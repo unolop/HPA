@@ -1,0 +1,195 @@
+,qid,category,l2_category,question_en,answer,score,question_en,options,answer_type,question_kr
+3,141,coarse perception,image scene and topic,"Which is the main topic of the image
+ Options: A: A woman surfing, B: A man skiting, C: A man surfing, D: A woman skiting",C,0.769230769230769,"Which is the main topic of the image
+ "," A: A woman surfing 여성이 서핑하는 것, B: A man skiting 남자가 스케이팅을 하는 것, C: A man surfing 남자가 서핑하는 것, D: A woman skiting 여자가 스케이팅을 하는 것",choice,이미지의 주요 주제는 무엇입니까?
+1204,568,instance reasoning,cross-instance relation reasoning,"Which property do these four objects have in common?
+ Options: A: sticky, B: hard, C: stretchy, D: nan",A,0.0,"Which property do these four objects have in common?
+ ","A: sticky 끈적한, B: hard 딱딱한, C: stretchy 신축성 있는, D: nan 숫자가 아님",choice,이 네 객체가 공통으로 가지는 속성은 무엇입니까?
+841,14,coarse perception,image emotion,"Which mood does this image convey?
+ Options: A: Cozy, B: Anxious, C: Happy, D: Angry",C,0.162162162162162,"Which mood does this image convey?
+ ","A: Cozy 아늑한, B: Anxious 불안한, C: Happy 행복한, D: Angry 화난",choice,이 이미지는 어떤 분위기를 전달하나요?
+151,910,logical reasoning,diagram reasoning,"Which continent is highlighted?
+ Options: A: Europe, B: South America, C: Antarctica, D: Africa",C,0.5,"Which continent is highlighted?
+ ","A: Europe, B: South America, C: Antarctica, D: Africa A: 유럽, B: 남아메리카, C: 남극, D: 아프리카",choice,강조된 대륙은 어느 대륙입니까?
+1056,560,instance reasoning,cross-instance relation reasoning,"Where is the little girl standing in relation to the old woman in the dress in the image?
+ Options: A: Behind her, B: To the right of her, C: In front of her, D: To the left of her",B,0.0909090909090909,"Where is the little girl standing in relation to the old woman in the dress in the image?
+ ","A: Behind her, 그녀의 뒤에 B: To the right of her, 그녀의 오른쪽에 C: In front of her, 그녀의 앞에 D: To the left of her, 그녀의 왼쪽에",choice,그 꼬마 소녀는 어떤 대상에 대해 어디에 서 있나요?
+209,27,coarse perception,image scene and topic,"Can you identify the season in which the picture was taken?
+ Options: A: spring, B: summer, C: fall, D: winter",D,0.416666666666667,"Can you identify the season in which the picture was taken?
+ ","A: spring 봄, B: summer 여름, C: fall 가을, D: winter 겨울",choice,그 그림에서 묘사된 계절을 식별할 수 있나요?
+524,167,coarse perception,image style & quality,"Which art style is showcased in this image?
+ Options: A: depth of field, B: pencil, C: vector art, D: Baroque",B,0.25,"Which art style is showcased in this image?
+ "," A: depth of field, B: pencil, C: vector art, D: Baroque A: 피사계 심도, B: 연필, C: 벡터 아트, D: 바로크",choice,이 이미지에 보여지는 예술 양식은 무엇인가요?
+91,532,instance reasoning,cross-instance relation reasoning,"Based on the image, what is the significance of having two cakes on the table during the couple's celebration with their baby?
+ Options: A: Having two cakes allows for different cake flavors or designs for their guests., B: Having two cakes signifies that the couple is celebrating multiple occasions or milestones., C: Having two cakes indicates a preference for abundance and excess., D: Having two cakes is a common practice in most celebrations of this nature.",B,0.545454545454545,"Based on the image, what is the significance of having two cakes on the table during the couple's celebration with their baby?
+ ",A: Having two cakes allows for different cake flavors or designs for their guests. 두 케이크는 손님들을 위해 서로 다른 케이크 맛이나 디자인을 가능하게 한다. B: Having two cakes signifies that the couple is celebrating multiple occasions or milestones. 두 개의 케이크는 커플이 여러 가지 행사나 이정표를 축하하고 있음을 나타낸다. C: Having two cakes indicates a preference for abundance and excess. 두 개의 케이크를 갖는 것은 풍요와 과잉을 선호한다는 것을 나타낸다. D: Having two cakes is a common practice in most celebrations of this nature. 이런 종류의 축하 행사에서 두 개의 케이크를 가지는 것은 일반적인 관행이다.,choice,"이미지를 기반으로, o의 의미는 무엇입니까..."
+1072,593,instance reasoning,single-instance reasoning,"The gas shown in this figure:
+ Options: A: Is a colorless, odorless gas that is poisonous to humans and animals, B: Forms when fuels like gasoline, coal, and wood are burned without enough oxygen, C: Has a boiling point of -191.5°C, D: None of these options are correct.",A,0.0909090909090909,"The gas shown in this figure:
+ ","  A: Is a colorless, odorless gas that is poisonous to humans and animals, B: Forms when fuels like gasoline, coal, and wood are burned without enough oxygen, C: Has a boiling point of -191.5°C, D: None of these options are correct. A: 인간과 동물에게 독성이 있는 무색 무취의 가스이다, B: 가솔린, 석탄, 목재와 같은 연료가 충분한 산소 없이 타고 있을 때 형성된다, C: 끓는점은 -191.5°C이다, D: 이들 중 올바른 것은 없다.",choice,이 그림에 보이는 가스:
+706,17,coarse perception,image emotion,"Which mood does this image convey?
+ Options: A: Sad, B: Anxious, C: Happy, D: Angry",D,0.189189189189189,"Which mood does this image convey?
+ "," A: Sad, B: Anxious, C: Happy, D: Angry A: 슬픈, B: 불안한, C: 행복한, D: 화난",choice,이 이미지는 어떤 분위기를 전달합니까?
+1067,526,instance reasoning,cross-instance attribute reasoning,"Which option describe the object relationship in the image correctly?
+ Options: A: The sink contains the cat., B: The cat is beside the microwave., C: The cat is at the edge of the sink., D: The book is beside the cat.",A,0.0909090909090909,"Which option describe the object relationship in the image correctly?
+ ",A: The sink contains the cat. 싱크대에 고양이가 있다. B: The cat is beside the microwave. 고양이는 전자레인지 옆에 있다. C: The cat is at the edge of the sink. 싱크대의 가장자리에 고양이가 있다. D: The book is beside the cat. 그 책은 고양이 옆에 있다.,choice,다음 중 어떤 옵션이 객체 간의 관계를 설명합니까?
+1106,142,coarse perception,image scene and topic,"Which is the main topic of the image
+ Options: A: Driving cars, B: Driving buses, C: A driving bus, D: A driving car",B,0.0833333333333333,"Which is the main topic of the image
+ ","A: Driving cars 자동차 운전, B: Driving buses 버스 운전, C: A driving bus 운전 중인 버스, D: A driving car 운전 중인 자동차",choice,이미지의 주요 주제는 무엇입니까?
+1092,426,fine-grained perception,recognition,"What is the subject of the image?
+ Options: A: Green exit sign with an arrow pointing to the right, B: Sign of a toilet on the roof of a building, C: Green exit sign with a directional arrow, D: Green exit sign with an arrow pointing to the left",D,0.0833333333333333,"What is the subject of the image?
+ "," A: Green exit sign with an arrow pointing to the right, B: Sign of a toilet on the roof of a building, C: Green exit sign with a directional arrow, D: Green exit sign with an arrow pointing to the left A: 오른쪽으로 향하는 화살표가 있는 초록색 출구 표지, B: 건물 옥상에 있는 화장실 표지, C: 방향 화살표가 있는 초록색 출구 표지, D: 왼쪽으로 향하는 화살표가 있는 초록색 출구 표지",choice,이미지의 주제가 무엇입니까?
+850,109,coarse perception,image scene and topic,"What is the primary subject in this image?
+ Options: A: a guitar, B: a man on stage, C: a microphone, D: a concert",D,0.153846153846154,"What is the primary subject in this image?
+ ","A: a guitar, B: a man on stage, C: a microphone, D: a concert A: 기타, B: 무대 위의 남자, C: 마이크, D: 콘서트",choice,이 이미지의 주요 주제는 무엇입니까?
+282,793,logical reasoning,common reasoning,"What is the referee doing in the image?
+ Options: A: Blowing the whistle, B: Talking to the players, C: Watching the match from the sideline, D: Scoring the goal",C,0.363636363636364,"What is the referee doing in the image?
+ ","A: Blowing the whistle 호루라기를 불고 있다, B: Talking to the players 선수들과 대화하고 있다, C: Watching the match from the sideline 측선에서 경기를 지켜보고 있다, D: Scoring the goal 골을 넣고 있다",choice,사진 속 심판은 무엇을 하고 있습니까?
+816,241,fine-grained perception,object counting,"Based on the image, how many soccer players are on the field?
+ Options: A: 1, B: 2, C: 4, D: 3",C,0.166666666666667,"Based on the image, how many soccer players are on the field?
+ ","A: 1 A: 1, B: 2 B: 2, C: 4 C: 4, D: 3 D: 3",choice,이미지에 따르면 축구 선수의 수는 몇 명입니까?
+825,197,coarse perception,image style & quality,"what style is this painting?
+ Options: A: ink wash painting, B: watercolor painting, C: gouache painting, D: pen and ink",B,0.166666666666667,"what style is this painting?
+ ","A: ink wash painting, B: watercolor painting, C: gouache painting, D: pen and ink  A: 수묵화, B: 수채화, C: 구아슈 페인팅, D: 펜과 잉크",choice,이 그림의 스타일은 무엇입니까?
+573,84,coarse perception,image scene and topic,"What is the most frequent color shown in the image?
+ Options: A: White, B: Brown, C: Blue, D: Green",D,0.230769230769231,"What is the most frequent color shown in the image?
+ ","A: White 흰색, B: Brown 갈색, C: Blue 파란색, D: Green 초록",choice,이미지에 나타난 가장 자주 보이는 색은 무엇입니까?
+29,335,fine-grained perception,recognition,"Does the image contain any person wearing green clothes?
+ Options: A: Yes, B: Cannot determine from the given information, C: No, D: None of the above",C,0.666666666666667,"Does the image contain any person wearing green clothes?
+ ","A: Yes 네, B: Cannot determine from the given information 주어진 정보로는 판단할 수 없습니다, C: No 아니요, D: None of the above 위의 어느 것도 아니다",choice,이미지에 초록색 옷을 입은 사람이 있나요?
+786,265,fine-grained perception,object counting,"How many dressers are visible in the image?
+ Options: A: nan, B: Three, C: Two, D: One",A,0.166666666666667,"How many dressers are visible in the image?
+ ","A: nan 해당 없음, B: Three 세 개, C: Two 두 개, D: One 한 개",choice,그 사진에서 보이는 서랍장은 몇 개입니까?
+1001,921,logical reasoning,diagram reasoning,"Which of these cities is marked on the map?
+ Options: A: Miami, B: Atlanta, C: Nashville, D: Oklahoma City",B,0.1,"Which of these cities is marked on the map?
+ "," A: Miami (마이애미), B: Atlanta (애틀랜타), C: Nashville (내슈빌), D: Oklahoma City (오클라호마 시티)",choice,다음 도시들 중 지도에 표시된 도시는 어느 도시입니까?
+723,477,instance reasoning,cross-instance attribute reasoning,"What is the position of the glass of juice relative to the tangerines?
+ Options: A: Next to the tangerines, B: Between the tangerines, C: Behind the tangerines, D: Cannot tell",B,0.181818181818182,"What is the position of the glass of juice relative to the tangerines?
+ "," A: Next to the tangerines 귤 옆에, B: Between the tangerines 귤 사이에, C: Behind the tangerines 귤 뒤에, D: Cannot tell 알 수 없음",choice,귤에 비해 주스 한 잔의 위치는 어디에 있나요?
+475,486,instance reasoning,cross-instance attribute reasoning,"What is the relationship between the people in the image?
+ Options: A: friends, B: family, C: commercial, D: professional",D,0.272727272727273,"What is the relationship between the people in the image?
+ ","A: friends 친구들, B: family 가족, C: commercial 상업적, D: professional 전문적",choice,...에 있는 사람들 사이의 관계는 무엇입니까?
+1295,715,logical reasoning,code & sequence reasoning,"Which Python code can generate the content of the image?
+ Options: A: tup1 = ('physics', 'chemistry', 1997, 2000)
+ tup2 = (1, 2, 3, 4, 5, 6, 7 )
+ print ""tup1[0]: "", tup1[0]
+ print ""tup2[1:5]: "", tup2[1:5], B: tup1 = ('physics', 'chemistry', 1997, 2000)
+ tup2 = (1, 2, 3, 4, 5, 6, 7 )
+ print ""tup1[0]: "", tup1[0]
+ print ""tup2[1:5]: "", tup2[2:5], C: tup1 = ('physics', 'chemistry', 1990, 2000)
+ tup2 = (1, 2, 3, 4, 5, 6, 7 )
+ print ""tup1[0]: "", tup1[0]
+ print ""tup2[1:5]: "", tup2[1:5], D: tup1 = ('physics', 'chemistry', 1990, 2000)
+ tup2 = (1, 2, 3, 4, 5, 6, 7 )
+ print ""tup1[0]: "", tup1[0]
+ print ""tup2[2:5]: "", tup2[1:5]",A,0.0,"Which Python code can generate the content of the image?
+ ","A: tup1 = ('physics', 'chemistry', 1997, 2000) tup2 = (1, 2, 3, 4, 5, 6, 7 ) print \""tup1[0]: \"", tup1[0] print \""tup2[1:5]: \"", tup2[1:5]  tup1의 첫 원소는 'physics'이고 tup2의 슬라이스 tup2[1:5]은 (2, 3, 4, 5)이다. B: tup1 = ('physics', 'chemistry', 1997, 2000) tup2 = (1, 2, 3, 4, 5, 6, 7 ) print \""tup1[0]: \"", tup1[0] print \""tup2[1:5]: \"", tup2[2:5]  tup1의 첫 원소는 'physics'이고 tup2의 슬라이스 tup2[2:5]은 (3, 4, 5)이다. C: tup1 = ('physics', 'chemistry', 1990, 2000) tup2 = (1, 2, 3, 4, 5, 6, 7 ) print \""tup1[0]: \"", tup1[0] print \""tup2[1:5]: \"", tup2[1:5]  tup1의 첫 원소는 'physics'이고 tup2[1:5]의 값은 (2, 3, 4, 5)이다. D: tup1 = ('physics', 'chemistry', 1990, 2000) tup2 = (1, 2, 3, 4, 5, 6, 7 ) print \""tup1[0]: \"", tup1[0] print \""tup2[2:5]: \"", tup2[1:5]  tup1의 첫 원소는 'physics'이고 tup2[2:5]의 값은 (3, 4, 5)이다.",choice,다음 파이썬 코드로 ...의 내용을 생성할 수 있는가?
+1139,128,coarse perception,image scene and topic,"What time of day is it in the image?
+ Options: A: Noon, B: Evening, C: Night, D: Dawn",D,0.0769230769230769,"What time of day is it in the image?
+ "," A: Noon, B: Evening, C: Night, D: Dawn A: 정오, B: 저녁, C: 밤, D: 새벽",choice,이미지 속 시간대는 무엇인가요?
+1266,156,coarse perception,image scene and topic,"Which option describe the object relationship in the image correctly?
+ Options: A: The suitcase is on the book., B: The suitcase is beneath the cat., C: The suitcase is beneath the bed., D: The suitcase is beneath the book.",A,0.0,"Which option describe the object relationship in the image correctly?
+ ","A: The suitcase is on the book. 여행 가방은 책 위에 있다., B: The suitcase is beneath the cat. 여행 가방은 고양이 아래에 있다., C: The suitcase is beneath the bed. 여행 가방은 침대 아래에 있다., D: The suitcase is beneath the book. 여행 가방은 책 아래에 있다.",choice,다음 중 물체 간의 관계를 설명하는 옵션은 무엇입니까?
+1170,301,fine-grained perception,object counting,"How many people are visible in the image?
+ Options: A: Two, B: One, C: Three, D: Four",D,0.0,"How many people are visible in the image?
+ ","A: Two 두 명, B: One 한 명, C: Three 세 명, D: Four 네 명",choice,이미지에 보이는 사람의 수는 몇 명입니까?
+575,189,coarse perception,image style & quality,"Which image shows the highest sharpness?
+ Options: A: upper left, B: upper right, C: down left, D: down right",A,0.230769230769231,"Which image shows the highest sharpness?
+ "," A: upper left, B: upper right, C: down left, D: down right A: 왼쪽 위, B: 오른쪽 위, C: 왼쪽 아래, D: 오른쪽 아래",choice,가장 선명한 이미지는 어느 이미지입니까?
+506,325,fine-grained perception,object counting,"How many white jugs are on the nightstand?
+ Options: A: 0, B: 3, C: 2, D: 1",A,0.25,"How many white jugs are on the nightstand?
+ ","A: 0, B: 3, C: 2, D: 1 A: 0, B: 3, C: 2, D: 1",choice,협탁 위에 흰색 저그가 몇 개 있나요?
+1130,413,fine-grained perception,recognition,"What is the most prominent color of the countertop?
+ Options: A: Gray, B: White, C: Black, D: Brown",D,0.0833333333333333,"What is the most prominent color of the countertop?
+ ","A: Gray 회색, B: White 흰색, C: Black 검은색, D: Brown 갈색",choice,카운터의 가장 두드러진 색은 무엇입니까?
+1181,611,instance reasoning,single-instance reasoning,"What is the material of the cage-like object in this image?
+ Options: A: Plastic, B: Wire, C: Metal, D: Glass",A,0.0,"What is the material of the cage-like object in this image?
+ "," A: Plastic, B: Wire, C: Metal, D: Glass A: 플라스틱, B: 와이어, C: 금속, D: 유리",choice,새장 같은 물체의 재질은 무엇입니까?
+174,641,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ Options: A: astronaut, B: chemist, C: violinist, D: pianist",C,0.454545454545455,"What's the profession of the people in this picture?
+ ","A: astronaut, B: chemist, C: violinist, D: pianist A: 우주비행사, B: 화학자, C: 바이올리스트, D: 피아니스트",choice,이 사진에 있는 사람들의 직업은 무엇입니까?
+1129,445,fine-grained perception,recognition,"Which woman has dark hair in the image?
+ Options: A: Both women, B: The woman standing farther from the teddy bear, C: The woman standing closer to the teddy bear, D: Neither woman",A,0.0833333333333333,"Which woman has dark hair in the image?
+ ","A: Both women, B: The woman standing farther from the teddy bear, C: The woman standing closer to the teddy bear, D: Neither woman A: 두 여성 모두, B: 테디 베어에서 더 멀리에 서 있는 여성, C: 테디 베어에 더 가까이 서 있는 여성, D: 어느 여성도 아니다",choice,사진 속에서 머리카락이 어두운 여성은 누구입니까?
+632,917,logical reasoning,diagram reasoning,"Which letter represents the new moon?
+ Options: A: C, B: J, C: E, D: B",C,0.2,"Which letter represents the new moon?
+ ","A: C (씨), B: J (제이), C: E (이), D: B (비)",choice,신월을 나타내는 문자는 무엇입니까?
+56,784,logical reasoning,common reasoning,"What is the intended outcome in this image?
+ Options: A: She will lose leg muscle, B: She will maintain her current leg muscle size, C: She will grow her leg muscle, D: She will undergo surgery to reduce leg muscle",C,0.6,"What is the intended outcome in this image?
+ ","A: She will lose leg muscle 다리 근육을 잃게 된다, B: She will maintain her current leg muscle size 현재의 다리 근육 크기를 유지하게 된다, C: She will grow her leg muscle 다리 근육이 커지게 된다, D: She will undergo surgery to reduce leg muscle 다리 근육을 줄이기 위한 수술을 받게 된다",choice,이 이미지의 의도된 결과는 무엇입니까?
+784,421,fine-grained perception,recognition,"What is the primary surface of the playing field in the image?
+ Options: A: Asphalt, B: Sand, C: Artificial turf, D: Grass",C,0.166666666666667,"What is the primary surface of the playing field in the image?
+ ","A: Asphalt 아스팔트, B: Sand 모래, C: Artificial turf 인조잔디, D: Grass 잔디",choice,운동 경기장의 주된 표면은 무엇입니까?
+1113,309,fine-grained perception,object counting,"How many ponds are clearly visible in this image?
+ Options: A: One, B: Three, C: Two, D: Four",B,0.0833333333333333,"How many ponds are clearly visible in this image?
+ ","A: One, B: Three, C: Two, D: Four 하나 세 둘 네",choice,이 이미지에서 확실히 보이는 연못은 몇 개입니까?
+466,530,instance reasoning,cross-instance attribute reasoning,"which image is more colorful?
+ Options: A: The first image, B: The second image, C: nan, D: nan",A,0.272727272727273,"which image is more colorful?
+ ","A: The first image, B: The second image, C: nan, D: nan A: 첫 번째 이미지, B: 두 번째 이미지, C: nan, D: nan",choice,어떤 이미지가 더 다채롭나요?
+727,535,instance reasoning,cross-instance relation reasoning,"Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?
+ Options: A: sample A, B: neither; the samples have the same temperature, C: sample B, D: nan",B,0.181818181818182,"Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?
+ ","A: sample A 샘플 A, B: neither; 두 샘플의 온도가 같다, C: sample B 샘플 B, D: nan 숫자가 아님",choice,두 샘플의 입자들의 평균 운동 에너지를 비교하시오.
+509,352,fine-grained perception,recognition,"What color are the flowers in the room?
+ Options: A: White, B: Yellow, C: Red, D: Pink",B,0.25,"What color are the flowers in the room?
+ ","A: White, B: Yellow, C: Red, D: Pink A: 흰색, B: 노란색, C: 빨간색, D: 분홍색",choice,방 안의 꽃은 무슨 색입니까?
+998,883,logical reasoning,diagram reasoning,"Is the following statement about our solar system true or false?
+ Of the four largest planets, three are made mainly of gas.
+ Options: A: false, B: true, C: nan, D: nan",A,0.1,"Is the following statement about our solar system true or false?
+ Of the four largest planets, three are made mainly of gas.
+ ","A: false 거짓, B: true 참, C: nan 숫자 아님, D: nan 숫자 아님",choice,다음 진술이 우리 태양계에 관한 것인가요?
+1049,614,instance reasoning,single-instance reasoning,"What is the object that the man with the uniform is standing in front of?
+ Options: A: A flag, B: A table, C: A picture, D: A chair",D,0.0909090909090909,"What is the object that the man with the uniform is standing in front of?
+ ","A: A flag 깃발, B: A table 탁자, C: A picture 그림, D: A chair 의자",choice,제복을 입은 남자가 들고 있는 물건은 무엇입니까?
+1147,68,coarse perception,image scene and topic,"What is the main focus of the image?
+ Options: A: A person playing a guitar in front of a choir, B: A choir singing on a stage, C: A man sitting in a chair playing a guitar, D: A man playing a guitar in front of a group of people",C,0.0769230769230769,"What is the main focus of the image?
+ ","A: A person playing a guitar in front of a choir, B: A choir singing on a stage, C: A man sitting in a chair playing a guitar, D: A man playing a guitar in front of a group of people  A: 합창단 앞에서 기타를 연주하는 사람, B: 무대에서 합창단이 노래하는 모습, C: 의자에 앉아 기타를 연주하는 남자, D: 사람들 앞에서 기타를 연주하는 남자",choice,이미지의 주된 초점은 무엇입니까?
+821,211,fine-grained perception,localization,"What is the position of the grape in relation to the plate of walnuts?
+ Options: A: The grape is on top of the plate of walnuts, B: The grape is below the plate of walnuts, C: The grape is to the right of the plate of walnuts, D: The grape is to the left of the plate of walnuts",A,0.166666666666667,"What is the position of the grape in relation to the plate of walnuts?
+ ","A: The grape is on top of the plate of walnuts 포도가 호두 접시 위에 있다, B: The grape is below the plate of walnuts 포도가 호두 접시 아래에 있다, C: The grape is to the right of the plate of walnuts 포도는 호두 접시의 오른쪽에 있다, D: The grape is to the left of the plate of walnuts 포도는 호두 접시의 왼쪽에 있다",choice,포도와 호두 접시 사이의 상대적 위치는 무엇입니까?
+777,481,instance reasoning,cross-instance attribute reasoning,"What is the position of the white couch relative to the glass coffee table?
+ Options: A: The couch is in front of the coffee table, B: The couch is to the right of the coffee table, C: The couch is to the left of the coffee table, D: The couch is behind the coffee table",D,0.181818181818182,"What is the position of the white couch relative to the glass coffee table?
+ ","A: The couch is in front of the coffee table 흰색 소파는 커피 테이블의 앞에 있습니다, B: The couch is to the right of the coffee table 흰색 소파는 커피 테이블의 오른쪽에 있습니다, C: The couch is to the left of the coffee table 흰색 소파는 커피 테이블의 왼쪽에 있습니다, D: The couch is behind the coffee table 흰색 소파는 커피 테이블의 뒤에 있습니다",choice,흰색 소파의 위치는 커피 테이블에 대해 어디에 있습니까?
+335,218,fine-grained perception,localization,"Where is it located?
+ Options: A: Xi'an, B: Shanghai, C: Beijing, D: Nanjing",A,0.333333333333333,"Where is it located?
+ ","A: Xi'an 시안, B: Shanghai 상하이, C: Beijing 베이징, D: Nanjing 난징",choice,그것은 어디에 위치해 있나요?
+291,649,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ Options: A: magician, B: financial analyst, C: florist, D: lawyer",A,0.363636363636364,"What's the profession of the people in this picture?
+ ","A: magician 마술사, B: financial analyst 재무 분석가, C: florist 플로리스트, D: lawyer 변호사",choice,이 사진 속 사람들의 직업은 무엇입니까?
+856,50,coarse perception,image scene and topic,"What is the dominant color scheme in this image?
+ Options: A: White and blue, B: Blue and green, C: Brown and yellow, D: Pink and orange",B,0.153846153846154,"What is the dominant color scheme in this image?
+ ","A: White and blue 흰색과 파란색, B: Blue and green 파란색과 초록색, C: Brown and yellow 갈색과 노란색, D: Pink and orange 분홍색과 주황색",choice,이 이미지의 지배적인 색 구성은 무엇입니까?
+275,131,coarse perception,image scene and topic,"What type of scene is depicted in this image?
+ Options: A: A workspace, B: A beach vacation, C: A tropical restaurant, D: A desert oasis",A,0.384615384615385,"What type of scene is depicted in this image?
+ ","A: A workspace 작업 공간, B: A beach vacation 해변 휴가, C: A tropical restaurant 열대 식당, D: A desert oasis 사막 오아시스",choice,이 이미지에는 어떤 종류의 장면이 묘사되어 있나요?
+1112,399,fine-grained perception,recognition,"What is the color of the word ""brick"" as it appears on the wall in the image?
+ Options: A: White, B: Gray, C: Red, D: Black",B,0.0833333333333333,"What is the color of the word ""brick"" as it appears on the wall in the image?
+ ","A: White, B: Gray, C: Red, D: Black 흰색 회색 빨간색 검은색",choice,단어 'brick'의 색은 무엇입니까?
+804,153,coarse perception,image scene and topic,"Which one is the correct caption of this image?
+ Options: A: A bunch of cars sitting still in the middle of a street, B: Two giraffes near a tree in the wild., C: Small personal bathroom with a tiny entrance door., D: An elephant drinking water while the rest of the herd is walking in dry grass.",D,0.166666666666667,"Which one is the correct caption of this image?
+ ","A: A bunch of cars sitting still in the middle of a street, 길 한가운데에 멈춰 서 있는 차들 B: Two giraffes near a tree in the wild., 야생에서 나무 근처에 있는 두 마리의 기린 C: Small personal bathroom with a tiny entrance door., 아주 작은 입구가 있는 개인용 욕실 D: An elephant drinking water while the rest of the herd is walking in dry grass. 마른 풀밭에서 떼의 나머지 무리들이 걷고 있는 동안 물을 마시는 코끼리",choice,이 이미지에 대한 올바른 캡션은 무엇입니까?
+540,446,fine-grained perception,recognition,"Who is the person in this image?
+ Options: A: Elon Musk, B: Xiang Liu, C: Jay Chou, D: Ming Yao",C,0.25,"Who is the person in this image?
+ ","A: Elon Musk 일론 머스크, B: Xiang Liu 샹 리우, C: Jay Chou 제이 차오, D: Ming Yao 밍 야오",choice,이 이미지 속 인물은 누구입니까?
+1120,385,fine-grained perception,recognition,"What is the color of the net behind the players in the image?
+ Options: A: It is not visible in the image., B: Blue, C: Red, D: White",B,0.0833333333333333,"What is the color of the net behind the players in the image?
+ ","A: It is not visible in the image. 이미지에서 보이지 않습니다., B: Blue 파란색, C: Red 빨간색, D: White 흰색",choice,선수 뒤에 있는 네트의 색은 무엇입니까?
+321,376,fine-grained perception,recognition,"What is the color of the couch in the living room?
+ Options: A: Beige, B: Grey, C: Dark Brown, D: White",C,0.333333333333333,"What is the color of the couch in the living room?
+ ","A: Beige 베이지, B: Grey 그레이, C: Dark Brown 다크 브라운, D: White 화이트",choice,거실 소파의 색은 무엇입니까?
+42,897,logical reasoning,diagram reasoning,"What is the name of the colony shown?
+ Options: A: Maine, B: Rhode Island, C: New York, D: Virginia",B,0.6,"What is the name of the colony shown?
+ "," A: Maine, B: Rhode Island, C: New York, D: Virginia A: 메인 주, B: 로드 아일랜드 주, C: 뉴욕 주, D: 버지니아 주",choice,보여진 식민지의 이름은 무엇입니까?
+195,606,instance reasoning,single-instance reasoning,"What is most prominent in the image?
+ Options: A: A building with a clock, B: A city skyline, C: A boat docked in the water., D: Water with boats and ships.",A,0.454545454545455,"What is most prominent in the image?
+ ","A: A building with a clock, B: A city skyline, C: A boat docked in the water., D: Water with boats and ships. A: 시계가 달린 건물, B: 도시의 스카이라인, C: 물에 정박한 보트, D: 보트와 선박이 있는 물",choice,사진에서 가장 눈에 띄는 것은 무엇입니까?
+301,677,instance reasoning,single-instance reasoning,"Which special day is associated with this poster?
+ Options: A: Earth Day., B: Children's Day., C: Father's Day., D: Mother's Day",B,0.363636363636364,"Which special day is associated with this poster?
+ ","A: Earth Day. 지구의 날, B: Children's Day. 어린이날, C: Father's Day. 아버지의 날, D: Mother's Day. 어머니의 날",choice,이 게시물과 관련된 특별한 날은 무엇입니까?
+719,639,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ Options: A: prepare food and cook meals, B: sleep, C: a sanitary facility used for excretion, D: Play basketball",B,0.181818181818182,"What's the function of the demonstrated object?
+ ","A: prepare food and cook meals, B: sleep, C: a sanitary facility used for excretion, D: Play basketball A: 음식을 준비하고 식사를 요리한다, B: 자다, C: 배변에 사용되는 위생 시설, D: 농구를 하다",choice,시연된 물체의 기능은 무엇입니까?
+1078,342,fine-grained perception,recognition,"How many people are performing on the stage?
+ Options: A: Three, B: Two, C: One, D: Four",D,0.0833333333333333,"How many people are performing on the stage?
+ ","A: Three, B: Two, C: One, D: Four A: 세 명, B: 두 명, C: 한 명, D: 네 명",choice,무대에서 공연 중인 사람은 몇 명입니까?
+294,638,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ Options: A: increase passenger capacity and reduce traffic congestion, B: a sanitary facility used for excretion, C: used as decorations., D: watch TV shows",A,0.363636363636364,"What's the function of the demonstrated object?
+ ","A: increase passenger capacity and reduce traffic congestion 승객 수용 능력을 늘리고 교통 체증을 줄이는 기능, B: a sanitary facility used for excretion 배변에 사용되는 위생 시설, C: used as decorations. 장식으로 사용된다., D: watch TV shows TV를 본다",choice,시연된 물건의 기능은 무엇입니까?

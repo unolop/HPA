@@ -1,0 +1,1015 @@
+,qid,category,l2_category,question_en,options,answer_type,question_kr,Unnamed: 0.1,Unnamed: 0,answer,score,index,question_type,image_id,answers,multiple_choice_answer
+0,664,instance reasoning,single-instance reasoning,"Where is the woman's blue bag located in the image?
+ ","A: In her hand 그녀의 손에, B: On her shoulder 그녀의 어깨에, C: On the ground 땅에, D: Inside the man's bag 그 남자의 가방 안에",choice,이미지 속 여성의 파란 가방은 어디에 위치해 있나요?,,,,,,,,,
+1,6,coarse perception,image emotion,"What feeling is shown in this image?
+ ","A: engaged 참여하는, B: lonely 외로운, C: angry 화난, D: supportive 지지하는",choice,이 이미지에 어떤 감정이 나타나고 있나요?,,,,,,,,,
+2,662,instance reasoning,single-instance reasoning,"Where is the rug in the living room located?
+ ","A: Next to the door 문 옆에, B: Under the table 탁자 아래에, C: In front of the window 창문 앞에, D: Under the couch 소파 아래에",choice,거실의 러그는 어디에 위치해 있나요?,,,,,,,,,
+3,773,logical reasoning,common reasoning,"Is there a teddy bear in the image?
+ ","A: Can't tell 알 수 없음, B: No 아니오, C: Yes 네, D: Maybe 아마도",choice,이미지에 곰인형이 있나요?,,,,,,,,,
+4,556,instance reasoning,cross-instance relation reasoning,"What is the relationship between the people in the image?
+ ","A: commercial 상업적인, B: professional 전문적인, C: friends 친구들, D: family 가족",choice,사진 속 사람들 간의 관계는 무엇입니까?,,,,,,,,,
+5,768,logical reasoning,common reasoning,"In the picture, which direction is the baby facing?
+ ","A: left 왼쪽, B: right 오른쪽, C: up 위, D: down 아래",choice,사진에서 아기가 어느 방향을 향하고 있나요?,,,,,,,,,
+6,802,logical reasoning,common reasoning,"What will happen next?
+ ","A: the kid is gonna slide through 그 아이가 미끄러져 지나갈 거야, B: the kid is gonna crash into the other kid 그 아이가 다른 아이와 부딪힐 거야, C: the other kid is gonna dodge 그 다른 아이가 피할 거야, D: both A,B, and C A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,,,
+7,598,instance reasoning,single-instance reasoning,"The object shown in this figure:
+ ","A: Is a colorless liquid with a slightly metallic taste, 무색의 액체로 약간의 금속 맛이 나는 물질이다, B: Is a powerful oxidizer that can cause skin and eye irritation, 피부와 눈에 자극을 유발할 수 있는 강력한 산화제이다, C: Has a boiling point of 150.2°C, 끓는점이 150.2°C이다, D: None of these options are correct. 이러한 옵션들 중 올바른 것은 없다.",choice,다음 그림에 보이는 물체는:,,,,,,,,,
+8,70,coarse perception,image scene and topic,"What is the main focus of the image?
+ ","A: A woman standing in front of a brick wall 한 여성이 벽돌 벽 앞에 서 있다, B: A woman standing in front of a green hedge 한 여성이 초록색 울타리 앞에 서 있다, C: A garden with a lot of flowers and bushes 꽃과 덤불이 많은 정원, D: A bench surrounded by a lot of plants 많은 식물로 둘러싸인 벤치",choice,이미지의 주요 초점은 무엇입니까?,,,,,,,,,
+9,97,coarse perception,image scene and topic,"What is the predominant color of the image?
+ ","A: Yellow 노란색, B: Black 검정, C: White 흰색, D: Blue 파란색",choice,이미지의 주된 색상은 무엇입니까?,,,,,,,,,
+10,462,instance reasoning,cross-instance attribute reasoning,"In the picture, one is a bear doll and the other is a cat. Are they the same size?
+ ","A: same 같은, B: Not the same 다른, C: Can't judge 판단할 수 없다, D: nan 숫자가 아님",choice,사진 속에서 하나는 곰 인형이고 다른 하나는 고양이입니다. 둘은 같은 크기인가요?,,,,,,,,,
+11,428,fine-grained perception,recognition,"What is the woman holding in her hand?
+ ","A: A book 책, B: A camera 카메라, C: A cell phone 휴대폰, D: Nothing 아무 것도 없음",choice,여자가 손에 들고 있는 것은 무엇인가요?,,,,,,,,,
+12,13,coarse perception,image emotion,"Which emotion is being depicted in this image?
+ ","A: happiness, B: sadness, C: anger, D: love A: 행복, B: 슬픔, C: 분노, D: 사랑",choice,이 이미지에서 어떤 감정이 표현되고 있나요?,,,,,,,,,
+13,414,fine-grained perception,recognition,"What is the most prominent color of the jacket worn by the man with the laptop?
+ ","A: Blue 파란색, B: Black 검정색, C: Gray 회색, D: Red 빨간색",choice,노트북을 들고 있는 남자가 입은 재킷의 가장 눈에 띄는 색은 무엇입니까?,,,,,,,,,
+14,550,instance reasoning,cross-instance relation reasoning,"What can Hazel and Xavier trade to each get what they want?
+ ",A: Hazel can trade her tomatoes for Xavier's broccoli. 헤이즐은 그녀의 토마토를 자비에의 브로콜리와 교환할 수 있다. B: Hazel can trade her tomatoes for Xavier's carrots. 헤이즐은 그녀의 토마토를 자비에의 당근과 교환할 수 있다. C: Xavier can trade his broccoli for Hazel's oranges. 자비에는 자신의 브로콜리를 헤이즐의 오렌지와 교환할 수 있다. D: Xavier can trade his almonds for Hazel's tomatoes. 자비에는 자신의 아몬드를 헤이즐의 토마토와 교환할 수 있다.,choice,헤이즐과 자비에는 서로 원하는 것을 얻기 위해 무엇을 교환할 수 있나요?,,,,,,,,,
+15,816,logical reasoning,common reasoning,"Which of the following objects has the highest density in the image?
+ ","A: Palm trees 야자나무들, B: Trees 나무들, C: Sand 모래, D: Dead grass 죽은 풀",choice,다음 중 이미지에서 가장 밀도가 높은 객체는 무엇입니까?,,,,,,,,,
+16,788,logical reasoning,common reasoning,"What is the most likely purpose of this poster?
+ ","A: To celebrate New Year., B: To celebrate someone's birthday., C: To celebrate Christmas., D: To celebrate National Day. A: 새해를 축하하기 위해., B: 누군가의 생일을 축하하기 위해., C: 크리스마스를 축하하기 위해., D: 국경일을 축하하기 위해.",choice,이 포스터의 가장 가능성이 높은 목적은 무엇입니까?,,,,,,,,,
+17,317,fine-grained perception,object counting,"How many teddy bears are in the picture?
+ ","A: Two 두 개, B: One 한 개, C: Three 세 개, D: Four 네 개",choice,그림 속에 곰인형이 몇 개 있나요?,,,,,,,,,
+18,160,coarse perception,image scene and topic,"is this place crowded?
+ ","A: yes 네, B: no 아니요",choice,이 장소는 붐비나요?,,,,,,,,,
+19,357,fine-grained perception,recognition,"What color is the building in the foreground?
+ ","A: Blue 파란색, B: Grey 회색, C: White 흰색, D: Black 검은색",choice,전경에 보이는 건물의 색은 무엇입니까?,,,,,,,,,
+20,423,fine-grained perception,recognition,"What is the shape of the object with an angel face and wings in the image?
+ ","A: Egg-shaped 계란 모양, B: Square 정사각형, C: Round 원형, D: Star-shaped 별 모양",choice,이미지 속 천사 얼굴과 날개를 가진 물체의 모양은 무엇인가요?,,,,,,,,,
+21,250,fine-grained perception,object counting,"How many bananas are there in the image?
+ ","A: 3 삼, B: 2 이, C: 4 사, D: 5 오",choice,이미지에 바나나가 몇 개 있나요?,,,,,,,,,
+22,129,coarse perception,image scene and topic,"What type of environment is depicted in the picture?
+ ","A: home 집, B: shopping mall 쇼핑몰, C: street 거리, D: forest 숲",choice,사진에 묘사된 환경의 유형은 무엇입니까?,,,,,,,,,
+23,349,fine-grained perception,recognition,"Roughly how much of the picture is occupied by the two people on the bench in the picture?
+ ","A: more than 50% 50% 이상, B: less than 30% 30% 미만, C: 0.8 0.8, D: more than 60% 60% 이상",choice,그 그림에서 벤치에 앉아 있는 두 사람이 차지하는 부분은 대략 얼마나 됩니까?,,,,,,,,,
+24,392,fine-grained perception,recognition,"What is the color of the shirt worn by a man playing the guitar?
+ ","A: Blue 파란색, B: Black 검은색, C: Red 빨간색, D: White 흰색",choice,기타를 연주하는 남자가 입은 셔츠의 색은 무엇입니까?,,,,,,,,,
+25,384,fine-grained perception,recognition,"What is the color of the man's tie in the image?
+ ","A: Blue 파란색, B: White 흰색, C: Black 검은색, D: Red 빨간색",choice,이미지 속 남자의 넥타이 색상은 무엇입니까?,,,,,,,,,
+26,502,instance reasoning,cross-instance attribute reasoning,"What's the function of the demonstrated object?
+ ","A: baking 굽기, B: heating 가열, C: flavouring 향미 첨가, D: Pick-up 픽업",choice,시연된 물체의 기능은 무엇입니까?,,,,,,,,,
+27,552,instance reasoning,cross-instance relation reasoning,"What can be the relationship between the two persons in this image?
+ ","A: Father and daughter 아버지와 딸, B: Mother and son 어머니와 아들, C: Brother and sister 형제자매, D: Husband and wife 남편과 아내",choice,이 이미지 속 두 사람 사이의 관계는 무엇일 수 있나요?,,,,,,,,,
+28,804,logical reasoning,common reasoning,"What will happen next?
+ ","A: the motorcyle is gonna go forward, 오토바이가 앞으로 나아갈 것이다, B: the motorcyle is gonna crash, 오토바이가 충돌할 것이다, C: the motorcyle is gonna go backward, 오토바이가 뒤로 움직일 것이다, D: both A,B, and C A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,,,
+29,654,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: mason 석공, B: postman 우체부, C: singer 가수, D: soldier 군인",choice,이 사진 속 사람들의 직업은 무엇인가요?,,,,,,,,,
+30,544,instance reasoning,cross-instance relation reasoning,"In nature, what's the relationship between these two creatures?
+ ","A: Predatory relationships 포식 관계, B: Competitive relationships 경쟁 관계, C: Parasitic relationships 기생 관계, D: Symbiotic relationship 공생 관계",choice,자연에서 이 두 생물 사이의 관계는 무엇인가요?,,,,,,,,,
+31,529,instance reasoning,cross-instance attribute reasoning,"Which two objects are closest to each other?
+ ","A: Soccer player and football team 축구 선수와 축구 팀, B: Soccer player and coach 축구 선수와 코치, C: Football player and politician 축구 선수와 정치인, D: Football player and coach 축구 선수와 코치",choice,서로 가장 가까운 두 물체는 무엇인가요?,,,,,,,,,
+32,85,coarse perception,image scene and topic,"What is the most prominent feature in the image?
+ ","A: Sailboats, B: City skyline, C: Sky, D: Sun A: 요트, B: 도시 스카이라인, C: 하늘, D: 태양",choice,이미지에서 가장 두드러진 특징은 무엇인가요?,,,,,,,,,
+33,89,coarse perception,image scene and topic,"What is the overall scene depicted in this image?
+ ","A: A group of people ice skating on a frozen lake surrounded by snowy trees and hills 눈 덮인 나무와 언덕으로 둘러싸인 얼어붙은 호수 위에서 아이스 스케이트를 타는 사람들, B: A small town during a winter snowfall with snow-covered buildings and trees 눈이 내리는 겨울의 작은 마을로 눈으로 덮인 건물과 나무들, C: A busy city street during Christmas time with decorated buildings and light displays 크리스마스 시즌에 장식된 건물과 조명이 화려한 분주한 도시 거리, D: A ski resort town with snowy mountains and ski lifts visible in the background 배경에 눈 덮인 산과 스키 리프트가 보이는 스키 리조트 마을",choice,이 이미지에 묘사된 전반적인 장면은 무엇입니까?,,,,,,,,,
+34,140,coarse perception,image scene and topic,"Which is the main topic of the image
+ ","A: A woman is playing tennis 한 여성이 테니스를 치고 있다, B: A man is playing tennis 한 남성이 테니스를 치고 있다, C: A boy is playing soccer 한 소년이 축구를 하고 있다, D: A girl is playing volleyball 한 소녀가 배구를 하고 있다",choice,이미지의 주요 주제는 무엇입니까?,,,,,,,,,
+35,10,coarse perception,image emotion,"What is the overall mood or atmosphere of the image?
+ ","A: Joyful and energetic 즐겁고 활기찬, B: Intimate and cozy 친밀하고 아늑한, C: Dark and gloomy 어둡고 음울한, D: Serene and peaceful 고요하고 평화로운",choice,그 이미지의 전반적인 분위기는 무엇인가요?,,,,,,,,,
+36,433,fine-grained perception,recognition,"What type of family is shown in the image?
+ ","A: A family of all women 모든 여성으로 이루어진 가족, B: A family of mixed genders 성별이 혼합된 가족, C: A family of all men 모든 남성으로 이루어진 가족, D: A family of only children 아이들로만 이루어진 가족",choice,이미지에 어떤 유형의 가족이 보이나요?,,,,,,,,,
+37,587,instance reasoning,single-instance reasoning,"How many lamps are in the bedroom?
+ ","A: One 하나, B: Two 둘, C: Three 셋, D: Four 넷",choice,침실에 램프가 몇 개 있나요?,,,,,,,,,
+38,227,fine-grained perception,localization,"Where is the seated person visible in the image?
+ "," A: On the fence 울타리 위에, B: In the field 들판에, C: Outside the field 들판 밖에, D: Behind the bench 벤치 뒤에",choice,이미지에서 앉아 있는 사람이 보이는 곳은 어디인가?,,,,,,,,,
+39,430,fine-grained perception,recognition,"What shape is the ottoman in the living room?
+ ","A: Square 정사각형, B: Round 원형, C: Rectangular 직사각형, D: Oval 타원형",choice,거실의 오토만은 어떤 모양입니까?,,,,,,,,,
+40,74,coarse perception,image scene and topic,"What is the main focus of this image?
+ ","A: The grassy hill 잔디가 깔린 언덕, B: The sculpture 조각상, C: The fence 울타리, D: The building 건물",choice,이 이미지의 주된 초점은 무엇입니까?,,,,,,,,,
+41,281,fine-grained perception,object counting,"How many people are on stage?
+ ",A: 2 두 명 B: 3 세 명 C: 4 네 명 D: 5 다섯 명,choice,무대에 몇 명이 있나요?,,,,,,,,,
+42,799,logical reasoning,common reasoning,"What type of vegetation is visible in the image?
+ ","A: Trees only 나무만, B: A mix of trees and bushes 나무와 덤불의 혼합, C: Bushes only 덤불만, D: Grass 풀",choice,이미지에서 보이는 식생의 유형은 무엇입니까?,,,,,,,,,
+43,263,fine-grained perception,object counting,"How many drawers can be seen in the image?
+ ","A: One 하나, B: Three 세 개, C: Two 두 개, D: Four 네 개",choice,이미지에서 보이는 서랍의 수는 몇 개입니까?,,,,,,,,,
+44,264,fine-grained perception,object counting,"How many drawers can be seen in the white kitchen?
+ ","A: Three 세 개, B: Two 두 개, C: One 한 개, D: Four 네 개",choice,흰색 주방에서 보이는 서랍은 몇 개입니까?,,,,,,,,,
+45,29,coarse perception,image scene and topic,"Does the picture show a mountainous landscape or a coastal landscape?
+ ","A: Mountainous 산악의, B: Coastal 해안의, C: plain 평야, D: basin 분지",choice,"그 그림은 산악 풍경인가요, 아니면 해안 풍경인가요?",,,,,,,,,
+46,132,coarse perception,image scene and topic,"Where is the exit in the image?
+ ","A: To the left of the green exit sign 녹색 출구 표지판의 왼쪽에, B: To the right of the green exit sign 녹색 출구 표지판의 오른쪽에, C: Behind the green exit sign with an arrow pointing to the left 왼쪽으로 향하는 화살표가 있는 녹색 출구 표지판 뒤에, D: Not visible in the image 이미지에 보이지 않음",choice,이미지 속 출구는 어디에 있나요?,,,,,,,,,
+47,436,fine-grained perception,recognition,"What type of pavement is the person with the dog walking on?
+ ","A: Concrete 콘크리트, B: Brick 벽돌, C: Asphalt 아스팔트, D: Gravel 자갈",choice,개를 데리고 걷는 사람이 걷고 있는 포장 도로의 종류는 무엇인가요?,,,,,,,,,
+48,708,logical reasoning,code & sequence reasoning,"What will happen next?
+ ","A: this person is gonna cry 이 사람이 울 거야, B: this person is gonna laugh 이 사람이 웃을 거야, C: this person is gonna get mad 이 사람이 화를 낼 거야, D: both A,B, and C A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,,,
+49,194,coarse perception,image style & quality,"what style is depicted in this image?
+ ","A: impressionism 인상주의, B: post-Impressionism 후기 인상주의, C: modernism 모더니즘, D: dadaism 다다이즘",choice,이 이미지에 묘사된 스타일은 무엇입니까?,,,,,,,,,
+50,269,fine-grained perception,object counting,"How many horses are in the image?
+ ","A: 1 일, B: 2 이, C: 4 사, D: 3 삼",choice,그 이미지에는 말이 몇 마리 있나요?,,,,,,,,,
+51,254,fine-grained perception,object counting,"How many buildings are present in the image?
+ ","A: 1, B: 3, C: 2, D: 4 A: 일, B: 삼, C: 이, D: 사",choice,그 이미지에 건물이 몇 채 있나요?,,,,,,,,,
+52,419,fine-grained perception,recognition,"What is the primary color of the glove held by the player in the foreground?
+ ","A: Black 검은색, B: Orange 주황색, C: Brown 갈색, D: Yellow 노란색",choice,전경에 있는 선수의 손에 들고 있는 장갑의 주된 색상은 무엇입니까?,,,,,,,,,
+53,228,fine-grained perception,localization,"Where is the snail located in the image?
+ ","A: On a tree trunk, 나무 줄기 위에, B: On top of a mushroom, 버섯 위에, C: On a log, 통나무 위에, D: On a rock, 바위 위에",choice,그 이미지에서 달팽이는 어디에 있나요?,,,,,,,,,
+54,229,fine-grained perception,localization,"Where is the soccer ball located?
+ ","A: On the ground in the bottom left corner, A: 왼쪽 아래 모서리의 바닥에, B: In the air in the top right corner, B: 오른쪽 위 구석의 공중에, C: On the ground in the bottom right corner, C: 오른쪽 아래 모서리의 바닥에, D: In the air in the top left corner, D: 왼쪽 위 구석의 공중에",choice,축구공은 어디에 있나요?,,,,,,,,,
+55,412,fine-grained perception,recognition,"What is the material of the boots that the woman is wearing in the image?
+ ","A: Suede 스웨이드, B: Leather 가죽, C: Canvas 캔버스, D: Synthetic 합성 섬유",choice,이미지 속 여성이 신은 부츠의 소재는 무엇인가요?,,,,,,,,,
+56,159,coarse perception,image scene and topic,"Which term matches the picture?
+ ","A: basket star 바구니 불가사리, B: brittle star 불가사리",choice,그 그림에 맞는 용어는 무엇입니까?,,,,,,,,,
+57,162,coarse perception,image style & quality,"The image displays which art style?
+ ","A: watercolor 수채화, B: early renaissance 초기 르네상스, C: art nouveau 아르 누보, D: vector art 벡터 아트",choice,그 이미지에는 어떤 예술 양식이 나타나나요?,,,,,,,,,
+58,391,fine-grained perception,recognition,"What is the color of the sheep in the foreground?
+ ","A: Black 검은색, B: Brown 갈색, C: White 흰색, D: Gray 회색",choice,전경에 있는 양의 색은 무엇입니까?,,,,,,,,,
+59,394,fine-grained perception,recognition,"What is the color of the shorts of the soccer player wearing a red and black uniform?
+ ","A: White and black 흰색과 검은색, B: Yellow and green 노란색과 초록색, C: Black and white 검은색과 흰색, D: Blue and red 파란색과 빨간색",choice,빨간색과 검은색 유니폼을 입은 축구 선수의 반바지 색은 무엇입니까?,,,,,,,,,
+60,266,fine-grained perception,object counting,"How many gloves can be seen in this image?
+ ","A: One 하나, B: Two 둘, C: Three 셋, D: Four 넷",choice,이 이미지에서 장갑은 몇 개 보이나요?,,,,,,,,,
+61,420,fine-grained perception,recognition,"What is the primary color of the shoes worn by the player closest to the camera?
+ ","A: Yellow 노란색, B: Black 검은색, C: Gray 회색, D: Orange 주황색",choice,카메라에 가장 가까이 있는 선수의 신발의 주 색상은 무엇입니까?,,,,,,,,,
+62,144,coarse perception,image scene and topic,"Which object is the most central in the image?
+ ","A: Woman in white dress, 하얀 드레스를 입은 여성 B: Actor in a white dress on the red carpet at a festival, 축제의 레드 카펫에서 흰 드레스를 입은 배우 C: Refrigerator, 냉장고 D: Red Carpet, 레드 카펫",choice,이미지에서 가장 중앙에 위치한 객체는 무엇인가?,,,,,,,,,
+63,145,coarse perception,image scene and topic,"Which of the following best describes the view from the deck?
+ ","A: A view of a forest 숲의 경치, B: A view of the cityscape 도시 풍경, C: A view of the mountains 산의 경치, D: A view of a body of water 수역의 경치",choice,다음 중 데크에서 보이는 경치를 가장 잘 설명하는 것은 무엇입니까?,,,,,,,,,
+64,659,instance reasoning,single-instance reasoning,"Where is the lamp in the living room?
+ ","A: On the coffee table, 커피 탁자 위에, B: On the windowsill, 창턱 위에, C: On the end table, 사이드 테이블 위에, D: On the floor, 바닥 위에",choice,거실에 있는 램프는 어디에 있나요?,,,,,,,,,
+65,660,instance reasoning,single-instance reasoning,"Where is the man playing the guitar located on the stage?
+ ","A: Left side of the stage, A: 무대의 왼쪽, B: Middle of the stage, B: 무대의 중앙, C: Right side of the stage, C: 무대의 오른쪽, D: Behind the microphones, D: 마이크 뒤에",choice,무대에서 기타를 연주하는 남자는 어디에 위치해 있습니까?,,,,,,,,,
+66,31,coarse perception,image scene and topic,"How many police officers are in the image?
+ ","A: 1 한 명, B: 0 명, C: 2 명, D: 3 명",choice,사진 속 경찰관은 몇 명인가요?,,,,,,,,,
+67,99,coarse perception,image scene and topic,"What is the predominant feature in the image?
+ ","A: Houses 주택들, B: The Sky 하늘, C: Mountains 산들, D: Trees 나무들",choice,이미지에서 지배적인 특징은 무엇인가요?,,,,,,,,,
+68,61,coarse perception,image scene and topic,"What is the main feature in the background of the image?
+ ","A: A park bench near the water. 물가 근처의 공원 벤치, B: A couple sitting on a bench. 벤치에 앉아 있는 커플, C: A body of water and the Golden Gate Bridge. 물의 몸체와 골든 게이트 다리, D: A mountain in the distance. 멀리 있는 산",choice,이미지의 배경에 있는 주요 특징은 무엇입니까?,,,,,,,,,
+69,37,coarse perception,image scene and topic,"What is the center of focus in the image?
+ ",A: A man writing in a book 한 남자가 책에 글을 쓰고 있다. B: A boy with his head in his hands surrounded by books 책들에 둘러싸인 채 손으로 머리를 받치고 있는 소년. C: A cluttered desk with books and a pen 책과 펜이 어질러진 책상. D: A stack of books covering a young man's face 젊은 남자의 얼굴을 가리고 있는 책 더미,choice,이미지의 초점은 어디인가요?,,,,,,,,,
+70,249,fine-grained perception,object counting,"How many balls are on the table?
+ ","A: 6 6개, B: 4 4개, C: 5 5개, D: 3 3개",choice,탁자 위에 공이 몇 개 있나요?,,,,,,,,,
+71,353,fine-grained perception,recognition,"What color are the man's shoes?
+ ","A: Gray 회색, B: Brown 갈색, C: Blue 파란색, D: Black 검은색",choice,그 남자의 신발은 무슨 색인가요?,,,,,,,,,
+72,329,fine-grained perception,object counting,"How many women are sitting at the table in the image?
+ ","A: One 한 명, B: Two 두 명, C: Four 네 명, D: Three 세 명",choice,이미지 속 탁자에 앉아 있는 여성은 몇 명입니까?,,,,,,,,,
+73,347,fine-grained perception,recognition,"Is there a person walking in the image?
+ ","A: The image is too blurry to tell, A: 이미지는 판단하기에 너무 흐려서 알 수 없습니다, B: No, B: 아니오, C: There is more than one person walking, C: 보행 중인 사람이 두 명 이상 있습니다, D: Yes D: 예",choice,이미지 속에 걷고 있는 사람이 있나요?,,,,,,,,,
+74,247,fine-grained perception,object counting,"How many apples are there in the image? And how many bananas are there?
+ ","A: 4 apples and 2 bananas 사과 4개와 바나나 2개, B: 3 apples and 3 banana 사과 3개와 바나나 3개, C: 2 apples and 4 bananas 사과 2개와 바나나 4개, D: 4 apples and 1 bananas 사과 4개와 바나나 1개",choice,그 이미지에는 사과가 몇 개 있나요? 그리고 바나나가 몇 개 있나요?,,,,,,,,,
+75,809,logical reasoning,common reasoning,"What's the profession of the people in this picture?
+ ","A: trainer 트레이너, B: chemist 화학자, C: musician 음악가, D: pianist 피아니스트",choice,이 사진 속 사람들의 직업은 무엇입니까?,,,,,,,,,
+76,88,coarse perception,image scene and topic,"What is the occasion depicted in the image?
+ "," A: New Year's Eve celebration, B: Christmas Eve party, C: Birthday celebration, D: Wedding reception A: 새해 전야제, B: 크리스마스 이브 파티, C: 생일 축하 파티, D: 결혼식 피로연",choice,사진에 묘사된 행사는 무엇인가요?,,,,,,,,,
+77,393,fine-grained perception,recognition,"What is the color of the shirt worn by the baseball player standing on the right side of the image?
+ ","A: Blue 파란색, B: White 흰색, C: Black 검은색, D: Gray 회색",choice,이미지의 오른쪽에 서 있는 야구 선수가 입은 셔츠의 색상은 무엇입니까?,,,,,,,,,
+78,100,coarse perception,image scene and topic,"What is the predominant feature of the forest in the image?
+ ","A: The ground is dry and covered in brown dirt 땅은 건조하고 갈색 흙으로 덮여 있다, B: The trees are all tall and bare with no leaves 나무들은 모두 키가 크고 잎이 없다, C: The trees are covered in green ivy and climbing vines 나무에는 녹색 아이비와 덩굴이 덮여 있다, D: The bark on the trees is white and peeling 나무 껍질이 흰색이고 벗겨져 있다",choice,사진 속 숲의 지배적인 특징은 무엇인가요?,,,,,,,,,
+79,113,coarse perception,image scene and topic,"What is the relative position of the man and the child in this image?
+ ","A: The man and the child are out of frame 남자와 아이는 화면 밖에 있다, B: The man is standing next to the child 남자는 아이 옆에 서 있다, C: The man is holding the child 남자는 아이를 안고 있다, D: The man is standing apart from the child 남자는 아이와 떨어져 서 있다",choice,이 이미지에서 남자와 아이의 상대적 위치는 무엇입니까?,,,,,,,,,
+80,147,coarse perception,image scene and topic,"Which of the following captions best describes this image?
+ ","A: A group of people sitting around a campfire 모닥불 주위에 앉아 있는 사람들, B: A person kayaking on a lake 호수에서 카약을 타는 사람, C: A family having a picnic in a park 공원에서 피크닉을 즐기는 가족, D: A person hiking on a mountain trail 산길에서 하이킹하는 사람",choice,다음 중 이 이미지를 가장 잘 설명하는 캡션은 무엇입니까?,,,,,,,,,
+81,397,fine-grained perception,recognition,"What is the color of the watch worn by a person in the image?
+ ","A: White, B: Black, C: Silver, D: Gold A: 흰색, B: 검정색, C: 은색, D: 금색",choice,이미지 속 사람의 시계 색상은 무엇입니까?,,,,,,,,,
+82,360,fine-grained perception,recognition,"What color is the microphone in the image?
+ "," A: Silver 은색, B: White 흰색, C: Black 검은색, D: Red 빨간색",choice,이미지 속 마이크의 색상은 무엇입니까?,,,,,,,,,
+83,315,fine-grained perception,object counting,"How many tables are there in the room?
+ ","A: Four tables 네 개의 탁자, B: Two tables 두 개의 탁자, C: Three tables 세 개의 탁자, D: One table 한 개의 탁자",choice,방에 탁자가 몇 개 있나요?,,,,,,,,,
+84,307,fine-grained perception,object counting,"How many pillows can be seen in the bedroom?
+ ","A: 5 5개, B: 4 4개, C: 3 3개, D: 6 6개",choice,침실에서 보이는 베개는 몇 개입니까?,,,,,,,,,
+85,260,fine-grained perception,object counting,"How many colors are the eyes of the depicted animals?
+ ","  A: Two 두 가지, B: One 한 가지, C: Three 세 가지, D: Four 네 가지",choice,그려진 동물들의 눈은 몇 가지 색인가요?,,,,,,,,,
+86,431,fine-grained perception,recognition,"What type of ball is being held by the player?
+ ","A: A tennis ball 테니스 공, B: A basketball 농구공, C: A volleyball 배구공, D: A soccer ball 축구공",choice,선수가 들고 있는 공의 종류는 무엇입니까?,,,,,,,,,
+87,212,fine-grained perception,localization,"What is the position of the person on stage?
+ ","A: Standing on the left side 왼쪽에 서 있는 사람, B: Seated in the center 가운데에 앉아 있는 사람, C: Sitting on the floor in front 앞쪽 바닥에 앉아 있는 사람, D: Leaning on the guitar on the right side 오른쪽 편의 기타에 기대고 있는 사람",choice,무대 위에 있는 사람의 위치는 어디인가요?,,,,,,,,,
+88,219,fine-grained perception,localization,"Where is it?
+ ","A: Shanghai 상하이, B: Xi'an 시안, C: Wuhan 우한, D: Nanjing 난징",choice,그것은 어디에 있나요?,,,,,,,,,
+89,386,fine-grained perception,recognition,"What is the color of the number on the red and blue jersey in the image?
+ ","A: Blue 파란색, B: Red 빨간색, C: Orange 주황색, D: Black 검은색",choice,이미지 속 빨간색과 파란색 저지에 있는 숫자의 색상은 무엇입니까?,,,,,,,,,
+90,330,fine-grained perception,object counting,"How many wooden objects are in the image?
+ ","A: 1, B: 2, C: 3, D: 4 A: 일, B: 이, C: 삼, D: 사",choice,이미지에 나무로 된 물체가 몇 개 있나요?,,,,,,,,,
+91,319,fine-grained perception,object counting,"How many tires can be seen in the image?
+ ","A: 4 4개, B: 3 3개, C: 5 5개, D: 6 6개",choice,이미지에서 보이는 타이어의 개수는 몇 개입니까?,,,,,,,,,
+92,447,fine-grained perception,recognition,"Who is the person in this image?
+ ","A: Kobe Bryant 코비 브라이언트, B: Jing Wu 징 우, C: Morgan Freeman 모건 프리먼, D: Jay Chou 제이 추",choice,이 이미지 속 인물은 누구입니까?,,,,,,,,,
+93,442,fine-grained perception,recognition,"Which scene category matches this image the best?
+ ","A: forest_path 숲길, B: museum/indoor 박물관/실내, C: storage_room 저장실, D: alley 골목",choice,이 이미지에 가장 잘 맞는 장면 카테고리는 무엇입니까?,,,,,,,,,
+94,383,fine-grained perception,recognition,"What is the color of the lettering on the green sign in the image?
+ ","A: Black 검은색, B: Blue 파란색, C: Yellow 노란색, D: White 흰색",choice,이미지의 초록색 표지판에 적힌 글자의 색은 무엇입니까?,,,,,,,,,
+95,375,fine-grained perception,recognition,"What is the color of the couch in the image?
+ ","A: Beige 베이지색, B: Brown 갈색, C: Tan 탠색, D: Gray 회색",choice,이미지 속 소파의 색은 무엇입니까?,,,,,,,,,
+96,292,fine-grained perception,object counting,"How many people are present in the image?
+ ","A: One 하나, B: Three 세, C: Two 두, D: Four 네",choice,이미지에 몇 명의 사람이 있나요?,,,,,,,,,
+97,401,fine-grained perception,recognition,"What is the color scheme of the costumes worn by the men in the parade?
+ ","A: Yellow, red, and gold 노란색, 빨간색, 금색, B: Red, blue, and black 빨간색, 파란색, 검은색, C: Green, orange, and white 초록색, 주황색, 흰색, D: Black, white, and gray 검은색, 흰색, 회색",choice,행진에 참가한 남성들이 입은 의상의 색상 구성은 무엇입니까?,,,,,,,,,
+98,295,fine-grained perception,object counting,"How many people are standing on the stage in the image?
+ ","A: One 한 명, B: More than three 네 명 이상, C: Three 세 명, D: Two 두 명",choice,이미지 속 무대 위에 몇 사람이 서 있습니까?,,,,,,,,,
+99,493,instance reasoning,cross-instance attribute reasoning,"What is the relative position of the man and woman in the image?
+ ","A: They are facing each other 그들은 서로 마주 보고 있다, B: They are both facing forward 그들은 모두 앞으로 향해 있다, C: They are both facing the camera 그들은 모두 카메라를 향하고 있다, D: They are both looking away from the camera 그들은 모두 카메라를 등지고 있다",choice,이미지 속 남자와 여자의 상대 위치는 무엇입니까?,,,,,,,,,
+100,819,logical reasoning,diagram reasoning,"<image 1> is the HRM Roles, David Ulrich (1997) model. According to Ulrich, if HR is to become and remain relevant in the current business environment, what is not something HR professionals must learn?
+ ","A: Manage human resources operations and infrastructure 인적 자원 운영 및 인프라 관리, B: Become the link between human resources and organizational strategy 인적 자원과 조직 전략 사이의 연결고리가 된다, C: Optimize the value of employees 직원의 가치를 최적화하다, D: Be a change agent with a long-term vision for the organization 조직에 대한 장기 비전을 가진 변화 주도자가 된다",choice,"질문: David Ulrich(1997)의 HRM 역할 모델에 따르면, HR이 현재의 비즈니스 환경에서 관련성을 유지하고 유지하려면 HR 전문가가 배워야 할 것이 아닌 것은 무엇입니까?",,,,,,,,,
+101,919,logical reasoning,diagram reasoning,"Which month has the lowest average precipitation in London?
+ ","A: July 7월, B: February 2월, C: November 11월, D: nan 없음",choice,런던에서 평균 강수량이 가장 낮은 달은 무엇입니까?,,,,,,,,,
+102,609,instance reasoning,single-instance reasoning,"What is the dominant material of the cabinets in the image?
+ ","A: Ceramic 도자기, B: Metal 금속, C: Wood 목재, D: Glass 유리",choice,이미지 속 찬장의 주된 재료는 무엇인가요?,,,,,,,,,
+103,569,instance reasoning,cross-instance relation reasoning,"Which property do these three objects have in common?
+ ","A: blue 파란색, B: smooth 매끄러운, C: flexible 유연한, D: nan 숫자가 아님",choice,이 세 물체가 공통으로 가지는 성질은 무엇입니까?,,,,,,,,,
+104,168,coarse perception,image style & quality,"Which category does this image belong to?
+ ","A: MRI image MRI 영상, B: icon 아이콘, C: microscopic image 현미경 이미지, D: abstract painting 추상화",choice,이 이미지는 어떤 범주에 속하나요?,,,,,,,,,
+105,669,instance reasoning,single-instance reasoning,"Which is right?
+ ","A: The orange is next to the apple, 오렌지는 사과 옆에 있다 B: The apple is on the left, 사과는 왼쪽에 있다 C: The orange is on the right, 오렌지는 오른쪽에 있다 D: All above are not right, 위의 모든 항목은 옳지 않다",choice,다음 중 옳은 것은 무엇입니까?,,,,,,,,,
+106,248,fine-grained perception,object counting,"How many archways are there in the image?
+ ","A: One 하나, B: Four 네, C: Three 세, D: Two 두",choice,이미지 속 아치의 수는 몇 개인가요?,,,,,,,,,
+107,395,fine-grained perception,recognition,"What is the color of the socks detected in the attribute detection of the image?
+ ","A: Black 검정, B: Red 빨간색, C: White 흰색, D: Striped 줄무늬",choice,이미지의 속성 탐지에서 탐지된 양말의 색은 무엇입니까?,,,,,,,,,
+108,882,logical reasoning,diagram reasoning,"In the diagram shown, which organism consumes small fish as food?
+ "," A: mahi mahi 마히마히, B: large shark 큰상어, C: zooplankton 동물성 플랑크톤, D: mackerel 고등어",choice,제시된 도표에서 작은 물고기를 먹이로 삼는 생물은 무엇입니까?,,,,,,,,,
+109,221,fine-grained perception,localization,"Where is the drum located in the image?
+ ","A: In the back 뒤쪽에, B: On the left side 왼쪽에, C: On the right side 오른쪽에, D: At the center 중앙에",choice,이미지 속 드럼은 어디에 위치해 있나요?,,,,,,,,,
+110,711,logical reasoning,code & sequence reasoning,"Which Python code can generate the content of the image?
+ ","A: from collections import Counter
+ result = Counter('Canada')
+ print(result)  'Canada' 문자열에 대해 Counter를 생성하고 그 결과를 출력합니다., B: from collections import Counter
+ result = Counter('strawberry')
+ print(result)  'strawberry' 문자열에 대해 Counter를 생성하고 그 결과를 출력합니다., C: from collections import Counter
+ result = Counter('banana')
+ print(result)  'banana' 문자열에 대해 Counter를 생성하고 그 결과를 출력합니다., D: from collections import Counter
+ result = Counter('apple')
+ print(result)  'apple' 문자열에 대해 Counter를 생성하고 그 결과를 출력합니다.",choice,이미지의 내용을 생성할 수 있는 파이썬 코드는 무엇입니까?,,,,,,,,,
+111,54,coarse perception,image scene and topic,"What is the general theme of this image?
+ ","A: Candy buffet 캔디 뷔페, B: Ice cream sundae 아이스크림 선데, C: Yogurt containers 요거트 용기, D: Fruit desserts 과일 디저트",choice,이 이미지의 일반적인 주제는 무엇입니까?,,,,,,,,,
+112,551,instance reasoning,cross-instance relation reasoning,"What can Rosa and Kylie trade to each get what they want?
+ ",A: Kylie can trade her almonds for Rosa's tomatoes. 카일리는 자신의 아몬드를 로사의 토마토와 바꿀 수 있다. B: Rosa can trade her tomatoes for Kylie's broccoli. 로사는 자신의 토마토를 카일리의 브로콜리와 바꿀 수 있다. C: Rosa can trade her tomatoes for Kylie's carrots. 로사는 자신의 토마토를 카일리의 당근과 바꿀 수 있다. D: Kylie can trade her broccoli for Rosa's oranges. 카일리는 자신의 브로콜리를 로사의 오렌지와 바꿀 수 있다.,choice,로사와 카일리는 서로 원하는 것을 얻기 위해 무엇을 교환할 수 있을까요?,,,,,,,,,
+113,504,instance reasoning,cross-instance attribute reasoning,"Where is the top of the purple bottle in relation to the man with the guitar?
+ ","A: Beside him 그 옆에 있습니다, B: Above him 그 위에 있습니다, C: Below him 그 아래에 있습니다, D: On his head 그의 머리 위에 있습니다",choice,기타를 든 남자에 비해 보라색 병의 윗부분은 어디에 위치합니까?,,,,,,,,,
+114,913,logical reasoning,diagram reasoning,"Which country is highlighted?
+ ","A: Saint Lucia 세인트 루시아, B: Jamaica 자메이카, C: Haiti 아이티, D: Cuba 쿠바",choice,어떤 나라가 강조되었나요?,,,,,,,,,
+115,651,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: mason 석공, B: nurse 간호사, C: pilot 조종사, D: policeman 경찰관",choice,이 사진 속 사람들의 직업은 무엇인가요?,,,,,,,,,
+116,801,logical reasoning,common reasoning,"What will happen next?
+ ","A: the girls is gonna turn the pan around, 그 소녀들은 팬을 돌려 방향을 바꿀 것이다, B: the pan itself is gonna fly into the woman's face, 팬 자체가 여자의 얼굴로 날아갈 것이다, C: nothing is gonna happen, 아무 일도 일어나지 않을 것이다, D: both A,B, and C, A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,,,
+117,626,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ ","A: clean 청소, B: measurement 측정, C: Bulldozing 불도저 작업, D: Cutting platform 절단 플랫폼",choice,시연된 물체의 기능은 무엇입니까?,,,,,,,,,
+118,370,fine-grained perception,recognition,"What color is the writing on the sign in the image?
+ ","A: White 흰색, B: Green 초록색, C: Red 빨간색, D: Black 검은색",choice,이미지 속 간판에 적힌 글씨의 색은 무엇입니까?,,,,,,,,,
+119,425,fine-grained perception,recognition,"What is the shape of the window on the building in the image?
+ ","A: Square 정사각형, B: Rectangle 직사각형, C: Circle 원, D: Triangle 삼각형",choice,이미지 속 건물의 창문 모양은 무엇인가요?,,,,,,,,,
+120,543,instance reasoning,cross-instance relation reasoning,"In nature, what's the relationship between these two creatures?
+ ","A: Predatory relationships 포식적 관계, B: Competitive relationships 경쟁적 관계, C: Parasitic relationships 기생 관계, D: Symbiotic relationship 공생 관계",choice,자연에서 이 두 생물 사이의 관계는 무엇입니까?,,,,,,,,,
+121,663,instance reasoning,single-instance reasoning,"Where is the sheep?
+ ","A: The sheep is behind the car 양은 차 뒤에 있다, B: The sheep is in the front of the car 양은 차 앞에 있다, C: The sheep is on the right of the car 양은 차의 오른쪽에 있다, D: The sheep is on the left of the car 양은 차의 왼쪽에 있다",choice,양은 어디에 있나요?,,,,,,,,,
+122,181,coarse perception,image style & quality,"Which image is more brightful?
+ ","A: The first image 첫 번째 이미지, B: The second image 두 번째 이미지, C: nan, D: nan",choice,어떤 이미지가 더 밝습니까?,,,,,,,,,
+123,510,instance reasoning,cross-instance attribute reasoning,"Which image shows the highest sharpness?
+ ","A: upper left 왼쪽 상단, B: upper right 오른쪽 상단, C: down left 왼쪽 하단, D: down right 오른쪽 하단",choice,어떤 이미지가 가장 선명합니까?,,,,,,,,,
+124,511,instance reasoning,cross-instance attribute reasoning,"Which image shows the highest sharpness?
+ ","A: upper left 왼쪽 위, B: upper right 오른쪽 위, C: down left 왼쪽 아래, D: down right 오른쪽 아래",choice,가장 선명한 이미지는 어느 것인가?,,,,,,,,,
+125,278,fine-grained perception,object counting,"How many pairs of shoes can be seen in the image?
+ ","A: One 하나, B: Three 세, C: Two 두, D: Cannot be determined 판단할 수 없다",choice,이미지에서 보이는 신발의 쌍은 몇 개입니까?,,,,,,,,,
+126,24,coarse perception,image scene and topic,"Based on the image, which statement best describes the likely purpose of the setting?
+ ","A: A photoshoot for greeting cards 인사 카드용 사진 촬영, B: A scientific research site 과학 연구 현장, C: A festive celebration 축제적인 축하 행사, D: A picnic spot for a group of people 여러 명이 함께하는 피크닉 장소",choice,이미지를 기반으로 볼 때 이 설정의 가능한 목적을 가장 잘 설명하는 진술은 무엇입니까?,,,,,,,,,
+127,245,fine-grained perception,object counting,"How many angels have halos?
+ ","A: Two 두 명, B: One 한 명, C: nan 숫자가 아님, D: Three 세 명",choice,후광을 가진 천사는 몇 명입니까?,,,,,,,,,
+128,655,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: photographer 사진작가, B: chemist 화학자, C: repairman 수리공, D: pianist 피아니스트",choice,이 사진 속 사람들의 직업은 무엇입니까?,,,,,,,,,
+129,231,fine-grained perception,localization,"Where is the table in relation to the balcony?
+ ","A: On the right side of the balcony, 발코니의 오른쪽에, B: In the center of the balcony, 발코니의 중앙에, C: On the left side of the balcony, 발코니의 왼쪽에, D: Cannot be determined from the information given, 주어진 정보로는 판단할 수 없다",choice,탁자는 발코니에 대해 어느 위치에 있나요?,,,,,,,,,
+130,629,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ ","A: excavate 굴착하다, B: transport 운반하다, C: weld 용접하다, D: Measure the level 수준을 측정하다",choice,시연된 물체의 기능은 무엇입니까?,,,,,,,,,
+131,215,fine-grained perception,localization,"What is the position of the sheep's legs in the image?
+ ",A: At the top 위쪽에 B: On the right side 오른쪽에 C: On the left side 왼쪽에 D: At the bottom 아래쪽에,choice,이미지에서 양의 다리는 어디에 있나요?,,,,,,,,,
+132,924,logical reasoning,diagram reasoning,"Which solution has a higher concentration of green particles?
+ ","A: neither; their concentrations are the same 둘 다 아니다; 농도는 같다, B: Solution A 용액 A, C: Solution B 용액 B, D: nan 숫자가 아니다",choice,어떤 용액에서 녹색 입자의 농도가 더 높은가요?,,,,,,,,,
+133,441,fine-grained perception,recognition,"Which of these cities is marked on the map?
+ ","A: New York City 뉴욕시, B: Washington, D.C. 워싱턴 D.C., C: Philadelphia 필라델피아, D: Boston 보스턴",choice,다음 도시들 중 지도에 표시된 도시는 어느 도시입니까?,,,,,,,,,
+134,494,instance reasoning,cross-instance attribute reasoning,"What is the relative position of the man holding a guitar and the woman on stage?
+ ","A: The man is behind the woman 남자는 여자 뒤에 있다, B: The man is to the right of the woman 남자는 여자의 오른쪽에 있다, C: The man is to the left of the woman 남자는 여자의 왼쪽에 있다, D: The man is in front of the woman 남자는 여자 앞에 있다",choice,무대 위에 있는 여자와 기타를 들고 있는 남자의 상대적인 위치는 무엇입니까?,,,,,,,,,
+135,46,coarse perception,image scene and topic,"What is the dominant color of the image?
+ ","A: White 흰색, B: Brown 갈색, C: Gray 회색, D: Green 초록",choice,이미지의 주된 색상은 무엇인가요?,,,,,,,,,
+136,287,fine-grained perception,object counting,"How many people are playing music in the image?
+ ","A: One, B: Two, C: Three, D: Four A: 한 명, B: 두 명, C: 세 명, D: 네 명",choice,이미지에서 음악을 연주하고 있는 사람은 몇 명인가요?,,,,,,,,,
+137,239,fine-grained perception,localization,"where is the cat?
+ "," A: top-right 오른쪽 상단, B: top-left 왼쪽 상단, C: bottom-left 왼쪽 하단, D: bottom-right 오른쪽 하단",choice,고양이가 어디에 있나요?,,,,,,,,,
+138,3,coarse perception,image emotion,"What feeling is represented in this image?
+ ","A: engaged 몰입한, B: disordered 무질서한, C: angry 화난, D: supportive 지지하는",choice,이 이미지에서 표현된 감정은 무엇인가요?,,,,,,,,,
+139,93,coarse perception,image scene and topic,"What is the overall theme of the image?
+ ","A: Fashion 패션, B: Wildlife 야생동물, C: Nature 자연, D: Photography 사진",choice,그 이미지의 전반적인 주제는 무엇입니까?,,,,,,,,,
+140,336,fine-grained perception,recognition,"Does the man have any facial hair?
+ ","A: No, 아니오, B: Yes, a mustache 네, 콧수염이 있습니다, C: Yes, a full beard 네, 전면 수염이 있습니다, D: Yes, slight stubble 네, 약간의 잔털이 있습니다",choice,그 남자에게 얼굴 털이 있나요?,,,,,,,,,
+141,705,logical reasoning,code & sequence reasoning,"What is correct Python code to generate the content of the image?
+ "," A: def myfunc():\n x = 300\n def myinnerfunc():\n print(x)\n myinnerfunc()\n\nmyfunc() (한국어 번역: 이 코드는 x 값을 출력하기 위해 중첩 함수를 정의하고 호출합니다.), B: thisdict = {\n ""brand"": ""Ford"",\n ""model"": ""Mustang"",\n ""year"": 1964\n}\n\nprint(len(thisdict)) (한국어 번역: 이 코드는 딕셔너리를 생성하고 길이를 출력합니다.), C: x = min(5, 10, 25)\ny = max(5, 10, 25)\n\nprint(x)\nprint(y) (한국어 번역: 이 코드는 최소값과 최대값을 계산하고 출력합니다.), D: class Person:\n def __init__(self, name, age):\n self.name = name\n self.age = age\n\np1 = Person(""John"", 36)\n\nprint(p1.name)\nprint(p1.age) (한국어 번역: 이 코드는 이름과 나이를 가진 Person 클래스를 정의하고 인스턴스의 이름과 나이를 출력합니다.)",choice,이미지의 내용을 생성하기 위한 올바른 파이썬 코드는 무엇입니까?,,,,,,,,,
+142,766,logical reasoning,common reasoning,"If you were to sit on the chair closest to the window, which color would the chair be?
+ ","A: Green 초록색, B: Blue 파란색, C: Red 빨간색, D: White 흰색",choice,창문에 가장 가까운 의자에 앉는다면 의자는 어떤 색일까요?,,,,,,,,,
+143,884,logical reasoning,diagram reasoning,"The diagram above represents the cycle of the Earth around the Sun, what letter represents Summer Solstice?
+ ","A: D 디, B: C 씨, C: B 비, D: A 에이",choice,위의 도표는 지구가 태양 주위를 도는 주기를 나타냅니다. 여름 하지에 해당하는 문자는 무엇입니까?,,,,,,,,,
+144,538,instance reasoning,cross-instance relation reasoning,"Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?
+ ","A: sample B 샘플 B, B: sample A 샘플 A, C: neither; the samples have the same temperature 어느 쪽도 아니다; 두 샘플은 같은 온도이다, D: nan 숫자가 아님",choice,각 샘플에 포함된 입자들의 평균 운동에너지를 비교하시오. 어느 샘플의 온도가 더 높습니까?,,,,,,,,,
+145,379,fine-grained perception,recognition,"What is the color of the eye in the mask in the image?
+ ","A: Blue and green 파란색과 초록색, B: Purple and pink 보라색과 분홍색, C: Brown and black 갈색과 검은색, D: Yellow and black 노란색과 검은색",choice,이미지 속 가면의 눈 색깔은 무엇입니까?,,,,,,,,,
+146,279,fine-grained perception,object counting,"How many people are holding the flag in the street?
+ ","A: 3 삼, B: 2 이, C: 1 일, D: Cannot be determined 알 수 없음",choice,거리에서 깃발을 들고 있는 사람은 몇 명인가요?,,,,,,,,,
+147,165,coarse perception,image style & quality,"What art style is evident in this image?
+ ","A: watercolor 수채화, B: photography 사진, C: vector art 벡터 아트, D: pencil 연필",choice,이 이미지에서 나타나는 미술 스타일은 무엇입니까?,,,,,,,,,
+148,86,coarse perception,image scene and topic,"What is the most prominent feature in the image?
+ "," A: The skyline 스카이라인, B: The golf course 골프 코스, C: The trees 나무들, D: The person 사람",choice,이미지에서 가장 두드러진 특징은 무엇인가요?,,,,,,,,,
+149,174,coarse perception,image style & quality,"Which category does this image belong to?
+ ","A: oil painting 유화, B: sketch 스케치, C: digital art 디지털 아트, D: photo 사진",choice,이 이미지는 어떤 카테고리에 속하나요?,,,,,,,,,
+150,767,logical reasoning,common reasoning,"In nature, what's the relationship between these two creatures?
+ ","A: Predatory relationships 포식 관계, B: Competitive relationships 경쟁 관계, C: Parasitic relationships 기생 관계, D: Symbiotic relationship 공생 관계",choice,자연에서 이 두 생물 사이의 관계는 무엇인가요?,,,,,,,,,
+151,805,logical reasoning,common reasoning,"What will happen next?
+ "," A: the person is gonna fall off the ladder 그 사람이 사다리에서 떨어질 거야, B: the person is gonna stand still on the ladder 그 사람은 사다리 위에서 가만히 있을 거야, C: someone is gonna come and hold the ladder 누군가 와서 사다리를 잡아줄 거야, D: both A,B, and C A, B, C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,,,
+152,527,instance reasoning,cross-instance attribute reasoning,"Which picture depicts cell division?
+ ","A: B 비, B: A 에이, C: C 씨, D: {}",choice,어떤 그림이 세포 분열을 묘사하고 있습니까?,,,,,,,,,
+153,38,coarse perception,image scene and topic,"What is the color of the majority of objects in the image?
+ ","A: White 흰색, B: Gray 회색, C: Blue 파란색, D: Green 초록색",choice,이미지 속 다수의 물체의 색은 무엇입니까?,,,,,,,,,
+154,19,coarse perception,image emotion,"Which mood does this image convey?
+ ","A: Sad 슬픈, B: Cozy 아늑한, C: Happy 행복한, D: Angry 화난",choice,이 이미지가 전달하는 분위기는 무엇입니까?,,,,,,,,,
+155,519,instance reasoning,cross-instance attribute reasoning,"Which of the following statements match the image?
+ ","A: A triangle is to the left of a pentagon., B: A blue pentagon is to the right of a gray pentagon., C: A blue square is to the left of a blue pentagon., D: A blue pentagon is to the left of a gray shape. A: 삼각형이 오각형의 왼쪽에 있다., B: 파란 오각형이 회색 오각형의 오른쪽에 있다., C: 파란 정사각형이 파란 오각형의 왼쪽에 있다., D: 파란 오각형이 회색 도형의 왼쪽에 있다.",choice,다음 중 이미지와 일치하는 진술은 무엇입니까?,,,,,,,,,
+156,246,fine-grained perception,object counting,"How many apples are there in the image? And how many bananas are there?
+ ","A: 3 apples and 1 bananas 사과 3개와 바나나 1개, B: 3 apples and 2 bananas 사과 3개와 바나나 2개, C: 1 apples and 1 bananas 사과 1개와 바나나 1개, D: 2 apples and 1 bananas 사과 2개와 바나나 1개",choice,이미지에는 사과가 몇 개 있나요? 그리고 바나나가 몇 개 있나요?,,,,,,,,,
+157,123,coarse perception,image scene and topic,"What kind of weather is depicted in the picture?
+ ","A: sunny 맑음, B: rainy 비 오는, C: windy 바람 부는, D: snowy 눈 오는",choice,사진에 묘사된 날씨는 어떤 모습인가요?,,,,,,,,,
+158,56,coarse perception,image scene and topic,"What is the main color of the image?
+ "," A: Red 빨간색, B: Green 초록색, C: Black 검은색, D: White 흰색",choice,이미지의 주요 색상은 무엇입니까?,,,,,,,,,
+159,653,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: mason 석공, B: postman 우편배달원, C: pilot 조종사, D: policeman 경찰관",choice,이 사진 속 사람들의 직업은 무엇입니까?,,,,,,,,,
+160,94,coarse perception,image scene and topic,"What is the overall theme of this image?
+ ","A: Sports 스포츠, B: Sunset 일몰, C: Nature 자연, D: Kids playing 아이들이 노는 모습",choice,이 이미지의 전반적인 주제는 무엇인가요?,,,,,,,,,
+161,373,fine-grained perception,recognition,"What is the color of the ball closest to the man?
+ ","A: White 흰색, B: Red 빨간색, C: Blue 파란색, D: Brown 갈색",choice,그 남자와 가장 가까운 공의 색은 무엇입니까?,,,,,,,,,
+162,33,coarse perception,image scene and topic,"What color dominates the logo seen on the wall?
+ ","A: Red 빨간색, B: Black and White 검은색과 흰색, C: Yellow 노란색, D: Blue 파란색",choice,벽에 보이는 로고의 주된 색상은 무엇입니까?,,,,,,,,,
+163,92,coarse perception,image scene and topic,"What is the overall theme of the image?
+ ","A: Beach vacation 해변 휴가, B: Athletic lifestyle 운동적인 생활 방식, C: Summer fashion 여름 패션, D: Urban street style 도시 스트리트 스타일",choice,그 이미지를 전반적으로 나타내는 주제는 무엇입니까?,,,,,,,,,
+164,378,fine-grained perception,recognition,"What is the color of the ears on the dessert item located in the bottom right of the image?
+ ","A: Red, B: Brown, C: Black, D: White A: 빨간색, B: 갈색, C: 검정색, D: 흰색",choice,이미지의 오른쪽 아래에 위치한 디저트 아이템의 귀 색은 무엇입니까?,,,,,,,,,
+165,410,fine-grained perception,recognition,"What is the main item on the counter in the image?
+ ","A: A cup of ice cream on a counter with a cone on top 위에 콘이 얹힌 카운터 위의 아이스크림 컵, B: Two ice cream cones sitting next to each other 두 개의 아이스크림 콘이 서로 나란히 놓여 있다, C: A coffee cup with whipped cream on top 윗면에 휘핑 크림이 얹힌 커피 잔, D: A cup of ice cream with different flavors 다른 맛의 아이스크림 한 컵",choice,사진 속 카운터에 있는 주요 아이템은 무엇입니까?,,,,,,,,,
+166,814,logical reasoning,common reasoning,"Which corner doesn't have any food?
+ ","A: top-right 오른쪽 위, B: top-left 왼쪽 위, C: bottom-left 왼쪽 아래, D: bottom-right 오른쪽 아래",choice,어떤 모서리에는 음식이 없나요?,,,,,,,,,
+167,55,coarse perception,image scene and topic,"What is the main activity happening in this image?
+ ",A: A couple of men are playing soccer 남자 두 명이 축구를 하고 있다 B: A group of people are having a picnic in the park 공원에서 사람들이 피크닉을 하고 있다 C: Two men are playing cricket 두 남자들이 크리켓을 하고 있다 D: A group of people are playing volleyball 한 무리의 사람들이 배구를 하고 있다,choice,이 이미지에서 주된 활동은 무엇인가요?,,,,,,,,,
+168,368,fine-grained perception,recognition,What color is the text in the image? ,"A: White 흰색, B: Blue 파란색, C: Black 검은색, D: Grey 회색",choice,이미지의 텍스트 색상은 무엇입니까?,0.0,0.0,,,,,,,
+169,600,instance reasoning,single-instance reasoning,The object shown in this figure: ,"A: Is a colorless, flammable liquid that is commonly used as a solvent and fuel, B: Has a boiling point of 64.7°C, C: Can be toxic if ingested or absorbed through the skin, D: None of these options are correct. A: 용매 및 연료로 일반적으로 사용되는 무색의 인화성 액체이다, B: 끓는점이 64.7°C이다, C: 경구로 섭취하거나 피부를 통한 흡수로 독성이 있을 수 있다, D: 이들 옵션 중 어느 것도 옳지 않다.",choice,이 그림에 보이는 물체는:,2.0,2.0,,,,,,,
+170,333,fine-grained perception,recognition,"According to this picture, how old are Dennis. ","A: 38, B: 45, C: 29, D: 47 A: 38, B: 45, C: 29, D: 47",choice,이 그림에서 Dennis의 나이는 몇 살입니까?,3.0,3.0,,,,,,,
+171,589,instance reasoning,single-instance reasoning,"If the liquid in the picture contains only one solute, what is it most likely to contain? ","A: Ferric hydroxide. 철(III) 수산화물, B: Sodium hydroxide. 수산화나트륨, C: Sodium chloride. 염화나트륨, D: Copper sulfate. 황산구리(II)",choice,그 그림 속 액체에 단 하나의 ...가 포함되어 있다면,4.0,4.0,,,,,,,
+172,306,fine-grained perception,object counting,How many pillows are on the bed closest to the window? ,"A: 0, B: 1, C: 3, D: 2 A: 0개, B: 1개, C: 3개, D: 2개",choice,가장 가까운 침대에 있는 베개는 몇 개인가요?,5.0,5.0,,,,,,,
+173,359,fine-grained perception,recognition,What color is the horse in the image? ," A: Black 검은색, B: Brown 갈색, C: Grey 회색, D: White 흰색",choice,이미지 속의 말은 무슨 색인가요?,6.0,6.0,,,,,,,
+174,180,coarse perception,image style & quality,Which image is more brightful? ,"A: The first image 첫 번째 이미지, B: The second image 두 번째 이미지, C: nan, D: nan",choice,어떤 이미지가 더 밝습니까?,10.0,10.0,,,,,,,
+175,405,fine-grained perception,recognition,What is the gender of the person playing the keyboard? ,"A: Multiple persons are playing the keyboard, 키보드를 연주하는 여러 명의 사람들, B: Female, 여성, C: Cannot determine due to insufficient information, 정보가 불충분하여 판단할 수 없습니다, D: Male, 남성",choice,키보드를 연주하는 사람의 성별은 무엇입니까?,11.0,11.0,,,,,,,
+176,48,coarse perception,image scene and topic,What is the dominant color of the room? ,"A: White, B: Green, C: Blue, D: Red A: 흰색, B: 초록색, C: 파란색, D: 빨간색",choice,방의 주된 색은 무엇인가요?,12.0,12.0,,,,,,,
+177,918,logical reasoning,diagram reasoning,Which letter shows the sun's position at morning time? ,"A: D 디, B: B 비, C: A 에이, D: C 씨",choice,아침에 태양의 위치를 나타내는 글자는 무엇입니까?,13.0,13.0,,,,,,,
+178,652,instance reasoning,single-instance reasoning,What's the profession of the people in this picture? ,"A: mason 석공, B: plumber 배관공, C: pilot 조종사, D: police 경찰",choice,이 사진 속 사람들의 직업은 무엇입니까?,14.0,14.0,,,,,,,
+179,771,logical reasoning,common reasoning,Is the man wearing a hat? ,"A: There is a design on his head, but no hat, B: No, C: Can't be determined, D: Yes A: 그의 머리에 디자인이 있지만 모자는 없다, B: 아니요, C: 확정할 수 없다, D: 예",choice,그 남자가 모자를 쓰고 있나요?,15.0,15.0,,,,,,,
+180,886,logical reasoning,diagram reasoning,Think about the magnetic force between the magnets in each pair. Which of the following statements is true? ,"A: The magnitude of the magnetic force is greater in Pair 2., B: The magnitude of the magnetic force is greater in Pair 1., C: The magnitude of the magnetic force is the same in both pairs., D: nan A: 두 페어 중 자기력의 크기가 더 큰 쪽은 페어 2이다., B: 두 페어 중 자기력의 크기가 더 큰 쪽은 페어 1이다., C: 두 페어의 자기력의 크기는 같다., D: nan",choice,자석들 사이의 자기력에 대해 생각해 보십시오.,16.0,16.0,,,,,,,
+181,885,logical reasoning,diagram reasoning,Think about the magnetic force between the magnets in each pair. Which of the following statements is true? ,"A: The magnetic force is weaker in Pair 2. 쌍 2에서 자기력이 더 약하다., B: The strength of the magnetic force is the same in both pairs. 두 쌍 모두에서 자기력의 크기는 같다., C: The magnetic force is weaker in Pair 1. 쌍 1에서 자기력이 더 약하다., D: nan 나노",choice,자석 사이의 자기력에 대해 생각해 보세요.,19.0,19.0,,,,,,,
+182,719,logical reasoning,code & sequence reasoning,what python code is gonna generate the result as shown in the image? ,"A: thisdict = {\n ""brand"": ""Ford"",\n ""model"": ""Mustang"",\n ""year"": 1966\n }\n print(thisdict), 이 코드는 딕셔너리를 생성하고 출력한다., B: thisdict = {\n ""brand"": ""Ford"",\n ""model"": ""Mustang"",\n ""year"": 1966\n }\n print(thisdict[\""brand\""]), 이 코드는 딕셔너리를 생성한 뒤 'brand' 키의 값을 출력한다., C: thisdict = {\n ""brand"": ""Ford"",\n ""electric"": False,\n ""year"": 1966,\n ""colors"": [\""red\"", \""white\"", \""blue\""]\n }\n \n print(thisdict), 이 코드는 딕셔너리를 생성하고 출력한다., D: thisdict = dict(name = \""John\"", age = 38, country = \""Norway\"")\n \n print(thisdict) 이 코드는 dict()를 이용해 딕셔너리를 생성하고 출력한다.",choice,결과를 생성할 파이썬 코드는 무엇인가요?,20.0,20.0,,,,,,,
+183,490,instance reasoning,cross-instance attribute reasoning,What is the relative position of the brown horse to the man in the image? ,"A: The horse is behind the man, 말은 남자 뒤에 있다, B: The horse is in front of the man, 말은 남자 앞에 있다, C: The horse is under the man, 말은 남자 아래에 있다, D: The horse is beside the man, 말은 남자 옆에 있다",choice,갈색 말의 상대 위치는 무엇입니까?,21.0,21.0,,,,,,,
+184,927,logical reasoning,diagram reasoning,which of the label show maximum leaf ,"A: j 제이, B: k 케이, C: h 에이치, D: g 지",choice,레이블 중 어떤 것이 최대 잎을 보여주나요?,22.0,22.0,,,,,,,
+185,515,instance reasoning,cross-instance attribute reasoning,Which of the following statements match the image? ,"A: A gray circle is to the left of a cyan shape. 회색 원이 시안색 도형의 왼쪽에 있다., B: A cyan square is to the left of a gray circle. 시안색 정사각형이 회색 원의 왼쪽에 있다., C: A cyan ellipse is to the right of a gray circle. 시안색 타원형이 회색 원의 오른쪽에 있다., D: A cyan circle is to the right of a circle. 시안색 원이 원의 오른쪽에 있다.",choice,다음 진술들 중 이미지와 일치하는 것은 무엇입니까?,23.0,23.0,,,,,,,
+186,39,coarse perception,image scene and topic,What is the color theme of the bathroom? ,"A: Gray and white 회색과 흰색, B: Beige and white 베이지색과 흰색, C: Black and white 검은색과 흰색, D: Brown and white 갈색과 흰색",choice,욕실의 색상 테마는 무엇입니까?,24.0,24.0,,,,,,,
+187,138,coarse perception,image scene and topic,Which is the main topic of the image ,"A: A boy skiting 소년이 스케이트를 타고 있는, B: A girl skiting 소녀가 스케이트를 타고 있는, C: A man skiting 남자가 스케이트를 타고 있는, D: A woman skiting 여성이 스케이트를 타고 있는",choice,이미지의 주요 주제는 무엇인가요?,26.0,26.0,,,,,,,
+188,226,fine-grained perception,localization,Where is the person in the Alice in Wonderland costume located? ,"A: In the middle of the image 이미지의 중앙에, B: Close to the right side of the image 이미지의 오른쪽 가장자리 근처에, C: Close to the left side of the image 이미지의 왼쪽 가장자리 근처에, D: At the bottom of the image 이미지의 하단에",choice,이상한 나라의 앨리스에서 그 사람은 어디에 있나요?,28.0,28.0,,,,,,,
+189,498,instance reasoning,cross-instance attribute reasoning,What is the relative position of the two people playing guitars? ," A: They are standing next to each other against a wall, 그들은 벽에 기대어 서로 나란히 서 있다, B: They are sitting on opposite sides of a table, 탁자 양쪽에 앉아 있다, C: They are sitting facing each other next to a window, 창가 옆에서 서로 마주 보고 앉아 있다, D: They are standing far away from each other on a stage, 무대 위에서 서로 멀리 떨어져 서 있다",choice,두 사람의 상대적인 위치는 무엇입니까?,30.0,30.0,,,,,,,
+190,341,fine-grained perception,recognition,How can you best describe the pillow on the chair? ,"A: Plain white 흰색, B: Colorful and striped 다채롭고 줄무늬가 있는, C: Solid blue 단색 파란색, D: Floral pattern 꽃무늬",choice,의자 위의 베개를 가장 잘 설명하는 방법은 무엇입니까?,31.0,31.0,,,,,,,
+191,721,logical reasoning,common reasoning,Approximately what proportion of the picture is occupied by the bus in the image? ,"A: 0.8 0.8, B: 1 1, C: 0.6 0.6, D: 0.3 0.3",choice,그림에서 대략 어느 비율이 차지합니까?,33.0,33.0,,,,,,,
+192,594,instance reasoning,single-instance reasoning,The object shown in this figure: ," A: Is a colorless and odorless gas, B: Has a boiling point of -161°C, C: Is a greenhouse gas that contributes to climate change, D: None of these options are correct. A: 무색이고 냄새가 없는 기체이다, B: 끓는점이 -161°C이다, C: 기후 변화에 기여하는 온실가스이다, D: 이 중 옳은 것은 없다.",choice,이 그림에 보이는 물체는:,34.0,34.0,,,,,,,
+193,813,logical reasoning,common reasoning,Which can be the associated text with this image posted on twitter ," A: if anyone has super mario maker 2, make sure to stop by my account and play a few of my levels. most of these levels are from 4-1 years ago, tho, i do have a super world in the works!, 만약 누군가가 슈퍼 마리오 메이커 2를 가지고 있다면 제 계정에 들러 제 레벨 중 몇 개를 플레이해 보세요. 이 레벨들 중 대부분은 4년에서 1년 전의 것들이에요, 다만 제가 작업 중인 슈퍼 월드가 있습니다!, B: 2017年10月27日発売のNintendo Switchソフト『スーパーマリオ オデッセイ』の公式アカウントです。3Dマリオ最新作『スーパーマリオ オデッセイ』に関するゲーム情報やお知らせをディレクターの元倉がお伝えします。 ※ご質問・お問い合わせにはお答えしておりませんのでご容赦ください。, 2017년 10월 27일 발매된 닌텐도 스위치 소프트웨어 『슈퍼 마리오 오디세이』의 공식 계정입니다. 3D 마리오 최신작 『슈퍼 마리오 오디세이』에 관한 게임 정보나 공지를 디렉터 모토쿠라가 전합니다. ※질문·문의에는 답변하지 않으므로 양해 부탁드립니다., C: happy tears of the kingdom day!! #kirby #zelda, 왕국의 날에 행복한 눈물!! #kirby #zelda, D: See You In July - Kirby Gamble Galaxy Stories #Kirby #Nintendo #Gamedev #GameDesign #カービィ #星のカービィ #Fangame #Fanart #IndieDev #GameMaker #gamedevelopment #Fanart, 7월에 다시 만나요 - 커비 갬블 갤럭시 스토리 #Kirby #Nintendo #Gamedev #GameDesign #カービィ #星のカービィ #Fangame #Fanart #IndieDev #GameMaker #gamedevelopment #Fanart",choice,다음 이미지에 연결될 수 있는 텍스트는 무엇입니까?,35.0,35.0,,,,,,,
+194,588,instance reasoning,single-instance reasoning,How many people are in the car in the image? ,"A: Three, B: Five, C: Four, D: Six A: 세 명, B: 다섯 명, C: 네 명, D: 여섯 명",choice,이미지 속 자동차 안에 몇 명이 있나요?,36.0,36.0,,,,,,,
+195,151,coarse perception,image scene and topic,Which of the following objects is the closest to the apple in the image? ,"A: Grilled caramel apple crunch on tin foil 알루미늄 포일 위의 구운 카라멜 사과 크런치, B: Small jar in the middle 가운데 작은 병, C: White and black wax paper 흰색과 검은색 왁스페이퍼, D: None of the above 위의 어느 것도 아니다",choice,다음 중 어떤 물체가 가장 가까운가요?,37.0,37.0,,,,,,,
+196,214,fine-grained perception,localization,What is the position of the red rug in the living room? ," A: Under the couch, B: In front of the sliding glass door, C: Under the table, D: In the corner of the room A: 소파 아래에, B: 슬라이딩 유리문 앞에, C: 탁자 아래에, D: 방의 구석에",choice,거실에서 빨간색 양탄자의 위치는 어디인가요?,39.0,39.0,,,,,,,
+197,119,coarse perception,image scene and topic,What kind of environment is depicted in the image? ,"A: A historical site 역사적 장소, B: A religious location 종교적 장소, C: A residential area 주거 지역, D: A garden 정원",choice,이미지에 묘사된 환경은 어떤 종류입니까?,40.0,40.0,,,,,,,
+198,667,instance reasoning,single-instance reasoning,Which is a full grown plant? ,"A: d 디, B: b 비, C: c 씨, D: a 에이",choice,어떤 것이 완전히 자란 식물입니까?,42.0,42.0,,,,,,,
+199,472,instance reasoning,cross-instance attribute reasoning,What direction is Syria in the Mediterranean Sea? ,"  A: east, B: south, C: west, D: north A: 동, B: 남, C: 서, D: 북",choice,시리아는 지중해에서 어느 방향에 있습니까?,43.0,43.0,,,,,,,
+200,193,coarse perception,image style & quality,what style is depicted in this image? ,"A: impressionism 인상주의, B: post-Impressionism 후기 인상주의, C: modernism 모더니즘, D: dadaism 다다이즘",choice,이 이미지에 묘사된 스타일은 무엇입니까?,47.0,47.0,,,,,,,
+201,531,instance reasoning,cross-instance attribute reasoning,which image is more colorful? ,"A: The first image 첫 번째 이미지, B: The second image 두 번째 이미지, C: nan nan, D: nan nan",choice,어떤 이미지가 더 다채롭습니까?,48.0,48.0,,,,,,,
+202,95,coarse perception,image scene and topic,What is the predominant color in the image? ,"A: White 흰색, B: Red 빨간색, C: Blue 파란색, D: Silver 은색",choice,이미지에서 지배적인 색상은 무엇입니까?,49.0,49.0,,,,,,,
+203,898,logical reasoning,diagram reasoning,What is the name of the colony shown? ,"A: New York, B: Connecticut, C: New Hampshire, D: Massachusetts A: 뉴욕 주, B: 코네티컷 주, C: 뉴햄프셔 주, D: 매사추세츠 주",choice,보여진 식민지의 이름은 무엇입니까?,50.0,50.0,,,,,,,
+204,437,fine-grained perception,recognition,Which can be the associated text with this image posted on twitter ,"A: Morning: Memeland Evening: Jay Chou 7 sold out nights in #hongkong #JayChou  아침: Memeland 저녁: Jay Chou 홍콩에서 매진된 7개의 밤 #hongkong #JayChou, B: We will be streaming our Mayday [ Live In the Sky ] online concert tomorrow night: http://bit.ly/YTBinMusic . We go on at 20:00 (GMT+8) May 31st. See you online then.  내일 밤 우리 Mayday [ Live In the Sky ] 온라인 콘서트를 스트리밍할 예정: http://bit.ly/YTBinMusic . 5월 31일 20:00 (GMT+8)에 시작합니다. 그때 온라인에서 뵙겠습니다., C: my little airport 🫶🏼  내 작은 공항 🫶🏼, D: Run to Victoria Harbor at night😅  밤에 빅토리아 하버로 달리기 😅",choice,다음 중 이 이미지와 연결될 수 있는 텍스트는 무엇입니까?,51.0,51.0,,,,,,,
+205,296,fine-grained perception,object counting,How many people are there in the image? ,"A: 0 0, B: 1 1, C: 2 2, D: 3 3",choice,이미지에 몇 명이 있나요?,52.0,52.0,,,,,,,
+206,169,coarse perception,image style & quality,Which category does this image belong to? ," A: MRI image MRI 이미지, B: icon 아이콘, C: microscopic image 현미경 이미지, D: abstract painting 추상화",choice,이 이미지는 어떤 범주에 속하나요?,53.0,53.0,,,,,,,
+207,627,instance reasoning,single-instance reasoning,What's the function of the demonstrated object? ,"A: display information in pictorial or textual form 그림이나 텍스트 형태로 정보를 표시, B: project images or videos onto a larger surface 더 큰 표면에 이미지나 비디오를 투사, C: watch TV shows TV 프로그램을 시청하다, D: display digital photos in a slideshow format. 디지털 사진을 슬라이드쇼 형식으로 표시",choice,시연된 물체의 기능은 무엇입니까?,54.0,54.0,,,,,,,
+208,334,fine-grained perception,recognition,Can you see a flag in the image? ,"A: Yes, it's in the middle of the frame, 네, 프레임의 중앙에 있습니다, B: Yes, it's close to the bottom left corner, 네, 프레임의 왼쪽 하단 모서리 쪽에 있습니다, C: No, there's no flag in the image, 아니요, 이미지에 깃발이 없습니다, D: Yes, it's to the right of the frame, 네, 프레임의 오른쪽에 있습니다",choice,이미지에서 깃발이 보이나요?,55.0,55.0,,,,,,,
+209,499,instance reasoning,cross-instance attribute reasoning,What is the relative position of the window to the shutters on the building in the image? ,"A: The window is above the shutters, 창문은 셔터 위에 있다, B: The window is on the same level as the shutters, 창문은 셔터와 같은 높이에 있다, C: The window is below the shutters, 창문은 셔터 아래에 있다, D: The window is to the left of the shutters, 창문은 셔터의 왼쪽에 있다",choice,창문이 셔터에 대해 어떤 상대적 위치에 있습니까?,56.0,56.0,,,,,,,
+210,171,coarse perception,image style & quality,Which category does this image belong to? ,"A: MRI image, B: icon, C: microscopic image, D: abstract painting A: MRI 이미지, B: 아이콘, C: 현미경 이미지, D: 추상화",choice,이 이미지는 어떤 범주에 속하나요?,57.0,57.0,,,,,,,
+211,724,logical reasoning,common reasoning,"Based on the lighting, what time of day does it appear to be in the image? ","A: Late afternoon, B: Morning, C: Evening, D: Night A: 늦은 오후, B: 아침, C: 저녁, D: 밤",choice,조명에 따라 어느 시간대인가요?,59.0,59.0,,,,,,,
+212,505,instance reasoning,cross-instance attribute reasoning,Which image is more brightful? ,"A: The first image 첫 번째 이미지, B: The second image 두 번째 이미지, C: nan, D: nan",choice,어떤 이미지가 더 밝습니까?,60.0,60.0,,,,,,,
+213,305,fine-grained perception,object counting,How many persons are playing guitar in the concert? ,"A: 1 1, B: 2 2, C: 3 3, D: 4 4",choice,콘서트에서 기타를 연주하는 사람은 몇 명입니까?,62.0,62.0,,,,,,,
+214,75,coarse perception,image scene and topic,What is the main object in the image? ,"A: The guitar 기타, B: The man 남자, C: The woman 여자, D: The person on stage 무대에 선 사람",choice,이미지에서 가장 중요한 사물은 무엇입니까?,64.0,64.0,,,,,,,
+215,149,coarse perception,image scene and topic,Which of the following captions best describes this image? ,"A: A person playing a guitar on a stage A: 무대에서 기타를 연주하는 사람, B: A group of people dancing at a party B: 파티에서 춤추는 사람들, C: A singer performing on a microphone C: 마이크 앞에서 노래하는 가수, D: A person playing a piano in a studio D: 스튜디오에서 피아노를 연주하는 사람",choice,다음 캡션 중 어떤 것이 가장 잘 설명합니까?,65.0,65.0,,,,,,,
+216,704,logical reasoning,code & sequence reasoning,What is correct Python code to generate the content of the image? ,"A: class Person:\n def __init__(self, fname, lname):\n self.firstname = fname\n self.lastname = lname\n\n def printname(self):\n print(self.firstname, self.lastname)\n\n#Use the Person class to create an object, and then execute the printname method:\n\nx = Person(\""John\"", \""Doe\"")\nx.printname()\n 한국어 설명: Person 클래스를 정의하고 객체를 만들어 printname 메서드를 호출하는 예제. , B: mystr = \""banana\""\nmyit = iter(mystr)\n\nprint(next(myit))\nprint(next(myit))\nprint(next(myit))\nprint(next(myit))\nprint(next(myit))\nprint(next(myit))  한국어 설명: 문자열에서 이터레이터를 생성하고 각 next() 호출로 문자를 차례로 출력하는 예제. , C: def my_function():\n print(\""Hello from a function\"")\n \nmy_function()\n 한국어 설명: 함수 정의 및 호출의 간단한 예제. , D: x = min(5, 10, 25)\ny = max(5, 10, 25)\n\nprint(x)\nprint(y)\n 한국어 설명: 최소값과 최대값을 구하고 출력하는 예제.",choice,다음은 co...를 생성하기 위한 올바른 Python 코드가 무엇인가요?,67.0,67.0,,,,,,,
+217,11,coarse perception,image emotion,What motion this image want to convey? ,"A: happy 행복한, B: angry 화난, C: sad 슬픈, D: terrified 겁에 질린",choice,이 이미지가 전달하려는 동작은 무엇인가?,70.0,70.0,,,,,,,
+218,277,fine-grained perception,object counting,How many paintings are in the image? ,"A: 0, B: 2, C: 1, D: 3 A: 0, B: 2, C: 1, D: 3",choice,그 이미지에는 그림이 몇 점이나 있나요?,71.0,71.0,,,,,,,
+219,81,coarse perception,image scene and topic,What is the main theme of the image? ," A: Bearded men 수염 난 남자들, B: Bathroom hygiene 욕실 위생, C: Royal monarchy 왕정, D: Home decor 가정 장식",choice,이미지의 주요 주제는 무엇인가요?,72.0,72.0,,,,,,,
+220,624,instance reasoning,single-instance reasoning,What's the function of the demonstrated object? ,"A: Separatist 분리주의자, B: Clamping 클램핑, C: drill 드릴, D: incise 절개",choice,시연된 물체의 기능은 무엇입니까...?,75.0,75.0,,,,,,,
+221,34,coarse perception,image scene and topic,What is happening in the image? ,"A: A football player is tackling a soccer player, 풋볼 선수가 축구 선수를 태클하고 있다, B: A soccer player is kicking a football, 축구 선수가 축구공을 차고 있다, C: A group of men are playing soccer, 여러 남자들이 축구를 하고 있다, D: A football player is dribbling the ball towards the goal, 풋볼 선수가 골대 방향으로 공을 드리블하고 있다",choice,이미지에서 무슨 일이 일어나고 있나요?,76.0,76.0,,,,,,,
+222,415,fine-grained perception,recognition,What is the name of the place shown? ,"A: Virginia 버지니아, B: Michigan 미시간, C: Kentucky 켄터키, D: Maryland 메릴랜드",choice,제시된 장소의 이름은 무엇입니까?,78.0,78.0,,,,,,,
+223,810,logical reasoning,common reasoning,Where is the woman holding her belly in the image? ,"A: With both hands 양손으로, B: With her right hand 오른손으로, C: With her left hand 왼손으로, D: She's not holding her belly 그녀는 배를 들고 있지 않다",choice,이미지에서 여자가 배를 들고 있는 위치는 어디인가요?,80.0,80.0,,,,,,,
+224,553,instance reasoning,cross-instance relation reasoning,What is the most curved beak species? ,"A: iiki, B: swallow-tanager, C: cliff swallow, D: hawfinch A: 아이키, B: 제비-탄가르새, C: 절벽제비, D: 큰부리딱새",choice,가장 곡선 모양의 부리를 가진 종은 무엇입니까?,81.0,81.0,,,,,,,
+225,808,logical reasoning,common reasoning,What will happen next? ,"A: this person is gonna cry, 이 사람이 울 것 같다, B: this person is gonna laugh, 이 사람이 웃을 것 같다, C: this person is gonna get mad, 이 사람이 화가 날 것이다, D: both A,B, and C, A, B, 및 C 모두",choice,다음에 무슨 일이 일어날까요?,82.0,82.0,,,,,,,
+226,585,instance reasoning,single-instance reasoning,How is the model's leg positioned in the image? ,"A: Crossed, B: Straight, C: Raised, D: Bent A: 교차된, B: 직선의, C: 올려진, D: 구부린",choice,이미지에서 모델의 다리는 어떻게 위치하고 있나요?,83.0,83.0,,,,,,,
+227,562,instance reasoning,cross-instance relation reasoning,Which group has a notched outline? ,"A: A, B: D, C: B, D: C A: 에이, B: 디, C: 비, D: 씨",choice,어떤 그룹이 홈이 파인 윤곽선을 가지고 있나요?,84.0,84.0,,,,,,,
+228,274,fine-grained perception,object counting,How many musical instruments can be seen in the image? ,"A: One 하나, B: Four 넷, C: Three 셋, D: Two 둘",choice,보이는 악기의 수는 몇 개인가요?,85.0,85.0,,,,,,,
+229,304,fine-grained perception,object counting,How many people in the image have a visible smile? ," A: Two, B: Four, C: Three, D: Five A: Two 둘, B: Four 네, C: Three 셋, D: Five 다섯",choice,사진 속에서 보이는 미소를 가진 사람이 몇 명입니까?,87.0,87.0,,,,,,,
+230,572,instance reasoning,cross-instance relation reasoning,Which solution has a higher concentration of blue particles? ,"A: Solution A 용액 A, B: Solution B 용액 B, C: neither; their concentrations are the same 둘 다 아니다; 농도가 같습니다, D: nan 값이 없습니다",choice,b...의 농도가 더 높은 용액은 어느 것입니까?,88.0,88.0,,,,,,,
+231,533,instance reasoning,cross-instance relation reasoning,Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature? ," A: neither; the samples have the same temperature 둘 다 아니다; 두 샘플의 온도가 같다, B: sample A, 샘플 A, C: sample B, 샘플 B, D: nan NaN(숫자 아님)",choice,입자들의 평균 운동 에너지를 비교하시오.,90.0,90.0,,,,,,,
+232,348,fine-grained perception,recognition,Name the topmost opening of a volcano ,"A: Camino Proncipale 주요 경로, B: Camino volcanico 화산 경로, C: Cratere volcanico 화산 분화구, D: Cratere Proncipale 주요 분화구",choice,화산의 최상단 분화구의 이름을 말하시오.,91.0,91.0,,,,,,,
+233,567,instance reasoning,cross-instance relation reasoning,Which property do these four objects have in common? ,"A: fragile 약한, B: transparent 투명한, C: opaque 불투명한, D: nan 숫자가 아님",choice,다음 네 객체가 공통으로 가지는 속성은 무엇입니까?,92.0,92.0,,,,,,,
+234,150,coarse perception,image scene and topic,Which of the following captions best describes this image? ,"A: A person taking a photo with a camera, B: A group of people watching a movie in a theater, C: A person reading a book in a library, D: A woman applying makeup in front of a mirror A: 카메라로 사진을 찍는 사람, B: 극장에 모여 영화를 보는 사람들, C: 도서관에서 책을 읽는 사람, D: 거울 앞에서 화장을 하는 여성",choice,다음 캡션 중 어떤 것이 가장 잘 설명합니까?,94.0,94.0,,,,,,,
+235,146,coarse perception,image scene and topic,Which of the following captions best describes this image? ,"A: A group of people playing soccer in a field, B: A woman walking her dog on a beach, C: A man riding a bicycle on a mountain trail, D: A child playing with a ball in a park 들판에서 축구를 하는 사람들, 해변에서 개를 산책하는 여성, 산길에서 자전거를 타는 남성, 공원에서 공을 가지고 노는 아이",choice,다음 이미지에 대해 아래 캡션 중 어느 것이 가장 잘 설명합니까?,95.0,95.0,,,,,,,
+236,21,coarse perception,image emotion,what emotion does this emoji express? ,"A: happy 행복한, B: sad 슬픈, C: excited 신난, D: angry 화난",choice,이 이모지는 어떤 감정을 표현하나요?,96.0,96.0,,,,,,,
+237,923,logical reasoning,diagram reasoning,Which part the body that lies between the thorax and the stinger? ,"A: C, B: A, C: G, D: I A: C(씨), B: A(에이), C: G(지), D: I(아이)",choice,흉부 사이에 위치한 신체의 어느 부분입니까?,97.0,97.0,,,,,,,
+238,225,fine-grained perception,localization,Where is the pathway located in the image? ,"A: On the left side of the image, 이미지의 왼쪽에 있습니다 B: On the right side of the image, 이미지의 오른쪽에 있습니다 C: In the center of the image, 이미지의 중앙에 있습니다 D: Cannot be determined from the information provided, 제공된 정보로는 판단할 수 없습니다",choice,이미지에서 경로가 어디에 위치해 있나요?,98.0,98.0,,,,,,,
+239,308,fine-grained perception,object counting,How many plants are in the image? ,"A: 1, B: 2, C: 3, D: 4 A: 1, B: 2, C: 3, D: 4",choice,이미지에 식물이 몇 개 있나요?,99.0,99.0,,,,,,,
+240,141,coarse perception,image scene and topic,"Which is the main topic of the image
+ "," A: A woman surfing 여성이 서핑하는 것, B: A man skiting 남자가 스케이팅을 하는 것, C: A man surfing 남자가 서핑하는 것, D: A woman skiting 여자가 스케이팅을 하는 것",choice,이미지의 주요 주제는 무엇입니까?,,,C,0.769230769230769,,,,,
+241,568,instance reasoning,cross-instance relation reasoning,"Which property do these four objects have in common?
+ ","A: sticky 끈적한, B: hard 딱딱한, C: stretchy 신축성 있는, D: nan 숫자가 아님",choice,이 네 객체가 공통으로 가지는 속성은 무엇입니까?,,,A,0.0,,,,,
+242,14,coarse perception,image emotion,"Which mood does this image convey?
+ ","A: Cozy 아늑한, B: Anxious 불안한, C: Happy 행복한, D: Angry 화난",choice,이 이미지는 어떤 분위기를 전달하나요?,,,C,0.162162162162162,,,,,
+243,910,logical reasoning,diagram reasoning,"Which continent is highlighted?
+ ","A: Europe, B: South America, C: Antarctica, D: Africa A: 유럽, B: 남아메리카, C: 남극, D: 아프리카",choice,강조된 대륙은 어느 대륙입니까?,,,C,0.5,,,,,
+244,560,instance reasoning,cross-instance relation reasoning,"Where is the little girl standing in relation to the old woman in the dress in the image?
+ ","A: Behind her, 그녀의 뒤에 B: To the right of her, 그녀의 오른쪽에 C: In front of her, 그녀의 앞에 D: To the left of her, 그녀의 왼쪽에",choice,그 꼬마 소녀는 어떤 대상에 대해 어디에 서 있나요?,,,B,0.0909090909090909,,,,,
+245,27,coarse perception,image scene and topic,"Can you identify the season in which the picture was taken?
+ ","A: spring 봄, B: summer 여름, C: fall 가을, D: winter 겨울",choice,그 그림에서 묘사된 계절을 식별할 수 있나요?,,,D,0.416666666666667,,,,,
+246,167,coarse perception,image style & quality,"Which art style is showcased in this image?
+ "," A: depth of field, B: pencil, C: vector art, D: Baroque A: 피사계 심도, B: 연필, C: 벡터 아트, D: 바로크",choice,이 이미지에 보여지는 예술 양식은 무엇인가요?,,,B,0.25,,,,,
+247,532,instance reasoning,cross-instance relation reasoning,"Based on the image, what is the significance of having two cakes on the table during the couple's celebration with their baby?
+ ",A: Having two cakes allows for different cake flavors or designs for their guests. 두 케이크는 손님들을 위해 서로 다른 케이크 맛이나 디자인을 가능하게 한다. B: Having two cakes signifies that the couple is celebrating multiple occasions or milestones. 두 개의 케이크는 커플이 여러 가지 행사나 이정표를 축하하고 있음을 나타낸다. C: Having two cakes indicates a preference for abundance and excess. 두 개의 케이크를 갖는 것은 풍요와 과잉을 선호한다는 것을 나타낸다. D: Having two cakes is a common practice in most celebrations of this nature. 이런 종류의 축하 행사에서 두 개의 케이크를 가지는 것은 일반적인 관행이다.,choice,"이미지를 기반으로, o의 의미는 무엇입니까...",,,B,0.545454545454545,,,,,
+248,593,instance reasoning,single-instance reasoning,"The gas shown in this figure:
+ ","  A: Is a colorless, odorless gas that is poisonous to humans and animals, B: Forms when fuels like gasoline, coal, and wood are burned without enough oxygen, C: Has a boiling point of -191.5°C, D: None of these options are correct. A: 인간과 동물에게 독성이 있는 무색 무취의 가스이다, B: 가솔린, 석탄, 목재와 같은 연료가 충분한 산소 없이 타고 있을 때 형성된다, C: 끓는점은 -191.5°C이다, D: 이들 중 올바른 것은 없다.",choice,이 그림에 보이는 가스:,,,A,0.0909090909090909,,,,,
+249,17,coarse perception,image emotion,"Which mood does this image convey?
+ "," A: Sad, B: Anxious, C: Happy, D: Angry A: 슬픈, B: 불안한, C: 행복한, D: 화난",choice,이 이미지는 어떤 분위기를 전달합니까?,,,D,0.189189189189189,,,,,
+250,526,instance reasoning,cross-instance attribute reasoning,"Which option describe the object relationship in the image correctly?
+ ",A: The sink contains the cat. 싱크대에 고양이가 있다. B: The cat is beside the microwave. 고양이는 전자레인지 옆에 있다. C: The cat is at the edge of the sink. 싱크대의 가장자리에 고양이가 있다. D: The book is beside the cat. 그 책은 고양이 옆에 있다.,choice,다음 중 어떤 옵션이 객체 간의 관계를 설명합니까?,,,A,0.0909090909090909,,,,,
+251,142,coarse perception,image scene and topic,"Which is the main topic of the image
+ ","A: Driving cars 자동차 운전, B: Driving buses 버스 운전, C: A driving bus 운전 중인 버스, D: A driving car 운전 중인 자동차",choice,이미지의 주요 주제는 무엇입니까?,,,B,0.0833333333333333,,,,,
+252,426,fine-grained perception,recognition,"What is the subject of the image?
+ "," A: Green exit sign with an arrow pointing to the right, B: Sign of a toilet on the roof of a building, C: Green exit sign with a directional arrow, D: Green exit sign with an arrow pointing to the left A: 오른쪽으로 향하는 화살표가 있는 초록색 출구 표지, B: 건물 옥상에 있는 화장실 표지, C: 방향 화살표가 있는 초록색 출구 표지, D: 왼쪽으로 향하는 화살표가 있는 초록색 출구 표지",choice,이미지의 주제가 무엇입니까?,,,D,0.0833333333333333,,,,,
+253,109,coarse perception,image scene and topic,"What is the primary subject in this image?
+ ","A: a guitar, B: a man on stage, C: a microphone, D: a concert A: 기타, B: 무대 위의 남자, C: 마이크, D: 콘서트",choice,이 이미지의 주요 주제는 무엇입니까?,,,D,0.153846153846154,,,,,
+254,793,logical reasoning,common reasoning,"What is the referee doing in the image?
+ ","A: Blowing the whistle 호루라기를 불고 있다, B: Talking to the players 선수들과 대화하고 있다, C: Watching the match from the sideline 측선에서 경기를 지켜보고 있다, D: Scoring the goal 골을 넣고 있다",choice,사진 속 심판은 무엇을 하고 있습니까?,,,C,0.363636363636364,,,,,
+255,241,fine-grained perception,object counting,"Based on the image, how many soccer players are on the field?
+ ","A: 1 A: 1, B: 2 B: 2, C: 4 C: 4, D: 3 D: 3",choice,이미지에 따르면 축구 선수의 수는 몇 명입니까?,,,C,0.166666666666667,,,,,
+256,197,coarse perception,image style & quality,"what style is this painting?
+ ","A: ink wash painting, B: watercolor painting, C: gouache painting, D: pen and ink  A: 수묵화, B: 수채화, C: 구아슈 페인팅, D: 펜과 잉크",choice,이 그림의 스타일은 무엇입니까?,,,B,0.166666666666667,,,,,
+257,84,coarse perception,image scene and topic,"What is the most frequent color shown in the image?
+ ","A: White 흰색, B: Brown 갈색, C: Blue 파란색, D: Green 초록",choice,이미지에 나타난 가장 자주 보이는 색은 무엇입니까?,,,D,0.230769230769231,,,,,
+258,335,fine-grained perception,recognition,"Does the image contain any person wearing green clothes?
+ ","A: Yes 네, B: Cannot determine from the given information 주어진 정보로는 판단할 수 없습니다, C: No 아니요, D: None of the above 위의 어느 것도 아니다",choice,이미지에 초록색 옷을 입은 사람이 있나요?,,,C,0.666666666666667,,,,,
+259,265,fine-grained perception,object counting,"How many dressers are visible in the image?
+ ","A: nan 해당 없음, B: Three 세 개, C: Two 두 개, D: One 한 개",choice,그 사진에서 보이는 서랍장은 몇 개입니까?,,,A,0.166666666666667,,,,,
+260,921,logical reasoning,diagram reasoning,"Which of these cities is marked on the map?
+ "," A: Miami (마이애미), B: Atlanta (애틀랜타), C: Nashville (내슈빌), D: Oklahoma City (오클라호마 시티)",choice,다음 도시들 중 지도에 표시된 도시는 어느 도시입니까?,,,B,0.1,,,,,
+261,477,instance reasoning,cross-instance attribute reasoning,"What is the position of the glass of juice relative to the tangerines?
+ "," A: Next to the tangerines 귤 옆에, B: Between the tangerines 귤 사이에, C: Behind the tangerines 귤 뒤에, D: Cannot tell 알 수 없음",choice,귤에 비해 주스 한 잔의 위치는 어디에 있나요?,,,B,0.181818181818182,,,,,
+262,486,instance reasoning,cross-instance attribute reasoning,"What is the relationship between the people in the image?
+ ","A: friends 친구들, B: family 가족, C: commercial 상업적, D: professional 전문적",choice,...에 있는 사람들 사이의 관계는 무엇입니까?,,,D,0.272727272727273,,,,,
+263,715,logical reasoning,code & sequence reasoning,"Which Python code can generate the content of the image?
+ ","A: tup1 = ('physics', 'chemistry', 1997, 2000) tup2 = (1, 2, 3, 4, 5, 6, 7 ) print \""tup1[0]: \"", tup1[0] print \""tup2[1:5]: \"", tup2[1:5]  tup1의 첫 원소는 'physics'이고 tup2의 슬라이스 tup2[1:5]은 (2, 3, 4, 5)이다. B: tup1 = ('physics', 'chemistry', 1997, 2000) tup2 = (1, 2, 3, 4, 5, 6, 7 ) print \""tup1[0]: \"", tup1[0] print \""tup2[1:5]: \"", tup2[2:5]  tup1의 첫 원소는 'physics'이고 tup2의 슬라이스 tup2[2:5]은 (3, 4, 5)이다. C: tup1 = ('physics', 'chemistry', 1990, 2000) tup2 = (1, 2, 3, 4, 5, 6, 7 ) print \""tup1[0]: \"", tup1[0] print \""tup2[1:5]: \"", tup2[1:5]  tup1의 첫 원소는 'physics'이고 tup2[1:5]의 값은 (2, 3, 4, 5)이다. D: tup1 = ('physics', 'chemistry', 1990, 2000) tup2 = (1, 2, 3, 4, 5, 6, 7 ) print \""tup1[0]: \"", tup1[0] print \""tup2[2:5]: \"", tup2[1:5]  tup1의 첫 원소는 'physics'이고 tup2[2:5]의 값은 (3, 4, 5)이다.",choice,다음 파이썬 코드로 ...의 내용을 생성할 수 있는가?,,,A,0.0,,,,,
+264,128,coarse perception,image scene and topic,"What time of day is it in the image?
+ "," A: Noon, B: Evening, C: Night, D: Dawn A: 정오, B: 저녁, C: 밤, D: 새벽",choice,이미지 속 시간대는 무엇인가요?,,,D,0.0769230769230769,,,,,
+265,156,coarse perception,image scene and topic,"Which option describe the object relationship in the image correctly?
+ ","A: The suitcase is on the book. 여행 가방은 책 위에 있다., B: The suitcase is beneath the cat. 여행 가방은 고양이 아래에 있다., C: The suitcase is beneath the bed. 여행 가방은 침대 아래에 있다., D: The suitcase is beneath the book. 여행 가방은 책 아래에 있다.",choice,다음 중 물체 간의 관계를 설명하는 옵션은 무엇입니까?,,,A,0.0,,,,,
+266,301,fine-grained perception,object counting,"How many people are visible in the image?
+ ","A: Two 두 명, B: One 한 명, C: Three 세 명, D: Four 네 명",choice,이미지에 보이는 사람의 수는 몇 명입니까?,,,D,0.0,,,,,
+267,189,coarse perception,image style & quality,"Which image shows the highest sharpness?
+ "," A: upper left, B: upper right, C: down left, D: down right A: 왼쪽 위, B: 오른쪽 위, C: 왼쪽 아래, D: 오른쪽 아래",choice,가장 선명한 이미지는 어느 이미지입니까?,,,A,0.230769230769231,,,,,
+268,325,fine-grained perception,object counting,"How many white jugs are on the nightstand?
+ ","A: 0, B: 3, C: 2, D: 1 A: 0, B: 3, C: 2, D: 1",choice,협탁 위에 흰색 저그가 몇 개 있나요?,,,A,0.25,,,,,
+269,413,fine-grained perception,recognition,"What is the most prominent color of the countertop?
+ ","A: Gray 회색, B: White 흰색, C: Black 검은색, D: Brown 갈색",choice,카운터의 가장 두드러진 색은 무엇입니까?,,,D,0.0833333333333333,,,,,
+270,611,instance reasoning,single-instance reasoning,"What is the material of the cage-like object in this image?
+ "," A: Plastic, B: Wire, C: Metal, D: Glass A: 플라스틱, B: 와이어, C: 금속, D: 유리",choice,새장 같은 물체의 재질은 무엇입니까?,,,A,0.0,,,,,
+271,641,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: astronaut, B: chemist, C: violinist, D: pianist A: 우주비행사, B: 화학자, C: 바이올리스트, D: 피아니스트",choice,이 사진에 있는 사람들의 직업은 무엇입니까?,,,C,0.454545454545455,,,,,
+272,445,fine-grained perception,recognition,"Which woman has dark hair in the image?
+ ","A: Both women, B: The woman standing farther from the teddy bear, C: The woman standing closer to the teddy bear, D: Neither woman A: 두 여성 모두, B: 테디 베어에서 더 멀리에 서 있는 여성, C: 테디 베어에 더 가까이 서 있는 여성, D: 어느 여성도 아니다",choice,사진 속에서 머리카락이 어두운 여성은 누구입니까?,,,A,0.0833333333333333,,,,,
+273,917,logical reasoning,diagram reasoning,"Which letter represents the new moon?
+ ","A: C (씨), B: J (제이), C: E (이), D: B (비)",choice,신월을 나타내는 문자는 무엇입니까?,,,C,0.2,,,,,
+274,784,logical reasoning,common reasoning,"What is the intended outcome in this image?
+ ","A: She will lose leg muscle 다리 근육을 잃게 된다, B: She will maintain her current leg muscle size 현재의 다리 근육 크기를 유지하게 된다, C: She will grow her leg muscle 다리 근육이 커지게 된다, D: She will undergo surgery to reduce leg muscle 다리 근육을 줄이기 위한 수술을 받게 된다",choice,이 이미지의 의도된 결과는 무엇입니까?,,,C,0.6,,,,,
+275,421,fine-grained perception,recognition,"What is the primary surface of the playing field in the image?
+ ","A: Asphalt 아스팔트, B: Sand 모래, C: Artificial turf 인조잔디, D: Grass 잔디",choice,운동 경기장의 주된 표면은 무엇입니까?,,,C,0.166666666666667,,,,,
+276,309,fine-grained perception,object counting,"How many ponds are clearly visible in this image?
+ ","A: One, B: Three, C: Two, D: Four 하나 세 둘 네",choice,이 이미지에서 확실히 보이는 연못은 몇 개입니까?,,,B,0.0833333333333333,,,,,
+277,530,instance reasoning,cross-instance attribute reasoning,"which image is more colorful?
+ ","A: The first image, B: The second image, C: nan, D: nan A: 첫 번째 이미지, B: 두 번째 이미지, C: nan, D: nan",choice,어떤 이미지가 더 다채롭나요?,,,A,0.272727272727273,,,,,
+278,535,instance reasoning,cross-instance relation reasoning,"Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?
+ ","A: sample A 샘플 A, B: neither; 두 샘플의 온도가 같다, C: sample B 샘플 B, D: nan 숫자가 아님",choice,두 샘플의 입자들의 평균 운동 에너지를 비교하시오.,,,B,0.181818181818182,,,,,
+279,352,fine-grained perception,recognition,"What color are the flowers in the room?
+ ","A: White, B: Yellow, C: Red, D: Pink A: 흰색, B: 노란색, C: 빨간색, D: 분홍색",choice,방 안의 꽃은 무슨 색입니까?,,,B,0.25,,,,,
+280,883,logical reasoning,diagram reasoning,"Is the following statement about our solar system true or false?
+ Of the four largest planets, three are made mainly of gas.
+ ","A: false 거짓, B: true 참, C: nan 숫자 아님, D: nan 숫자 아님",choice,다음 진술이 우리 태양계에 관한 것인가요?,,,A,0.1,,,,,
+281,614,instance reasoning,single-instance reasoning,"What is the object that the man with the uniform is standing in front of?
+ ","A: A flag 깃발, B: A table 탁자, C: A picture 그림, D: A chair 의자",choice,제복을 입은 남자가 들고 있는 물건은 무엇입니까?,,,D,0.0909090909090909,,,,,
+282,68,coarse perception,image scene and topic,"What is the main focus of the image?
+ ","A: A person playing a guitar in front of a choir, B: A choir singing on a stage, C: A man sitting in a chair playing a guitar, D: A man playing a guitar in front of a group of people  A: 합창단 앞에서 기타를 연주하는 사람, B: 무대에서 합창단이 노래하는 모습, C: 의자에 앉아 기타를 연주하는 남자, D: 사람들 앞에서 기타를 연주하는 남자",choice,이미지의 주된 초점은 무엇입니까?,,,C,0.0769230769230769,,,,,
+283,211,fine-grained perception,localization,"What is the position of the grape in relation to the plate of walnuts?
+ ","A: The grape is on top of the plate of walnuts 포도가 호두 접시 위에 있다, B: The grape is below the plate of walnuts 포도가 호두 접시 아래에 있다, C: The grape is to the right of the plate of walnuts 포도는 호두 접시의 오른쪽에 있다, D: The grape is to the left of the plate of walnuts 포도는 호두 접시의 왼쪽에 있다",choice,포도와 호두 접시 사이의 상대적 위치는 무엇입니까?,,,A,0.166666666666667,,,,,
+284,481,instance reasoning,cross-instance attribute reasoning,"What is the position of the white couch relative to the glass coffee table?
+ ","A: The couch is in front of the coffee table 흰색 소파는 커피 테이블의 앞에 있습니다, B: The couch is to the right of the coffee table 흰색 소파는 커피 테이블의 오른쪽에 있습니다, C: The couch is to the left of the coffee table 흰색 소파는 커피 테이블의 왼쪽에 있습니다, D: The couch is behind the coffee table 흰색 소파는 커피 테이블의 뒤에 있습니다",choice,흰색 소파의 위치는 커피 테이블에 대해 어디에 있습니까?,,,D,0.181818181818182,,,,,
+285,218,fine-grained perception,localization,"Where is it located?
+ ","A: Xi'an 시안, B: Shanghai 상하이, C: Beijing 베이징, D: Nanjing 난징",choice,그것은 어디에 위치해 있나요?,,,A,0.333333333333333,,,,,
+286,649,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: magician 마술사, B: financial analyst 재무 분석가, C: florist 플로리스트, D: lawyer 변호사",choice,이 사진 속 사람들의 직업은 무엇입니까?,,,A,0.363636363636364,,,,,
+287,50,coarse perception,image scene and topic,"What is the dominant color scheme in this image?
+ ","A: White and blue 흰색과 파란색, B: Blue and green 파란색과 초록색, C: Brown and yellow 갈색과 노란색, D: Pink and orange 분홍색과 주황색",choice,이 이미지의 지배적인 색 구성은 무엇입니까?,,,B,0.153846153846154,,,,,
+288,131,coarse perception,image scene and topic,"What type of scene is depicted in this image?
+ ","A: A workspace 작업 공간, B: A beach vacation 해변 휴가, C: A tropical restaurant 열대 식당, D: A desert oasis 사막 오아시스",choice,이 이미지에는 어떤 종류의 장면이 묘사되어 있나요?,,,A,0.384615384615385,,,,,
+289,399,fine-grained perception,recognition,"What is the color of the word ""brick"" as it appears on the wall in the image?
+ ","A: White, B: Gray, C: Red, D: Black 흰색 회색 빨간색 검은색",choice,단어 'brick'의 색은 무엇입니까?,,,B,0.0833333333333333,,,,,
+290,153,coarse perception,image scene and topic,"Which one is the correct caption of this image?
+ ","A: A bunch of cars sitting still in the middle of a street, 길 한가운데에 멈춰 서 있는 차들 B: Two giraffes near a tree in the wild., 야생에서 나무 근처에 있는 두 마리의 기린 C: Small personal bathroom with a tiny entrance door., 아주 작은 입구가 있는 개인용 욕실 D: An elephant drinking water while the rest of the herd is walking in dry grass. 마른 풀밭에서 떼의 나머지 무리들이 걷고 있는 동안 물을 마시는 코끼리",choice,이 이미지에 대한 올바른 캡션은 무엇입니까?,,,D,0.166666666666667,,,,,
+291,446,fine-grained perception,recognition,"Who is the person in this image?
+ ","A: Elon Musk 일론 머스크, B: Xiang Liu 샹 리우, C: Jay Chou 제이 차오, D: Ming Yao 밍 야오",choice,이 이미지 속 인물은 누구입니까?,,,C,0.25,,,,,
+292,385,fine-grained perception,recognition,"What is the color of the net behind the players in the image?
+ ","A: It is not visible in the image. 이미지에서 보이지 않습니다., B: Blue 파란색, C: Red 빨간색, D: White 흰색",choice,선수 뒤에 있는 네트의 색은 무엇입니까?,,,B,0.0833333333333333,,,,,
+293,376,fine-grained perception,recognition,"What is the color of the couch in the living room?
+ ","A: Beige 베이지, B: Grey 그레이, C: Dark Brown 다크 브라운, D: White 화이트",choice,거실 소파의 색은 무엇입니까?,,,C,0.333333333333333,,,,,
+294,897,logical reasoning,diagram reasoning,"What is the name of the colony shown?
+ "," A: Maine, B: Rhode Island, C: New York, D: Virginia A: 메인 주, B: 로드 아일랜드 주, C: 뉴욕 주, D: 버지니아 주",choice,보여진 식민지의 이름은 무엇입니까?,,,B,0.6,,,,,
+295,606,instance reasoning,single-instance reasoning,"What is most prominent in the image?
+ ","A: A building with a clock, B: A city skyline, C: A boat docked in the water., D: Water with boats and ships. A: 시계가 달린 건물, B: 도시의 스카이라인, C: 물에 정박한 보트, D: 보트와 선박이 있는 물",choice,사진에서 가장 눈에 띄는 것은 무엇입니까?,,,A,0.454545454545455,,,,,
+296,677,instance reasoning,single-instance reasoning,"Which special day is associated with this poster?
+ ","A: Earth Day. 지구의 날, B: Children's Day. 어린이날, C: Father's Day. 아버지의 날, D: Mother's Day. 어머니의 날",choice,이 게시물과 관련된 특별한 날은 무엇입니까?,,,B,0.363636363636364,,,,,
+297,639,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ ","A: prepare food and cook meals, B: sleep, C: a sanitary facility used for excretion, D: Play basketball A: 음식을 준비하고 식사를 요리한다, B: 자다, C: 배변에 사용되는 위생 시설, D: 농구를 하다",choice,시연된 물체의 기능은 무엇입니까?,,,B,0.181818181818182,,,,,
+298,342,fine-grained perception,recognition,"How many people are performing on the stage?
+ ","A: Three, B: Two, C: One, D: Four A: 세 명, B: 두 명, C: 한 명, D: 네 명",choice,무대에서 공연 중인 사람은 몇 명입니까?,,,D,0.0833333333333333,,,,,
+299,638,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ ","A: increase passenger capacity and reduce traffic congestion 승객 수용 능력을 늘리고 교통 체증을 줄이는 기능, B: a sanitary facility used for excretion 배변에 사용되는 위생 시설, C: used as decorations. 장식으로 사용된다., D: watch TV shows TV를 본다",choice,시연된 물건의 기능은 무엇입니까?,,,A,0.363636363636364,,,,,
+0,418297001,,,Is a real bird on the tower?,,text,탑 위에 진짜 새가 있나요?,,0.0,,,0.0,is,,,
+1,444302001,,,What is the number on the pole?,,text,기둥에 있는 숫자는 무엇인가요?,,1.0,,,1.0,what is the,,,
+2,244019002,,,Has the wall been tagged?,,text,벽에 태그가 붙었나요?,,2.0,,,2.0,has,,,
+3,297269002,,,What color is the label on the side of the bottom appliance?,,text,하단 가전제품 측면의 라벨은 어떤 색인가요?,,3.0,,,3.0,what color is the,,,
+4,22656001,,,Is there toothpaste on the sink?,,text,싱크대에 치약이 있나요?,,4.0,,,4.0,is there,,,
+5,552849003,,,Where is a man wearing a white robe?,,text,흰 가운을 입은 남자는 어디에 있나요?,,5.0,,,5.0,none of the above,,,
+6,96762000,,,How many American flags are in the picture?,,text,사진에는 몇 개의 국기가 있나요?,,6.0,,,6.0,how many,,,
+7,537701022,,,Does this man's tie match the background?,,text,이 남자의 넥타이가 배경과 일치하나요?,,7.0,,,7.0,does this,,,
+8,326814006,,,Is the electricity in the room turned on?,,text,방에 전기가 켜져 있나요?,,8.0,,,8.0,is the,,,
+9,466838000,,,Is this a normal size slice of pizza?,,text,이것은 보통 크기의 피자 조각인가요?,,9.0,,,9.0,is this a,,,
+10,399516001,,,Did you try any of these?,,text,이것들 중 하나라도 시도해 보셨나요?,,10.0,,,10.0,none of the above,,,
+11,280238001,,,Do you see a street light?,,text,가로등 보이시나요?,,11.0,,,11.0,do you,,,
+12,563730000,,,What color is the fork?,,text,포크는 어떤 색인가요?,,12.0,,,12.0,what color is the,,,
+13,153782000,,,Is this a 3-D photo?,,text,이것은 3D 사진인가요?,,13.0,,,13.0,is this a,,,
+14,79930001,,,How many people are on the motorcycle?,,text,오토바이에 몇 명이 타고 있나요?,,14.0,,,14.0,how many people are,,,
+15,4495000,,,What item in the room is plaid?,,text,방 안에 어떤 물건이 격자무늬로 되어 있나요?,,15.0,,,15.0,what,,,
+16,301305003,,,Does anyone have on glasses?,,text,안경 쓴 사람 있나요?,,16.0,,,16.0,none of the above,,,
+17,241209002,,,What color is the table?,,text,테이블의 색상은 무엇인가요?,,17.0,,,17.0,what color is the,,,
+18,208566001,,,How many containers of peanut butter are on the table?,,text,테이블 위에 땅콩버터 용기가 몇 개 있습니까?,,18.0,,,18.0,how many,,,
+19,480416017,,,Is it raining?,,text,비가 오나요?,,19.0,,,19.0,is it,,,
+20,360698008,,,Is the weather safe for flying?,,text,날씨가 비행하기에 안전한가요?,,20.0,,,20.0,is the,,,
+21,527038002,,,What website is shown?,,text,어떤 웹사이트가 표시되나요?,,21.0,,,21.0,what,,,
+22,562347009,,,What is the man doing?,,text,남자는 무엇을 하고 있나요?,,22.0,,,22.0,what is the man,,,
+23,357532001,,,Is there a fence around the top row of seats?,,text,좌석 맨 윗줄에 울타리가 있나요?,,23.0,,,23.0,is there a,,,
+24,35105002,,,How many cars are there?,,text,차가 몇 대 있습니까?,,24.0,,,24.0,how many,,,
+25,316596001,,,What is the cake sitting on?,,text,케이크가 무엇 위에 놓여 있나요?,,25.0,,,25.0,what is the,,,
+26,578093003,,,Is this a boathouse?,,text,여기가 보트 하우스인가요?,,26.0,,,26.0,is this a,,,
+27,163280011,,,What are they researching?,,text,그들은 무엇을 연구하고 있습니까?,,27.0,,,27.0,what are,,,
+28,280242009,,,What is the reflection?,,text,반성이란 무엇인가요?,,28.0,,,28.0,what is the,,,
+29,98658002,,,Is there a passenger in the truck?,,text,트럭에 승객이 있습니까?,,29.0,,,29.0,is there a,,,
+30,196516003,,,Is he flipping the board?,,text,그가 보드를 뒤집고 있나요?,,30.0,,,30.0,is he,,,
+31,343481000,,,Are these sheep in a box?,,text,이 양들은 상자에 들어 있나요?,,31.0,,,31.0,are these,,,
+32,66543002,,,Is this a busy area?,,text,여기가 번잡한 지역인가요?,,32.0,,,32.0,is this a,,,
+33,94663002,,,Can you see the sky from this photo?,,text,이 사진에서 하늘이 보이나요?,,33.0,,,33.0,can you,,,
+34,491242000,,,What is the man wearing?,,text,남자는 무엇을 입고 있나요?,,34.0,,,34.0,what is the man,,,
+35,55772003,,,What is on the plate?,,text,접시 위에 무엇이 있나요?,,35.0,,,35.0,what is on the,,,
+36,364725009,,,Is this a puppy?,,text,강아지인가요?,,36.0,,,36.0,is this a,,,
+37,521669001,,,What is the man holding in his hand?,,text,남자가 손에 들고 있는 것은 무엇입니까?,,37.0,,,37.0,what is the man,,,
+38,224595001,,,Is the plane flying?,,text,비행기가 날고 있나요?,,38.0,,,38.0,is the,,,
+39,19109001,,,Is that a restaurant?,,text,식당인가요?,,39.0,,,39.0,is that a,,,
+40,522232002,,,Is the man wearing a helmet?,,text,남자가 헬멧을 쓰고 있나요?,,40.0,,,40.0,is the man,,,
+41,235597003,,,What color is the mouse?,,text,마우스는 어떤 색인가요?,,41.0,,,41.0,what color is the,,,
+42,504827000,,,What color is the soap in the dispenser?,,text,디스펜서의 비누는 어떤 색인가요?,,42.0,,,42.0,what color is the,,,
+43,523871003,,,Are these people real?,,text,이 사람들 진짜인가요?,,43.0,,,43.0,are these,,,
+44,239992006,,,What is the plane on the left?,,text,왼쪽에 있는 비행기는 무엇인가요?,,44.0,,,44.0,what is the,,,
+45,503210000,,,What is hanging on the left wall?,,text,왼쪽 벽에는 무엇이 걸려 있나요?,,45.0,,,45.0,what is,,,
+46,122981001,,,Is the boy playing?,,text,소년이 놀고 있나요?,,46.0,,,46.0,is the,,,
+47,273420002,,,Who is the man talking to on the phone?,,text,남자가 전화로 누구와 이야기하고 있습니까?,,47.0,,,47.0,who is,,,
+48,205594005,,,What sport is this?,,text,이 스포츠는 무엇인가요?,,48.0,,,48.0,what sport is,,,
+49,176149002,,,What kind of street sign is in the picture?,,text,사진 속에는 어떤 종류의 거리 표지판이 있나요?,,49.0,,,49.0,what kind of,,,
+50,11241003,,,Is this enough food for more than two people?,,text,이 음식은 두 명 이상이 먹을 수 있는 양인가요?,,50.0,,,50.0,is this,,,
+51,47837003,,,How many people are wearing glasses?,,text,안경을 쓰고 있는 사람은 몇 명입니까?,,51.0,,,51.0,how many people are,,,
+52,525021007,,,Does everyone have helmets on?,,text,모두 헬멧을 쓰고 있나요?,,52.0,,,52.0,none of the above,,,
+53,346577000,,,What color is his shirt?,,text,그의 셔츠는 무슨 색인가요?,,53.0,,,53.0,what color is,,,
+54,183715005,,,What flavor is the frosting on the cake?,,text,케이크의 프로스팅은 어떤 맛인가요?,,54.0,,,54.0,what,,,
+55,512760019,,,What color are the cabinets?,,text,캐비닛은 어떤 색인가요?,,55.0,,,55.0,what color are the,,,
+56,570528001,,,Is the pet in its bed?,,text,애완동물이 침대에 있나요?,,56.0,,,56.0,is the,,,
+57,459301002,,,What covers the ground?,,text,무엇이 땅을 덮고 있습니까?,,57.0,,,57.0,what,,,
+58,492271002,,,What herb is the man trimming?,,text,남자가 다듬고 있는 허브는 무엇인가요?,,58.0,,,58.0,what,,,
+59,572178006,,,Is this photo in color?,,text,이 사진은 색상인가요?,,59.0,,,59.0,is this,,,
+60,28682012,,,Is there a kettle on the stove?,,text,스토브에 주전자가 있나요?,,60.0,,,60.0,is there a,,,
+61,131869001,,,What sport is being played?,,text,어떤 스포츠가 진행되고 있나요?,,61.0,,,61.0,what sport is,,,
+62,532812006,,,What sport is being played in this scene?,,text,이 장면에서 어떤 스포츠가 진행되고 있나요?,,62.0,,,62.0,what sport is,,,
+63,119802000,,,Do any cars have their lights on?,,text,불이 켜져 있는 차가 있나요?,,63.0,,,63.0,do,,,
+64,524282006,,,Are these women wearing skirts?,,text,이 여성들은 치마를 입고 있나요?,,64.0,,,64.0,are these,,,
+65,563295006,,,Is the sky clear?,,text,하늘이 맑나요?,,65.0,,,65.0,is the,,,
+66,126592007,,,What road is nearby?,,text,근처에 어떤 도로가 있나요?,,66.0,,,66.0,what,,,
+67,114941009,,,What color is the train?,,text,기차는 어떤 색인가요?,,67.0,,,67.0,what color is the,,,
+68,455219002,,,How many animals are there?,,text,동물이 몇 마리 있나요?,,68.0,,,68.0,how many,,,
+69,127660002,,,"Is this woman ""dressed her age""?",,text,"이 여성은 ""나이를 차려입었나요?""",,69.0,,,69.0,is this,,,
+70,330955003,,,What is on the kids head?,,text,아이들 머리에는 무엇이 있나요?,,70.0,,,70.0,what is on the,,,
+71,437947001,,,Where is the sink in the picture?,,text,사진 속 싱크대는 어디에 있나요?,,71.0,,,71.0,where is the,,,
+72,450709003,,,What is she wearing on her eyes?,,text,그녀는 눈에 무엇을 입고 있나요?,,72.0,,,72.0,what is,,,
+73,554459002,,,Which one is wearing sunglasses?,,text,선글라스를 쓰고 있는 사람은 누구인가요?,,73.0,,,73.0,which,,,
+74,60347004,,,Does the chair have a cup holder?,,text,의자에 컵 홀더가 있나요?,,74.0,,,74.0,does the,,,
+75,345154001,,,Which sport item is higher in the air?,,text,어떤 스포츠 아이템이 더 높은가요?,,75.0,,,75.0,which,,,
+76,193743000,,,Which foot is in front of the other?,,text,어느 발이 다른 발 앞에 있나요?,,76.0,,,76.0,which,,,
+77,201426002,,,How many kids are here?,,text,여기 아이들이 몇 명 있나요?,,77.0,,,77.0,how many,,,
+78,135666002,,,"Based on the clothing, Is it cold outside?",,text,옷을 보니 밖이 춥나요?,,78.0,,,78.0,none of the above,,,
+79,133933006,,,Is this someone's house?,,text,여기가 누군가의 집인가요?,,79.0,,,79.0,is this,,,
+80,531000002,,,How many animals are in the picture?,,text,사진에 동물이 몇 마리 있나요?,,80.0,,,80.0,how many,,,
+81,143560011,,,Was this picture taken in the daytime?,,text,이 사진은 낮에 찍혔나요?,,81.0,,,81.0,was,,,
+82,493206001,,,What vegetable is present in this food?,,text,이 음식에는 어떤 채소가 포함되어 있습니까?,,82.0,,,82.0,what,,,
+83,480379002,,,Is the boat in the water?,,text,보트가 물속에 있나요?,,83.0,,,83.0,is the,,,
+84,522446001,,,How many people are sitting at the bar?,,text,바에 몇 명이 앉아 있나요?,,84.0,,,84.0,how many people are,,,
+85,388974004,,,What is the baby eating?,,text,아기가 무엇을 먹고 있나요?,,85.0,,,85.0,what is the,,,
+86,8351002,,,Are the dogs the same breed?,,text,개들이 같은 품종인가요?,,86.0,,,86.0,are the,,,
+87,531086004,,,Are there any magnets on the fridge?,,text,냉장고에 자석이 있나요?,,87.0,,,87.0,are there any,,,
+88,315621001,,,Is this a popular location?,,text,이곳이 인기 있는 장소인가요?,,88.0,,,88.0,is this a,,,
+89,53838004,,,What is on the plane?,,text,비행기에 무엇이 있나요?,,89.0,,,89.0,what is on the,,,
+90,232684002,,,What is around the man's neck?,,text,남자의 목 주위에는 무엇이 있나요?,,90.0,,,90.0,what is,,,
+91,358268007,,,What game is represented in the hands of the man on the left?,,text,왼쪽에 있는 남자의 손에는 어떤 게임이 그려져 있나요?,,91.0,,,91.0,what,,,
+92,566026000,,,What time is it?,,text,지금 몇 시예요?,,92.0,,,92.0,what time,,,
+93,283217022,,,What are the kids holding?,,text,아이들이 무엇을 들고 있나요?,,93.0,,,93.0,what are the,,,
+94,388601002,,,What food is the sleeping bag?,,text,침낭은 어떤 음식인가요?,,94.0,,,94.0,what,,,
+95,504561001,,,How many women?,,text,여자가 몇 명입니까?,,95.0,,,95.0,how many,,,
+96,420230006,,,Is this elephant sick?,,text,이 코끼리가 아프신가요?,,96.0,,,96.0,is this,,,
+97,358090001,,,What color coat is this person wearing?,,text,이 사람은 어떤 색 코트를 입고 있나요?,,97.0,,,97.0,what color,,,
+98,322482003,,,Why doesn't he need his sunglasses on right now?,,text,그는 왜 지금 당장 선글라스를 쓰지 않나요?,,98.0,,,98.0,why,,,
+99,214471008,,,What is piled on top of the sandwich?,,text,샌드위치 위에 무엇이 쌓여 있나요?,,99.0,,,99.0,what is,,,
+100,345361001,,,Are all of these children wearing hats?,,text,이 아이들 모두 모자를 쓰고 있나요?,,100.0,,,0.0,are,,,
+101,88120004,,,Are her pants tight?,,text,그녀의 바지는 꽉 끼나요?,,101.0,,,1.0,are,,,
+102,244750002,,,Are all three glasses filled with the same amount of wine?,,text,세 잔 모두 같은 양의 와인으로 채워져 있나요?,,102.0,,,2.0,are,,,
+103,390760002,,,Are all the kites the same?,,text,모든 연이 같은가요?,,103.0,,,3.0,are,,,
+104,447549001,,,Are all the trees green?,,text,모든 나무가 초록색인가요?,,104.0,,,4.0,are,,,
+105,381246001,,,Are there peppers on the pizza?,,text,피자에 고추가 있나요?,,105.0,,,5.0,are there,,,
+106,232790002,,,Are there more ties that has stripes than there are plain?,,text,줄무늬가 있는 넥타이가 일반 넥타이보다 더 많습니까?,,106.0,,,6.0,are there,,,
+107,331475002,,,Are there cigarettes in the ashtray?,,text,재떨이에 담배가 있나요?,,107.0,,,7.0,are there,,,
+108,196681009,,,Are there clouds in the sky?,,text,하늘에 구름이 있나요?,,108.0,,,8.0,are there,,,
+109,102411000,,,Are there waves in this photo?,,text,이 사진에 파도가 있나요?,,109.0,,,9.0,are there,,,
+111,343496001,,,Are there any animals in this photo?,,text,이 사진에 동물이 있나요?,,111.0,,,11.0,are there any,,,
+112,161231011,,,Are there any weeds growing along the tracks?,,text,선로를 따라 잡초가 자라고 있나요?,,112.0,,,12.0,are there any,,,
+113,297819007,,,Are there any napkins in this photo?,,text,이 사진에 냅킨이 있나요?,,113.0,,,13.0,are there any,,,
+114,76384019,,,Are there any utensils shown?,,text,보여주는 도구가 있나요?,,114.0,,,14.0,are there any,,,
+115,200939002,,,Are they married?,,text,그들은 결혼했나요?,,115.0,,,15.0,are they,,,
+116,204051000,,,Are they taking a selfie?,,text,셀카를 찍고 있나요?,,116.0,,,16.0,are they,,,
+117,107511001,,,Are they in the zoo?,,text,그들은 동물원에 있나요?,,117.0,,,17.0,are they,,,
+118,528062000,,,Are they in the kitchen?,,text,그들은 부엌에 있나요?,,118.0,,,18.0,are they,,,
+119,380143002,,,Are they playing?,,text,그들은 놀고 있나요?,,119.0,,,19.0,are they,,,
+120,550432000,,,Could a cactus grow in this climate?,,text,선인장이 이 기후에서 자랄 수 있을까요?,,120.0,,,20.0,could,,,
+121,404437001,,,Could the bear be tame?,,text,곰이 길들일 수 있을까요?,,121.0,,,21.0,could,,,
+122,460927006,,,Could this animal be someone's pet?,,text,이 동물이 누군가의 애완동물이 될 수 있을까요?,,122.0,,,22.0,could,,,
+123,458702007,,,Could there be a vending machine?,,text,자판기가 있을까요?,,123.0,,,23.0,could,,,
+124,51576002,,,Could that be a waterhole?,,text,물웅덩이가 될 수 있나요?,,124.0,,,24.0,could,,,
+125,117725018,,,Do you see a bell?,,text,종이 보이나요?,,125.0,,,25.0,do you,,,
+126,212759008,,,Do you see any grass?,,text,잔디가 보이나요?,,126.0,,,26.0,do you,,,
+127,321217002,,,Do you see the sea?,,text,바다가 보이나요?,,127.0,,,27.0,do you,,,
+130,355272014,,,Has this boy been injured recently?,,text,이 소년이 최근에 다쳤나요?,,130.0,,,30.0,has,,,
+131,318998002,,,Is he standing in another boat?,,text,그는 다른 배에 서 있나요?,,131.0,,,31.0,is he,,,
+132,336341002,,,Is he wearing blush?,,text,그는 얼굴을 붉히고 있나요?,,132.0,,,32.0,is he,,,
+134,486576004,,,Is that a man or woman looking at the screen?,,text,"화면을 보고 있는 사람이 남자인가요, 여자인가요?",,134.0,,,34.0,is that a,,,
+135,133515009,,,Is that a finished kitchen?,,text,완성된 주방인가요?,,135.0,,,35.0,is that a,,,
+136,415880001,,,Is that a new car?,,text,새 차인가요?,,136.0,,,36.0,is that a,,,
+138,82259002,,,Is the person on the ground?,,text,그 사람이 바닥에 있나요?,,138.0,,,38.0,is the person,,,
+139,329711002,,,Is there any work equipment in the photo?,,text,사진에 작업 장비가 있나요?,,139.0,,,39.0,is there,,,
+140,175535001,,,Is there lettuce on the plate?,,text,접시에 상추가 있나요?,,140.0,,,40.0,is there,,,
+141,74711003,,,Is there lilies in the water?,,text,물에 백합이 있나요?,,141.0,,,41.0,is there,,,
+142,391837005,,,IS there water in the background?,,text,배경에 물이 있나요?,,142.0,,,42.0,is there,,,
+143,509826033,,,Is there snow?,,text,눈이 있나요?,,143.0,,,43.0,is there,,,
+144,215652000,,,Was this picture taken during the day or night?,,text,"이 사진은 낮에 찍은 건가요, 아니면 밤에 찍은 건가요?",,144.0,,,44.0,was,,,
+146,135486006,,,What are they carrying?,,text,그들은 무엇을 운반하고 있습니까?,,146.0,,,46.0,what are,,,
+147,425933004,,,What are pedestrians asked not to do on the white sign?,,text,흰색 표지판에서 보행자에게 하지 말아야 할 일은 무엇인가요?,,147.0,,,47.0,what are,,,
+148,408201006,,,What are they playing?,,text,그들은 무엇을 하고 있나요?,,148.0,,,48.0,what are,,,
+149,574537003,,,What are on the child's feet?,,text,아이의 발에는 무엇이 있나요?,,149.0,,,49.0,what are,,,
+150,479075003,,,What are these animals?,,text,이 동물들은 무엇인가요?,,150.0,,,50.0,what are,,,
+151,487131002,,,What color are these trucks?,,text,이 트럭들은 어떤 색인가요?,,151.0,,,51.0,what color,,,
+152,487236000,,,What color grass is the giraffe standing in?,,text,기린은 어떤 색의 풀밭에 서 있나요?,,152.0,,,52.0,what color,,,
+153,58539001,,,What color are their jackets?,,text,그들의 재킷은 어떤 색인가요?,,153.0,,,53.0,what color,,,
+154,499588001,,,What color thread hangs down the right side?,,text,오른쪽에는 어떤 색의 실이 매달려 있나요?,,154.0,,,54.0,what color,,,
+155,525162004,,,What color boat is the man riding in?,,text,남자가 타고 있는 배는 어떤 색인가요?,,155.0,,,55.0,what color,,,
+156,252625003,,,What color are the crates against the wall?,,text,벽에 걸린 상자들은 어떤 색인가요?,,156.0,,,56.0,what color are the,,,
+158,414711003,,,What color are the clock's numerals?,,text,시계의 숫자는 어떤 색인가요?,,158.0,,,58.0,what color are the,,,
+159,429754001,,,What color are the scissors?,,text,가위는 어떤 색인가요?,,159.0,,,59.0,what color are the,,,
+160,364157004,,,What color are the curtains?,,text,커튼은 어떤 색인가요?,,160.0,,,60.0,what color are the,,,
+162,443453003,,,What color is her dress?,,text,그녀의 드레스는 어떤 색인가요?,,162.0,,,62.0,what color is,,,
+163,305329002,,,What color is his helmet?,,text,그의 헬멧은 어떤 색인가요?,,163.0,,,63.0,what color is,,,
+164,159842001,,,What color is her headband?,,text,그녀의 머리띠는 어떤 색인가요?,,164.0,,,64.0,what color is,,,
+165,22341001,,,What color is her top?,,text,그녀의 상의는 무슨 색인가요?,,165.0,,,65.0,what color is,,,
+166,40986004,,,What is in the bottle?,,text,병 안에 무엇이 들어 있나요?,,166.0,,,66.0,what is in the,,,
+167,254237002,,,What is in the vase?,,text,꽃병 안에 무엇이 있습니까?,,167.0,,,67.0,what is in the,,,
+168,145318001,,,What is in the white plastic covered container behind the bowl?,,text,그릇 뒤에 있는 흰색 플라스틱 뚜껑이 있는 용기에는 무엇이 들어 있나요?,,168.0,,,68.0,what is in the,,,
+169,427135026,,,What is in the man's hand?,,text,남자의 손에는 무엇이 있나요?,,169.0,,,69.0,what is in the,,,
+170,118507000,,,What is in the far back room?,,text,맨 뒷방에는 무엇이 있나요?,,170.0,,,70.0,what is in the,,,
+171,520012001,,,What is on the left plate?,,text,왼쪽 접시에는 무엇이 있습니까?,,171.0,,,71.0,what is on the,,,
+173,434494018,,,What is on the man's head?,,text,남자의 머리에는 무엇이 있나요?,,173.0,,,73.0,what is on the,,,
+174,133515003,,,What is on the table?,,text,테이블 위에 무엇이 있나요?,,174.0,,,74.0,what is on the,,,
+176,430774001,,,What time is shown on the clock?,,text,시계에는 몇 시가 표시되나요?,,176.0,,,76.0,what time,,,
+178,367452003,,,What time is it?,,text,지금 몇 시예요?,,178.0,,,78.0,what time,,,
+179,580621000,,,What type of establishment are these people likely seated?,,text,이 사람들은 어떤 종류의 시설에 앉을 가능성이 높습니까?,,179.0,,,79.0,what type of,,,
+180,52161010,,,What type of shoes is this person wearing?,,text,이 사람은 어떤 종류의 신발을 신고 있나요?,,180.0,,,80.0,what type of,,,
+181,506943005,,,What type of building can this scene be found in?,,text,이 장면은 어떤 유형의 건물에서 찾을 수 있나요?,,181.0,,,81.0,what type of,,,
+182,48153002,,,What type of pants is this woman wearing?,,text,이 여자는 어떤 종류의 바지를 입고 있나요?,,182.0,,,82.0,what type of,,,
+183,290981008,,,What type of animal are these?,,text,이것들은 어떤 종류의 동물인가요?,,183.0,,,83.0,what type of,,,
+184,252986000,,,Where is the bench?,,text,벤치는 어디에 있나요?,,184.0,,,84.0,where is the,,,
+185,524577024,,,Where is the clock located?,,text,시계는 어디에 있나요?,,185.0,,,85.0,where is the,,,
+186,304044004,,,Where is the school bus going?,,text,스쿨버스는 어디로 가나요?,,186.0,,,86.0,where is the,,,
+187,154202010,,,Where is the phone?,,text,전화기가 어디 있나요?,,187.0,,,87.0,where is the,,,
+188,94823002,,,Where is the dog?,,text,개는 어디에 있어요?,,188.0,,,88.0,where is the,,,
+189,113588003,,,Who is using the laptop?,,text,누가 노트북을 사용하고 있나요?,,189.0,,,89.0,who is,,,
+190,136140000,,,Who is wearing glasses?,,text,누가 안경을 쓰고 있나요?,,190.0,,,90.0,who is,,,
+191,88859004,,,Who is the pitcher?,,text,투수는 누구인가요?,,191.0,,,91.0,who is,,,
+193,490280012,,,Who is in the photo?,,text,사진 속에는 누구가 있나요?,,193.0,,,93.0,who is,,,
+194,241340000,,,Why is this dog fighting over a Frisbee?,,text,이 개가 프리스비 때문에 싸우는 이유는 무엇인가요?,,194.0,,,94.0,why,,,
+195,57508001,,,Why are there straps on the suitcase?,,text,여행 가방에 끈이 있는 이유는 무엇인가요?,,195.0,,,95.0,why,,,
+196,80306002,,,Why is she shiny?,,text,그녀는 왜 반짝반짝 빛나요?,,196.0,,,96.0,why,,,
+197,151978002,,,Why are the lamps lit?,,text,램프가 켜진 이유는 무엇인가요?,,197.0,,,97.0,why,,,
+199,561412009,,,Is the sky cloudy?,,text,하늘이 흐리나요?,,199.0,,,0.0,is the,,,
+200,96638000,,,Is the photo colored?,,text,사진이 색칠되어 있나요?,,200.0,,,1.0,is the,,,
+201,88695011,,,Is the man hairy?,,text,그 남자는 털이 많나요?,,201.0,,,2.0,is the man,,,
+202,576031002,,,Does this person believe in safety?,,text,이 사람은 안전을 믿습니까?,,202.0,,,3.0,does this,,,
+203,444928001,,,Are these people wearing helmets?,,text,이 사람들은 헬멧을 쓰고 있나요?,,203.0,,,4.0,are these,,,
+204,503992002,,,Does the dog like his bed?,,text,그 개는 침대를 좋아하나요?,,204.0,,,5.0,does the,,,
+205,488942005,,,Is this a sightseeing attraction?,,text,관광 명소인가요?,,205.0,,,6.0,is this a,,,
+206,536027000,,,Is this picture in focus?,,text,이 사진이 초점에 맞습니까?,,206.0,,,7.0,is this,,,
+207,536195002,,,What are the sheep eating?,,text,양들은 무엇을 먹고 있나요?,,207.0,,,8.0,what are the,,,
+208,532693000,,,Is the dog being affectionate?,,text,그 개는 애정이 많나요?,,208.0,,,9.0,is the,,,
+209,442746004,,,Do people come here to sit?,,text,사람들이 여기 와서 앉나요?,,209.0,,,10.0,do,,,
+210,453649001,,,What are the zebras eating?,,text,얼룩말들은 무엇을 먹고 있나요?,,210.0,,,11.0,what are the,,,
+211,329717005,,,Is this a recent photograph?,,text,이것은 최근에 찍은 사진인가요?,,211.0,,,12.0,is this a,,,
+213,490741003,,,Is it a cloudy day?,,text,흐린 날인가요?,,213.0,,,14.0,is it,,,
+214,237118000,,,Is this man angry?,,text,이 남자 화났어요?,,214.0,,,15.0,is this,,,
+215,200667002,,,Is the cow wearing an ear tag?,,text,소가 귀표를 달고 있나요?,,215.0,,,16.0,is the,,,
+216,515885003,,,Is it a beer?,,text,맥주인가요?,,216.0,,,17.0,is it,,,
+217,510078000,,,Is this in a parking lot?,,text,주차장에 있나요?,,217.0,,,18.0,is this,,,
+218,367608007,,,Is this guy wearing safety gear?,,text,이 남자는 안전 장비를 착용하고 있나요?,,218.0,,,19.0,is this,,,
+219,140713008,,,What color is the elephant?,,text,코끼리는 어떤 색인가요?,,219.0,,,20.0,what color is the,,,
+220,317070001,,,Is the man flying?,,text,남자가 날고 있나요?,,220.0,,,21.0,is the man,,,
+221,384834006,,,Does the surfboard have fins?,,text,서핑보드에 핀이 있나요?,,221.0,,,22.0,does the,,,
+222,62549003,,,Is the bird being fed by a human?,,text,새가 사람에게 먹이를 주고 있나요?,,222.0,,,23.0,is the,,,
+223,559462000,,,Is she wearing sneakers?,,text,그녀는 운동화를 신고 있나요?,,223.0,,,24.0,is,,,
+224,245162006,,,Is this a busy street?,,text,여기가 번화한 거리인가요?,,224.0,,,25.0,is this a,,,
+226,70626005,,,What kind of cheese is on the pizza?,,text,피자에는 어떤 종류의 치즈가 들어 있나요?,,226.0,,,27.0,what kind of,,,
+227,514518002,,,Is this fresh snow?,,text,이것은 신선한 눈인가요?,,227.0,,,28.0,is this,,,
+228,129576008,,,Does the color of the pillow match the color of the chair?,,text,베개의 색상이 의자의 색상과 일치합니까?,,228.0,,,29.0,does the,,,
+229,392915002,,,Is the room sunny?,,text,방이 화창한가요?,,229.0,,,30.0,is the,,,
+231,346633003,,,Is this food raw?,,text,이 음식은 날것인가요?,,231.0,,,32.0,is this,,,
+232,517386001,,,What is in the vase?,,text,꽃병 안에 무엇이 있습니까?,,232.0,,,33.0,what is in the,,,
+233,128034004,,,Do these look like school buses?,,text,이것들이 스쿨버스처럼 보이나요?,,233.0,,,34.0,do,,,
+234,154931001,,,What is the gender of the person in the black shirt?,,text,검은색 셔츠를 입은 사람의 성별은 무엇인가요?,,234.0,,,35.0,what is the,,,
+235,482476008,,,Does the woman's hair look clean or dirty?,,text,"여자의 머리카락이 깨끗해 보이나요, 아니면 더럽나요?",,235.0,,,36.0,does the,,,
+236,360137003,,,What color is the water?,,text,물은 어떤 색인가요?,,236.0,,,37.0,what color is the,,,
+237,56684001,,,Does this dessert look healthy?,,text,이 디저트가 건강해 보이나요?,,237.0,,,38.0,does this,,,
+238,493846001,,,What might someone wear on their head when riding this thing?,,text,이 물건을 탈 때 누군가 머리에 무엇을 착용할 수 있을까요?,,238.0,,,39.0,what,,,
+239,85089002,,,Do all the glasses have etching on them?,,text,모든 안경에 에칭이 있나요?,,239.0,,,40.0,do,,,
+240,102421000,,,Can you tell if the cat is looking at bright light?,,text,고양이가 밝은 빛을 보고 있는지 알 수 있나요?,,240.0,,,41.0,can you,,,
+241,215581002,,,Does this picture show carrots in a basket?,,text,이 사진에 바구니에 당근이 들어 있나요?,,241.0,,,42.0,does this,,,
+242,50828012,,,Are the lights on in the room?,,text,방에 불이 켜져 있나요?,,242.0,,,43.0,are the,,,
+243,376493000,,,Is there a yield sign in the picture?,,text,사진에 양보 표지판이 있나요?,,243.0,,,44.0,is there a,,,
+244,367468003,,,Is the cat picking out shoes to wear?,,text,고양이가 신을 신발을 고르고 있나요?,,244.0,,,45.0,is the,,,
+245,502630003,,,"Is the animal in the foreground one of the ""big 5"" game animals?",,text,"전경에 있는 동물이 ""빅 5"" 게임 동물 중 하나입니까?",,245.0,,,46.0,is the,,,
+246,116068011,,,Is the water calm?,,text,물이 잔잔한가요?,,246.0,,,47.0,is the,,,
+247,323375001,,,Is this a scene in Africa?,,text,아프리카의 한 장면인가요?,,247.0,,,48.0,is this a,,,
+248,183338005,,,Are these people playing for fun?,,text,이 사람들은 재미로 놀고 있나요?,,248.0,,,49.0,are these,,,
+250,383209003,,,Is the cat going to fall off the TV?,,text,고양이가 TV에서 떨어질까요?,,250.0,,,51.0,is the,,,
+251,443450003,,,Is the plane far away?,,text,비행기가 멀리 있나요?,,251.0,,,52.0,is the,,,
+252,331856019,,,Is this man tired of playing?,,text,이 남자는 노는 데 지쳤나요?,,252.0,,,53.0,is this,,,
+253,530313001,,,Is a woman playing with her hair?,,text,여자가 머리를 가지고 놀고 있나요?,,253.0,,,54.0,is,,,
+255,434867004,,,Is this a normal color for a train?,,text,이것이 기차의 일반적인 색상인가요?,,255.0,,,56.0,is this a,,,
+256,435208011,,,Does this room have warm lighting?,,text,이 방에 따뜻한 조명이 있나요?,,256.0,,,57.0,does this,,,
+258,325568007,,,Are you behind a net?,,text,그물 뒤에 있나요?,,258.0,,,59.0,are,,,
+259,42541003,,,Is the sun out?,,text,해가 떴나요?,,259.0,,,60.0,is the,,,
+262,399284000,,,What color is the water?,,text,물은 어떤 색인가요?,,262.0,,,63.0,what color is the,,,
+263,465715003,,,Is the water clear?,,text,물이 맑나요?,,263.0,,,64.0,is the,,,
+264,73199001,,,Are all the men wearing the same color shirts?,,text,모든 남자들이 같은 색 셔츠를 입고 있나요?,,264.0,,,65.0,are,,,
+266,244111000,,,Is this designed to be co-located with another electronic device?,,text,이것은 다른 전자 기기와 함께 배치되도록 설계되었나요?,,266.0,,,67.0,is this,,,
+267,361321003,,,Can you use a credit card here?,,text,여기서 신용카드를 사용할 수 있나요?,,267.0,,,68.0,can you,,,
+268,205352003,,,Are the people on the boat seen easily?,,text,보트에 타고 있는 사람들이 쉽게 보이나요?,,268.0,,,69.0,are the,,,
+269,196484002,,,Is the photographer as high as the giraffe?,,text,사진작가가 기린만큼 높나요?,,269.0,,,70.0,is the,,,
+273,374677000,,,Is this a flower native to North America?,,text,이것은 북미 원산의 꽃인가요?,,273.0,,,74.0,is this a,,,
+274,26501010,,,Will the bus go uptown?,,text,버스가 시내로 올라갈까요?,,274.0,,,75.0,none of the above,,,
+275,493218001,,,Can you see any bare necks?,,text,맨 목이 보이나요?,,275.0,,,76.0,can you,,,
+276,396200022,,,Is this kid on the right a professional skater?,,text,오른쪽에 있는 이 아이는 프로 스케이터인가요?,,276.0,,,77.0,is this,,,
+277,224391007,,,Are these elephants in the jungle?,,text,이 코끼리들은 정글에 있나요?,,277.0,,,78.0,are these,,,
+278,493623001,,,Are the shoes heels or flats?,,text,"신발이 힐인가요, 플랫인가요?",,278.0,,,79.0,are the,,,
+280,339823002,,,What color is the umbrella?,,text,우산은 어떤 색인가요?,,280.0,,,81.0,what color is the,,,
+281,511111002,,,What kind of juice is in the glass?,,text,유리잔에는 어떤 주스가 들어 있나요?,,281.0,,,82.0,what kind of,,,
+282,192047000,,,Is there a towel on the hanger?,,text,옷걸이에 수건이 있나요?,,282.0,,,83.0,is there a,,,
+284,117015004,,,Does the giraffe have a long neck?,,text,기린은 목이 길까요?,,284.0,,,85.0,does the,,,
+285,223804001,,,Does the house have a porch?,,text,집에 현관이 있나요?,,285.0,,,86.0,does the,,,
+286,220266001,,,Is the cat happy?,,text,고양이는 행복한가요?,,286.0,,,87.0,is the,,,
+287,142722003,,,Do the cows appear to be concerned?,,text,소들이 걱정하는 것처럼 보이나요?,,287.0,,,88.0,do,,,
+288,333290003,,,Is the giraffe taller than the light post?,,text,기린이 등대보다 더 큰가요?,,288.0,,,89.0,is the,,,
+289,333371004,,,How many engines?,,text,엔진이 몇 개입니까?,,289.0,,,90.0,how many,,,
+290,278601001,,,Is the company that made this truck still in business?,,text,이 트럭을 만든 회사는 아직 사업을 하고 있습니까?,,290.0,,,91.0,is the,,,
+291,186282000,,,Is the monitor showing off a rainbow?,,text,모니터가 무지개를 뽐내고 있나요?,,291.0,,,92.0,is the,,,
+292,188460002,,,Is the man sitting on a bed?,,text,남자가 침대에 앉아 있나요?,,292.0,,,93.0,is the man,,,
+293,489861000,,,Is this truck a V-8?,,text,이 트럭은 V-8인가요?,,293.0,,,94.0,is this,,,
+294,489728002,,,Is hellsing the same character as Van Helsing?,,text,헬싱은 반 헬싱과 같은 캐릭터인가요?,,294.0,,,95.0,is,,,
+295,483553002,,,Is that spaghetti sauce?,,text,스파게티 소스인가요?,,295.0,,,96.0,is,,,
+298,425153000,,,What is the giraffe eating?,,text,기린은 무엇을 먹고 있나요?,,298.0,,,99.0,what is the,,,
+299,97230007,,,Is there a baby elephant in this picture?,,text,이 사진에 아기 코끼리가 있나요?,,299.0,,,100.0,is there a,,,
+300,97964002,,,Is there anyone on the pic?,,text,사진에 누가 있나요?,,300.0,,,101.0,is there,,,
+301,371135000,,,Is she reaching downwards?,,text,그녀가 아래로 손을 뻗고 있나요?,,301.0,,,102.0,is,,,
+302,371139000,,,What color is the traffic light?,,text,신호등은 어떤 색인가요?,,302.0,,,103.0,what color is the,,,
+303,10694011,,,Is it late night on the computer?,,text,컴퓨터가 늦은 밤에 켜져있가요?,,303.0,,,104.0,is it,,,
+304,757004,,,Are these animals all touching?,,text,이 동물들은 모두 접촉하고 있나요?,,304.0,,,105.0,are these,,,
+305,554002001,,,Is the dog wearing a tag?,,text,개가 태그를 달고 있나요?,,305.0,,,106.0,is the,,,
+305,23954002,,,"Question: How many different types of animals are pictured? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 그림에 몇 가지 서로 다른 종류의 동물이 보이나요? 한 단어나 구로 답하십시오.,,,,,,how many,COCO_val2014_000000023954.jpg,"[{'answer': '2', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 10}]",2
+212,422157006,,,"Question: Is the bus going to turn left or right? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 버스가 좌회전할까요 아니면 우회전할까요? 한 단어나 구절로 답하십시오. 답:,,,,,,is the,COCO_val2014_000000422157.jpg,"[{'answer': 'right', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'right', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'right', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'right', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'right', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'right', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'right', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'right', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'straight', 'answer_confidence': 'maybe', 'answer_id': 10}]",right
+47,135275001,,,"Question: What does yellow of the road mean? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 도로의 노란색은 무슨 뜻인가요? 한 단어나 구절로 답하십시오.,,,,,,what,COCO_val2014_000000135275.jpg,"[{'answer': 'fire lane', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'middle', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'no parking', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'caution', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'slow', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'caution', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'median', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'caution', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'curb', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'caution', 'answer_confidence': 'yes', 'answer_id': 10}]",caution
+868,25005002,,,"Question: What is the man standing on? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 남자는 무엇 위에 서 있나요? 한 단어나 구절로 대답하십시오. 답:,,,,,,what is the man,COCO_val2014_000000025005.jpg,"[{'answer': 'skis', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'skis', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'skis', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'snow', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'skis', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'skis', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'snow', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'skis', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'skis', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'skis', 'answer_confidence': 'yes', 'answer_id': 10}]",skis
+350,268215000,,,"Question: What vegetable is lining the dish? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 접시에 둘러싸고 있는 채소는 무엇입니까? 한 단어나 구절로 질문에 답하십시오. 답:,,,,,,what,COCO_val2014_000000268215.jpg,"[{'answer': 'green beans', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'green beans', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'rice, beans', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'beans and carrots', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'beans and carrots', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'green beans and carrots', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'beans', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'beans', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'rice', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'carrots and green beans', 'answer_confidence': 'yes', 'answer_id': 10}]",beans and carrots
+784,8498007,,,"Question: How many clocks? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 시계가 몇 대입니까? 한 단어나 구로 답하십시오.,,,,,,how many,COCO_val2014_000000008498.jpg,"[{'answer': '2', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '2', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 10}]",2
+587,382850000,,,"Question: What color is the boat? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 배의 색은 무엇입니까? 한 단어나 구로 질문에 답하십시오. 답변:,,,,,,what color is the,COCO_val2014_000000382850.jpg,"[{'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 10}]",blue
+442,418275003,,,"Question: Is the bottle half full? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 병이 반쯤 차 있나요? 한 단어나 구로 질문에 답하십시오. 답:,,,,,,is the,COCO_val2014_000000418275.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 10}]",yes
+666,207275011,,,"Question: What game is he playing? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 그가 어떤 게임을 하고 있나요? 한 단어나 구로 답하십시오. 답:,,,,,,what,COCO_val2014_000000207275.jpg,"[{'answer': 'nintendo wii', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'wii', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'wii', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'wii', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'wii', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'wi', 'answer_confidence': 'no', 'answer_id': 6}, {'answer': 'wii', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'wii', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'wii', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'wii', 'answer_confidence': 'maybe', 'answer_id': 10}]",wii
+621,147309005,,,"Question: Is this a fancy desert? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이것은 멋진 사막인가요? 한 단어나 구절로 질문에 답하십시오. 답:,,,,,,is this a,COCO_val2014_000000147309.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+801,424258002,,,"Question: What are the plants inside of? Answer the question using a single word or phrase. 
+Answer:",,text,안에 있는 식물들은 무엇입니까? 한 단어나 구로 답하십시오.,,,,,,what are the,COCO_val2014_000000424258.jpg,"[{'answer': 'pot', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'pots', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'planters', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'cedar planters', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'wooden tubs', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'wooden barrel', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'barrels', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'barrels', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'planters', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'containers', 'answer_confidence': 'yes', 'answer_id': 10}]",barrels
+216,487076005,,,"Question: What color is the fire hydrant? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 소화전은 무슨 색입니까? 한 단어나 구로 질문에 대답하십시오. 답:,,,,,,what color is the,COCO_val2014_000000487076.jpg,"[{'answer': 'red', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'yellow', 'answer_confidence': 'no', 'answer_id': 2}, {'answer': 'yellow', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yellow', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yellow', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yellow', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yellow', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yellow', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yellow', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yellow', 'answer_confidence': 'maybe', 'answer_id': 10}]",yellow
+97,282046012,,,"Question: Is the sand wet? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 모래가 젖었나요? 한 단어나 구절로 답하십시오. 답:,,,,,,is the,COCO_val2014_000000282046.jpg,"[{'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 10}]",no
+748,534252001,,,"Question: What is the dog looking at? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 개가 무엇을 보고 있나요? 한 단어 또는 구절로 답하십시오.,,,,,,what is the,COCO_val2014_000000534252.jpg,"[{'answer': 'sandals', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'shoes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'shoe', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'sandals', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'shoes', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'sandal', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'sandal', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'shoe', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'shoes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'sandal', 'answer_confidence': 'yes', 'answer_id': 10}]",sandal
+205,122672003,,,"Question: What is this man doing? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 남자는 무엇을 하고 있습니까? 한 단어나 구절로 대답하십시오.,,,,,,what is this,COCO_val2014_000000122672.jpg,"[{'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'surfing', 'answer_confidence': 'yes', 'answer_id': 10}]",surfing
+970,437738050,,,"Question: What color is the sky? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 하늘의 색은 무엇입니까? 한 단어나 구로 답하십시오.,,,,,,what color is the,COCO_val2014_000000437738.jpg,"[{'answer': 'gray', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'gray', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'gray', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'gray and white', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'gray', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'gray', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'gray', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'gray', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 10}]",gray
+837,319721003,,,"Question: What color is the horse's nose? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 말의 코는 어떤 색입니까? 한 단어 또는 구로 답하십시오.,,,,,,what color is the,COCO_val2014_000000319721.jpg,"[{'answer': 'pink', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'white', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'pink', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'white', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'pink', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'white', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'pink', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'pink', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'pink', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'pink', 'answer_confidence': 'yes', 'answer_id': 10}]",pink
+99,235252017,,,"Question: Is this a picnic area? Answer the question using a single word or phrase. 
+Answer:",,text,이곳은 피크닉 공간인가요?,,,,,,is this a,COCO_val2014_000000235252.jpg,"[{'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 10}]",no
+21,156397004,,,"Question: How many animals are in the picture? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 그림에는 동물이 몇 마리 있나요? 하나의 단어나 구로 답하십시오.,,,,,,how many,COCO_val2014_000000156397.jpg,"[{'answer': '20', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '30', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'many', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '30', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': '30', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': '25', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': '26', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': '32', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': '26', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': '50', 'answer_confidence': 'yes', 'answer_id': 10}]",30
+246,75990007,,,"Question: What kind of hat is he wearing? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 그가 쓰고 있는 모자는 어떤 종류의 모자입니까? 한 단어나 구로 답하십시오.,,,,,,what kind of,COCO_val2014_000000075990.jpg,"[{'answer': 'sun hat', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'cowboy hat', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'cowboy', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'straw/cowboy', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'white', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'cowboy', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'cowboy', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'desert hat', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'safari hat', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'cowboy', 'answer_confidence': 'maybe', 'answer_id': 10}]",cowboy
+68,100199001,,,"Question: How many different meats are on this pizza? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 피자에는 서로 다른 고기가 몇 가지나 들어 있나요? 한 단어나 한 구절로 답하십시오.,,,,,,how many,COCO_val2014_000000100199.jpg,"[{'answer': '2', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '2', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '2', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '2', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 10}]",2
+788,387434001,,,"Question: What is the wall made of? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 벽은 무엇으로 만들어져 있나요? 한 단어나 구로 답하십시오.,,,,,,what is the,COCO_val2014_000000387434.jpg,"[{'answer': 'wood', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'wood', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'wood', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'wood', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'wood', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'wood paneling', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'paneling', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'wood', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'wood', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'wood', 'answer_confidence': 'yes', 'answer_id': 10}]",wood
+590,568426010,,,"Question: Would this dessert be sweet? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 디저트가 달콤할까요? 한 단어나 구절로 질문에 답하십시오. 답:,,,,,,none of the above,COCO_val2014_000000568426.jpg,"[{'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 10}]",no
+288,173057001,,,"Question: How many floors on this building? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 건물의 층수는 몇 층입니까? 한 단어나 구로 답해 주세요.,,,,,,how many,COCO_val2014_000000173057.jpg,"[{'answer': '2', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '2', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 10}]",3
+328,225312007,,,"Question: Is there a flip phone in this scene? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 장면에 플립폰이 있나요? 한 단어나 구로 대답하십시오.,,,,,,is there a,COCO_val2014_000000225312.jpg,"[{'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 10}]",no
+83,220446000,,,"Question: Is the space in ill repair? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 공간이 형편없이 보수되어 있나요? 한 단어나 구로 답하십시오. 답:,,,,,,is the,COCO_val2014_000000220446.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+529,381699001,,,"Question: What is the chandelier made from? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 샹들리에가 무엇으로 만들어졌나요? 한 단어나 구로 답하십시오.,,,,,,what is the,COCO_val2014_000000381699.jpg,"[{'answer': 'deer antlers', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'wood', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'wood', 'answer_confidence': 'no', 'answer_id': 3}, {'answer': 'antlers', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'antlers', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'antlers', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'antlers', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'antlers', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'antlers', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'antlers', 'answer_confidence': 'yes', 'answer_id': 10}]",antlers
+450,246963005,,,"Question: What does the street sign say? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 도로 표지판에 무엇이 적혀 있나요? 한 단어나 구로 답하십시오.,,,,,,what does the,COCO_val2014_000000246963.jpg,"[{'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'stop', 'answer_confidence': 'yes', 'answer_id': 10}]",stop
+379,157192000,,,"Question: What is this food called? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 음식의 이름은 무엇입니까? 한 단어나 구절로 답하십시오.,,,,,,what is this,COCO_val2014_000000157192.jpg,"[{'answer': 'bananas', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'plantain', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'bananas', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'banana', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'banana', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'bananas', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'banana', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'banana', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'banana', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'banana', 'answer_confidence': 'yes', 'answer_id': 10}]",banana
+735,337083001,,,"Question: What is the main color of the building? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 건물의 주된 색상은 무엇입니까? 한 단어나 구절로 답하십시오.,,,,,,what is the,COCO_val2014_000000337083.jpg,"[{'answer': 'beige', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'tan', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'yellow', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'tan', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'brown', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'tan', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'coral', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'beige', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'brown', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'yellow', 'answer_confidence': 'yes', 'answer_id': 10}]",tan
+726,560440009,,,"Question: Is the photo colored? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 사진이 색칠되어 있나요? 한 단어나 구로 질문에 답하십시오. 답:,,,,,,is the,COCO_val2014_000000560440.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+996,524577006,,,"Question: What number of clocks are on this tower? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 탑에 시계가 몇 개나 있나요? 한 단어나 구로 질문에 답하십시오.,,,,,,what,COCO_val2014_000000524577.jpg,"[{'answer': '1', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '1', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 10}]",1
+414,296745000,,,"Question: Which person is touching the elephant? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 어떤 사람이 코끼리를 만지고 있나요? 한 단어나 구로 질문에 답하세요.,,,,,,which,COCO_val2014_000000296745.jpg,"[{'answer': 'orange top', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'lady in orange shirt', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'orange shirt woman', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'woman', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'woman in orange', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'girl in orange top', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'woman in orange shirt', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'woman', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'woman in orange shirt', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'woman in orange shirt', 'answer_confidence': 'yes', 'answer_id': 10}]",woman in orange shirt
+307,411530002,,,"Question: What do people do from the top of ski slope? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 사람들이 스키 슬로프의 정상에서 무엇을 합니까? 한 단어나 구로 대답하십시오.,,,,,,what,COCO_val2014_000000411530.jpg,"[{'answer': 'ski', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'snow', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'slide', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'ski down', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'ski', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'ski', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'ski down', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'ski down', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'ski', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'ski down', 'answer_confidence': 'yes', 'answer_id': 10}]",ski down
+251,574057007,,,"Question: What is outside the window? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 창밖에는 무엇이 있나요? 한 단어나 구절로 질문에 답하십시오. 답:,,,,,,what is,COCO_val2014_000000574057.jpg,"[{'answer': 'trees', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'countryside', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'trees', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'trees', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'trees', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'greenery', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'trees and grass', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'grass', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'field', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'grass', 'answer_confidence': 'yes', 'answer_id': 10}]",trees
+893,125201004,,,"Question: What is the time? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 현재 시간은 무엇입니까? 한 단어 또는 구절로 답하십시오.,,,,,,what is the,COCO_val2014_000000125201.jpg,"[{'answer': '1:30', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '1:30', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '1:30', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '1:30', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '1:30', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': '1:30', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '1:30 pm', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '1:32', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '1:30', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '1:30', 'answer_confidence': 'yes', 'answer_id': 10}]",1:30
+635,326344001,,,"Question: How many oranges are in this photo? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 사진에 오렌지가 몇 개 있나요? 한 단어나 구절로 대답하십시오.,,,,,,how many,COCO_val2014_000000326344.jpg,"[{'answer': '3', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 10}]",3
+757,291990001,,,"Question: What street is this? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 거리는 어느 거리인가요? 한 단어나 구절로 답하세요.,,,,,,what,COCO_val2014_000000291990.jpg,"[{'answer': '35th ave', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '35th ave', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '35th avenue', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '35th', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '35 ave', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '35th avenue', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '35th', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '35th avenue', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '35th avenue', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '35th avenue', 'answer_confidence': 'yes', 'answer_id': 10}]",35th avenue
+164,559270003,,,"Question: Will this vehicle leave the area soon? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 차량은 곧 이 지역을 떠날까요? 한 단어나 구로 대답하십시오.,,,,,,none of the above,COCO_val2014_000000559270.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+617,263014012,,,"Question: How many zebras? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 얼룩말은 몇 마리입니까? 한 단어 또는 구로 답하십시오. 답:,,,,,,how many,COCO_val2014_000000263014.jpg,"[{'answer': '2', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '2', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 10}]",2
+2,356421011,,,"Question: What is the boy's skateboard balancing on? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 소년의 스케이트보드가 무엇에 균형을 잡고 있나요? 한 단어나 구로 답하십시오.,,,,,,what is the,COCO_val2014_000000356421.jpg,"[{'answer': 'air', 'answer_confidence': 'no', 'answer_id': 1}, {'answer': 'nothing', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'nothing', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'thin air', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'nothing', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'nothing', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'in air', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'nothing', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'air', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'air', 'answer_confidence': 'yes', 'answer_id': 10}]",nothing
+928,360610003,,,"Question: What game are the two people playing? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 두 사람이 어떤 게임을 하고 있나요? 한 단어나 구로 답하십시오.,,,,,,what,COCO_val2014_000000360610.jpg,"[{'answer': 'frisbee', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'frisbee', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'frisbee', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'frisbee', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'frisbee', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'frisbee', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'frisbee', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'frisbee', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'flying kites', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'frisbee', 'answer_confidence': 'yes', 'answer_id': 10}]",frisbee
+902,589013,,,"Question: Approximately what time of day is it? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 현재 하루 중 대략 몇 시쯤인가요? 한 단어나 구절로 대답하십시오.,,,,,,none of the above,COCO_val2014_000000000589.jpg,"[{'answer': 'evening', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'night', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '10 pm', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': '9', 'answer_confidence': 'no', 'answer_id': 4}, {'answer': 'night', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'night', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': '11 pm', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': '9', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '9:00 pm', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '900', 'answer_confidence': 'no', 'answer_id': 10}]",night
+122,233017006,,,"Question: What is behind the transit bus? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 시내버스 뒤에 무엇이 있나요? 한 단어 또는 한 구절로 답하십시오.,,,,,,what is,COCO_val2014_000000233017.jpg,"[{'answer': 'car', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'car', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'car', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'car', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'car', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'stop light', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'car', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'car', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'car', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'car', 'answer_confidence': 'yes', 'answer_id': 10}]",car
+314,161195002,,,"Question: What kind of plant is in the background? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 배경에 어떤 종류의 식물이 있나요? 한 단어나 구절로 답하십시오.,,,,,,what kind of,COCO_val2014_000000161195.jpg,"[{'answer': 'tree', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'none', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'moss', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'grass', 'answer_confidence': 'no', 'answer_id': 4}, {'answer': 'tree', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'dead leaves', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'grass', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'tree', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'grass', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'weed', 'answer_confidence': 'yes', 'answer_id': 10}]",tree
+57,214753005,,,"Question: What is the most common jacket color among these riders? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 라이더들 사이에서 가장 일반적인 재킷 색상은 무엇입니까? 한 단어나 구절로 대답하십시오.,,,,,,what is the,COCO_val2014_000000214753.jpg,"[{'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'blue', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'neutral', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'blue', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'blue', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'blue', 'answer_confidence': 'maybe', 'answer_id': 10}]",blue
+818,152211003,,,"Question: How many people are in the picture? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 그림 속에 몇 사람이 있나요? 한 단어나 구로 질문에 답하십시오.,,,,,,how many people are in,COCO_val2014_000000152211.jpg,"[{'answer': '1', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 10}]",1
+689,518615001,,,"Question: Are the portals at the top of the tower arched? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 탑의 꼭대기에 있는 포털은 아치형입니까? 한 단어나 구로 답하십시오. 답:,,,,,,are the,COCO_val2014_000000518615.jpg,"[{'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 10}]",no
+725,122549116,,,"Question: What hairstyle does this guy have? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 남자는 어떤 헤어스타일을 하고 있나요? 한 단어나 구절로 답하십시오. 답:,,,,,,what,COCO_val2014_000000122549.jpg,"[{'answer': 'shaved head', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'shaved', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'close-shaved head', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'buzz cut', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'shaved', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'shaved', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'shaved', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'buzz cut', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'buzz cut', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'crew cut', 'answer_confidence': 'yes', 'answer_id': 10}]",shaved
+570,241638003,,,"Question: Is this cross country skiing? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이것이 크로스컨트리 스키인가요? 한 단어나 한 구절로 답하세요.,,,,,,is this,COCO_val2014_000000241638.jpg,"[{'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 10}]",no
+139,113113004,,,"Question: What is the green vegetable on the left? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 왼쪽에 있는 초록색 채소는 무엇입니까? 한 단어나 구로 대답하십시오.,,,,,,what is the,COCO_val2014_000000113113.jpg,"[{'answer': 'lime', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'pepper', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'pepper', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'green pepper', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'avocado', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'pepper', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'bell pepper', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'bell pepper', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'green bell pepper', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'bell pepper', 'answer_confidence': 'yes', 'answer_id': 10}]",pepper
+532,471562000,,,"Question: Is this an airport? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이것이 공항인가요? 한 단어 또는 한 구절로 질문에 대답하십시오. 답:,,,,,,is this an,COCO_val2014_000000471562.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+908,572028008,,,"Question: What kind of animals are these? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이것들은 어떤 종류의 동물입니까? 한 단어나 구절로 대답하십시오.,,,,,,what kind of,COCO_val2014_000000572028.jpg,"[{'answer': ""zebra's and deer"", 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'zebras and deer', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'zebras and deer', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'zebras and antelopes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'zebra and antelope', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'zebras and antelopes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'zebras and gazelles', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'zebras and deer', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'african mammals', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'zebra, deer', 'answer_confidence': 'yes', 'answer_id': 10}]",zebras and deer
+543,425447005,,,"Question: How many taillights does the truck have? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 트럭에는 후미등이 몇 개입니까? 한 단어나 구로 질문에 답하십시오.,,,,,,how many,COCO_val2014_000000425447.jpg,"[{'answer': '6', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '2', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': '3', 'answer_confidence': 'maybe', 'answer_id': 10}]",2
+365,279499001,,,"Question: What number is on the bus? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 버스에 적힌 숫자는 무엇인가요? 한 단어나 구로 답하십시오.,,,,,,what number is,COCO_val2014_000000279499.jpg,"[{'answer': '5306', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '5306', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': '5306', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '5306', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '5306', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '5306', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '5306', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '5306', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '5306', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '5306', 'answer_confidence': 'maybe', 'answer_id': 10}]",5306
+20,469857006,,,"Question: What on the bed? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 침대 위에 무엇이 있나요? 한 단어나 구절로 답하십시오.,,,,,,what,COCO_val2014_000000469857.jpg,"[{'answer': 'blankets', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'backpack', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'blanket', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'bed sheets and pillow', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'comforter', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'pillows', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'blankets', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'blanket, sheets, and pillows', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'covers', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'comforter', 'answer_confidence': 'yes', 'answer_id': 10}]",comforter
+488,158279002,,,"Question: What is the web address listed? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 제시된 웹 주소는 무엇입니까? 한 단어나 구절로 답하십시오.,,,,,,what is the,COCO_val2014_000000158279.jpg,"[{'answer': 'foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'http://foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'http://foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'http://foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'http://foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'http://foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'foodiebakercom', 'answer_confidence': 'yes', 'answer_id': 10}]",http://foodiebakercom
+611,379376003,,,"Question: What country is this in? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이것은 어느 나라에 있나요? 질문에 한 단어나 구로 대답하십시오. 답:,,,,,,what,COCO_val2014_000000379376.jpg,"[{'answer': 'us', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'america', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'not sure', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'united states', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'australia', 'answer_confidence': 'no', 'answer_id': 5}, {'answer': 'unknown', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'usa', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'us', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'usa', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'united states', 'answer_confidence': 'yes', 'answer_id': 10}]",usa
+420,264660000,,,"Question: How many pictures of children are there? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 아이들의 사진은 몇 장이나 있습니까? 한 단어 또는 한 구절로 답하십시오.,,,,,,how many,COCO_val2014_000000264660.jpg,"[{'answer': '10', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': '8', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': '16', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '14', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': '3', 'answer_confidence': 'no', 'answer_id': 6}, {'answer': '15', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': '0', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'few', 'answer_confidence': 'yes', 'answer_id': 10}]",0
+260,323552001,,,"Question: What is the girl waiting for? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 그 소녀는 무엇을 기다리고 있나요? 한 단어나 구로 대답하십시오.,,,,,,what is the,COCO_val2014_000000323552.jpg,"[{'answer': 'luggage', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'family', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'luggage', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'her ride home', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'someone', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'luggage', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'luggage', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'train', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'luggage', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'luggage', 'answer_confidence': 'yes', 'answer_id': 10}]",luggage
+987,289870005,,,"Question: Is this a freight train? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이것이 화물 열차입니까? 한 단어나 구절로 질문에 답하십시오. 답:,,,,,,is this a,COCO_val2014_000000289870.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+776,169802000,,,"Question: How many bananas is this person wearing? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 사람이 몇 개의 바나나를 입고 있나요? 한 단어나 구로 답하십시오. 답:,,,,,,how many,COCO_val2014_000000169802.jpg,"[{'answer': '47+', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '40', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '39', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': '50', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'many', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'many', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '30', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'lot', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '40', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': '41', 'answer_confidence': 'yes', 'answer_id': 10}]",40
+972,264044002,,,"Question: Where are the umbrellas? Answer the question using a single word or phrase. 
+Answer:",,text,우산은 어디에 있나요? 한 단어나 한 구절로 답해 주세요. 답:,,,,,,where are the,COCO_val2014_000000264044.jpg,"[{'answer': 'front of building', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'in front of restaurant', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'in front of store', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'outside', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'in front of brick building', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'sidewalk cafe', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'on sidewalk', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'on sidewalk', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'front', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'on street', 'answer_confidence': 'yes', 'answer_id': 10}]",on sidewalk
+811,126583001,,,"Question: What does the man have in his right hand? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 남자가 오른손에 무엇을 들고 있나요? 한 단어나 구절로 대답하십시오.,,,,,,what does the,COCO_val2014_000000126583.jpg,"[{'answer': 'towel', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'towel', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'towel', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'tennis racquet', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'towel', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'glove', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'towel', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'towel', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'towel', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'tennis racket', 'answer_confidence': 'yes', 'answer_id': 10}]",towel
+368,227656000,,,"Question: Is this a train? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이것이 기차입니까? 한 단어 또는 구절로 질문에 답하십시오. 답:,,,,,,is this a,COCO_val2014_000000227656.jpg,"[{'answer': 'yes', 'answer_confidence': 'no', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+910,145318003,,,"Question: Are the utensils plastic or metal? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 식기류가 플라스틱인가요 아니면 금속인가요? 한 단어 또는 구절로 답하십시오.,,,,,,are the,COCO_val2014_000000145318.jpg,"[{'answer': 'plastic', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'plastic', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'plastic', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'plastic', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'plastic', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'plastic', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'plastic', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'paper', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'plastic', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'plastic', 'answer_confidence': 'yes', 'answer_id': 10}]",plastic
+905,479762007,,,"Question: What colors are these zebra stripes? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 얼룩말의 줄무늬는 어떤 색인가요? 한 단어나 한 구절로 답하십시오.,,,,,,what,COCO_val2014_000000479762.jpg,"[{'answer': 'black and white', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'black and white', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'black', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'black and white', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'black', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'black and white', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'black', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'black/white', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'black and white', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'black and white', 'answer_confidence': 'maybe', 'answer_id': 10}]",black and white
+290,117914001,,,"Question: Is the window in the bathroom? Answer the question using a single word or phrase. 
+Answer:",,text,욕실에 창문이 있나요? 한 단어나 구절로 대답하십시오.,,,,,,is the,COCO_val2014_000000117914.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+755,195862016,,,"Question: Is the horse giving you an evil look? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 말이 당신에게 악의 있는 눈빛을 주고 있나요? 한 단어나 구로 답하십시오. 답:,,,,,,is the,COCO_val2014_000000195862.jpg,"[{'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 10}]",no
+821,282847003,,,"Question: IS this outside? Answer the question using a single word or phrase. 
+Answer:",,text,이것이 밖인가요?,,,,,,is this,COCO_val2014_000000282847.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+93,469777002,,,"Question: Are the elephant in the wild? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 야생에 코끼리가 있나요? 한 단어나 구절로 질문에 답하십시오. 답:,,,,,,are the,COCO_val2014_000000469777.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 10}]",yes
+754,280530005,,,"Question: Is there a clock on the left side of the tower? Answer the question using a single word or phrase. 
+Answer:",,text,타워의 왼쪽 측면에 시계가 있나요?,,,,,,is there a,COCO_val2014_000000280530.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+901,477805035,,,"Question: Is this man wearing all black? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 남자는 전부 검은색 옷을 입고 있나요? 한 단어 또는 한 구절로 대답하십시오.,,,,,,is this,COCO_val2014_000000477805.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 10}]",yes
+381,289630003,,,"Question: What does the graffiti say? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 그래피티에 무엇이 적혀 있나요? 한 단어나 구절로 답하십시오.,,,,,,what does the,COCO_val2014_000000289630.jpg,"[{'answer': ""it's not readable"", 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'akoba', 'answer_confidence': 'no', 'answer_id': 2}, {'answer': 'ariba', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'ngoba', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'akoba', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'noob', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'nkoba', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'nkoba', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'aruba', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'nkoba', 'answer_confidence': 'no', 'answer_id': 10}]",nkoba
+34,434089002,,,"Question: Is this an old goat? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이것은 늙은 염소인가요? 한 단어나 구절로 대답하십시오.,,,,,,is this an,COCO_val2014_000000434089.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+485,332300001,,,"Question: Is the clock embedded in the building? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 건물 안에 시계가 내장되어 있나요? 질문에 한 단어 또는 한 구절로 답하십시오. 답:,,,,,,is the,COCO_val2014_000000332300.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+733,85826002,,,"Question: Is the baby sleeping? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 아기가 자고 있나요? 한 단어나 구절로 답하십시오.,,,,,,is the,COCO_val2014_000000085826.jpg,"[{'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 10}]",no
+250,264044001,,,"Question: Is this an Avenue or a street? Answer the question using a single word or phrase. 
+Answer:",,text,"질문: 이것이 대로(Avenue)인가요, 아니면 거리(Street)인가요? 한 단어나 구로 답하십시오. 답:",,,,,,is this an,COCO_val2014_000000264044.jpg,"[{'answer': 'avenue', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'avenue', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'avenue', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'avenue', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'avenue', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'street', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'avenue', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'avenue', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'avenue', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'avenue', 'answer_confidence': 'yes', 'answer_id': 10}]",avenue
+424,397303000,,,"Question: Where are the chairs? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 의자들은 어디에 있나요? 한 단어나 구절로 질문에 답하십시오. 답:,,,,,,where are the,COCO_val2014_000000397303.jpg,"[{'answer': 'outside', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'ground', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'alongside tables', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'market', 'answer_confidence': 'no', 'answer_id': 4}, {'answer': 'behind table', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'at tables', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'on ground', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'behind people', 'answer_confidence': 'no', 'answer_id': 8}, {'answer': 'outside', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'around tables', 'answer_confidence': 'yes', 'answer_id': 10}]",outside
+292,387661004,,,"Question: What number is on the marker? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 마커에 적힌 숫자는 무엇입니까? 한 단어나 구로 대답하십시오. 대답:,,,,,,what number is,COCO_val2014_000000387661.jpg,"[{'answer': '147', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '147', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '147', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '147', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '147', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '147', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '147', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '147', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '147', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '147', 'answer_confidence': 'yes', 'answer_id': 10}]",147
+607,234779002,,,"Question: Is this bread toasted or fresh? Answer the question using a single word or phrase. 
+Answer:",,text,"질문: 이 빵이 토스트되었나요, 아니면 신선한가요? 한 단어 또는 한 구절로 답하십시오.",,,,,,is this,COCO_val2014_000000234779.jpg,"[{'answer': 'toasted', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'toasted', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'toasted', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'toasted', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'fresh', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'toasted', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'toasted', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'toasted', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'toasted', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'toasted', 'answer_confidence': 'yes', 'answer_id': 10}]",toasted
+656,322955002,,,"Question: Is it daylight? Answer the question using a single word or phrase. 
+Answer:",,text,지금 낮인가요?,,,,,,is it,COCO_val2014_000000322955.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'twilight', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+787,574280002,,,"Question: What is behind the bikes? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 자전거들 뒤에 무엇이 있나요? 한 단어나 한 구절로 질문에 답하세요. 답:,,,,,,what is,COCO_val2014_000000574280.jpg,"[{'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'bus', 'answer_confidence': 'yes', 'answer_id': 10}]",bus
+540,232610007,,,"Question: Why is the woman's mouth open? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 왜 여성의 입이 벌어져 있나요? 한 단어나 구절로 답하십시오.,,,,,,why is the,COCO_val2014_000000232610.jpg,"[{'answer': 'smiling', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'talking', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'talking on phone', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'smiling', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'smiling', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': ""she's smiling"", 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'talking', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",smiling
+474,528225028,,,"Question: Is this cow in a field? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 소가 들판에 있나요? 한 단어나 구절로 대답하십시오.,,,,,,is this,COCO_val2014_000000528225.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+207,387482002,,,"Question: What is hanging on the wall? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 벽에 무엇이 걸려 있나요? 한 단어나 구절로 답하십시오.,,,,,,what is,COCO_val2014_000000387482.jpg,"[{'answer': 'mirror', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'mirror', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'mirror', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'mirror', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'mirror', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'mirror', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'mirror', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'mirror', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'mirror', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'mirror', 'answer_confidence': 'yes', 'answer_id': 10}]",mirror
+152,52835005,,,"Question: What color is the packing box? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 포장 상자의 색상은 무엇입니까? 한 단어 또는 한 구절로 질문에 답하십시오. 답:,,,,,,what color is the,COCO_val2014_000000052835.jpg,"[{'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'purple', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'purple', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'blue', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'blue/purple', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'blue', 'answer_confidence': 'yes', 'answer_id': 10}]",blue
+580,321846005,,,"Question: How many chocolate frosted doughnuts do you see? Answer the question using a single word or phrase. 
+Answer:",,text,몇 개의 초콜릿 프로스팅 도넛이 보이나요? 한 단어나 한 구절로 대답하십시오.,,,,,,how many,COCO_val2014_000000321846.jpg,"[{'answer': '1', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '1', 'answer_confidence': 'no', 'answer_id': 6}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '1', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '2', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '1', 'answer_confidence': 'maybe', 'answer_id': 10}]",1
+134,76632002,,,"Question: Is this boy a good pitcher? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 소년은 좋은 투수인가요? 한 단어나 구절로 답하십시오.,,,,,,is this,COCO_val2014_000000076632.jpg,"[{'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 3}, {'answer': 'unknown', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'maybe', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 10}]",yes
+732,334915004,,,"Question: How many people are in this photo? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이 사진에는 몇 명이 있습니까? 한 단어나 구로 답하십시오.,,,,,,how many people are in,COCO_val2014_000000334915.jpg,"[{'answer': '3', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '4', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': '3', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': '5', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '7', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '3', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '3', 'answer_confidence': 'yes', 'answer_id': 10}]",3
+516,303667011,,,"Question: What is the man wearing on his back? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 남자는 등에 무엇을 메고 있나요? 한 단어 또는 구절로 대답하십시오.,,,,,,what is the man,COCO_val2014_000000303667.jpg,"[{'answer': 'shirt', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'book bag', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'shirt', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'shirt', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'shirt', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'nothing', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'shirt', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'backpack', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'shirt', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'shirt', 'answer_confidence': 'maybe', 'answer_id': 10}]",shirt
+325,417164002,,,"Question: What does the red and white sign say? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 빨간색과 흰색 표지판에는 무엇이라고 적혀 있나요? 한 단어나 구절로 답하십시오. 답:,,,,,,what does the,COCO_val2014_000000417164.jpg,"[{'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'open 24 hours', 'answer_confidence': 'yes', 'answer_id': 10}]",open 24 hours
+743,124601004,,,"Question: How many oranges are there? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 오렌지가 몇 개 있습니까? 한 단어 또는 구로 답하십시오.,,,,,,how many,COCO_val2014_000000124601.jpg,"[{'answer': '0', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': '0', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': '0', 'answer_confidence': 'yes', 'answer_id': 10}]",0
+192,62661000,,,"Question: Is the hydrant being blocked? Answer the question using a single word or phrase. 
+Answer:",,text,소화전이 막히고 있나요?,,,,,,is the,COCO_val2014_000000062661.jpg,"[{'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'yes', 'answer_confidence': 'yes', 'answer_id': 10}]",yes
+33,68993002,,,"Question: Is the snow melting, or still falling? Answer the question using a single word or phrase. 
+Answer:",,text,"질문: 눈이 녹고 있나요, 아니면 아직 내리고 있나요? 한 단어나 구절로 답하십시오.",,,,,,is the,COCO_val2014_000000068993.jpg,"[{'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'melting', 'answer_confidence': 'yes', 'answer_id': 10}]",melting
+109,120806005,,,"Question: What is flying above the boat? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 보트 위에 무엇이 날고 있습니까? 한 단어나 구절로 답하십시오.,,,,,,what is,COCO_val2014_000000120806.jpg,"[{'answer': 'helicopter', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'plane and helicopter', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'helicopter', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'airplane', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'plane', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'plane', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'airplane', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'helicopter', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'helicopter', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'airplane', 'answer_confidence': 'yes', 'answer_id': 10}]",helicopter
+165,118417001,,,"Question: What is the very top of the stack of food? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 음식 더미의 맨 위에는 무엇이 있나요? 한 단어나 구로 답하십시오.,,,,,,what is the,COCO_val2014_000000118417.jpg,"[{'answer': 'egg', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'egg', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'cream', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'white egg', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'cream', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'egg', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'cream cheese', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'cheese', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'egg', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'ice cream', 'answer_confidence': 'yes', 'answer_id': 10}]",egg
+415,87052017,,,"Question: What is the woman wearing on top? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 여자가 상체에 입고 있는 것은 무엇인가요? 한 단어나 구로 답하십시오.,,,,,,what is the woman,COCO_val2014_000000087052.jpg,"[{'answer': 'hoodie sweater', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'sweatshirt', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'hoodie', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'hoodie', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'hoodie', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'hoodie', 'answer_confidence': 'yes', 'answer_id': 6}, {'answer': 'hoody', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'grey sweater and green shirt', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'hoody', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'jacket', 'answer_confidence': 'yes', 'answer_id': 10}]",hoodie
+700,562243050,,,"Question: What color is the tie? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 넥타이의 색은 무엇입니까? 한 단어 또는 구로 대답하십시오.,,,,,,what color is the,COCO_val2014_000000562243.jpg,"[{'answer': 'light blue', 'answer_confidence': 'maybe', 'answer_id': 1}, {'answer': 'blue,white', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'purple', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'purple', 'answer_confidence': 'maybe', 'answer_id': 4}, {'answer': 'blue', 'answer_confidence': 'maybe', 'answer_id': 5}, {'answer': 'blue', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'purple', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'purple, white', 'answer_confidence': 'yes', 'answer_id': 8}, {'answer': 'purple', 'answer_confidence': 'yes', 'answer_id': 9}, {'answer': 'gray', 'answer_confidence': 'yes', 'answer_id': 10}]",purple
+156,333480000,,,"Question: Is this healthy food? Answer the question using a single word or phrase. 
+Answer:",,text,질문: 이것이 건강한 음식입니까? 한 단어나 구절로 답하십시오.,,,,,,is this,COCO_val2014_000000333480.jpg,"[{'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 1}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 2}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 3}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 4}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 5}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 6}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 7}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 8}, {'answer': 'no', 'answer_confidence': 'maybe', 'answer_id': 9}, {'answer': 'no', 'answer_confidence': 'yes', 'answer_id': 10}]",no

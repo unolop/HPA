@@ -3,6 +3,53 @@ import pandas as pd
 import os 
 import json 
 from typing import List, Any
+import os
+
+def translate_question(client, question):
+    prompt = f"""
+            You are a precise translation and data-formatting assistant.
+
+            Task:
+            Given a multiple-choice question and its options in English, 
+            return the result as a strict JSON dictionary with the following fields:
+            - question_kr: Translate the QUESTION into Korean 
+            
+            Input:
+            QUESTION: {question}
+            """
+
+    response = client.chat.completions.create(
+        model="gpt-5-nano",   # or your preferred model
+        messages=[{"role": "user", "content": prompt}],
+        temperature=1,
+    )
+
+    output = response.choices[0].message.content.strip()
+    return output
+
+def translate_mmstar(client, question, options):
+    prompt = f"""
+            You are a precise translation and data-formatting assistant.
+
+            Task:
+            Given a multiple-choice question and its options in English, 
+            return the result as a strict JSON dictionary with the following fields:
+            - question_kr: Translate the QUESTION into Korean 
+            - options: Insert translated korean options after its English choices separated by a blank space in the same string format. Do not remove the original English options. Numbers don't need to be translated in both languages.
+
+            Input:
+            QUESTION: {question}
+            OPTIONS_STRING: {options}
+            """
+
+    response = client.chat.completions.create(
+        model="gpt-5-nano",   # or your preferred model
+        messages=[{"role": "user", "content": prompt}],
+        temperature=1,
+    )
+
+    output = response.choices[0].message.content.strip()
+    return output
 
 def contains_korean(text):
     pattern = re.compile(r'[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7A3]')

@@ -4,4 +4,7 @@ __pycache__/
 *.pyc
 *.pyo
 data/vqav2_val.json
-models/*.pth
+*.pth
+models/lxmert
+models/unilm
+
