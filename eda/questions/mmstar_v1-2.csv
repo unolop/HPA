@@ -1,0 +1,637 @@
+,category,l2_category,question_id,question_en,question_kr,options,answer_type,question,answer,correct
+0,instance reasoning,single-instance reasoning,664.0,"Where is the woman's blue bag located in the image?
+ ","이미지에서 여자의 파란 가방은 어디에 있나요? A: 그녀의 손에, B: 어깨에, C: 바닥에, D: 남자의 가방 안에."""," A: In her hand, B: On her shoulder, C: On the ground, D: Inside the man's bag",choice,,,
+1,coarse perception,image emotion,6.0,"What feeling is shown in this image?
+ ","이 이미지에는 어떤 느낌이 담겨 있나요? A: 참여, B: 외로운, C: 화난, D: 지지"""," A: engaged, B: lonely, C: angry, D: supportive",choice,,,
+2,instance reasoning,single-instance reasoning,662.0,"Where is the rug in the living room located?
+ ","거실의 러그는 어디에 있나요?
+A: 문 옆, B: 테이블 아래, C: 창문 앞, D: 소파 아래"," A: Next to the door, B: Under the table, C: In front of the window, D: Under the couch",choice,,,
+3,logical reasoning,common reasoning,773.0,"Is there a teddy bear in the image?
+ ","이미지에 곰 인형이 있나요?
+옵션: A: 알 수 없습니다, B: 아니요, C: 네, D: 아마도요."""," A: Can't tell, B: No, C: Yes, D: Maybe",choice,,,
+4,instance reasoning,cross-instance relation reasoning,556.0,"What is the relationship between the people in the image?
+ ","이미지 속 사람들 사이의 관계는 무엇인가요? A: 광고, B: 전문가, C: 친구, D: 가족"""," A: commercial, B: professional, C: friends, D: family",choice,,,
+5,logical reasoning,common reasoning,768.0,"In the picture, which direction is the baby facing?
+ ","""사진에서 아기는 어느 방향을 향하고 있습니까? A: 왼쪽, B: 오른쪽, C: 위쪽, D: 아래쪽"""," A: left, B: right, C: up, D: down",choice,,,
+6,logical reasoning,common reasoning,802.0,"What will happen next?
+ ","다음에는 어떻게 될까요? 옵션: A: 아이는 미끄러져 지나갈 것이고, B: 아이는 다른 아이와 충돌할 것입니다, C: 다른 아이는 피할 것입니다, D: A, B, C 모두."""," A: the kid is gonna slide through, B: the kid is gonna crash into the other kid, C: the other kid is gonna dodge, D: both A,B, and C",choice,,,
+7,instance reasoning,single-instance reasoning,598.0,"The object shown in this figure:
+ ","이 그림에 표시된 객체: A: 약간 금속 맛이 나는 무색 액체, B: 피부와 눈에 자극을 줄 수 있는 강력한 산화제, C: 끓는점이 150.2°C, D: 이 옵션 중 어느 것도 올바르지 않습니다."""," A: Is a colorless liquid with a slightly metallic taste, B: Is a powerful oxidizer that can cause skin and eye irritation, C: Has a boiling point of 150.2°C, D: None of these options are correct.",choice,,,
+9,coarse perception,image scene and topic,70.0,"What is the main focus of the image?
+ ","이미지의 주요 초점은 무엇입니까?
+ 옵션: A: 벽돌 벽 앞에 서 있는 여자, B: 녹색 울타리 앞에 서 있는 여자, C: 꽃과 덤불이 많은 정원, D: 많은 식물로 둘러싸인 벤치"""," A: A woman standing in front of a brick wall, B: A woman standing in front of a green hedge, C: A garden with a lot of flowers and bushes, D: A bench surrounded by a lot of plants",choice,,,
+10,coarse perception,image scene and topic,97.0,"What is the predominant color of the image?
+ ","이미지의 주요 색상은 무엇입니까?
+ 옵션: A: 노란색, B: 검은색, C: 흰색, D: 파란색"""," A: Yellow, B: Black, C: White, D: Blue",choice,,,
+11,instance reasoning,cross-instance attribute reasoning,462.0,"In the picture, one is a bear doll and the other is a cat. Are they the same size?
+ ","""사진에서 한 명은 곰 인형이고 다른 한 명은 고양이입니다. 크기가 같은가요?
+ 옵션: A: 똑같아, B: 같지 않아, C: 판단할 수 없어, D: 난."""," A: same, B: Not the same, C: Can't judge, D: nan",choice,,,
+12,fine-grained perception,recognition,428.0,"What is the woman holding in her hand?
+ ","여자가 손에 들고 있는 것은 무엇입니까?
+ 옵션: A: 책, B: 카메라, C: 휴대폰, D: 아무것도 없습니다."""," A: A book, B: A camera, C: A cell phone, D: Nothing",choice,,,
+13,coarse perception,image emotion,13.0,"Which emotion is being depicted in this image?
+ ","이 이미지에는 어떤 감정이 묘사되고 있습니까?
+ 옵션: A: 행복, B: 슬픔, C: 분노, D: 사랑"""," A: happiness, B: sadness, C: anger, D: love",choice,,,
+14,fine-grained perception,recognition,414.0,"What is the most prominent color of the jacket worn by the man with the laptop?
+ ","""노트북을 든 남자가 입은 재킷의 가장 눈에 띄는 색상은 무엇입니까?
+ 옵션: A: 파란색, B: 검은색, C: 회색, D: 빨간색"""," A: Blue, B: Black, C: Gray, D: Red",choice,,,
+15,instance reasoning,cross-instance relation reasoning,550.0,"What can Hazel and Xavier trade to each get what they want?
+ ","헤이즐과 자비에는 각각 원하는 것을 얻기 위해 무엇을 교환할 수 있을까요?
+옵션: A: 헤이즐은 토마토를 자비에의 브로콜리와 교환할 수 있습니다. B: 헤이즐은 토마토를 자비에의 당근과 교환할 수 있습니다. C: 자비에는 브로콜리를 헤이즐의 오렌지와 교환할 수 있습니다. D: 자비에는 아몬드를 헤이즐의 토마토와 교환할 수 있습니다."," A: Hazel can trade her tomatoes for Xavier's broccoli., B: Hazel can trade her tomatoes for Xavier's carrots., C: Xavier can trade his broccoli for Hazel's oranges., D: Xavier can trade his almonds for Hazel's tomatoes.",choice,,,
+16,logical reasoning,common reasoning,816.0,"Which of the following objects has the highest density in the image?
+ ","다음 중 이미지에서 밀도가 가장 높은 물체는?
+ 옵션: A: 야자수, B: 나무, C: 모래, D: 죽은 풀"""," A: Palm trees, B: Trees, C: Sand, D: Dead grass",choice,,,
+17,logical reasoning,common reasoning,788.0,"What is the most likely purpose of this poster?
+ ","이 포스터의 가장 유력한 목적은 무엇입니까?
+ 옵션: A: 새해를 축하하기 위해, B: 누군가의 생일을 축하하기 위해, C: 크리스마스를 축하하기 위해, D: 국경일을 축하하기 위해."""," A: To celebrate New Year., B: To celebrate someone's birthday., C: To celebrate Christmas., D: To celebrate National Day.",choice,,,
+18,fine-grained perception,object counting,317.0,"How many teddy bears are in the picture?
+ ","사진 속 곰 인형은 몇 개입니까?
+ 옵션: A: 둘, B: 하나, C: 셋, D: 넷"""," A: Two, B: One, C: Three, D: Four",choice,,,
+19,coarse perception,image scene and topic,160.0,"is this place crowded?
+ ","이곳은 붐비나요?
+ 옵션: A: 네, B: 아니요"," A: yes, B: no",choice,,,
+20,fine-grained perception,recognition,357.0,"What color is the building in the foreground?
+ ","전경에 있는 건물은 어떤 색인가요?
+ 옵션: A: 파란색, B: 회색, C: 흰색, D: 검은색"""," A: Blue, B: Grey, C: White, D: Black",choice,,,
+21,fine-grained perception,recognition,423.0,"What is the shape of the object with an angel face and wings in the image?
+ ","""이미지에서 천사의 얼굴과 날개를 가진 물체의 모양은 어떻습니까?
+옵션: A: 달걀 모양, B: 정사각형, C: 둥글고 D: 별 모양"""," A: Egg-shaped, B: Square, C: Round, D: Star-shaped",choice,,,
+22,fine-grained perception,object counting,250.0,"How many bananas are there in the image?
+ ","이미지에 바나나가 몇 개 있나요?
+옵션: A: 3, B: 2, C: 4, D: 5"""," A: 3, B: 2, C: 4, D: 5",choice,,,
+23,coarse perception,image scene and topic,129.0,"What type of environment is depicted in the picture?
+ ","""사진에는 어떤 종류의 환경이 그려져 있나요?
+옵션: A: 집, B: 쇼핑몰, C: 거리, D: 숲"""," A: home, B: shopping mall, C: street, D: forest",choice,,,
+24,fine-grained perception,recognition,349.0,"Roughly how much of the picture is occupied by the two people on the bench in the picture?
+ ","""사진 속 벤치에 앉아 있는 두 사람이 대략 얼마나 많은 사진을 차지하고 있습니까?
+ 옵션: A: 50% 이상, B: 30% 미만, C: 0.8, D: 60% 이상"""," A: more than 50%, B: less than 30%, C: 0.8, D: more than 60%",choice,,,
+25,fine-grained perception,recognition,392.0,"What is the color of the shirt worn by a man playing the guitar?
+ ","기타를 치는 남자가 입는 셔츠의 색깔은 무엇인가요?
+ 옵션: A: 파란색, B: 검은색, C: 빨간색, D: 흰색"""," A: Blue, B: Black, C: Red, D: White",choice,,,
+26,fine-grained perception,recognition,384.0,"What is the color of the man's tie in the image?
+ ","이미지 속 남자 넥타이의 색깔은 무엇인가요?
+ 옵션: A: 파란색, B: 흰색, C: 검은색, D: 빨간색"""," A: Blue, B: White, C: Black, D: Red",choice,,,
+27,instance reasoning,cross-instance attribute reasoning,502.0,"What's the function of the demonstrated object?
+ ","시연된 물체의 기능은 무엇입니까?
+옵션: A: 베이킹, B: 가열, C: 향료, D: 픽업"""," A: baking, B: heating, C: flavouring, D: Pick-up",choice,,,
+28,instance reasoning,cross-instance relation reasoning,552.0,"What can be the relationship between the two persons in this image?
+ ","이 이미지에서 두 사람 사이의 관계는 무엇일까요?
+ 옵션: A: 아버지와 딸, B: 어머니와 아들, C: 형제자매, D: 남편과 아내"""," A: Father and daughter, B: Mother and son, C: Brother and sister, D: Husband and wife",choice,,,
+29,logical reasoning,common reasoning,804.0,"What will happen next?
+ ","다음에는 어떻게 될까요?
+ 옵션: A: 오토바이가 앞으로 가고, B: 오토바이가 충돌하고, C: 오토바이가 뒤로 가고, D: A, B, C 모두"""," A: the motorcyle is gonna go forward, B: the motorcyle is gonna crash, C: the motorcyle is gonna go backward, D: both A,B, and C",choice,,,
+30,instance reasoning,single-instance reasoning,654.0,"What's the profession of the people in this picture?
+ ","이 사진 속 사람들의 직업은 무엇인가요?
+ 옵션: A: 메이슨, B: 우체부, C: 가수, D: 군인"""," A: mason, B: postman, C: singer, D: soldier",choice,,,
+31,instance reasoning,cross-instance relation reasoning,544.0,"In nature, what's the relationship between these two creatures?
+ ","자연에서 이 두 생물 사이에는 어떤 관계가 있을까요?
+ 옵션: A: 약탈적 관계, B: 경쟁적 관계, C: 기생적 관계, D: 공생 관계"""," A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship",choice,,,
+32,instance reasoning,cross-instance attribute reasoning,529.0,"Which two objects are closest to each other?
+ ","다음 중 서로 가장 가까운 두 물체는?
+옵션: A: 축구 선수 및 축구 팀, B: 축구 선수 및 코치, C: 축구 선수 및 정치인, D: 축구 선수 및 코치"""," A: Soccer player and football team, B: Soccer player and coach, C: Football player and politician, D: Football player and coach",choice,,,
+33,coarse perception,image scene and topic,85.0,"What is the most prominent feature in the image?
+ ","이미지에서 가장 눈에 띄는 특징은 무엇인가요?
+ 옵션: A: 돛단배, B: 도시 스카이라인, C: 하늘, D: 태양"""," A: Sailboats, B: City skyline, C: Sky, D: Sun",choice,,,
+34,coarse perception,image scene and topic,89.0,"What is the overall scene depicted in this image?
+ ","""이 이 이미지의 전반적인 장면은 무엇입니까?
+옵션:A: 눈높은 나무와 언덕과 언덕에 둘러싸여 있는 겨울 눈설 등 작은 마을에는 눈설 등 작은 마을, 눈설 등 작은 마을에는 눈설로 장식된 건물과 같은 작은 마을이다."," A: A group of people ice skating on a frozen lake surrounded by snowy trees and hills, B: A small town during a winter snowfall with snow-covered buildings and trees, C: A busy city street during Christmas time with decorated buildings and light displays, D: A ski resort town with snowy mountains and ski lifts visible in the background",choice,,,
+35,coarse perception,image scene and topic,140.0,"Which is the main topic of the image
+ ","이미지의 주요 주제는 무엇입니까
+ 옵션: A: 여자가 테니스를 치고 있고, B: 남자가 테니스를 치고 있고, C: 남자가 축구를 하고, D: 여자가 배구를 하고 있습니다"," A: A woman is playing tennis, B: A man is playing tennis, C: A boy is playing soccer, D: A girl is playing volleyball",choice,,,
+36,coarse perception,image emotion,10.0,"What is the overall mood or atmosphere of the image?
+ ","이미지의 전체적인 분위기나 분위기는 어떻습니까?
+ 옵션: A: 즐겁고 활기찬, B: 친밀하고 아늑한, C: 어둡고 우울한, D: 고요하고 평화로운"""," A: Joyful and energetic, B: Intimate and cozy, C: Dark and gloomy, D: Serene and peaceful",choice,,,
+37,fine-grained perception,recognition,433.0,"What type of family is shown in the image?
+ ","""가족은 어떤 종류의 가족이 보여?
+옵션:A: 모든 여성, B: 모든 남자 가족, C: 모든 남자 가족, D: 모든 남자 가족 중 하나이다."," A: A family of all women, B: A family of mixed genders, C: A family of all men, D: A family of only children",choice,,,
+38,instance reasoning,single-instance reasoning,587.0,"How many lamps are in the bedroom?
+ ",""" 침실에서 램프가 얼마나 됩니까?
+옵션:A: 하나, B: 셋, C: 셋, D: 4"""," A: One, B: Two, C: Three, D: Four",choice,,,
+39,fine-grained perception,localization,227.0,"Where is the seated person visible in the image?
+ ","이미지에서 앉은 사람은 어디에 보이나요?
+ 옵션: A: 펜스에서, B: 필드에서, C: 필드 밖에서, D: 벤치 뒤에서"""," A: On the fence, B: In the field, C: Outside the field, D: Behind the bench",choice,,,
+40,fine-grained perception,recognition,430.0,"What shape is the ottoman in the living room?
+ ","거실에 있는 소파의 모습은 무엇인가요?
+ 옵션: A: 정사각형, B: 둥근, C: 직사각형, D: 타원형"""," A: Square, B: Round, C: Rectangular, D: Oval",choice,,,
+41,coarse perception,image scene and topic,74.0,"What is the main focus of this image?
+ ","주요 초점은 무엇입니까?
+ 옵션: A: 풀이 무성한 언덕, B: 조형물, C: 울타리, D: 건물"""," A: The grassy hill, B: The sculpture, C: The fence, D: The building",choice,,,
+42,fine-grained perception,object counting,281.0,"How many people are on stage?
+ ","무대에는 몇 명이 있나요?
+ 옵션: A: 2, B: 3, C: 4, D: 5"""," A: 2, B: 3, C: 4, D: 5",choice,,,
+43,logical reasoning,common reasoning,799.0,"What type of vegetation is visible in the image?
+ ","이미지에 어떤 종류의 식물이 보이나요?
+옵션: A: 나무만, B: 나무와 덤불의 혼합, C: 덤불만, D: 잔디"""," A: Trees only, B: A mix of trees and bushes, C: Bushes only, D: Grass",choice,,,
+44,fine-grained perception,object counting,263.0,"How many drawers can be seen in the image?
+ ","이미지에 서랍이 몇 개나 보이나요?
+옵션: A: 하나, B: 셋, C: 둘, D: 넷"""," A: One, B: Three, C: Two, D: Four",choice,,,
+45,fine-grained perception,object counting,264.0,"How many drawers can be seen in the white kitchen?
+ ","하얀 주방에 서랍이 몇 개나 보이나요?
+옵션: A: 셋, B: 둘, C: 하나, D: 넷"""," A: Three, B: Two, C: One, D: Four",choice,,,
+46,coarse perception,image scene and topic,29.0,"Does the picture show a mountainous landscape or a coastal landscape?
+ ","사진에 산악 지형이 나와 있나요, 아니면 해안 지형이 나와 있나요? 옵션: A: 산악, B: 해안, C: 평야, D: 분지"" "," A: Mountainous, B: Coastal, C: plain, D: basin",choice,,,
+47,coarse perception,image scene and topic,132.0,"Where is the exit in the image?
+ ","이미지에서 출구는 어디에 있습니까? 옵션: A: 녹색 출구 표지판의 왼쪽, B: 녹색 출구 표지판의 오른쪽, C: 왼쪽을 가리키는 화살표가 있는 녹색 출구 표지판 뒤, D: 이미지에 보이지 않음"" "," A: To the left of the green exit sign, B: To the right of the green exit sign, C: Behind the green exit sign with an arrow pointing to the left, D: Not visible in the image",choice,,,
+48,fine-grained perception,recognition,436.0,"What type of pavement is the person with the dog walking on?
+ ","개와 함께 걷는 사람은 어떤 종류의 포장도로를 걷고 있습니까?
+ 옵션: A: 콘크리트, B: 벽돌, C: 아스팔트, D: 자갈"," A: Concrete, B: Brick, C: Asphalt, D: Gravel",choice,,,
+49,logical reasoning,code & sequence reasoning,708.0,"What will happen next?
+ ","다음에는 어떻게 될까요? 옵션: A: 이 사람은 울 거야, B: 이 사람은 웃을 거야, C: 이 사람은 화낼 거야, D: A, B, C 모두."""," A: this person is gonna cry, B: this person is gonna laugh, C: this person is gonna get mad, D: both A,B, and C",choice,,,
+50,coarse perception,image style & quality,194.0,"what style is depicted in this image?
+ ","이 이미지에는 어떤 스타일이 그려져 있습니까? 옵션: A: 인상주의, B: 후기 인상주의, C: 모더니즘, D: 다다이즘"" "," A: impressionism, B: post-Impressionism, C: modernism, D: dadaism",choice,,,
+51,fine-grained perception,object counting,269.0,"How many horses are in the image?
+ ","""그렇게 많은 말들은 몇 명입니까?
+옵션:A:1, B: 4, C: 3"""," A: 1, B: 2, C: 4, D: 3",choice,,,
+52,fine-grained perception,object counting,254.0,"How many buildings are present in the image?
+ ","
+""그래픽은 몇 개의 건물들이 있습니까?
+옵션:A:1, B: 3, C: 2, D: 4"""," A: 1, B: 3, C: 2, D: 4",choice,,,
+53,fine-grained perception,recognition,419.0,"What is the primary color of the glove held by the player in the foreground?
+ ","
+""세계에서 열리는 장갑의 주요 색상은 무엇입니까?
+옵션:A: 블랙, C: 오렌지, C: 브라운, D: 노란색"""," A: Black, B: Orange, C: Brown, D: Yellow",choice,,,
+54,fine-grained perception,localization,228.0,"Where is the snail located in the image?
+ ","이미지에서 달팽이는 어디에 있나요?
+ 옵션: A: 나무 줄기 위에서, B: 버섯 위에서, C: 통나무 위에서, D: 바위 위에서"," A: On a tree trunk, B: On top of a mushroom, C: On a log, D: On a rock",choice,,,
+55,fine-grained perception,localization,229.0,"Where is the soccer ball located?
+ ","축구공은 어디에 있나요? A: 왼쪽 하단 모서리의 지면, B: 오른쪽 상단 모서리의 공기 중, C: 오른쪽 하단 모서리의 지면, D: 왼쪽 상단 모서리의 공기 중."""," A: On the ground in the bottom left corner, B: In the air in the top right corner, C: On the ground in the bottom right corner, D: In the air in the top left corner",choice,,,
+56,fine-grained perception,recognition,412.0,"What is the material of the boots that the woman is wearing in the image?
+ ","이미지에서 여자가 신고 있는 부츠의 재질은 무엇입니까?
+ 옵션: A: 스웨이드, B: 가죽, C: 캔버스, D: 합성"," A: Suede, B: Leather, C: Canvas, D: Synthetic",choice,,,
+57,coarse perception,image scene and topic,159.0,"Which term matches the picture?
+ ","어떤 용어가 그림과 일치합니까? 옵션: A: 삼천발이, B: 거미불가사리"," A: basket star, B: brittle star",choice,,,
+58,coarse perception,image style & quality,162.0,"The image displays which art style?
+ ","이미지에는 어떤 예술 스타일이 표시됩니까?
+ 옵션: A: 수채화, B: 초기 르네상스, C: 아르누보, D: 벡터 아트"""," A: watercolor, B: early renaissance, C: art nouveau, D: vector art",choice,,,
+59,fine-grained perception,recognition,391.0,"What is the color of the sheep in the foreground?
+ ","양의 색깔은 무엇입니까?
+ 옵션: A: 검정, B: 갈색, C: 흰색, D: 회색"""," A: Black, B: Brown, C: White, D: Gray",choice,,,
+60,fine-grained perception,recognition,394.0,"What is the color of the shorts of the soccer player wearing a red and black uniform?
+ ","빨간색과 검은색 유니폼을 입은 축구 선수의 반바지 색깔은 무엇인가요?
+ 옵션: A: 흰색과 검은색, B: 노란색과 초록색, C: 검은색과 흰색, D: 파란색과 빨간색"""," A: White and black, B: Yellow and green, C: Black and white, D: Blue and red",choice,,,
+61,fine-grained perception,object counting,266.0,"How many gloves can be seen in this image?
+ ","이 이미지에서 몇 개의 장갑을 볼 수 있습니까?
+옵션: A: 하나, B: 둘, C: 셋, D: 넷"""," A: One, B: Two, C: Three, D: Four",choice,,,
+62,fine-grained perception,recognition,420.0,"What is the primary color of the shoes worn by the player closest to the camera?
+ ","
+""카메라에 가장 가까이 있는 선수가 신는 신발의 기본 색상은 무엇인가요?
+옵션: A: 노란색, B: 검은색, C: 회색, D: 주황색"""," A: Yellow, B: Black, C: Gray, D: Orange",choice,,,
+63,coarse perception,image scene and topic,144.0,"Which object is the most central in the image?
+ ","
+이미지에서 가장 중심이 되는 물체는 무엇입니까?
+옵션: A: 흰색 드레스를 입은 여자, B: 축제에서 레드카펫 위에서 흰색 드레스를 입은 배우, C: 냉장고, D: 레드카펫"""," A: Woman in white dress, B: Actor in a white dress on the red carpet at a festival, C: Refrigerator, D: Red Carpet",choice,,,
+64,coarse perception,image scene and topic,145.0,"Which of the following best describes the view from the deck?
+ ","
+다음 중 갑판에서 본 경치를 가장 잘 설명하는 것은?
+옵션: A: 숲의 전망, B: 도시 경관의 전망, C: 산의 전망, D: 수역의 전망"""," A: A view of a forest, B: A view of the cityscape, C: A view of the mountains, D: A view of a body of water",choice,,,
+65,instance reasoning,single-instance reasoning,659.0,"Where is the lamp in the living room?
+ ","거실의 램프는 어디에 있나요?
+옵션: A: 커피 테이블 위에, B: 창턱 위에, C: 끝 테이블 위에, D: 바닥에."""," A: On the coffee table, B: On the windowsill, C: On the end table, D: On the floor",choice,,,
+66,instance reasoning,single-instance reasoning,660.0,"Where is the man playing the guitar located on the stage?
+ ","
+기타를 연주하는 남자는 무대 어디에 있나요?
+옵션: A: 무대 왼쪽, B: 무대 중앙, C: 무대 오른쪽, D: 마이크 뒤"""," A: Left side of the stage, B: Middle of the stage, C: Right side of the stage, D: Behind the microphones",choice,,,
+67,coarse perception,image scene and topic,31.0,"How many police officers are in the image?
+ ","
+이미지에 경찰관이 몇 명 있습니까?
+옵션: A: 1, B: 0, C: 2, D: 3"""," A: 1, B: 0, C: 2, D: 3",choice,,,
+68,coarse perception,image scene and topic,33.0,"What color dominates the logo seen on the wall?
+ ","""벽에 보이는 로고는 어떤 색이 지배적인가요?
+옵션: A: 빨간색, B: 흑백, C: 노란색, D: 파란색"""," A: Red, B: Black and White, C: Yellow, D: Blue",choice,,,
+69,coarse perception,image scene and topic,99.0,"What is the predominant feature in the image?
+ ","
+이미지의 주요 특징은 무엇입니까?
+옵션: A: 집, B: 하늘, C: 산, D: 나무"""," A: Houses, B: The Sky, C: Mountains, D: Trees",choice,,,
+70,coarse perception,image scene and topic,61.0,"What is the main feature in the background of the image?
+ ","
+이미지 배경의 주요 특징은 무엇입니까?
+옵션: A: 물가 근처의 공원 벤치. B: 벤치에 앉아 있는 커플. C: 수역과 금문교. D: 멀리 산."""," A: A park bench near the water., B: A couple sitting on a bench., C: A body of water and the Golden Gate Bridge., D: A mountain in the distance.",choice,,,
+71,coarse perception,image scene and topic,37.0,"What is the center of focus in the image?
+ ","
+이미지의 초점은 무엇입니까?
+옵션: A: 책에 글을 쓰는 남자, B: 책에 둘러싸여 머리를 손에 들고 있는 소년, C: 책과 펜으로 어수선한 책상, D: 젊은이의 얼굴을 덮고 있는 책 더미."""," A: A man writing in a book, B: A boy with his head in his hands surrounded by books, C: A cluttered desk with books and a pen, D: A stack of books covering a young man's face",choice,,,
+72,fine-grained perception,object counting,249.0,"How many balls are on the table?
+ ","
+테이블 위에 공이 몇 개 있나요?
+옵션: A: 6, B: 4, C: 5, D: 3"""," A: 6, B: 4, C: 5, D: 3",choice,,,
+73,fine-grained perception,recognition,353.0,"What color are the man's shoes?
+ ","
+남자의 신발은 어떤 색인가요?
+옵션: A: 회색, B: 갈색, C: 파란색, D: 검은색"""," A: Gray, B: Brown, C: Blue, D: Black",choice,,,
+74,fine-grained perception,object counting,329.0,"How many women are sitting at the table in the image?
+ ","
+이미지에서 테이블에 앉아 있는 여성은 몇 명입니까?
+옵션: A: 하나, B: 둘, C: 넷, D: 셋"""," A: One, B: Two, C: Four, D: Three",choice,,,
+75,fine-grained perception,recognition,347.0,"Is there a person walking in the image?
+ ","
+이미지 속에 걸어가는 사람이 있나요?
+옵션: A: 이미지가 너무 흐릿해서 알 수 없어요, B: 아니요, C: 한 사람 이상이 걷고 있어요, D: 네."""," A: The image is too blurry to tell, B: No, C: There is more than one person walking, D: Yes",choice,,,
+76,fine-grained perception,object counting,247.0,"How many apples are there in the image? And how many bananas are there?
+ ","
+이미지에 사과가 몇 개 있나요? 바나나는 몇 개인가요?
+옵션: A: 사과 4개와 바나나 2개, B: 사과 3개와 바나나 3개, C: 사과 2개와 바나나 4개, D: 사과 4개와 바나나 1개"""," A: 4 apples and 2 bananas, B: 3 apples and 3 banana, C: 2 apples and 4 bananas, D: 4 apples and 1 bananas",choice,,,
+77,logical reasoning,common reasoning,809.0,"What's the profession of the people in this picture?
+ ","
+이 사진 속 사람들의 직업은 무엇인가요?
+옵션: A: 트레이너, B: 화학자, C: 뮤지션, D: 피아니스트"""," A: trainer, B: chemist, C: musician, D: pianist",choice,,,
+78,coarse perception,image scene and topic,88.0,"What is the occasion depicted in the image?
+ ","
+이미지에 묘사된 사건은 무엇입니까?
+옵션: A: 새해 전야 축하 행사, B: 크리스마스 전야 파티, C: 생일 축하 행사, D: 결혼식 피로연"""," A: New Year's Eve celebration, B: Christmas Eve party, C: Birthday celebration, D: Wedding reception",choice,,,
+79,fine-grained perception,recognition,393.0,"What is the color of the shirt worn by the baseball player standing on the right side of the image?
+ ","
+""이미지 오른쪽에 서 있는 야구 선수가 입은 셔츠의 색상은 무엇입니까?
+옵션: A: 파란색, B: 흰색, C: 검은색, D: 회색"""," A: Blue, B: White, C: Black, D: Gray",choice,,,
+80,coarse perception,image scene and topic,100.0,"What is the predominant feature of the forest in the image?
+ ","
+이미지에서 숲의 주요 특징은 무엇입니까?
+옵션: A: 땅이 건조하고 갈색 흙으로 덮여 있습니다. B: 나무는 모두 높고 잎이 없는 맨살입니다. C: 나무는 녹색 담쟁이덩굴과 덩굴식물로 덮여 있습니다. D: 나무의 껍질은 하얗고 벗겨져 있습니다."""," A: The ground is dry and covered in brown dirt, B: The trees are all tall and bare with no leaves, C: The trees are covered in green ivy and climbing vines, D: The bark on the trees is white and peeling",choice,,,
+81,coarse perception,image scene and topic,113.0,"What is the relative position of the man and the child in this image?
+ ","
+이 이미지에서 남자와 아이의 상대적 위치는 무엇입니까?
+옵션: A: 남자와 아이가 틀을 벗어났습니다. B: 남자는 아이 옆에 서 있습니다. C: 남자는 아이를 안고 있고, D: 남자는 아이와 떨어져 서 있습니다."""," A: The man and the child are out of frame, B: The man is standing next to the child, C: The man is holding the child, D: The man is standing apart from the child",choice,,,
+82,coarse perception,image scene and topic,147.0,"Which of the following captions best describes this image?
+ ","
+다음 캡션 중 이 이미지를 가장 잘 설명하는 것은?
+옵션: A: 모닥불 주위에 앉아 있는 사람들, B: 호수에서 카약을 타는 사람, C: 공원에서 피크닉을 하는 가족, D: 산길을 하이킹하는 사람."""," A: A group of people sitting around a campfire, B: A person kayaking on a lake, C: A family having a picnic in a park, D: A person hiking on a mountain trail",choice,,,
+83,fine-grained perception,recognition,397.0,"What is the color of the watch worn by a person in the image?
+ ","
+이미지 속 사람이 착용한 시계의 색상은 무엇입니까?
+옵션: A: 흰색, B: 검은색, C: 은색, D: 금색"""," A: White, B: Black, C: Silver, D: Gold",choice,,,
+84,fine-grained perception,recognition,360.0,"What color is the microphone in the image?
+ ","
+이미지 속 마이크는 어떤 색인가요?
+옵션: A: 실버, B: 화이트, C: 블랙, D: 레드"""," A: Silver, B: White, C: Black, D: Red",choice,,,
+85,fine-grained perception,object counting,315.0,"How many tables are there in the room?
+ ","
+방에 테이블이 몇 개 있습니까?
+옵션: A: 테이블 4개, B: 테이블 2개, C: 테이블 3개, D: 테이블 1개"""," A: Four tables, B: Two tables, C: Three tables, D: One table",choice,,,
+86,fine-grained perception,object counting,307.0,"How many pillows can be seen in the bedroom?
+ ","
+침실에 베개가 몇 개나 보이나요?
+옵션: A: 5, B: 4, C: 3, D: 6"""," A: 5, B: 4, C: 3, D: 6",choice,,,
+87,fine-grained perception,object counting,260.0,"How many colors are the eyes of the depicted animals?
+ ","
+묘사된 동물들의 눈은 몇 가지 색입니까?
+옵션: A: 둘, B: 하나, C: 셋, D: 넷"""," A: Two, B: One, C: Three, D: Four",choice,,,
+88,fine-grained perception,recognition,431.0,"What type of ball is being held by the player?
+ ","선수는 어떤 종류의 공을 들고 있나요?
+ 옵션: A: 테니스 공, B: 농구공, C: 배구공, D: 축구공"""," A: A tennis ball, B: A basketball, C: A volleyball, D: A soccer ball",choice,,,
+89,fine-grained perception,localization,212.0,"What is the position of the person on stage?
+ ","
+무대 위에 있는 사람의 위치는 무엇입니까?
+ 옵션: A: 왼쪽에 서서, B: 가운데에 앉아, C: 앞쪽 바닥에 앉아, D: 오른쪽 기타에 기대어"""," A: Standing on the left side, B: Seated in the center, C: Sitting on the floor in front, D: Leaning on the guitar on the right side",choice,,,
+90,fine-grained perception,localization,219.0,"Where is it?
+ ","어디에 있나요?
+ 옵션: A: 상하이, B: 시안, C: 우한, D: 난징""
+"," A: Shanghai, B: Xi'an, C: Wuhan, D: Nanjing",choice,,,
+91,fine-grained perception,recognition,386.0,"What is the color of the number on the red and blue jersey in the image?
+ ","""이미지에서 빨간색과 파란색 유니폼의 숫자 색상은 무엇입니까?
+ 옵션: A: 파란색, B: 빨간색, C: 주황색, D: 검은색"""," A: Blue, B: Red, C: Orange, D: Black",choice,,,
+92,fine-grained perception,object counting,330.0,"How many wooden objects are in the image?
+ ","
+이미지에는 몇 개의 나무 물체가 있습니까?
+ 옵션: A: 1, B: 2, C: 3, D: 4"""," A: 1, B: 2, C: 3, D: 4",choice,,,
+93,fine-grained perception,object counting,319.0,"How many tires can be seen in the image?
+ ","
+이미지에서 몇 개의 타이어를 볼 수 있습니까?
+ 옵션: A: 4, B: 3, C: 5, D: 6"""," A: 4, B: 3, C: 5, D: 6",choice,,,
+94,fine-grained perception,recognition,447.0,"Who is the person in this image?
+ ","
+이 이미지 속 인물은 누구인가요?
+ 옵션: A: 코비 브라이언트, B: 징 우, C: 모건 프리먼, D: 제이 추"""," A: Kobe Bryant, B: Jing Wu, C: Morgan Freeman, D: Jay Chou",choice,,,
+95,fine-grained perception,recognition,442.0,"Which scene category matches this image the best?
+ ","
+이 이미지와 가장 잘 어울리는 장면 카테고리는 무엇인가요?
+ 옵션: A: 숲_길, B: 박물관/실내, C: 창고_방, D: 골목""
+"," A: forest_path, B: museum/indoor, C: storage_room, D: alley",choice,,,
+96,fine-grained perception,recognition,383.0,"What is the color of the lettering on the green sign in the image?
+ ","이미지의 녹색 표지판에 있는 글자의 색상은 무엇입니까?
+ 옵션: A: 검정, B: 파랑, C: 노랑, D: 흰색"""," A: Black, B: Blue, C: Yellow, D: White",choice,,,
+97,fine-grained perception,recognition,375.0,"What is the color of the couch in the image?
+ ","
+이미지 속 소파의 색상은 무엇인가요?
+ 옵션: A: 베이지, B: 브라운, C: 탄, D: 그레이"""," A: Beige, B: Brown, C: Tan, D: Gray",choice,,,
+98,fine-grained perception,object counting,292.0,"How many people are present in the image?
+ ","
+이미지에 몇 명이 있나요?
+ 옵션: A: 하나, B: 셋, C: 둘, D: 넷"""," A: One, B: Three, C: Two, D: Four",choice,,,
+99,fine-grained perception,recognition,401.0,"What is the color scheme of the costumes worn by the men in the parade?
+ ","퍼레이드에 참가한 남자들이 입은 의상의 색상 구성은 무엇입니까?
+ 옵션: A: 노란색, 빨간색, 금색, B: 빨간색, 파란색, 검은색, C: 녹색, 주황색, 흰색, D: 검은색, 흰색, 회색"""," A: Yellow, red, and gold, B: Red, blue, and black, C: Green, orange, and white, D: Black, white, and gray",choice,,,
+1101,fine-grained perception,object counting,295.0,"How many people are standing on the stage in the image?
+ ",," A: One, B: More than three, C: Three, D: Two",choice,"How many people are standing on the stage in the image?
+ Options: A: One, B: More than three, C: Three, D: Two",D,0.0833333333333333
+1229,instance reasoning,cross-instance attribute reasoning,493.0,"What is the relative position of the man and woman in the image?
+ ",," A: They are facing each other, B: They are both facing forward, C: They are both facing the camera, D: They are both looking away from the camera",choice,"What is the relative position of the man and woman in the image?
+ Options: A: They are facing each other, B: They are both facing forward, C: They are both facing the camera, D: They are both looking away from the camera",D,0.0
+1037,logical reasoning,diagram reasoning,819.0,"<image 1> is the HRM Roles, David Ulrich (1997) model. According to Ulrich, if HR is to become and remain relevant in the current business environment, what is not something HR professionals must learn?
+ ",," A: Manage human resources operations and infrastructure, B: Become the link between human resources and organizational strategy, C: Optimize the value of employees, D: Be a change agent with a long-term vision for the organization",choice,"<image 1> is the HRM Roles, David Ulrich (1997) model. According to Ulrich, if HR is to become and remain relevant in the current business environment, what is not something HR professionals must learn?
+ Options: A: Manage human resources operations and infrastructure, B: Become the link between human resources and organizational strategy, C: Optimize the value of employees, D: Be a change agent with a long-term vision for the organization",C,0.0909090909090909
+593,logical reasoning,diagram reasoning,919.0,"Which month has the lowest average precipitation in London?
+ ",," A: July, B: February, C: November, D: nan",choice,"Which month has the lowest average precipitation in London?
+ Options: A: July, B: February, C: November, D: nan",A,0.2
+1283,instance reasoning,single-instance reasoning,609.0,"What is the dominant material of the cabinets in the image?
+ ",," A: Ceramic, B: Metal, C: Wood, D: Glass",choice,"What is the dominant material of the cabinets in the image?
+ Options: A: Ceramic, B: Metal, C: Wood, D: Glass",A,0.0
+9,instance reasoning,cross-instance relation reasoning,569.0,"Which property do these three objects have in common?
+ ",," A: blue, B: smooth, C: flexible, D: nan",choice,"Which property do these three objects have in common?
+ Options: A: blue, B: smooth, C: flexible, D: nan",B,0.727272727272727
+877,science & technology,biology & chemistry & physics,1247.0,"What is H in the diagram?
+ ",," A: pith, B: protoxylem, C: cambium, D: metaxylem",choice,"What is H in the diagram?
+ Options: A: pith, B: protoxylem, C: cambium, D: metaxylem",A,0.1
+1269,instance reasoning,single-instance reasoning,660.0,"Where is the man playing the guitar located on the stage?
+ ",," A: Left side of the stage, B: Middle of the stage, C: Right side of the stage, D: Behind the microphones",choice,"Where is the man playing the guitar located on the stage?
+ Options: A: Left side of the stage, B: Middle of the stage, C: Right side of the stage, D: Behind the microphones",D,0.0
+1102,coarse perception,image style & quality,168.0,"Which category does this image belong to?
+ ",," A: MRI image, B: icon, C: microscopic image, D: abstract painting",choice,"Which category does this image belong to?
+ Options: A: MRI image, B: icon, C: microscopic image, D: abstract painting",A,0.0833333333333333
+210,science & technology,geography & earth science & agriculture,1411.0,"Which label indicates the earth's gravitational pull on the moon?
+ ",," A: D, B: A, C: B, D: E",choice,"Which label indicates the earth's gravitational pull on the moon?
+ Options: A: D, B: A, C: B, D: E",A,0.4
+1271,instance reasoning,single-instance reasoning,669.0,"Which is right?
+ ",," A: The orange is next to the apple, B: The apple is on the left, C: The orange is on the right, D: All above are not right",choice,"Which is right?
+ Options: A: The orange is next to the apple, B: The apple is on the left, C: The orange is on the right, D: All above are not right",A,0.0
+402,science & technology,biology & chemistry & physics,1214.0,"Leaf B is of which plant?
+ ",," A: Celtis, B: Stem, C: Ulmus, D: Lotus",choice,"Leaf B is of which plant?
+ Options: A: Celtis, B: Stem, C: Ulmus, D: Lotus",A,0.3
+885,science & technology,biology & chemistry & physics,1215.0,"Letter A in the following diagram represents which stage?
+ ",," A: attached planula, B: polyp, C: ephyra, D: planula",choice,"Letter A in the following diagram represents which stage?
+ Options: A: attached planula, B: polyp, C: ephyra, D: planula",C,0.1
+534,fine-grained perception,object counting,248.0,"How many archways are there in the image?
+ ",," A: One, B: Four, C: Three, D: Two",choice,"How many archways are there in the image?
+ Options: A: One, B: Four, C: Three, D: Two",D,0.25
+518,fine-grained perception,recognition,395.0,"What is the color of the socks detected in the attribute detection of the image?
+ ",," A: Black, B: Red, C: White, D: Striped",choice,"What is the color of the socks detected in the attribute detection of the image?
+ Options: A: Black, B: Red, C: White, D: Striped",C,0.25
+636,logical reasoning,diagram reasoning,882.0,"In the diagram shown, which organism consumes small fish as food?
+ ",," A: mahi mahi, B: large shark, C: zooplankton, D: mackerel",choice,"In the diagram shown, which organism consumes small fish as food?
+ Options: A: mahi mahi, B: large shark, C: zooplankton, D: mackerel",D,0.2
+395,science & technology,electronics & energy & mechanical eng.,1327.0,"<image 1>The accompanying sketch shows the schematic arrangement for measuring the thermal conductivity by the guarded hot plate method. Two similar 1 cm thick specimens receive heat from a 6.5 cm by 6.5 cm guard heater. When the power dissipation by the wattmeter was 15 W, the thermocouples inserted at the hot and cold surfaces indicated temperatures as 325 K and 300 K. What is the thermal conductivity of the test specimen material?
+ ",," A: 0.81 W/m K, B: 0.71 W/m K, C: 0.61 W/m K, D: 0.51 W/m K",choice,"<image 1>The accompanying sketch shows the schematic arrangement for measuring the thermal conductivity by the guarded hot plate method. Two similar 1 cm thick specimens receive heat from a 6.5 cm by 6.5 cm guard heater. When the power dissipation by the wattmeter was 15 W, the thermocouples inserted at the hot and cold surfaces indicated temperatures as 325 K and 300 K. What is the thermal conductivity of the test specimen material?
+ Options: A: 0.81 W/m K, B: 0.71 W/m K, C: 0.61 W/m K, D: 0.51 W/m K",B,0.3
+819,fine-grained perception,localization,221.0,"Where is the drum located in the image?
+ ",," A: In the back, B: On the left side, C: On the right side, D: At the center",choice,"Where is the drum located in the image?
+ Options: A: In the back, B: On the left side, C: On the right side, D: At the center",C,0.166666666666667
+933,science & technology,electronics & energy & mechanical eng.,1367.0,"Which schedule is an equivalent serial schedule for the precendence graph in <image 1>?
+ ",," A: T3 -> T1 -> T2, B: T2 -> T1 -> T3, C: T1 -> T2 -> T3, D: There are no serial schedules for the graph.",choice,"Which schedule is an equivalent serial schedule for the precendence graph in <image 1>?
+ Options: A: T3 -> T1 -> T2, B: T2 -> T1 -> T3, C: T1 -> T2 -> T3, D: There are no serial schedules for the graph.",D,0.1
+495,logical reasoning,code & sequence reasoning,711.0,"Which Python code can generate the content of the image?
+ ",," A: from collections import Counter
+ result = Counter('Canada')
+ print(result), B: from collections import Counter
+ result = Counter('strawberry')
+ print(result), C: from collections import Counter
+ result = Counter('banana')
+ print(result), D: from collections import Counter
+ result = Counter('apple')
+ print(result)",choice,"Which Python code can generate the content of the image?
+ Options: A: from collections import Counter
+ result = Counter('Canada')
+ print(result), B: from collections import Counter
+ result = Counter('strawberry')
+ print(result), C: from collections import Counter
+ result = Counter('banana')
+ print(result), D: from collections import Counter
+ result = Counter('apple')
+ print(result)",C,0.272727272727273
+581,coarse perception,image scene and topic,54.0,"What is the general theme of this image?
+ ",," A: Candy buffet, B: Ice cream sundae, C: Yogurt containers, D: Fruit desserts",choice,"What is the general theme of this image?
+ Options: A: Candy buffet, B: Ice cream sundae, C: Yogurt containers, D: Fruit desserts",B,0.230769230769231
+84,instance reasoning,cross-instance relation reasoning,551.0,"What can Rosa and Kylie trade to each get what they want?
+ ",," A: Kylie can trade her almonds for Rosa's tomatoes., B: Rosa can trade her tomatoes for Kylie's broccoli., C: Rosa can trade her tomatoes for Kylie's carrots., D: Kylie can trade her broccoli for Rosa's oranges.",choice,"What can Rosa and Kylie trade to each get what they want?
+ Options: A: Kylie can trade her almonds for Rosa's tomatoes., B: Rosa can trade her tomatoes for Kylie's broccoli., C: Rosa can trade her tomatoes for Kylie's carrots., D: Kylie can trade her broccoli for Rosa's oranges.",B,0.545454545454545
+258,math,statistical reasoning,1178.0,"You are asked to compare two options with parameters as given. The risk-free interest rate should be assumed to be 6%. Assume the stocks on which these options are written pay no dividends. <image 1> Which put option must be written on the stock with the lower price?
+ ",," A: A, B: B, C: Not enough information, D: nan",choice,"You are asked to compare two options with parameters as given. The risk-free interest rate should be assumed to be 6%. Assume the stocks on which these options are written pay no dividends. <image 1> Which put option must be written on the stock with the lower price?
+ Options: A: A, B: B, C: Not enough information, D: nan",B,0.4
+1225,instance reasoning,cross-instance attribute reasoning,504.0,"Where is the top of the purple bottle in relation to the man with the guitar?
+ ",," A: Beside him, B: Above him, C: Below him, D: On his head",choice,"Where is the top of the purple bottle in relation to the man with the guitar?
+ Options: A: Beside him, B: Above him, C: Below him, D: On his head",A,0.0
+399,logical reasoning,diagram reasoning,913.0,"Which country is highlighted?
+ ",," A: Saint Lucia, B: Jamaica, C: Haiti, D: Cuba",choice,"Which country is highlighted?
+ Options: A: Saint Lucia, B: Jamaica, C: Haiti, D: Cuba",B,0.3
+400,science & technology,biology & chemistry & physics,1196.0,"From the above food web diagram, if all th bettle dies then
+ ",," A: guava increases, B: fungi decreases, C: bacteria increases, D: guava decreases",choice,"From the above food web diagram, if all th bettle dies then
+ Options: A: guava increases, B: fungi decreases, C: bacteria increases, D: guava decreases",A,0.3
+695,science & technology,biology & chemistry & physics,1230.0,"The manufacture of compound F requires five separate chemical reactions. The initial reactant, compound A, is converted to compound B, compound B is converted to compound C, and so on. The diagram below summarizes the steps in the manufacture of compound F, including the percent yield for each step. Provide the missing quantities or missing percent yields.Assume that the reactant and product in each step react in a one-to-one mole ratio. <image 1>
+ ",," A: 20.0%,0.50 mol,0.05 mol,20.0%, B: 30.0%,0.50 mol,0.05 mol,20.0%, C: 40.0%,0.50 mol,0.05 mol,20.0%, D: 50.0%,0.50 mol,0.05 mol,20.0%",choice,"The manufacture of compound F requires five separate chemical reactions. The initial reactant, compound A, is converted to compound B, compound B is converted to compound C, and so on. The diagram below summarizes the steps in the manufacture of compound F, including the percent yield for each step. Provide the missing quantities or missing percent yields.Assume that the reactant and product in each step react in a one-to-one mole ratio. <image 1>
+ Options: A: 20.0%,0.50 mol,0.05 mol,20.0%, B: 30.0%,0.50 mol,0.05 mol,20.0%, C: 40.0%,0.50 mol,0.05 mol,20.0%, D: 50.0%,0.50 mol,0.05 mol,20.0%",D,0.2
+194,instance reasoning,single-instance reasoning,651.0,"What's the profession of the people in this picture?
+ ",," A: mason, B: nurse, C: pilot, D: policeman",choice,"What's the profession of the people in this picture?
+ Options: A: mason, B: nurse, C: pilot, D: policeman",D,0.454545454545455
+615,science & technology,biology & chemistry & physics,1312.0,"Which picture represents Aculeate?
+ ",," A: G, B: F, C: C, D: N",choice,"Which picture represents Aculeate?
+ Options: A: G, B: F, C: C, D: N",B,0.2
+700,logical reasoning,common reasoning,801.0,"What will happen next?
+ ",," A: the girls is gonna turn the pan around, B: the pan itself is gonna fly into the woman's face, C: nothing is gonna happen, D: both A,B, and C",choice,"What will happen next?
+ Options: A: the girls is gonna turn the pan around, B: the pan itself is gonna fly into the woman's face, C: nothing is gonna happen, D: both A,B, and C",B,0.2
+429,science & technology,biology & chemistry & physics,1257.0,"What is the ATP in the diagram?
+ ",," A: B, B: A, C: D, D: none of the above",choice,"What is the ATP in the diagram?
+ Options: A: B, B: A, C: D, D: none of the above",A,0.3
+98,instance reasoning,single-instance reasoning,626.0,"What's the function of the demonstrated object?
+ ",," A: clean, B: measurement, C: Bulldozing, D: Cutting platform",choice,"What's the function of the demonstrated object?
+ Options: A: clean, B: measurement, C: Bulldozing, D: Cutting platform",D,0.545454545454545
+324,fine-grained perception,recognition,370.0,"What color is the writing on the sign in the image?
+ ",," A: White, B: Green, C: Red, D: Black",choice,"What color is the writing on the sign in the image?
+ Options: A: White, B: Green, C: Red, D: Black",D,0.333333333333333
+696,math,statistical reasoning,1175.0,"The Booth Company's sales are forecasted to double from $1,000 in 2010 to $2,000 in 2011. Here is the December 31, 2010, balance sheet: <image 1> Booth's fixed assets were used to only 50% of capacity during 2010, but its current assets were at their proper levels in relation to sales. All assets except fixed assets must increase at the same rate as sales, and fixed assets would also have to increase at the same rate if the current excess capacity did not exist. Booth's after-tax profit margin is forecasted to be 5% and its payout ratio to be 60%. What is Booth's additional funds needed (AFN) for the coming year?
+ ",," A: 360, B: Other Answers, C: nan, D: nan",choice,"The Booth Company's sales are forecasted to double from $1,000 in 2010 to $2,000 in 2011. Here is the December 31, 2010, balance sheet: <image 1> Booth's fixed assets were used to only 50% of capacity during 2010, but its current assets were at their proper levels in relation to sales. All assets except fixed assets must increase at the same rate as sales, and fixed assets would also have to increase at the same rate if the current excess capacity did not exist. Booth's after-tax profit margin is forecasted to be 5% and its payout ratio to be 60%. What is Booth's additional funds needed (AFN) for the coming year?
+ Options: A: 360, B: Other Answers, C: nan, D: nan",A,0.2
+996,science & technology,biology & chemistry & physics,1270.0,"What stage does D depict
+ ",," A: Chrysalis, B: Egg, C: Caterpillar, D: Butterfly",choice,"What stage does D depict
+ Options: A: Chrysalis, B: Egg, C: Caterpillar, D: Butterfly",B,0.1
+685,science & technology,electronics & energy & mechanical eng.,1332.0,"Among the following binary trees, which one may become a binary search decision tree (excluding external nodes)
+ ",," A: <image 1>, B: <image 2>, C: <image 3>, D: <image 4>",choice,"Among the following binary trees, which one may become a binary search decision tree (excluding external nodes)
+ Options: A: <image 1>, B: <image 2>, C: <image 3>, D: <image 4>",A,0.2
+787,fine-grained perception,recognition,425.0,"What is the shape of the window on the building in the image?
+ ",," A: Square, B: Rectangle, C: Circle, D: Triangle",choice,"What is the shape of the window on the building in the image?
+ Options: A: Square, B: Rectangle, C: Circle, D: Triangle",C,0.166666666666667
+1160,instance reasoning,cross-instance relation reasoning,543.0,"In nature, what's the relationship between these two creatures?
+ ",," A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship",choice,"In nature, what's the relationship between these two creatures?
+ Options: A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship",B,0.0606060606060606
+758,instance reasoning,single-instance reasoning,663.0,"Where is the sheep?
+ ",," A: The sheep is behind the car, B: The sheep is in the front of the car, C: The sheep is on the right of the car, D: The sheep is on the left of the car",choice,"Where is the sheep?
+ Options: A: The sheep is behind the car, B: The sheep is in the front of the car, C: The sheep is on the right of the car, D: The sheep is on the left of the car",B,0.181818181818182
+224,coarse perception,image style & quality,181.0,"Which image is more brightful?
+ ",," A: The first image, B: The second image, C: nan, D: nan",choice,"Which image is more brightful?
+ Options: A: The first image, B: The second image, C: nan, D: nan",B,0.4
+296,instance reasoning,cross-instance attribute reasoning,510.0,"Which image shows the highest sharpness?
+ ",," A: upper left, B: upper right, C: down left, D: down right",choice,"Which image shows the highest sharpness?
+ Options: A: upper left, B: upper right, C: down left, D: down right",B,0.363636363636364
+744,instance reasoning,cross-instance attribute reasoning,511.0,"Which image shows the highest sharpness?
+ ",," A: upper left, B: upper right, C: down left, D: down right",choice,"Which image shows the highest sharpness?
+ Options: A: upper left, B: upper right, C: down left, D: down right",C,0.181818181818182
+1105,fine-grained perception,object counting,278.0,"How many pairs of shoes can be seen in the image?
+ ",," A: One, B: Three, C: Two, D: Cannot be determined",choice,"How many pairs of shoes can be seen in the image?
+ Options: A: One, B: Three, C: Two, D: Cannot be determined",A,0.0833333333333333
+274,coarse perception,image scene and topic,24.0,"Based on the image, which statement best describes the likely purpose of the setting?
+ ",," A: A photoshoot for greeting cards, B: A scientific research site, C: A festive celebration, D: A picnic spot for a group of people",choice,"Based on the image, which statement best describes the likely purpose of the setting?
+ Options: A: A photoshoot for greeting cards, B: A scientific research site, C: A festive celebration, D: A picnic spot for a group of people",A,0.384615384615385
+532,fine-grained perception,object counting,245.0,"How many angels have halos?
+ ",," A: Two, B: One, C: nan, D: Three",choice,"How many angels have halos?
+ Options: A: Two, B: One, C: nan, D: Three",D,0.25
+480,instance reasoning,single-instance reasoning,655.0,"What's the profession of the people in this picture?
+ ",," A: photographer, B: chemist, C: repairman, D: pianist",choice,"What's the profession of the people in this picture?
+ Options: A: photographer, B: chemist, C: repairman, D: pianist",C,0.272727272727273
+814,fine-grained perception,localization,231.0,"Where is the table in relation to the balcony?
+ ",," A: On the right side of the balcony, B: In the center of the balcony, C: On the left side of the balcony, D: Cannot be determined from the information given",choice,"Where is the table in relation to the balcony?
+ Options: A: On the right side of the balcony, B: In the center of the balcony, C: On the left side of the balcony, D: Cannot be determined from the information given",B,0.166666666666667
+867,science & technology,biology & chemistry & physics,1194.0,"Consider the molecule in blue bound to a binding site. Identify the binding interactions taking place at ii shown in red. <image 1>
+ ",," A: hydrogen bonds, B: ionic bonds, C: van der Waals interactions, D: nan",choice,"Consider the molecule in blue bound to a binding site. Identify the binding interactions taking place at ii shown in red. <image 1>
+ Options: A: hydrogen bonds, B: ionic bonds, C: van der Waals interactions, D: nan",B,0.1
+746,instance reasoning,single-instance reasoning,629.0,"What's the function of the demonstrated object?
+ ",," A: excavate, B: transport, C: weld, D: Measure the level",choice,"What's the function of the demonstrated object?
+ Options: A: excavate, B: transport, C: weld, D: Measure the level",A,0.181818181818182
+823,fine-grained perception,localization,215.0,"What is the position of the sheep's legs in the image?
+ ",," A: At the top, B: On the right side, C: On the left side, D: At the bottom",choice,"What is the position of the sheep's legs in the image?
+ Options: A: At the top, B: On the right side, C: On the left side, D: At the bottom",B,0.166666666666667
+132,logical reasoning,diagram reasoning,924.0,"Which solution has a higher concentration of green particles?
+ ",," A: neither; their concentrations are the same, B: Solution A, C: Solution B, D: nan",choice,"Which solution has a higher concentration of green particles?
+ Options: A: neither; their concentrations are the same, B: Solution A, C: Solution B, D: nan",B,0.5
+1127,fine-grained perception,recognition,441.0,"Which of these cities is marked on the map?
+ ",," A: New York City, B: Washington, D.C., C: Philadelphia, D: Boston",choice,"Which of these cities is marked on the map?
+ Options: A: New York City, B: Washington, D.C., C: Philadelphia, D: Boston",C,0.0833333333333333
+391,science & technology,geography & earth science & agriculture,1403.0,"Which country is highlighted?
+ ",," A: Dominica, B: Antigua and Barbuda, C: Barbados, D: Saint Kitts and Nevis",choice,"Which country is highlighted?
+ Options: A: Dominica, B: Antigua and Barbuda, C: Barbados, D: Saint Kitts and Nevis",B,0.3
+387,science & technology,geography & earth science & agriculture,1374.0,"What does D depict in the diagram?
+ ",," A: 4th quarter, B: 1st quarter, C: 3rd quarter, D: none of the above",choice,"What does D depict in the diagram?
+ Options: A: 4th quarter, B: 1st quarter, C: 3rd quarter, D: none of the above",C,0.3
+306,instance reasoning,cross-instance attribute reasoning,494.0,"What is the relative position of the man holding a guitar and the woman on stage?
+ ",," A: The man is behind the woman, B: The man is to the right of the woman, C: The man is to the left of the woman, D: The man is in front of the woman",choice,"What is the relative position of the man holding a guitar and the woman on stage?
+ Options: A: The man is behind the woman, B: The man is to the right of the woman, C: The man is to the left of the woman, D: The man is in front of the woman",B,0.363636363636364
+961,science & technology,geography & earth science & agriculture,1376.0,"What does letter E depict?
+ ",," A: waning gibbous, B: first quarter, C: waxing gibbous, D: last quarter",choice,"What does letter E depict?
+ Options: A: waning gibbous, B: first quarter, C: waxing gibbous, D: last quarter",D,0.1
+197,coarse perception,image scene and topic,46.0,"What is the dominant color of the image?
+ ",," A: White, B: Brown, C: Gray, D: Green",choice,"What is the dominant color of the image?
+ Options: A: White, B: Brown, C: Gray, D: Green",A,0.416666666666667
+1080,fine-grained perception,object counting,287.0,"How many people are playing music in the image?
+ ",," A: One, B: Two, C: Three, D: Four",choice,"How many people are playing music in the image?
+ Options: A: One, B: Two, C: Three, D: Four",D,0.0833333333333333
+204,fine-grained perception,localization,239.0,"where is the cat?
+ ",," A: top-right, B: top-left, C: bottom-left, D: bottom-right",choice,"where is the cat?
+ Options: A: top-right, B: top-left, C: bottom-left, D: bottom-right",B,0.416666666666667
+375,science & technology,biology & chemistry & physics,1263.0,"What is the probability that a sheep produced by this cross will be homozygous dominant for the wool color gene?
+ ",," A: 2/4, B: 1/4, C: 0/4, D: 3/4",choice,"What is the probability that a sheep produced by this cross will be homozygous dominant for the wool color gene?
+ Options: A: 2/4, B: 1/4, C: 0/4, D: 3/4",C,0.3
+6,coarse perception,image emotion,3.0,"What feeling is represented in this image?
+ ",," A: engaged, B: disordered, C: angry, D: supportive",choice,"What feeling is represented in this image?
+ Options: A: engaged, B: disordered, C: angry, D: supportive",B,0.75
+140,science & technology,biology & chemistry & physics,1278.0,"Where do the axons of this nucleus terminate? <image 1> 
+ ",," A: Muscles of pharynx and larynx., B: Postganglionic parasympathetic cell bodies., C: Smooth muscle of viscera., D: nan",choice,"Where do the axons of this nucleus terminate? <image 1> 
+ Options: A: Muscles of pharynx and larynx., B: Postganglionic parasympathetic cell bodies., C: Smooth muscle of viscera., D: nan",B,0.5
+1219,math,geometry,931.0,"A surveyor needs to know the distance between points C and B in Figure 2.17. A building obscures the view directly between the two points. Setting up at the end of the building at point A, the surveyor measures the two distances AC and AB, and the interior angle at A. What is the desired distance, CB?<image 1>
+ ",," A: Distance CB = 748.50', B: Distance CB = 748.70', C: Distance CB = 748.60', D: Distance CB = 748.40'",choice,"A surveyor needs to know the distance between points C and B in Figure 2.17. A building obscures the view directly between the two points. Setting up at the end of the building at point A, the surveyor measures the two distances AC and AB, and the interior angle at A. What is the desired distance, CB?<image 1>
+ Options: A: Distance CB = 748.50', B: Distance CB = 748.70', C: Distance CB = 748.60', D: Distance CB = 748.40'",D,0.0
+273,coarse perception,image scene and topic,93.0,"What is the overall theme of the image?
+ ",," A: Fashion, B: Wildlife, C: Nature, D: Photography",choice,"What is the overall theme of the image?
+ Options: A: Fashion, B: Wildlife, C: Nature, D: Photography",D,0.384615384615385
+1081,fine-grained perception,recognition,336.0,"Does the man have any facial hair?
+ ",," A: No, B: Yes, a mustache, C: Yes, a full beard, D: Yes, slight stubble",choice,"Does the man have any facial hair?
+ Options: A: No, B: Yes, a mustache, C: Yes, a full beard, D: Yes, slight stubble",B,0.0833333333333333
+627,science & technology,geography & earth science & agriculture,1418.0,"Which of the following is the magma chamber?
+ ",," A: K, B: B, C: C, D: H",choice,"Which of the following is the magma chamber?
+ Options: A: K, B: B, C: C, D: H",B,0.2
+941,science & technology,electronics & energy & mechanical eng.,1329.0,"A man at a point P on the shore of a circular lake of radius 1 mile wants to reach the point Q on the shore diametrically opposite P (Fig. 16-5). He can row 1.5 miles per hour and walk 3 miles per hour. At what angle $\theta $ ($0<\theta < \pi /2$) to the diameter PQ should he row in order to minimize the time required to reach Q? <image 1>
+ ",," A: $\theta = \pi /2$, B: $\theta = \pi /3$, C: $\theta = \pi $, D: $\theta = 2\pi $",choice,"A man at a point P on the shore of a circular lake of radius 1 mile wants to reach the point Q on the shore diametrically opposite P (Fig. 16-5). He can row 1.5 miles per hour and walk 3 miles per hour. At what angle $\theta $ ($0<\theta < \pi /2$) to the diameter PQ should he row in order to minimize the time required to reach Q? <image 1>
+ Options: A: $\theta = \pi /2$, B: $\theta = \pi /3$, C: $\theta = \pi $, D: $\theta = 2\pi $",A,0.1
+976,logical reasoning,code & sequence reasoning,705.0,"What is correct Python code to generate the content of the image?
+ ",," A: def myfunc():\n x = 300\n def myinnerfunc():\n print(x)\n myinnerfunc()\n\nmyfunc(), B: thisdict = {\n ""brand"": ""Ford"",\n ""model"": ""Mustang"",\n ""year"": 1964\n}\n\nprint(len(thisdict)), C: x = min(5, 10, 25)\ny = max(5, 10, 25)\n\nprint(x)\nprint(y), D: class Person:\n def __init__(self, name, age):\n self.name = name\n self.age = age\n\np1 = Person(""John"", 36)\n\nprint(p1.name)\nprint(p1.age)",choice,"What is correct Python code to generate the content of the image?
+ Options: A: def myfunc():\n x = 300\n def myinnerfunc():\n print(x)\n myinnerfunc()\n\nmyfunc(), B: thisdict = {\n ""brand"": ""Ford"",\n ""model"": ""Mustang"",\n ""year"": 1964\n}\n\nprint(len(thisdict)), C: x = min(5, 10, 25)\ny = max(5, 10, 25)\n\nprint(x)\nprint(y), D: class Person:\n def __init__(self, name, age):\n self.name = name\n self.age = age\n\np1 = Person(""John"", 36)\n\nprint(p1.name)\nprint(p1.age)",A,0.1
+866,logical reasoning,common reasoning,766.0,"If you were to sit on the chair closest to the window, which color would the chair be?
+ ",," A: Green, B: Blue, C: Red, D: White",choice,"If you were to sit on the chair closest to the window, which color would the chair be?
+ Options: A: Green, B: Blue, C: Red, D: White",A,0.1
+999,logical reasoning,diagram reasoning,884.0,"The diagram above represents the cycle of the Earth around the Sun, what letter represents Summer Solstice?
+ ",," A: D, B: C, C: B, D: A",choice,"The diagram above represents the cycle of the Earth around the Sun, what letter represents Summer Solstice?
+ Options: A: D, B: C, C: B, D: A",D,0.1
+739,instance reasoning,cross-instance relation reasoning,538.0,"Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?
+ ",," A: sample B, B: sample A, C: neither; the samples have the same temperature, D: nan",choice,"Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?
+ Options: A: sample B, B: sample A, C: neither; the samples have the same temperature, D: nan",A,0.181818181818182
+789,fine-grained perception,recognition,379.0,"What is the color of the eye in the mask in the image?
+ ",," A: Blue and green, B: Purple and pink, C: Brown and black, D: Yellow and black",choice,"What is the color of the eye in the mask in the image?
+ Options: A: Blue and green, B: Purple and pink, C: Brown and black, D: Yellow and black",D,0.166666666666667
+612,science & technology,geography & earth science & agriculture,1402.0,"Which area on the map shows China?
+ ",," A: B, B: C, C: D, D: A",choice,"Which area on the map shows China?
+ Options: A: B, B: C, C: D, D: A",A,0.2
+1076,fine-grained perception,object counting,279.0,"How many people are holding the flag in the street?
+ ",," A: 3, B: 2, C: 1, D: Cannot be determined",choice,"How many people are holding the flag in the street?
+ Options: A: 3, B: 2, C: 1, D: Cannot be determined",B,0.0833333333333333
+5,coarse perception,image style & quality,165.0,"What art style is evident in this image?
+ ",," A: watercolor, B: photography, C: vector art, D: pencil",choice,"What art style is evident in this image?
+ Options: A: watercolor, B: photography, C: vector art, D: pencil",C,0.75
+1323,math,statistical reasoning,1104.0,"Given the adjacency matrix of a weighted undirected graph as follows, the total weight of its minimum spanning tree is:<image 1>
+ ",," A: 22, B: 20, C: 15, D: 8",choice,"Given the adjacency matrix of a weighted undirected graph as follows, the total weight of its minimum spanning tree is:<image 1>
+ Options: A: 22, B: 20, C: 15, D: 8",D,0.0
+1153,coarse perception,image scene and topic,86.0,"What is the most prominent feature in the image?
+ ",," A: The skyline, B: The golf course, C: The trees, D: The person",choice,"What is the most prominent feature in the image?
+ Options: A: The skyline, B: The golf course, C: The trees, D: The person",C,0.0769230769230769
+1273,coarse perception,image style & quality,174.0,"Which category does this image belong to?
+ ",," A: oil painting, B: sketch, C: digital art, D: photo",choice,"Which category does this image belong to?
+ Options: A: oil painting, B: sketch, C: digital art, D: photo",A,0.0
+899,math,numeric commonsense and calculation,1092.0,"Which operation of fractions is represented by this formula?
+ ",," A: Add, B: Subtract, C: Multiply, D: Devide",choice,"Which operation of fractions is represented by this formula?
+ Options: A: Add, B: Subtract, C: Multiply, D: Devide",B,0.1
+1159,logical reasoning,common reasoning,767.0,"In nature, what's the relationship between these two creatures?
+ ",," A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship",choice,"In nature, what's the relationship between these two creatures?
+ Options: A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship",B,0.0697674418604651
+711,logical reasoning,common reasoning,805.0,"What will happen next?
+ ",," A: the person is gonna fall off the ladder, B: the person is gonna stand still on the ladder, C: someone is gonna come and hold the ladder, D: both A,B, and C",choice,"What will happen next?
+ Options: A: the person is gonna fall off the ladder, B: the person is gonna stand still on the ladder, C: someone is gonna come and hold the ladder, D: both A,B, and C",A,0.181818181818182
+697,science & technology,biology & chemistry & physics,1208.0,"In the diagram of the food web shown, what do flat fish eat as food?
+ ",," A: fan worm, B: nurse shark, C: giant clam, D: turtle grass",choice,"In the diagram of the food web shown, what do flat fish eat as food?
+ Options: A: fan worm, B: nurse shark, C: giant clam, D: turtle grass",B,0.2
+500,instance reasoning,cross-instance attribute reasoning,527.0,"Which picture depicts cell division?
+ ",," A: B, B: A, C: C, D: {}",choice,"Which picture depicts cell division?
+ Options: A: B, B: A, C: C, D: {}",C,0.272727272727273
+576,coarse perception,image scene and topic,38.0,"What is the color of the majority of objects in the image?
+ ",," A: White, B: Gray, C: Blue, D: Green",choice,"What is the color of the majority of objects in the image?
+ Options: A: White, B: Gray, C: Blue, D: Green",A,0.230769230769231
+271,coarse perception,image emotion,19.0,"Which mood does this image convey?
+ ",," A: Sad, B: Cozy, C: Happy, D: Angry",choice,"Which mood does this image convey?
+ Options: A: Sad, B: Cozy, C: Happy, D: Angry",B,0.384615384615385
+498,instance reasoning,cross-instance attribute reasoning,519.0,"Which of the following statements match the image?
+ ",," A: A triangle is to the left of a pentagon., B: A blue pentagon is to the right of a gray pentagon., C: A blue square is to the left of a blue pentagon., D: A blue pentagon is to the left of a gray shape.",choice,"Which of the following statements match the image?
+ Options: A: A triangle is to the left of a pentagon., B: A blue pentagon is to the right of a gray pentagon., C: A blue square is to the left of a blue pentagon., D: A blue pentagon is to the left of a gray shape.",B,0.272727272727273
+871,science & technology,biology & chemistry & physics,1209.0,"In the diagram of the food web shown, what will most directly be impacted if the supply of deer increase?
+ ",," A: foxes will decrease, B: fruit trees will decrease, C: fruit trees will increase, D: grass will decrease",choice,"In the diagram of the food web shown, what will most directly be impacted if the supply of deer increase?
+ Options: A: foxes will decrease, B: fruit trees will decrease, C: fruit trees will increase, D: grass will decrease",B,0.1
+533,fine-grained perception,object counting,246.0,"How many apples are there in the image? And how many bananas are there?
+ ",," A: 3 apples and 1 bananas, B: 3 apples and 2 bananas, C: 1 apples and 1 bananas, D: 2 apples and 1 bananas",choice,"How many apples are there in the image? And how many bananas are there?
+ Options: A: 3 apples and 1 bananas, B: 3 apples and 2 bananas, C: 1 apples and 1 bananas, D: 2 apples and 1 bananas",C,0.25
+1111,coarse perception,image scene and topic,123.0,"What kind of weather is depicted in the picture?
+ ",," A: sunny, B: rainy, C: windy, D: snowy",choice,"What kind of weather is depicted in the picture?
+ Options: A: sunny, B: rainy, C: windy, D: snowy",A,0.0833333333333333
+843,coarse perception,image scene and topic,56.0,"What is the main color of the image?
+ ",," A: Red, B: Green, C: Black, D: White",choice,"What is the main color of the image?
+ Options: A: Red, B: Green, C: Black, D: White",D,0.153846153846154
+303,instance reasoning,single-instance reasoning,653.0,"What's the profession of the people in this picture?
+ ",," A: mason, B: postman, C: pilot, D: policeman",choice,"What's the profession of the people in this picture?
+ Options: A: mason, B: postman, C: pilot, D: policeman",B,0.363636363636364
+1151,coarse perception,image scene and topic,94.0,"What is the overall theme of this image?
+ ",," A: Sports, B: Sunset, C: Nature, D: Kids playing",choice,"What is the overall theme of this image?
+ Options: A: Sports, B: Sunset, C: Nature, D: Kids playing",B,0.0769230769230769
+317,fine-grained perception,recognition,373.0,"What is the color of the ball closest to the man?
+ ",," A: White, B: Red, C: Blue, D: Brown",choice,"What is the color of the ball closest to the man?
+ Options: A: White, B: Red, C: Blue, D: Brown",A,0.333333333333333
+1275,coarse perception,image scene and topic,33.0,"What color dominates the logo seen on the wall?
+ ",," A: Red, B: Black and White, C: Yellow, D: Blue",choice,"What color dominates the logo seen on the wall?
+ Options: A: Red, B: Black and White, C: Yellow, D: Blue",A,0.0
+1303,science & technology,biology & chemistry & physics,1181.0,"<image 1> What could be the reason for the corky outgrowths on a young ash tree by the roadside in Littondale, Yorkshire?
+ ",," A: Fungal disease, B: Bacterial disease, C: Don't know or not sure, D: Genetic abnormality",choice,"<image 1> What could be the reason for the corky outgrowths on a young ash tree by the roadside in Littondale, Yorkshire?
+ Options: A: Fungal disease, B: Bacterial disease, C: Don't know or not sure, D: Genetic abnormality",B,0.0
+844,coarse perception,image scene and topic,92.0,"What is the overall theme of the image?
+ ",," A: Beach vacation, B: Athletic lifestyle, C: Summer fashion, D: Urban street style",choice,"What is the overall theme of the image?
+ Options: A: Beach vacation, B: Athletic lifestyle, C: Summer fashion, D: Urban street style",C,0.153846153846154
+558,fine-grained perception,recognition,378.0,"What is the color of the ears on the dessert item located in the bottom right of the image?
+ ",," A: Red, B: Brown, C: Black, D: White",choice,"What is the color of the ears on the dessert item located in the bottom right of the image?
+ Options: A: Red, B: Brown, C: Black, D: White",D,0.25
+812,fine-grained perception,recognition,410.0,"What is the main item on the counter in the image?
+ ",," A: A cup of ice cream on a counter with a cone on top, B: Two ice cream cones sitting next to each other, C: A coffee cup with whipped cream on top, D: A cup of ice cream with different flavors",choice,"What is the main item on the counter in the image?
+ Options: A: A cup of ice cream on a counter with a cone on top, B: Two ice cream cones sitting next to each other, C: A coffee cup with whipped cream on top, D: A cup of ice cream with different flavors",B,0.166666666666667
+709,logical reasoning,common reasoning,814.0,"Which corner doesn't have any food?
+ ",," A: top-right, B: top-left, C: bottom-left, D: bottom-right",choice,"Which corner doesn't have any food?
+ Options: A: top-right, B: top-left, C: bottom-left, D: bottom-right",D,0.181818181818182
+1084,coarse perception,image scene and topic,55.0,"What is the main activity happening in this image?
+ ",," A: A couple of men are playing soccer, B: A group of people are having a picnic in the park, C: Two men are playing cricket, D: A group of people are playing volleyball",choice,"What is the main activity happening in this image?
+ Options: A: A couple of men are playing soccer, B: A group of people are having a picnic in the park, C: Two men are playing cricket, D: A group of people are playing volleyball",A,0.0833333333333333

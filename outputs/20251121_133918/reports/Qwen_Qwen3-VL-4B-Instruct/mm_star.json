@@ -1,0 +1,59 @@
+{
+    "name": "Qwen_Qwen3-VL-4B-Instruct@mm_star",
+    "dataset_name": "mm_star",
+    "dataset_pretty_name": "MMStar",
+    "dataset_description": "MMStar: an elite vision-indispensible multi-modal benchmark, aiming to ensure each curated sample exhibits visual dependency, minimal data leakage, and requires advanced multi-modal capabilities.",
+    "model_name": "Qwen_Qwen3-VL-4B-Instruct",
+    "score": 0.6573,
+    "metrics": [
+        {
+            "name": "mean_acc",
+            "num": 1500,
+            "score": 0.6573,
+            "macro_score": 0.6573,
+            "categories": [
+                {
+                    "name": [
+                        "default"
+                    ],
+                    "num": 1500,
+                    "score": 0.6573,
+                    "macro_score": 0.6573,
+                    "subsets": [
+                        {
+                            "name": "coarse perception",
+                            "score": 0.72,
+                            "num": 250
+                        },
+                        {
+                            "name": "fine-grained perception",
+                            "score": 0.592,
+                            "num": 250
+                        },
+                        {
+                            "name": "instance reasoning",
+                            "score": 0.708,
+                            "num": 250
+                        },
+                        {
+                            "name": "logical reasoning",
+                            "score": 0.728,
+                            "num": 250
+                        },
+                        {
+                            "name": "math",
+                            "score": 0.744,
+                            "num": 250
+                        },
+                        {
+                            "name": "science & technology",
+                            "score": 0.452,
+                            "num": 250
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "analysis": "N/A"
+}

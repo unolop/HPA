@@ -1,0 +1,280 @@
+2025-11-21 13:40:21 - evalscope - INFO: Running with native backend
+2025-11-21 13:40:21 - evalscope - INFO: Dump task config to ./outputs/20251121_134021/configs/task_config_05113c.yaml
+2025-11-21 13:40:21 - evalscope - INFO: {
+    "model": "SwiftVLMEngine",
+    "model_id": "Qwen_Qwen3-VL-2B-Instruct",
+    "model_args": {
+        "revision": "master",
+        "precision": "torch.float16"
+    },
+    "model_task": "text_generation",
+    "chat_template": null,
+    "datasets": [
+        "mm_star"
+    ],
+    "dataset_args": {
+        "mm_star": {
+            "name": "mm_star",
+            "dataset_id": "evalscope/MMStar",
+            "output_types": [
+                "generation"
+            ],
+            "subset_list": [
+                "coarse perception",
+                "fine-grained perception",
+                "instance reasoning",
+                "logical reasoning",
+                "math",
+                "science & technology"
+            ],
+            "default_subset": "val",
+            "few_shot_num": 0,
+            "few_shot_random": false,
+            "train_split": null,
+            "eval_split": "val",
+            "prompt_template": "Answer the following multiple choice question.\nThe last line of your response should be of the following format:\n'ANSWER: $LETTER' (without quotes)\nwhere LETTER is one of A,B,C,D. Think step by step before answering.\n\n{question}",
+            "few_shot_prompt_template": null,
+            "system_prompt": null,
+            "query_template": null,
+            "pretty_name": "MMStar",
+            "description": "MMStar: an elite vision-indispensible multi-modal benchmark, aiming to ensure each curated sample exhibits visual dependency, minimal data leakage, and requires advanced multi-modal capabilities.",
+            "tags": [
+                "MultiModal",
+                "Knowledge",
+                "MCQ"
+            ],
+            "filters": null,
+            "metric_list": [
+                "acc"
+            ],
+            "aggregation": "mean",
+            "shuffle": false,
+            "shuffle_choices": false,
+            "review_timeout": null,
+            "extra_params": {}
+        }
+    },
+    "dataset_dir": "/home/work/main/Privacy/.modelscope/datasets",
+    "dataset_hub": "modelscope",
+    "repeats": 1,
+    "generation_config": {
+        "batch_size": 1,
+        "max_tokens": 2048,
+        "top_p": 1.0,
+        "temperature": 1.0,
+        "do_sample": false,
+        "top_k": 50,
+        "n": 1
+    },
+    "eval_type": "llm_ckpt",
+    "eval_backend": "Native",
+    "eval_config": null,
+    "limit": null,
+    "eval_batch_size": 1,
+    "use_cache": null,
+    "rerun_review": false,
+    "work_dir": "./outputs/20251121_134021",
+    "ignore_errors": false,
+    "debug": false,
+    "seed": 42,
+    "api_url": null,
+    "timeout": null,
+    "stream": null,
+    "judge_strategy": "auto",
+    "judge_worker_num": 1,
+    "judge_model_args": {},
+    "analysis_report": false,
+    "use_sandbox": false,
+    "sandbox_type": "docker",
+    "sandbox_manager_config": {},
+    "sandbox_config": {},
+    "evalscope_version": "1.2.0"
+}
+2025-11-21 13:40:21 - evalscope - INFO: Start evaluating benchmark: mm_star
+2025-11-21 13:40:21 - evalscope - INFO: Evaluating all subsets of the dataset...
+2025-11-21 13:40:21 - evalscope - INFO: Evaluating subset: coarse perception
+2025-11-21 13:40:21 - evalscope - INFO: Getting predictions for subset: coarse perception
+2025-11-21 13:40:21 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 14:29:46 - evalscope - INFO: Finished getting predictions for subset: coarse perception.
+2025-11-21 14:29:46 - evalscope - INFO: Getting reviews for subset: coarse perception
+2025-11-21 14:29:46 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 14:29:48 - evalscope - INFO: Finished reviewing subset: coarse perception. Total reviewed: 250
+2025-11-21 14:29:48 - evalscope - INFO: Aggregating scores for subset: coarse perception
+2025-11-21 14:29:48 - evalscope - INFO: Evaluating subset: fine-grained perception
+2025-11-21 14:29:48 - evalscope - INFO: Getting predictions for subset: fine-grained perception
+2025-11-21 14:29:48 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 15:15:53 - evalscope - INFO: Finished getting predictions for subset: fine-grained perception.
+2025-11-21 15:15:53 - evalscope - INFO: Getting reviews for subset: fine-grained perception
+2025-11-21 15:15:53 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 15:15:53 - evalscope - INFO: Finished reviewing subset: fine-grained perception. Total reviewed: 250
+2025-11-21 15:15:53 - evalscope - INFO: Aggregating scores for subset: fine-grained perception
+2025-11-21 15:15:53 - evalscope - INFO: Evaluating subset: instance reasoning
+2025-11-21 15:15:53 - evalscope - INFO: Getting predictions for subset: instance reasoning
+2025-11-21 15:15:53 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 15:23:54 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=220
+2025-11-21 16:13:03 - evalscope - INFO: Finished getting predictions for subset: instance reasoning.
+2025-11-21 16:13:03 - evalscope - INFO: Getting reviews for subset: instance reasoning
+2025-11-21 16:13:03 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 16:13:04 - evalscope - INFO: Finished reviewing subset: instance reasoning. Total reviewed: 250
+2025-11-21 16:13:04 - evalscope - INFO: Aggregating scores for subset: instance reasoning
+2025-11-21 16:13:04 - evalscope - INFO: Evaluating subset: logical reasoning
+2025-11-21 16:13:04 - evalscope - INFO: Getting predictions for subset: logical reasoning
+2025-11-21 16:13:04 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 16:21:04 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=226
+2025-11-21 16:23:04 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=225
+2025-11-21 16:25:04 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=223
+2025-11-21 16:28:04 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=219
+2025-11-21 16:30:04 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=218
+2025-11-21 16:32:04 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=217
+2025-11-21 16:35:04 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=213
+2025-11-21 16:38:04 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=208
+2025-11-21 16:42:05 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=201
+2025-11-21 16:44:05 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=200
+2025-11-21 16:45:05 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=200
+2025-11-21 16:47:05 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=199
+2025-11-21 16:53:05 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=181
+2025-11-21 17:02:05 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=147
+2025-11-21 17:24:06 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=58
+2025-11-21 17:28:06 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=51
+2025-11-21 17:35:06 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=32
+2025-11-21 17:45:06 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=5
+2025-11-21 17:47:06 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=4
+2025-11-21 17:50:06 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=2
+2025-11-21 17:50:39 - evalscope - INFO: Finished getting predictions for subset: logical reasoning.
+2025-11-21 17:50:39 - evalscope - INFO: Getting reviews for subset: logical reasoning
+2025-11-21 17:50:39 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 17:50:40 - evalscope - INFO: Finished reviewing subset: logical reasoning. Total reviewed: 250
+2025-11-21 17:50:40 - evalscope - INFO: Aggregating scores for subset: logical reasoning
+2025-11-21 17:50:40 - evalscope - INFO: Evaluating subset: math
+2025-11-21 17:50:40 - evalscope - INFO: Getting predictions for subset: math
+2025-11-21 17:50:40 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 17:51:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=250
+2025-11-21 17:52:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=250
+2025-11-21 17:54:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=246
+2025-11-21 17:56:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=245
+2025-11-21 18:01:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=237
+2025-11-21 18:03:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=235
+2025-11-21 18:05:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=232
+2025-11-21 18:09:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=227
+2025-11-21 18:16:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=214
+2025-11-21 18:18:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=213
+2025-11-21 18:23:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=200
+2025-11-21 18:27:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=196
+2025-11-21 18:29:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=193
+2025-11-21 18:31:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=192
+2025-11-21 18:33:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=191
+2025-11-21 18:35:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=190
+2025-11-21 18:38:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=187
+2025-11-21 18:40:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=185
+2025-11-21 18:42:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=184
+2025-11-21 18:45:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=180
+2025-11-21 18:49:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=170
+2025-11-21 18:53:40 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=165
+2025-11-21 18:56:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=162
+2025-11-21 18:59:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=157
+2025-11-21 19:02:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=151
+2025-11-21 19:06:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=145
+2025-11-21 19:11:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=133
+2025-11-21 19:14:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=128
+2025-11-21 19:18:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=120
+2025-11-21 19:20:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=117
+2025-11-21 19:25:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=107
+2025-11-21 19:31:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=94
+2025-11-21 19:34:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=88
+2025-11-21 19:37:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=86
+2025-11-21 19:39:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=85
+2025-11-21 19:45:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=71
+2025-11-21 19:50:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=56
+2025-11-21 19:56:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=38
+2025-11-21 19:58:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=35
+2025-11-21 20:04:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=21
+2025-11-21 20:07:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=16
+2025-11-21 20:09:41 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=14
+2025-11-21 20:12:42 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=10
+2025-11-21 20:15:42 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=7
+2025-11-21 20:17:42 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=6
+2025-11-21 20:19:42 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=5
+2025-11-21 20:20:55 - evalscope - INFO: Finished getting predictions for subset: math.
+2025-11-21 20:20:55 - evalscope - INFO: Getting reviews for subset: math
+2025-11-21 20:20:55 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 20:20:55 - evalscope - INFO: Finished reviewing subset: math. Total reviewed: 250
+2025-11-21 20:20:55 - evalscope - INFO: Aggregating scores for subset: math
+2025-11-21 20:20:55 - evalscope - INFO: Evaluating subset: science & technology
+2025-11-21 20:20:55 - evalscope - INFO: Getting predictions for subset: science & technology
+2025-11-21 20:20:55 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 20:22:55 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=248
+2025-11-21 20:24:55 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=246
+2025-11-21 20:26:55 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=245
+2025-11-21 20:29:55 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=242
+2025-11-21 20:32:55 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=238
+2025-11-21 20:46:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=202
+2025-11-21 20:48:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=201
+2025-11-21 20:51:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=197
+2025-11-21 20:53:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=196
+2025-11-21 21:01:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=171
+2025-11-21 21:04:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=168
+2025-11-21 21:10:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=152
+2025-11-21 21:12:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=149
+2025-11-21 21:15:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=145
+2025-11-21 21:17:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=144
+2025-11-21 21:23:56 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=133
+2025-11-21 21:32:57 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=108
+2025-11-21 21:33:57 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=108
+2025-11-21 21:44:57 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=80
+2025-11-21 21:49:57 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=71
+2025-11-21 21:55:57 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=59
+2025-11-21 22:00:57 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=45
+2025-11-21 22:01:57 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=45
+2025-11-21 22:03:57 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=44
+2025-11-21 22:14:57 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=10
+2025-11-21 22:18:21 - evalscope - INFO: Finished getting predictions for subset: science & technology.
+2025-11-21 22:18:21 - evalscope - INFO: Getting reviews for subset: science & technology
+2025-11-21 22:18:21 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 22:18:22 - evalscope - INFO: Finished reviewing subset: science & technology. Total reviewed: 250
+2025-11-21 22:18:22 - evalscope - INFO: Aggregating scores for subset: science & technology
+2025-11-21 22:18:22 - evalscope - INFO: Generating report...
+2025-11-21 22:18:23 - evalscope - INFO: 
+mm_star report table:
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Model                     | Dataset   | Metric   | Subset                  |   Num |   Score | Cat.0   |
++===========================+===========+==========+=========================+=======+=========+=========+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | coarse perception       |   250 |  0.692  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | fine-grained perception |   250 |  0.508  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | instance reasoning      |   250 |  0.648  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | logical reasoning       |   250 |  0.608  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | math                    |   250 |  0.636  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | science & technology    |   250 |  0.336  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | OVERALL                 |  1500 |  0.5713 | -       |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+ 
+
+2025-11-21 22:18:23 - evalscope - INFO: Skipping report analysis (`analysis_report=False`).
+2025-11-21 22:18:23 - evalscope - INFO: Dump report to: ./outputs/20251121_134021/reports/Qwen_Qwen3-VL-2B-Instruct/mm_star.json 
+
+2025-11-21 22:18:23 - evalscope - INFO: Benchmark mm_star evaluation finished.
+2025-11-21 22:18:23 - evalscope - INFO: Overall report table: 
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Model                     | Dataset   | Metric   | Subset                  |   Num |   Score | Cat.0   |
++===========================+===========+==========+=========================+=======+=========+=========+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | coarse perception       |   250 |  0.692  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | fine-grained perception |   250 |  0.508  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | instance reasoning      |   250 |  0.648  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | logical reasoning       |   250 |  0.608  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | math                    |   250 |  0.636  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | science & technology    |   250 |  0.336  | default |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Qwen_Qwen3-VL-2B-Instruct | mm_star   | mean_acc | OVERALL                 |  1500 |  0.5713 | -       |
++---------------------------+-----------+----------+-------------------------+-------+---------+---------+ 
+
+2025-11-21 22:18:23 - evalscope - INFO: Finished evaluation for Qwen_Qwen3-VL-2B-Instruct on ['mm_star']
+2025-11-21 22:18:23 - evalscope - INFO: Output directory: ./outputs/20251121_134021

@@ -1,0 +1,206 @@
+2025-11-21 13:54:24 - evalscope - INFO: Running with native backend
+2025-11-21 13:54:24 - evalscope - INFO: Dump task config to ./outputs/20251121_135424/configs/task_config_3b79f0.yaml
+2025-11-21 13:54:24 - evalscope - INFO: {
+    "model": "SwiftVLMEngine",
+    "model_id": "OpenGVLab_InternVL3_5-2B",
+    "model_args": {
+        "revision": "master",
+        "precision": "torch.float16"
+    },
+    "model_task": "text_generation",
+    "chat_template": null,
+    "datasets": [
+        "mm_star"
+    ],
+    "dataset_args": {
+        "mm_star": {
+            "name": "mm_star",
+            "dataset_id": "evalscope/MMStar",
+            "output_types": [
+                "generation"
+            ],
+            "subset_list": [
+                "coarse perception",
+                "fine-grained perception",
+                "instance reasoning",
+                "logical reasoning",
+                "math",
+                "science & technology"
+            ],
+            "default_subset": "val",
+            "few_shot_num": 0,
+            "few_shot_random": false,
+            "train_split": null,
+            "eval_split": "val",
+            "prompt_template": "Answer the following multiple choice question.\nThe last line of your response should be of the following format:\n'ANSWER: $LETTER' (without quotes)\nwhere LETTER is one of A,B,C,D. Think step by step before answering.\n\n{question}",
+            "few_shot_prompt_template": null,
+            "system_prompt": null,
+            "query_template": null,
+            "pretty_name": "MMStar",
+            "description": "MMStar: an elite vision-indispensible multi-modal benchmark, aiming to ensure each curated sample exhibits visual dependency, minimal data leakage, and requires advanced multi-modal capabilities.",
+            "tags": [
+                "MultiModal",
+                "Knowledge",
+                "MCQ"
+            ],
+            "filters": null,
+            "metric_list": [
+                "acc"
+            ],
+            "aggregation": "mean",
+            "shuffle": false,
+            "shuffle_choices": false,
+            "review_timeout": null,
+            "extra_params": {}
+        }
+    },
+    "dataset_dir": "/home/work/main/Privacy/.modelscope/datasets",
+    "dataset_hub": "modelscope",
+    "repeats": 1,
+    "generation_config": {
+        "batch_size": 1,
+        "max_tokens": 2048,
+        "top_p": 1.0,
+        "temperature": 1.0,
+        "do_sample": false,
+        "top_k": 50,
+        "n": 1
+    },
+    "eval_type": "llm_ckpt",
+    "eval_backend": "Native",
+    "eval_config": null,
+    "limit": null,
+    "eval_batch_size": 1,
+    "use_cache": null,
+    "rerun_review": false,
+    "work_dir": "./outputs/20251121_135424",
+    "ignore_errors": false,
+    "debug": false,
+    "seed": 42,
+    "api_url": null,
+    "timeout": null,
+    "stream": null,
+    "judge_strategy": "auto",
+    "judge_worker_num": 1,
+    "judge_model_args": {},
+    "analysis_report": false,
+    "use_sandbox": false,
+    "sandbox_type": "docker",
+    "sandbox_manager_config": {},
+    "sandbox_config": {},
+    "evalscope_version": "1.2.0"
+}
+2025-11-21 13:54:24 - evalscope - INFO: Start evaluating benchmark: mm_star
+2025-11-21 13:54:25 - evalscope - INFO: Evaluating all subsets of the dataset...
+2025-11-21 13:54:25 - evalscope - INFO: Evaluating subset: coarse perception
+2025-11-21 13:54:25 - evalscope - INFO: Getting predictions for subset: coarse perception
+2025-11-21 13:54:25 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 15:23:01 - evalscope - INFO: Finished getting predictions for subset: coarse perception.
+2025-11-21 15:23:01 - evalscope - INFO: Getting reviews for subset: coarse perception
+2025-11-21 15:23:01 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 15:23:02 - evalscope - INFO: Finished reviewing subset: coarse perception. Total reviewed: 250
+2025-11-21 15:23:02 - evalscope - INFO: Aggregating scores for subset: coarse perception
+2025-11-21 15:23:02 - evalscope - INFO: Evaluating subset: fine-grained perception
+2025-11-21 15:23:02 - evalscope - INFO: Getting predictions for subset: fine-grained perception
+2025-11-21 15:23:02 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 16:24:04 - evalscope - INFO: Finished getting predictions for subset: fine-grained perception.
+2025-11-21 16:24:04 - evalscope - INFO: Getting reviews for subset: fine-grained perception
+2025-11-21 16:24:04 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 16:24:05 - evalscope - INFO: Finished reviewing subset: fine-grained perception. Total reviewed: 250
+2025-11-21 16:24:05 - evalscope - INFO: Aggregating scores for subset: fine-grained perception
+2025-11-21 16:24:05 - evalscope - INFO: Evaluating subset: instance reasoning
+2025-11-21 16:24:05 - evalscope - INFO: Getting predictions for subset: instance reasoning
+2025-11-21 16:24:05 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 17:41:42 - evalscope - INFO: Finished getting predictions for subset: instance reasoning.
+2025-11-21 17:41:42 - evalscope - INFO: Getting reviews for subset: instance reasoning
+2025-11-21 17:41:42 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 17:41:42 - evalscope - INFO: Finished reviewing subset: instance reasoning. Total reviewed: 250
+2025-11-21 17:41:42 - evalscope - INFO: Aggregating scores for subset: instance reasoning
+2025-11-21 17:41:42 - evalscope - INFO: Evaluating subset: logical reasoning
+2025-11-21 17:41:42 - evalscope - INFO: Getting predictions for subset: logical reasoning
+2025-11-21 17:41:42 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 19:15:54 - evalscope - INFO: Finished getting predictions for subset: logical reasoning.
+2025-11-21 19:15:54 - evalscope - INFO: Getting reviews for subset: logical reasoning
+2025-11-21 19:15:54 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 19:15:55 - evalscope - INFO: Finished reviewing subset: logical reasoning. Total reviewed: 250
+2025-11-21 19:15:55 - evalscope - INFO: Aggregating scores for subset: logical reasoning
+2025-11-21 19:15:55 - evalscope - INFO: Evaluating subset: math
+2025-11-21 19:15:55 - evalscope - INFO: Getting predictions for subset: math
+2025-11-21 19:15:55 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 19:22:55 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=241
+2025-11-21 19:48:55 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=193
+2025-11-21 20:06:56 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=165
+2025-11-21 20:08:56 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=164
+2025-11-21 20:41:56 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=101
+2025-11-21 20:50:56 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=85
+2025-11-21 21:33:09 - evalscope - INFO: Finished getting predictions for subset: math.
+2025-11-21 21:33:09 - evalscope - INFO: Getting reviews for subset: math
+2025-11-21 21:33:09 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 21:33:09 - evalscope - INFO: Finished reviewing subset: math. Total reviewed: 250
+2025-11-21 21:33:09 - evalscope - INFO: Aggregating scores for subset: math
+2025-11-21 21:33:09 - evalscope - INFO: Evaluating subset: science & technology
+2025-11-21 21:33:09 - evalscope - INFO: Getting predictions for subset: science & technology
+2025-11-21 21:33:09 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 21:37:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=246
+2025-11-21 21:44:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=238
+2025-11-21 21:54:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=223
+2025-11-21 21:56:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=222
+2025-11-21 21:59:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=220
+2025-11-21 22:01:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=216
+2025-11-21 22:11:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=202
+2025-11-21 22:13:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=201
+2025-11-21 22:16:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=197
+2025-11-21 22:34:10 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=152
+2025-11-21 22:55:11 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=103
+2025-11-21 23:16:11 - evalscope - INFO: Predicting[mm_star@science & technology]:  still processing... pending=59
+2025-11-21 23:35:54 - evalscope - INFO: Finished getting predictions for subset: science & technology.
+2025-11-21 23:35:54 - evalscope - INFO: Getting reviews for subset: science & technology
+2025-11-21 23:35:54 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 23:35:54 - evalscope - INFO: Finished reviewing subset: science & technology. Total reviewed: 250
+2025-11-21 23:35:54 - evalscope - INFO: Aggregating scores for subset: science & technology
+2025-11-21 23:35:54 - evalscope - INFO: Generating report...
+2025-11-21 23:35:54 - evalscope - INFO: 
+mm_star report table:
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Model                    | Dataset   | Metric   | Subset                  |   Num |   Score | Cat.0   |
++==========================+===========+==========+=========================+=======+=========+=========+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | coarse perception       |   250 |   0.68  | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | fine-grained perception |   250 |   0.496 | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | instance reasoning      |   250 |   0.68  | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | logical reasoning       |   250 |   0.624 | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | math                    |   250 |   0.68  | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | science & technology    |   250 |   0.44  | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | OVERALL                 |  1500 |   0.6   | -       |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+ 
+
+2025-11-21 23:35:54 - evalscope - INFO: Skipping report analysis (`analysis_report=False`).
+2025-11-21 23:35:54 - evalscope - INFO: Dump report to: ./outputs/20251121_135424/reports/OpenGVLab_InternVL3_5-2B/mm_star.json 
+
+2025-11-21 23:35:54 - evalscope - INFO: Benchmark mm_star evaluation finished.
+2025-11-21 23:35:54 - evalscope - INFO: Overall report table: 
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| Model                    | Dataset   | Metric   | Subset                  |   Num |   Score | Cat.0   |
++==========================+===========+==========+=========================+=======+=========+=========+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | coarse perception       |   250 |   0.68  | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | fine-grained perception |   250 |   0.496 | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | instance reasoning      |   250 |   0.68  | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | logical reasoning       |   250 |   0.624 | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | math                    |   250 |   0.68  | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | science & technology    |   250 |   0.44  | default |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+
+| OpenGVLab_InternVL3_5-2B | mm_star   | mean_acc | OVERALL                 |  1500 |   0.6   | -       |
++--------------------------+-----------+----------+-------------------------+-------+---------+---------+ 
+
+2025-11-21 23:35:56 - evalscope - INFO: Finished evaluation for OpenGVLab_InternVL3_5-2B on ['mm_star']
+2025-11-21 23:35:56 - evalscope - INFO: Output directory: ./outputs/20251121_135424

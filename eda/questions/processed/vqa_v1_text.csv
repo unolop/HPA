@@ -1,0 +1,307 @@
+,index,qid,question_type,question_en,question_kr,answer_type
+0,0,418297001,is,Is a real bird on the tower?,탑 위에 진짜 새가 있나요?,text
+1,1,444302001,what is the,What is the number on the pole?,기둥에 있는 숫자는 무엇인가요?,text
+2,2,244019002,has,Has the wall been tagged?,벽에 태그가 붙었나요?,text
+3,3,297269002,what color is the,What color is the label on the side of the bottom appliance?,하단 가전제품 측면의 라벨은 어떤 색인가요?,text
+4,4,22656001,is there,Is there toothpaste on the sink?,싱크대에 치약이 있나요?,text
+5,5,552849003,none of the above,Where is a man wearing a white robe?,흰 가운을 입은 남자는 어디에 있나요?,text
+6,6,96762000,how many,How many American flags are in the picture?,사진에는 몇 개의 국기가 있나요?,text
+7,7,537701022,does this,Does this man's tie match the background?,이 남자의 넥타이가 배경과 일치하나요?,text
+8,8,326814006,is the,Is the electricity in the room turned on?,방에 전기가 켜져 있나요?,text
+9,9,466838000,is this a,Is this a normal size slice of pizza?,이것은 보통 크기의 피자 조각인가요?,text
+10,10,399516001,none of the above,Did you try any of these?,이것들 중 하나라도 시도해 보셨나요?,text
+11,11,280238001,do you,Do you see a street light?,가로등 보이시나요?,text
+12,12,563730000,what color is the,What color is the fork?,포크는 어떤 색인가요?,text
+13,13,153782000,is this a,Is this a 3-D photo?,이것은 3D 사진인가요?,text
+14,14,79930001,how many people are,How many people are on the motorcycle?,오토바이에 몇 명이 타고 있나요?,text
+15,15,4495000,what,What item in the room is plaid?,방 안에 어떤 물건이 격자무늬로 되어 있나요?,text
+16,16,301305003,none of the above,Does anyone have on glasses?,안경 쓴 사람 있나요?,text
+17,17,241209002,what color is the,What color is the table?,테이블의 색상은 무엇인가요?,text
+18,18,208566001,how many,How many containers of peanut butter are on the table?,테이블 위에 땅콩버터 용기가 몇 개 있습니까?,text
+19,19,480416017,is it,Is it raining?,비가 오나요?,text
+20,20,360698008,is the,Is the weather safe for flying?,날씨가 비행하기에 안전한가요?,text
+21,21,527038002,what,What website is shown?,어떤 웹사이트가 표시되나요?,text
+22,22,562347009,what is the man,What is the man doing?,남자는 무엇을 하고 있나요?,text
+23,23,357532001,is there a,Is there a fence around the top row of seats?,좌석 맨 윗줄에 울타리가 있나요?,text
+24,24,35105002,how many,How many cars are there?,차가 몇 대 있습니까?,text
+25,25,316596001,what is the,What is the cake sitting on?,케이크가 무엇 위에 놓여 있나요?,text
+26,26,578093003,is this a,Is this a boathouse?,여기가 보트 하우스인가요?,text
+27,27,163280011,what are,What are they researching?,그들은 무엇을 연구하고 있습니까?,text
+28,28,280242009,what is the,What is the reflection?,반성이란 무엇인가요?,text
+29,29,98658002,is there a,Is there a passenger in the truck?,트럭에 승객이 있습니까?,text
+30,30,196516003,is he,Is he flipping the board?,그가 보드를 뒤집고 있나요?,text
+31,31,343481000,are these,Are these sheep in a box?,이 양들은 상자에 들어 있나요?,text
+32,32,66543002,is this a,Is this a busy area?,여기가 번잡한 지역인가요?,text
+33,33,94663002,can you,Can you see the sky from this photo?,이 사진에서 하늘이 보이나요?,text
+34,34,491242000,what is the man,What is the man wearing?,남자는 무엇을 입고 있나요?,text
+35,35,55772003,what is on the,What is on the plate?,접시 위에 무엇이 있나요?,text
+36,36,364725009,is this a,Is this a puppy?,강아지인가요?,text
+37,37,521669001,what is the man,What is the man holding in his hand?,남자가 손에 들고 있는 것은 무엇입니까?,text
+38,38,224595001,is the,Is the plane flying?,비행기가 날고 있나요?,text
+39,39,19109001,is that a,Is that a restaurant?,식당인가요?,text
+40,40,522232002,is the man,Is the man wearing a helmet?,남자가 헬멧을 쓰고 있나요?,text
+41,41,235597003,what color is the,What color is the mouse?,마우스는 어떤 색인가요?,text
+42,42,504827000,what color is the,What color is the soap in the dispenser?,디스펜서의 비누는 어떤 색인가요?,text
+43,43,523871003,are these,Are these people real?,이 사람들 진짜인가요?,text
+44,44,239992006,what is the,What is the plane on the left?,왼쪽에 있는 비행기는 무엇인가요?,text
+45,45,503210000,what is,What is hanging on the left wall?,왼쪽 벽에는 무엇이 걸려 있나요?,text
+46,46,122981001,is the,Is the boy playing?,소년이 놀고 있나요?,text
+47,47,273420002,who is,Who is the man talking to on the phone?,남자가 전화로 누구와 이야기하고 있습니까?,text
+48,48,205594005,what sport is,What sport is this?,이 스포츠는 무엇인가요?,text
+49,49,176149002,what kind of,What kind of street sign is in the picture?,사진 속에는 어떤 종류의 거리 표지판이 있나요?,text
+50,50,11241003,is this,Is this enough food for more than two people?,이 음식은 두 명 이상이 먹을 수 있는 양인가요?,text
+51,51,47837003,how many people are,How many people are wearing glasses?,안경을 쓰고 있는 사람은 몇 명입니까?,text
+52,52,525021007,none of the above,Does everyone have helmets on?,모두 헬멧을 쓰고 있나요?,text
+53,53,346577000,what color is,What color is his shirt?,그의 셔츠는 무슨 색인가요?,text
+54,54,183715005,what,What flavor is the frosting on the cake?,케이크의 프로스팅은 어떤 맛인가요?,text
+55,55,512760019,what color are the,What color are the cabinets?,캐비닛은 어떤 색인가요?,text
+56,56,570528001,is the,Is the pet in its bed?,애완동물이 침대에 있나요?,text
+57,57,459301002,what,What covers the ground?,무엇이 땅을 덮고 있습니까?,text
+58,58,492271002,what,What herb is the man trimming?,남자가 다듬고 있는 허브는 무엇인가요?,text
+59,59,572178006,is this,Is this photo in color?,이 사진은 색상인가요?,text
+60,60,28682012,is there a,Is there a kettle on the stove?,스토브에 주전자가 있나요?,text
+61,61,131869001,what sport is,What sport is being played?,어떤 스포츠가 진행되고 있나요?,text
+62,62,532812006,what sport is,What sport is being played in this scene?,이 장면에서 어떤 스포츠가 진행되고 있나요?,text
+63,63,119802000,do,Do any cars have their lights on?,불이 켜져 있는 차가 있나요?,text
+64,64,524282006,are these,Are these women wearing skirts?,이 여성들은 치마를 입고 있나요?,text
+65,65,563295006,is the,Is the sky clear?,하늘이 맑나요?,text
+66,66,126592007,what,What road is nearby?,근처에 어떤 도로가 있나요?,text
+67,67,114941009,what color is the,What color is the train?,기차는 어떤 색인가요?,text
+68,68,455219002,how many,How many animals are there?,동물이 몇 마리 있나요?,text
+69,69,127660002,is this,"Is this woman ""dressed her age""?","이 여성은 ""나이를 차려입었나요?""",text
+70,70,330955003,what is on the,What is on the kids head?,아이들 머리에는 무엇이 있나요?,text
+71,71,437947001,where is the,Where is the sink in the picture?,사진 속 싱크대는 어디에 있나요?,text
+72,72,450709003,what is,What is she wearing on her eyes?,그녀는 눈에 무엇을 입고 있나요?,text
+73,73,554459002,which,Which one is wearing sunglasses?,선글라스를 쓰고 있는 사람은 누구인가요?,text
+74,74,60347004,does the,Does the chair have a cup holder?,의자에 컵 홀더가 있나요?,text
+75,75,345154001,which,Which sport item is higher in the air?,어떤 스포츠 아이템이 더 높은가요?,text
+76,76,193743000,which,Which foot is in front of the other?,어느 발이 다른 발 앞에 있나요?,text
+77,77,201426002,how many,How many kids are here?,여기 아이들이 몇 명 있나요?,text
+78,78,135666002,none of the above,"Based on the clothing, Is it cold outside?",옷을 보니 밖이 춥나요?,text
+79,79,133933006,is this,Is this someone's house?,여기가 누군가의 집인가요?,text
+80,80,531000002,how many,How many animals are in the picture?,사진에 동물이 몇 마리 있나요?,text
+81,81,143560011,was,Was this picture taken in the daytime?,이 사진은 낮에 찍혔나요?,text
+82,82,493206001,what,What vegetable is present in this food?,이 음식에는 어떤 채소가 포함되어 있습니까?,text
+83,83,480379002,is the,Is the boat in the water?,보트가 물속에 있나요?,text
+84,84,522446001,how many people are,How many people are sitting at the bar?,바에 몇 명이 앉아 있나요?,text
+85,85,388974004,what is the,What is the baby eating?,아기가 무엇을 먹고 있나요?,text
+86,86,8351002,are the,Are the dogs the same breed?,개들이 같은 품종인가요?,text
+87,87,531086004,are there any,Are there any magnets on the fridge?,냉장고에 자석이 있나요?,text
+88,88,315621001,is this a,Is this a popular location?,이곳이 인기 있는 장소인가요?,text
+89,89,53838004,what is on the,What is on the plane?,비행기에 무엇이 있나요?,text
+90,90,232684002,what is,What is around the man's neck?,남자의 목 주위에는 무엇이 있나요?,text
+91,91,358268007,what,What game is represented in the hands of the man on the left?,왼쪽에 있는 남자의 손에는 어떤 게임이 그려져 있나요?,text
+92,92,566026000,what time,What time is it?,지금 몇 시예요?,text
+93,93,283217022,what are the,What are the kids holding?,아이들이 무엇을 들고 있나요?,text
+94,94,388601002,what,What food is the sleeping bag?,침낭은 어떤 음식인가요?,text
+95,95,504561001,how many,How many women?,여자가 몇 명입니까?,text
+96,96,420230006,is this,Is this elephant sick?,이 코끼리가 아프신가요?,text
+97,97,358090001,what color,What color coat is this person wearing?,이 사람은 어떤 색 코트를 입고 있나요?,text
+98,98,322482003,why,Why doesn't he need his sunglasses on right now?,그는 왜 지금 당장 선글라스를 쓰지 않나요?,text
+99,99,214471008,what is,What is piled on top of the sandwich?,샌드위치 위에 무엇이 쌓여 있나요?,text
+100,0,345361001,are,Are all of these children wearing hats?,이 아이들 모두 모자를 쓰고 있나요?,text
+101,1,88120004,are,Are her pants tight?,그녀의 바지는 꽉 끼나요?,text
+102,2,244750002,are,Are all three glasses filled with the same amount of wine?,세 잔 모두 같은 양의 와인으로 채워져 있나요?,text
+103,3,390760002,are,Are all the kites the same?,모든 연이 같은가요?,text
+104,4,447549001,are,Are all the trees green?,모든 나무가 초록색인가요?,text
+105,5,381246001,are there,Are there peppers on the pizza?,피자에 고추가 있나요?,text
+106,6,232790002,are there,Are there more ties that has stripes than there are plain?,줄무늬가 있는 넥타이가 일반 넥타이보다 더 많습니까?,text
+107,7,331475002,are there,Are there cigarettes in the ashtray?,재떨이에 담배가 있나요?,text
+108,8,196681009,are there,Are there clouds in the sky?,하늘에 구름이 있나요?,text
+109,9,102411000,are there,Are there waves in this photo?,이 사진에 파도가 있나요?,text
+110,10,531086004,are there any,Are there any magnets on the fridge?,냉장고에 자석이 있나요?,text
+111,11,343496001,are there any,Are there any animals in this photo?,이 사진에 동물이 있나요?,text
+112,12,161231011,are there any,Are there any weeds growing along the tracks?,선로를 따라 잡초가 자라고 있나요?,text
+113,13,297819007,are there any,Are there any napkins in this photo?,이 사진에 냅킨이 있나요?,text
+114,14,76384019,are there any,Are there any utensils shown?,보여주는 도구가 있나요?,text
+115,15,200939002,are they,Are they married?,그들은 결혼했나요?,text
+116,16,204051000,are they,Are they taking a selfie?,셀카를 찍고 있나요?,text
+117,17,107511001,are they,Are they in the zoo?,그들은 동물원에 있나요?,text
+118,18,528062000,are they,Are they in the kitchen?,그들은 부엌에 있나요?,text
+119,19,380143002,are they,Are they playing?,그들은 놀고 있나요?,text
+120,20,550432000,could,Could a cactus grow in this climate?,선인장이 이 기후에서 자랄 수 있을까요?,text
+121,21,404437001,could,Could the bear be tame?,곰이 길들일 수 있을까요?,text
+122,22,460927006,could,Could this animal be someone's pet?,이 동물이 누군가의 애완동물이 될 수 있을까요?,text
+123,23,458702007,could,Could there be a vending machine?,자판기가 있을까요?,text
+124,24,51576002,could,Could that be a waterhole?,물웅덩이가 될 수 있나요?,text
+125,25,117725018,do you,Do you see a bell?,종이 보이나요?,text
+126,26,212759008,do you,Do you see any grass?,잔디가 보이나요?,text
+127,27,321217002,do you,Do you see the sea?,바다가 보이나요?,text
+128,28,280238001,do you,Do you see a street light?,가로등 보이시나요?,text
+129,29,244019002,has,Has the wall been tagged?,벽에 태그가 붙었나요?,text
+130,30,355272014,has,Has this boy been injured recently?,이 소년이 최근에 다쳤나요?,text
+131,31,318998002,is he,Is he standing in another boat?,그는 다른 배에 서 있나요?,text
+132,32,336341002,is he,Is he wearing blush?,그는 얼굴을 붉히고 있나요?,text
+133,33,196516003,is he,Is he flipping the board?,그가 보드를 뒤집고 있나요?,text
+134,34,486576004,is that a,Is that a man or woman looking at the screen?,"화면을 보고 있는 사람이 남자인가요, 여자인가요?",text
+135,35,133515009,is that a,Is that a finished kitchen?,완성된 주방인가요?,text
+136,36,415880001,is that a,Is that a new car?,새 차인가요?,text
+137,37,19109001,is that a,Is that a restaurant?,식당인가요?,text
+138,38,82259002,is the person,Is the person on the ground?,그 사람이 바닥에 있나요?,text
+139,39,329711002,is there,Is there any work equipment in the photo?,사진에 작업 장비가 있나요?,text
+140,40,175535001,is there,Is there lettuce on the plate?,접시에 상추가 있나요?,text
+141,41,74711003,is there,Is there lilies in the water?,물에 백합이 있나요?,text
+142,42,391837005,is there,IS there water in the background?,배경에 물이 있나요?,text
+143,43,509826033,is there,Is there snow?,눈이 있나요?,text
+144,44,215652000,was,Was this picture taken during the day or night?,"이 사진은 낮에 찍은 건가요, 아니면 밤에 찍은 건가요?",text
+145,45,143560011,was,Was this picture taken in the daytime?,이 사진은 낮에 찍혔나요?,text
+146,46,135486006,what are,What are they carrying?,그들은 무엇을 운반하고 있습니까?,text
+147,47,425933004,what are,What are pedestrians asked not to do on the white sign?,흰색 표지판에서 보행자에게 하지 말아야 할 일은 무엇인가요?,text
+148,48,408201006,what are,What are they playing?,그들은 무엇을 하고 있나요?,text
+149,49,574537003,what are,What are on the child's feet?,아이의 발에는 무엇이 있나요?,text
+150,50,479075003,what are,What are these animals?,이 동물들은 무엇인가요?,text
+151,51,487131002,what color,What color are these trucks?,이 트럭들은 어떤 색인가요?,text
+152,52,487236000,what color,What color grass is the giraffe standing in?,기린은 어떤 색의 풀밭에 서 있나요?,text
+153,53,58539001,what color,What color are their jackets?,그들의 재킷은 어떤 색인가요?,text
+154,54,499588001,what color,What color thread hangs down the right side?,오른쪽에는 어떤 색의 실이 매달려 있나요?,text
+155,55,525162004,what color,What color boat is the man riding in?,남자가 타고 있는 배는 어떤 색인가요?,text
+156,56,252625003,what color are the,What color are the crates against the wall?,벽에 걸린 상자들은 어떤 색인가요?,text
+157,57,512760019,what color are the,What color are the cabinets?,캐비닛은 어떤 색인가요?,text
+158,58,414711003,what color are the,What color are the clock's numerals?,시계의 숫자는 어떤 색인가요?,text
+159,59,429754001,what color are the,What color are the scissors?,가위는 어떤 색인가요?,text
+160,60,364157004,what color are the,What color are the curtains?,커튼은 어떤 색인가요?,text
+161,61,346577000,what color is,What color is his shirt?,그의 셔츠는 무슨 색인가요?,text
+162,62,443453003,what color is,What color is her dress?,그녀의 드레스는 어떤 색인가요?,text
+163,63,305329002,what color is,What color is his helmet?,그의 헬멧은 어떤 색인가요?,text
+164,64,159842001,what color is,What color is her headband?,그녀의 머리띠는 어떤 색인가요?,text
+165,65,22341001,what color is,What color is her top?,그녀의 상의는 무슨 색인가요?,text
+166,66,40986004,what is in the,What is in the bottle?,병 안에 무엇이 들어 있나요?,text
+167,67,254237002,what is in the,What is in the vase?,꽃병 안에 무엇이 있습니까?,text
+168,68,145318001,what is in the,What is in the white plastic covered container behind the bowl?,그릇 뒤에 있는 흰색 플라스틱 뚜껑이 있는 용기에는 무엇이 들어 있나요?,text
+169,69,427135026,what is in the,What is in the man's hand?,남자의 손에는 무엇이 있나요?,text
+170,70,118507000,what is in the,What is in the far back room?,맨 뒷방에는 무엇이 있나요?,text
+171,71,520012001,what is on the,What is on the left plate?,왼쪽 접시에는 무엇이 있습니까?,text
+172,72,55772003,what is on the,What is on the plate?,접시 위에 무엇이 있나요?,text
+173,73,434494018,what is on the,What is on the man's head?,남자의 머리에는 무엇이 있나요?,text
+174,74,133515003,what is on the,What is on the table?,테이블 위에 무엇이 있나요?,text
+175,75,53838004,what is on the,What is on the plane?,비행기에 무엇이 있나요?,text
+176,76,430774001,what time,What time is shown on the clock?,시계에는 몇 시가 표시되나요?,text
+177,77,566026000,what time,What time is it?,지금 몇 시예요?,text
+178,78,367452003,what time,What time is it?,지금 몇 시예요?,text
+179,79,580621000,what type of,What type of establishment are these people likely seated?,이 사람들은 어떤 종류의 시설에 앉을 가능성이 높습니까?,text
+180,80,52161010,what type of,What type of shoes is this person wearing?,이 사람은 어떤 종류의 신발을 신고 있나요?,text
+181,81,506943005,what type of,What type of building can this scene be found in?,이 장면은 어떤 유형의 건물에서 찾을 수 있나요?,text
+182,82,48153002,what type of,What type of pants is this woman wearing?,이 여자는 어떤 종류의 바지를 입고 있나요?,text
+183,83,290981008,what type of,What type of animal are these?,이것들은 어떤 종류의 동물인가요?,text
+184,84,252986000,where is the,Where is the bench?,벤치는 어디에 있나요?,text
+185,85,524577024,where is the,Where is the clock located?,시계는 어디에 있나요?,text
+186,86,304044004,where is the,Where is the school bus going?,스쿨버스는 어디로 가나요?,text
+187,87,154202010,where is the,Where is the phone?,전화기가 어디 있나요?,text
+188,88,94823002,where is the,Where is the dog?,개는 어디에 있어요?,text
+189,89,113588003,who is,Who is using the laptop?,누가 노트북을 사용하고 있나요?,text
+190,90,136140000,who is,Who is wearing glasses?,누가 안경을 쓰고 있나요?,text
+191,91,88859004,who is,Who is the pitcher?,투수는 누구인가요?,text
+192,92,273420002,who is,Who is the man talking to on the phone?,남자가 전화로 누구와 이야기하고 있습니까?,text
+193,93,490280012,who is,Who is in the photo?,사진 속에는 누구가 있나요?,text
+194,94,241340000,why,Why is this dog fighting over a Frisbee?,이 개가 프리스비 때문에 싸우는 이유는 무엇인가요?,text
+195,95,57508001,why,Why are there straps on the suitcase?,여행 가방에 끈이 있는 이유는 무엇인가요?,text
+196,96,80306002,why,Why is she shiny?,그녀는 왜 반짝반짝 빛나요?,text
+197,97,151978002,why,Why are the lamps lit?,램프가 켜진 이유는 무엇인가요?,text
+198,98,322482003,why,Why doesn't he need his sunglasses on right now?,그는 왜 지금 당장 선글라스를 쓰지 않나요?,text
+199,0,561412009,is the,Is the sky cloudy?,하늘이 흐리나요?,text
+200,1,96638000,is the,Is the photo colored?,사진이 색칠되어 있나요?,text
+201,2,88695011,is the man,Is the man hairy?,그 남자는 털이 많나요?,text
+202,3,576031002,does this,Does this person believe in safety?,이 사람은 안전을 믿습니까?,text
+203,4,444928001,are these,Are these people wearing helmets?,이 사람들은 헬멧을 쓰고 있나요?,text
+204,5,503992002,does the,Does the dog like his bed?,그 개는 침대를 좋아하나요?,text
+205,6,488942005,is this a,Is this a sightseeing attraction?,관광 명소인가요?,text
+206,7,536027000,is this,Is this picture in focus?,이 사진이 초점에 맞습니까?,text
+207,8,536195002,what are the,What are the sheep eating?,양들은 무엇을 먹고 있나요?,text
+208,9,532693000,is the,Is the dog being affectionate?,그 개는 애정이 많나요?,text
+209,10,442746004,do,Do people come here to sit?,사람들이 여기 와서 앉나요?,text
+210,11,453649001,what are the,What are the zebras eating?,얼룩말들은 무엇을 먹고 있나요?,text
+211,12,329717005,is this a,Is this a recent photograph?,이것은 최근에 찍은 사진인가요?,text
+212,13,82259002,is the person,Is the person on the ground?,그 사람이 바닥에 있나요?,text
+213,14,490741003,is it,Is it a cloudy day?,흐린 날인가요?,text
+214,15,237118000,is this,Is this man angry?,이 남자 화났어요?,text
+215,16,200667002,is the,Is the cow wearing an ear tag?,소가 귀표를 달고 있나요?,text
+216,17,515885003,is it,Is it a beer?,맥주인가요?,text
+217,18,510078000,is this,Is this in a parking lot?,주차장에 있나요?,text
+218,19,367608007,is this,Is this guy wearing safety gear?,이 남자는 안전 장비를 착용하고 있나요?,text
+219,20,140713008,what color is the,What color is the elephant?,코끼리는 어떤 색인가요?,text
+220,21,317070001,is the man,Is the man flying?,남자가 날고 있나요?,text
+221,22,384834006,does the,Does the surfboard have fins?,서핑보드에 핀이 있나요?,text
+222,23,62549003,is the,Is the bird being fed by a human?,새가 사람에게 먹이를 주고 있나요?,text
+223,24,559462000,is,Is she wearing sneakers?,그녀는 운동화를 신고 있나요?,text
+224,25,245162006,is this a,Is this a busy street?,여기가 번화한 거리인가요?,text
+225,26,200939002,are they,Are they married?,그들은 결혼했나요?,text
+226,27,70626005,what kind of,What kind of cheese is on the pizza?,피자에는 어떤 종류의 치즈가 들어 있나요?,text
+227,28,514518002,is this,Is this fresh snow?,이것은 신선한 눈인가요?,text
+228,29,129576008,does the,Does the color of the pillow match the color of the chair?,베개의 색상이 의자의 색상과 일치합니까?,text
+229,30,392915002,is the,Is the room sunny?,방이 화창한가요?,text
+230,31,254237002,what is in the,What is in the vase?,꽃병 안에 무엇이 있습니까?,text
+231,32,346633003,is this,Is this food raw?,이 음식은 날것인가요?,text
+232,33,517386001,what is in the,What is in the vase?,꽃병 안에 무엇이 있습니까?,text
+233,34,128034004,do,Do these look like school buses?,이것들이 스쿨버스처럼 보이나요?,text
+234,35,154931001,what is the,What is the gender of the person in the black shirt?,검은색 셔츠를 입은 사람의 성별은 무엇인가요?,text
+235,36,482476008,does the,Does the woman's hair look clean or dirty?,"여자의 머리카락이 깨끗해 보이나요, 아니면 더럽나요?",text
+236,37,360137003,what color is the,What color is the water?,물은 어떤 색인가요?,text
+237,38,56684001,does this,Does this dessert look healthy?,이 디저트가 건강해 보이나요?,text
+238,39,493846001,what,What might someone wear on their head when riding this thing?,이 물건을 탈 때 누군가 머리에 무엇을 착용할 수 있을까요?,text
+239,40,85089002,do,Do all the glasses have etching on them?,모든 안경에 에칭이 있나요?,text
+240,41,102421000,can you,Can you tell if the cat is looking at bright light?,고양이가 밝은 빛을 보고 있는지 알 수 있나요?,text
+241,42,215581002,does this,Does this picture show carrots in a basket?,이 사진에 바구니에 당근이 들어 있나요?,text
+242,43,50828012,are the,Are the lights on in the room?,방에 불이 켜져 있나요?,text
+243,44,376493000,is there a,Is there a yield sign in the picture?,사진에 양보 표지판이 있나요?,text
+244,45,367468003,is the,Is the cat picking out shoes to wear?,고양이가 신을 신발을 고르고 있나요?,text
+245,46,502630003,is the,"Is the animal in the foreground one of the ""big 5"" game animals?","전경에 있는 동물이 ""빅 5"" 게임 동물 중 하나입니까?",text
+246,47,116068011,is the,Is the water calm?,물이 잔잔한가요?,text
+247,48,323375001,is this a,Is this a scene in Africa?,아프리카의 한 장면인가요?,text
+248,49,183338005,are these,Are these people playing for fun?,이 사람들은 재미로 놀고 있나요?,text
+249,50,244750002,are,Are all three glasses filled with the same amount of wine?,세 잔 모두 같은 양의 와인으로 채워져 있나요?,text
+250,51,383209003,is the,Is the cat going to fall off the TV?,고양이가 TV에서 떨어질까요?,text
+251,52,443450003,is the,Is the plane far away?,비행기가 멀리 있나요?,text
+252,53,331856019,is this,Is this man tired of playing?,이 남자는 노는 데 지쳤나요?,text
+253,54,530313001,is,Is a woman playing with her hair?,여자가 머리를 가지고 놀고 있나요?,text
+254,55,297819007,are there any,Are there any napkins in this photo?,이 사진에 냅킨이 있나요?,text
+255,56,434867004,is this a,Is this a normal color for a train?,이것이 기차의 일반적인 색상인가요?,text
+256,57,435208011,does this,Does this room have warm lighting?,이 방에 따뜻한 조명이 있나요?,text
+257,58,318998002,is he,Is he standing in another boat?,그는 다른 배에 서 있나요?,text
+258,59,325568007,are,Are you behind a net?,그물 뒤에 있나요?,text
+259,60,42541003,is the,Is the sun out?,해가 떴나요?,text
+260,61,550432000,could,Could a cactus grow in this climate?,선인장이 이 기후에서 자랄 수 있을까요?,text
+261,62,580621000,what type of,What type of establishment are these people likely seated?,이 사람들은 어떤 종류의 시설에 앉을 가능성이 높습니까?,text
+262,63,399284000,what color is the,What color is the water?,물은 어떤 색인가요?,text
+263,64,465715003,is the,Is the water clear?,물이 맑나요?,text
+264,65,73199001,are,Are all the men wearing the same color shirts?,모든 남자들이 같은 색 셔츠를 입고 있나요?,text
+265,66,343496001,are there any,Are there any animals in this photo?,이 사진에 동물이 있나요?,text
+266,67,244111000,is this,Is this designed to be co-located with another electronic device?,이것은 다른 전자 기기와 함께 배치되도록 설계되었나요?,text
+267,68,361321003,can you,Can you use a credit card here?,여기서 신용카드를 사용할 수 있나요?,text
+268,69,205352003,are the,Are the people on the boat seen easily?,보트에 타고 있는 사람들이 쉽게 보이나요?,text
+269,70,196484002,is the,Is the photographer as high as the giraffe?,사진작가가 기린만큼 높나요?,text
+270,71,196681009,are there,Are there clouds in the sky?,하늘에 구름이 있나요?,text
+271,72,404437001,could,Could the bear be tame?,곰이 길들일 수 있을까요?,text
+272,73,74711003,is there,Is there lilies in the water?,물에 백합이 있나요?,text
+273,74,374677000,is this a,Is this a flower native to North America?,이것은 북미 원산의 꽃인가요?,text
+274,75,26501010,none of the above,Will the bus go uptown?,버스가 시내로 올라갈까요?,text
+275,76,493218001,can you,Can you see any bare necks?,맨 목이 보이나요?,text
+276,77,396200022,is this,Is this kid on the right a professional skater?,오른쪽에 있는 이 아이는 프로 스케이터인가요?,text
+277,78,224391007,are these,Are these elephants in the jungle?,이 코끼리들은 정글에 있나요?,text
+278,79,493623001,are the,Are the shoes heels or flats?,"신발이 힐인가요, 플랫인가요?",text
+279,80,336341002,is he,Is he wearing blush?,그는 얼굴을 붉히고 있나요?,text
+280,81,339823002,what color is the,What color is the umbrella?,우산은 어떤 색인가요?,text
+281,82,511111002,what kind of,What kind of juice is in the glass?,유리잔에는 어떤 주스가 들어 있나요?,text
+282,83,192047000,is there a,Is there a towel on the hanger?,옷걸이에 수건이 있나요?,text
+283,84,232790002,are there,Are there more ties that has stripes than there are plain?,줄무늬가 있는 넥타이가 일반 넥타이보다 더 많습니까?,text
+284,85,117015004,does the,Does the giraffe have a long neck?,기린은 목이 길까요?,text
+285,86,223804001,does the,Does the house have a porch?,집에 현관이 있나요?,text
+286,87,220266001,is the,Is the cat happy?,고양이는 행복한가요?,text
+287,88,142722003,do,Do the cows appear to be concerned?,소들이 걱정하는 것처럼 보이나요?,text
+288,89,333290003,is the,Is the giraffe taller than the light post?,기린이 등대보다 더 큰가요?,text
+289,90,333371004,how many,How many engines?,엔진이 몇 개입니까?,text
+290,91,278601001,is the,Is the company that made this truck still in business?,이 트럭을 만든 회사는 아직 사업을 하고 있습니까?,text
+291,92,186282000,is the,Is the monitor showing off a rainbow?,모니터가 무지개를 뽐내고 있나요?,text
+292,93,188460002,is the man,Is the man sitting on a bed?,남자가 침대에 앉아 있나요?,text
+293,94,489861000,is this,Is this truck a V-8?,이 트럭은 V-8인가요?,text
+294,95,489728002,is,Is hellsing the same character as Van Helsing?,헬싱은 반 헬싱과 같은 캐릭터인가요?,text
+295,96,483553002,is,Is that spaghetti sauce?,스파게티 소스인가요?,text
+296,97,48153002,what type of,What type of pants is this woman wearing?,이 여자는 어떤 종류의 바지를 입고 있나요?,text
+297,98,458702007,could,Could there be a vending machine?,자판기가 있을까요?,text
+298,99,425153000,what is the,What is the giraffe eating?,기린은 무엇을 먹고 있나요?,text
+299,100,97230007,is there a,Is there a baby elephant in this picture?,이 사진에 아기 코끼리가 있나요?,text
+300,101,97964002,is there,Is there anyone on the pic?,사진에 누가 있나요?,text
+301,102,371135000,is,Is she reaching downwards?,그녀가 아래로 손을 뻗고 있나요?,text
+302,103,371139000,what color is the,What color is the traffic light?,신호등은 어떤 색인가요?,text
+303,104,10694011,is it,Is it late night on the computer?,컴퓨터가 늦은 밤에 켜져있가요?,text
+304,105,757004,are these,Are these animals all touching?,이 동물들은 모두 접촉하고 있나요?,text
+305,106,554002001,is the,Is the dog wearing a tag?,개가 태그를 달고 있나요?,text

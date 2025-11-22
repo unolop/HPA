@@ -1,0 +1,90 @@
+analysis_report: false
+api_url: null
+chat_template: null
+dataset_args:
+  mm_star:
+    aggregation: mean
+    dataset_id: evalscope/MMStar
+    default_subset: val
+    description: 'MMStar: an elite vision-indispensible multi-modal benchmark, aiming
+      to ensure each curated sample exhibits visual dependency, minimal data leakage,
+      and requires advanced multi-modal capabilities.'
+    eval_split: val
+    extra_params: {}
+    few_shot_num: 0
+    few_shot_prompt_template: null
+    few_shot_random: false
+    filters: null
+    metric_list:
+    - acc
+    name: mm_star
+    output_types:
+    - generation
+    pretty_name: MMStar
+    prompt_template: 'Answer the following multiple choice question.
+
+      The last line of your response should be of the following format:
+
+      ''ANSWER: $LETTER'' (without quotes)
+
+      where LETTER is one of A,B,C,D. Think step by step before answering.
+
+
+      {question}'
+    query_template: null
+    review_timeout: null
+    shuffle: false
+    shuffle_choices: false
+    subset_list:
+    - coarse perception
+    - fine-grained perception
+    - instance reasoning
+    - logical reasoning
+    - math
+    - science & technology
+    system_prompt: null
+    tags:
+    - MultiModal
+    - Knowledge
+    - MCQ
+    train_split: null
+dataset_dir: /home/work/main/Privacy/.modelscope/datasets
+dataset_hub: modelscope
+datasets:
+- mm_star
+debug: false
+eval_backend: Native
+eval_batch_size: 1
+eval_config: null
+eval_type: llm_ckpt
+evalscope_version: 1.2.0
+generation_config:
+  batch_size: 1
+  do_sample: false
+  max_tokens: 2048
+  n: 1
+  temperature: 1.0
+  top_k: 50
+  top_p: 1.0
+ignore_errors: false
+judge_model_args: {}
+judge_strategy: auto
+judge_worker_num: 1
+limit: null
+model: SwiftVLMEngine
+model_args:
+  precision: torch.float16
+  revision: master
+model_id: Qwen_Qwen3-VL-2B-Instruct
+model_task: text_generation
+repeats: 1
+rerun_review: false
+sandbox_config: {}
+sandbox_manager_config: {}
+sandbox_type: docker
+seed: 42
+stream: null
+timeout: null
+use_cache: null
+use_sandbox: false
+work_dir: ./outputs/20251121_134021

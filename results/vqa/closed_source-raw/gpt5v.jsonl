@@ -1,0 +1,270 @@
+{"question": "Is the sky cloudy?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the photo colored?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this picture in focus?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this a recent photograph?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are these people wearing helmets?", "raw_output": "No", "model": "GPT5"}
+{"question": "Does this person believe in safety?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the man hairy?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this a sightseeing attraction?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Does the dog like his bed?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What are the sheep eating?", "raw_output": "Grass", "model": "GPT5"}
+{"question": "Is the dog being affectionate?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is it a cloudy day?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Do people come here to sit?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What are the zebras eating?", "raw_output": "Hay", "model": "GPT5"}
+{"question": "Is the person on the ground?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is this man angry?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is the cow wearing an ear tag?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is it a beer?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this in a parking lot?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this guy wearing safety gear?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is the man flying?", "raw_output": "No", "model": "GPT5"}
+{"question": "Does the surfboard have fins?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the bird being fed by a human?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is she wearing sneakers?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this a busy street?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are they married?", "raw_output": "Probably", "model": "GPT5"}
+{"question": "What kind of cheese is on the pizza?", "raw_output": "Mozzarella", "model": "GPT5"}
+{"question": "What color is the elephant?", "raw_output": "Gray", "model": "GPT5"}
+{"question": "Is this fresh snow?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Does the color of the pillow match the color of the chair?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is there anyone on the photo?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What is in the vase?", "raw_output": "Flowers", "model": "GPT5"}
+{"question": "Is the room sunny?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this food raw?", "raw_output": "No", "model": "GPT5"}
+{"question": "Do these look like school buses?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What is the gender of the person in the black shirt?", "raw_output": "Male", "model": "GPT5"}
+{"question": "Does the woman's hair look clean or dirty?", "raw_output": "Clean", "model": "GPT5"}
+{"question": "What color is the water?", "raw_output": "Blue", "model": "GPT5"}
+{"question": "Is this a normal color for a train?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What might someone wear on their head when riding this thing?", "raw_output": "Helmet", "model": "GPT5"}
+{"question": "Does this dessert look healthy?", "raw_output": "No", "model": "GPT5"}
+{"question": "Do all the glasses have etching on them?", "raw_output": "No", "model": "GPT5"}
+{"question": "Can you tell if the cat is looking at bright light?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Does this photo show carrots in a basket?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are the lights on in the room?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is there a yield sign in the photo?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is the cat picking out shoes to wear?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is the animal in the photo one of the \"big 5\" game animals?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the water calm?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this a photo in Africa?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are these people playing for fun?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are all three glasses filled with the same amount of wine?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is the cat going to fall off the TV?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is the plane far away?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this man tired of playing?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is a woman playing with her hair?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are there any napkins in this photo?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Does this room have warm lighting?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is he standing in another boat?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are you behind a net?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the sun out?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Could a cactus grow in this climate?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What type of establishment are these people likely seated?", "raw_output": "Restaurant", "model": "GPT5"}
+{"question": "Is the water clear?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are all the men wearing the same color shirts?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are there any animals in this photo?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this designed to be co-located with another electronic device?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Can you use a credit card here?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are the people on the boat seen easily?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the photographer as high as the giraffe?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are there clouds in the sky?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Could the bear be tame?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is there lilies in the water?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is this a flower native to North America?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Will the bus go uptown?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Can you see any bare necks?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this kid on the right a professional skater?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are these elephants in the jungle?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is he wearing blush?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are the shoes heels or flats?", "raw_output": "Flats", "model": "GPT5"}
+{"question": "What color is the umbrella?", "raw_output": "Red", "model": "GPT5"}
+{"question": "What kind of juice is in the glass?", "raw_output": "Orange", "model": "GPT5"}
+{"question": "Is there a towel on the hanger?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are there more ties that has stripes than there are plain?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Does the giraffe have a long neck?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Does the house have a porch?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the cat happy?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Do the cows appear to be concerned?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is the giraffe taller than the light post?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this truck a V-8?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "How many engines?", "raw_output": "1", "model": "GPT5"}
+{"question": "Is the company that made this truck still in business?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the monitor showing off a rainbow?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the man sitting on a bed?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is hellsing the same character as Van Helsing?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is that spaghetti sauce?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Could there be a vending machine?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What type of pants is this woman wearing?", "raw_output": "Jeans", "model": "GPT5"}
+{"question": "What is the giraffe eating?", "raw_output": "Leaves", "model": "GPT5"}
+{"question": "Is there a baby elephant in this photo?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is she reaching downwards?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What color is the traffic light?", "raw_output": "Green", "model": "GPT5"}
+{"question": "Is a real bird on the tower?", "raw_output": "No", "model": "GPT5"}
+{"question": "What is the number on the pole?", "raw_output": "12", "model": "GPT5"}
+{"question": "Has the wall been tagged?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What color is the label on the side of the bottom appliance?", "raw_output": "Blue", "model": "GPT5"}
+{"question": "Is there toothpaste on the sink?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Where is a man wearing a white robe?", "raw_output": "Bathroom", "model": "GPT5"}
+{"question": "How many American flags are in the picture?", "raw_output": "2", "model": "GPT5"}
+{"question": "Does this man's tie match the background?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the electricity in the room turned on?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this a normal size slice of pizza?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Do you see a street light?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What color is the fork?", "raw_output": "Silver", "model": "GPT5"}
+{"question": "Is this a 3-D photo?", "raw_output": "No", "model": "GPT5"}
+{"question": "How many people are on the motorcycle?", "raw_output": "2", "model": "GPT5"}
+{"question": "What item in the room is plaid?", "raw_output": "Blanket", "model": "GPT5"}
+{"question": "Does anyone have on glasses?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What color is the table?", "raw_output": "Brown", "model": "GPT5"}
+{"question": "How many containers of peanut butter are on the table?", "raw_output": "2", "model": "GPT5"}
+{"question": "Is it raining?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is the weather safe for flying?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What website is shown?", "raw_output": "YouTube", "model": "GPT5"}
+{"question": "What is the man doing?", "raw_output": "Talking", "model": "GPT5"}
+{"question": "Is there a fence around the top row of seats?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "How many cars are there?", "raw_output": "3", "model": "GPT5"}
+{"question": "What is the cake sitting on?", "raw_output": "Plate", "model": "GPT5"}
+{"question": "Is this a boathouse?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What are they researching?", "raw_output": "Plants", "model": "GPT5"}
+{"question": "What is the reflection?", "raw_output": "Tree", "model": "GPT5"}
+{"question": "Is there a passenger in the truck?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is he flipping the board?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are these sheep in a box?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is this a busy area?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Can you see the sky from this photo?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What is the man wearing?", "raw_output": "Jacket", "model": "GPT5"}
+{"question": "What is on the plate?", "raw_output": "Sandwich", "model": "GPT5"}
+{"question": "Is this a puppy?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What is the man holding in his hand?", "raw_output": "Book", "model": "GPT5"}
+{"question": "Is the plane flying?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is that a restaurant?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is the man wearing a helmet?", "raw_output": "No", "model": "GPT5"}
+{"question": "What color is the mouse?", "raw_output": "Black", "model": "GPT5"}
+{"question": "What color is the soap in the dispenser?", "raw_output": "Green", "model": "GPT5"}
+{"question": "Are these people real?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What is the plane on the left?", "raw_output": "Jet", "model": "GPT5"}
+{"question": "What is hanging on the left wall?", "raw_output": "Picture", "model": "GPT5"}
+{"question": "Is the boy playing?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Who is the man talking to on the phone?", "raw_output": "Friend", "model": "GPT5"}
+{"question": "What sport is this?", "raw_output": "Soccer", "model": "GPT5"}
+{"question": "What kind of street sign is in the picture?", "raw_output": "Stop", "model": "GPT5"}
+{"question": "Is this enough food for more than two people?", "raw_output": "No", "model": "GPT5"}
+{"question": "How many people are wearing glasses?", "raw_output": "1", "model": "GPT5"}
+{"question": "Does everyone have helmets on?", "raw_output": "No", "model": "GPT5"}
+{"question": "What color is his shirt?", "raw_output": "Blue", "model": "GPT5"}
+{"question": "What flavor is the frosting on the cake?", "raw_output": "Chocolate", "model": "GPT5"}
+{"question": "What color are the cabinets?", "raw_output": "White", "model": "GPT5"}
+{"question": "Is the pet in its bed?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What covers the ground?", "raw_output": "Snow", "model": "GPT5"}
+{"question": "What herb is the man trimming?", "raw_output": "Basil", "model": "GPT5"}
+{"question": "Is this photo in color?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is there a kettle on the stove?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What sport is being played?", "raw_output": "Basketball", "model": "GPT5"}
+{"question": "What sport is being played in this photo?", "raw_output": "Tennis", "model": "GPT5"}
+{"question": "Do any cars have their lights on?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are these women wearing skirts?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is the sky clear?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What road is nearby?", "raw_output": "Highway 1", "model": "GPT5"}
+{"question": "What color is the train?", "raw_output": "Red", "model": "GPT5"}
+{"question": "How many animals are there?", "raw_output": "3", "model": "GPT5"}
+{"question": "Is this woman \"dressed her age\"?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What is on the kids head?", "raw_output": "Hat", "model": "GPT5"}
+{"question": "Where is the sink in the picture?", "raw_output": "Left", "model": "GPT5"}
+{"question": "What is she wearing on her eyes?", "raw_output": "Glasses", "model": "GPT5"}
+{"question": "Which one is wearing sunglasses?", "raw_output": "Man on left", "model": "GPT5"}
+{"question": "Does the chair have a cup holder?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Which sport item is higher in the air?", "raw_output": "Ball", "model": "GPT5"}
+{"question": "Which foot is in front of the other?", "raw_output": "Left", "model": "GPT5"}
+{"question": "How many kids are here?", "raw_output": "4", "model": "GPT5"}
+{"question": "Based on the clothing, Is it cold outside?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this someone's house?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "How many animals are in the picture?", "raw_output": "2", "model": "GPT5"}
+{"question": "Was this picture taken in the daytime?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What vegetable is present in this food?", "raw_output": "Tomato", "model": "GPT5"}
+{"question": "Is the boat in the water?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "How many people are sitting at the bar?", "raw_output": "3", "model": "GPT5"}
+{"question": "What is the baby eating?", "raw_output": "Banana", "model": "GPT5"}
+{"question": "Are the dogs the same breed?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are there any magnets on the fridge?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is this a popular location?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "What is on the plane?", "raw_output": "Logo", "model": "GPT5"}
+{"question": "What is around the man's neck?", "raw_output": "Scarf", "model": "GPT5"}
+{"question": "What game is represented in the hands of the man on the left?", "raw_output": "Poker", "model": "GPT5"}
+{"question": "What time is it?", "raw_output": "3:15", "model": "GPT5"}
+{"question": "What are the kids holding?", "raw_output": "Balloons", "model": "GPT5"}
+{"question": "What food is the sleeping bag?", "raw_output": "Hot dog", "model": "GPT5"}
+{"question": "How many women?", "raw_output": "2", "model": "GPT5"}
+{"question": "Is this elephant sick?", "raw_output": "No", "model": "GPT5"}
+{"question": "What color coat is this person wearing?", "raw_output": "Brown", "model": "GPT5"}
+{"question": "Why doesn't he need his sunglasses on right now?", "raw_output": "Cloudy", "model": "GPT5"}
+{"question": "What is piled on top of the sandwich?", "raw_output": "Lettuce", "model": "GPT5"}
+{"question": "Are all of these children wearing hats?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are her pants tight?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are all the kites the same?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are all the trees green?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are there peppers on the pizza?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are there cigarettes in the ashtray?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are there waves in this photo?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are there any weeds growing along the tracks?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are there any utensils shown?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are they taking a selfie?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are they in the zoo?", "raw_output": "No", "model": "GPT5"}
+{"question": "Are they in the kitchen?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Are they playing?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Could this animal be someone's pet?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Could that be a waterhole?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Do you see a bell?", "raw_output": "No", "model": "GPT5"}
+{"question": "Do you see any grass?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Do you see the sea?", "raw_output": "No", "model": "GPT5"}
+{"question": "Has this boy been injured recently?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is that a man or woman looking at the screen?", "raw_output": "Man", "model": "GPT5"}
+{"question": "Is that a finished kitchen?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is that a new car?", "raw_output": "No", "model": "GPT5"}
+{"question": "Is there any work equipment in the photo?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is there lettuce on the plate?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "IS there water in the background?", "raw_output": "Yes", "model": "GPT5"}
+{"question": "Is there snow?", "raw_output": "No", "model": "GPT5"}
+{"question": "Was this picture taken during the day or night?", "raw_output": "Day", "model": "GPT5"}
+{"question": "What are they carrying?", "raw_output": "Bags", "model": "GPT5"}
+{"question": "What are pedestrians asked not to do on the white sign?", "raw_output": "Cross", "model": "GPT5"}
+{"question": "What are they playing?", "raw_output": "Chess", "model": "GPT5"}
+{"question": "What are on the child's feet?", "raw_output": "Shoes", "model": "GPT5"}
+{"question": "What are these animals?", "raw_output": "Horses", "model": "GPT5"}
+{"question": "What color are these trucks?", "raw_output": "Yellow", "model": "GPT5"}
+{"question": "What color grass is the giraffe standing in?", "raw_output": "Green", "model": "GPT5"}
+{"question": "What color are their jackets?", "raw_output": "Black", "model": "GPT5"}
+{"question": "What color thread hangs down the right side?", "raw_output": "Red", "model": "GPT5"}
+{"question": "What color boat is the man riding in?", "raw_output": "White", "model": "GPT5"}
+{"question": "What color are the crates against the wall?", "raw_output": "Blue", "model": "GPT5"}
+{"question": "What color are the clock's numerals?", "raw_output": "Black", "model": "GPT5"}
+{"question": "What color are the scissors?", "raw_output": "Silver", "model": "GPT5"}
+{"question": "What color are the curtains?", "raw_output": "White", "model": "GPT5"}
+{"question": "What color is her dress?", "raw_output": "Blue", "model": "GPT5"}
+{"question": "What color is his helmet?", "raw_output": "Red", "model": "GPT5"}
+{"question": "What color is her headband?", "raw_output": "Pink", "model": "GPT5"}
+{"question": "What color is her top?", "raw_output": "Yellow", "model": "GPT5"}
+{"question": "What is in the bottle?", "raw_output": "Milk", "model": "GPT5"}
+{"question": "What is in the white plastic covered container behind the bowl?", "raw_output": "Bread", "model": "GPT5"}
+{"question": "What is in the man's hand?", "raw_output": "Phone", "model": "GPT5"}
+{"question": "What is in the far back room?", "raw_output": "Table", "model": "GPT5"}
+{"question": "What is on the left plate?", "raw_output": "Fish", "model": "GPT5"}
+{"question": "What is on the man's head?", "raw_output": "Hat", "model": "GPT5"}
+{"question": "What is on the table?", "raw_output": "Fruit", "model": "GPT5"}
+{"question": "What time is shown on the clock?", "raw_output": "10:10", "model": "GPT5"}
+{"question": "What type of shoes is this person wearing?", "raw_output": "Boots", "model": "GPT5"}
+{"question": "What type of building can this photo be found in?", "raw_output": "Museum", "model": "GPT5"}
+{"question": "What type of animal are these?", "raw_output": "Cows", "model": "GPT5"}
+{"question": "Where is the bench?", "raw_output": "Park", "model": "GPT5"}
+{"question": "Where is the clock located?", "raw_output": "Wall", "model": "GPT5"}
+{"question": "Where is the school bus going?", "raw_output": "Downtown", "model": "GPT5"}
+{"question": "Where is the phone?", "raw_output": "Desk", "model": "GPT5"}
+{"question": "Where is the dog?", "raw_output": "Yard", "model": "GPT5"}
+{"question": "Who is using the laptop?", "raw_output": "Woman", "model": "GPT5"}
+{"question": "Who is wearing glasses?", "raw_output": "Man on right", "model": "GPT5"}
+{"question": "Who is the pitcher?", "raw_output": "Boy in red", "model": "GPT5"}
+{"question": "Who is in the photo?", "raw_output": "Family", "model": "GPT5"}
+{"question": "Why is this dog fighting over a Frisbee?", "raw_output": "Playing", "model": "GPT5"}
+{"question": "Why are there straps on the suitcase?", "raw_output": "Security", "model": "GPT5"}
+{"question": "Why is she shiny?", "raw_output": "Sweat", "model": "GPT5"}
+{"question": "Why are the lamps lit?", "raw_output": "Dark", "model": "GPT5"}

@@ -1,0 +1,317 @@
+,question_id,category,l2_category,question,answer,correct,question_en,options,answer_type
+1101,295.0,fine-grained perception,object counting,"How many people are standing on the stage in the image?
+ Options: A: One, B: More than three, C: Three, D: Two",D,0.0833333333333333,"How many people are standing on the stage in the image?
+ "," A: One, B: More than three, C: Three, D: Two",choice
+1229,493.0,instance reasoning,cross-instance attribute reasoning,"What is the relative position of the man and woman in the image?
+ Options: A: They are facing each other, B: They are both facing forward, C: They are both facing the camera, D: They are both looking away from the camera",D,0.0,"What is the relative position of the man and woman in the image?
+ "," A: They are facing each other, B: They are both facing forward, C: They are both facing the camera, D: They are both looking away from the camera",choice
+1037,819.0,logical reasoning,diagram reasoning,"<image 1> is the HRM Roles, David Ulrich (1997) model. According to Ulrich, if HR is to become and remain relevant in the current business environment, what is not something HR professionals must learn?
+ Options: A: Manage human resources operations and infrastructure, B: Become the link between human resources and organizational strategy, C: Optimize the value of employees, D: Be a change agent with a long-term vision for the organization",C,0.0909090909090909,"<image 1> is the HRM Roles, David Ulrich (1997) model. According to Ulrich, if HR is to become and remain relevant in the current business environment, what is not something HR professionals must learn?
+ "," A: Manage human resources operations and infrastructure, B: Become the link between human resources and organizational strategy, C: Optimize the value of employees, D: Be a change agent with a long-term vision for the organization",choice
+593,919.0,logical reasoning,diagram reasoning,"Which month has the lowest average precipitation in London?
+ Options: A: July, B: February, C: November, D: nan",A,0.2,"Which month has the lowest average precipitation in London?
+ "," A: July, B: February, C: November, D: nan",choice
+1283,609.0,instance reasoning,single-instance reasoning,"What is the dominant material of the cabinets in the image?
+ Options: A: Ceramic, B: Metal, C: Wood, D: Glass",A,0.0,"What is the dominant material of the cabinets in the image?
+ "," A: Ceramic, B: Metal, C: Wood, D: Glass",choice
+9,569.0,instance reasoning,cross-instance relation reasoning,"Which property do these three objects have in common?
+ Options: A: blue, B: smooth, C: flexible, D: nan",B,0.727272727272727,"Which property do these three objects have in common?
+ "," A: blue, B: smooth, C: flexible, D: nan",choice
+877,1247.0,science & technology,biology & chemistry & physics,"What is H in the diagram?
+ Options: A: pith, B: protoxylem, C: cambium, D: metaxylem",A,0.1,"What is H in the diagram?
+ "," A: pith, B: protoxylem, C: cambium, D: metaxylem",choice
+1269,660.0,instance reasoning,single-instance reasoning,"Where is the man playing the guitar located on the stage?
+ Options: A: Left side of the stage, B: Middle of the stage, C: Right side of the stage, D: Behind the microphones",D,0.0,"Where is the man playing the guitar located on the stage?
+ "," A: Left side of the stage, B: Middle of the stage, C: Right side of the stage, D: Behind the microphones",choice
+1102,168.0,coarse perception,image style & quality,"Which category does this image belong to?
+ Options: A: MRI image, B: icon, C: microscopic image, D: abstract painting",A,0.0833333333333333,"Which category does this image belong to?
+ "," A: MRI image, B: icon, C: microscopic image, D: abstract painting",choice
+210,1411.0,science & technology,geography & earth science & agriculture,"Which label indicates the earth's gravitational pull on the moon?
+ Options: A: D, B: A, C: B, D: E",A,0.4,"Which label indicates the earth's gravitational pull on the moon?
+ "," A: D, B: A, C: B, D: E",choice
+1271,669.0,instance reasoning,single-instance reasoning,"Which is right?
+ Options: A: The orange is next to the apple, B: The apple is on the left, C: The orange is on the right, D: All above are not right",A,0.0,"Which is right?
+ "," A: The orange is next to the apple, B: The apple is on the left, C: The orange is on the right, D: All above are not right",choice
+402,1214.0,science & technology,biology & chemistry & physics,"Leaf B is of which plant?
+ Options: A: Celtis, B: Stem, C: Ulmus, D: Lotus",A,0.3,"Leaf B is of which plant?
+ "," A: Celtis, B: Stem, C: Ulmus, D: Lotus",choice
+885,1215.0,science & technology,biology & chemistry & physics,"Letter A in the following diagram represents which stage?
+ Options: A: attached planula, B: polyp, C: ephyra, D: planula",C,0.1,"Letter A in the following diagram represents which stage?
+ "," A: attached planula, B: polyp, C: ephyra, D: planula",choice
+534,248.0,fine-grained perception,object counting,"How many archways are there in the image?
+ Options: A: One, B: Four, C: Three, D: Two",D,0.25,"How many archways are there in the image?
+ "," A: One, B: Four, C: Three, D: Two",choice
+518,395.0,fine-grained perception,recognition,"What is the color of the socks detected in the attribute detection of the image?
+ Options: A: Black, B: Red, C: White, D: Striped",C,0.25,"What is the color of the socks detected in the attribute detection of the image?
+ "," A: Black, B: Red, C: White, D: Striped",choice
+636,882.0,logical reasoning,diagram reasoning,"In the diagram shown, which organism consumes small fish as food?
+ Options: A: mahi mahi, B: large shark, C: zooplankton, D: mackerel",D,0.2,"In the diagram shown, which organism consumes small fish as food?
+ "," A: mahi mahi, B: large shark, C: zooplankton, D: mackerel",choice
+395,1327.0,science & technology,electronics & energy & mechanical eng.,"<image 1>The accompanying sketch shows the schematic arrangement for measuring the thermal conductivity by the guarded hot plate method. Two similar 1 cm thick specimens receive heat from a 6.5 cm by 6.5 cm guard heater. When the power dissipation by the wattmeter was 15 W, the thermocouples inserted at the hot and cold surfaces indicated temperatures as 325 K and 300 K. What is the thermal conductivity of the test specimen material?
+ Options: A: 0.81 W/m K, B: 0.71 W/m K, C: 0.61 W/m K, D: 0.51 W/m K",B,0.3,"<image 1>The accompanying sketch shows the schematic arrangement for measuring the thermal conductivity by the guarded hot plate method. Two similar 1 cm thick specimens receive heat from a 6.5 cm by 6.5 cm guard heater. When the power dissipation by the wattmeter was 15 W, the thermocouples inserted at the hot and cold surfaces indicated temperatures as 325 K and 300 K. What is the thermal conductivity of the test specimen material?
+ "," A: 0.81 W/m K, B: 0.71 W/m K, C: 0.61 W/m K, D: 0.51 W/m K",choice
+819,221.0,fine-grained perception,localization,"Where is the drum located in the image?
+ Options: A: In the back, B: On the left side, C: On the right side, D: At the center",C,0.166666666666667,"Where is the drum located in the image?
+ "," A: In the back, B: On the left side, C: On the right side, D: At the center",choice
+933,1367.0,science & technology,electronics & energy & mechanical eng.,"Which schedule is an equivalent serial schedule for the precendence graph in <image 1>?
+ Options: A: T3 -> T1 -> T2, B: T2 -> T1 -> T3, C: T1 -> T2 -> T3, D: There are no serial schedules for the graph.",D,0.1,"Which schedule is an equivalent serial schedule for the precendence graph in <image 1>?
+ "," A: T3 -> T1 -> T2, B: T2 -> T1 -> T3, C: T1 -> T2 -> T3, D: There are no serial schedules for the graph.",choice
+495,711.0,logical reasoning,code & sequence reasoning,"Which Python code can generate the content of the image?
+ Options: A: from collections import Counter
+ result = Counter('Canada')
+ print(result), B: from collections import Counter
+ result = Counter('strawberry')
+ print(result), C: from collections import Counter
+ result = Counter('banana')
+ print(result), D: from collections import Counter
+ result = Counter('apple')
+ print(result)",C,0.272727272727273,"Which Python code can generate the content of the image?
+ "," A: from collections import Counter
+ result = Counter('Canada')
+ print(result), B: from collections import Counter
+ result = Counter('strawberry')
+ print(result), C: from collections import Counter
+ result = Counter('banana')
+ print(result), D: from collections import Counter
+ result = Counter('apple')
+ print(result)",choice
+581,54.0,coarse perception,image scene and topic,"What is the general theme of this image?
+ Options: A: Candy buffet, B: Ice cream sundae, C: Yogurt containers, D: Fruit desserts",B,0.230769230769231,"What is the general theme of this image?
+ "," A: Candy buffet, B: Ice cream sundae, C: Yogurt containers, D: Fruit desserts",choice
+84,551.0,instance reasoning,cross-instance relation reasoning,"What can Rosa and Kylie trade to each get what they want?
+ Options: A: Kylie can trade her almonds for Rosa's tomatoes., B: Rosa can trade her tomatoes for Kylie's broccoli., C: Rosa can trade her tomatoes for Kylie's carrots., D: Kylie can trade her broccoli for Rosa's oranges.",B,0.545454545454545,"What can Rosa and Kylie trade to each get what they want?
+ "," A: Kylie can trade her almonds for Rosa's tomatoes., B: Rosa can trade her tomatoes for Kylie's broccoli., C: Rosa can trade her tomatoes for Kylie's carrots., D: Kylie can trade her broccoli for Rosa's oranges.",choice
+258,1178.0,math,statistical reasoning,"You are asked to compare two options with parameters as given. The risk-free interest rate should be assumed to be 6%. Assume the stocks on which these options are written pay no dividends. <image 1> Which put option must be written on the stock with the lower price?
+ Options: A: A, B: B, C: Not enough information, D: nan",B,0.4,"You are asked to compare two options with parameters as given. The risk-free interest rate should be assumed to be 6%. Assume the stocks on which these options are written pay no dividends. <image 1> Which put option must be written on the stock with the lower price?
+ "," A: A, B: B, C: Not enough information, D: nan",choice
+1225,504.0,instance reasoning,cross-instance attribute reasoning,"Where is the top of the purple bottle in relation to the man with the guitar?
+ Options: A: Beside him, B: Above him, C: Below him, D: On his head",A,0.0,"Where is the top of the purple bottle in relation to the man with the guitar?
+ "," A: Beside him, B: Above him, C: Below him, D: On his head",choice
+399,913.0,logical reasoning,diagram reasoning,"Which country is highlighted?
+ Options: A: Saint Lucia, B: Jamaica, C: Haiti, D: Cuba",B,0.3,"Which country is highlighted?
+ "," A: Saint Lucia, B: Jamaica, C: Haiti, D: Cuba",choice
+400,1196.0,science & technology,biology & chemistry & physics,"From the above food web diagram, if all th bettle dies then
+ Options: A: guava increases, B: fungi decreases, C: bacteria increases, D: guava decreases",A,0.3,"From the above food web diagram, if all th bettle dies then
+ "," A: guava increases, B: fungi decreases, C: bacteria increases, D: guava decreases",choice
+695,1230.0,science & technology,biology & chemistry & physics,"The manufacture of compound F requires five separate chemical reactions. The initial reactant, compound A, is converted to compound B, compound B is converted to compound C, and so on. The diagram below summarizes the steps in the manufacture of compound F, including the percent yield for each step. Provide the missing quantities or missing percent yields.Assume that the reactant and product in each step react in a one-to-one mole ratio. <image 1>
+ Options: A: 20.0%,0.50 mol,0.05 mol,20.0%, B: 30.0%,0.50 mol,0.05 mol,20.0%, C: 40.0%,0.50 mol,0.05 mol,20.0%, D: 50.0%,0.50 mol,0.05 mol,20.0%",D,0.2,"The manufacture of compound F requires five separate chemical reactions. The initial reactant, compound A, is converted to compound B, compound B is converted to compound C, and so on. The diagram below summarizes the steps in the manufacture of compound F, including the percent yield for each step. Provide the missing quantities or missing percent yields.Assume that the reactant and product in each step react in a one-to-one mole ratio. <image 1>
+ "," A: 20.0%,0.50 mol,0.05 mol,20.0%, B: 30.0%,0.50 mol,0.05 mol,20.0%, C: 40.0%,0.50 mol,0.05 mol,20.0%, D: 50.0%,0.50 mol,0.05 mol,20.0%",choice
+194,651.0,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ Options: A: mason, B: nurse, C: pilot, D: policeman",D,0.454545454545455,"What's the profession of the people in this picture?
+ "," A: mason, B: nurse, C: pilot, D: policeman",choice
+615,1312.0,science & technology,biology & chemistry & physics,"Which picture represents Aculeate?
+ Options: A: G, B: F, C: C, D: N",B,0.2,"Which picture represents Aculeate?
+ "," A: G, B: F, C: C, D: N",choice
+700,801.0,logical reasoning,common reasoning,"What will happen next?
+ Options: A: the girls is gonna turn the pan around, B: the pan itself is gonna fly into the woman's face, C: nothing is gonna happen, D: both A,B, and C",B,0.2,"What will happen next?
+ "," A: the girls is gonna turn the pan around, B: the pan itself is gonna fly into the woman's face, C: nothing is gonna happen, D: both A,B, and C",choice
+429,1257.0,science & technology,biology & chemistry & physics,"What is the ATP in the diagram?
+ Options: A: B, B: A, C: D, D: none of the above",A,0.3,"What is the ATP in the diagram?
+ "," A: B, B: A, C: D, D: none of the above",choice
+98,626.0,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ Options: A: clean, B: measurement, C: Bulldozing, D: Cutting platform",D,0.545454545454545,"What's the function of the demonstrated object?
+ "," A: clean, B: measurement, C: Bulldozing, D: Cutting platform",choice
+324,370.0,fine-grained perception,recognition,"What color is the writing on the sign in the image?
+ Options: A: White, B: Green, C: Red, D: Black",D,0.333333333333333,"What color is the writing on the sign in the image?
+ "," A: White, B: Green, C: Red, D: Black",choice
+696,1175.0,math,statistical reasoning,"The Booth Company's sales are forecasted to double from $1,000 in 2010 to $2,000 in 2011. Here is the December 31, 2010, balance sheet: <image 1> Booth's fixed assets were used to only 50% of capacity during 2010, but its current assets were at their proper levels in relation to sales. All assets except fixed assets must increase at the same rate as sales, and fixed assets would also have to increase at the same rate if the current excess capacity did not exist. Booth's after-tax profit margin is forecasted to be 5% and its payout ratio to be 60%. What is Booth's additional funds needed (AFN) for the coming year?
+ Options: A: 360, B: Other Answers, C: nan, D: nan",A,0.2,"The Booth Company's sales are forecasted to double from $1,000 in 2010 to $2,000 in 2011. Here is the December 31, 2010, balance sheet: <image 1> Booth's fixed assets were used to only 50% of capacity during 2010, but its current assets were at their proper levels in relation to sales. All assets except fixed assets must increase at the same rate as sales, and fixed assets would also have to increase at the same rate if the current excess capacity did not exist. Booth's after-tax profit margin is forecasted to be 5% and its payout ratio to be 60%. What is Booth's additional funds needed (AFN) for the coming year?
+ "," A: 360, B: Other Answers, C: nan, D: nan",choice
+996,1270.0,science & technology,biology & chemistry & physics,"What stage does D depict
+ Options: A: Chrysalis, B: Egg, C: Caterpillar, D: Butterfly",B,0.1,"What stage does D depict
+ "," A: Chrysalis, B: Egg, C: Caterpillar, D: Butterfly",choice
+685,1332.0,science & technology,electronics & energy & mechanical eng.,"Among the following binary trees, which one may become a binary search decision tree (excluding external nodes)
+ Options: A: <image 1>, B: <image 2>, C: <image 3>, D: <image 4>",A,0.2,"Among the following binary trees, which one may become a binary search decision tree (excluding external nodes)
+ "," A: <image 1>, B: <image 2>, C: <image 3>, D: <image 4>",choice
+787,425.0,fine-grained perception,recognition,"What is the shape of the window on the building in the image?
+ Options: A: Square, B: Rectangle, C: Circle, D: Triangle",C,0.166666666666667,"What is the shape of the window on the building in the image?
+ "," A: Square, B: Rectangle, C: Circle, D: Triangle",choice
+1160,543.0,instance reasoning,cross-instance relation reasoning,"In nature, what's the relationship between these two creatures?
+ Options: A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship",B,0.0606060606060606,"In nature, what's the relationship between these two creatures?
+ "," A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship",choice
+758,663.0,instance reasoning,single-instance reasoning,"Where is the sheep?
+ Options: A: The sheep is behind the car, B: The sheep is in the front of the car, C: The sheep is on the right of the car, D: The sheep is on the left of the car",B,0.181818181818182,"Where is the sheep?
+ "," A: The sheep is behind the car, B: The sheep is in the front of the car, C: The sheep is on the right of the car, D: The sheep is on the left of the car",choice
+224,181.0,coarse perception,image style & quality,"Which image is more brightful?
+ Options: A: The first image, B: The second image, C: nan, D: nan",B,0.4,"Which image is more brightful?
+ "," A: The first image, B: The second image, C: nan, D: nan",choice
+296,510.0,instance reasoning,cross-instance attribute reasoning,"Which image shows the highest sharpness?
+ Options: A: upper left, B: upper right, C: down left, D: down right",B,0.363636363636364,"Which image shows the highest sharpness?
+ "," A: upper left, B: upper right, C: down left, D: down right",choice
+744,511.0,instance reasoning,cross-instance attribute reasoning,"Which image shows the highest sharpness?
+ Options: A: upper left, B: upper right, C: down left, D: down right",C,0.181818181818182,"Which image shows the highest sharpness?
+ "," A: upper left, B: upper right, C: down left, D: down right",choice
+1105,278.0,fine-grained perception,object counting,"How many pairs of shoes can be seen in the image?
+ Options: A: One, B: Three, C: Two, D: Cannot be determined",A,0.0833333333333333,"How many pairs of shoes can be seen in the image?
+ "," A: One, B: Three, C: Two, D: Cannot be determined",choice
+274,24.0,coarse perception,image scene and topic,"Based on the image, which statement best describes the likely purpose of the setting?
+ Options: A: A photoshoot for greeting cards, B: A scientific research site, C: A festive celebration, D: A picnic spot for a group of people",A,0.384615384615385,"Based on the image, which statement best describes the likely purpose of the setting?
+ "," A: A photoshoot for greeting cards, B: A scientific research site, C: A festive celebration, D: A picnic spot for a group of people",choice
+532,245.0,fine-grained perception,object counting,"How many angels have halos?
+ Options: A: Two, B: One, C: nan, D: Three",D,0.25,"How many angels have halos?
+ "," A: Two, B: One, C: nan, D: Three",choice
+480,655.0,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ Options: A: photographer, B: chemist, C: repairman, D: pianist",C,0.272727272727273,"What's the profession of the people in this picture?
+ "," A: photographer, B: chemist, C: repairman, D: pianist",choice
+814,231.0,fine-grained perception,localization,"Where is the table in relation to the balcony?
+ Options: A: On the right side of the balcony, B: In the center of the balcony, C: On the left side of the balcony, D: Cannot be determined from the information given",B,0.166666666666667,"Where is the table in relation to the balcony?
+ "," A: On the right side of the balcony, B: In the center of the balcony, C: On the left side of the balcony, D: Cannot be determined from the information given",choice
+867,1194.0,science & technology,biology & chemistry & physics,"Consider the molecule in blue bound to a binding site. Identify the binding interactions taking place at ii shown in red. <image 1>
+ Options: A: hydrogen bonds, B: ionic bonds, C: van der Waals interactions, D: nan",B,0.1,"Consider the molecule in blue bound to a binding site. Identify the binding interactions taking place at ii shown in red. <image 1>
+ "," A: hydrogen bonds, B: ionic bonds, C: van der Waals interactions, D: nan",choice
+746,629.0,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ Options: A: excavate, B: transport, C: weld, D: Measure the level",A,0.181818181818182,"What's the function of the demonstrated object?
+ "," A: excavate, B: transport, C: weld, D: Measure the level",choice
+823,215.0,fine-grained perception,localization,"What is the position of the sheep's legs in the image?
+ Options: A: At the top, B: On the right side, C: On the left side, D: At the bottom",B,0.166666666666667,"What is the position of the sheep's legs in the image?
+ "," A: At the top, B: On the right side, C: On the left side, D: At the bottom",choice
+132,924.0,logical reasoning,diagram reasoning,"Which solution has a higher concentration of green particles?
+ Options: A: neither; their concentrations are the same, B: Solution A, C: Solution B, D: nan",B,0.5,"Which solution has a higher concentration of green particles?
+ "," A: neither; their concentrations are the same, B: Solution A, C: Solution B, D: nan",choice
+1127,441.0,fine-grained perception,recognition,"Which of these cities is marked on the map?
+ Options: A: New York City, B: Washington, D.C., C: Philadelphia, D: Boston",C,0.0833333333333333,"Which of these cities is marked on the map?
+ "," A: New York City, B: Washington, D.C., C: Philadelphia, D: Boston",choice
+391,1403.0,science & technology,geography & earth science & agriculture,"Which country is highlighted?
+ Options: A: Dominica, B: Antigua and Barbuda, C: Barbados, D: Saint Kitts and Nevis",B,0.3,"Which country is highlighted?
+ "," A: Dominica, B: Antigua and Barbuda, C: Barbados, D: Saint Kitts and Nevis",choice
+387,1374.0,science & technology,geography & earth science & agriculture,"What does D depict in the diagram?
+ Options: A: 4th quarter, B: 1st quarter, C: 3rd quarter, D: none of the above",C,0.3,"What does D depict in the diagram?
+ "," A: 4th quarter, B: 1st quarter, C: 3rd quarter, D: none of the above",choice
+306,494.0,instance reasoning,cross-instance attribute reasoning,"What is the relative position of the man holding a guitar and the woman on stage?
+ Options: A: The man is behind the woman, B: The man is to the right of the woman, C: The man is to the left of the woman, D: The man is in front of the woman",B,0.363636363636364,"What is the relative position of the man holding a guitar and the woman on stage?
+ "," A: The man is behind the woman, B: The man is to the right of the woman, C: The man is to the left of the woman, D: The man is in front of the woman",choice
+961,1376.0,science & technology,geography & earth science & agriculture,"What does letter E depict?
+ Options: A: waning gibbous, B: first quarter, C: waxing gibbous, D: last quarter",D,0.1,"What does letter E depict?
+ "," A: waning gibbous, B: first quarter, C: waxing gibbous, D: last quarter",choice
+197,46.0,coarse perception,image scene and topic,"What is the dominant color of the image?
+ Options: A: White, B: Brown, C: Gray, D: Green",A,0.416666666666667,"What is the dominant color of the image?
+ "," A: White, B: Brown, C: Gray, D: Green",choice
+1080,287.0,fine-grained perception,object counting,"How many people are playing music in the image?
+ Options: A: One, B: Two, C: Three, D: Four",D,0.0833333333333333,"How many people are playing music in the image?
+ "," A: One, B: Two, C: Three, D: Four",choice
+204,239.0,fine-grained perception,localization,"where is the cat?
+ Options: A: top-right, B: top-left, C: bottom-left, D: bottom-right",B,0.416666666666667,"where is the cat?
+ "," A: top-right, B: top-left, C: bottom-left, D: bottom-right",choice
+375,1263.0,science & technology,biology & chemistry & physics,"What is the probability that a sheep produced by this cross will be homozygous dominant for the wool color gene?
+ Options: A: 2/4, B: 1/4, C: 0/4, D: 3/4",C,0.3,"What is the probability that a sheep produced by this cross will be homozygous dominant for the wool color gene?
+ "," A: 2/4, B: 1/4, C: 0/4, D: 3/4",choice
+6,3.0,coarse perception,image emotion,"What feeling is represented in this image?
+ Options: A: engaged, B: disordered, C: angry, D: supportive",B,0.75,"What feeling is represented in this image?
+ "," A: engaged, B: disordered, C: angry, D: supportive",choice
+140,1278.0,science & technology,biology & chemistry & physics,"Where do the axons of this nucleus terminate? <image 1> 
+ Options: A: Muscles of pharynx and larynx., B: Postganglionic parasympathetic cell bodies., C: Smooth muscle of viscera., D: nan",B,0.5,"Where do the axons of this nucleus terminate? <image 1> 
+ "," A: Muscles of pharynx and larynx., B: Postganglionic parasympathetic cell bodies., C: Smooth muscle of viscera., D: nan",choice
+1219,931.0,math,geometry,"A surveyor needs to know the distance between points C and B in Figure 2.17. A building obscures the view directly between the two points. Setting up at the end of the building at point A, the surveyor measures the two distances AC and AB, and the interior angle at A. What is the desired distance, CB?<image 1>
+ Options: A: Distance CB = 748.50', B: Distance CB = 748.70', C: Distance CB = 748.60', D: Distance CB = 748.40'",D,0.0,"A surveyor needs to know the distance between points C and B in Figure 2.17. A building obscures the view directly between the two points. Setting up at the end of the building at point A, the surveyor measures the two distances AC and AB, and the interior angle at A. What is the desired distance, CB?<image 1>
+ "," A: Distance CB = 748.50', B: Distance CB = 748.70', C: Distance CB = 748.60', D: Distance CB = 748.40'",choice
+273,93.0,coarse perception,image scene and topic,"What is the overall theme of the image?
+ Options: A: Fashion, B: Wildlife, C: Nature, D: Photography",D,0.384615384615385,"What is the overall theme of the image?
+ "," A: Fashion, B: Wildlife, C: Nature, D: Photography",choice
+1081,336.0,fine-grained perception,recognition,"Does the man have any facial hair?
+ Options: A: No, B: Yes, a mustache, C: Yes, a full beard, D: Yes, slight stubble",B,0.0833333333333333,"Does the man have any facial hair?
+ "," A: No, B: Yes, a mustache, C: Yes, a full beard, D: Yes, slight stubble",choice
+627,1418.0,science & technology,geography & earth science & agriculture,"Which of the following is the magma chamber?
+ Options: A: K, B: B, C: C, D: H",B,0.2,"Which of the following is the magma chamber?
+ "," A: K, B: B, C: C, D: H",choice
+941,1329.0,science & technology,electronics & energy & mechanical eng.,"A man at a point P on the shore of a circular lake of radius 1 mile wants to reach the point Q on the shore diametrically opposite P (Fig. 16-5). He can row 1.5 miles per hour and walk 3 miles per hour. At what angle $\theta $ ($0<\theta < \pi /2$) to the diameter PQ should he row in order to minimize the time required to reach Q? <image 1>
+ Options: A: $\theta = \pi /2$, B: $\theta = \pi /3$, C: $\theta = \pi $, D: $\theta = 2\pi $",A,0.1,"A man at a point P on the shore of a circular lake of radius 1 mile wants to reach the point Q on the shore diametrically opposite P (Fig. 16-5). He can row 1.5 miles per hour and walk 3 miles per hour. At what angle $\theta $ ($0<\theta < \pi /2$) to the diameter PQ should he row in order to minimize the time required to reach Q? <image 1>
+ "," A: $\theta = \pi /2$, B: $\theta = \pi /3$, C: $\theta = \pi $, D: $\theta = 2\pi $",choice
+976,705.0,logical reasoning,code & sequence reasoning,"What is correct Python code to generate the content of the image?
+ Options: A: def myfunc():\n x = 300\n def myinnerfunc():\n print(x)\n myinnerfunc()\n\nmyfunc(), B: thisdict = {\n ""brand"": ""Ford"",\n ""model"": ""Mustang"",\n ""year"": 1964\n}\n\nprint(len(thisdict)), C: x = min(5, 10, 25)\ny = max(5, 10, 25)\n\nprint(x)\nprint(y), D: class Person:\n def __init__(self, name, age):\n self.name = name\n self.age = age\n\np1 = Person(""John"", 36)\n\nprint(p1.name)\nprint(p1.age)",A,0.1,"What is correct Python code to generate the content of the image?
+ "," A: def myfunc():\n x = 300\n def myinnerfunc():\n print(x)\n myinnerfunc()\n\nmyfunc(), B: thisdict = {\n ""brand"": ""Ford"",\n ""model"": ""Mustang"",\n ""year"": 1964\n}\n\nprint(len(thisdict)), C: x = min(5, 10, 25)\ny = max(5, 10, 25)\n\nprint(x)\nprint(y), D: class Person:\n def __init__(self, name, age):\n self.name = name\n self.age = age\n\np1 = Person(""John"", 36)\n\nprint(p1.name)\nprint(p1.age)",choice
+866,766.0,logical reasoning,common reasoning,"If you were to sit on the chair closest to the window, which color would the chair be?
+ Options: A: Green, B: Blue, C: Red, D: White",A,0.1,"If you were to sit on the chair closest to the window, which color would the chair be?
+ "," A: Green, B: Blue, C: Red, D: White",choice
+999,884.0,logical reasoning,diagram reasoning,"The diagram above represents the cycle of the Earth around the Sun, what letter represents Summer Solstice?
+ Options: A: D, B: C, C: B, D: A",D,0.1,"The diagram above represents the cycle of the Earth around the Sun, what letter represents Summer Solstice?
+ "," A: D, B: C, C: B, D: A",choice
+739,538.0,instance reasoning,cross-instance relation reasoning,"Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?
+ Options: A: sample B, B: sample A, C: neither; the samples have the same temperature, D: nan",A,0.181818181818182,"Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?
+ "," A: sample B, B: sample A, C: neither; the samples have the same temperature, D: nan",choice
+789,379.0,fine-grained perception,recognition,"What is the color of the eye in the mask in the image?
+ Options: A: Blue and green, B: Purple and pink, C: Brown and black, D: Yellow and black",D,0.166666666666667,"What is the color of the eye in the mask in the image?
+ "," A: Blue and green, B: Purple and pink, C: Brown and black, D: Yellow and black",choice
+612,1402.0,science & technology,geography & earth science & agriculture,"Which area on the map shows China?
+ Options: A: B, B: C, C: D, D: A",A,0.2,"Which area on the map shows China?
+ "," A: B, B: C, C: D, D: A",choice
+1076,279.0,fine-grained perception,object counting,"How many people are holding the flag in the street?
+ Options: A: 3, B: 2, C: 1, D: Cannot be determined",B,0.0833333333333333,"How many people are holding the flag in the street?
+ "," A: 3, B: 2, C: 1, D: Cannot be determined",choice
+5,165.0,coarse perception,image style & quality,"What art style is evident in this image?
+ Options: A: watercolor, B: photography, C: vector art, D: pencil",C,0.75,"What art style is evident in this image?
+ "," A: watercolor, B: photography, C: vector art, D: pencil",choice
+1323,1104.0,math,statistical reasoning,"Given the adjacency matrix of a weighted undirected graph as follows, the total weight of its minimum spanning tree is:<image 1>
+ Options: A: 22, B: 20, C: 15, D: 8",D,0.0,"Given the adjacency matrix of a weighted undirected graph as follows, the total weight of its minimum spanning tree is:<image 1>
+ "," A: 22, B: 20, C: 15, D: 8",choice
+1153,86.0,coarse perception,image scene and topic,"What is the most prominent feature in the image?
+ Options: A: The skyline, B: The golf course, C: The trees, D: The person",C,0.0769230769230769,"What is the most prominent feature in the image?
+ "," A: The skyline, B: The golf course, C: The trees, D: The person",choice
+1273,174.0,coarse perception,image style & quality,"Which category does this image belong to?
+ Options: A: oil painting, B: sketch, C: digital art, D: photo",A,0.0,"Which category does this image belong to?
+ "," A: oil painting, B: sketch, C: digital art, D: photo",choice
+899,1092.0,math,numeric commonsense and calculation,"Which operation of fractions is represented by this formula?
+ Options: A: Add, B: Subtract, C: Multiply, D: Devide",B,0.1,"Which operation of fractions is represented by this formula?
+ "," A: Add, B: Subtract, C: Multiply, D: Devide",choice
+1159,767.0,logical reasoning,common reasoning,"In nature, what's the relationship between these two creatures?
+ Options: A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship",B,0.0697674418604651,"In nature, what's the relationship between these two creatures?
+ "," A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship",choice
+711,805.0,logical reasoning,common reasoning,"What will happen next?
+ Options: A: the person is gonna fall off the ladder, B: the person is gonna stand still on the ladder, C: someone is gonna come and hold the ladder, D: both A,B, and C",A,0.181818181818182,"What will happen next?
+ "," A: the person is gonna fall off the ladder, B: the person is gonna stand still on the ladder, C: someone is gonna come and hold the ladder, D: both A,B, and C",choice
+697,1208.0,science & technology,biology & chemistry & physics,"In the diagram of the food web shown, what do flat fish eat as food?
+ Options: A: fan worm, B: nurse shark, C: giant clam, D: turtle grass",B,0.2,"In the diagram of the food web shown, what do flat fish eat as food?
+ "," A: fan worm, B: nurse shark, C: giant clam, D: turtle grass",choice
+500,527.0,instance reasoning,cross-instance attribute reasoning,"Which picture depicts cell division?
+ Options: A: B, B: A, C: C, D: {}",C,0.272727272727273,"Which picture depicts cell division?
+ "," A: B, B: A, C: C, D: {}",choice
+576,38.0,coarse perception,image scene and topic,"What is the color of the majority of objects in the image?
+ Options: A: White, B: Gray, C: Blue, D: Green",A,0.230769230769231,"What is the color of the majority of objects in the image?
+ "," A: White, B: Gray, C: Blue, D: Green",choice
+271,19.0,coarse perception,image emotion,"Which mood does this image convey?
+ Options: A: Sad, B: Cozy, C: Happy, D: Angry",B,0.384615384615385,"Which mood does this image convey?
+ "," A: Sad, B: Cozy, C: Happy, D: Angry",choice
+498,519.0,instance reasoning,cross-instance attribute reasoning,"Which of the following statements match the image?
+ Options: A: A triangle is to the left of a pentagon., B: A blue pentagon is to the right of a gray pentagon., C: A blue square is to the left of a blue pentagon., D: A blue pentagon is to the left of a gray shape.",B,0.272727272727273,"Which of the following statements match the image?
+ "," A: A triangle is to the left of a pentagon., B: A blue pentagon is to the right of a gray pentagon., C: A blue square is to the left of a blue pentagon., D: A blue pentagon is to the left of a gray shape.",choice
+871,1209.0,science & technology,biology & chemistry & physics,"In the diagram of the food web shown, what will most directly be impacted if the supply of deer increase?
+ Options: A: foxes will decrease, B: fruit trees will decrease, C: fruit trees will increase, D: grass will decrease",B,0.1,"In the diagram of the food web shown, what will most directly be impacted if the supply of deer increase?
+ "," A: foxes will decrease, B: fruit trees will decrease, C: fruit trees will increase, D: grass will decrease",choice
+533,246.0,fine-grained perception,object counting,"How many apples are there in the image? And how many bananas are there?
+ Options: A: 3 apples and 1 bananas, B: 3 apples and 2 bananas, C: 1 apples and 1 bananas, D: 2 apples and 1 bananas",C,0.25,"How many apples are there in the image? And how many bananas are there?
+ "," A: 3 apples and 1 bananas, B: 3 apples and 2 bananas, C: 1 apples and 1 bananas, D: 2 apples and 1 bananas",choice
+1111,123.0,coarse perception,image scene and topic,"What kind of weather is depicted in the picture?
+ Options: A: sunny, B: rainy, C: windy, D: snowy",A,0.0833333333333333,"What kind of weather is depicted in the picture?
+ "," A: sunny, B: rainy, C: windy, D: snowy",choice
+843,56.0,coarse perception,image scene and topic,"What is the main color of the image?
+ Options: A: Red, B: Green, C: Black, D: White",D,0.153846153846154,"What is the main color of the image?
+ "," A: Red, B: Green, C: Black, D: White",choice
+303,653.0,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ Options: A: mason, B: postman, C: pilot, D: policeman",B,0.363636363636364,"What's the profession of the people in this picture?
+ "," A: mason, B: postman, C: pilot, D: policeman",choice
+1151,94.0,coarse perception,image scene and topic,"What is the overall theme of this image?
+ Options: A: Sports, B: Sunset, C: Nature, D: Kids playing",B,0.0769230769230769,"What is the overall theme of this image?
+ "," A: Sports, B: Sunset, C: Nature, D: Kids playing",choice
+317,373.0,fine-grained perception,recognition,"What is the color of the ball closest to the man?
+ Options: A: White, B: Red, C: Blue, D: Brown",A,0.333333333333333,"What is the color of the ball closest to the man?
+ "," A: White, B: Red, C: Blue, D: Brown",choice
+1275,33.0,coarse perception,image scene and topic,"What color dominates the logo seen on the wall?
+ Options: A: Red, B: Black and White, C: Yellow, D: Blue",A,0.0,"What color dominates the logo seen on the wall?
+ "," A: Red, B: Black and White, C: Yellow, D: Blue",choice
+1303,1181.0,science & technology,biology & chemistry & physics,"<image 1> What could be the reason for the corky outgrowths on a young ash tree by the roadside in Littondale, Yorkshire?
+ Options: A: Fungal disease, B: Bacterial disease, C: Don't know or not sure, D: Genetic abnormality",B,0.0,"<image 1> What could be the reason for the corky outgrowths on a young ash tree by the roadside in Littondale, Yorkshire?
+ "," A: Fungal disease, B: Bacterial disease, C: Don't know or not sure, D: Genetic abnormality",choice
+844,92.0,coarse perception,image scene and topic,"What is the overall theme of the image?
+ Options: A: Beach vacation, B: Athletic lifestyle, C: Summer fashion, D: Urban street style",C,0.153846153846154,"What is the overall theme of the image?
+ "," A: Beach vacation, B: Athletic lifestyle, C: Summer fashion, D: Urban street style",choice
+558,378.0,fine-grained perception,recognition,"What is the color of the ears on the dessert item located in the bottom right of the image?
+ Options: A: Red, B: Brown, C: Black, D: White",D,0.25,"What is the color of the ears on the dessert item located in the bottom right of the image?
+ "," A: Red, B: Brown, C: Black, D: White",choice
+812,410.0,fine-grained perception,recognition,"What is the main item on the counter in the image?
+ Options: A: A cup of ice cream on a counter with a cone on top, B: Two ice cream cones sitting next to each other, C: A coffee cup with whipped cream on top, D: A cup of ice cream with different flavors",B,0.166666666666667,"What is the main item on the counter in the image?
+ "," A: A cup of ice cream on a counter with a cone on top, B: Two ice cream cones sitting next to each other, C: A coffee cup with whipped cream on top, D: A cup of ice cream with different flavors",choice
+709,814.0,logical reasoning,common reasoning,"Which corner doesn't have any food?
+ Options: A: top-right, B: top-left, C: bottom-left, D: bottom-right",D,0.181818181818182,"Which corner doesn't have any food?
+ "," A: top-right, B: top-left, C: bottom-left, D: bottom-right",choice
+1084,55.0,coarse perception,image scene and topic,"What is the main activity happening in this image?
+ Options: A: A couple of men are playing soccer, B: A group of people are having a picnic in the park, C: Two men are playing cricket, D: A group of people are playing volleyball",A,0.0833333333333333,"What is the main activity happening in this image?
+ "," A: A couple of men are playing soccer, B: A group of people are having a picnic in the park, C: Two men are playing cricket, D: A group of people are playing volleyball",choice

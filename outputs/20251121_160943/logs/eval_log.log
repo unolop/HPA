@@ -1,0 +1,451 @@
+2025-11-21 16:09:43 - evalscope - INFO: Running with native backend
+2025-11-21 16:09:43 - evalscope - INFO: Dump task config to ./outputs/20251121_160943/configs/task_config_ba2de0.yaml
+2025-11-21 16:09:43 - evalscope - INFO: {
+    "model": "SwiftVLMEngine",
+    "model_id": "Qwen_Qwen3-VL-4B-Thinking",
+    "model_args": {
+        "revision": "master",
+        "precision": "torch.float16"
+    },
+    "model_task": "text_generation",
+    "chat_template": null,
+    "datasets": [
+        "mm_star"
+    ],
+    "dataset_args": {
+        "mm_star": {
+            "name": "mm_star",
+            "dataset_id": "evalscope/MMStar",
+            "output_types": [
+                "generation"
+            ],
+            "subset_list": [
+                "coarse perception",
+                "fine-grained perception",
+                "instance reasoning",
+                "logical reasoning",
+                "math",
+                "science & technology"
+            ],
+            "default_subset": "val",
+            "few_shot_num": 0,
+            "few_shot_random": false,
+            "train_split": null,
+            "eval_split": "val",
+            "prompt_template": "Answer the following multiple choice question.\nThe last line of your response should be of the following format:\n'ANSWER: $LETTER' (without quotes)\nwhere LETTER is one of A,B,C,D. Think step by step before answering.\n\n{question}",
+            "few_shot_prompt_template": null,
+            "system_prompt": null,
+            "query_template": null,
+            "pretty_name": "MMStar",
+            "description": "MMStar: an elite vision-indispensible multi-modal benchmark, aiming to ensure each curated sample exhibits visual dependency, minimal data leakage, and requires advanced multi-modal capabilities.",
+            "tags": [
+                "MultiModal",
+                "Knowledge",
+                "MCQ"
+            ],
+            "filters": null,
+            "metric_list": [
+                "acc"
+            ],
+            "aggregation": "mean",
+            "shuffle": false,
+            "shuffle_choices": false,
+            "review_timeout": null,
+            "extra_params": {}
+        }
+    },
+    "dataset_dir": "/home/work/main/Privacy/.modelscope/datasets",
+    "dataset_hub": "modelscope",
+    "repeats": 1,
+    "generation_config": {
+        "batch_size": 1,
+        "max_tokens": 2048,
+        "top_p": 1.0,
+        "temperature": 1.0,
+        "do_sample": false,
+        "top_k": 50,
+        "n": 1
+    },
+    "eval_type": "llm_ckpt",
+    "eval_backend": "Native",
+    "eval_config": null,
+    "limit": null,
+    "eval_batch_size": 1,
+    "use_cache": null,
+    "rerun_review": false,
+    "work_dir": "./outputs/20251121_160943",
+    "ignore_errors": false,
+    "debug": false,
+    "seed": 42,
+    "api_url": null,
+    "timeout": null,
+    "stream": null,
+    "judge_strategy": "auto",
+    "judge_worker_num": 1,
+    "judge_model_args": {},
+    "analysis_report": false,
+    "use_sandbox": false,
+    "sandbox_type": "docker",
+    "sandbox_manager_config": {},
+    "sandbox_config": {},
+    "evalscope_version": "1.2.0"
+}
+2025-11-21 16:09:43 - evalscope - INFO: Start evaluating benchmark: mm_star
+2025-11-21 16:09:44 - evalscope - INFO: Evaluating all subsets of the dataset...
+2025-11-21 16:09:44 - evalscope - INFO: Evaluating subset: coarse perception
+2025-11-21 16:09:44 - evalscope - INFO: Getting predictions for subset: coarse perception
+2025-11-21 16:09:44 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 16:10:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=250
+2025-11-21 16:11:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=250
+2025-11-21 16:23:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=231
+2025-11-21 16:39:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=206
+2025-11-21 16:40:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=206
+2025-11-21 16:47:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=196
+2025-11-21 16:50:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=193
+2025-11-21 16:52:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=190
+2025-11-21 17:01:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=176
+2025-11-21 17:03:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=175
+2025-11-21 17:09:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=167
+2025-11-21 17:17:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=152
+2025-11-21 17:24:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=144
+2025-11-21 17:26:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=143
+2025-11-21 17:29:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=141
+2025-11-21 17:33:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=137
+2025-11-21 17:36:44 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=135
+2025-11-21 17:49:45 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=107
+2025-11-21 17:52:45 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=104
+2025-11-21 17:55:45 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=101
+2025-11-21 17:57:45 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=100
+2025-11-21 18:02:45 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=91
+2025-11-21 18:15:45 - evalscope - INFO: Predicting[mm_star@coarse perception]:  still processing... pending=60
+2025-11-21 18:37:48 - evalscope - INFO: Finished getting predictions for subset: coarse perception.
+2025-11-21 18:37:48 - evalscope - INFO: Getting reviews for subset: coarse perception
+2025-11-21 18:37:48 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 18:37:48 - evalscope - INFO: Finished reviewing subset: coarse perception. Total reviewed: 250
+2025-11-21 18:37:48 - evalscope - INFO: Aggregating scores for subset: coarse perception
+2025-11-21 18:37:48 - evalscope - INFO: Evaluating subset: fine-grained perception
+2025-11-21 18:37:48 - evalscope - INFO: Getting predictions for subset: fine-grained perception
+2025-11-21 18:37:48 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 18:39:48 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=247
+2025-11-21 18:44:48 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=241
+2025-11-21 18:50:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=235
+2025-11-21 18:53:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=232
+2025-11-21 18:55:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=230
+2025-11-21 18:58:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=225
+2025-11-21 19:05:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=212
+2025-11-21 19:09:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=208
+2025-11-21 19:13:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=200
+2025-11-21 19:18:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=193
+2025-11-21 19:23:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=186
+2025-11-21 19:28:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=180
+2025-11-21 19:31:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=175
+2025-11-21 19:33:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=174
+2025-11-21 19:37:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=168
+2025-11-21 19:40:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=165
+2025-11-21 19:44:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=157
+2025-11-21 19:48:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=152
+2025-11-21 19:52:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=143
+2025-11-21 19:53:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=143
+2025-11-21 19:56:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=141
+2025-11-21 20:02:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=129
+2025-11-21 20:03:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=129
+2025-11-21 20:09:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=114
+2025-11-21 20:22:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=85
+2025-11-21 20:23:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=85
+2025-11-21 20:26:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=80
+2025-11-21 20:31:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=74
+2025-11-21 20:32:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=74
+2025-11-21 20:34:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=70
+2025-11-21 20:35:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=70
+2025-11-21 20:38:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=64
+2025-11-21 20:39:49 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=64
+2025-11-21 20:47:50 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=50
+2025-11-21 20:55:50 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=37
+2025-11-21 20:58:50 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=32
+2025-11-21 20:59:50 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=32
+2025-11-21 21:03:50 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=27
+2025-11-21 21:09:50 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=14
+2025-11-21 21:14:50 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=3
+2025-11-21 21:15:50 - evalscope - INFO: Predicting[mm_star@fine-grained perception]:  still processing... pending=3
+2025-11-21 21:16:19 - evalscope - INFO: Finished getting predictions for subset: fine-grained perception.
+2025-11-21 21:16:19 - evalscope - INFO: Getting reviews for subset: fine-grained perception
+2025-11-21 21:16:19 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-21 21:16:20 - evalscope - INFO: Finished reviewing subset: fine-grained perception. Total reviewed: 250
+2025-11-21 21:16:20 - evalscope - INFO: Aggregating scores for subset: fine-grained perception
+2025-11-21 21:16:20 - evalscope - INFO: Evaluating subset: instance reasoning
+2025-11-21 21:16:20 - evalscope - INFO: Getting predictions for subset: instance reasoning
+2025-11-21 21:16:20 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-21 21:18:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=249
+2025-11-21 21:21:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=246
+2025-11-21 21:23:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=245
+2025-11-21 21:25:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=244
+2025-11-21 21:27:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=243
+2025-11-21 21:30:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=238
+2025-11-21 21:32:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=237
+2025-11-21 21:33:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=237
+2025-11-21 21:35:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=236
+2025-11-21 21:41:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=230
+2025-11-21 21:46:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=224
+2025-11-21 21:50:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=221
+2025-11-21 21:51:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=221
+2025-11-21 21:53:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=220
+2025-11-21 21:55:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=219
+2025-11-21 21:59:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=215
+2025-11-21 22:05:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=208
+2025-11-21 22:07:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=207
+2025-11-21 22:12:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=201
+2025-11-21 22:15:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=197
+2025-11-21 22:16:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=197
+2025-11-21 22:18:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=196
+2025-11-21 22:20:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=195
+2025-11-21 22:21:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=195
+2025-11-21 22:23:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=194
+2025-11-21 22:26:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=190
+2025-11-21 22:28:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=187
+2025-11-21 22:29:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=187
+2025-11-21 22:32:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=183
+2025-11-21 22:34:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=182
+2025-11-21 22:37:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=179
+2025-11-21 22:42:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=167
+2025-11-21 22:45:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=165
+2025-11-21 22:48:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=163
+2025-11-21 22:50:20 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=161
+2025-11-21 22:53:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=159
+2025-11-21 22:55:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=158
+2025-11-21 22:58:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=155
+2025-11-21 23:00:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=154
+2025-11-21 23:01:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=154
+2025-11-21 23:05:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=150
+2025-11-21 23:09:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=145
+2025-11-21 23:11:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=144
+2025-11-21 23:15:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=140
+2025-11-21 23:22:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=130
+2025-11-21 23:23:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=130
+2025-11-21 23:25:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=129
+2025-11-21 23:29:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=126
+2025-11-21 23:30:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=126
+2025-11-21 23:32:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=125
+2025-11-21 23:36:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=120
+2025-11-21 23:44:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=111
+2025-11-21 23:47:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=109
+2025-11-21 23:49:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=108
+2025-11-21 23:51:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=105
+2025-11-21 23:52:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=105
+2025-11-21 23:55:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=102
+2025-11-21 23:57:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=99
+2025-11-22 00:02:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=91
+2025-11-22 00:04:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=90
+2025-11-22 00:06:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=89
+2025-11-22 00:08:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=88
+2025-11-22 00:11:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=84
+2025-11-22 00:14:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=79
+2025-11-22 00:23:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=71
+2025-11-22 00:25:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=70
+2025-11-22 00:28:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=67
+2025-11-22 00:31:21 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=63
+2025-11-22 00:51:22 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=12
+2025-11-22 00:52:22 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=12
+2025-11-22 00:54:22 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=11
+2025-11-22 00:58:22 - evalscope - INFO: Predicting[mm_star@instance reasoning]:  still processing... pending=3
+2025-11-22 00:59:26 - evalscope - INFO: Finished getting predictions for subset: instance reasoning.
+2025-11-22 00:59:26 - evalscope - INFO: Getting reviews for subset: instance reasoning
+2025-11-22 00:59:26 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-22 00:59:27 - evalscope - INFO: Finished reviewing subset: instance reasoning. Total reviewed: 250
+2025-11-22 00:59:27 - evalscope - INFO: Aggregating scores for subset: instance reasoning
+2025-11-22 00:59:27 - evalscope - INFO: Evaluating subset: logical reasoning
+2025-11-22 00:59:27 - evalscope - INFO: Getting predictions for subset: logical reasoning
+2025-11-22 00:59:27 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-22 01:01:27 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=249
+2025-11-22 01:04:27 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=247
+2025-11-22 01:07:27 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=245
+2025-11-22 01:08:27 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=245
+2025-11-22 01:15:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=235
+2025-11-22 01:19:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=231
+2025-11-22 01:21:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=230
+2025-11-22 01:24:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=228
+2025-11-22 01:26:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=227
+2025-11-22 01:29:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=225
+2025-11-22 01:32:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=223
+2025-11-22 01:34:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=222
+2025-11-22 01:35:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=222
+2025-11-22 01:38:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=219
+2025-11-22 01:40:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=218
+2025-11-22 01:42:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=217
+2025-11-22 01:43:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=217
+2025-11-22 01:47:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=214
+2025-11-22 01:48:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=214
+2025-11-22 01:50:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=213
+2025-11-22 01:53:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=210
+2025-11-22 01:56:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=208
+2025-11-22 01:57:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=208
+2025-11-22 01:59:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=207
+2025-11-22 02:01:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=205
+2025-11-22 02:02:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=205
+2025-11-22 02:04:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=203
+2025-11-22 02:07:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=201
+2025-11-22 02:09:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=200
+2025-11-22 02:11:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=199
+2025-11-22 02:12:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=199
+2025-11-22 02:15:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=197
+2025-11-22 02:17:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=196
+2025-11-22 02:22:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=192
+2025-11-22 02:24:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=191
+2025-11-22 02:27:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=189
+2025-11-22 02:29:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=187
+2025-11-22 02:32:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=184
+2025-11-22 02:33:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=184
+2025-11-22 02:36:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=182
+2025-11-22 02:38:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=181
+2025-11-22 02:40:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=180
+2025-11-22 02:41:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=180
+2025-11-22 02:43:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=178
+2025-11-22 02:44:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=178
+2025-11-22 02:48:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=175
+2025-11-22 02:51:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=172
+2025-11-22 02:55:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=169
+2025-11-22 02:59:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=166
+2025-11-22 03:01:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=165
+2025-11-22 03:03:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=164
+2025-11-22 03:04:28 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=164
+2025-11-22 03:10:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=158
+2025-11-22 03:12:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=156
+2025-11-22 03:13:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=156
+2025-11-22 03:15:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=153
+2025-11-22 03:17:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=152
+2025-11-22 03:18:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=152
+2025-11-22 03:20:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=151
+2025-11-22 03:23:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=149
+2025-11-22 03:24:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=149
+2025-11-22 03:26:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=148
+2025-11-22 03:28:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=147
+2025-11-22 03:29:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=147
+2025-11-22 03:31:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=146
+2025-11-22 03:33:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=145
+2025-11-22 03:37:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=141
+2025-11-22 03:38:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=141
+2025-11-22 03:40:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=139
+2025-11-22 03:42:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=138
+2025-11-22 03:44:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=137
+2025-11-22 03:47:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=134
+2025-11-22 03:48:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=134
+2025-11-22 03:50:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=133
+2025-11-22 03:53:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=129
+2025-11-22 03:55:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=128
+2025-11-22 03:58:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=126
+2025-11-22 03:59:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=126
+2025-11-22 04:01:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=124
+2025-11-22 04:03:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=123
+2025-11-22 04:04:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=123
+2025-11-22 04:06:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=122
+2025-11-22 04:10:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=117
+2025-11-22 04:19:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=106
+2025-11-22 04:24:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=99
+2025-11-22 04:27:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=96
+2025-11-22 04:29:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=94
+2025-11-22 04:31:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=93
+2025-11-22 04:32:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=93
+2025-11-22 04:34:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=91
+2025-11-22 04:39:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=85
+2025-11-22 04:41:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=84
+2025-11-22 04:42:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=84
+2025-11-22 04:44:29 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=82
+2025-11-22 04:47:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=79
+2025-11-22 04:48:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=79
+2025-11-22 04:52:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=74
+2025-11-22 04:53:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=74
+2025-11-22 04:55:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=73
+2025-11-22 04:57:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=71
+2025-11-22 04:59:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=70
+2025-11-22 05:01:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=69
+2025-11-22 05:06:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=64
+2025-11-22 05:08:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=63
+2025-11-22 05:10:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=61
+2025-11-22 05:11:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=61
+2025-11-22 05:13:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=60
+2025-11-22 05:15:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=59
+2025-11-22 05:17:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=58
+2025-11-22 05:19:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=57
+2025-11-22 05:21:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=56
+2025-11-22 05:23:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=55
+2025-11-22 05:25:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=54
+2025-11-22 05:28:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=52
+2025-11-22 05:34:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=46
+2025-11-22 05:36:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=45
+2025-11-22 05:38:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=44
+2025-11-22 05:40:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=43
+2025-11-22 05:42:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=42
+2025-11-22 05:44:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=41
+2025-11-22 05:46:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=40
+2025-11-22 05:48:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=38
+2025-11-22 05:49:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=38
+2025-11-22 05:51:30 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=37
+2025-11-22 05:53:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=36
+2025-11-22 05:57:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=33
+2025-11-22 05:59:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=32
+2025-11-22 06:01:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=31
+2025-11-22 06:05:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=28
+2025-11-22 06:11:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=20
+2025-11-22 06:12:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=20
+2025-11-22 06:15:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=18
+2025-11-22 06:17:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=17
+2025-11-22 06:19:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=16
+2025-11-22 06:21:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=15
+2025-11-22 06:23:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=14
+2025-11-22 06:27:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=9
+2025-11-22 06:31:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=5
+2025-11-22 06:33:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=4
+2025-11-22 06:35:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=3
+2025-11-22 06:37:31 - evalscope - INFO: Predicting[mm_star@logical reasoning]:  still processing... pending=2
+2025-11-22 06:38:19 - evalscope - INFO: Finished getting predictions for subset: logical reasoning.
+2025-11-22 06:38:19 - evalscope - INFO: Getting reviews for subset: logical reasoning
+2025-11-22 06:38:19 - evalscope - INFO: Reviewing 250 samples, if data is large, it may take a while.
+2025-11-22 06:38:20 - evalscope - INFO: Finished reviewing subset: logical reasoning. Total reviewed: 250
+2025-11-22 06:38:20 - evalscope - INFO: Aggregating scores for subset: logical reasoning
+2025-11-22 06:38:20 - evalscope - INFO: Evaluating subset: math
+2025-11-22 06:38:20 - evalscope - INFO: Getting predictions for subset: math
+2025-11-22 06:38:20 - evalscope - INFO: Processing 250 samples, if data is large, it may take a while.
+2025-11-22 06:39:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=250
+2025-11-22 06:40:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=250
+2025-11-22 06:42:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=248
+2025-11-22 06:44:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=247
+2025-11-22 06:46:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=246
+2025-11-22 06:48:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=245
+2025-11-22 06:49:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=245
+2025-11-22 06:51:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=244
+2025-11-22 06:53:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=243
+2025-11-22 06:55:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=242
+2025-11-22 06:57:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=241
+2025-11-22 06:59:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=240
+2025-11-22 07:02:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=238
+2025-11-22 07:04:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=237
+2025-11-22 07:07:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=235
+2025-11-22 07:09:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=234
+2025-11-22 07:11:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=233
+2025-11-22 07:13:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=232
+2025-11-22 07:15:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=231
+2025-11-22 07:19:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=228
+2025-11-22 07:21:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=227
+2025-11-22 07:23:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=226
+2025-11-22 07:25:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=225
+2025-11-22 07:27:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=224
+2025-11-22 07:29:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=223
+2025-11-22 07:31:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=222
+2025-11-22 07:32:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=222
+2025-11-22 07:35:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=220
+2025-11-22 07:37:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=219
+2025-11-22 07:39:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=218
+2025-11-22 07:41:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=217
+2025-11-22 07:43:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=216
+2025-11-22 07:45:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=215
+2025-11-22 07:47:20 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=214
+2025-11-22 07:49:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=213
+2025-11-22 07:50:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=213
+2025-11-22 07:52:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=212
+2025-11-22 07:55:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=209
+2025-11-22 07:59:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=206
+2025-11-22 08:01:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=205
+2025-11-22 08:03:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=204
+2025-11-22 08:06:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=202
+2025-11-22 08:07:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=202
+2025-11-22 08:10:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=200
+2025-11-22 08:12:21 - evalscope - INFO: Predicting[mm_star@math]:  still processing... pending=199

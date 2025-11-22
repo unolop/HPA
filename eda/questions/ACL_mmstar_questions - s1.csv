@@ -1,0 +1,1231 @@
+instance reasoning,single-instance reasoning,664,"Where is the woman's blue bag located in the image?
+ Options: A: In her hand, B: On her shoulder, C: On the ground, D: Inside the man's bag","이미지에서 여자의 파란 가방은 어디에 있나요? A: 그녀의 손에, B: 어깨에, C: 바닥에, D: 남자의 가방 안에.""",A,B,C,D,B,0.909
+coarse perception,image emotion,6,"What feeling is shown in this image?
+ Options: A: engaged, B: lonely, C: angry, D: supportive","이 이미지에는 어떤 느낌이 담겨 있나요? A: 참여, B: 외로운, C: 화난, D: 지지""",A,B,C,D,B,0.833
+instance reasoning,single-instance reasoning,662,"Where is the rug in the living room located?
+ Options: A: Next to the door, B: Under the table, C: In front of the window, D: Under the couch","거실의 러그는 어디에 있나요?
+A: 문 옆, B: 테이블 아래, C: 창문 앞, D: 소파 아래",A,B,C,D,D,0.818
+logical reasoning,common reasoning,773,"Is there a teddy bear in the image?
+ Options: A: Can't tell, B: No, C: Yes, D: Maybe","이미지에 곰 인형이 있나요?
+옵션: A: 알 수 없습니다, B: 아니요, C: 네, D: 아마도요.""",A,B,C,D,B,0.818
+instance reasoning,cross-instance relation reasoning,556,"What is the relationship between the people in the image?
+ Options: A: commercial, B: professional, C: friends, D: family","이미지 속 사람들 사이의 관계는 무엇인가요? A: 광고, B: 전문가, C: 친구, D: 가족""",A,B,C,D,C,0.773
+logical reasoning,common reasoning,768,"In the picture, which direction is the baby facing?
+ Options: A: left, B: right, C: up, D: down","""사진에서 아기는 어느 방향을 향하고 있습니까? A: 왼쪽, B: 오른쪽, C: 위쪽, D: 아래쪽""",A,B,C,D,B,0.727
+logical reasoning,common reasoning,802,"What will happen next?
+ Options: A: the kid is gonna slide through, B: the kid is gonna crash into the other kid, C: the other kid is gonna dodge, D: both A,B, and C","다음에는 어떻게 될까요? 옵션: A: 아이는 미끄러져 지나갈 것이고, B: 아이는 다른 아이와 충돌할 것입니다, C: 다른 아이는 피할 것입니다, D: A, B, C 모두.""",A,B,C,D,D,0.727
+instance reasoning,single-instance reasoning,598,"The object shown in this figure:
+ Options: A: Is a colorless liquid with a slightly metallic taste, B: Is a powerful oxidizer that can cause skin and eye irritation, C: Has a boiling point of 150.2°C, D: None of these options are correct.","이 그림에 표시된 객체: A: 약간 금속 맛이 나는 무색 액체, B: 피부와 눈에 자극을 줄 수 있는 강력한 산화제, C: 끓는점이 150.2°C, D: 이 옵션 중 어느 것도 올바르지 않습니다.""",A,B,C,D,B,0.727
+logical reasoning,common reasoning,728," Question: If frogs were removed from this environment what animal would potentially see an increase in its population?
+ Choices:
+ (A) crickets
+ (B) deer
+ (C) snakes
+ (D) hawks"," 질문: 개구리가 이 환경에서 제거된다면 어떤 동물의 개체 수가 증가할 가능성이 있을까요?
+ 선택:
+ (A) 귀뚜라미
+ (B) 사슴
+ (C) 뱀
+ (D) 매""",A,B,C,D,A,0.700
+coarse perception,image scene and topic,70,"What is the main focus of the image?
+ Options: A: A woman standing in front of a brick wall, B: A woman standing in front of a green hedge, C: A garden with a lot of flowers and bushes, D: A bench surrounded by a lot of plants","이미지의 주요 초점은 무엇입니까?
+ 옵션: A: 벽돌 벽 앞에 서 있는 여자, B: 녹색 울타리 앞에 서 있는 여자, C: 꽃과 덤불이 많은 정원, D: 많은 식물로 둘러싸인 벤치""",A,B,C,D,B,0.692
+coarse perception,image scene and topic,97,"What is the predominant color of the image?
+ Options: A: Yellow, B: Black, C: White, D: Blue","이미지의 주요 색상은 무엇입니까?
+ 옵션: A: 노란색, B: 검은색, C: 흰색, D: 파란색""",A,B,C,D,B,0.692
+instance reasoning,cross-instance attribute reasoning,462,"In the picture, one is a bear doll and the other is a cat. Are they the same size?
+ Options: A: same, B: Not the same, C: Can't judge, D: nan","""사진에서 한 명은 곰 인형이고 다른 한 명은 고양이입니다. 크기가 같은가요?
+ 옵션: A: 똑같아, B: 같지 않아, C: 판단할 수 없어, D: 난.""",A,B,C,D,B,0.682
+fine-grained perception,recognition,428,"What is the woman holding in her hand?
+ Options: A: A book, B: A camera, C: A cell phone, D: Nothing","여자가 손에 들고 있는 것은 무엇입니까?
+ 옵션: A: 책, B: 카메라, C: 휴대폰, D: 아무것도 없습니다.""",A,B,C,D,D,0.667
+coarse perception,image emotion,13,"Which emotion is being depicted in this image?
+ Options: A: happiness, B: sadness, C: anger, D: love","이 이미지에는 어떤 감정이 묘사되고 있습니까?
+ 옵션: A: 행복, B: 슬픔, C: 분노, D: 사랑""",A,B,C,D,B,0.667
+fine-grained perception,recognition,414,"What is the most prominent color of the jacket worn by the man with the laptop?
+ Options: A: Blue, B: Black, C: Gray, D: Red","""노트북을 든 남자가 입은 재킷의 가장 눈에 띄는 색상은 무엇입니까?
+ 옵션: A: 파란색, B: 검은색, C: 회색, D: 빨간색""",A,B,C,D,B,0.667
+instance reasoning,cross-instance relation reasoning,550,"What can Hazel and Xavier trade to each get what they want?
+ Options: A: Hazel can trade her tomatoes for Xavier's broccoli., B: Hazel can trade her tomatoes for Xavier's carrots., C: Xavier can trade his broccoli for Hazel's oranges., D: Xavier can trade his almonds for Hazel's tomatoes.","헤이즐과 자비에는 각각 원하는 것을 얻기 위해 무엇을 교환할 수 있을까요?
+옵션: A: 헤이즐은 토마토를 자비에의 브로콜리와 교환할 수 있습니다. B: 헤이즐은 토마토를 자비에의 당근과 교환할 수 있습니다. C: 자비에는 브로콜리를 헤이즐의 오렌지와 교환할 수 있습니다. D: 자비에는 아몬드를 헤이즐의 토마토와 교환할 수 있습니다.",A,B,C,D,A,0.636
+logical reasoning,common reasoning,816,"Which of the following objects has the highest density in the image?
+ Options: A: Palm trees, B: Trees, C: Sand, D: Dead grass","다음 중 이미지에서 밀도가 가장 높은 물체는?
+ 옵션: A: 야자수, B: 나무, C: 모래, D: 죽은 풀""",A,B,C,D,C,0.636
+logical reasoning,common reasoning,788,"What is the most likely purpose of this poster?
+ Options: A: To celebrate New Year., B: To celebrate someone's birthday., C: To celebrate Christmas., D: To celebrate National Day.","이 포스터의 가장 유력한 목적은 무엇입니까?
+ 옵션: A: 새해를 축하하기 위해, B: 누군가의 생일을 축하하기 위해, C: 크리스마스를 축하하기 위해, D: 국경일을 축하하기 위해.""",A,B,C,D,C,0.600
+fine-grained perception,object counting,317,"How many teddy bears are in the picture?
+ Options: A: Two, B: One, C: Three, D: Four","사진 속 곰 인형은 몇 개입니까?
+ 옵션: A: 둘, B: 하나, C: 셋, D: 넷""",A,B,C,D,B,0.583
+coarse perception,image scene and topic,160,"is this place crowded?
+ Options: A: yes, B: no","이곳은 붐비나요?
+ 옵션: A: 네, B: 아니요",A,B,C,D,B,0.583
+fine-grained perception,recognition,357,"What color is the building in the foreground?
+ Options: A: Blue, B: Grey, C: White, D: Black","전경에 있는 건물은 어떤 색인가요?
+ 옵션: A: 파란색, B: 회색, C: 흰색, D: 검은색""",A,B,C,D,B,0.583
+fine-grained perception,recognition,423,"What is the shape of the object with an angel face and wings in the image?
+ Options: A: Egg-shaped, B: Square, C: Round, D: Star-shaped","""이미지에서 천사의 얼굴과 날개를 가진 물체의 모양은 어떻습니까?
+옵션: A: 달걀 모양, B: 정사각형, C: 둥글고 D: 별 모양""",A,B,C,D,A,0.583
+fine-grained perception,object counting,250,"How many bananas are there in the image?
+ Options: A: 3, B: 2, C: 4, D: 5","이미지에 바나나가 몇 개 있나요?
+옵션: A: 3, B: 2, C: 4, D: 5""",A,B,C,D,B,0.583
+coarse perception,image scene and topic,129,"What type of environment is depicted in the picture?
+ Options: A: home, B: shopping mall, C: street, D: forest","""사진에는 어떤 종류의 환경이 그려져 있나요?
+옵션: A: 집, B: 쇼핑몰, C: 거리, D: 숲""",A,B,C,D,C,0.583
+fine-grained perception,recognition,349,"Roughly how much of the picture is occupied by the two people on the bench in the picture?
+ Options: A: more than 50%, B: less than 30%, C: 0.8, D: more than 60%","""사진 속 벤치에 앉아 있는 두 사람이 대략 얼마나 많은 사진을 차지하고 있습니까?
+ 옵션: A: 50% 이상, B: 30% 미만, C: 0.8, D: 60% 이상""",A,B,C,D,B,0.583
+fine-grained perception,recognition,392,"What is the color of the shirt worn by a man playing the guitar?
+ Options: A: Blue, B: Black, C: Red, D: White","기타를 치는 남자가 입는 셔츠의 색깔은 무엇인가요?
+ 옵션: A: 파란색, B: 검은색, C: 빨간색, D: 흰색""",A,B,C,D,B,0.583
+fine-grained perception,recognition,384,"What is the color of the man's tie in the image?
+ Options: A: Blue, B: White, C: Black, D: Red","이미지 속 남자 넥타이의 색깔은 무엇인가요?
+ 옵션: A: 파란색, B: 흰색, C: 검은색, D: 빨간색""",A,B,C,D,C,0.583
+instance reasoning,cross-instance attribute reasoning,502,"What's the function of the demonstrated object?
+ Options: A: baking, B: heating, C: flavouring, D: Pick-up","시연된 물체의 기능은 무엇입니까?
+옵션: A: 베이킹, B: 가열, C: 향료, D: 픽업""",A,B,C,D,B,0.545
+instance reasoning,cross-instance relation reasoning,552,"What can be the relationship between the two persons in this image?
+ Options: A: Father and daughter, B: Mother and son, C: Brother and sister, D: Husband and wife","이 이미지에서 두 사람 사이의 관계는 무엇일까요?
+ 옵션: A: 아버지와 딸, B: 어머니와 아들, C: 형제자매, D: 남편과 아내""",A,B,C,D,C,0.545
+logical reasoning,common reasoning,804,"What will happen next?
+ Options: A: the motorcyle is gonna go forward, B: the motorcyle is gonna crash, C: the motorcyle is gonna go backward, D: both A,B, and C","다음에는 어떻게 될까요?
+ 옵션: A: 오토바이가 앞으로 가고, B: 오토바이가 충돌하고, C: 오토바이가 뒤로 가고, D: A, B, C 모두""",A,B,C,D,B,0.545
+instance reasoning,single-instance reasoning,654,"What's the profession of the people in this picture?
+ Options: A: mason, B: postman, C: singer, D: soldier","이 사진 속 사람들의 직업은 무엇인가요?
+ 옵션: A: 메이슨, B: 우체부, C: 가수, D: 군인""",A,B,C,D,D,0.545
+instance reasoning,cross-instance relation reasoning,544,"In nature, what's the relationship between these two creatures?
+ Options: A: Predatory relationships, B: Competitive relationships, C: Parasitic relationships, D: Symbiotic relationship","자연에서 이 두 생물 사이에는 어떤 관계가 있을까요?
+ 옵션: A: 약탈적 관계, B: 경쟁적 관계, C: 기생적 관계, D: 공생 관계""",A,B,C,D,D,0.545
+instance reasoning,cross-instance attribute reasoning,529,"Which two objects are closest to each other?
+ Options: A: Soccer player and football team, B: Soccer player and coach, C: Football player and politician, D: Football player and coach","다음 중 서로 가장 가까운 두 물체는?
+옵션: A: 축구 선수 및 축구 팀, B: 축구 선수 및 코치, C: 축구 선수 및 정치인, D: 축구 선수 및 코치""",A,B,C,D,B,0.545
+coarse perception,image scene and topic,85,"What is the most prominent feature in the image?
+ Options: A: Sailboats, B: City skyline, C: Sky, D: Sun","이미지에서 가장 눈에 띄는 특징은 무엇인가요?
+ 옵션: A: 돛단배, B: 도시 스카이라인, C: 하늘, D: 태양""",A,B,C,D,C,0.538
+coarse perception,image scene and topic,89,"What is the overall scene depicted in this image?
+ Options: A: A group of people ice skating on a frozen lake surrounded by snowy trees and hills, B: A small town during a winter snowfall with snow-covered buildings and trees, C: A busy city street during Christmas time with decorated buildings and light displays, D: A ski resort town with snowy mountains and ski lifts visible in the background","""이 이 이미지의 전반적인 장면은 무엇입니까?
+옵션:A: 눈높은 나무와 언덕과 언덕에 둘러싸여 있는 겨울 눈설 등 작은 마을에는 눈설 등 작은 마을, 눈설 등 작은 마을에는 눈설로 장식된 건물과 같은 작은 마을이다.",A,B,C,D,B,0.538
+coarse perception,image scene and topic,140,"Which is the main topic of the image
+ Options: A: A woman is playing tennis, B: A man is playing tennis, C: A boy is playing soccer, D: A girl is playing volleyball","이미지의 주요 주제는 무엇입니까
+ 옵션: A: 여자가 테니스를 치고 있고, B: 남자가 테니스를 치고 있고, C: 남자가 축구를 하고, D: 여자가 배구를 하고 있습니다",A,B,C,D,B,0.500
+coarse perception,image emotion,10,"What is the overall mood or atmosphere of the image?
+ Options: A: Joyful and energetic, B: Intimate and cozy, C: Dark and gloomy, D: Serene and peaceful","이미지의 전체적인 분위기나 분위기는 어떻습니까?
+ 옵션: A: 즐겁고 활기찬, B: 친밀하고 아늑한, C: 어둡고 우울한, D: 고요하고 평화로운""",A,B,C,D,A,0.000
+fine-grained perception,recognition,433,"What type of family is shown in the image?
+ Options: A: A family of all women, B: A family of mixed genders, C: A family of all men, D: A family of only children","""가족은 어떤 종류의 가족이 보여?
+옵션:A: 모든 여성, B: 모든 남자 가족, C: 모든 남자 가족, D: 모든 남자 가족 중 하나이다.",A,B,C,D,D,0.000
+instance reasoning,single-instance reasoning,587,"How many lamps are in the bedroom?
+ Options: A: One, B: Two, C: Three, D: Four",""" 침실에서 램프가 얼마나 됩니까?
+옵션:A: 하나, B: 셋, C: 셋, D: 4""",A,B,C,D,D,0.000
+fine-grained perception,localization,227,"Where is the seated person visible in the image?
+ Options: A: On the fence, B: In the field, C: Outside the field, D: Behind the bench","이미지에서 앉은 사람은 어디에 보이나요?
+ 옵션: A: 펜스에서, B: 필드에서, C: 필드 밖에서, D: 벤치 뒤에서""",A,B,C,D,C,0.000
+fine-grained perception,recognition,430,"What shape is the ottoman in the living room?
+ Options: A: Square, B: Round, C: Rectangular, D: Oval","거실에 있는 소파의 모습은 무엇인가요?
+ 옵션: A: 정사각형, B: 둥근, C: 직사각형, D: 타원형""",A,B,C,D,D,0.000
+coarse perception,image scene and topic,74,"What is the main focus of this image?
+ Options: A: The grassy hill, B: The sculpture, C: The fence, D: The building","주요 초점은 무엇입니까?
+ 옵션: A: 풀이 무성한 언덕, B: 조형물, C: 울타리, D: 건물""",A,B,C,D,A,0.000
+fine-grained perception,object counting,281,"How many people are on stage?
+ Options: A: 2, B: 3, C: 4, D: 5","무대에는 몇 명이 있나요?
+ 옵션: A: 2, B: 3, C: 4, D: 5""",A,B,C,D,D,0.000
+logical reasoning,common reasoning,799,"What type of vegetation is visible in the image?
+ Options: A: Trees only, B: A mix of trees and bushes, C: Bushes only, D: Grass","이미지에 어떤 종류의 식물이 보이나요?
+옵션: A: 나무만, B: 나무와 덤불의 혼합, C: 덤불만, D: 잔디""",A,B,C,D,A,0.000
+fine-grained perception,object counting,263,"How many drawers can be seen in the image?
+ Options: A: One, B: Three, C: Two, D: Four","이미지에 서랍이 몇 개나 보이나요?
+옵션: A: 하나, B: 셋, C: 둘, D: 넷""",A,B,C,D,D,0.000
+fine-grained perception,object counting,264,"How many drawers can be seen in the white kitchen?
+ Options: A: Three, B: Two, C: One, D: Four","하얀 주방에 서랍이 몇 개나 보이나요?
+옵션: A: 셋, B: 둘, C: 하나, D: 넷""",A,B,C,D,D,0.000
+coarse perception,image scene and topic,29,"Does the picture show a mountainous landscape or a coastal landscape?
+ Options: A: Mountainous, B: Coastal, C: plain, D: basin","사진에 산악 지형이 나와 있나요, 아니면 해안 지형이 나와 있나요? 옵션: A: 산악, B: 해안, C: 평야, D: 분지"" ",A,B,C,D,D,0.000
+coarse perception,image scene and topic,132,"Where is the exit in the image?
+ Options: A: To the left of the green exit sign, B: To the right of the green exit sign, C: Behind the green exit sign with an arrow pointing to the left, D: Not visible in the image","이미지에서 출구는 어디에 있습니까? 옵션: A: 녹색 출구 표지판의 왼쪽, B: 녹색 출구 표지판의 오른쪽, C: 왼쪽을 가리키는 화살표가 있는 녹색 출구 표지판 뒤, D: 이미지에 보이지 않음"" ",A,B,C,D,A,0.000
+fine-grained perception,recognition,436,"What type of pavement is the person with the dog walking on?
+ Options: A: Concrete, B: Brick, C: Asphalt, D: Gravel","개와 함께 걷는 사람은 어떤 종류의 포장도로를 걷고 있습니까?
+ 옵션: A: 콘크리트, B: 벽돌, C: 아스팔트, D: 자갈",A,B,C,D,A,0.000
+logical reasoning,code & sequence reasoning,708,"What will happen next?
+ Options: A: this person is gonna cry, B: this person is gonna laugh, C: this person is gonna get mad, D: both A,B, and C","다음에는 어떻게 될까요? 옵션: A: 이 사람은 울 거야, B: 이 사람은 웃을 거야, C: 이 사람은 화낼 거야, D: A, B, C 모두.""",A,B,C,D,B,0.000
+coarse perception,image style & quality,194,"what style is depicted in this image?
+ Options: A: impressionism, B: post-Impressionism, C: modernism, D: dadaism","이 이미지에는 어떤 스타일이 그려져 있습니까? 옵션: A: 인상주의, B: 후기 인상주의, C: 모더니즘, D: 다다이즘"" ",A,B,C,D,C,0.000
+fine-grained perception,object counting,269,"How many horses are in the image?
+ Options: A: 1, B: 2, C: 4, D: 3","""그렇게 많은 말들은 몇 명입니까?
+옵션:A:1, B: 4, C: 3""",A,B,C,D,C,0.000
+fine-grained perception,object counting,254,"How many buildings are present in the image?
+ Options: A: 1, B: 3, C: 2, D: 4","
+""그래픽은 몇 개의 건물들이 있습니까?
+옵션:A:1, B: 3, C: 2, D: 4""",A,B,C,D,D,0.000
+fine-grained perception,recognition,419,"What is the primary color of the glove held by the player in the foreground?
+ Options: A: Black, B: Orange, C: Brown, D: Yellow","
+""세계에서 열리는 장갑의 주요 색상은 무엇입니까?
+옵션:A: 블랙, C: 오렌지, C: 브라운, D: 노란색""",A,B,C,D,D,0.000
+fine-grained perception,localization,228,"Where is the snail located in the image?
+ Options: A: On a tree trunk, B: On top of a mushroom, C: On a log, D: On a rock","이미지에서 달팽이는 어디에 있나요?
+ 옵션: A: 나무 줄기 위에서, B: 버섯 위에서, C: 통나무 위에서, D: 바위 위에서",A,B,C,D,C,0.000
+fine-grained perception,localization,229,"Where is the soccer ball located?
+ Options: A: On the ground in the bottom left corner, B: In the air in the top right corner, C: On the ground in the bottom right corner, D: In the air in the top left corner","축구공은 어디에 있나요? A: 왼쪽 하단 모서리의 지면, B: 오른쪽 상단 모서리의 공기 중, C: 오른쪽 하단 모서리의 지면, D: 왼쪽 상단 모서리의 공기 중.""",A,B,C,D,D,0.000
+fine-grained perception,recognition,412,"What is the material of the boots that the woman is wearing in the image?
+ Options: A: Suede, B: Leather, C: Canvas, D: Synthetic","이미지에서 여자가 신고 있는 부츠의 재질은 무엇입니까?
+ 옵션: A: 스웨이드, B: 가죽, C: 캔버스, D: 합성",A,B,C,D,A,0.000
+coarse perception,image scene and topic,159,"Which term matches the picture?
+ Options: A: basket star, B: brittle star","어떤 용어가 그림과 일치합니까? 옵션: A: 삼천발이, B: 거미불가사리",A,B,C,D,A,0.000
+coarse perception,image style & quality,162,"The image displays which art style?
+ Options: A: watercolor, B: early renaissance, C: art nouveau, D: vector art","이미지에는 어떤 예술 스타일이 표시됩니까?
+ 옵션: A: 수채화, B: 초기 르네상스, C: 아르누보, D: 벡터 아트""",A,B,C,D,A,0.000
+fine-grained perception,recognition,391,"What is the color of the sheep in the foreground?
+ Options: A: Black, B: Brown, C: White, D: Gray","양의 색깔은 무엇입니까?
+ 옵션: A: 검정, B: 갈색, C: 흰색, D: 회색""",A,B,C,D,B,0.000
+fine-grained perception,recognition,394,"What is the color of the shorts of the soccer player wearing a red and black uniform?
+ Options: A: White and black, B: Yellow and green, C: Black and white, D: Blue and red","빨간색과 검은색 유니폼을 입은 축구 선수의 반바지 색깔은 무엇인가요?
+ 옵션: A: 흰색과 검은색, B: 노란색과 초록색, C: 검은색과 흰색, D: 파란색과 빨간색""",A,B,C,D,A,0.000
+fine-grained perception,object counting,266,"How many gloves can be seen in this image?
+ Options: A: One, B: Two, C: Three, D: Four","이 이미지에서 몇 개의 장갑을 볼 수 있습니까?
+옵션: A: 하나, B: 둘, C: 셋, D: 넷""",A,B,C,D,C,0.000
+fine-grained perception,recognition,420,"What is the primary color of the shoes worn by the player closest to the camera?
+ Options: A: Yellow, B: Black, C: Gray, D: Orange","
+""카메라에 가장 가까이 있는 선수가 신는 신발의 기본 색상은 무엇인가요?
+옵션: A: 노란색, B: 검은색, C: 회색, D: 주황색""",A,B,C,D,C,0.000
+coarse perception,image scene and topic,144,"Which object is the most central in the image?
+ Options: A: Woman in white dress, B: Actor in a white dress on the red carpet at a festival, C: Refrigerator, D: Red Carpet","
+이미지에서 가장 중심이 되는 물체는 무엇입니까?
+옵션: A: 흰색 드레스를 입은 여자, B: 축제에서 레드카펫 위에서 흰색 드레스를 입은 배우, C: 냉장고, D: 레드카펫""",A,B,C,D,A,0.000
+coarse perception,image scene and topic,145,"Which of the following best describes the view from the deck?
+ Options: A: A view of a forest, B: A view of the cityscape, C: A view of the mountains, D: A view of a body of water","
+다음 중 갑판에서 본 경치를 가장 잘 설명하는 것은?
+옵션: A: 숲의 전망, B: 도시 경관의 전망, C: 산의 전망, D: 수역의 전망""",A,B,C,D,A,0.000
+instance reasoning,single-instance reasoning,659,"Where is the lamp in the living room?
+ Options: A: On the coffee table, B: On the windowsill, C: On the end table, D: On the floor","거실의 램프는 어디에 있나요?
+옵션: A: 커피 테이블 위에, B: 창턱 위에, C: 끝 테이블 위에, D: 바닥에.""",A,B,C,D,A,0.000
+instance reasoning,single-instance reasoning,660,"Where is the man playing the guitar located on the stage?
+ Options: A: Left side of the stage, B: Middle of the stage, C: Right side of the stage, D: Behind the microphones","
+기타를 연주하는 남자는 무대 어디에 있나요?
+옵션: A: 무대 왼쪽, B: 무대 중앙, C: 무대 오른쪽, D: 마이크 뒤""",A,B,C,D,D,0.000
+coarse perception,image scene and topic,31,"How many police officers are in the image?
+ Options: A: 1, B: 0, C: 2, D: 3","
+이미지에 경찰관이 몇 명 있습니까?
+옵션: A: 1, B: 0, C: 2, D: 3""",A,B,C,D,A,0.000
+coarse perception,image scene and topic,33,"What color dominates the logo seen on the wall?
+ Options: A: Red, B: Black and White, C: Yellow, D: Blue","""벽에 보이는 로고는 어떤 색이 지배적인가요?
+옵션: A: 빨간색, B: 흑백, C: 노란색, D: 파란색""",A,B,C,D,A,0.000
+coarse perception,image scene and topic,99,"What is the predominant feature in the image?
+ Options: A: Houses, B: The Sky, C: Mountains, D: Trees","
+이미지의 주요 특징은 무엇입니까?
+옵션: A: 집, B: 하늘, C: 산, D: 나무""",A,B,C,D,D,0.000
+coarse perception,image scene and topic,61,"What is the main feature in the background of the image?
+ Options: A: A park bench near the water., B: A couple sitting on a bench., C: A body of water and the Golden Gate Bridge., D: A mountain in the distance.","
+이미지 배경의 주요 특징은 무엇입니까?
+옵션: A: 물가 근처의 공원 벤치. B: 벤치에 앉아 있는 커플. C: 수역과 금문교. D: 멀리 산.""",A,B,C,D,B,0.000
+coarse perception,image scene and topic,37,"What is the center of focus in the image?
+ Options: A: A man writing in a book, B: A boy with his head in his hands surrounded by books, C: A cluttered desk with books and a pen, D: A stack of books covering a young man's face","
+이미지의 초점은 무엇입니까?
+옵션: A: 책에 글을 쓰는 남자, B: 책에 둘러싸여 머리를 손에 들고 있는 소년, C: 책과 펜으로 어수선한 책상, D: 젊은이의 얼굴을 덮고 있는 책 더미.""",A,B,C,D,A,0.000
+fine-grained perception,object counting,249,"How many balls are on the table?
+ Options: A: 6, B: 4, C: 5, D: 3","
+테이블 위에 공이 몇 개 있나요?
+옵션: A: 6, B: 4, C: 5, D: 3""",A,B,C,D,B,0.500
+fine-grained perception,recognition,353,"What color are the man's shoes?
+ Options: A: Gray, B: Brown, C: Blue, D: Black","
+남자의 신발은 어떤 색인가요?
+옵션: A: 회색, B: 갈색, C: 파란색, D: 검은색""",A,B,C,D,D,0.500
+fine-grained perception,object counting,329,"How many women are sitting at the table in the image?
+ Options: A: One, B: Two, C: Four, D: Three","
+이미지에서 테이블에 앉아 있는 여성은 몇 명입니까?
+옵션: A: 하나, B: 둘, C: 넷, D: 셋""",A,B,C,D,B,0.500
+fine-grained perception,recognition,347,"Is there a person walking in the image?
+ Options: A: The image is too blurry to tell, B: No, C: There is more than one person walking, D: Yes","
+이미지 속에 걸어가는 사람이 있나요?
+옵션: A: 이미지가 너무 흐릿해서 알 수 없어요, B: 아니요, C: 한 사람 이상이 걷고 있어요, D: 네.""",A,B,C,D,B,0.500
+fine-grained perception,object counting,247,"How many apples are there in the image? And how many bananas are there?
+ Options: A: 4 apples and 2 bananas, B: 3 apples and 3 banana, C: 2 apples and 4 bananas, D: 4 apples and 1 bananas","
+이미지에 사과가 몇 개 있나요? 바나나는 몇 개인가요?
+옵션: A: 사과 4개와 바나나 2개, B: 사과 3개와 바나나 3개, C: 사과 2개와 바나나 4개, D: 사과 4개와 바나나 1개""",A,B,C,D,A,0.500
+logical reasoning,common reasoning,809,"What's the profession of the people in this picture?
+ Options: A: trainer, B: chemist, C: musician, D: pianist","
+이 사진 속 사람들의 직업은 무엇인가요?
+옵션: A: 트레이너, B: 화학자, C: 뮤지션, D: 피아니스트""",A,B,C,D,D,0.500
+coarse perception,image scene and topic,88,"What is the occasion depicted in the image?
+ Options: A: New Year's Eve celebration, B: Christmas Eve party, C: Birthday celebration, D: Wedding reception","
+이미지에 묘사된 사건은 무엇입니까?
+옵션: A: 새해 전야 축하 행사, B: 크리스마스 전야 파티, C: 생일 축하 행사, D: 결혼식 피로연""",A,B,C,D,B,0.500
+fine-grained perception,recognition,393,"What is the color of the shirt worn by the baseball player standing on the right side of the image?
+ Options: A: Blue, B: White, C: Black, D: Gray","
+""이미지 오른쪽에 서 있는 야구 선수가 입은 셔츠의 색상은 무엇입니까?
+옵션: A: 파란색, B: 흰색, C: 검은색, D: 회색""",A,B,C,D,B,0.500
+coarse perception,image scene and topic,100,"What is the predominant feature of the forest in the image?
+ Options: A: The ground is dry and covered in brown dirt, B: The trees are all tall and bare with no leaves, C: The trees are covered in green ivy and climbing vines, D: The bark on the trees is white and peeling","
+이미지에서 숲의 주요 특징은 무엇입니까?
+옵션: A: 땅이 건조하고 갈색 흙으로 덮여 있습니다. B: 나무는 모두 높고 잎이 없는 맨살입니다. C: 나무는 녹색 담쟁이덩굴과 덩굴식물로 덮여 있습니다. D: 나무의 껍질은 하얗고 벗겨져 있습니다.""",A,B,C,D,B,0.462
+coarse perception,image scene and topic,113,"What is the relative position of the man and the child in this image?
+ Options: A: The man and the child are out of frame, B: The man is standing next to the child, C: The man is holding the child, D: The man is standing apart from the child","
+이 이미지에서 남자와 아이의 상대적 위치는 무엇입니까?
+옵션: A: 남자와 아이가 틀을 벗어났습니다. B: 남자는 아이 옆에 서 있습니다. C: 남자는 아이를 안고 있고, D: 남자는 아이와 떨어져 서 있습니다.""",A,B,C,D,B,0.462
+coarse perception,image scene and topic,147,"Which of the following captions best describes this image?
+ Options: A: A group of people sitting around a campfire, B: A person kayaking on a lake, C: A family having a picnic in a park, D: A person hiking on a mountain trail","
+다음 캡션 중 이 이미지를 가장 잘 설명하는 것은?
+옵션: A: 모닥불 주위에 앉아 있는 사람들, B: 호수에서 카약을 타는 사람, C: 공원에서 피크닉을 하는 가족, D: 산길을 하이킹하는 사람.""",A,B,C,D,A,0.417
+fine-grained perception,recognition,397,"What is the color of the watch worn by a person in the image?
+ Options: A: White, B: Black, C: Silver, D: Gold","
+이미지 속 사람이 착용한 시계의 색상은 무엇입니까?
+옵션: A: 흰색, B: 검은색, C: 은색, D: 금색""",A,B,C,D,B,0.417
+fine-grained perception,recognition,360,"What color is the microphone in the image?
+ Options: A: Silver, B: White, C: Black, D: Red","
+이미지 속 마이크는 어떤 색인가요?
+옵션: A: 실버, B: 화이트, C: 블랙, D: 레드""",A,B,C,D,C,0.417
+fine-grained perception,object counting,315,"How many tables are there in the room?
+ Options: A: Four tables, B: Two tables, C: Three tables, D: One table","
+방에 테이블이 몇 개 있습니까?
+옵션: A: 테이블 4개, B: 테이블 2개, C: 테이블 3개, D: 테이블 1개""",A,B,C,D,D,0.417
+fine-grained perception,object counting,307,"How many pillows can be seen in the bedroom?
+ Options: A: 5, B: 4, C: 3, D: 6","
+침실에 베개가 몇 개나 보이나요?
+옵션: A: 5, B: 4, C: 3, D: 6""",A,B,C,D,B,0.417
+fine-grained perception,object counting,260,"How many colors are the eyes of the depicted animals?
+ Options: A: Two, B: One, C: Three, D: Four","
+묘사된 동물들의 눈은 몇 가지 색입니까?
+옵션: A: 둘, B: 하나, C: 셋, D: 넷""",A,B,C,D,B,0.417
+fine-grained perception,recognition,431,"What type of ball is being held by the player?
+ Options: A: A tennis ball, B: A basketball, C: A volleyball, D: A soccer ball","선수는 어떤 종류의 공을 들고 있나요?
+ 옵션: A: 테니스 공, B: 농구공, C: 배구공, D: 축구공""",A,B,C,D,A,0.417
+fine-grained perception,localization,212,"What is the position of the person on stage?
+ Options: A: Standing on the left side, B: Seated in the center, C: Sitting on the floor in front, D: Leaning on the guitar on the right side","
+무대 위에 있는 사람의 위치는 무엇입니까?
+ 옵션: A: 왼쪽에 서서, B: 가운데에 앉아, C: 앞쪽 바닥에 앉아, D: 오른쪽 기타에 기대어""",A,B,C,D,B,0.417
+fine-grained perception,localization,219,"Where is it?
+ Options: A: Shanghai, B: Xi'an, C: Wuhan, D: Nanjing","어디에 있나요?
+ 옵션: A: 상하이, B: 시안, C: 우한, D: 난징""
+",A,B,C,D,B,0.417
+fine-grained perception,recognition,386,"What is the color of the number on the red and blue jersey in the image?
+ Options: A: Blue, B: Red, C: Orange, D: Black","""이미지에서 빨간색과 파란색 유니폼의 숫자 색상은 무엇입니까?
+ 옵션: A: 파란색, B: 빨간색, C: 주황색, D: 검은색""",A,B,C,D,B,0.333
+fine-grained perception,object counting,330,"How many wooden objects are in the image?
+ Options: A: 1, B: 2, C: 3, D: 4","
+이미지에는 몇 개의 나무 물체가 있습니까?
+ 옵션: A: 1, B: 2, C: 3, D: 4""",A,B,C,D,A,0.333
+fine-grained perception,object counting,319,"How many tires can be seen in the image?
+ Options: A: 4, B: 3, C: 5, D: 6","
+이미지에서 몇 개의 타이어를 볼 수 있습니까?
+ 옵션: A: 4, B: 3, C: 5, D: 6""",A,B,C,D,B,0.333
+fine-grained perception,recognition,447,"Who is the person in this image?
+ Options: A: Kobe Bryant, B: Jing Wu, C: Morgan Freeman, D: Jay Chou","
+이 이미지 속 인물은 누구인가요?
+ 옵션: A: 코비 브라이언트, B: 징 우, C: 모건 프리먼, D: 제이 추""",A,B,C,D,B,0.333
+fine-grained perception,recognition,442,"Which scene category matches this image the best?
+ Options: A: forest_path, B: museum/indoor, C: storage_room, D: alley","
+이 이미지와 가장 잘 어울리는 장면 카테고리는 무엇인가요?
+ 옵션: A: 숲_길, B: 박물관/실내, C: 창고_방, D: 골목""
+",A,B,C,D,C,0.333
+fine-grained perception,recognition,383,"What is the color of the lettering on the green sign in the image?
+ Options: A: Black, B: Blue, C: Yellow, D: White","이미지의 녹색 표지판에 있는 글자의 색상은 무엇입니까?
+ 옵션: A: 검정, B: 파랑, C: 노랑, D: 흰색""",A,B,C,D,D,0.333
+fine-grained perception,recognition,375,"What is the color of the couch in the image?
+ Options: A: Beige, B: Brown, C: Tan, D: Gray","
+이미지 속 소파의 색상은 무엇인가요?
+ 옵션: A: 베이지, B: 브라운, C: 탄, D: 그레이""",A,B,C,D,B,0.333
+fine-grained perception,object counting,292,"How many people are present in the image?
+ Options: A: One, B: Three, C: Two, D: Four","
+이미지에 몇 명이 있나요?
+ 옵션: A: 하나, B: 셋, C: 둘, D: 넷""",A,B,C,D,B,0.333
+fine-grained perception,recognition,401,"What is the color scheme of the costumes worn by the men in the parade?
+ Options: A: Yellow, red, and gold, B: Red, blue, and black, C: Green, orange, and white, D: Black, white, and gray","퍼레이드에 참가한 남자들이 입은 의상의 색상 구성은 무엇입니까?
+ 옵션: A: 노란색, 빨간색, 금색, B: 빨간색, 파란색, 검은색, C: 녹색, 주황색, 흰색, D: 검은색, 흰색, 회색""",A,B,C,D,B,0.333
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,
+,,,,,A,B,C,D,,

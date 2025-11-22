@@ -1,0 +1,403 @@
+qid,category,l2_category,question_en,options,answer_type,question_kr
+664,instance reasoning,single-instance reasoning,"Where is the woman's blue bag located in the image?
+ ","A: In her hand 그녀의 손에, B: On her shoulder 그녀의 어깨에, C: On the ground 땅에, D: Inside the man's bag 그 남자의 가방 안에",choice,이미지 속 여성의 파란 가방은 어디에 위치해 있나요?
+6,coarse perception,image emotion,"What feeling is shown in this image?
+ ","A: engaged 참여하는, B: lonely 외로운, C: angry 화난, D: supportive 지지하는",choice,이 이미지에 어떤 감정이 나타나고 있나요?
+662,instance reasoning,single-instance reasoning,"Where is the rug in the living room located?
+ ","A: Next to the door 문 옆에, B: Under the table 탁자 아래에, C: In front of the window 창문 앞에, D: Under the couch 소파 아래에",choice,거실의 러그는 어디에 위치해 있나요?
+773,logical reasoning,common reasoning,"Is there a teddy bear in the image?
+ ","A: Can't tell 알 수 없음, B: No 아니오, C: Yes 네, D: Maybe 아마도",choice,이미지에 곰인형이 있나요?
+556,instance reasoning,cross-instance relation reasoning,"What is the relationship between the people in the image?
+ ","A: commercial 상업적인, B: professional 전문적인, C: friends 친구들, D: family 가족",choice,사진 속 사람들 간의 관계는 무엇입니까?
+768,logical reasoning,common reasoning,"In the picture, which direction is the baby facing?
+ ","A: left 왼쪽, B: right 오른쪽, C: up 위, D: down 아래",choice,사진에서 아기가 어느 방향을 향하고 있나요?
+802,logical reasoning,common reasoning,"What will happen next?
+ ","A: the kid is gonna slide through 그 아이가 미끄러져 지나갈 거야, B: the kid is gonna crash into the other kid 그 아이가 다른 아이와 부딪힐 거야, C: the other kid is gonna dodge 그 다른 아이가 피할 거야, D: both A,B, and C A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?
+598,instance reasoning,single-instance reasoning,"The object shown in this figure:
+ ","A: Is a colorless liquid with a slightly metallic taste, 무색의 액체로 약간의 금속 맛이 나는 물질이다, B: Is a powerful oxidizer that can cause skin and eye irritation, 피부와 눈에 자극을 유발할 수 있는 강력한 산화제이다, C: Has a boiling point of 150.2°C, 끓는점이 150.2°C이다, D: None of these options are correct. 이러한 옵션들 중 올바른 것은 없다.",choice,다음 그림에 보이는 물체는:
+70,coarse perception,image scene and topic,"What is the main focus of the image?
+ ","A: A woman standing in front of a brick wall 한 여성이 벽돌 벽 앞에 서 있다, B: A woman standing in front of a green hedge 한 여성이 초록색 울타리 앞에 서 있다, C: A garden with a lot of flowers and bushes 꽃과 덤불이 많은 정원, D: A bench surrounded by a lot of plants 많은 식물로 둘러싸인 벤치",choice,이미지의 주요 초점은 무엇입니까?
+97,coarse perception,image scene and topic,"What is the predominant color of the image?
+ ","A: Yellow 노란색, B: Black 검정, C: White 흰색, D: Blue 파란색",choice,이미지의 주된 색상은 무엇입니까?
+462,instance reasoning,cross-instance attribute reasoning,"In the picture, one is a bear doll and the other is a cat. Are they the same size?
+ ","A: same 같은, B: Not the same 다른, C: Can't judge 판단할 수 없다, D: nan 숫자가 아님",choice,사진 속에서 하나는 곰 인형이고 다른 하나는 고양이입니다. 둘은 같은 크기인가요?
+428,fine-grained perception,recognition,"What is the woman holding in her hand?
+ ","A: A book 책, B: A camera 카메라, C: A cell phone 휴대폰, D: Nothing 아무 것도 없음",choice,여자가 손에 들고 있는 것은 무엇인가요?
+13,coarse perception,image emotion,"Which emotion is being depicted in this image?
+ ","A: happiness, B: sadness, C: anger, D: love A: 행복, B: 슬픔, C: 분노, D: 사랑",choice,이 이미지에서 어떤 감정이 표현되고 있나요?
+414,fine-grained perception,recognition,"What is the most prominent color of the jacket worn by the man with the laptop?
+ ","A: Blue 파란색, B: Black 검정색, C: Gray 회색, D: Red 빨간색",choice,노트북을 들고 있는 남자가 입은 재킷의 가장 눈에 띄는 색은 무엇입니까?
+550,instance reasoning,cross-instance relation reasoning,"What can Hazel and Xavier trade to each get what they want?
+ ",A: Hazel can trade her tomatoes for Xavier's broccoli. 헤이즐은 그녀의 토마토를 자비에의 브로콜리와 교환할 수 있다. B: Hazel can trade her tomatoes for Xavier's carrots. 헤이즐은 그녀의 토마토를 자비에의 당근과 교환할 수 있다. C: Xavier can trade his broccoli for Hazel's oranges. 자비에는 자신의 브로콜리를 헤이즐의 오렌지와 교환할 수 있다. D: Xavier can trade his almonds for Hazel's tomatoes. 자비에는 자신의 아몬드를 헤이즐의 토마토와 교환할 수 있다.,choice,헤이즐과 자비에는 서로 원하는 것을 얻기 위해 무엇을 교환할 수 있나요?
+816,logical reasoning,common reasoning,"Which of the following objects has the highest density in the image?
+ ","A: Palm trees 야자나무들, B: Trees 나무들, C: Sand 모래, D: Dead grass 죽은 풀",choice,다음 중 이미지에서 가장 밀도가 높은 객체는 무엇입니까?
+788,logical reasoning,common reasoning,"What is the most likely purpose of this poster?
+ ","A: To celebrate New Year., B: To celebrate someone's birthday., C: To celebrate Christmas., D: To celebrate National Day. A: 새해를 축하하기 위해., B: 누군가의 생일을 축하하기 위해., C: 크리스마스를 축하하기 위해., D: 국경일을 축하하기 위해.",choice,이 포스터의 가장 가능성이 높은 목적은 무엇입니까?
+317,fine-grained perception,object counting,"How many teddy bears are in the picture?
+ ","A: Two 두 개, B: One 한 개, C: Three 세 개, D: Four 네 개",choice,그림 속에 곰인형이 몇 개 있나요?
+160,coarse perception,image scene and topic,"is this place crowded?
+ ","A: yes 네, B: no 아니요",choice,이 장소는 붐비나요?
+357,fine-grained perception,recognition,"What color is the building in the foreground?
+ ","A: Blue 파란색, B: Grey 회색, C: White 흰색, D: Black 검은색",choice,전경에 보이는 건물의 색은 무엇입니까?
+423,fine-grained perception,recognition,"What is the shape of the object with an angel face and wings in the image?
+ ","A: Egg-shaped 계란 모양, B: Square 정사각형, C: Round 원형, D: Star-shaped 별 모양",choice,이미지 속 천사 얼굴과 날개를 가진 물체의 모양은 무엇인가요?
+250,fine-grained perception,object counting,"How many bananas are there in the image?
+ ","A: 3 삼, B: 2 이, C: 4 사, D: 5 오",choice,이미지에 바나나가 몇 개 있나요?
+129,coarse perception,image scene and topic,"What type of environment is depicted in the picture?
+ ","A: home 집, B: shopping mall 쇼핑몰, C: street 거리, D: forest 숲",choice,사진에 묘사된 환경의 유형은 무엇입니까?
+349,fine-grained perception,recognition,"Roughly how much of the picture is occupied by the two people on the bench in the picture?
+ ","A: more than 50% 50% 이상, B: less than 30% 30% 미만, C: 0.8 0.8, D: more than 60% 60% 이상",choice,그 그림에서 벤치에 앉아 있는 두 사람이 차지하는 부분은 대략 얼마나 됩니까?
+392,fine-grained perception,recognition,"What is the color of the shirt worn by a man playing the guitar?
+ ","A: Blue 파란색, B: Black 검은색, C: Red 빨간색, D: White 흰색",choice,기타를 연주하는 남자가 입은 셔츠의 색은 무엇입니까?
+384,fine-grained perception,recognition,"What is the color of the man's tie in the image?
+ ","A: Blue 파란색, B: White 흰색, C: Black 검은색, D: Red 빨간색",choice,이미지 속 남자의 넥타이 색상은 무엇입니까?
+502,instance reasoning,cross-instance attribute reasoning,"What's the function of the demonstrated object?
+ ","A: baking 굽기, B: heating 가열, C: flavouring 향미 첨가, D: Pick-up 픽업",choice,시연된 물체의 기능은 무엇입니까?
+552,instance reasoning,cross-instance relation reasoning,"What can be the relationship between the two persons in this image?
+ ","A: Father and daughter 아버지와 딸, B: Mother and son 어머니와 아들, C: Brother and sister 형제자매, D: Husband and wife 남편과 아내",choice,이 이미지 속 두 사람 사이의 관계는 무엇일 수 있나요?
+804,logical reasoning,common reasoning,"What will happen next?
+ ","A: the motorcyle is gonna go forward, 오토바이가 앞으로 나아갈 것이다, B: the motorcyle is gonna crash, 오토바이가 충돌할 것이다, C: the motorcyle is gonna go backward, 오토바이가 뒤로 움직일 것이다, D: both A,B, and C A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?
+654,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: mason 석공, B: postman 우체부, C: singer 가수, D: soldier 군인",choice,이 사진 속 사람들의 직업은 무엇인가요?
+544,instance reasoning,cross-instance relation reasoning,"In nature, what's the relationship between these two creatures?
+ ","A: Predatory relationships 포식 관계, B: Competitive relationships 경쟁 관계, C: Parasitic relationships 기생 관계, D: Symbiotic relationship 공생 관계",choice,자연에서 이 두 생물 사이의 관계는 무엇인가요?
+529,instance reasoning,cross-instance attribute reasoning,"Which two objects are closest to each other?
+ ","A: Soccer player and football team 축구 선수와 축구 팀, B: Soccer player and coach 축구 선수와 코치, C: Football player and politician 축구 선수와 정치인, D: Football player and coach 축구 선수와 코치",choice,서로 가장 가까운 두 물체는 무엇인가요?
+85,coarse perception,image scene and topic,"What is the most prominent feature in the image?
+ ","A: Sailboats, B: City skyline, C: Sky, D: Sun A: 요트, B: 도시 스카이라인, C: 하늘, D: 태양",choice,이미지에서 가장 두드러진 특징은 무엇인가요?
+89,coarse perception,image scene and topic,"What is the overall scene depicted in this image?
+ ","A: A group of people ice skating on a frozen lake surrounded by snowy trees and hills 눈 덮인 나무와 언덕으로 둘러싸인 얼어붙은 호수 위에서 아이스 스케이트를 타는 사람들, B: A small town during a winter snowfall with snow-covered buildings and trees 눈이 내리는 겨울의 작은 마을로 눈으로 덮인 건물과 나무들, C: A busy city street during Christmas time with decorated buildings and light displays 크리스마스 시즌에 장식된 건물과 조명이 화려한 분주한 도시 거리, D: A ski resort town with snowy mountains and ski lifts visible in the background 배경에 눈 덮인 산과 스키 리프트가 보이는 스키 리조트 마을",choice,이 이미지에 묘사된 전반적인 장면은 무엇입니까?
+140,coarse perception,image scene and topic,"Which is the main topic of the image
+ ","A: A woman is playing tennis 한 여성이 테니스를 치고 있다, B: A man is playing tennis 한 남성이 테니스를 치고 있다, C: A boy is playing soccer 한 소년이 축구를 하고 있다, D: A girl is playing volleyball 한 소녀가 배구를 하고 있다",choice,이미지의 주요 주제는 무엇입니까?
+10,coarse perception,image emotion,"What is the overall mood or atmosphere of the image?
+ ","A: Joyful and energetic 즐겁고 활기찬, B: Intimate and cozy 친밀하고 아늑한, C: Dark and gloomy 어둡고 음울한, D: Serene and peaceful 고요하고 평화로운",choice,그 이미지의 전반적인 분위기는 무엇인가요?
+433,fine-grained perception,recognition,"What type of family is shown in the image?
+ ","A: A family of all women 모든 여성으로 이루어진 가족, B: A family of mixed genders 성별이 혼합된 가족, C: A family of all men 모든 남성으로 이루어진 가족, D: A family of only children 아이들로만 이루어진 가족",choice,이미지에 어떤 유형의 가족이 보이나요?
+587,instance reasoning,single-instance reasoning,"How many lamps are in the bedroom?
+ ","A: One 하나, B: Two 둘, C: Three 셋, D: Four 넷",choice,침실에 램프가 몇 개 있나요?
+227,fine-grained perception,localization,"Where is the seated person visible in the image?
+ "," A: On the fence 울타리 위에, B: In the field 들판에, C: Outside the field 들판 밖에, D: Behind the bench 벤치 뒤에",choice,이미지에서 앉아 있는 사람이 보이는 곳은 어디인가?
+430,fine-grained perception,recognition,"What shape is the ottoman in the living room?
+ ","A: Square 정사각형, B: Round 원형, C: Rectangular 직사각형, D: Oval 타원형",choice,거실의 오토만은 어떤 모양입니까?
+74,coarse perception,image scene and topic,"What is the main focus of this image?
+ ","A: The grassy hill 잔디가 깔린 언덕, B: The sculpture 조각상, C: The fence 울타리, D: The building 건물",choice,이 이미지의 주된 초점은 무엇입니까?
+281,fine-grained perception,object counting,"How many people are on stage?
+ ",A: 2 두 명 B: 3 세 명 C: 4 네 명 D: 5 다섯 명,choice,무대에 몇 명이 있나요?
+799,logical reasoning,common reasoning,"What type of vegetation is visible in the image?
+ ","A: Trees only 나무만, B: A mix of trees and bushes 나무와 덤불의 혼합, C: Bushes only 덤불만, D: Grass 풀",choice,이미지에서 보이는 식생의 유형은 무엇입니까?
+263,fine-grained perception,object counting,"How many drawers can be seen in the image?
+ ","A: One 하나, B: Three 세 개, C: Two 두 개, D: Four 네 개",choice,이미지에서 보이는 서랍의 수는 몇 개입니까?
+264,fine-grained perception,object counting,"How many drawers can be seen in the white kitchen?
+ ","A: Three 세 개, B: Two 두 개, C: One 한 개, D: Four 네 개",choice,흰색 주방에서 보이는 서랍은 몇 개입니까?
+29,coarse perception,image scene and topic,"Does the picture show a mountainous landscape or a coastal landscape?
+ ","A: Mountainous 산악의, B: Coastal 해안의, C: plain 평야, D: basin 분지",choice,"그 그림은 산악 풍경인가요, 아니면 해안 풍경인가요?"
+132,coarse perception,image scene and topic,"Where is the exit in the image?
+ ","A: To the left of the green exit sign 녹색 출구 표지판의 왼쪽에, B: To the right of the green exit sign 녹색 출구 표지판의 오른쪽에, C: Behind the green exit sign with an arrow pointing to the left 왼쪽으로 향하는 화살표가 있는 녹색 출구 표지판 뒤에, D: Not visible in the image 이미지에 보이지 않음",choice,이미지 속 출구는 어디에 있나요?
+436,fine-grained perception,recognition,"What type of pavement is the person with the dog walking on?
+ ","A: Concrete 콘크리트, B: Brick 벽돌, C: Asphalt 아스팔트, D: Gravel 자갈",choice,개를 데리고 걷는 사람이 걷고 있는 포장 도로의 종류는 무엇인가요?
+708,logical reasoning,code & sequence reasoning,"What will happen next?
+ ","A: this person is gonna cry 이 사람이 울 거야, B: this person is gonna laugh 이 사람이 웃을 거야, C: this person is gonna get mad 이 사람이 화를 낼 거야, D: both A,B, and C A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?
+194,coarse perception,image style & quality,"what style is depicted in this image?
+ ","A: impressionism 인상주의, B: post-Impressionism 후기 인상주의, C: modernism 모더니즘, D: dadaism 다다이즘",choice,이 이미지에 묘사된 스타일은 무엇입니까?
+269,fine-grained perception,object counting,"How many horses are in the image?
+ ","A: 1 일, B: 2 이, C: 4 사, D: 3 삼",choice,그 이미지에는 말이 몇 마리 있나요?
+254,fine-grained perception,object counting,"How many buildings are present in the image?
+ ","A: 1, B: 3, C: 2, D: 4 A: 일, B: 삼, C: 이, D: 사",choice,그 이미지에 건물이 몇 채 있나요?
+419,fine-grained perception,recognition,"What is the primary color of the glove held by the player in the foreground?
+ ","A: Black 검은색, B: Orange 주황색, C: Brown 갈색, D: Yellow 노란색",choice,전경에 있는 선수의 손에 들고 있는 장갑의 주된 색상은 무엇입니까?
+228,fine-grained perception,localization,"Where is the snail located in the image?
+ ","A: On a tree trunk, 나무 줄기 위에, B: On top of a mushroom, 버섯 위에, C: On a log, 통나무 위에, D: On a rock, 바위 위에",choice,그 이미지에서 달팽이는 어디에 있나요?
+229,fine-grained perception,localization,"Where is the soccer ball located?
+ ","A: On the ground in the bottom left corner, A: 왼쪽 아래 모서리의 바닥에, B: In the air in the top right corner, B: 오른쪽 위 구석의 공중에, C: On the ground in the bottom right corner, C: 오른쪽 아래 모서리의 바닥에, D: In the air in the top left corner, D: 왼쪽 위 구석의 공중에",choice,축구공은 어디에 있나요?
+412,fine-grained perception,recognition,"What is the material of the boots that the woman is wearing in the image?
+ ","A: Suede 스웨이드, B: Leather 가죽, C: Canvas 캔버스, D: Synthetic 합성 섬유",choice,이미지 속 여성이 신은 부츠의 소재는 무엇인가요?
+159,coarse perception,image scene and topic,"Which term matches the picture?
+ ","A: basket star 바구니 불가사리, B: brittle star 불가사리",choice,그 그림에 맞는 용어는 무엇입니까?
+162,coarse perception,image style & quality,"The image displays which art style?
+ ","A: watercolor 수채화, B: early renaissance 초기 르네상스, C: art nouveau 아르 누보, D: vector art 벡터 아트",choice,그 이미지에는 어떤 예술 양식이 나타나나요?
+391,fine-grained perception,recognition,"What is the color of the sheep in the foreground?
+ ","A: Black 검은색, B: Brown 갈색, C: White 흰색, D: Gray 회색",choice,전경에 있는 양의 색은 무엇입니까?
+394,fine-grained perception,recognition,"What is the color of the shorts of the soccer player wearing a red and black uniform?
+ ","A: White and black 흰색과 검은색, B: Yellow and green 노란색과 초록색, C: Black and white 검은색과 흰색, D: Blue and red 파란색과 빨간색",choice,빨간색과 검은색 유니폼을 입은 축구 선수의 반바지 색은 무엇입니까?
+266,fine-grained perception,object counting,"How many gloves can be seen in this image?
+ ","A: One 하나, B: Two 둘, C: Three 셋, D: Four 넷",choice,이 이미지에서 장갑은 몇 개 보이나요?
+420,fine-grained perception,recognition,"What is the primary color of the shoes worn by the player closest to the camera?
+ ","A: Yellow 노란색, B: Black 검은색, C: Gray 회색, D: Orange 주황색",choice,카메라에 가장 가까이 있는 선수의 신발의 주 색상은 무엇입니까?
+144,coarse perception,image scene and topic,"Which object is the most central in the image?
+ ","A: Woman in white dress, 하얀 드레스를 입은 여성 B: Actor in a white dress on the red carpet at a festival, 축제의 레드 카펫에서 흰 드레스를 입은 배우 C: Refrigerator, 냉장고 D: Red Carpet, 레드 카펫",choice,이미지에서 가장 중앙에 위치한 객체는 무엇인가?
+145,coarse perception,image scene and topic,"Which of the following best describes the view from the deck?
+ ","A: A view of a forest 숲의 경치, B: A view of the cityscape 도시 풍경, C: A view of the mountains 산의 경치, D: A view of a body of water 수역의 경치",choice,다음 중 데크에서 보이는 경치를 가장 잘 설명하는 것은 무엇입니까?
+659,instance reasoning,single-instance reasoning,"Where is the lamp in the living room?
+ ","A: On the coffee table, 커피 탁자 위에, B: On the windowsill, 창턱 위에, C: On the end table, 사이드 테이블 위에, D: On the floor, 바닥 위에",choice,거실에 있는 램프는 어디에 있나요?
+660,instance reasoning,single-instance reasoning,"Where is the man playing the guitar located on the stage?
+ ","A: Left side of the stage, A: 무대의 왼쪽, B: Middle of the stage, B: 무대의 중앙, C: Right side of the stage, C: 무대의 오른쪽, D: Behind the microphones, D: 마이크 뒤에",choice,무대에서 기타를 연주하는 남자는 어디에 위치해 있습니까?
+31,coarse perception,image scene and topic,"How many police officers are in the image?
+ ","A: 1 한 명, B: 0 명, C: 2 명, D: 3 명",choice,사진 속 경찰관은 몇 명인가요?
+99,coarse perception,image scene and topic,"What is the predominant feature in the image?
+ ","A: Houses 주택들, B: The Sky 하늘, C: Mountains 산들, D: Trees 나무들",choice,이미지에서 지배적인 특징은 무엇인가요?
+61,coarse perception,image scene and topic,"What is the main feature in the background of the image?
+ ","A: A park bench near the water. 물가 근처의 공원 벤치, B: A couple sitting on a bench. 벤치에 앉아 있는 커플, C: A body of water and the Golden Gate Bridge. 물의 몸체와 골든 게이트 다리, D: A mountain in the distance. 멀리 있는 산",choice,이미지의 배경에 있는 주요 특징은 무엇입니까?
+37,coarse perception,image scene and topic,"What is the center of focus in the image?
+ ",A: A man writing in a book 한 남자가 책에 글을 쓰고 있다. B: A boy with his head in his hands surrounded by books 책들에 둘러싸인 채 손으로 머리를 받치고 있는 소년. C: A cluttered desk with books and a pen 책과 펜이 어질러진 책상. D: A stack of books covering a young man's face 젊은 남자의 얼굴을 가리고 있는 책 더미,choice,이미지의 초점은 어디인가요?
+249,fine-grained perception,object counting,"How many balls are on the table?
+ ","A: 6 6개, B: 4 4개, C: 5 5개, D: 3 3개",choice,탁자 위에 공이 몇 개 있나요?
+353,fine-grained perception,recognition,"What color are the man's shoes?
+ ","A: Gray 회색, B: Brown 갈색, C: Blue 파란색, D: Black 검은색",choice,그 남자의 신발은 무슨 색인가요?
+329,fine-grained perception,object counting,"How many women are sitting at the table in the image?
+ ","A: One 한 명, B: Two 두 명, C: Four 네 명, D: Three 세 명",choice,이미지 속 탁자에 앉아 있는 여성은 몇 명입니까?
+347,fine-grained perception,recognition,"Is there a person walking in the image?
+ ","A: The image is too blurry to tell, A: 이미지는 판단하기에 너무 흐려서 알 수 없습니다, B: No, B: 아니오, C: There is more than one person walking, C: 보행 중인 사람이 두 명 이상 있습니다, D: Yes D: 예",choice,이미지 속에 걷고 있는 사람이 있나요?
+247,fine-grained perception,object counting,"How many apples are there in the image? And how many bananas are there?
+ ","A: 4 apples and 2 bananas 사과 4개와 바나나 2개, B: 3 apples and 3 banana 사과 3개와 바나나 3개, C: 2 apples and 4 bananas 사과 2개와 바나나 4개, D: 4 apples and 1 bananas 사과 4개와 바나나 1개",choice,그 이미지에는 사과가 몇 개 있나요? 그리고 바나나가 몇 개 있나요?
+809,logical reasoning,common reasoning,"What's the profession of the people in this picture?
+ ","A: trainer 트레이너, B: chemist 화학자, C: musician 음악가, D: pianist 피아니스트",choice,이 사진 속 사람들의 직업은 무엇입니까?
+88,coarse perception,image scene and topic,"What is the occasion depicted in the image?
+ "," A: New Year's Eve celebration, B: Christmas Eve party, C: Birthday celebration, D: Wedding reception A: 새해 전야제, B: 크리스마스 이브 파티, C: 생일 축하 파티, D: 결혼식 피로연",choice,사진에 묘사된 행사는 무엇인가요?
+393,fine-grained perception,recognition,"What is the color of the shirt worn by the baseball player standing on the right side of the image?
+ ","A: Blue 파란색, B: White 흰색, C: Black 검은색, D: Gray 회색",choice,이미지의 오른쪽에 서 있는 야구 선수가 입은 셔츠의 색상은 무엇입니까?
+100,coarse perception,image scene and topic,"What is the predominant feature of the forest in the image?
+ ","A: The ground is dry and covered in brown dirt 땅은 건조하고 갈색 흙으로 덮여 있다, B: The trees are all tall and bare with no leaves 나무들은 모두 키가 크고 잎이 없다, C: The trees are covered in green ivy and climbing vines 나무에는 녹색 아이비와 덩굴이 덮여 있다, D: The bark on the trees is white and peeling 나무 껍질이 흰색이고 벗겨져 있다",choice,사진 속 숲의 지배적인 특징은 무엇인가요?
+113,coarse perception,image scene and topic,"What is the relative position of the man and the child in this image?
+ ","A: The man and the child are out of frame 남자와 아이는 화면 밖에 있다, B: The man is standing next to the child 남자는 아이 옆에 서 있다, C: The man is holding the child 남자는 아이를 안고 있다, D: The man is standing apart from the child 남자는 아이와 떨어져 서 있다",choice,이 이미지에서 남자와 아이의 상대적 위치는 무엇입니까?
+147,coarse perception,image scene and topic,"Which of the following captions best describes this image?
+ ","A: A group of people sitting around a campfire 모닥불 주위에 앉아 있는 사람들, B: A person kayaking on a lake 호수에서 카약을 타는 사람, C: A family having a picnic in a park 공원에서 피크닉을 즐기는 가족, D: A person hiking on a mountain trail 산길에서 하이킹하는 사람",choice,다음 중 이 이미지를 가장 잘 설명하는 캡션은 무엇입니까?
+397,fine-grained perception,recognition,"What is the color of the watch worn by a person in the image?
+ ","A: White, B: Black, C: Silver, D: Gold A: 흰색, B: 검정색, C: 은색, D: 금색",choice,이미지 속 사람의 시계 색상은 무엇입니까?
+360,fine-grained perception,recognition,"What color is the microphone in the image?
+ "," A: Silver 은색, B: White 흰색, C: Black 검은색, D: Red 빨간색",choice,이미지 속 마이크의 색상은 무엇입니까?
+315,fine-grained perception,object counting,"How many tables are there in the room?
+ ","A: Four tables 네 개의 탁자, B: Two tables 두 개의 탁자, C: Three tables 세 개의 탁자, D: One table 한 개의 탁자",choice,방에 탁자가 몇 개 있나요?
+307,fine-grained perception,object counting,"How many pillows can be seen in the bedroom?
+ ","A: 5 5개, B: 4 4개, C: 3 3개, D: 6 6개",choice,침실에서 보이는 베개는 몇 개입니까?
+260,fine-grained perception,object counting,"How many colors are the eyes of the depicted animals?
+ ","  A: Two 두 가지, B: One 한 가지, C: Three 세 가지, D: Four 네 가지",choice,그려진 동물들의 눈은 몇 가지 색인가요?
+431,fine-grained perception,recognition,"What type of ball is being held by the player?
+ ","A: A tennis ball 테니스 공, B: A basketball 농구공, C: A volleyball 배구공, D: A soccer ball 축구공",choice,선수가 들고 있는 공의 종류는 무엇입니까?
+212,fine-grained perception,localization,"What is the position of the person on stage?
+ ","A: Standing on the left side 왼쪽에 서 있는 사람, B: Seated in the center 가운데에 앉아 있는 사람, C: Sitting on the floor in front 앞쪽 바닥에 앉아 있는 사람, D: Leaning on the guitar on the right side 오른쪽 편의 기타에 기대고 있는 사람",choice,무대 위에 있는 사람의 위치는 어디인가요?
+219,fine-grained perception,localization,"Where is it?
+ ","A: Shanghai 상하이, B: Xi'an 시안, C: Wuhan 우한, D: Nanjing 난징",choice,그것은 어디에 있나요?
+386,fine-grained perception,recognition,"What is the color of the number on the red and blue jersey in the image?
+ ","A: Blue 파란색, B: Red 빨간색, C: Orange 주황색, D: Black 검은색",choice,이미지 속 빨간색과 파란색 저지에 있는 숫자의 색상은 무엇입니까?
+330,fine-grained perception,object counting,"How many wooden objects are in the image?
+ ","A: 1, B: 2, C: 3, D: 4 A: 일, B: 이, C: 삼, D: 사",choice,이미지에 나무로 된 물체가 몇 개 있나요?
+319,fine-grained perception,object counting,"How many tires can be seen in the image?
+ ","A: 4 4개, B: 3 3개, C: 5 5개, D: 6 6개",choice,이미지에서 보이는 타이어의 개수는 몇 개입니까?
+447,fine-grained perception,recognition,"Who is the person in this image?
+ ","A: Kobe Bryant 코비 브라이언트, B: Jing Wu 징 우, C: Morgan Freeman 모건 프리먼, D: Jay Chou 제이 추",choice,이 이미지 속 인물은 누구입니까?
+442,fine-grained perception,recognition,"Which scene category matches this image the best?
+ ","A: forest_path 숲길, B: museum/indoor 박물관/실내, C: storage_room 저장실, D: alley 골목",choice,이 이미지에 가장 잘 맞는 장면 카테고리는 무엇입니까?
+383,fine-grained perception,recognition,"What is the color of the lettering on the green sign in the image?
+ ","A: Black 검은색, B: Blue 파란색, C: Yellow 노란색, D: White 흰색",choice,이미지의 초록색 표지판에 적힌 글자의 색은 무엇입니까?
+375,fine-grained perception,recognition,"What is the color of the couch in the image?
+ ","A: Beige 베이지색, B: Brown 갈색, C: Tan 탠색, D: Gray 회색",choice,이미지 속 소파의 색은 무엇입니까?
+292,fine-grained perception,object counting,"How many people are present in the image?
+ ","A: One 하나, B: Three 세, C: Two 두, D: Four 네",choice,이미지에 몇 명의 사람이 있나요?
+401,fine-grained perception,recognition,"What is the color scheme of the costumes worn by the men in the parade?
+ ","A: Yellow, red, and gold 노란색, 빨간색, 금색, B: Red, blue, and black 빨간색, 파란색, 검은색, C: Green, orange, and white 초록색, 주황색, 흰색, D: Black, white, and gray 검은색, 흰색, 회색",choice,행진에 참가한 남성들이 입은 의상의 색상 구성은 무엇입니까?
+295,fine-grained perception,object counting,"How many people are standing on the stage in the image?
+ ","A: One 한 명, B: More than three 네 명 이상, C: Three 세 명, D: Two 두 명",choice,이미지 속 무대 위에 몇 사람이 서 있습니까?
+493,instance reasoning,cross-instance attribute reasoning,"What is the relative position of the man and woman in the image?
+ ","A: They are facing each other 그들은 서로 마주 보고 있다, B: They are both facing forward 그들은 모두 앞으로 향해 있다, C: They are both facing the camera 그들은 모두 카메라를 향하고 있다, D: They are both looking away from the camera 그들은 모두 카메라를 등지고 있다",choice,이미지 속 남자와 여자의 상대 위치는 무엇입니까?
+819,logical reasoning,diagram reasoning,"<image 1> is the HRM Roles, David Ulrich (1997) model. According to Ulrich, if HR is to become and remain relevant in the current business environment, what is not something HR professionals must learn?
+ ","A: Manage human resources operations and infrastructure 인적 자원 운영 및 인프라 관리, B: Become the link between human resources and organizational strategy 인적 자원과 조직 전략 사이의 연결고리가 된다, C: Optimize the value of employees 직원의 가치를 최적화하다, D: Be a change agent with a long-term vision for the organization 조직에 대한 장기 비전을 가진 변화 주도자가 된다",choice,"질문: David Ulrich(1997)의 HRM 역할 모델에 따르면, HR이 현재의 비즈니스 환경에서 관련성을 유지하고 유지하려면 HR 전문가가 배워야 할 것이 아닌 것은 무엇입니까?"
+919,logical reasoning,diagram reasoning,"Which month has the lowest average precipitation in London?
+ ","A: July 7월, B: February 2월, C: November 11월, D: nan 없음",choice,런던에서 평균 강수량이 가장 낮은 달은 무엇입니까?
+609,instance reasoning,single-instance reasoning,"What is the dominant material of the cabinets in the image?
+ ","A: Ceramic 도자기, B: Metal 금속, C: Wood 목재, D: Glass 유리",choice,이미지 속 찬장의 주된 재료는 무엇인가요?
+569,instance reasoning,cross-instance relation reasoning,"Which property do these three objects have in common?
+ ","A: blue 파란색, B: smooth 매끄러운, C: flexible 유연한, D: nan 숫자가 아님",choice,이 세 물체가 공통으로 가지는 성질은 무엇입니까?
+1247,science & technology,biology & chemistry & physics,"What is H in the diagram?
+ ","A: pith 피스, B: protoxylem 원시목, C: cambium 형성층, D: metaxylem 메타목",choice,도표에서 H는 무엇입니까?
+168,coarse perception,image style & quality,"Which category does this image belong to?
+ ","A: MRI image MRI 영상, B: icon 아이콘, C: microscopic image 현미경 이미지, D: abstract painting 추상화",choice,이 이미지는 어떤 범주에 속하나요?
+1411,science & technology,geography & earth science & agriculture,"Which label indicates the earth's gravitational pull on the moon?
+ ","A: D, B: A, C: B, D: E A: 디, B: 에이, C: 비, D: 이",choice,달에 작용하는 지구의 중력을 가리키는 표시는 무엇입니까?
+669,instance reasoning,single-instance reasoning,"Which is right?
+ ","A: The orange is next to the apple, 오렌지는 사과 옆에 있다 B: The apple is on the left, 사과는 왼쪽에 있다 C: The orange is on the right, 오렌지는 오른쪽에 있다 D: All above are not right, 위의 모든 항목은 옳지 않다",choice,다음 중 옳은 것은 무엇입니까?
+1214,science & technology,biology & chemistry & physics,"Leaf B is of which plant?
+ ","A: Celtis, B: Stem, C: Ulmus, D: Lotus  A: 셀티스, B: 줄기, C: 느릅나무, D: 연꽃",choice,잎 B는 어느 식물의 잎인가요?
+1215,science & technology,biology & chemistry & physics,"Letter A in the following diagram represents which stage?
+ ","A: attached planula 부착된 플라눌라, B: polyp 폴립, C: ephyra 에피라, D: planula 플라눌라",choice,다음 다이어그램에서 문자 A가 나타내는 단계는 무엇입니까?
+248,fine-grained perception,object counting,"How many archways are there in the image?
+ ","A: One 하나, B: Four 네, C: Three 세, D: Two 두",choice,이미지 속 아치의 수는 몇 개인가요?
+395,fine-grained perception,recognition,"What is the color of the socks detected in the attribute detection of the image?
+ ","A: Black 검정, B: Red 빨간색, C: White 흰색, D: Striped 줄무늬",choice,이미지의 속성 탐지에서 탐지된 양말의 색은 무엇입니까?
+882,logical reasoning,diagram reasoning,"In the diagram shown, which organism consumes small fish as food?
+ "," A: mahi mahi 마히마히, B: large shark 큰상어, C: zooplankton 동물성 플랑크톤, D: mackerel 고등어",choice,제시된 도표에서 작은 물고기를 먹이로 삼는 생물은 무엇입니까?
+1327,science & technology,electronics & energy & mechanical eng.,"<image 1>The accompanying sketch shows the schematic arrangement for measuring the thermal conductivity by the guarded hot plate method. Two similar 1 cm thick specimens receive heat from a 6.5 cm by 6.5 cm guard heater. When the power dissipation by the wattmeter was 15 W, the thermocouples inserted at the hot and cold surfaces indicated temperatures as 325 K and 300 K. What is the thermal conductivity of the test specimen material?
+ ","A: 0.81 W/m K 0.81 W/m K, B: 0.71 W/m K 0.71 W/m K, C: 0.61 W/m K 0.61 W/m K, D: 0.51 W/m K 0.51 W/m K",choice,"첨부된 도면은 guarded hot plate 방법으로 열전도율을 측정하기 위한 개략적 배열을 보여준다. 두께가 1 cm인 두 유사한 시편이 6.5 cm × 6.5 cm의 가드 히터로부터 열을 받는다. 와트미터의 전력 소모가 15 W일 때, 핫 표면과 냉 표면에 삽입된 열전쌍은 각각 325 K와 300 K의 온도를 나타냈다. 시험 시편 재료의 열전도율은 얼마인가?"
+221,fine-grained perception,localization,"Where is the drum located in the image?
+ ","A: In the back 뒤쪽에, B: On the left side 왼쪽에, C: On the right side 오른쪽에, D: At the center 중앙에",choice,이미지 속 드럼은 어디에 위치해 있나요?
+1367,science & technology,electronics & energy & mechanical eng.,"Which schedule is an equivalent serial schedule for the precendence graph in <image 1>?
+ ","A: T3 -> T1 -> T2  (한국어: A: T3 -> T1 -> T2), B: T2 -> T1 -> T3  (한국어: B: T2 -> T1 -> T3), C: T1 -> T2 -> T3  (한국어: C: T1 -> T2 -> T3), D: There are no serial schedules for the graph.  (한국어: 그래프에 대한 직렬 일정이 없다.)",choice,다음 그림 1의 선행 그래프에 대해 어떤 직렬 일정이 동등한가?
+711,logical reasoning,code & sequence reasoning,"Which Python code can generate the content of the image?
+ ","A: from collections import Counter
+ result = Counter('Canada')
+ print(result)  'Canada' 문자열에 대해 Counter를 생성하고 그 결과를 출력합니다., B: from collections import Counter
+ result = Counter('strawberry')
+ print(result)  'strawberry' 문자열에 대해 Counter를 생성하고 그 결과를 출력합니다., C: from collections import Counter
+ result = Counter('banana')
+ print(result)  'banana' 문자열에 대해 Counter를 생성하고 그 결과를 출력합니다., D: from collections import Counter
+ result = Counter('apple')
+ print(result)  'apple' 문자열에 대해 Counter를 생성하고 그 결과를 출력합니다.",choice,이미지의 내용을 생성할 수 있는 파이썬 코드는 무엇입니까?
+54,coarse perception,image scene and topic,"What is the general theme of this image?
+ ","A: Candy buffet 캔디 뷔페, B: Ice cream sundae 아이스크림 선데, C: Yogurt containers 요거트 용기, D: Fruit desserts 과일 디저트",choice,이 이미지의 일반적인 주제는 무엇입니까?
+551,instance reasoning,cross-instance relation reasoning,"What can Rosa and Kylie trade to each get what they want?
+ ",A: Kylie can trade her almonds for Rosa's tomatoes. 카일리는 자신의 아몬드를 로사의 토마토와 바꿀 수 있다. B: Rosa can trade her tomatoes for Kylie's broccoli. 로사는 자신의 토마토를 카일리의 브로콜리와 바꿀 수 있다. C: Rosa can trade her tomatoes for Kylie's carrots. 로사는 자신의 토마토를 카일리의 당근과 바꿀 수 있다. D: Kylie can trade her broccoli for Rosa's oranges. 카일리는 자신의 브로콜리를 로사의 오렌지와 바꿀 수 있다.,choice,로사와 카일리는 서로 원하는 것을 얻기 위해 무엇을 교환할 수 있을까요?
+1178,math,statistical reasoning,"You are asked to compare two options with parameters as given. The risk-free interest rate should be assumed to be 6%. Assume the stocks on which these options are written pay no dividends. <image 1> Which put option must be written on the stock with the lower price?
+ ","A: A (영어 옵션 A), B: B (영어 옵션 B), C: Not enough information (한국어: 충분한 정보가 없음), D: nan (한국어: 숫자가 아님)",choice,주어진 매개변수로 두 옵션을 비교하라는 요청을 받았습니다. 무위험 이자율은 6%로 가정합니다. 이 옵션들이 기초하는 주식은 배당금을 지급하지 않는다고 가정합니다. <image 1> 가격이 더 낮은 주식에 대해 어떤 풋옵션을 매도해야 합니까?
+504,instance reasoning,cross-instance attribute reasoning,"Where is the top of the purple bottle in relation to the man with the guitar?
+ ","A: Beside him 그 옆에 있습니다, B: Above him 그 위에 있습니다, C: Below him 그 아래에 있습니다, D: On his head 그의 머리 위에 있습니다",choice,기타를 든 남자에 비해 보라색 병의 윗부분은 어디에 위치합니까?
+913,logical reasoning,diagram reasoning,"Which country is highlighted?
+ ","A: Saint Lucia 세인트 루시아, B: Jamaica 자메이카, C: Haiti 아이티, D: Cuba 쿠바",choice,어떤 나라가 강조되었나요?
+1196,science & technology,biology & chemistry & physics,"From the above food web diagram, if all th bettle dies then
+ ","A: guava increases 구아바가 증가한다, B: fungi decreases 곰팡이가 감소한다, C: bacteria increases 박테리아가 증가한다, D: guava decreases 구아바가 감소한다",choice,위의 먹이망 다이어그램에서 모든 딱정벌레가 죽는다면
+1230,science & technology,biology & chemistry & physics,"The manufacture of compound F requires five separate chemical reactions. The initial reactant, compound A, is converted to compound B, compound B is converted to compound C, and so on. The diagram below summarizes the steps in the manufacture of compound F, including the percent yield for each step. Provide the missing quantities or missing percent yields.Assume that the reactant and product in each step react in a one-to-one mole ratio. <image 1>
+ "," A: 20.0%,0.50 mol,0.05 mol,20.0% A: 20.0%,0.50 몰,0.05 몰,20.0%, B: 30.0%,0.50 mol,0.05 mol,20.0% B: 30.0%,0.50 몰,0.05 몰,20.0%, C: 40.0%,0.50 mol,0.05 mol,20.0% C: 40.0%,0.50 몰,0.05 몰,20.0%, D: 50.0%,0.50 mol,0.05 mol,20.0% D: 50.0%,0.50 몰,0.05 몰,20.0%",choice,"화합물 F의 제조에는 다섯 개의 독립적인 화학 반응이 필요합니다. 초기 반응물인 화합물 A는 화합물 B로 변환되고, 화합물 B는 화합물 C로 변환되며, 이와 같이 계속되어 화합물 F의 제조가 이루어집니다. 아래 도표는 각 단계의 수율을 포함하여 화합물 F의 제조 과정을 요약합니다. 누락된 양 또는 누락된 수율을 구하십시오. 각 단계에서 반응물과 생성물이 1:1 몰 비로 반응한다고 가정합니다. <image 1>"
+651,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: mason 석공, B: nurse 간호사, C: pilot 조종사, D: policeman 경찰관",choice,이 사진 속 사람들의 직업은 무엇인가요?
+1312,science & technology,biology & chemistry & physics,"Which picture represents Aculeate?
+ ","A: G, B: F, C: C, D: N A: G, B: F, C: C, D: N",choice,Aculeate를 나타내는 그림은 어떤 그림입니까?
+801,logical reasoning,common reasoning,"What will happen next?
+ ","A: the girls is gonna turn the pan around, 그 소녀들은 팬을 돌려 방향을 바꿀 것이다, B: the pan itself is gonna fly into the woman's face, 팬 자체가 여자의 얼굴로 날아갈 것이다, C: nothing is gonna happen, 아무 일도 일어나지 않을 것이다, D: both A,B, and C, A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?
+1257,science & technology,biology & chemistry & physics,"What is the ATP in the diagram?
+ ","A: B 비, B: A 에이, C: D 디, D: none of the above 위의 보기 중 해당 없음",choice,도표의 ATP는 무엇입니까?
+626,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ ","A: clean 청소, B: measurement 측정, C: Bulldozing 불도저 작업, D: Cutting platform 절단 플랫폼",choice,시연된 물체의 기능은 무엇입니까?
+370,fine-grained perception,recognition,"What color is the writing on the sign in the image?
+ ","A: White 흰색, B: Green 초록색, C: Red 빨간색, D: Black 검은색",choice,이미지 속 간판에 적힌 글씨의 색은 무엇입니까?
+1175,math,statistical reasoning,"The Booth Company's sales are forecasted to double from $1,000 in 2010 to $2,000 in 2011. Here is the December 31, 2010, balance sheet: <image 1> Booth's fixed assets were used to only 50% of capacity during 2010, but its current assets were at their proper levels in relation to sales. All assets except fixed assets must increase at the same rate as sales, and fixed assets would also have to increase at the same rate if the current excess capacity did not exist. Booth's after-tax profit margin is forecasted to be 5% and its payout ratio to be 60%. What is Booth's additional funds needed (AFN) for the coming year?
+ ","A: 360 삼백육십, B: Other Answers 다른 답변, C: nan 숫자 아님, D: nan 숫자 아님",choice,"Booth Company의 매출은 2010년 1,000달러에서 2011년 2,000달러로 두 배로 증가할 것으로 예측된다. 아래에는 2010년 12월 31일의 대차대조표가 있다: <image 1> Booth의 고정자산은 2010년 동안 설비 용량의 50%만 사용되었지만, 유동자산은 매출에 비례하여 적정 수준이 있었다. 고정자산을 제외한 모든 자산은 매출 증가율과 같은 비율로 증가해야 하며, 현재의 여유 용량이 존재하지 않는다면 고정자산 역시 같은 비율로 증가해야 한다. Booth의 세후 이익률은 5%로, 배당성향은 60%로 예측된다. 다가오는 해에 Booth가 필요한 추가 자금(AFN)은 얼마인가?"
+1270,science & technology,biology & chemistry & physics,"What stage does D depict
+ ","A: Chrysalis 고치, B: Egg 알, C: Caterpillar 애벌레, D: Butterfly 나비",choice,D가 묘사하는 단계는 무엇입니까?
+1332,science & technology,electronics & energy & mechanical eng.,"Among the following binary trees, which one may become a binary search decision tree (excluding external nodes)
+ ","A: <image 1>, B: <image 2>, C: <image 3>, D: <image 4> A: 이미지 1, B: 이미지 2, C: 이미지 3, D: 이미지 4",choice,다음 이진 트리들 중에서 어떤 것이 외부 노드를 제외한 이진 검색 결정 트리로 될 수 있는가?
+425,fine-grained perception,recognition,"What is the shape of the window on the building in the image?
+ ","A: Square 정사각형, B: Rectangle 직사각형, C: Circle 원, D: Triangle 삼각형",choice,이미지 속 건물의 창문 모양은 무엇인가요?
+543,instance reasoning,cross-instance relation reasoning,"In nature, what's the relationship between these two creatures?
+ ","A: Predatory relationships 포식적 관계, B: Competitive relationships 경쟁적 관계, C: Parasitic relationships 기생 관계, D: Symbiotic relationship 공생 관계",choice,자연에서 이 두 생물 사이의 관계는 무엇입니까?
+663,instance reasoning,single-instance reasoning,"Where is the sheep?
+ ","A: The sheep is behind the car 양은 차 뒤에 있다, B: The sheep is in the front of the car 양은 차 앞에 있다, C: The sheep is on the right of the car 양은 차의 오른쪽에 있다, D: The sheep is on the left of the car 양은 차의 왼쪽에 있다",choice,양은 어디에 있나요?
+181,coarse perception,image style & quality,"Which image is more brightful?
+ ","A: The first image 첫 번째 이미지, B: The second image 두 번째 이미지, C: nan, D: nan",choice,어떤 이미지가 더 밝습니까?
+510,instance reasoning,cross-instance attribute reasoning,"Which image shows the highest sharpness?
+ ","A: upper left 왼쪽 상단, B: upper right 오른쪽 상단, C: down left 왼쪽 하단, D: down right 오른쪽 하단",choice,어떤 이미지가 가장 선명합니까?
+511,instance reasoning,cross-instance attribute reasoning,"Which image shows the highest sharpness?
+ ","A: upper left 왼쪽 위, B: upper right 오른쪽 위, C: down left 왼쪽 아래, D: down right 오른쪽 아래",choice,가장 선명한 이미지는 어느 것인가?
+278,fine-grained perception,object counting,"How many pairs of shoes can be seen in the image?
+ ","A: One 하나, B: Three 세, C: Two 두, D: Cannot be determined 판단할 수 없다",choice,이미지에서 보이는 신발의 쌍은 몇 개입니까?
+24,coarse perception,image scene and topic,"Based on the image, which statement best describes the likely purpose of the setting?
+ ","A: A photoshoot for greeting cards 인사 카드용 사진 촬영, B: A scientific research site 과학 연구 현장, C: A festive celebration 축제적인 축하 행사, D: A picnic spot for a group of people 여러 명이 함께하는 피크닉 장소",choice,이미지를 기반으로 볼 때 이 설정의 가능한 목적을 가장 잘 설명하는 진술은 무엇입니까?
+245,fine-grained perception,object counting,"How many angels have halos?
+ ","A: Two 두 명, B: One 한 명, C: nan 숫자가 아님, D: Three 세 명",choice,후광을 가진 천사는 몇 명입니까?
+655,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: photographer 사진작가, B: chemist 화학자, C: repairman 수리공, D: pianist 피아니스트",choice,이 사진 속 사람들의 직업은 무엇입니까?
+231,fine-grained perception,localization,"Where is the table in relation to the balcony?
+ ","A: On the right side of the balcony, 발코니의 오른쪽에, B: In the center of the balcony, 발코니의 중앙에, C: On the left side of the balcony, 발코니의 왼쪽에, D: Cannot be determined from the information given, 주어진 정보로는 판단할 수 없다",choice,탁자는 발코니에 대해 어느 위치에 있나요?
+1194,science & technology,biology & chemistry & physics,"Consider the molecule in blue bound to a binding site. Identify the binding interactions taking place at ii shown in red. <image 1>
+ ","A: hydrogen bonds A: 수소 결합, B: ionic bonds B: 이온 결합, C: van der Waals interactions C: 반데르발스 상호작용, D: nan D: 없음",choice,파란색으로 표시된 분자가 결합 부위에 결합해 있다. 빨간색으로 표시된 ii 위치에서 일어나는 결합 상호작용을 식별하시오. <image 1>
+629,instance reasoning,single-instance reasoning,"What's the function of the demonstrated object?
+ ","A: excavate 굴착하다, B: transport 운반하다, C: weld 용접하다, D: Measure the level 수준을 측정하다",choice,시연된 물체의 기능은 무엇입니까?
+215,fine-grained perception,localization,"What is the position of the sheep's legs in the image?
+ ",A: At the top 위쪽에 B: On the right side 오른쪽에 C: On the left side 왼쪽에 D: At the bottom 아래쪽에,choice,이미지에서 양의 다리는 어디에 있나요?
+924,logical reasoning,diagram reasoning,"Which solution has a higher concentration of green particles?
+ ","A: neither; their concentrations are the same 둘 다 아니다; 농도는 같다, B: Solution A 용액 A, C: Solution B 용액 B, D: nan 숫자가 아니다",choice,어떤 용액에서 녹색 입자의 농도가 더 높은가요?
+441,fine-grained perception,recognition,"Which of these cities is marked on the map?
+ ","A: New York City 뉴욕시, B: Washington, D.C. 워싱턴 D.C., C: Philadelphia 필라델피아, D: Boston 보스턴",choice,다음 도시들 중 지도에 표시된 도시는 어느 도시입니까?
+1403,science & technology,geography & earth science & agriculture,"Which country is highlighted?
+ ","A: Dominica 도미니카, B: Antigua and Barbuda 앤티가 바부다, C: Barbados 바베도스, D: Saint Kitts and Nevis 세인트키츠 네비스",choice,어느 나라가 강조 표시되어 있나요?
+1374,science & technology,geography & earth science & agriculture,"What does D depict in the diagram?
+ ","A: 4th quarter 4분기, B: 1st quarter 1분기, C: 3rd quarter 3분기, D: none of the above 위의 어느 것도 아니다",choice,도표에서 D가 나타내는 것은 무엇입니까?
+494,instance reasoning,cross-instance attribute reasoning,"What is the relative position of the man holding a guitar and the woman on stage?
+ ","A: The man is behind the woman 남자는 여자 뒤에 있다, B: The man is to the right of the woman 남자는 여자의 오른쪽에 있다, C: The man is to the left of the woman 남자는 여자의 왼쪽에 있다, D: The man is in front of the woman 남자는 여자 앞에 있다",choice,무대 위에 있는 여자와 기타를 들고 있는 남자의 상대적인 위치는 무엇입니까?
+1376,science & technology,geography & earth science & agriculture,"What does letter E depict?
+ ","A: waning gibbous 하현보름달, B: first quarter 상현달, C: waxing gibbous 상현보름달, D: last quarter 하현달",choice,문자 E는 무엇을 나타냅니까?
+46,coarse perception,image scene and topic,"What is the dominant color of the image?
+ ","A: White 흰색, B: Brown 갈색, C: Gray 회색, D: Green 초록",choice,이미지의 주된 색상은 무엇인가요?
+287,fine-grained perception,object counting,"How many people are playing music in the image?
+ ","A: One, B: Two, C: Three, D: Four A: 한 명, B: 두 명, C: 세 명, D: 네 명",choice,이미지에서 음악을 연주하고 있는 사람은 몇 명인가요?
+239,fine-grained perception,localization,"where is the cat?
+ "," A: top-right 오른쪽 상단, B: top-left 왼쪽 상단, C: bottom-left 왼쪽 하단, D: bottom-right 오른쪽 하단",choice,고양이가 어디에 있나요?
+1263,science & technology,biology & chemistry & physics,"What is the probability that a sheep produced by this cross will be homozygous dominant for the wool color gene?
+ ","A: 2/4 4분의 2, B: 1/4 4분의 1, C: 0/4 4분의 0, D: 3/4 4분의 3",choice,이 교배로 생산된 양이 양모 색 유전자에 대해 동형접합 우성일 확률은 얼마입니까?
+3,coarse perception,image emotion,"What feeling is represented in this image?
+ ","A: engaged 몰입한, B: disordered 무질서한, C: angry 화난, D: supportive 지지하는",choice,이 이미지에서 표현된 감정은 무엇인가요?
+1278,science & technology,biology & chemistry & physics,"Where do the axons of this nucleus terminate? <image 1> 
+ ","A: Muscles of pharynx and larynx. 인두와 후두의 근육들., B: Postganglionic parasympathetic cell bodies. 부교감 신경절의 신경세포체들., C: Smooth muscle of viscera. 내장기관의 평활근., D: nan. 숫자가 아님",choice,이 핵의 축삭은 어디에서 종결합니까? <image 1>
+931,math,geometry,"A surveyor needs to know the distance between points C and B in Figure 2.17. A building obscures the view directly between the two points. Setting up at the end of the building at point A, the surveyor measures the two distances AC and AB, and the interior angle at A. What is the desired distance, CB?<image 1>
+ ",A: Distance CB = 748.50' C와 B 사이의 거리 = 748.50' B: Distance CB = 748.70' C와 B 사이의 거리 = 748.70' C: Distance CB = 748.60' C와 B 사이의 거리 = 748.60' D: Distance CB = 748.40' C와 B 사이의 거리 = 748.40',choice,"측량사는 그림 2.17에서 점 C와 점 B 사이의 거리를 알아야 한다. 건물이 두 점 사이의 시야를 직접 가리므로 차단된다. 건물의 끝에 있는 A 지점에 설치하고, 측량사는 AC와 AB 두 거리와 A에서의 내각을 측정한다. 원하는 거리 CB는 얼마인가?"
+93,coarse perception,image scene and topic,"What is the overall theme of the image?
+ ","A: Fashion 패션, B: Wildlife 야생동물, C: Nature 자연, D: Photography 사진",choice,그 이미지의 전반적인 주제는 무엇입니까?
+336,fine-grained perception,recognition,"Does the man have any facial hair?
+ ","A: No, 아니오, B: Yes, a mustache 네, 콧수염이 있습니다, C: Yes, a full beard 네, 전면 수염이 있습니다, D: Yes, slight stubble 네, 약간의 잔털이 있습니다",choice,그 남자에게 얼굴 털이 있나요?
+1418,science & technology,geography & earth science & agriculture,"Which of the following is the magma chamber?
+ ","A: K 케 이? No, wait. A: K 케 이? correction: A: K 케이, B: B 비, C: C 씨, D: H 에이치",choice,다음 중 마그마 방은 어느 것입니까?
+1329,science & technology,electronics & energy & mechanical eng.,"A man at a point P on the shore of a circular lake of radius 1 mile wants to reach the point Q on the shore diametrically opposite P (Fig. 16-5). He can row 1.5 miles per hour and walk 3 miles per hour. At what angle $\theta $ ($0<\theta < \pi /2$) to the diameter PQ should he row in order to minimize the time required to reach Q? <image 1>
+ ","A: $\theta = \pi /2$, B: $\theta = \pi /3$, C: $\theta = \pi $, D: $\theta = 2\pi $ A: 세타 = π /2 B: 세타 = π /3 C: 세타 = π D: 세타 = 2π",choice,반지름이 1마일인 원형 호수의 해안에 있는 점 P에서 시작해 P와 직경상 반대편에 위치한 해안의 점 Q에 도달하고 싶다. 그는 시속 1.5마일로 노를 젓고 시속 3마일로 걷는다. Q에 도달하는 데 필요한 시간을 최소화하려면 PQ의 직경에 대해 θ(0<θ<π/2) 만큼의 각도로 노를 저어야 하는가? (그림 16-5)
+705,logical reasoning,code & sequence reasoning,"What is correct Python code to generate the content of the image?
+ "," A: def myfunc():\n x = 300\n def myinnerfunc():\n print(x)\n myinnerfunc()\n\nmyfunc() (한국어 번역: 이 코드는 x 값을 출력하기 위해 중첩 함수를 정의하고 호출합니다.), B: thisdict = {\n ""brand"": ""Ford"",\n ""model"": ""Mustang"",\n ""year"": 1964\n}\n\nprint(len(thisdict)) (한국어 번역: 이 코드는 딕셔너리를 생성하고 길이를 출력합니다.), C: x = min(5, 10, 25)\ny = max(5, 10, 25)\n\nprint(x)\nprint(y) (한국어 번역: 이 코드는 최소값과 최대값을 계산하고 출력합니다.), D: class Person:\n def __init__(self, name, age):\n self.name = name\n self.age = age\n\np1 = Person(""John"", 36)\n\nprint(p1.name)\nprint(p1.age) (한국어 번역: 이 코드는 이름과 나이를 가진 Person 클래스를 정의하고 인스턴스의 이름과 나이를 출력합니다.)",choice,이미지의 내용을 생성하기 위한 올바른 파이썬 코드는 무엇입니까?
+766,logical reasoning,common reasoning,"If you were to sit on the chair closest to the window, which color would the chair be?
+ ","A: Green 초록색, B: Blue 파란색, C: Red 빨간색, D: White 흰색",choice,창문에 가장 가까운 의자에 앉는다면 의자는 어떤 색일까요?
+884,logical reasoning,diagram reasoning,"The diagram above represents the cycle of the Earth around the Sun, what letter represents Summer Solstice?
+ ","A: D 디, B: C 씨, C: B 비, D: A 에이",choice,위의 도표는 지구가 태양 주위를 도는 주기를 나타냅니다. 여름 하지에 해당하는 문자는 무엇입니까?
+538,instance reasoning,cross-instance relation reasoning,"Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?
+ ","A: sample B 샘플 B, B: sample A 샘플 A, C: neither; the samples have the same temperature 어느 쪽도 아니다; 두 샘플은 같은 온도이다, D: nan 숫자가 아님",choice,각 샘플에 포함된 입자들의 평균 운동에너지를 비교하시오. 어느 샘플의 온도가 더 높습니까?
+379,fine-grained perception,recognition,"What is the color of the eye in the mask in the image?
+ ","A: Blue and green 파란색과 초록색, B: Purple and pink 보라색과 분홍색, C: Brown and black 갈색과 검은색, D: Yellow and black 노란색과 검은색",choice,이미지 속 가면의 눈 색깔은 무엇입니까?
+1402,science & technology,geography & earth science & agriculture,"Which area on the map shows China?
+ ","A: B 비, B: C 씨, C: D 디, D: A 에이",choice,지도에서 중국이 표시된 영역은 어디인가요?
+279,fine-grained perception,object counting,"How many people are holding the flag in the street?
+ ","A: 3 삼, B: 2 이, C: 1 일, D: Cannot be determined 알 수 없음",choice,거리에서 깃발을 들고 있는 사람은 몇 명인가요?
+165,coarse perception,image style & quality,"What art style is evident in this image?
+ ","A: watercolor 수채화, B: photography 사진, C: vector art 벡터 아트, D: pencil 연필",choice,이 이미지에서 나타나는 미술 스타일은 무엇입니까?
+1104,math,statistical reasoning,"Given the adjacency matrix of a weighted undirected graph as follows, the total weight of its minimum spanning tree is:<image 1>
+ ","A: 22 이십이, B: 20 이십, C: 15 십오, D: 8 팔",choice,"다음과 같은 가중치를 갖는 무향 그래프의 인접 행렬이 주어졌을 때, 그 최소 신장 트리의 총 가중치는 얼마입니까? <image 1>"
+86,coarse perception,image scene and topic,"What is the most prominent feature in the image?
+ "," A: The skyline 스카이라인, B: The golf course 골프 코스, C: The trees 나무들, D: The person 사람",choice,이미지에서 가장 두드러진 특징은 무엇인가요?
+174,coarse perception,image style & quality,"Which category does this image belong to?
+ ","A: oil painting 유화, B: sketch 스케치, C: digital art 디지털 아트, D: photo 사진",choice,이 이미지는 어떤 카테고리에 속하나요?
+1092,math,numeric commonsense and calculation,"Which operation of fractions is represented by this formula?
+ ","A: Add 덧셈, B: Subtract 뺄셈, C: Multiply 곱셈, D: Devide 나눗셈",choice,이 수식이 나타내는 분수의 연산은 무엇입니까?
+767,logical reasoning,common reasoning,"In nature, what's the relationship between these two creatures?
+ ","A: Predatory relationships 포식 관계, B: Competitive relationships 경쟁 관계, C: Parasitic relationships 기생 관계, D: Symbiotic relationship 공생 관계",choice,자연에서 이 두 생물 사이의 관계는 무엇인가요?
+805,logical reasoning,common reasoning,"What will happen next?
+ "," A: the person is gonna fall off the ladder 그 사람이 사다리에서 떨어질 거야, B: the person is gonna stand still on the ladder 그 사람은 사다리 위에서 가만히 있을 거야, C: someone is gonna come and hold the ladder 누군가 와서 사다리를 잡아줄 거야, D: both A,B, and C A, B, C 모두",choice,다음에 무슨 일이 일어날까요?
+1208,science & technology,biology & chemistry & physics,"In the diagram of the food web shown, what do flat fish eat as food?
+ ","A: fan worm 부채벌레, B: nurse shark 간호상어, C: giant clam 거대한 대합조개, D: turtle grass 거북이풀",choice,제시된 먹이망 다이어그램에서 편평한 물고기는 먹이로 무엇을 삼나요?
+527,instance reasoning,cross-instance attribute reasoning,"Which picture depicts cell division?
+ ","A: B 비, B: A 에이, C: C 씨, D: {}",choice,어떤 그림이 세포 분열을 묘사하고 있습니까?
+38,coarse perception,image scene and topic,"What is the color of the majority of objects in the image?
+ ","A: White 흰색, B: Gray 회색, C: Blue 파란색, D: Green 초록색",choice,이미지 속 다수의 물체의 색은 무엇입니까?
+19,coarse perception,image emotion,"Which mood does this image convey?
+ ","A: Sad 슬픈, B: Cozy 아늑한, C: Happy 행복한, D: Angry 화난",choice,이 이미지가 전달하는 분위기는 무엇입니까?
+519,instance reasoning,cross-instance attribute reasoning,"Which of the following statements match the image?
+ ","A: A triangle is to the left of a pentagon., B: A blue pentagon is to the right of a gray pentagon., C: A blue square is to the left of a blue pentagon., D: A blue pentagon is to the left of a gray shape. A: 삼각형이 오각형의 왼쪽에 있다., B: 파란 오각형이 회색 오각형의 오른쪽에 있다., C: 파란 정사각형이 파란 오각형의 왼쪽에 있다., D: 파란 오각형이 회색 도형의 왼쪽에 있다.",choice,다음 중 이미지와 일치하는 진술은 무엇입니까?
+1209,science & technology,biology & chemistry & physics,"In the diagram of the food web shown, what will most directly be impacted if the supply of deer increase?
+ ","A: foxes will decrease 여우들이 감소할 것이다, B: fruit trees will decrease 과일나무들이 감소할 것이다, C: fruit trees will increase 과일나무들이 증가할 것이다, D: grass will decrease 풀은 감소할 것이다",choice,제시된 먹이망 다이어그램에서 사슴의 공급량이 증가하면 가장 직접적으로 어떤 것이 영향을 받게 될까요?
+246,fine-grained perception,object counting,"How many apples are there in the image? And how many bananas are there?
+ ","A: 3 apples and 1 bananas 사과 3개와 바나나 1개, B: 3 apples and 2 bananas 사과 3개와 바나나 2개, C: 1 apples and 1 bananas 사과 1개와 바나나 1개, D: 2 apples and 1 bananas 사과 2개와 바나나 1개",choice,이미지에는 사과가 몇 개 있나요? 그리고 바나나가 몇 개 있나요?
+123,coarse perception,image scene and topic,"What kind of weather is depicted in the picture?
+ ","A: sunny 맑음, B: rainy 비 오는, C: windy 바람 부는, D: snowy 눈 오는",choice,사진에 묘사된 날씨는 어떤 모습인가요?
+56,coarse perception,image scene and topic,"What is the main color of the image?
+ "," A: Red 빨간색, B: Green 초록색, C: Black 검은색, D: White 흰색",choice,이미지의 주요 색상은 무엇입니까?
+653,instance reasoning,single-instance reasoning,"What's the profession of the people in this picture?
+ ","A: mason 석공, B: postman 우편배달원, C: pilot 조종사, D: policeman 경찰관",choice,이 사진 속 사람들의 직업은 무엇입니까?
+94,coarse perception,image scene and topic,"What is the overall theme of this image?
+ ","A: Sports 스포츠, B: Sunset 일몰, C: Nature 자연, D: Kids playing 아이들이 노는 모습",choice,이 이미지의 전반적인 주제는 무엇인가요?
+373,fine-grained perception,recognition,"What is the color of the ball closest to the man?
+ ","A: White 흰색, B: Red 빨간색, C: Blue 파란색, D: Brown 갈색",choice,그 남자와 가장 가까운 공의 색은 무엇입니까?
+33,coarse perception,image scene and topic,"What color dominates the logo seen on the wall?
+ ","A: Red 빨간색, B: Black and White 검은색과 흰색, C: Yellow 노란색, D: Blue 파란색",choice,벽에 보이는 로고의 주된 색상은 무엇입니까?
+1181,science & technology,biology & chemistry & physics,"<image 1> What could be the reason for the corky outgrowths on a young ash tree by the roadside in Littondale, Yorkshire?
+ ","A: Fungal disease 진균병, B: Bacterial disease 세균성 질병, C: Don't know or not sure 모름 또는 확실하지 않음, D: Genetic abnormality 유전적 이상",choice,"<이미지 1> Littondale, Yorkshire의 도로변에 있는 어린 자작나무에 생긴 코르크 모양의 돌출부의 원인은 무엇일 수 있을까요?"
+92,coarse perception,image scene and topic,"What is the overall theme of the image?
+ ","A: Beach vacation 해변 휴가, B: Athletic lifestyle 운동적인 생활 방식, C: Summer fashion 여름 패션, D: Urban street style 도시 스트리트 스타일",choice,그 이미지를 전반적으로 나타내는 주제는 무엇입니까?
+378,fine-grained perception,recognition,"What is the color of the ears on the dessert item located in the bottom right of the image?
+ ","A: Red, B: Brown, C: Black, D: White A: 빨간색, B: 갈색, C: 검정색, D: 흰색",choice,이미지의 오른쪽 아래에 위치한 디저트 아이템의 귀 색은 무엇입니까?
+410,fine-grained perception,recognition,"What is the main item on the counter in the image?
+ ","A: A cup of ice cream on a counter with a cone on top 위에 콘이 얹힌 카운터 위의 아이스크림 컵, B: Two ice cream cones sitting next to each other 두 개의 아이스크림 콘이 서로 나란히 놓여 있다, C: A coffee cup with whipped cream on top 윗면에 휘핑 크림이 얹힌 커피 잔, D: A cup of ice cream with different flavors 다른 맛의 아이스크림 한 컵",choice,사진 속 카운터에 있는 주요 아이템은 무엇입니까?
+814,logical reasoning,common reasoning,"Which corner doesn't have any food?
+ ","A: top-right 오른쪽 위, B: top-left 왼쪽 위, C: bottom-left 왼쪽 아래, D: bottom-right 오른쪽 아래",choice,어떤 모서리에는 음식이 없나요?
+55,coarse perception,image scene and topic,"What is the main activity happening in this image?
+ ",A: A couple of men are playing soccer 남자 두 명이 축구를 하고 있다 B: A group of people are having a picnic in the park 공원에서 사람들이 피크닉을 하고 있다 C: Two men are playing cricket 두 남자들이 크리켓을 하고 있다 D: A group of people are playing volleyball 한 무리의 사람들이 배구를 하고 있다,choice,이 이미지에서 주된 활동은 무엇인가요?
