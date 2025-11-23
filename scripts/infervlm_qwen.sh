@@ -3,9 +3,9 @@
 
 export CUDA_VISIBLE_DEVICES=1  # use GPU 1 instead of GPU 0
 BASE_MODEL=(
-            "Qwen/Qwen3-VL-8B-Instruct"
             "Qwen/Qwen3-VL-4B-Instruct"
-            # "Qwen/Qwen3-VL-2B-Instruct"
+            "Qwen/Qwen3-VL-2B-Instruct"
+            "Qwen/Qwen3-VL-8B-Instruct"
             )
 # ADAPTERS_PATHS=(
     # "llava-v1.5-7b-Mixed-lora_VISPR_LoRA_r32_vlguard/v1-20251031-193648/checkpoint-2500"
@@ -13,10 +13,13 @@ BASE_MODEL=(
         # --adapters "${ROOT_DIR}${CHECKPOINT}" \
 
 DATASET_PATHS=(
-    # blind conditions
-    "vlm_vqav2_val_1k.jsonl" # LLM VQA 1K 
-    "vlm_vqav2_val_1k_blind.jsonl" # LLM VQA 1K 
-    "vlm_mmstar_blind.jsonl"
+    # # blind conditions
+    "vlm_vqav2_val_1k_inst_blind.jsonl"
+    "vlm_mmstar_inst_blind.jsonl"
+
+    # "vlm_vqav2_val_1k.jsonl" # LLM VQA 1K 
+    # "vlm_vqav2_val_1k_blind.jsonl" # LLM VQA 1K 
+    # "vlm_mmstar_blind.jsonl"
     # "/home/work/yuna/data/VLGuard/test_safe_unsafes.jsonl" ## MMStar 
     # "/home/work/yuna/data/VLGuard/test_safe_safes.jsonl" ## VQAv2 5k 
 )

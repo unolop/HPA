@@ -13,10 +13,14 @@ BASE_MODEL=(
         # --adapters "${ROOT_DIR}${CHECKPOINT}" \
 
 DATASET_PATHS=(
-    "vlm_vqav2_val_1k.jsonl" # LLM VQA 1K 
-    "vlm_vqav2_val_1k_blind.jsonl" # LLM VQA 1K 
-    # blind conditions
-    "vlm_mmstar_blind.jsonl"
+    # "vlm_vqav2_val_1k.jsonl" # LLM VQA 1K 
+
+    # # blind conditions
+    # "vlm_mmstar_blind.jsonl"
+    # "vlm_vqav2_val_1k_blind.jsonl" # LLM VQA 1K 
+
+    # instruction + blind conditions 
+    "vlm_vqav2_val_1k_blind_inst_blind.jsonl" 
 )
 
 for BASE_MODEL in "${BASE_MODEL[@]}"; do 
