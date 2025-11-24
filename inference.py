@@ -5,9 +5,17 @@ from tqdm import tqdm
 from typing import List, Union
 from PIL import Image
 import json
+import numpy as np 
 import torch
+import random 
 
 system_message = "Note: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
+
+seed = 42
+np.random.seed(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+torch.cuda.empty_cache() 
 
 def load_dataset(data_name:str, prompt:str=''): 
     print("Loading dataset...")
@@ -16,16 +24,44 @@ def load_dataset(data_name:str, prompt:str=''):
         from datasets import load_dataset 
         dataset = load_dataset("Lin-Chen/MMStar", split="val") 
     
+    elif data_name == "spubench":
+        from datasets import load_dataset 
+        
+        with open('/home/work/yuna/HPA/data/annotation.json', 'r', encoding='utf-8') as f: 
+            annot = json.load(f)
+
+        ds = load_dataset("mmbench/MM-SpuBench", streaming=True)
+        dataset = [] 
+
+        for (data, ann) in zip(ds['train'], annot): 
+            image = data['image']
+            question = ann['question'] 
+            choices = ann['choices'] 
+            choices_text = "\n".join(choices)  
+            question = (
+                f"{prompt}Question: {question}\n"
+                f"{choices_text}\n"
+                "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
+                "Answer:"
+            )
+            ann['question'] = question
+            ann['image'] = image
+
+            dataset.append(ann) 
+
     elif data_name == "vqa_1k":
         from data.vqav2 import VQADataset_json
         dataset =VQADataset_json(prompt=prompt)
         
     elif data_name == "vqa_5k":
         from data.vqav2 import VQADataset
+        from torch.utils.data import Subset
+
         with open('/home/work/yuna/HPA/data/vqav2_1k/s1_qids.json', 'r') as file:
             qids = json.load(file)
 
-        dataset =VQADataset(prompt=prompt, filter_qids=qids) 
+        dataset = VQADataset(prompt=prompt, filter_qids=qids) 
+        dataset = Subset(dataset, np.random.choice(len(dataset), size=5000, replace=False))
 
     return dataset 
 
@@ -81,16 +117,18 @@ def main(args):
     template_type = template_type or model.model_meta.template
     template = get_template(template_type, tokenizer, default_system=default_system)
     engine = PtEngine.from_model_template(model, template, max_batch_size=1)
-    request_config = RequestConfig(max_tokens=128, temperature=0)
+    request_config = RequestConfig(max_tokens=512, temperature=0)
     
     save_name = args.lora_path.split('/')[-3] if args.lora_path else args.model.split('/')[-1]
     output_jsonl_path = f"{args.savedir}/{save_name}_{args.dataset}{args.condition}.jsonl"
+    prompt= ''
 
-    if 'inst' in args.condition and 'sys' not in args.condition:  
-        print('instructions appending in vqav2 question')
-        prompt = system_message
-    else :
-        prompt= ''
+    if 'blind' in args.condition : 
+        print('blind condition')
+        if 'inst' in args.condition and 'sys' not in args.condition:  
+            print('instructions appending in vqav2 question')
+            prompt = system_message
+            
     dataset = load_dataset(args.dataset, prompt) 
     processed_ids, current_item_id = skip_processed_idx(existing_keys=dataset[0].keys(), output_jsonl_path=output_jsonl_path)
 
@@ -107,7 +145,7 @@ def main(args):
             if processed_ids is not None: 
                 if data[current_item_id] in processed_ids:
                     continue 
-
+            
             prompt = data['question'] 
             messages = [] 
             if 'sys_inst' in args.condition: 
