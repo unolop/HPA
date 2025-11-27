@@ -1,24 +1,23 @@
 #!/bin/bash
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
-GPU=1
-DATASET_PATHS=( "spubench") # "vqa_5k") #"mmstar" 
-CONDITION_LIST=("" "_inst_blind"  ) #  "_sys_inst_blind" "_blind"
+GPU=0
+DATASET_PATHS=("mmstar" ) #  "vqa_1k"  "vqa_5k" "spubench" 
+CONDITION_LIST=("_blind" ) #  "_sys_inst_blind"  "_inst_blind" "" 
 BASE_MODEL=(
-            # "llava-hf/llava-v1.6-mistral-7b-hf"
-            # "llava-hf/llava-v1.6-vicuna-7b-hf" 
-            # "llava-hf/llava-v1.5-7b-hf"
+    # "OpenGVLab/InternVL3_5-8B"
+    # "Qwen/Qwen3-VL-8B-Instruct"
 
-            # "Qwen/Qwen3-VL-8B-Instruct"
-            # "OpenGVLab/InternVL3_5-8B"
+    # "OpenGVLab/InternVL3_5-1B"
+    "OpenGVLab/InternVL3_5-2B"
+    "OpenGVLab/InternVL3_5-4B"
 
-            "OpenGVLab/InternVL3_5-2B"
-            "Qwen/Qwen3-VL-2B-Instruct"
-            "OpenGVLab/InternVL3_5-1B"
+    "Qwen/Qwen3-VL-2B-Instruct"
+    "Qwen/Qwen3-VL-4B-Instruct"
 
-            # "OpenGVLab/InternVL3_5-4B"
-            # "Qwen/Qwen3-VL-4B-Instruct"
-
+    # "llava-hf/llava-1.5-7b-hf"
+    # "llava-hf/llava-v1.6-vicuna-7b-hf"
+    # "llava-hf/llava-v1.6-mistral-7b-hf"
             )
 # ADAPTERS_PATHS=(
     # "llava-v1.5-7b-Mixed-lora_VISPR_LoRA_r32_vlguard/v1-20251031-193648/checkpoint-2500"

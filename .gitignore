@@ -7,4 +7,5 @@ data/vqav2_val.json
 *.pth
 models/lxmert
 models/unilm
-
+checkpoint 
+wandb 

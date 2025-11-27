@@ -1,8 +1,8 @@
 #!/bin/bash
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
-CONDITION_LIST=("_inst_blind" "_blind") 
-DATASET_PATHS=("vqa_1k" "mmstar" ) 
+CONDITION_LIST=("") # "_blind" _inst_blind 
+DATASET_PATHS=("spubench") # "vqa_1k" "mmstar"  
 BASE_MODEL=(
             "Qwen/Qwen3-4B-Base"
             "Qwen/Qwen3-1.7B-Base" 
@@ -13,7 +13,7 @@ BASE_MODEL=(
 for CONDITON in "${CONDITION_LIST[@]}"; do 
     for BASE_MODEL in "${BASE_MODEL[@]}"; do 
         for VAL_DATASET in "${DATASET_PATHS[@]}"; do 
-            CUDA_VISIBLE_DEVICES=1 python /home/work/yuna/HPA/inference.py \
+            CUDA_VISIBLE_DEVICES=0 python /home/work/yuna/HPA/inference.py \
                 --model "${BASE_MODEL}" \
                 --dataset "${VAL_DATASET}" \
                 --model_type "llm"
