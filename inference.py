@@ -17,6 +17,35 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 torch.cuda.empty_cache() 
 
+DATASET_TYPE = {
+    'mmstar': 'multi-choice', 
+    # 'mmstar': 'multi-choice', 
+    # 'mmstar': 'multi-choice', 
+}
+
+def build_prompt(line, for_llm=False): 
+    prompt = line['question'] 
+    if DATASET_TYPE(dataset) == 'multi-choice':
+        question = line['question']
+        options = {
+            cand: line[cand]
+            for cand in string.ascii_uppercase
+            if cand in line and not pd.isna(line[cand])
+        }
+        options_prompt = 'Options:\n'
+        for key, item in options.items():
+            options_prompt += f'{key}. {item}\n'
+        prompt = ''
+        if hint is not None:
+            prompt += f'Hint: {hint}\n'
+        prompt += f'Question: {question}\n'
+        if len(options):
+            prompt += options_prompt
+    elif DATASET_TYPE(dataset) == 'Y/N' and for_llm:
+        prompt += 'Answer the question using a single word or phrase. \n'
+
+    return dict(image=tgt_path, text=prompt)
+    
 def load_dataset(data_name:str, prompt:str=''): 
     print("Loading dataset...")
     
@@ -57,7 +86,7 @@ def load_dataset(data_name:str, prompt:str=''):
         from data.vqav2 import VQADataset
         from torch.utils.data import Subset
 
-        with open('/home/work/yuna/HPA/data/vqav2_1k/s1_qids.json', 'r') as file:
+        with open('/home/work/yuna/HPA/data/s1_qids.json', 'r') as file:
             qids = json.load(file)
 
         dataset = VQADataset(prompt=prompt, filter_qids=qids) 
@@ -68,6 +97,7 @@ def load_dataset(data_name:str, prompt:str=''):
 def skip_processed_idx(existing_keys, output_jsonl_path): 
     id_keys = ['idx', 'qid', 'question_id', 'index']
     current_item_id = None
+    processed_ids=set()
 
     for key in id_keys:
         if key in existing_keys:
@@ -78,7 +108,6 @@ def skip_processed_idx(existing_keys, output_jsonl_path):
     if current_item_id is None : 
         current_item_id = 'pid'
 
-    processed_ids = set()
     if os.path.exists(output_jsonl_path):
         print(f"'{output_jsonl_path}' exists.")
         with open(output_jsonl_path, 'r', encoding='utf-8') as f:
@@ -117,7 +146,7 @@ def main(args):
     template_type = template_type or model.model_meta.template
     template = get_template(template_type, tokenizer, default_system=default_system)
     engine = PtEngine.from_model_template(model, template, max_batch_size=1)
-    request_config = RequestConfig(max_tokens=512, temperature=0)
+    request_config = RequestConfig(max_tokens=args.max_token_length, temperature=0)
     
     save_name = args.lora_path.split('/')[-3] if args.lora_path else args.model.split('/')[-1]
     output_jsonl_path = f"{args.savedir}/{save_name}_{args.dataset}{args.condition}.jsonl"
@@ -127,12 +156,18 @@ def main(args):
         print('blind condition')
         if 'inst' in args.condition and 'sys' not in args.condition:  
             print('instructions appending in vqav2 question')
-            prompt = system_message
+            prompt = '\n' + system_message 
             
     dataset = load_dataset(args.dataset, prompt) 
     processed_ids, current_item_id = skip_processed_idx(existing_keys=dataset[0].keys(), output_jsonl_path=output_jsonl_path)
 
-    with open(output_jsonl_path, 'a', encoding='utf-8') as f:
+    if not args.resume: 
+        processed_ids = set()
+        write_mode = 'w'
+    else :
+        write_mode = 'a' 
+
+    with open(output_jsonl_path, write_mode, encoding='utf-8') as f:
         for i in tqdm(range(len(dataset))):
             
             data = dataset[i] 
@@ -145,20 +180,28 @@ def main(args):
             if processed_ids is not None: 
                 if data[current_item_id] in processed_ids:
                     continue 
+
+            if args.dataset == 'mmstar': 
+                prompt = data['question'] 
+                if args.condition == '_inst_blind' and 'vqa' not in args.dataset:
+                    prompt += system_message
+                if args.model_type == 'llm':
+                    prompt += "\nAnswer with the option's letter from the given choices directly, such as answer letter 'A' only. \n"
+                else: 
+                    prompt += 'Please select the correct answer from the options above.'
             
-            prompt = data['question'] 
             messages = [] 
             if 'sys_inst' in args.condition: 
                 messages.append({'role': 'system', 'content': system_message}) 
             
             if args.model_type == 'vlm':  
-                prompt = f'<image>{prompt}' 
-                messages.append({'role': 'user', 'content': prompt})
+                messages.append({'role': 'user', 'content': f'<image>{prompt}' })
                 
                 infer_request = InferRequest(
                     messages=messages,
                     images=[data['image']] 
                 )
+
             else : 
                 messages.append({'role': 'user', 'content': prompt})
                 infer_request = InferRequest(
@@ -166,10 +209,21 @@ def main(args):
                 ) 
 
             resp_list = engine.infer([infer_request], request_config)
-            output_text = resp_list[0].choices[0].message.content
-            print(output_text)
+            output_text = resp_list[0].choices[0].message.content 
+        
+            matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)
+            if matches:
+                output_text = matches[-1].strip().replace('*', '')
+            else:
+                output_text = output_text.strip().replace('*', '')
+
+            if 'answer' in data.keys(): 
+                data['correct'] = output_text.strip().lower()[0] == data['answer'].strip().lower()
+
             # 6. 결과를 JSON 객체로 생성하고 JSONL에 즉시 작성
             data['output'] = output_text 
+            print('Q:', prompt, 'Output:', data['output'], 'Ans:', data['answer'], int(data['correct']), output_jsonl_path)
+
             data.pop('image')
             f.write(json.dumps(data, ensure_ascii=False) + '\n')
             f.flush()  # 버퍼를 비워 파일에 즉시 쓰도록 강제
@@ -181,6 +235,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="VQA Evaluation") 
     parser.add_argument("--model", type=str, default="OpenGVLab/InternVL3_5-2B", help="Model name") 
     parser.add_argument("--model_type", type=str, default="vlm")
+    parser.add_argument("--resume", action="store_true") 
+    parser.add_argument("--max_token_length", default=512) 
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
     parser.add_argument("--dataset", type=str, default="mmstar", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 

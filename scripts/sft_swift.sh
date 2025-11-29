@@ -8,8 +8,8 @@ swift sft \
     --model $MODEL \
     --model_name $MODEL \
     --train_type lora \
-    --dataset /home/work/yuna/HPA/data/swift/s1_vqa.jsonl \
-    --val_dataset /home/work/yuna/HPA/data/swift/vqa5k_val.jsonl \
+    --dataset /home/work/yuna/HPA/data/s1_vqa.jsonl \
+    --val_dataset /home/work/yuna/HPA/data/vqa5k_val.jsonl \
     --torch_dtype bfloat16 \
     --max_step 300 \
     --per_device_train_batch_size 1 \
