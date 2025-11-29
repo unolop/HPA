@@ -30,6 +30,7 @@ def skip_processed_idx(current_item_id, output_jsonl_path):
                         # Assuming the ID field is called 'qid'
                         processed_ids.add(item[current_item_id])
                     except json.JSONDecodeError:
+                        print(f'detected malformed {item}')
                         continue  # Skip malformed lines
         print(f"총 {len(processed_ids)}개의 항목을 건너뜁니다.")
     return processed_ids

@@ -1,13 +1,13 @@
 #!/bin/bash
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
-CONDITION_LIST=("") # "_blind" _inst_blind 
-DATASET_PATHS=("spubench") # "vqa_1k" "mmstar"  
+CONDITION_LIST=("_inst_blind " "" ) # "_blind" 
+DATASET_PATHS=("mmstar" "spubench" "vqa_1k" "vqa_5k") #   
 BASE_MODEL=(
-            "Qwen/Qwen3-4B-Base"
             "Qwen/Qwen3-1.7B-Base" 
-            "Qwen/Qwen3-0.6B-Base" # doesnt work 
+            "Qwen/Qwen3-4B-Base"
             "Qwen/Qwen3-8B-Base"
+            "Qwen/Qwen3-0.6B-Base" # doesnt work 
             )
 
 for CONDITON in "${CONDITION_LIST[@]}"; do 
