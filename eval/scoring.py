@@ -1,32 +1,31 @@
+from sentence_transformers import SentenceTransformer
 
-import numpy as np 
-import pandas as pd 
-import os 
-import re 
-import torch
-import matplotlib.pyplot as plt
+encoder = SentenceTransformer("all-MiniLM-L6-v2").to('cuda')
 
-def vqa_accuracy(gt_answers, pred): # pred_answers):
+def vqa_accuracy(gt_answers, pred):
     """
-    gt_answers: dict mapping question_id to list of 10 human answers (strings)
-    pred_answers: dict mapping question_id to model answer (string)
-    Returns: overall VQA accuracy (float)
-    """ 
-    matches = sum([pred.strip().lower() == ans['answer'].strip().lower() for ans in gt_answers])
-    acc = min(1.0, matches / 3.0)
-    return acc 
-
-def answer_similarity(answer, gt:list): 
-    avg = [] 
-    # print(gt, answer)
-
-    for gta in gt : 
-        gta = gta['answer'] 
-        embeddings = encoder.encode([answer, gta]) 
-        # print(embeddings.shape) # [3, 384]
-        similarities = encoder.similarity(embeddings, embeddings)
-        avg.append(similarities[1,0]) 
-        # print(similarities) 
-
-    return np.mean(avg) 
+    gt_answers: list of strings, e.g., ["no", "yes", ...]
+    pred: string
+    """
+    pred = pred.strip().lower()
     
+    matches = sum([
+        pred == ans.strip().lower()
+        for ans in gt_answers
+    ])
+    
+    acc = min(1.0, matches / 3.0)
+    return acc
+
+
+def answer_similarity(gt_answers, pred):
+    """gt_answers is a list of strings. pred is a string."""
+    pred = pred.strip().lower()
+    scores = []
+    
+    for gta in gt_answers:
+        gta = gta.strip().lower()  # string
+        emb = encoder.encode([pred, gta])
+        similarities = encoder.similarity(emb,emb) 
+        scores.append(similarities[1,0])
+    return float(np.mean(scores))

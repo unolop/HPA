@@ -1,3 +1,69 @@
+import numpy as np 
+import pandas as pd 
+import os 
+import re 
+
+
+def translate_question(client, question):
+    prompt = f"""
+            You are a precise translation and data-formatting assistant.
+
+            Task:
+            Given a multiple-choice question and its options in English, 
+            return the result as a strict JSON dictionary with the following fields:
+            - question_kr: Translate the QUESTION into Korean 
+            
+            Input:
+            QUESTION: {question}
+            """
+
+    response = client.chat.completions.create(
+        model="gpt-5-nano",   # or your preferred model
+        messages=[{"role": "user", "content": prompt}],
+        temperature=1,
+    )
+
+    output = response.choices[0].message.content.strip()
+    return output
+
+def translate_mmstar(client, question, options):
+    prompt = f"""
+            You are a precise translation and data-formatting assistant.
+
+            Task:
+            Given a multiple-choice question and its options in English, 
+            return the result as a strict JSON dictionary with the following fields:
+            - question_kr: Translate the QUESTION into Korean 
+            - options: Insert translated korean options after its English choices separated by a blank space in the same string format. Do not remove the original English options. Numbers don't need to be translated in both languages.
+
+            Input:
+            QUESTION: {question}
+            OPTIONS_STRING: {options}
+            """
+
+    response = client.chat.completions.create(
+        model="gpt-5-nano",   # or your preferred model
+        messages=[{"role": "user", "content": prompt}],
+        temperature=1,
+    )
+
+    output = response.choices[0].message.content.strip()
+    return output
+    
+def split_thinking(s):
+    if '</think>' in s:
+        splits = s.split('</think>')
+        prediction = splits[-1].strip()
+        if len(splits) == 2 and '<think>' in splits[0]:
+            thinking = splits[0].split('<think>')[1].strip()
+        else:
+            thinking = '</think>'.join(splits[:-1])
+            thinking += '</think>'
+            warnings.warn('Failed to parse thinking, multiple </think> tags or missing <think> tag.')
+    else:
+        thinking = ''
+        prediction = s
+    return (prediction, thinking)
 
 contractions = {
             "aint": "ain't",

@@ -32,9 +32,6 @@ def build_prompt(line, for_llm=False):
             for cand in string.ascii_uppercase
             if cand in line and not pd.isna(line[cand])
         }
-        options_prompt = 'Options:\n'
-        for key, item in options.items():
-            options_prompt += f'{key}. {item}\n'
         prompt = ''
         if hint is not None:
             prompt += f'Hint: {hint}\n'
@@ -54,29 +51,12 @@ def load_dataset(data_name:str, prompt:str=''):
         dataset = load_dataset("Lin-Chen/MMStar", split="val") 
     
     elif data_name == "spubench":
-        from datasets import load_dataset 
+        from datasets import load_dataset
         
         with open('/home/work/yuna/HPA/data/annotation.json', 'r', encoding='utf-8') as f: 
             annot = json.load(f)
 
-        ds = load_dataset("mmbench/MM-SpuBench", streaming=True)
-        dataset = [] 
-
-        for (data, ann) in zip(ds['train'], annot): 
-            image = data['image']
-            question = ann['question'] 
-            choices = ann['choices'] 
-            choices_text = "\n".join(choices)  
-            question = (
-                f"{prompt}Question: {question}\n"
-                f"{choices_text}\n"
-                "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
-                "Answer:"
-            )
-            ann['question'] = question
-            ann['image'] = image
-
-            dataset.append(ann) 
+        dataset = load_dataset("mmbench/MM-SpuBench", streaming=True)
 
     elif data_name == "vqa_1k":
         from data.vqav2 import VQADataset_json
@@ -169,27 +149,31 @@ def main(args):
 
     with open(output_jsonl_path, write_mode, encoding='utf-8') as f:
         for i in tqdm(range(len(dataset))):
-            
             data = dataset[i] 
+            data['pid'] = i 
+            prompt = data['question'] 
+
             if 'blind' in args.condition: 
                 data['image'] = "/home/work/yuna/HPA/data/blank_224.png"
-
-            if current_item_id == 'pid' : 
-                data['pid'] = i
-
+                
             if processed_ids is not None: 
                 if data[current_item_id] in processed_ids:
                     continue 
 
-            if args.dataset == 'mmstar': 
-                prompt = data['question'] 
-                if args.condition == '_inst_blind' and 'vqa' not in args.dataset:
-                    prompt += system_message
-                if args.model_type == 'llm':
-                    prompt += "\nAnswer with the option's letter from the given choices directly, such as answer letter 'A' only. \n"
-                else: 
-                    prompt += 'Please select the correct answer from the options above.'
+            if args.dataset == 'spubench': 
+                prompt += 'Options:\n'
+                for item in ann['choices']: 
+                    prompt += f'{item}\n'  
+
+            if args.condition == '_inst_blind' and 'vqa' not in args.dataset:
+                prompt += system_message
+
+            if args.model_type == 'llm' and 'vqa' not in args.dataset:
+                prompt += "\nAnswer with the option's letter from the given choices directly, such as answer letter 'A' only. \n"
             
+            if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
+                prompt += 'Please select the correct answer from the options above.'
+        
             messages = [] 
             if 'sys_inst' in args.condition: 
                 messages.append({'role': 'system', 'content': system_message}) 
@@ -217,12 +201,13 @@ def main(args):
             else:
                 output_text = output_text.strip().replace('*', '')
 
-            if 'answer' in data.keys(): 
-                data['correct'] = output_text.strip().lower()[0] == data['answer'].strip().lower()
-
             # 6. 결과를 JSON 객체로 생성하고 JSONL에 즉시 작성
             data['output'] = output_text 
-            print('Q:', prompt, 'Output:', data['output'], 'Ans:', data['answer'], int(data['correct']), output_jsonl_path)
+            print('Q:', prompt, 'Output:', data['output'], 'Ans:', output_jsonl_path)
+
+            if 'answer' in data.keys(): 
+                data['correct'] = output_text.strip().lower()[0] == data['answer'].strip().lower()
+                print(data['answer'], int(data['correct'])) 
 
             data.pop('image')
             f.write(json.dumps(data, ensure_ascii=False) + '\n')
