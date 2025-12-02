@@ -51,16 +51,33 @@ def load_dataset(data_name:str, prompt:str=''):
         dataset = load_dataset("Lin-Chen/MMStar", split="val") 
     
     elif data_name == "spubench":
-        from datasets import load_dataset
+        from datasets import load_dataset 
         
         with open('/home/work/yuna/HPA/data/annotation.json', 'r', encoding='utf-8') as f: 
             annot = json.load(f)
 
-        dataset = load_dataset("mmbench/MM-SpuBench", streaming=True)
+        dataset = [] 
+
+        ds = load_dataset("mmbench/MM-SpuBench", streaming=True)['train']
+        for (data, ann) in zip(ds, annot): 
+            image = data['image']
+            question = ann['question'] 
+            choices = ann['choices'] 
+            choices_text = "\n".join(choices)  
+            question = (
+                f"{prompt}Question: {question}\n"
+                f"{choices_text}\n"
+                "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
+                "Answer:"
+            )
+            ann['question'] = question
+            ann['image'] = image
+
+            dataset.append(ann) 
 
     elif data_name == "vqa_1k":
         from data.vqav2 import VQADataset_json
-        dataset =VQADataset_json(prompt=prompt)
+        dataset = VQADataset_json(prompt=prompt)
         
     elif data_name == "vqa_5k":
         from data.vqav2 import VQADataset
@@ -139,7 +156,11 @@ def main(args):
             prompt = '\n' + system_message 
             
     dataset = load_dataset(args.dataset, prompt) 
-    processed_ids, current_item_id = skip_processed_idx(existing_keys=dataset[0].keys(), output_jsonl_path=output_jsonl_path)
+    try: 
+        processed_ids, current_item_id = skip_processed_idx(existing_keys=dataset[0].keys(), output_jsonl_path=output_jsonl_path)
+    except Exception as e: 
+        print(e)
+        processed_ids = set()
 
     if not args.resume: 
         processed_ids = set()
@@ -159,12 +180,7 @@ def main(args):
             if processed_ids is not None: 
                 if data[current_item_id] in processed_ids:
                     continue 
-
-            if args.dataset == 'spubench': 
-                prompt += 'Options:\n'
-                for item in ann['choices']: 
-                    prompt += f'{item}\n'  
-
+                
             if args.condition == '_inst_blind' and 'vqa' not in args.dataset:
                 prompt += system_message
 

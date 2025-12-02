@@ -2,7 +2,91 @@ import numpy as np
 import pandas as pd 
 import os 
 import re 
+import json
+import sys
+from collections import defaultdict
+from pathlib import Path
 
+
+datasets = [ "mmstar","spubench","vqa_1k",  "vqa_5k" ]
+conditions = ["_inst_blind", "" ,"_sys_inst_blind", "_blind"]
+modelnames = [
+    "Qwen/Qwen3-VL-2B-Instruct",
+    "OpenGVLab/InternVL3_5-8B",
+    "OpenGVLab/InternVL3_5-4B",
+    "OpenGVLab/InternVL3_5-2B",
+    "OpenGVLab/InternVL3_5-1B",
+    "llava-hf/llava-v1.6-mistral-7b-hf",
+    "OpenGVLab/InternVL3_5-8B",
+    "Qwen/Qwen3-VL-8B-Instruct",
+    "llava-hf/llava-v1.6-vicuna-7b-hf",
+    "Qwen/Qwen3-VL-4B-Instruct",
+    "llava-hf/llava-1.5-7b-hf"]
+
+def get_conditions(path, datasets=datasets, conditions=conditions, modelnames=modelnames):
+    filename = os.path.basename(path).replace(".jsonl", "")
+    tokens = filename.split("_")
+    short_models = {m.split("/")[-1]: m for m in modelnames}
+
+    model_short = None
+    model_full = None
+    for short, full in short_models.items():
+        if short in filename:
+            model_short = short
+            model_full = full
+            break
+
+    dataset = None
+    for d in datasets:
+        if d in tokens or d in filename:
+            dataset = d
+            break
+
+    condition = ""
+    for c in conditions:
+        if c != "" and c in filename:
+            condition = c
+            break
+
+    return model_full, dataset, condition
+
+def extract_mc_choice(output: str) -> str:
+    """
+    Extract the predicted answer (A, B, C, D, etc.) from model output.
+    Uses multiple heuristics to find the answer.
+    """
+    if not output:
+        return ""
+    
+    output = output.strip()
+    
+    # Pattern 1: Look for explicit answer statements
+    patterns = [
+        r"(?:the\s+)?(?:correct\s+)?answer\s+is[:\s]*([A-D])",
+        r"(?:the\s+)?(?:correct\s+)?answer[:\s]*([A-D])",
+        r"(?:option\s+)?([A-D])\s+is\s+(?:the\s+)?correct",
+        r"(?:I\s+)?(?:would\s+)?choose\s+(?:option\s+)?([A-D])",
+        r"(?:I\s+)?(?:would\s+)?select\s+(?:option\s+)?([A-D])",
+        r"^([A-D])(?:[:\.\)]|\s|$)",  # Answer at the start
+        r"\n([A-D])(?:[:\.\)]|\s|$)",  # Answer after newline
+        r"(?:Therefore|Thus|So|Hence)[,\s]+(?:the\s+)?(?:answer\s+is\s+)?(?:option\s+)?([A-D])",
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, output, re.IGNORECASE)
+        if match:
+            return match.group(1).upper()
+    
+    # Pattern 2: Look for the last standalone letter A-D
+    matches = re.findall(r'\b([A-D])\b', output)
+    if matches:
+        return matches[-1].upper()
+    
+    # Pattern 3: Check if output is just a single letter
+    if len(output) == 1 and output.upper() in 'ABCD':
+        return output.upper()
+    
+    return ""
 
 def translate_question(client, question):
     prompt = f"""
