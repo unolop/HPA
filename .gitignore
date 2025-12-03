@@ -1,11 +1,45 @@
+# Environment
 .env
 *.env
+
+# Python
 __pycache__/
-*.pyc
-*.pyo
-data/vqav2_val.json
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Outputs and temporary files
+outputs/temp/
+*.log
+wandb/
+checkpoint/
+
+# Model files
 *.pth
-models/lxmert
-models/unilm
-checkpoint 
-wandb 
+*.bin
+*.safetensors
+models/lxmert/
+models/unilm/
+
+# Data
+data/vqav2_val.json
+data/translation_cache.json
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db 

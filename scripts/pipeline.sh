@@ -1,48 +1,69 @@
-### PILOT 
-python 1_preprocess_answers.py \
-    --input_csvs /home/work/yuna/HPA/results/humans/pilot_cleaned/_all_pilot_cleaned.jsonl \
-    --questions_csv /home/work/yuna/HPA/eda/questions/s1.csv \
-    --output_dir /home/work/yuna/HPA/results/humans/pilot_cleaned/pilot
-python data/2_prepare_training_data.py --processed_dir /home/work/yuna/HPA/results/humans/pilot_cleaned/pilot --questions_csv /home/work/yuna/HPA/eda/questions/s1.csv --output_dir /home/work/yuna/HPA/data/pilot --with_instruction # --create_split  
+#!/bin/bash
+# Main pipeline for HPA project
+# Updated paths for reorganized directory structure
 
-### ACTUAL DATA 
+### PILOT
+python src/preprocessing/preprocess.py \
+    --input_csvs outputs/results/humans/pilot_cleaned/_all_pilot_cleaned.jsonl \
+    --questions_csv data/questions/s1.csv \
+    --output_dir outputs/results/humans/pilot_cleaned/pilot
+
+python src/preprocessing/prepare_training_data.py \
+    --processed_dir outputs/results/humans/pilot_cleaned/pilot \
+    --questions_csv data/questions/s1.csv \
+    --output_dir data/pilot \
+    --with_instruction # --create_split
+
+### ACTUAL DATA
 # # 1. Preprocess (with Korean translation caching)
-python data/1_preprocess_answers.py --input_csvs /home/work/yuna/HPA/results/humans/all_results_20251202_112501/*/*.csv \
-    --questions_csv /home/work/yuna/HPA/eda/questions/s1.csv --output_dir /home/work/yuna/HPA/results/processed \
+python src/preprocessing/preprocess.py \
+    --input_csvs outputs/results/humans/all_results_20251202_112501/*/*.csv \
+    --questions_csv data/questions/s1.csv \
+    --output_dir outputs/results/processed \
     --translate --cache_file data/translation_cache.json
 
 # 2. Create training data
-python data/2_prepare_training_data.py --responses_path /home/work/yuna/HPA/results/processed/s1_choice.json \
-    --questions_csv /home/work/yuna/HPA/eda/questions/s1.csv --output_dir /home/work/yuna/HPA/data/s1_mmstar \
-    --with_instruction # --create_split 
+python src/preprocessing/prepare_training_data.py \
+    --responses_path outputs/results/processed/s1_choice.json \
+    --questions_csv data/questions/s1.csv \
+    --output_dir data/s1_mmstar \
+    --with_instruction # --create_split
 
-python data/2_prepare_training_data.py --responses_path /home/work/yuna/HPA/results/processed/s1_text.json \
-    --questions_csv /home/work/yuna/HPA/eda/questions/s1.csv --output_dir /home/work/yuna/HPA/data/s1_vqa \
-    --with_instruction # --also_create_gt --images_dir /home/work/yuna/VLMEval/data/val2014  # --create_split  
-    
-# # # 3. Train (main method A5)
-# CUDA_VISIBLE_DEVICES=1 python 3_train_soft_supervised.py --ablation A4 \
-#     --model_path OpenGVLab/InternVL3_5-2B \
-#     --train_data /home/work/yuna/HPA/data/s1_mmstar/train_aggregated.jsonl \
-#     --output_dir yuna/HPA/checkpoint/A5 --run_name A5_InternVL3_5-2B_s1_mmstar
+python src/preprocessing/prepare_training_data.py \
+    --responses_path outputs/results/processed/s1_text.json \
+    --questions_csv data/questions/s1.csv \
+    --output_dir data/s1_vqa \
+    --with_instruction # --also_create_gt --images_dir /path/to/val2014  # --create_split
 
-# python 3_train_soft_supervised.py --ablation A4 \
+# # 3. Train (main method A5)
+# CUDA_VISIBLE_DEVICES=1 python src/training/train_supervised.py --ablation A5 \
 #     --model_path OpenGVLab/InternVL3_5-2B \
-#     --train_data /home/work/yuna/HPA/data/s1_vqa/train_aggregated.jsonl \
-#     --output_dir yuna/HPA/checkpoint/A5 --run_name A5_InternVL3_5-2B_s1_vqa
+#     --train_data data/s1_mmstar/train_aggregated.jsonl \
+#     --output_dir outputs/checkpoints/A5 --run_name A5_InternVL3_5-2B_s1_mmstar
+
+# python src/training/train_supervised.py --ablation A5 \
+#     --model_path OpenGVLab/InternVL3_5-2B \
+#     --train_data data/s1_vqa/train_aggregated.jsonl \
+#     --output_dir outputs/checkpoints/A5 --run_name A5_InternVL3_5-2B_s1_vqa
 
 # # 4. Evaluate
-# python 4_evaluate_models.py --model_path ./output/A5/checkpoint-* \
+# python src/evaluation/evaluate.py --model_path ./outputs/checkpoints/A5/checkpoint-* \
 #     --base_model_path OpenGVLab/InternVL3_5-2B \
-#     --test_data ./data/test.csv --output_dir ./eval/A5 --eval_blind
+#     --test_data ./data/test.csv --output_dir ./outputs/evaluation/A5 --eval_blind
 
 # # 5-6. Analyze
-# python 5_analyze_human_model.py --human_responses ./processed/individual_responses.json \
-#     --model_predictions ./eval/A5/eval_full.json --output_dir ./analysis
+# python src/analysis/analyze_human_model.py \
+#     --human_responses outputs/results/processed/individual_responses.json \
+#     --model_predictions outputs/evaluation/A5/eval_full.json \
+#     --output_dir outputs/analysis
 
-# python 6_analyze_calibration.py --human_responses ./processed/individual_responses.json \
-#     --gt_path ./data/questions.csv --output_dir ./calibration
- 
+# python src/analysis/analyze_calibration.py \
+#     --human_responses outputs/results/processed/individual_responses.json \
+#     --gt_path data/questions/s1.csv \
+#     --output_dir outputs/analysis
+
 # # 7. Figures
-# python 7_visualize_results.py --calibration_results ./calibration/*.json \
-#     --comparison_results ./analysis/*.json --output_dir ./figures
+# python src/analysis/visualize_results.py \
+#     --calibration_results outputs/analysis/*.json \
+#     --comparison_results outputs/analysis/*.json \
+#     --output_dir outputs/figures
