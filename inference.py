@@ -221,10 +221,6 @@ def main(args):
             data['output'] = output_text 
             print('Q:', prompt, 'Output:', data['output'], 'Ans:', output_jsonl_path)
 
-            if 'answer' in data.keys(): 
-                data['correct'] = output_text.strip().lower()[0] == data['answer'].strip().lower()
-                print(data['answer'], int(data['correct'])) 
-
             data.pop('image')
             f.write(json.dumps(data, ensure_ascii=False) + '\n')
             f.flush()  # 버퍼를 비워 파일에 즉시 쓰도록 강제

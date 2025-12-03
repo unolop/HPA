@@ -1,0 +1,558 @@
+#!/usr/bin/env python3
+"""
+score_results.py - Score existing inference JSONL outputs
+
+Works with your existing output format:
+{"index": 2, "question": "...", "answer": "D", "output": "A: Hanging Posters", ...}
+
+Computes:
+- MC accuracy (extracts A/B/C/D from output)
+- VQA accuracy (for open-ended)
+- Embedding similarity
+- Per-category breakdown
+
+Usage:
+    # Score single file
+    python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl
+
+    # Score all files in directory
+    python score_results.py --input_dir /home/work/yuna/HPA/results/swift/ --output_dir /home/work/yuna/HPA/results/swift/scored/ 
+
+    # With embedding similarity
+    python score_results.py --input results/*.jsonl --with_similarity
+"""
+
+import os
+import re
+import json
+import argparse
+import numpy as np
+import pandas as pd
+from pathlib import Path
+from collections import defaultdict
+from typing import Dict, List, Optional, Tuple
+from glob import glob
+
+
+# =============================================================================
+# Constants
+# =============================================================================
+
+DATASETS = ["mmstar", "spubench", "vqa_1k", "vqa_5k"]
+CONDITIONS = ["_inst_blind", "", "_sys_inst_blind", "_blind"]
+MODELNAMES = [
+    "Qwen/Qwen3-VL-2B-Instruct",
+    "OpenGVLab/InternVL3_5-8B",
+    "OpenGVLab/InternVL3_5-4B",
+    "OpenGVLab/InternVL3_5-2B",
+    "OpenGVLab/InternVL3_5-1B",
+    "llava-hf/llava-v1.6-mistral-7b-hf",
+    "Qwen/Qwen3-VL-8B-Instruct",
+    "llava-hf/llava-v1.6-vicuna-7b-hf",
+    "Qwen/Qwen3-VL-4B-Instruct",
+    "llava-hf/llava-1.5-7b-hf",
+]
+
+DATASET_TYPE = {
+    'mmstar': 'multi-choice',
+    'spubench': 'multi-choice',
+    'vqa_1k': 'open-ended',
+    'vqa_5k': 'open-ended',
+}
+
+VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
+
+
+# =============================================================================
+# VQA Answer Mapping
+# =============================================================================
+
+class VQAAnswerMapper:
+    """
+    Maps question_id to list of ground truth answers from VQA annotations.
+    
+    Usage:
+        mapper = VQAAnswerMapper()
+        answers = mapper.get_answers(123456)  # Returns list of 10 annotator answers
+    """
+    
+    def __init__(self, annotations_path: str = VQA_ANNOTATIONS_PATH):
+        self.annotations_path = annotations_path
+        self._qid_to_answers = None  # Lazy load
+    
+    def _load(self):
+        """Load annotations and build lookup dict."""
+        if self._qid_to_answers is not None:
+            return
+        
+        print(f"📂 Loading VQA annotations from {self.annotations_path}...")
+        
+        with open(self.annotations_path, 'r') as f:
+            data = json.load(f)
+        
+        annotations = data.get('annotations', data)
+        
+        # Build qid -> answers lookup
+        self._qid_to_answers = {}
+        for ann in annotations:
+            qid = int(ann['question_id'])
+            # Extract answer strings from annotator responses
+            answers = [a['answer'] for a in ann['answers']]
+            self._qid_to_answers[qid] = answers
+        
+        print(f"   ✓ Loaded {len(self._qid_to_answers)} question annotations")
+    
+    def get_answers(self, question_id: int) -> List[str]:
+        """
+        Get list of ground truth answers for a question.
+        
+        Args:
+            question_id: VQA question ID
+            
+        Returns:
+            List of 10 annotator answers (strings)
+        """
+        self._load()
+        qid = int(question_id)
+        return self._qid_to_answers.get(qid, [])
+    
+    def get_majority_answer(self, question_id: int) -> str:
+        """Get most common answer for a question."""
+        answers = self.get_answers(question_id)
+        if not answers:
+            return ""
+        from collections import Counter
+        return Counter(answers).most_common(1)[0][0]
+    
+    def has_question(self, question_id: int) -> bool:
+        """Check if question_id exists in annotations."""
+        self._load()
+        return int(question_id) in self._qid_to_answers
+
+
+# Global mapper instance (lazy loaded)
+_vqa_mapper = None
+
+def get_vqa_mapper() -> VQAAnswerMapper:
+    """Get or create global VQA mapper."""
+    global _vqa_mapper
+    if _vqa_mapper is None:
+        _vqa_mapper = VQAAnswerMapper()
+    return _vqa_mapper
+
+
+# =============================================================================
+# Parsing Functions (from your processor.py)
+# =============================================================================
+
+def get_conditions(path, datasets=DATASETS, conditions=CONDITIONS, modelnames=MODELNAMES):
+    """Extract model, dataset, condition from filename."""
+    filename = os.path.basename(path).replace(".jsonl", "")
+    tokens = filename.split("_")
+    short_models = {m.split("/")[-1]: m for m in modelnames}
+
+    model_short = None
+    model_full = None
+    for short, full in short_models.items():
+        if short in filename:
+            model_short = short
+            model_full = full
+            break
+
+    dataset = None
+    for d in datasets:
+        if d in tokens or d in filename:
+            dataset = d
+            break
+
+    condition = ""
+    for c in conditions:
+        if c != "" and c in filename:
+            condition = c
+            break
+
+    return model_full, dataset, condition
+
+
+def extract_mc_choice(output: str) -> str:
+    """Extract the predicted answer (A, B, C, D) from model output."""
+    if not output:
+        return ""
+    
+    output = output.strip()
+    
+    # Pattern 1: Look for explicit answer statements
+    patterns = [
+        r"(?:the\s+)?(?:correct\s+)?answer\s+is[:\s]*([A-D])",
+        r"(?:the\s+)?(?:correct\s+)?answer[:\s]*([A-D])",
+        r"(?:option\s+)?([A-D])\s+is\s+(?:the\s+)?correct",
+        r"(?:I\s+)?(?:would\s+)?choose\s+(?:option\s+)?([A-D])",
+        r"(?:I\s+)?(?:would\s+)?select\s+(?:option\s+)?([A-D])",
+        r"^([A-D])(?:[:\.\)]|\s|$)",  # Answer at the start
+        r"\n([A-D])(?:[:\.\)]|\s|$)",  # Answer after newline
+        r"(?:Therefore|Thus|So|Hence)[,\s]+(?:the\s+)?(?:answer\s+is\s+)?(?:option\s+)?([A-D])",
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, output, re.IGNORECASE)
+        if match:
+            return match.group(1).upper()
+    
+    # Pattern 2: Look for the last standalone letter A-D
+    matches = re.findall(r'\b([A-D])\b', output)
+    if matches:
+        return matches[-1].upper()
+    
+    # Pattern 3: Check if output is just a single letter
+    if len(output) == 1 and output.upper() in 'ABCD':
+        return output.upper()
+    
+    # Pattern 4: Check format like "A: Hanging Posters"
+    match = re.match(r'^([A-D]):', output)
+    if match:
+        return match.group(1).upper()
+    
+    return ""
+
+
+def normalize_answer(answer: str) -> str:
+    """Normalize answer for comparison (open-ended)."""
+    if not answer:
+        return ""
+    answer = str(answer).lower().strip()
+    # Remove articles
+    for article in ['a ', 'an ', 'the ']:
+        if answer.startswith(article):
+            answer = answer[len(article):]
+    # Remove punctuation
+    import string
+    answer = answer.translate(str.maketrans('', '', string.punctuation))
+    return ' '.join(answer.split()).strip()
+
+
+# =============================================================================
+# Scoring Functions
+# =============================================================================
+
+def mc_accuracy(gt: str, pred: str) -> bool:
+    """Multiple choice accuracy."""
+    gt_letter = gt.strip().upper()[0] if gt else ""
+    pred_letter = extract_mc_choice(pred)
+    return gt_letter == pred_letter
+
+
+def vqa_accuracy(gt_answers: List[str], pred: str) -> float:
+    """VQA accuracy: min(1, #matches / 3)."""
+    pred = normalize_answer(pred)
+    matches = sum([pred == normalize_answer(ans) for ans in gt_answers])
+    return min(1.0, matches / 3.0)
+
+
+def exact_match(gt: str, pred: str) -> bool:
+    """Exact match after normalization."""
+    return normalize_answer(pred) == normalize_answer(gt)
+
+
+def get_encoder():
+    """Lazy load sentence transformer."""
+    try:
+        from sentence_transformers import SentenceTransformer
+        return SentenceTransformer("all-MiniLM-L6-v2").to('cuda')
+    except:
+        return None
+
+
+def answer_similarity(gt: str, pred: str, encoder) -> float:
+    """Compute embedding similarity."""
+    if encoder is None:
+        return 0.0
+    try:
+        pred = pred.strip().lower()
+        gt = str(gt).strip().lower()
+        emb = encoder.encode([pred, gt])
+        similarities = encoder.similarity(emb, emb)
+        return float(similarities[1, 0])
+    except:
+        return 0.0
+
+
+# =============================================================================
+# Main Scoring
+# =============================================================================
+
+def score_file(
+    input_path: str,
+    with_similarity: bool = False,
+    encoder = None,
+) -> Dict:
+    """
+    Score a single JSONL file.
+    
+    Returns dict with accuracy, per-category breakdown, etc.
+    """
+    # Parse filename
+    model_full, dataset, condition = get_conditions(input_path)
+    dataset_type = DATASET_TYPE.get(dataset, 'multi-choice')
+    
+    print(f"\n{'='*60}")
+    print(f"📊 Scoring: {os.path.basename(input_path)}")
+    print(f"   Model: {model_full}")
+    print(f"   Dataset: {dataset} ({dataset_type})")
+    print(f"   Condition: {condition or '(none)'}")
+    print(f"{'='*60}")
+    
+    # Load VQA mapper for open-ended datasets
+    vqa_mapper = None
+    if dataset_type == 'open-ended':
+        vqa_mapper = get_vqa_mapper()
+    
+    # Load data
+    data = []
+    with open(input_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            if line.strip():
+                data.append(json.loads(line))
+    
+    if not data:
+        print("   ⚠️ Empty file!")
+        return {}
+    
+    # Score each example
+    correct = 0
+    total = 0
+    similarities = []
+    by_category = defaultdict(lambda: {'correct': 0, 'total': 0, 'similarities': []})
+    
+    for item in data:
+        output = item.get('output', '')
+        category = item.get('category', item.get('l2_category', item.get('question_type', 'Unknown')))
+        
+        # Get ground truth answers
+        if dataset_type == 'multi-choice':
+            gt = item.get('answer', '')
+            is_correct = mc_accuracy(gt, output)
+            gt_for_sim = gt
+        else:
+            # Open-ended: get all annotator answers
+            qid = item.get('question_id', item.get('qid', item.get('index', None)))
+            
+            if vqa_mapper and qid is not None:
+                all_answers = vqa_mapper.get_answers(qid)
+            else:
+                # Fallback to item's answers field
+                all_answers = item.get('answers', [item.get('answer', '')])
+                if isinstance(all_answers, str):
+                    all_answers = [all_answers]
+            
+            if all_answers:
+                acc = vqa_accuracy(all_answers, output)
+                is_correct = acc >= 0.5  # Binary for counting
+                gt_for_sim = all_answers[0]  # Use first for similarity
+            else:
+                gt = item.get('answer', '')
+                is_correct = exact_match(gt, output)
+                gt_for_sim = gt
+        
+        # Update counts
+        correct += int(is_correct)
+        total += 1
+        by_category[category]['correct'] += int(is_correct)
+        by_category[category]['total'] += 1
+        
+        # Similarity
+        if with_similarity and encoder:
+            sim = answer_similarity(gt_for_sim, output, encoder)
+            similarities.append(sim)
+            by_category[category]['similarities'].append(sim)
+    
+    # Compute metrics
+    accuracy = correct / total if total > 0 else 0
+    
+    results = {
+        'file': os.path.basename(input_path),
+        'model': model_full,
+        'dataset': dataset,
+        'condition': condition,
+        'accuracy': accuracy,
+        'correct': correct,
+        'total': total,
+        'by_category': {},
+    }
+    
+    if similarities:
+        results['embedding_similarity'] = np.mean(similarities)
+    
+    # Per-category
+    for cat, cat_data in by_category.items():
+        cat_acc = cat_data['correct'] / cat_data['total'] if cat_data['total'] > 0 else 0
+        results['by_category'][cat] = {
+            'accuracy': cat_acc,
+            'correct': cat_data['correct'],
+            'total': cat_data['total'],
+        }
+        if cat_data['similarities']:
+            results['by_category'][cat]['similarity'] = np.mean(cat_data['similarities'])
+    
+    # Print results
+    print(f"\n📈 Results:")
+    print(f"   Accuracy: {accuracy:.4f} ({correct}/{total})")
+    if 'embedding_similarity' in results:
+        print(f"   Embedding Similarity: {results['embedding_similarity']:.4f}")
+    
+    print(f"\n   Per-category:")
+    for cat, cat_data in sorted(results['by_category'].items(), key=lambda x: -x[1]['accuracy']):
+        print(f"      {cat}: {cat_data['accuracy']:.3f} ({cat_data['correct']}/{cat_data['total']})")
+    
+    return results
+
+
+def score_directory(
+    input_dir: str,
+    output_dir: str = None,
+    pattern: str = "*.jsonl",
+    with_similarity: bool = False,
+) -> pd.DataFrame:
+    """
+    Score all JSONL files in directory.
+    
+    Returns DataFrame with all results.
+    """
+    files = sorted(glob(os.path.join(input_dir, pattern)))
+    
+    if not files:
+        print(f"❌ No files matching {pattern} in {input_dir}")
+        return pd.DataFrame()
+    
+    print(f"Found {len(files)} files to score")
+    
+    # Load encoder once
+    encoder = None
+    if with_similarity:
+        encoder = get_encoder()
+    
+    # Score all files
+    all_results = []
+    for f in files:
+        result = score_file(f, with_similarity, encoder)
+        if result:
+            all_results.append(result)
+    
+    # Create summary DataFrame
+    df = pd.DataFrame(all_results)
+    
+    # Pivot for easy comparison
+    if len(all_results) > 0:
+        print("\n" + "="*60)
+        print("📊 SUMMARY")
+        print("="*60)
+        
+        # Group by model and condition
+        summary = df.groupby(['model', 'dataset', 'condition'])['accuracy'].first().unstack(fill_value=0)
+        print(summary.to_string())
+    
+    # Save if output_dir provided
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Save detailed results
+        results_path = os.path.join(output_dir, 'scored_results.json')
+        with open(results_path, 'w') as f:
+            json.dump(all_results, f, indent=2)
+        print(f"\n✓ Detailed results: {results_path}")
+        
+        # Save summary CSV
+        csv_path = os.path.join(output_dir, 'summary.csv')
+        df.to_csv(csv_path, index=False)
+        print(f"✓ Summary CSV: {csv_path}")
+    
+    return df
+
+
+# =============================================================================
+# CLI
+# =============================================================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Score inference JSONL outputs",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Score single file
+  python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl
+
+  # Score all files in directory
+  python score_results.py --input_dir results/ --output_dir scored/
+
+  # Multiple files with glob
+  python score_results.py --input "results/*mmstar*.jsonl"
+
+  # With embedding similarity
+  python score_results.py --input results/*.jsonl --with_similarity
+        """
+    )
+    
+    parser.add_argument("--input", type=str, nargs='*', default=None,
+                        help="Input JSONL file(s)")
+    parser.add_argument("--input_dir", type=str, default=None,
+                        help="Directory with JSONL files")
+    parser.add_argument("--output_dir", type=str, default=None,
+                        help="Output directory for results")
+    parser.add_argument("--with_similarity", action="store_true",
+                        help="Compute embedding similarity")
+    parser.add_argument("--pattern", type=str, default="*.jsonl",
+                        help="File pattern for input_dir")
+    
+    args = parser.parse_args()
+    
+    # Load encoder if needed
+    encoder = None
+    if args.with_similarity:
+        encoder = get_encoder()
+    
+    if args.input_dir:
+        # Score directory
+        score_directory(
+            args.input_dir,
+            args.output_dir,
+            args.pattern,
+            args.with_similarity,
+        )
+    
+    elif args.input:
+        # Score individual files
+        all_results = []
+        for input_path in args.input:
+            # Handle glob patterns
+            if '*' in input_path:
+                files = glob(input_path)
+            else:
+                files = [input_path]
+            
+            for f in files:
+                result = score_file(f, args.with_similarity, encoder)
+                if result:
+                    all_results.append(result)
+        
+        # Print summary if multiple files
+        if len(all_results) > 1:
+            print("\n" + "="*60)
+            print("📊 SUMMARY")
+            print("="*60)
+            df = pd.DataFrame(all_results)[['file', 'accuracy', 'correct', 'total']]
+            print(df.to_string(index=False))
+        
+        # Save if output_dir
+        if args.output_dir:
+            os.makedirs(args.output_dir, exist_ok=True)
+            results_path = os.path.join(args.output_dir, 'scored_results.json')
+            with open(results_path, 'w') as f:
+                json.dump(all_results, f, indent=2)
+            print(f"\n✓ Saved: {results_path}")
+    
+    else:
+        parser.print_help()
+
+
+if __name__ == "__main__":
+    main()
