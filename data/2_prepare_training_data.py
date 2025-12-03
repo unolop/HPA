@@ -26,7 +26,7 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 from PIL import Image
 
-vqavalq = "/home/work/yuna/VLMEval/data/v2_OpenEnded_mscoco_val2014_questions.json"
+
 # =============================================================================
 # Black Image Creation
 # =============================================================================
@@ -124,13 +124,31 @@ def create_training_jsonl(
     instruction_prefix: str = "",
     min_confidence: float = None,
     min_responses: int = 1,
-) -> int: 
+) -> int:
+    """
+    Create training JSONL file with MC formatting.
+    
+    Format:
+    {
+        "images": ["black_image.png"],
+        "conversations": [
+            {"role": "user", "content": "<image>\n{instruction}{question}"},
+            {"role": "assistant", "content": "{answer}"}
+        ],
+        "confidence": 4.2,
+        "qid": "664",
+        ...
+    }
+    """
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     examples = []
     filtered_conf = 0
     filtered_resp = 0
+    
+    # Answer number to letter mapping
+    num_to_letter = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'}
     
     for item in data:
         # Apply filters
@@ -146,16 +164,48 @@ def create_training_jsonl(
         if not question:
             continue
         
+        answer = item['answer']
+        options = item.get('options', None)
+        
+        # Format question with options if available
+        if options:
+            if isinstance(options, str):
+                try:
+                    import ast
+                    options = ast.literal_eval(options)
+                except:
+                    options = None
+            
+            if options and isinstance(options, list):
+                choices_text = "\n".join([f"{chr(65+i)}. {opt}" for i, opt in enumerate(options)])
+                formatted_question = (
+                    f"{instruction_prefix}Question: {question}\n"
+                    f"{choices_text}\n"
+                    "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
+                    "Answer:"
+                )
+            else:
+                formatted_question = f"{instruction_prefix}{question}"
+        else:
+            formatted_question = f"{instruction_prefix}{question}"
+        
+        # Convert numeric answer (1-4) to letter (A-D)
+        formatted_answer = str(answer)
+        if formatted_answer in num_to_letter:
+            formatted_answer = num_to_letter[formatted_answer]
+        elif formatted_answer.strip() in num_to_letter:
+            formatted_answer = num_to_letter[formatted_answer.strip()]
+        
         example = {
             "images": [black_image_path],
             "conversations": [
                 {
                     "role": "user",
-                    "content": f"<image>\n{instruction_prefix}{question}"
+                    "content": f"<image>\n{formatted_question}"
                 },
                 {
                     "role": "assistant",
-                    "content": item['answer']
+                    "content": formatted_answer
                 }
             ],
             "confidence": item['confidence'],
@@ -190,29 +240,65 @@ def create_individual_jsonl(
     Create training JSONL from individual (non-aggregated) responses.
     
     Each response becomes one training example.
+    Handles multiple choice formatting with options.
     """
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     examples = []
     
+    # Answer number to letter mapping
+    num_to_letter = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'}
+    
     for r in responses:
         question = r.get('question', '')
         answer = r.get('answer_normalized', r.get('answer', ''))
+        options = r.get('options', None)
         
         if not question or not answer:
             continue
+        
+        # Format question with options if available
+        formatted_question = question
+        if options:
+            if isinstance(options, str):
+                # Parse options string like "['A', 'B', 'C', 'D']"
+                try:
+                    import ast
+                    options = ast.literal_eval(options)
+                except:
+                    options = None
+            
+            if options and isinstance(options, list):
+                choices_text = "\n".join([f"{chr(65+i)}. {opt}" for i, opt in enumerate(options)])
+                formatted_question = (
+                    f"{instruction_prefix}Question: {question}\n"
+                    f"{choices_text}\n"
+                    "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
+                    "Answer:"
+                )
+            else:
+                formatted_question = f"{instruction_prefix}{question}"
+        else:
+            formatted_question = f"{instruction_prefix}{question}"
+        
+        # Convert numeric answer (1-4) to letter (A-D)
+        formatted_answer = answer
+        if answer in num_to_letter:
+            formatted_answer = num_to_letter[answer]
+        elif answer.strip() in num_to_letter:
+            formatted_answer = num_to_letter[answer.strip()]
         
         example = {
             "images": [black_image_path],
             "conversations": [
                 {
                     "role": "user",
-                    "content": f"<image>\n{instruction_prefix}{question}"
+                    "content": f"<image>\n{formatted_question}"
                 },
                 {
                     "role": "assistant",
-                    "content": answer
+                    "content": formatted_answer
                 }
             ],
             "confidence": r.get('confidence', 3),
@@ -315,21 +401,39 @@ def create_gt_training_data(
     
     # Load questions with GT answers
     questions = []
-
-    with open(vqavalq, 'r', encoding='utf-8') as f:
-        data = json.load(f)
     
-    items = data if isinstance(data, list) else data.get('questions', [])
-    for item in items:
-        qid = str(item.get('qid', item.get('question_id', '')))
-        questions.append({
-            'qid': qid,
-            'question': item.get('question', item.get('question_en', '')),
-            'answer': item.get('answer', ''),
-            'image_id': item.get('image_id', ''),
-            'category': item.get('category', ''),
-        })
-
+    if questions_path.endswith('.csv'):
+        with open(questions_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                qid = str(row.get('qid', row.get('question_id', '')))
+                question = row.get('question_en', row.get('question', ''))
+                answer = row.get('answer', row.get('multiple_choice_answer', ''))
+                image_id = row.get('image_id', '')
+                
+                if question and answer:
+                    questions.append({
+                        'qid': qid,
+                        'question': question,
+                        'answer': answer,
+                        'image_id': image_id,
+                        'category': row.get('category', ''),
+                    })
+    else:
+        with open(questions_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        items = data if isinstance(data, list) else data.get('questions', [])
+        for item in items:
+            qid = str(item.get('qid', item.get('question_id', '')))
+            questions.append({
+                'qid': qid,
+                'question': item.get('question', item.get('question_en', '')),
+                'answer': item.get('answer', ''),
+                'image_id': item.get('image_id', ''),
+                'category': item.get('category', ''),
+            })
+    
     # Create training examples
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -382,7 +486,7 @@ def create_gt_training_data(
 # =============================================================================
 
 def prepare_training_data(
-    responses_path: str,
+    processed_dir: str,
     questions_path: str,
     output_dir: str,
     with_instruction: bool = True,
@@ -405,28 +509,40 @@ def prepare_training_data(
     print("=" * 60)
     
     # Create black image
-    black_image_path = "/home/work/yuna/HPA/data/blank_224.png" # os.path.join(output_dir, 'black_image.png')
-    # create_black_image(black_image_path) 
+    black_image_path = "/home/work/yuna/HPA/data/blank_224.png"
+    # create_black_image(black_image_path)
     
     # Instruction prefix
     instruction = ""
     if with_instruction:
         instruction = "Note: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
     
-    # Load preprocessed responses
-    # responses_path = os.path.join(processed_dir, 'individual_responses.json')
+    # Load preprocessed responses (handle both JSON and JSONL)
+    responses_path = processed_dir
+    if os.path.isdir(processed_dir):
+        responses_path = os.path.join(processed_dir, 'individual_responses.json')
+    
     if not os.path.exists(responses_path):
         print(f"❌ Not found: {responses_path}")
         print("   Run preprocess_answers.py first!")
         return
     
-    with open(responses_path, 'r', encoding='utf-8') as f:
-        responses = json.load(f)
+    # Load based on file extension
+    responses = []
+    if responses_path.endswith('.jsonl'):
+        with open(responses_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                if line.strip():
+                    responses.append(json.loads(line))
+    else:
+        with open(responses_path, 'r', encoding='utf-8') as f:
+            responses = json.load(f)
     
     print(f"✓ Loaded {len(responses)} preprocessed responses")
     
     # Create training data
     if aggregate:
+        # Aggregated version
         aggregated = aggregate_responses(responses, by_cluster=by_cluster)
         
         jsonl_path = os.path.join(output_dir, 'train_aggregated.jsonl')
@@ -500,6 +616,7 @@ def main():
         description="Prepare training data from preprocessed responses",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
+        
 Examples:
   # Basic usage (aggregated + split)
   python prepare_training_data.py \\
@@ -517,7 +634,7 @@ Examples:
         """
     )
     
-    parser.add_argument("--responses_path", type=str, required=True,
+    parser.add_argument("--processed_dir", type=str, required=True,
                         help="Directory with preprocessed data (from preprocess_answers.py)")
     parser.add_argument("--questions_csv", type=str, required=True,
                         help="Questions file (for GT data)")
@@ -549,8 +666,7 @@ Examples:
     args = parser.parse_args()
     
     prepare_training_data(
-        # processed_dir=args.processed_dir,
-        responses_path=args.responses_path, 
+        processed_dir=args.processed_dir,
         questions_path=args.questions_csv,
         output_dir=args.output_dir,
         with_instruction=args.with_instruction,

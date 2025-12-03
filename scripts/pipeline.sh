@@ -2,8 +2,8 @@
 python 1_preprocess_answers.py \
     --input_csvs /home/work/yuna/HPA/results/humans/pilot_cleaned/_all_pilot_cleaned.jsonl \
     --questions_csv /home/work/yuna/HPA/eda/questions/s1.csv \
-    --output_dir /home/work/yuna/HPA/data/pilot
-python data/2_prepare_training_data.py --responses_path /home/work/yuna/HPA/results/humans/pilot_cleaned/_all_pilot_cleaned.jsonl --questions_csv /home/work/yuna/HPA/eda/questions/s1.csv --output_dir /home/work/yuna/HPA/data/pilot --with_instruction # --create_split  
+    --output_dir /home/work/yuna/HPA/results/humans/pilot_cleaned/pilot
+python data/2_prepare_training_data.py --processed_dir /home/work/yuna/HPA/results/humans/pilot_cleaned/pilot --questions_csv /home/work/yuna/HPA/eda/questions/s1.csv --output_dir /home/work/yuna/HPA/data/pilot --with_instruction # --create_split  
 
 ### ACTUAL DATA 
 # # 1. Preprocess (with Korean translation caching)
