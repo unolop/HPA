@@ -151,6 +151,39 @@ def answers_match(ans1: str, ans2: str) -> bool:
     return normalize_answer(ans1) == normalize_answer(ans2)
 
 
+def extract_answer_by_type(answer: str, answer_type: str) -> str:
+    """Extract answer based on question type.
+
+    For multiple choice questions (answer_type='choice'), extracts the first
+    letter A, B, C, or D from the answer string.
+    For other types, returns the full answer.
+    """
+    if answer_type == 'choice':
+        import re
+        answer_str = str(answer).upper()
+
+        # Try to find pattern like "A:", "B:", etc. (answer choice with colon)
+        match = re.search(r'\b([ABCD]):', answer_str)
+        if match:
+            return match.group(1)
+
+        # Try to find standalone letter at word boundary
+        match = re.search(r'\b([ABCD])\b', answer_str)
+        if match:
+            return match.group(1)
+
+        # Fallback: find first occurrence of A, B, C, or D
+        for char in answer_str:
+            if char in ['A', 'B', 'C', 'D']:
+                return char
+
+        # Last resort: first character
+        return answer_str[0] if answer_str else ''
+    else:
+        # For free-form answers, return the full text
+        return str(answer)
+
+
 # =============================================================================
 # Analysis Functions
 # =============================================================================
@@ -166,19 +199,25 @@ def compute_agreement_matrix(human_data: Dict, model_data: Dict) -> Dict:
         hm = human_data[qid]
         m = model_data[qid]
         
-        ### TODO: FOR VQA FREE ANSWER TYPE, VQA ACCURACY AND EMBEDDING SCORE SHOULD BE CALCULATED INSTEAD 
+        ### TODO: FOR VQA FREE ANSWER TYPE, VQA ACCURACY AND EMBEDDING SCORE SHOULD BE CALCULATED INSTEAD
         gt = m.get('ground_truth', '')
-        # gt = [g['answer'] for g in gt] ### TODO: IF GT IS A LIST OF DICTIONARIES (FOR VQA) 
+        # gt = [g['answer'] for g in gt] ### TODO: IF GT IS A LIST OF DICTIONARIES (FOR VQA)
         h_correct = []
         m_correct = []
-        
-        for g in gt: 
-            ### TODO !!! CHECK THE ANSWER TYPE OF THE QUESTION, GET THE FIRST LETTER FOR MCQ 
-            m_correct.append(answers_match(m['prediction'][0], g)) # for the MC Question of the model  
-            for h in hm: 
-                try: 
+
+        # Get answer_type from human responses (all responses for same question have same type)
+        answer_type = hm[0].get('answer_type', '') if isinstance(hm, list) and len(hm) > 0 else ''
+
+        for g in gt:
+            # Extract model prediction based on answer type (MCQ vs free-form)
+            model_answer = extract_answer_by_type(m['prediction'], answer_type)
+            m_correct.append(answers_match(model_answer, g))
+
+            for h in hm:
+                try:
+                    # Human answers are already processed in load_human_responses
                     h_correct.append(answers_match(h, g))
-                except Exception as e: 
+                except Exception as e:
                     breakpoint()
 
         h_correct = np.mean(h_correct) 
@@ -232,16 +271,20 @@ def compute_correlations(human_data: Dict, model_data: Dict) -> Dict:
         hm, md = human_data[qid], model_data[qid]
         gt = md.get('ground_truth', '')
 
-        ### EDITED: 
+        ### EDITED:
         h_correct = []
         m_correct = []
+
+        # Get answer_type from human responses
+        answer_type = hm[0].get('answer_type', '') if isinstance(hm, list) and len(hm) > 0 else ''
 
         # HUMAN: % correct
         human_correct_rate = np.mean([1 if answers_match(h, gt) else 0 for h in hm])
         h_correct.append(human_correct_rate)
 
         # MODEL: 1 or 0
-        model_is_correct = 1 if answers_match(md['prediction'][0], gt) else 0
+        model_answer = extract_answer_by_type(md['prediction'], answer_type)
+        model_is_correct = 1 if answers_match(model_answer, gt) else 0
         m_correct.append(model_is_correct)
 
         # h_conf.append(h['mean_confidence'])
