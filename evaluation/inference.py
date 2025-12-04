@@ -1,13 +1,9 @@
-import os 
 import re 
-import csv
 from tqdm import tqdm
-from typing import List, Union
-from PIL import Image
 import json
 import numpy as np 
 import torch
-import random 
+from utils import skip_processed_idx  
 
 system_message = "Note: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
 
@@ -53,7 +49,7 @@ def load_dataset(data_name:str, prompt:str=''):
     elif data_name == "spubench":
         from datasets import load_dataset 
         
-        with open('/home/work/yuna/HPA/data/annotation.json', 'r', encoding='utf-8') as f: 
+        with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f: 
             annot = json.load(f)
 
         dataset = [] 
@@ -91,38 +87,7 @@ def load_dataset(data_name:str, prompt:str=''):
 
     return dataset 
 
-def skip_processed_idx(existing_keys, output_jsonl_path): 
-    id_keys = ['idx', 'qid', 'question_id', 'index']
-    current_item_id = None
-    processed_ids=set()
-
-    for key in id_keys:
-        if key in existing_keys:
-            current_item_id = key
-            break
-    
-    create_new_key = False 
-    if current_item_id is None : 
-        current_item_id = 'pid'
-
-    if os.path.exists(output_jsonl_path):
-        print(f"'{output_jsonl_path}' exists.")
-        with open(output_jsonl_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line:  # Skip empty lines
-                    try:
-                        item = json.loads(line)
-                        # Assuming the ID field is called 'qid'
-                        processed_ids.add(item[current_item_id])
-                    except json.JSONDecodeError:
-                        continue  # Skip malformed lines
-        print(f"총 {len(processed_ids)}개의 항목을 건너뜁니다.")
-    return processed_ids, current_item_id
-
 def main(args):
-
-    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
 
     from swift.llm import (
         PtEngine, RequestConfig, safe_snapshot_download, get_model_tokenizer, get_template, InferRequest
@@ -238,7 +203,6 @@ if __name__ == "__main__":
     parser.add_argument("--dataset", type=str, default="mmstar", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
     parser.add_argument('--savedir', type=str, default="/home/work/yuna/HPA/results/swift", help='Save directory of inference') 
-    parser.add_argument("--gpu", type=str, default="0")
     parser.add_argument("--condition", type=str, default='')
     
     args = parser.parse_args() 

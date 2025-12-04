@@ -2,8 +2,8 @@
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
 GPU=0
-DATASET_PATHS=("mmstar" "spubench" ) # "vqa_1k"  "vqa_5k" 
-CONDITION_LIST=("_blind" ) #  "_sys_inst_blind" "_inst_blind" "" 
+DATASET_PATHS=("spubench" "mmstar" ) # "vqa_1k"  "vqa_5k" 
+CONDITION_LIST=("") #  "_sys_inst_blind" "_inst_blind" "_blind"  
 BASE_MODEL=(
     "Qwen/Qwen3-VL-2B-Instruct"
     # "llava-hf/llava-v1.6-vicuna-7b-hf"
@@ -28,11 +28,10 @@ for BASE_MODEL in "${BASE_MODEL[@]}"; do
     for VAL_DATASET in "${DATASET_PATHS[@]}"; do 
         for CONDITION in "${CONDITION_LIST[@]}"; do 
 
-            python /home/work/yuna/HPA/inference.py \
+            CUDA_VISIBLE_DEVICES=${GPU} python /home/work/yuna/HPA/evaluation/inference.py \
                 --model "${BASE_MODEL}" \
                 --dataset "${VAL_DATASET}" \
                 --condition "${CONDITION}" \
-                --gpu "${GPU}" \
                 --resume
         done 
     done

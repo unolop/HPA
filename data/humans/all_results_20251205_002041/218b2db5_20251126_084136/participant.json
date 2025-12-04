@@ -1,0 +1,16 @@
+{
+  "participant_id": "218b2db5-215e-45c0-b306-4f93e36acf78",
+  "name": "송혜은",
+  "age": "26",
+  "gender": "female",
+  "email": "sho656@naver.com",
+  "session": "s1",
+  "experiment_start_time": "2025-11-26T08:41:03.390452",
+  "experiment_end_time": "2025-11-26T09:26:16.809734",
+  "total_questions": 641,
+  "current_question": 641,
+  "is_completed": true,
+  "total_time_spent_ms": 2587119,
+  "save_timestamp": "20251126_092616",
+  "result_folder": "218b2db5_20251126_084136"
+}

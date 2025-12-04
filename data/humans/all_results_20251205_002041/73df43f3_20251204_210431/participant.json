@@ -1,0 +1,16 @@
+{
+  "participant_id": "73df43f3-7066-48ea-916e-54c9328363ed",
+  "name": "이가원",
+  "age": "29",
+  "gender": "female",
+  "email": "gabong3352@naver.com",
+  "session": "s1",
+  "experiment_start_time": "2025-12-04T21:01:46.679333",
+  "experiment_end_time": "2025-12-04T22:26:18.343118",
+  "total_questions": 641,
+  "current_question": 641,
+  "is_completed": true,
+  "total_time_spent_ms": 4853259,
+  "save_timestamp": "20251204_222618",
+  "result_folder": "73df43f3_20251204_210431"
+}
