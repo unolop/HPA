@@ -12,7 +12,7 @@ qid,category,l2_category,question_en,options,answer_type,question_kr,answer,scor
 768,logical reasoning,common reasoning,"In the picture, which direction is the baby facing?
  ","A: left 왼쪽, B: right 오른쪽, C: up 위, D: down 아래",choice,사진에서 아기가 어느 방향을 향하고 있나요?,,,,,,,
 802,logical reasoning,common reasoning,"What will happen next?
- ","A: the kid is gonna slide through 그 아이가 미끄러져 지나갈 거야, B: the kid is gonna crash into the other kid 그 아이가 다른 아이와 부딪힐 거야, C: the other kid is gonna dodge 그 다른 아이가 피할 거야, D: both A,B, and C A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,
+ ","A: the kid is gonna slide through 그 아이가 미끄러져 지나갈 거야, B: the kid is gonna crash into the other kid 그 아이가 다른 아이와 부딪힐 거야, C: the other kid is gonna dodge 그 다른 아이가 피할 거야, D: both A,B, C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,
 598,instance reasoning,single-instance reasoning,"The object shown in this figure:
  ","A: Is a colorless liquid with a slightly metallic taste 무색의 액체로 약간의 금속 맛이 나는 물질이다, B: Is a powerful oxidizer that can cause skin and eye irritation 피부와 눈에 자극을 유발할 수 있는 강력한 산화제이다, C: Has a boiling point of 150.2°C 끓는점이 150.2°C이다, D: None of these options are correct. 이러한 옵션들 중 올바른 것은 없다.",choice,다음 그림에 보이는 물체는:,,,,,,,
 70,coarse perception,image scene and topic,"What is the main focus of the image?
@@ -94,7 +94,7 @@ qid,category,l2_category,question_en,options,answer_type,question_kr,answer,scor
 436,fine-grained perception,recognition,"What type of pavement is the person with the dog walking on?
  ","A: Concrete 콘크리트, B: Brick 벽돌, C: Asphalt 아스팔트, D: Gravel 자갈",choice,개를 데리고 걷는 사람이 걷고 있는 포장 도로의 종류는 무엇인가요?,,,,,,,
 708,logical reasoning,code & sequence reasoning,"What will happen next?
- ","A: this person is gonna cry 이 사람이 울 거야, B: this person is gonna laugh 이 사람이 웃을 거야, C: this person is gonna get mad 이 사람이 화를 낼 거야, D: both A,B, and C A,B, 그리고 C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,
+ ","A: this person is gonna cry 이 사람이 울 거야, B: this person is gonna laugh 이 사람이 웃을 거야, C: this person is gonna get mad 이 사람이 화를 낼 거야, D: both A,B, C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,
 194,coarse perception,image style & quality,"what style is depicted in this image?
  ","A: impressionism 인상주의, B: post-Impressionism 후기 인상주의, C: modernism 모더니즘, D: dadaism 다다이즘",choice,이 이미지에 묘사된 스타일은 무엇입니까?,,,,,,,
 269,fine-grained perception,object counting,"How many horses are in the image?
@@ -126,7 +126,7 @@ qid,category,l2_category,question_en,options,answer_type,question_kr,answer,scor
 145,coarse perception,image scene and topic,"Which of the following best describes the view from the deck?
  ","A: A view of a forest 숲의 경치, B: A view of the cityscape 도시 풍경, C: A view of the mountains 산의 경치, D: A view of a body of water 수역의 경치",choice,다음 중 데크에서 보이는 경치를 가장 잘 설명하는 것은 무엇입니까?,,,,,,,
 659,instance reasoning,single-instance reasoning,"Where is the lamp in the living room?
- ","A: On the coffee table 커피 탁자 위에, B: On the windowsill 창턱 위에, C: On the end table 사이드 테이블 위에 D: On the floor 바닥 위에",choice,거실에 있는 램프는 어디에 있나요?,,,,,,,
+ ","A: On the coffee table 커피 탁자 위에, B: On the windowsill 창턱 위에, C: On the end table 사이드 테이블 위에, D: On the floor 바닥 위에",choice,거실에 있는 램프는 어디에 있나요?,,,,,,,
 660,instance reasoning,single-instance reasoning,"Where is the man playing the guitar located on the stage?
  ","A: Left side of the stage 무대의 왼쪽, B: Middle of the stage 무대의 중앙, C: Right side of the stage 무대의 오른쪽, D: Behind the microphones 마이크 뒤에",choice,무대에서 기타를 연주하는 남자는 어디에 위치해 있습니까?,,,,,,,
 31,coarse perception,image scene and topic,"How many police officers are in the image?
@@ -286,7 +286,7 @@ qid,category,l2_category,question_en,options,answer_type,question_kr,answer,scor
 767,logical reasoning,common reasoning,"In nature, what's the relationship between these two creatures?
  ","A: Predatory relationships 포식 관계, B: Competitive relationships 경쟁 관계, C: Parasitic relationships 기생 관계, D: Symbiotic relationship 공생 관계",choice,자연에서 이 두 생물 사이의 관계는 무엇인가요?,,,,,,,
 805,logical reasoning,common reasoning,"What will happen next?
- ","A: the person is gonna fall off the ladder 그 사람이 사다리에서 떨어질 거야, B: the person is gonna stand still on the ladder 그 사람은 사다리 위에서 가만히 있을 거야, C: someone is gonna come and hold the ladder 누군가 와서 사다리를 잡아줄 거야, D: both A,B, and C A, B, C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,
+ ","A: the person is gonna fall off the ladder 그 사람이 사다리에서 떨어질 거야, B: the person is gonna stand still on the ladder 그 사람은 사다리 위에서 가만히 있을 거야, C: someone is gonna come and hold the ladder 누군가 와서 사다리를 잡아줄 거야, D: both A, B, C 모두",choice,다음에 무슨 일이 일어날까요?,,,,,,,
 38,coarse perception,image scene and topic,"What is the color of the majority of objects in the image?
  ","A: White 흰색, B: Gray 회색, C: Blue 파란색, D: Green 초록색",choice,이미지 속 다수의 물체의 색은 무엇입니까?,,,,,,,
 19,coarse perception,image emotion,"Which mood does this image convey?
@@ -457,7 +457,7 @@ qid,category,l2_category,question_en,options,answer_type,question_kr,answer,scor
 131,coarse perception,image scene and topic,"What type of scene is depicted in this image?
  ","A: A workspace 작업 공간, B: A beach vacation 해변 휴가, C: A tropical restaurant 열대 식당, D: A desert oasis 사막 오아시스",choice,이 이미지에는 어떤 종류의 장면이 묘사되어 있나요?,A,0.3846153846,,,,,
 153,coarse perception,image scene and topic,"Which one is the correct caption of this image?
- ",A: A bunch of cars sitting still in the middle of a street 길 한가운데에 멈춰 서 있는 차들 B: Two giraffes near a tree in the wild. 야생에서 나무 근처에 있는 두 마리의 기린 C: Small personal bathroom with a tiny entrance door. 아주 작은 입구가 있는 개인용 욕실 D: An elephant drinking water while the rest of the herd is walking in dry grass. 마른 풀밭에서 떼의 나머지 무리들이 걷고 있는 동안 물을 마시는 코끼리,choice,"A: A bunch of cars sitting still in the middle of a street 길 한가운데에 멈춰 서 있는 차들, B: Two giraffes near a tree in the wild. 야생에서 나무 근처에 있는 두 마리의 기린, C: Small personal bathroom with a tiny entrance door. 아주 작은 입구가 있는 개인용 욕실, D: An elephant drinking water while the rest of the herd is walking in dry grass. 마른 풀밭에서 떼의 나머지 무리들이 걷고 있는 동안 물을 마시는 코끼리",D,0.1666666667,,,,,
+ ","A: A bunch of cars sitting still in the middle of a street 길 한가운데에 멈춰 서 있는 차들, B: Two giraffes near a tree in the wild. 야생에서 나무 근처에 있는 두 마리의 기린, C: Small personal bathroom with a tiny entrance door. 아주 작은 입구가 있는 개인용 욕실, D: An elephant drinking water while the rest of the herd is walking in dry grass. 마른 풀밭에서 떼의 나머지 무리들이 걷고 있는 동안 물을 마시는 코끼리",choice,"A: A bunch of cars sitting still in the middle of a street 길 한가운데에 멈춰 서 있는 차들, B: Two giraffes near a tree in the wild. 야생에서 나무 근처에 있는 두 마리의 기린, C: Small personal bathroom with a tiny entrance door. 아주 작은 입구가 있는 개인용 욕실, D: An elephant drinking water while the rest of the herd is walking in dry grass. 마른 풀밭에서 떼의 나머지 무리들이 걷고 있는 동안 물을 마시는 코끼리",D,0.1666666667,,,,,
 446,fine-grained perception,recognition,"Who is the person in this image?
  ","A: Elon Musk 일론 머스크, B: Xiang Liu 샹 리우, C: Jay Chou 제이 차오, D: Ming Yao 밍 야오",choice,이 이미지 속 인물은 누구입니까?,C,0.25,,,,,
 385,fine-grained perception,recognition,"What is the color of the net behind the players in the image?
