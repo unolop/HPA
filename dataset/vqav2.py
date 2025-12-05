@@ -30,8 +30,9 @@ class VQADataset(Dataset):
 
         if len(filter_qids): 
             self.annotations, self.questions = self.filter_dataset(filter_qids) 
-
-    def filter_dataset(self, qids): 
+        
+        
+    def filter_dataset(self, qids):
         
         anns = []
         qs = [] 
@@ -56,14 +57,37 @@ class VQADataset(Dataset):
         ann = self.annotations[idx]
 
         question = q['question']
-        question = f"Question: {question} Answer the question using a single word or phrase. \nAnswer:" 
-        ann['question'] = self.prompt + question
+        ann['question'] = f"Question: {question} Answer the question using a single word or phrase. {self.prompt}\nAnswer:" 
+        
         padded_id = str(ann['image_id']).zfill(12)
         filename = f"COCO_val2014_{padded_id}.jpg"
         image = os.path.join(self.image_dir_path, filename)
         ann = {**q, **ann} 
         ann['image'] = image
         return ann 
+    
+    def get_by_qid(self):
+        """Return a dictionary of all annotations keyed by question_id."""
+        qid_to_ann = {}
+        
+        for q, ann in zip(self.questions, self.annotations):
+            qid = q.get('question_id') or ann.get('question_id')
+            if qid is None:
+                continue
+                
+            question = q['question']
+            ann['question'] = f"Question: {question} Answer the question using a single word or phrase. {self.prompt}\nAnswer:" 
+            padded_id = str(ann['image_id']).zfill(12)
+            filename = f"COCO_val2014_{padded_id}.jpg"
+            image = os.path.join(self.image_dir_path, filename)
+            processed_ann = {**q, **ann}
+            processed_ann['image'] = image
+            
+            # Store with both int and string keys for flexibility
+            qid_to_ann[int(qid)] = processed_ann
+            qid_to_ann[str(qid)] = processed_ann
+        
+        return qid_to_ann 
 
 class VQADataset_json(Dataset):
     def __init__(self, 

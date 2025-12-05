@@ -1,26 +1,10 @@
 #!/bin/bash
-# Main pipeline for HPA project
-# Updated paths for reorganized directory structure
 
-### PILOT
-python src/preprocessing/preprocess.py \
-    --input_csvs outputs/results/humans/pilot_cleaned/_all_pilot_cleaned.jsonl \
-    --questions_csv data/questions/s1.csv \
-    --output_dir outputs/results/humans/pilot_cleaned/pilot
-
-python src/preprocessing/prepare_training_data.py \
-    --processed_dir outputs/results/humans/pilot_cleaned/pilot \
-    --questions_csv data/questions/s1.csv \
-    --output_dir data/pilot \
-    --with_instruction # --create_split
-
-### ACTUAL DATA
-# # 1. Preprocess (with Korean translation caching)
-python src/preprocessing/preprocess.py \
-    --input_csvs outputs/results/humans/all_results_20251202_112501/*/*.csv \
-    --questions_csv data/questions/s1.csv \
-    --output_dir outputs/results/processed \
-    --translate --cache_file data/translation_cache.json
+python preprocessing/preprocess.py \
+    --input_csvs data/humans/all_results_20251205_002041/*/*.csv \
+    --questions_csv experiments/questions/s1.csv \
+    --output_dir data/humans/all_results_20251205_002041_cleaned \
+    --translate --cache_file preprocessing/translation_cache.json
 
 # 2. Create training data
 python src/preprocessing/prepare_training_data.py \

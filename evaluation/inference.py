@@ -202,7 +202,7 @@ if __name__ == "__main__":
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
     parser.add_argument("--dataset", type=str, default="mmstar", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
-    parser.add_argument('--savedir', type=str, default="/home/work/yuna/HPA/results/swift", help='Save directory of inference') 
+    parser.add_argument('--savedir', type=str, default="/home/work/yuna/HPA/data/models", help='Save directory of inference') 
     parser.add_argument("--condition", type=str, default='')
     
     args = parser.parse_args() 

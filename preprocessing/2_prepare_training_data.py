@@ -25,28 +25,53 @@ from collections import defaultdict
 from typing import Dict, List, Optional, Tuple
 import numpy as np
 from PIL import Image
+import sys 
+sys.path.append('/home/work/yuna/HPA')
+from dataset.vqav2 import VQADataset
 
+def read_questions(dataset='s1', answer_type='text'): 
+    questions_path = f"/home/work/yuna/HPA/experiments/questions/{dataset}.csv" 
+    questions = []
+    if answer_type == 'text': 
+        vqa_val = VQADataset()
+        vqa_val = vqa_val.get_by_qid() 
 
-# =============================================================================
-# Black Image Creation
-# =============================================================================
+    if questions_path.endswith('.csv'):
+        import csv
+        with open(questions_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                qid = str(row.get('qid', row.get('question_id', '')))
+                atype = row.get('answer_type', '') 
+                
+                if atype != answer_type: 
+                    continue 
 
-def create_black_image(output_path: str, size: Tuple[int, int] = (448, 448)) -> str:
-    """Create a black placeholder image."""
-    output_path = Path(output_path)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    
-    black_array = np.zeros((size[0], size[1], 3), dtype=np.uint8)
-    img = Image.fromarray(black_array)
-    img.save(output_path)
-    
-    print(f"✓ Created black image: {output_path}")
-    return str(output_path)
+                if answer_type == 'choice': 
+                    answer = row.get('answer', row.get('multiple_choice_answer', ''))
+                    # annot = annotations[qid] 
+                    # annot['answer'] = answer 
+                    ### TODO Load the images for mmstar and mmspu and save into PIL image below 
+                    # questions.append(annot) 
 
+                else: # vqa questions 
+                    questions.append(vqa_val[qid]) 
+    else:
+        with open(questions_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        items = data if isinstance(data, list) else data.get('questions', [])
+        for item in items:
+            qid = str(item.get('qid', item.get('question_id', '')))
+            questions.append({
+                'qid': qid,
+                'question': item.get('question', item.get('question_en', '')),
+                'answer': item.get('answer', ''),
+                'image_id': item.get('image_id', ''),
+                'category': item.get('category', ''),
+            })
 
-# =============================================================================
-# Data Aggregation
-# =============================================================================
+    return questions 
 
 def aggregate_responses(
     responses: List[Dict],
@@ -121,9 +146,7 @@ def create_training_jsonl(
     data: List[Dict],
     output_path: str,
     black_image_path: str,
-    instruction_prefix: str = "",
     min_confidence: float = None,
-    min_responses: int = 1,
 ) -> int:
     """
     Create training JSONL file with MC formatting.
@@ -147,18 +170,11 @@ def create_training_jsonl(
     filtered_conf = 0
     filtered_resp = 0
     
-    # Answer number to letter mapping
-    num_to_letter = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'}
-    
     for item in data:
         # Apply filters
         if min_confidence and item['confidence'] < min_confidence:
             filtered_conf += 1
-            continue
-        
-        if item.get('num_responses', 1) < min_responses:
-            filtered_resp += 1
-            continue
+            continue 
         
         question = item.get('question', '')
         if not question:
@@ -178,34 +194,23 @@ def create_training_jsonl(
             
             if options and isinstance(options, list):
                 choices_text = "\n".join([f"{chr(65+i)}. {opt}" for i, opt in enumerate(options)])
-                formatted_question = (
-                    f"{instruction_prefix}Question: {question}\n"
+                question = (
+                    f"Question: {question}\n"
                     f"{choices_text}\n"
                     "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
                     "Answer:"
                 )
-            else:
-                formatted_question = f"{instruction_prefix}{question}"
-        else:
-            formatted_question = f"{instruction_prefix}{question}"
-        
-        # Convert numeric answer (1-4) to letter (A-D)
-        formatted_answer = str(answer)
-        if formatted_answer in num_to_letter:
-            formatted_answer = num_to_letter[formatted_answer]
-        elif formatted_answer.strip() in num_to_letter:
-            formatted_answer = num_to_letter[formatted_answer.strip()]
         
         example = {
             "images": [black_image_path],
             "conversations": [
                 {
                     "role": "user",
-                    "content": f"<image>\n{formatted_question}"
+                    "content": f"<image>\n{question}"
                 },
                 {
                     "role": "assistant",
-                    "content": formatted_answer
+                    "content": answer
                 }
             ],
             "confidence": item['confidence'],
@@ -224,8 +229,6 @@ def create_training_jsonl(
     print(f"✓ Created {output_path} ({len(examples)} examples)")
     if filtered_conf > 0:
         print(f"  Filtered by confidence: {filtered_conf}")
-    if filtered_resp > 0:
-        print(f"  Filtered by min_responses: {filtered_resp}")
     
     return len(examples)
 
@@ -247,22 +250,17 @@ def create_individual_jsonl(
     
     examples = []
     
-    # Answer number to letter mapping
-    num_to_letter = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'}
-    
     for r in responses:
         question = r.get('question', '')
         answer = r.get('answer_normalized', r.get('answer', ''))
         options = r.get('options', None)
+        formatted_question = f"{question}\n{instruction_prefix}" 
         
         if not question or not answer:
             continue
         
-        # Format question with options if available
-        formatted_question = question
         if options:
             if isinstance(options, str):
-                # Parse options string like "['A', 'B', 'C', 'D']"
                 try:
                     import ast
                     options = ast.literal_eval(options)
@@ -272,22 +270,11 @@ def create_individual_jsonl(
             if options and isinstance(options, list):
                 choices_text = "\n".join([f"{chr(65+i)}. {opt}" for i, opt in enumerate(options)])
                 formatted_question = (
-                    f"{instruction_prefix}Question: {question}\n"
+                    f"Question: {question}\n{instruction_prefix}\n"
                     f"{choices_text}\n"
                     "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
                     "Answer:"
                 )
-            else:
-                formatted_question = f"{instruction_prefix}{question}"
-        else:
-            formatted_question = f"{instruction_prefix}{question}"
-        
-        # Convert numeric answer (1-4) to letter (A-D)
-        formatted_answer = answer
-        if answer in num_to_letter:
-            formatted_answer = num_to_letter[answer]
-        elif answer.strip() in num_to_letter:
-            formatted_answer = num_to_letter[answer.strip()]
         
         example = {
             "images": [black_image_path],
@@ -298,7 +285,7 @@ def create_individual_jsonl(
                 },
                 {
                     "role": "assistant",
-                    "content": formatted_answer
+                    "content": answer
                 }
             ],
             "confidence": r.get('confidence', 3),
@@ -383,56 +370,12 @@ def create_train_val_split(
 # =============================================================================
 
 def create_gt_training_data(
-    questions_path: str,
+    questions: str,
     output_path: str,
-    black_image_path: str,
     images_dir: str = None,
     use_real_images: bool = False,
     instruction_prefix: str = "",
 ) -> int:
-    """
-    Create training data using ground truth answers.
-    
-    For ablations:
-    - A1: GT answers + real images
-    - A2: GT answers + black images
-    """
-    import csv
-    
-    # Load questions with GT answers
-    questions = []
-    
-    if questions_path.endswith('.csv'):
-        with open(questions_path, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                qid = str(row.get('qid', row.get('question_id', '')))
-                question = row.get('question_en', row.get('question', ''))
-                answer = row.get('answer', row.get('multiple_choice_answer', ''))
-                image_id = row.get('image_id', '')
-                
-                if question and answer:
-                    questions.append({
-                        'qid': qid,
-                        'question': question,
-                        'answer': answer,
-                        'image_id': image_id,
-                        'category': row.get('category', ''),
-                    })
-    else:
-        with open(questions_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        items = data if isinstance(data, list) else data.get('questions', [])
-        for item in items:
-            qid = str(item.get('qid', item.get('question_id', '')))
-            questions.append({
-                'qid': qid,
-                'question': item.get('question', item.get('question_en', '')),
-                'answer': item.get('answer', ''),
-                'image_id': item.get('image_id', ''),
-                'category': item.get('category', ''),
-            })
     
     # Create training examples
     output_path = Path(output_path)
@@ -444,7 +387,6 @@ def create_gt_training_data(
         if not q['question'] or not q['answer']:
             continue
         
-        # Determine image path
         if use_real_images and images_dir and q['image_id']:
             image_path = f"{images_dir}/{q['image_id']}.jpg"
             if not os.path.exists(image_path):
@@ -489,14 +431,11 @@ def prepare_training_data(
     processed_dir: str,
     questions_path: str,
     output_dir: str,
-    with_instruction: bool = True,
-    aggregate: bool = True,
-    by_cluster: bool = False,
-    create_split: bool = True,
+    # by_cluster: bool = False,
+    # create_split: bool = True,
     train_ratio: float = 0.9,
     min_confidence: float = None,
-    min_responses: int = 1,
-    also_create_gt: bool = False,
+    # min_responses: int = 1,
     images_dir: str = None,
 ):
     """
@@ -507,15 +446,9 @@ def prepare_training_data(
     print("=" * 60)
     print("📦 PREPARING TRAINING DATA")
     print("=" * 60)
-    
-    # Create black image
+
     black_image_path = "/home/work/yuna/HPA/data/blank_224.png"
-    # create_black_image(black_image_path)
-    
-    # Instruction prefix
-    instruction = ""
-    if with_instruction:
-        instruction = "Note: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
+    blind_instruction = "Note: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
     
     # Load preprocessed responses (handle both JSON and JSONL)
     responses_path = processed_dir
@@ -540,23 +473,10 @@ def prepare_training_data(
     
     print(f"✓ Loaded {len(responses)} preprocessed responses")
     
-    # Create training data
-    if aggregate:
-        # Aggregated version
-        aggregated = aggregate_responses(responses, by_cluster=by_cluster)
-        
-        jsonl_path = os.path.join(output_dir, 'train_aggregated.jsonl')
-        create_training_jsonl(
-            aggregated,
-            jsonl_path,
-            black_image_path,
-            instruction,
-            min_confidence,
-            min_responses,
-        )
-        
-        if create_split:
-            create_train_val_split(jsonl_path, train_ratio)
+    # Create training data Aggregated version 
+    # if aggregate:
+    # aggregated = aggregate_responses(responses, by_cluster=False) # TODO: no clustering answers now 
+    # jsonl_path = os.path.join(output_dir, 'train_aggregated.jsonl')
     
     # Also create individual (shuffled) version
     individual_path = os.path.join(output_dir, 'train_individual.jsonl')
@@ -564,37 +484,27 @@ def prepare_training_data(
         responses,
         individual_path,
         black_image_path,
-        instruction,
+    )
+    # create_train_val_split(individual_path, train_ratio)
+
+    print("\n📋 Creating GT training data...") 
+    # A2: GT + black images
+    gt_blind_path = os.path.join(output_dir, 'train_gt_blind.jsonl')
+    create_gt_training_data(
+        questions_path,
+        gt_blind_path,
+        use_real_images=False,
     )
     
-    if create_split:
-        create_train_val_split(individual_path, train_ratio)
-    
-    # Optionally create GT training data
-    if also_create_gt:
-        print("\n📋 Creating GT training data...")
-        
-        # A2: GT + black images
-        gt_blind_path = os.path.join(output_dir, 'train_gt_blind.jsonl')
-        create_gt_training_data(
-            questions_path,
-            gt_blind_path,
-            black_image_path,
-            use_real_images=False,
-            instruction_prefix=instruction,
-        )
-        
-        # A1: GT + real images (if images_dir provided)
-        if images_dir:
-            gt_real_path = os.path.join(output_dir, 'train_gt_real.jsonl')
-            create_gt_training_data(
-                questions_path,
-                gt_real_path,
-                black_image_path,
-                images_dir=images_dir,
-                use_real_images=True,
-                instruction_prefix="",  # No instruction for real images
-            )
+    # A1: GT + real images (if images_dir provided)
+    # if images_dir:
+    gt_real_path = os.path.join(output_dir, 'train_gt_images.jsonl')
+    create_gt_training_data(
+        questions_path,
+        gt_real_path,
+        images_dir=images_dir,
+        use_real_images=True,
+    )
     
     # Summary
     print("\n" + "=" * 60)
@@ -655,11 +565,6 @@ Examples:
     
     parser.add_argument("--min_confidence", type=float, default=None,
                         help="Filter examples below this confidence")
-    parser.add_argument("--min_responses", type=int, default=1,
-                        help="Filter examples with fewer responses")
-    
-    parser.add_argument("--also_create_gt", action="store_true",
-                        help="Also create GT training data (for A1, A2 ablations)")
     parser.add_argument("--images_dir", type=str, default=None,
                         help="Directory with real images (for A1)")
     
@@ -675,8 +580,6 @@ Examples:
         create_split=args.create_split,
         train_ratio=args.train_ratio,
         min_confidence=args.min_confidence,
-        min_responses=args.min_responses,
-        also_create_gt=args.also_create_gt,
         images_dir=args.images_dir,
     )
 

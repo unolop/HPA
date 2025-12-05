@@ -1,20 +1,4 @@
 #!/usr/bin/env python3
-"""
-1. preprocess_answers.py - Answer Preprocessing with Translation Caching
-
-Handles:
-- Korean → English translation with persistent caching
-- Answer normalization  
-- Optional semantic clustering for free-text answers
-
-Usage:
-    python preprocess_answers.py \
-        --input_csvs ./human_data/mmstar/*.csv \
-        --questions_csv ./data/mmstar_questions.csv \
-        --output_dir ./processed_data/mmstar \
-        --translate \
-        --cache_file ./translation_cache.json
-"""
 
 import os
 import re
@@ -24,8 +8,7 @@ import argparse
 import atexit
 from pathlib import Path
 from collections import defaultdict
-from typing import Dict, List, Optional, Tuple
-import numpy as np
+from typing import Dict, List, Optional
 from tqdm import tqdm
 
 # =============================================================================
@@ -475,7 +458,7 @@ def load_human_responses(input_files: List[str]) -> List[Dict]:
     responses = []
     
     for input_file in input_files:
-        participant_id = Path(input_file).stem
+        participant_id = Path(input_file).parent.stem
         
         try:
             if input_file.endswith('.jsonl'):
@@ -644,8 +627,11 @@ def preprocess_pipeline(
     print("\n[3/5] Normalizing answers...")
     for r in responses:
         r['answer_raw'] = r['answer']
-        r['answer_normalized'] = normalize_answer(r['answer'])
-        r['answer_normalized'] = normalize_number_words(r['answer_normalized'])
+        if r['answer_type'] == 'choice': 
+            r['answer_normalized'] = ['A', 'B', 'C', 'D'][int(r['answer_raw'])-1]
+        else:
+            r['answer_normalized'] = normalize_answer(r['answer'])
+            r['answer_normalized'] = normalize_number_words(r['answer_normalized'])
     
     # Step 4: Optional clustering
     if cluster:
