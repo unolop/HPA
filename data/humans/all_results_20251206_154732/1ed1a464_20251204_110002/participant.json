@@ -1,0 +1,16 @@
+{
+  "participant_id": "1ed1a464-3a55-4a71-bf36-2227b1cfea46",
+  "name": "최유리",
+  "age": "27",
+  "gender": "female",
+  "email": "yuri9742@naver.com",
+  "session": "s1",
+  "experiment_start_time": "2025-12-04T10:58:16.869562",
+  "experiment_end_time": null,
+  "total_questions": 641,
+  "current_question": 77,
+  "is_completed": false,
+  "total_time_spent_ms": 8369321,
+  "save_timestamp": "20251204_131804",
+  "result_folder": "1ed1a464_20251204_110002"
+}

@@ -7,9 +7,114 @@ import json
 import argparse
 import atexit
 from pathlib import Path
-from collections import defaultdict
 from typing import Dict, List, Optional
 from tqdm import tqdm
+from collections import defaultdict
+from typing import Dict, List, Optional, Tuple
+import numpy as np
+import sys 
+import glob
+from pathlib import Path
+# Add parent directory to path for dataset imports
+if str(Path(__file__).parent.parent) not in sys.path:
+    sys.path.append(str(Path(__file__).parent.parent))
+from dataset.vqav2 import VQADataset
+
+def create_train_val_split(
+    jsonl_path: str,
+    train_ratio: float = 0.9,
+    seed: int = 42,
+) -> Tuple[str, str]:
+    """
+    Split JSONL file into train and validation sets.
+    
+    Splits by question ID to avoid data leakage.
+    """
+    np.random.seed(seed)
+    
+    # Load examples
+    examples = []
+    with open(jsonl_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            examples.append(json.loads(line))
+    
+    # Group by qid
+    by_qid = defaultdict(list)
+    for ex in examples:
+        by_qid[ex['qid']].append(ex)
+    
+    # Split qids
+    qids = list(by_qid.keys())
+    np.random.shuffle(qids)
+    
+    split_idx = int(len(qids) * train_ratio)
+    train_qids = set(qids[:split_idx])
+    val_qids = set(qids[split_idx:])
+    
+    # Assign examples
+    train_examples = [ex for ex in examples if ex['qid'] in train_qids]
+    val_examples = [ex for ex in examples if ex['qid'] in val_qids]
+    
+    # Save
+    base_path = Path(jsonl_path)
+    train_path = base_path.parent / f"{base_path.stem}_train.jsonl"
+    val_path = base_path.parent / f"{base_path.stem}_val.jsonl"
+    
+    with open(train_path, 'w', encoding='utf-8') as f:
+        for ex in train_examples:
+            f.write(json.dumps(ex, ensure_ascii=False) + '\n')
+    
+    with open(val_path, 'w', encoding='utf-8') as f:
+        for ex in val_examples:
+            f.write(json.dumps(ex, ensure_ascii=False) + '\n')
+    
+    print(f"✓ Train: {train_path} ({len(train_examples)} examples, {len(train_qids)} questions)")
+    print(f"✓ Val: {val_path} ({len(val_examples)} examples, {len(val_qids)} questions)")
+    
+    return str(train_path), str(val_path)
+
+
+def read_questions(dataset='s1', answer_type='text'): 
+    questions_path = f"/home/work/yuna/HPA/experiments/questions/{dataset}.csv" 
+    questions = []
+    if answer_type == 'text': 
+        vqa_val = VQADataset()
+        vqa_val = vqa_val.get_by_qid() 
+
+    if questions_path.endswith('.csv'):
+        with open(questions_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                qid = str(row.get('qid', row.get('question_id', '')))
+                atype = row.get('answer_type', '') 
+                if atype != answer_type: 
+                    continue 
+
+                if answer_type == 'choice': 
+                    answer = row.get('answer', row.get('multiple_choice_answer', ''))
+                    # annot = annotations[qid] 
+                    # annot['answer'] = answer 
+                    ### TODO Load the images for mmstar and mmspu and save into PIL image below 
+                    # questions.append(annot) 
+
+                else: # vqa questions 
+                    questions.append(vqa_val[qid]) 
+    else:
+        with open(questions_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        items = data if isinstance(data, list) else data.get('questions', [])
+        for item in items:
+            qid = str(item.get('qid', item.get('question_id', '')))
+            questions.append({
+                'qid': qid,
+                'question': item.get('question', item.get('question_en', '')),
+                'answer': item.get('answer', ''),
+                'image_id': item.get('image_id', ''),
+                'category': item.get('category', ''),
+            })
+
+    return questions 
 
 # =============================================================================
 # Translation Cache Manager
@@ -197,62 +302,22 @@ def setup_openai_client(api_key: str = None):
     
     return OpenAI(api_key=api_key)
 
-
-def translate_single(
-    client,
-    question: str,
-    answer: str,
-    model: str = "gpt-4o-mini",
-    max_retries: int = 3,
-) -> str:
-    """
-    Translate a single Korean answer to English.
-    
-    Uses question context for better translation.
-    Retries on failure.
-    """
+def translate_prompt(question, answer): 
     prompt = f"""You are a precise translation assistant for VQA data.
 
-Task: Translate the Korean answer to English. Return ONLY the translated answer, nothing else.
+    Task: Translate the Korean answer to English. Return ONLY the translated answer, nothing else.
 
-Rules:
-- Keep answer concise (similar length to original)
-- Use natural English phrasing
-- If it's a number, color, or simple noun, translate directly
-- Do not add explanations
+    Rules:
+    - Keep answer concise (similar length to original)
+    - Use natural English phrasing
+    - If it's a number, color, or simple noun, translate directly
+    - Do not add explanations
 
-QUESTION: {question}
-KOREAN ANSWER: {answer}
+    QUESTION: {question}
+    KOREAN ANSWER: {answer}
 
-English:"""
-
-    for attempt in range(max_retries):
-        try:
-            response = client.chat.completions.create(
-                model=model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.1,  # Low for consistency
-                max_tokens=100,
-            )
-            result = response.choices[0].message.content.strip()
-            
-            # Clean up common issues
-            result = result.strip('"\'')
-            if result.lower().startswith('english:'):
-                result = result[8:].strip()
-            
-            return result
-            
-        except Exception as e:
-            print(f"  ⚠ Translation attempt {attempt + 1} failed: {e}")
-            if attempt < max_retries - 1:
-                import time
-                time.sleep(1)  # Wait before retry
-    
-    # Return original if all retries fail
-    print(f"  ❌ Failed to translate: {answer}")
-    return answer
-
+    English:"""
+    return prompt 
 
 def translate_answers(
     responses: List[Dict],
@@ -290,7 +355,13 @@ def translate_answers(
             question = questions.get(qid, {}).get('question', '')
             
             # Translate
-            translated = translate_single(client, question, answer, model)
+            prompt = translate_prompt(question, answer)
+            translated = ask_gpt(client, prompt, model)
+
+            # Clean up common issues
+            translated = translated.strip('"\'')
+            if translated.lower().startswith('english:'):
+                translated = translated[8:].strip()
             
             # Save to cache immediately
             cache.set(answer, translated)
@@ -361,164 +432,32 @@ def normalize_number_words(answer: str) -> str:
     return number_map.get(answer_lower, answer)
 
 
-# =============================================================================
-# Optional: Semantic Clustering
-# =============================================================================
-
-def cluster_answers(
-    responses: List[Dict],
-    distance_threshold: float = 0.5,
-) -> List[Dict]:
-    """
-    Cluster semantically similar answers per question.
-    
-    Requires: pip install sentence-transformers scikit-learn
-    """
-    try:
-        from sentence_transformers import SentenceTransformer
-        from sklearn.cluster import AgglomerativeClustering
-    except ImportError:
-        print("⚠ Clustering requires: pip install sentence-transformers scikit-learn")
-        print("  Skipping clustering, returning original responses.")
-        return responses
-    
-    print("\n🔗 Clustering similar answers...")
-    
-    # Load model
-    model = SentenceTransformer('all-MiniLM-L6-v2')
-    
-    # Group by question
-    by_question = defaultdict(list)
-    for i, r in enumerate(responses):
-        by_question[r['qid']].append((i, r))
-    
-    # Cluster each question's answers
-    clustered_responses = responses.copy()
-    total_clusters = 0
-    
-    for qid, items in tqdm(by_question.items(), desc="Clustering"):
-        indices = [i for i, r in items]
-        answers = [r['answer_normalized'] for i, r in items]
-        
-        if len(set(answers)) <= 1:
-            # All same answer, single cluster
-            for idx in indices:
-                clustered_responses[idx]['cluster_id'] = 0
-                clustered_responses[idx]['cluster_answer'] = answers[0]
-            total_clusters += 1
-            continue
-        
-        # Get unique answers and their embeddings
-        unique_answers = list(set(answers))
-        embeddings = model.encode(unique_answers)
-        
-        if len(unique_answers) == 1:
-            answer_to_cluster = {unique_answers[0]: 0}
-        else:
-            # Cluster
-            clustering = AgglomerativeClustering(
-                n_clusters=None,
-                distance_threshold=distance_threshold,
-                metric='cosine',
-                linkage='average',
-            )
-            labels = clustering.fit_predict(embeddings)
-            answer_to_cluster = {a: int(l) for a, l in zip(unique_answers, labels)}
-        
-        # Find representative for each cluster (most common answer)
-        cluster_answers = defaultdict(list)
-        for i, r in items:
-            cid = answer_to_cluster[r['answer_normalized']]
-            cluster_answers[cid].append(r['answer_normalized'])
-        
-        cluster_representatives = {}
-        for cid, ans_list in cluster_answers.items():
-            from collections import Counter
-            cluster_representatives[cid] = Counter(ans_list).most_common(1)[0][0]
-        
-        # Assign clusters to responses
-        for idx, (i, r) in zip(indices, items):
-            cid = answer_to_cluster[r['answer_normalized']]
-            clustered_responses[idx]['cluster_id'] = cid
-            clustered_responses[idx]['cluster_answer'] = cluster_representatives[cid]
-        
-        total_clusters += len(set(answer_to_cluster.values()))
-    
-    print(f"✓ Created {total_clusters} clusters from {len(responses)} responses")
-    
-    return clustered_responses
-
-
-# =============================================================================
-# Data Loading
-# =============================================================================
-
-def load_human_responses(input_files: List[str]) -> List[Dict]:
+def load_human_responses(input_files: List[str], session_length:int) -> List[Dict]:
     """Load human responses from participant CSV, JSON, or JSONL files."""
     responses = []
+    num_files= len(input_files)
     
     for input_file in input_files:
         participant_id = Path(input_file).parent.stem
         
         try:
-            if input_file.endswith('.jsonl'):
-                # Handle JSONL files (pilot data)
-                with open(input_file, 'r', encoding='utf-8') as f:
-                    for line in f:
-                        if not line.strip():
-                            continue
-                        row = json.loads(line)
-                        # Clean qid (remove .0 from float conversion)
-                        qid = str(row.get('qid', row.get('question_id', '')))
-                        if qid.endswith('.0'):
-                            qid = qid[:-2]
-                        responses.append({
-                            'qid': qid,
-                            'answer': str(row.get('answer', row.get('processed_output', ''))),
-                            'confidence': int(row.get('confidence', 1)),  # Default 1 for pilot
-                            'time_spent': float(row.get('time_spent_seconds', 0)),
-                            'participant_id': row.get('participant_id', participant_id),
-                            'question': row.get('question', ''),
-                            'question_type': row.get('question_type', ''),
-                        })
-            
-            elif input_file.endswith('.json'):
-                # Handle JSON files (list of responses)
-                with open(input_file, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                    items = data if isinstance(data, list) else data.get('responses', [])
-                    for row in items:
-                        qid = str(row.get('qid', row.get('question_id', '')))
-                        if qid.endswith('.0'):
-                            qid = qid[:-2]
-                        responses.append({
-                            'qid': qid,
-                            'answer': str(row.get('answer', '')),
-                            'confidence': int(row.get('confidence', 1)),
-                            'time_spent': float(row.get('time_spent_seconds', 0)),
-                            'participant_id': row.get('participant_id', participant_id),
-                            'question': row.get('question', ''),
-                            'question_type': row.get('question_type', ''),
-                        })
-            
-            else:
-                # Handle CSV files (original format)
-                with open(input_file, 'r', encoding='utf-8') as f:
-                    reader = csv.DictReader(f)
-                    for row in reader:
-                        responses.append({
-                            'qid': str(row.get('qid', row.get('question_id', ''))),
-                            'answer': str(row.get('answer', '')),
-                            'confidence': int(row.get('confidence', 3)),
-                            'time_spent': float(row.get('time_spent_seconds', 0)),
-                            'participant_id': participant_id,
-                        })
+            # Handle CSV files (original format)
+            with open(input_file, 'r', encoding='utf-8') as f:
+                reader = list(csv.DictReader(f))
+                # print(f"CSV file {input_file} has {len(reader)} rows")
+                if len(reader) < session_length: 
+                    print(f"{input_file} is incomplete, skip")
+                    num_files-= 1
+                    continue 
+                for row in reader:
+                    row['participant_id'] = participant_id
+                    responses.append(row) 
 
         except Exception as e:
             print(f"⚠ Error loading {input_file}: {e}")
     
-    print(f"✓ Loaded {len(responses)} responses from {len(input_files)} files")
-    return responses
+    print(f"✓ Loaded {len(responses)} responses from {num_files} files")
+    return num_files, responses
 
 
 def load_questions(questions_path: str) -> Dict[str, Dict]:
@@ -530,35 +469,7 @@ def load_questions(questions_path: str) -> Dict[str, Dict]:
             reader = csv.DictReader(f)
             for row in reader:
                 qid = str(row.get('qid', row.get('question_id', row.get('index', ''))))
-                questions[qid] = {
-                    'question': row.get('question_en', row.get('question', '')),
-                    'category': row.get('category', row.get('question_type', '')),
-                    'l2_category': row.get('l2_category', ''),
-                    'answer': row.get('answer', row.get('multiple_choice_answer', '')),
-                    'answer_type': row.get('answer_type', ''),
-                    'options': row.get('options', ''),
-                }
-    else:
-        with open(questions_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        # Handle various JSON formats
-        if isinstance(data, list):
-            items = data
-        elif 'questions' in data:
-            items = data['questions']
-        else:
-            items = list(data.values()) if isinstance(data, dict) else []
-        
-        for item in items:
-            if isinstance(item, dict):
-                qid = str(item.get('qid', item.get('question_id', item.get('id', ''))))
-                questions[qid] = {
-                    'question': item.get('question', item.get('question_en', '')),
-                    'category': item.get('category', ''),
-                    'answer': item.get('answer', ''),
-                }
-    
+                questions[qid] = row
     print(f"✓ Loaded {len(questions)} questions from {questions_path}")
     return questions
 
@@ -571,23 +482,11 @@ def preprocess_pipeline(
     input_csvs: List[str],
     questions_path: str,
     output_dir: str,
-    cache_file: str = None,
+    cache_file: str = "/home/work/yuna/HPA/preprocessing/translation_cache.json",
     translate: bool = True,
-    cluster: bool = False,
-    cluster_threshold: float = 0.5,
     openai_model: str = "gpt-4o-mini",
 ) -> Dict:
-    """
-    Main preprocessing pipeline.
     
-    Steps:
-    1. Load human responses
-    2. Load questions
-    3. Translate Korean answers (with caching)
-    4. Normalize answers
-    5. Optional: Cluster similar answers
-    6. Save processed data
-    """
     os.makedirs(output_dir, exist_ok=True)
     
     print("=" * 60)
@@ -600,16 +499,18 @@ def preprocess_pipeline(
     
     # Step 1: Load data
     print("\n[1/5] Loading data...")
-    responses = load_human_responses(input_csvs)
-    questions = load_questions(questions_path)
+    questions = load_questions(questions_path)              # a dict of questions by qid 
+    n, responses = load_human_responses(input_csvs, session_length=len(questions)) 
     
     # Add question info to responses
-    for r in responses:
-        q = questions.get(r['qid'], {})
-        r['question'] = q.get('question', '')
-        r['category'] = q.get('category', '')
-        r['answer_type'] = q.get('answer_type', '')
-    
+    for r in responses:  
+        qid = r['qid'] 
+        question_dict = questions.get(qid, {})
+        answer_type = question_dict['answer_type'] 
+        question = questions.get(question_dict['question_en'], "")
+        r['question'] = question 
+        r['answer_type'] = answer_type 
+        
     # Step 2: Translation
     if translate:
         print("\n[2/5] Translating Korean answers...")
@@ -628,29 +529,24 @@ def preprocess_pipeline(
     for r in responses:
         r['answer_raw'] = r['answer']
         if r['answer_type'] == 'choice': 
-            r['answer_normalized'] = ['A', 'B', 'C', 'D'][int(r['answer_raw'])-1]
+            r['answer'] = ['A', 'B', 'C', 'D'][int(r['answer_raw'])-1]
         else:
-            r['answer_normalized'] = normalize_answer(r['answer'])
-            r['answer_normalized'] = normalize_number_words(r['answer_normalized'])
+            r['answer'] = normalize_answer(r['answer'])
+            r['answer'] = normalize_number_words(r['answer'])
     
-    # Step 4: Optional clustering
-    if cluster:
-        print("\n[4/5] Clustering similar answers...")
-        responses = cluster_answers(responses, cluster_threshold)
-    else:
-        print("\n[4/5] Skipping clustering (disabled)")
-        for r in responses:
-            r['cluster_id'] = None
-            r['cluster_answer'] = r['answer_normalized']
-    
+    # Create a dict to group responses by answer_type
+    responses_by_type = defaultdict(list)
+    for r in responses:
+        responses_by_type[r['answer_type']].append(r)
+
+    for answer_type, resp_list in responses_by_type.items():
+        path = os.path.join(output_dir, f"cleaned_n{n}_{answer_type}.json")
+        with open(path, "w", encoding='utf-8') as f:
+            json.dump(resp_list, f, ensure_ascii=False, indent=2)
+        print(f"   ✓ {path}")
+
     # Step 5: Save outputs
     print("\n[5/5] Saving outputs...")
-    
-    # Save individual responses (for calibration analysis)
-    individual_path = os.path.join(output_dir, 'individual_responses.json')
-    with open(individual_path, 'w', encoding='utf-8') as f:
-        json.dump(responses, f, ensure_ascii=False, indent=2)
-    print(f"   ✓ {individual_path}")
     
     # Save statistics
     stats = {
@@ -658,11 +554,8 @@ def preprocess_pipeline(
         'total_questions': len(set(r['qid'] for r in responses)),
         'total_participants': len(set(r['participant_id'] for r in responses)),
         'korean_translated': sum(1 for r in responses if 'answer_original' in r),
-        'unique_answers': len(set(r['answer_normalized'] for r in responses)),
+        'unique_answers': len(set(r['answer'] for r in responses)),
     }
-    
-    if cluster:
-        stats['total_clusters'] = len(set((r['qid'], r['cluster_id']) for r in responses if r['cluster_id'] is not None))
     
     stats_path = os.path.join(output_dir, 'preprocessing_stats.json')
     with open(stats_path, 'w', encoding='utf-8') as f:
@@ -678,41 +571,14 @@ def preprocess_pipeline(
     print("=" * 60)
     
     return {
-        'responses': responses,
+        'responses': responses_by_type,
         'questions': questions,
         'stats': stats,
         'output_dir': output_dir,
     }
 
-
-# =============================================================================
-# CLI
-# =============================================================================
-
 def main():
-    parser = argparse.ArgumentParser(
-        description="Preprocess VQA answers with translation and normalization",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  # Basic preprocessing with translation
-  python preprocess_answers.py \\
-      --input_csvs ./human_data/*.csv \\
-      --questions_csv ./data/questions.csv \\
-      --output_dir ./processed \\
-      --translate
-
-  # With clustering for free-text answers
-  python preprocess_answers.py \\
-      --input_csvs ./human_data/*.csv \\
-      --questions_csv ./data/questions.csv \\
-      --output_dir ./processed \\
-      --translate --cluster
-        """
-    )
-    
-    parser.add_argument("--input_csvs", type=str, nargs='+', required=True,
-                        help="Human response CSV files (glob pattern supported)")
+    parser = argparse.ArgumentParser() 
     parser.add_argument("--questions_csv", type=str, required=True,
                         help="Questions file (CSV or JSON)")
     parser.add_argument("--output_dir", type=str, required=True,
@@ -725,15 +591,9 @@ Examples:
     parser.add_argument("--openai_model", type=str, default="gpt-4o-mini",
                         help="OpenAI model for translation")
     
-    parser.add_argument("--cluster", action="store_true",
-                        help="Cluster semantically similar answers")
-    parser.add_argument("--cluster_threshold", type=float, default=0.5,
-                        help="Clustering distance threshold (0.3=tight, 0.7=loose)")
-    
     args = parser.parse_args()
     
     # Handle glob patterns
-    import glob
     input_files = []
     for pattern in args.input_csvs:
         input_files.extend(glob.glob(pattern))
@@ -752,7 +612,6 @@ Examples:
         cluster_threshold=args.cluster_threshold,
         openai_model=args.openai_model,
     )
-
 
 if __name__ == "__main__":
     main()

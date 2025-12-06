@@ -1,10 +1,5 @@
-import re 
 import os 
 import json 
-import glob 
-import torch
-import numpy as np
-from PIL import Image
 from torch.utils.data import Dataset 
 
 class VQADataset(Dataset):
@@ -66,7 +61,7 @@ class VQADataset(Dataset):
         ann['image'] = image
         return ann 
     
-    def get_by_qid(self):
+    def get_by_qid(self): # TODO: A bit repetitive with the getitem 
         """Return a dictionary of all annotations keyed by question_id."""
         qid_to_ann = {}
         

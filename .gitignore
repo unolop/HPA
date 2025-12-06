@@ -21,6 +21,8 @@ outputs/temp/
 *.log
 wandb/
 checkpoint/
+experiments/output
+checkpoint*
 
 # Model files
 *.pth
