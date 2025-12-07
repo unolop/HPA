@@ -88,7 +88,12 @@ def sample_data(processed, pilot=None, n=20):
                 pilot_data = pilot[qid]
                 idx = 0
                 while len(resp) < n and idx < len(pilot_data):
-                    resp.append(pilot_data[idx])
+                    pilot_resp = pilot_data[idx].copy()  # Make a copy to avoid modifying original
+                    # Ensure the qid field matches the current question
+                    if 'qid' in pilot_resp and pilot_resp['qid'] != qid:
+                        print(f"[QID {qid}] ⚠️ Pilot response has qid={pilot_resp['qid']}, correcting to {qid}")
+                        pilot_resp['qid'] = qid
+                    resp.append(pilot_resp)
                     idx += 1
                 print(f"[QID {qid}] Added {idx} pilot responses → now have {len(resp)}/{n}")
                 if len(resp) != n:
