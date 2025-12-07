@@ -658,7 +658,7 @@ Examples:
     
     # Optional
     parser.add_argument("--val_data_path", type=str, default=None,
-                        help="Validation data JSONL file")
+                        help="Validation data JSONL file (optional, omit for no validation)")
     parser.add_argument("--learning_rate", type=float, default=2e-5)
     parser.add_argument("--num_epochs", type=int, default=3)
     parser.add_argument("--max_steps", type=int, default=-1)
@@ -671,14 +671,19 @@ Examples:
     parser.add_argument("--logging_steps", type=int, default=10)
     
     args = parser.parse_args()
-    
+
+    # Handle None/empty string for val_data_path
+    val_data = args.val_data_path
+    if val_data is not None and (val_data.lower() == 'none' or val_data.strip() == ''):
+        val_data = None
+
     run_ablation(
         ablation=args.ablation,
         model_path=args.model_path,
         train_data=args.train_data,
         output_dir=args.output_dir,
         run_name=args.run_name,
-        val_data=args.val_data_path,
+        val_data=val_data,
         learning_rate=args.learning_rate,
         num_epochs=args.num_epochs,
         max_steps=args.max_steps,
