@@ -378,17 +378,17 @@ def train_human_alignment(
     if val_data_path is not None:
         val_data_path = [val_data_path]
     else:
-        val_data_path = None 
+        val_data_path = None
 
     sft_args = HumanAlignmentArguments(
         model=model_path,
         dataset=[data_path],
         val_dataset=val_data_path,
         output_dir=output_dir,
-        
+
         train_type="lora",
         torch_dtype="bfloat16",
-        
+
         num_train_epochs=num_epochs,
         max_steps=max_steps,
         learning_rate=learning_rate,
@@ -398,23 +398,23 @@ def train_human_alignment(
         warmup_ratio=0.05,
         weight_decay=0.1,
         lr_scheduler_type="cosine",
-        
+
         lora_rank=lora_rank,
         lora_alpha=lora_alpha,
         lora_dropout=0.1,  # Higher dropout for small dataset regularization
         lora_bias="none",
         target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
-        
+
         freeze_llm=False,
         freeze_vit=True,
         freeze_aligner=True,
-        
+
         save_strategy="steps",
         save_steps=save_steps,
         save_total_limit=3,
         logging_steps=logging_steps,
-        eval_steps=eval_steps,
-        eval_strategy="steps",
+        eval_steps=eval_steps if val_data_path else None,
+        eval_strategy="steps" if val_data_path else "no",
         
         max_length=1024,
         max_pixels=max_pixels,
