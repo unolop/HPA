@@ -18,7 +18,7 @@ Usage:
         --ablation A5 \\
         --model_path OpenGVLab/InternVL3_5-2B \\
         --train_data ./training_data/mmstar/train_aggregated_train.jsonl \\
-        --val_data ./training_data/mmstar/train_aggregated_val.jsonl \\
+        --val_data_path ./training_data/mmstar/train_aggregated_val.jsonl \\
         --output_dir ./output/A5_mmstar \\
         --run_name A5_soft_kl_mmstar
 """
@@ -657,7 +657,7 @@ Examples:
                         help="Run name for logging")
     
     # Optional
-    parser.add_argument("--val_data", type=str, default=None,
+    parser.add_argument("--val_data_path", type=str, default=None,
                         help="Validation data JSONL file")
     parser.add_argument("--learning_rate", type=float, default=2e-5)
     parser.add_argument("--num_epochs", type=int, default=3)
@@ -678,7 +678,7 @@ Examples:
         train_data=args.train_data,
         output_dir=args.output_dir,
         run_name=args.run_name,
-        val_data=args.val_data,
+        val_data=args.val_data_path,
         learning_rate=args.learning_rate,
         num_epochs=args.num_epochs,
         max_steps=args.max_steps,
