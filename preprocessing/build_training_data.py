@@ -35,20 +35,60 @@ def read_pilot_data(path):
                 data.append(line)
     return data
 
+def get_annot(answer_type, prompt): 
+
+    if answer_type == 'text':  
+        annot = VQADataset(prompt=prompt)
+        annot = annot.get_by_qid() 
+    else: 
+        ### TODO Get original dataset to save images to the directory 
+        with open("/home/work/yuna/HPA/data/models/InternVL3_5-1B_mmstar_inst_blind.jsonl", 'r', encoding='utf-8') as f:
+            mmstar = [json.loads(line) for line in f]
+
+        questions= [] # original questions 
+        with open(f"/home/work/yuna/HPA/dataset/questions/s1.csv" , 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                questions.append(row)  
+        
+        questions = [row for row in questions if row.get('answer_type') == 'choice']
+        annot = {} # map questions to original answers and question index for mmstar 
+        for row in questions: 
+            qid = row['qid'] 
+            question = row.get('question_en', row.get('question', '')) 
+            # breakpoint()
+            for data in mmstar: 
+                if question.strip()[:50] in data['question'] : 
+                    # oq = d['question']
+                    # q = oq.split('\nOptions:')[0] 
+                    # q += prompt 
+                    # q += '\nOptions:'
+                    # q += oq.split('\nOptions:')[1] 
+                    annot[qid] = {**row, **data}   
+                    annot[qid]['question'] = data['question']
+                    breakpoint()
+                    break 
+
+    return annot 
+    
 def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):  
+
+    answers = [a for a in answers if a.get("answer_type") == answer_type] 
+    responses_by_qid = {}
 
     if blind: 
         prompt = "\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
     else: 
         prompt = "" 
-    
-    if answer_type == 'text':  
-        vqa_val = VQADataset(prompt=prompt)
-        vqa_val = vqa_val.get_by_qid() 
 
-    responses_by_qid = {}
+    # get annotations 
+    annot = get_annot(answer_type, prompt) 
+        
     for resp in answers: 
-        qid = resp['qid'] # .get("qid", '') 
+        # breakpoint()
+        qid = str(resp['qid']) # .get("qid", '') 
+        ann = annot[qid]
+
         if qid not in responses_by_qid.keys() : 
             responses_by_qid[qid] = [] 
 
@@ -57,13 +97,11 @@ def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):
             confidence = set_confidence 
         confidence = CONF_MAP[str(confidence)]  
         resp['confidence'] = confidence
-        
-        if answer_type == 'text':  
-            vqa_annot = vqa_val[qid]
-            vqa_annot.pop('answers', None) # remove the ground truth answers 
-            resp = {**vqa_annot, **resp}
-            resp['question'] = vqa_annot['question']
-        responses_by_qid[qid].append(resp)  
+        ann.pop('answers', None) # remove the ground truth answers 
+        resp['question'] = ann['question']
+        breakpoint()
+        resp = {**ann, **resp}
+        responses_by_qid[qid].append(resp)   
 
     return responses_by_qid 
 

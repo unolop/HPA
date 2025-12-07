@@ -150,7 +150,7 @@ def main(args):
                 if data[current_item_id] in processed_ids:
                     continue 
                 
-            if args.condition == '_inst_blind' and 'vqa' not in args.dataset:
+            if 'inst' in args.condition and 'vqa' not in args.dataset:
                 prompt += system_message
 
             if args.model_type == 'llm' and 'vqa' not in args.dataset:

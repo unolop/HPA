@@ -10,7 +10,6 @@ data_path="/home/work/yuna/HPA/data/training/vqa1k_374.jsonl"
 data_path="/home/work/yuna/HPA/data/training/s1_text_10_blind_inst_mixed.jsonl"
 data_path="/home/work/yuna/HPA/data/training/s1_choice/train_agg_14_blind_inst.jsonl"
 
-# Set to empty string if you don't want validation
 val_data=""
 # val_data="/home/work/yuna/HPA/data/training/vqa5k_agg.jsonl"
 RUNNAME="mmstar_alignment_js_blind_4b"
