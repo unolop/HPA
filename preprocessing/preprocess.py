@@ -499,16 +499,16 @@ def preprocess_pipeline(
     
     # Step 1: Load data
     print("\n[1/5] Loading data...")
-    questions = load_questions(questions_path)              # a dict of questions by qid 
+    questions = load_questions(questions_path)        
     n, responses = load_human_responses(input_csvs, session_length=len(questions)) 
     
     # Add question info to responses
     for r in responses:  
         qid = r['qid'] 
-        question_dict = questions.get(qid, {})
+        question_dict = questions[qid]
         answer_type = question_dict['answer_type'] 
-        question = questions.get(question_dict['question_en'], "")
-        r['question'] = question 
+        question = question_dict['question_en'].replace('\n', '').strip()
+        r['question'] = question  
         r['answer_type'] = answer_type 
         
     # Step 2: Translation
