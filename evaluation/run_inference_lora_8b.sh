@@ -1,8 +1,8 @@
 #!/bin/bash
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
-GPU=1
-DATASET_PATHS=("mmstar" "vqa_1k"  "vqa_5k" "spubench" ) 
+GPU=0
+DATASET_PATHS=("spubench" ) # "mmstar" "vqa_1k"  "vqa_5k" 
 CONDITION_LIST=("" "_inst_blind" ) #  "_sys_inst_blind" "_blind"  
 BASE_MODEL=(
     "Qwen/Qwen3-VL-8B-Instruct")

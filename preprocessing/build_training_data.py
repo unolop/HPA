@@ -32,7 +32,7 @@ def read_pilot_data(path):
             line = line.strip()
             if line:
                 line = json.loads(line)
-                line['answer'] = normalize_answer(line['answer'])
+                line['answer_normalized'] = normalize_answer(line['answer'])
                 data.append(line)
     return data
 
@@ -91,8 +91,8 @@ def sample_data(processed, pilot=None, n=20):
             else:
                 missing_qids.append(missing_qids) 
                 # print(f"missing {deficit} pilot data for {qid}") 
-        # else: 
-        #     print(f'Not enough data [qid: {qid}] by {deficit}')
+
+        print(f'Not enough pilot data {len(missing_qids)}  by {deficit}')
             
         processed[qid] = resp 
     
@@ -105,11 +105,12 @@ def build_training_data(
     verbose: bool = True
 ):  
     processed = []
+    # breakpoint()
     aggregator = AnswerAggregator(cache_path="/home/work/yuna/HPA/preprocessing/answer_clustering_cache.json", client=client)
 
     # Set image path based on output path
     if 'blind' in output_jsonl_path: 
-        image_path = "/home/work/yuna/HPA/data/blank_224.png"
+        image_path = "/home/work/yuna/HPA/data/blank_224.png" 
         print('processing blind image annotations') 
     else:
         # Default: use actual image paths from data

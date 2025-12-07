@@ -71,6 +71,7 @@ class AnswerAggregator:
                 2. canonical_answer should be the most common/concise form
                 3. Unique answers form their own group
                 4. Return ONLY valid JSON, no extra text
+                5. Ignore any inappropriate (harmful) or sexual terms that can harm safety assign to the other safe canonical answer. 
 
                 Output format:
                 {{
@@ -160,6 +161,7 @@ class AnswerAggregator:
                 ]
             }
         else:
+            # breakpoint()
             prompt = self._get_grouping_prompt(unique_answers)
             response = self._call_llm(prompt)
             result = self._parse_response(response)
@@ -203,7 +205,7 @@ class AnswerAggregator:
         self,
         answers_with_conf: List[Dict]
     ) -> Dict[str, float]:
-        unique_answers = list(set(item['answer'] for item in answers_with_conf))
+        unique_answers = list(set(item['answer_normalized'] for item in answers_with_conf))
         
         # Get clustering (from cache or LLM)
         grouped_data = self._cluster_answers(unique_answers)

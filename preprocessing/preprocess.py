@@ -415,7 +415,7 @@ def normalize_answer(answer: str) -> str:
     # Normalize whitespace
     answer = ' '.join(answer.split())
     
-    return answer.strip()
+    return answer.lower().strip()
 
 
 def normalize_number_words(answer: str) -> str:
