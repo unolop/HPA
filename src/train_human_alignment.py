@@ -375,10 +375,11 @@ def train_human_alignment(
     if val_data_path is not None and (val_data_path.lower() == 'none' or val_data_path.strip() == ''):
         val_data_path = None
 
+    # Swift framework expects a list (can be empty) for val_dataset, not None
     if val_data_path is not None:
         val_data_path = [val_data_path]
     else:
-        val_data_path = None
+        val_data_path = []  # Empty list instead of None to avoid len() error
 
     sft_args = HumanAlignmentArguments(
         model=model_path,
@@ -413,8 +414,8 @@ def train_human_alignment(
         save_steps=save_steps,
         save_total_limit=3,
         logging_steps=logging_steps,
-        eval_steps=eval_steps if val_data_path else None,
-        eval_strategy="steps" if val_data_path else "no",
+        eval_steps=eval_steps if len(val_data_path) > 0 else None,
+        eval_strategy="steps" if len(val_data_path) > 0 else "no",
         
         max_length=1024,
         max_pixels=max_pixels,
