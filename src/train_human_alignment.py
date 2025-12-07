@@ -370,9 +370,14 @@ def train_human_alignment(
     
     # Get tokenizer for answer token lookup
     _, tokenizer = get_model_tokenizer(model_path, torch_dtype=torch.bfloat16, device_map="cpu")
-    if val_data_path is not None: 
-        val_data_path = [val_data_path] 
-    else: 
+
+    # Handle None/empty string for val_data_path
+    if val_data_path is not None and (val_data_path.lower() == 'none' or val_data_path.strip() == ''):
+        val_data_path = None
+
+    if val_data_path is not None:
+        val_data_path = [val_data_path]
+    else:
         val_data_path = None 
 
     sft_args = HumanAlignmentArguments(
@@ -452,7 +457,8 @@ def main():
     parser.add_argument("--data_path", type=str, required=True)
     parser.add_argument("--output_dir", type=str, required=True)
     parser.add_argument("--run_name", type=str, required=True)
-    parser.add_argument("--val_data_path", type=str, default=None)
+    parser.add_argument("--val_data_path", type=str, default=None,
+                        help="Validation data JSONL file (optional, omit for no validation)")
     parser.add_argument("--mode", type=str, default="JS", choices=["CE", "JS"])
     parser.add_argument("--lambda_dist", type=float, default=1.0)
     parser.add_argument("--lambda_l2", type=float, default=0.1)

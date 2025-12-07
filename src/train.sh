@@ -10,17 +10,23 @@ data_path="/home/work/yuna/HPA/data/training/vqa1k_374.jsonl"
 data_path="/home/work/yuna/HPA/data/training/s1_text_10_blind_inst_mixed.jsonl"
 data_path="/home/work/yuna/HPA/data/training/s1_choice/train_agg_14_blind_inst.jsonl"
 
-val_data="/home/work/yuna/HPA/data/training/vqa5k_agg.jsonl"
-val_data=None
+# Set to empty string if you don't want validation
+val_data=""
+# val_data="/home/work/yuna/HPA/data/training/vqa5k_agg.jsonl"
 RUNNAME="mmstar_alignment_js_blind_4b"
 
-for MODEL_8B in "${MODELS[@]}"; do 
+for MODEL_8B in "${MODELS[@]}"; do
+    # Build validation argument conditionally
+    val_arg=""
+    if [ -n "$val_data" ]; then
+        val_arg="--val_data_path ${val_data}"
+    fi
 
     CUDA_VISIBLE_DEVICES=0 python train_human_alignment.py \
         --model_path ${MODEL_8B} \
         --data_path ${data_path} \
-        --output_dir ./output/${MODEL_8B}/${RUNNAME}\
-        --val_data_path ${val_data} \
+        --output_dir ./output/${MODEL_8B}/${RUNNAME} \
+        ${val_arg} \
         --run_name ${RUNNAME} \
         --max_steps 5000 \
         --num_epochs 50 \
