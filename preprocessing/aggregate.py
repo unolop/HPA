@@ -12,7 +12,7 @@ import json
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Set, Optional
+from typing import Any, Dict, List, Set, Optional
 
 try:
     from openai import OpenAI
@@ -202,7 +202,7 @@ Output format:
         """
         # Check which answers need clustering
         for item in answers_with_conf:
-            ans = item['answer']
+            ans = item['answer_normalized']
             if ans not in self.answer_map:
                 self.cache_misses += 1
                 self.pending_answers.add(ans)
@@ -214,7 +214,7 @@ Output format:
             self._process_pending()
         
         # Aggregate using the map
-        conf_sums = defaultdict(float)
+        conf_sums = defaultdict[Any, float](float)
         for item in answers_with_conf:
             ans = item['answer']
             conf = item['confidence']

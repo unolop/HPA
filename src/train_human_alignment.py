@@ -1,13 +1,4 @@
 #!/usr/bin/env python3
-"""
-Human Alignment Training for Visual Grounding
-Uses Jensen-Shannon Divergence to match model distribution to human confidence labels
-
-Dataset format:
-{"idx": 0, "images": ["..."], "qid": 102411000, 
- "conversations": [{"role": "user", "content": "..."}, {"role": "assistant", "content": "yes"}], 
- "labels": {"confidences": [1.0], "answers": ["yes"]}}
-"""
 
 import torch
 import torch.nn.functional as F

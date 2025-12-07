@@ -67,7 +67,7 @@ class AnswerAggregator:
                 {answers_str}
 
                 Instructions:
-                1. Group answers that are semantically identical (e.g., "three" and "3", "yes" and "Yeah")
+                1. Group answers that are semantically identical (e.g., "three" and "3", "yes" and "Yeah") and make sure the phrase makes sense by itself.
                 2. canonical_answer should be the most common/concise form
                 3. Unique answers form their own group
                 4. Return ONLY valid JSON, no extra text
@@ -75,7 +75,7 @@ class AnswerAggregator:
                 Output format:
                 {{
                     "grouped_answers": [
-                        {{"canonical_answer": "3", "original_answers_in_group": ["3", "three", "Three"]}},
+                        {{"canonical_answer": "3", "original_answers_in_group": ["3", "three"]}},
                         {{"canonical_answer": "yes", "original_answers_in_group": ["yes", "Yeah"]}}
                     ]
                 }}"""
@@ -218,7 +218,7 @@ class AnswerAggregator:
         # Sum confidences per canonical answer
         conf_sums = defaultdict(float)
         for item in answers_with_conf:
-            ans = item['answer']
+            ans = item['answer_normalized']
             conf = item['confidence']
             canonical = original_to_canonical.get(ans, ans)
             conf_sums[canonical] += conf

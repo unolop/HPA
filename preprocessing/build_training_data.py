@@ -7,7 +7,9 @@ from typing import Optional
 sys.path.append('..')
 from preprocess import *
 from dataset.vqav2 import VQADataset
-from aggregate import AnswerAggregator 
+from aggregate_old import AnswerAggregator 
+import random
+
 
 CONF_MAP = {'yes': 1.0, 
             'maybe': 0.5, 
@@ -71,7 +73,11 @@ def sample_data(processed, pilot=None, n=20):
     for qid in processed.keys(): 
         resp = processed[qid] 
         deficit = n - len(resp)
+        if deficit < 0: 
+            # print(f'we have more than enough data {n}') 
+            resp = resp[:n]
 
+        # append pilot data 
         if len(resp) < n and pilot is not None :
             if qid in pilot.keys(): 
                 pilot_data = pilot[qid]
@@ -84,8 +90,8 @@ def sample_data(processed, pilot=None, n=20):
             else:
                 missing_qids.append(missing_qids) 
                 # print(f"missing {deficit} pilot data for {qid}") 
-        else: 
-            print(f'Not enough data [qid: {qid}] by {deficit}')
+        # else: 
+        #     print(f'Not enough data [qid: {qid}] by {deficit}')
             
         processed[qid] = resp 
     
@@ -120,12 +126,17 @@ def build_training_data(
                 item_image_path = data[0]['image']
             elif item_image_path is None:
                 item_image_path = f"images/{qid}.jpg"  # Fallback
-            
             confidence_dist = aggregator.aggregate(data) 
             sorted_items = sorted(confidence_dist.items(), key=lambda x: -x[1])
             unique_answers = [item[0] for item in sorted_items]
             unique_confidences = [item[1] for item in sorted_items]
-            ans = data[0].get('multiple_choice_answer', '') # TODO if not get the highest confidence answer 
+            # Get the index of the highest value in unique_confidences
+            max_conf_idx = unique_confidences.index(max(unique_confidences)) if unique_confidences else 0
+            if 'blind' in output_jsonl_path: 
+                ans = unique_answers[max_conf_idx] if unique_answers else ''
+            else: 
+                ans = data[0].get('multiple_choice_answer', '') # TODO if not get the highest confidence answer 
+
             
             item = {
                 'idx': i,
@@ -146,7 +157,7 @@ def build_training_data(
             f.flush()  # Force write to disk immediately so file updates per iteration
     
     print(f"Wrote {len(processed)} items to {output_jsonl_path}")
-    print(f"Cache stats: {aggregator.get_cache_stats()}")
+    # print(f"Cache stats: {aggregator.get_cache_stats()}")
     
     return processed
 
@@ -167,7 +178,7 @@ def main(args):
 
     ### S1 answers 
     input_csvs = glob.glob(f"/home/work/yuna/HPA/data/humans/{args.results}/*/*.csv") 
-    questions_path = f"/home/work/yuna/HPA/experiments/questions/{args.session}.csv"
+    questions_path = f"/home/work/yuna/HPA/dataset/questions/{args.session}.csv"
     output_dir = f"/home/work/yuna/HPA/data/training/{args.session}_{args.answer_type}" 
 
     ### Get pilot data 
@@ -201,6 +212,19 @@ def main(args):
         )
     ## TODO Need to implement answer_type=='choice' (No need to aggregate)
 
+    ### Mixed dataset 
+    data1 = read_jsonl("/home/work/yuna/HPA/data/training/vqa1k_374.jsonl")
+    data2 = read_jsonl(f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl")
+    combined = data1 + data2
+    random.shuffle(combined)
+    # Do something with shuffled combined
+    print(f"Loaded {len(data1)} + {len(data2)} = {len(combined)} examples. First example:")
+    # Save the combined shuffled data to a new JSONL file
+    combined_output_path = f"{output_dir}/vqa1k_{args.n}_blind_inst_mixed.jsonl"
+    with open(combined_output_path, "w", encoding="utf-8") as fout:
+        for ex in combined:
+            fout.write(json.dumps(ex, ensure_ascii=False) + "\n")
+    print(f"Combined dataset saved to {combined_output_path}")
     # np.random.shuffle(examples) 
 
 if __name__ == '__main__': 

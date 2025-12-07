@@ -1,3 +1,4 @@
+import os 
 import re 
 from tqdm import tqdm
 import json
@@ -61,7 +62,7 @@ def load_dataset(data_name:str, prompt:str=''):
             choices = ann['choices'] 
             choices_text = "\n".join(choices)  
             question = (
-                f"{prompt}Question: {question}\n"
+                f"Question: {question}\n{prompt}"
                 f"{choices_text}\n"
                 "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
                 "Answer:"
@@ -110,7 +111,9 @@ def main(args):
     engine = PtEngine.from_model_template(model, template, max_batch_size=1)
     request_config = RequestConfig(max_tokens=args.max_token_length, temperature=0)
     
-    save_name = args.lora_path.split('/')[-3] if args.lora_path else args.model.split('/')[-1]
+    save_name = args.model.split('/')[-1]
+    if args.lora_path is not None : 
+        save_name += args.lora_path.split('/')[-3] 
     output_jsonl_path = f"{args.savedir}/{save_name}_{args.dataset}{args.condition}.jsonl"
     prompt= ''
 
@@ -133,6 +136,7 @@ def main(args):
     else :
         write_mode = 'a' 
 
+    os.makedirs(os.path.dirname(output_jsonl_path), exist_ok=True)
     with open(output_jsonl_path, write_mode, encoding='utf-8') as f:
         for i in tqdm(range(len(dataset))):
             data = dataset[i] 

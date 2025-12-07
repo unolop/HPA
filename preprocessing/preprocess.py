@@ -529,10 +529,10 @@ def preprocess_pipeline(
     for r in responses:
         r['answer_raw'] = r['answer']
         if r['answer_type'] == 'choice': 
-            r['answer'] = ['A', 'B', 'C', 'D'][int(r['answer_raw'])-1]
+            r['answer_normalized'] = ['A', 'B', 'C', 'D'][int(r['answer_raw'])-1]
         else:
-            r['answer'] = normalize_answer(r['answer'])
-            r['answer'] = normalize_number_words(r['answer'])
+            r['answer_normalized'] = normalize_answer(r['answer_raw'])
+            r['answer_normalized'] = normalize_number_words(r['answer_normalized'])
     
     # Create a dict to group responses by answer_type
     responses_by_type = defaultdict(list)
