@@ -23,6 +23,26 @@ modelnames = [
     "Qwen/Qwen3-VL-4B-Instruct",
     "llava-hf/llava-1.5-7b-hf"]
 
+def read_and_clean_jsonl(path):
+    data = []
+    with open(path, 'r', encoding='utf-8') as f:
+        for line in f:
+            try:
+                d = json.loads(line)
+                
+                # *** CLEANING STEP FOR 'qid' ***
+                # Convert the 'qid' field to a string, regardless of its original type (int, float, or string).
+                if 'qid' in d:
+                    d['qid'] = str(d['qid'])
+                
+                data.append(d)
+                
+            except json.JSONDecodeError as e:
+                print(f"Error decoding JSON line in {path}: {e}\nLine: {line.strip()}")
+                # You might want to skip the bad line or raise the error here
+                continue
+    return data
+
 def get_conditions(path, datasets=datasets, conditions=conditions, modelnames=modelnames):
     filename = os.path.basename(path).replace(".jsonl", "")
     tokens = filename.split("_")

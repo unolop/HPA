@@ -7,8 +7,9 @@ from typing import Optional
 sys.path.append('..')
 from preprocess import *
 from dataset.vqav2 import VQADataset
-from aggregate_old import AnswerAggregator 
+from aggregate import AnswerAggregator 
 import random
+from utils import read_and_clean_jsonl
 
 
 CONF_MAP = {'yes': 1.0, 
@@ -209,12 +210,12 @@ def main(args):
             ds=data,
             output_jsonl_path=f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl" , 
             client=setup_openai_client()
-        )
+        ) 
     ## TODO Need to implement answer_type=='choice' (No need to aggregate)
 
     ### Mixed dataset 
-    data1 = read_jsonl("/home/work/yuna/HPA/data/training/vqa1k_374.jsonl")
-    data2 = read_jsonl(f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl")
+    data1 = read_and_clean_jsonl("/home/work/yuna/HPA/data/training/vqa1k_374.jsonl")
+    data2 = read_and_clean_jsonl(f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl")
     combined = data1 + data2
     random.shuffle(combined)
     # Do something with shuffled combined
