@@ -68,34 +68,37 @@ def get_responses_by_qid(answers, vqa=True, blind=True, set_confidence=None):
 
     return responses_by_qid 
 
-def sample_data(processed, pilot=None, n=20): 
-    
-    missing_qids = []
-    for qid in processed.keys(): 
-        resp = processed[qid] 
-        deficit = n - len(resp)
-        if deficit < 0: 
-            # print(f'we have more than enough data {n}') 
-            resp = resp[:n]
+def sample_data(processed, pilot=None, n=20):
 
-        # append pilot data 
-        if len(resp) < n and pilot is not None :
-            if qid in pilot.keys(): 
+    missing_qids = []
+    for qid in processed.keys():
+        resp = processed[qid]
+        original_count = len(resp)
+        deficit = n - len(resp)
+
+        if deficit < 0:
+            # We have more than enough data, truncate to n
+            resp = resp[:n]
+            print(f"[QID {qid}] Truncated {original_count} → {len(resp)} responses")
+
+        # Append pilot data if we still need more
+        if len(resp) < n and pilot is not None:
+            print(f"[QID {qid}] Need {n - len(resp)} more responses (have {len(resp)}/{n})")
+            if qid in pilot.keys():
                 pilot_data = pilot[qid]
                 idx = 0
-                while len(resp) < n and idx < len(pilot_data): 
+                while len(resp) < n and idx < len(pilot_data):
                     resp.append(pilot_data[idx])
-                    idx += 1  
+                    idx += 1
+                print(f"[QID {qid}] Added {idx} pilot responses → now have {len(resp)}/{n}")
                 if len(resp) != n:
-                    print(f"still missing {n - len(resp)} after appending {idx} pilot data")
+                    print(f"[QID {qid}] ⚠️ Still missing {n - len(resp)} responses after pilot data")
             else:
-                missing_qids.append(missing_qids) 
-                # print(f"missing {deficit} pilot data for {qid}") 
-        # else: 
-        #     print(f'Not enough data [qid: {qid}] by {deficit}')
-            
-        processed[qid] = resp 
-    
+                missing_qids.append(qid)  # Fixed: was appending list to itself!
+                print(f"[QID {qid}] ⚠️ No pilot data available, missing {n - len(resp)} responses")
+
+        processed[qid] = resp
+
     return processed, missing_qids 
 
 def build_training_data(
