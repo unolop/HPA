@@ -8,8 +8,7 @@ sys.path.append('..')
 from preprocess import *
 from dataset.vqav2 import VQADataset
 from aggregate import AnswerAggregator 
-import random
-from utils import read_and_clean_jsonl
+from utils import mix_original
 
 
 CONF_MAP = {'yes': 1.0, 
@@ -20,7 +19,7 @@ CONF_MAP = {'yes': 1.0,
             '3': 0.5,
             '4': 0.75,
             '5': 1.0
-}
+            }
 
 def read_pilot_data(path): 
     '''
@@ -36,14 +35,14 @@ def read_pilot_data(path):
                 data.append(line)
     return data
 
-def get_responses_by_qid(answers, vqa=True, blind=True, set_confidence=None):  
+def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):  
 
     if blind: 
         prompt = "\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
     else: 
         prompt = "" 
     
-    if vqa:  
+    if answer_type == 'text':  
         vqa_val = VQADataset(prompt=prompt)
         vqa_val = vqa_val.get_by_qid() 
 
@@ -59,7 +58,7 @@ def get_responses_by_qid(answers, vqa=True, blind=True, set_confidence=None):
         confidence = CONF_MAP[str(confidence)]  
         resp['confidence'] = confidence
         
-        if vqa: # get original annotations 
+        if answer_type == 'text':  
             vqa_annot = vqa_val[qid]
             vqa_annot.pop('answers', None) # remove the ground truth answers 
             resp = {**vqa_annot, **resp}
@@ -75,7 +74,7 @@ def sample_data(processed, pilot=None, n=20):
         resp = processed[qid] 
         deficit = n - len(resp)
         if deficit < 0: 
-            # print(f'we have more than enough data {n}') 
+            print(f'we have more than enough data {n} total: {len(resp)}') 
             resp = resp[:n]
 
         # append pilot data 
@@ -89,10 +88,10 @@ def sample_data(processed, pilot=None, n=20):
                 if len(resp) != n:
                     print(f"still missing {n - len(resp)} after appending {idx} pilot data")
             else:
-                missing_qids.append(missing_qids) 
+                missing_qids.append(qid) 
                 # print(f"missing {deficit} pilot data for {qid}") 
 
-        print(f'Not enough pilot data {len(missing_qids)}  by {deficit}')
+        print(f'Not enough pilot data qid: {qid} by {deficit}')
             
         processed[qid] = resp 
     
@@ -184,11 +183,11 @@ def main(args):
     questions_path = f"/home/work/yuna/HPA/dataset/questions/{args.session}.csv"
     output_dir = f"/home/work/yuna/HPA/data/training/{args.session}_{args.answer_type}" 
 
-    ### Get pilot data 
+    ### Get pilot data
     pilot_data = read_pilot_data("/home/work/yuna/HPA/data/humans/_all_pilot_cleaned.jsonl")
     for d in pilot_data: 
         d['confidence'] = 3
-    pilot_data = get_responses_by_qid(pilot_data) 
+    pilot_data = get_responses_by_qid(pilot_data, args.answer_type) 
     print(f'Total # Pilot Questions: {len(pilot_data.keys())}')  # number of qids / questions 
     
     ### Actual data 
@@ -196,7 +195,7 @@ def main(args):
     # get data by answer type and normalized 
     processed = preprocess_pipeline(input_csvs, questions_path, output_dir) 
     processed = processed['responses'][args.answer_type] 
-    processed = get_responses_by_qid(processed)
+    processed = get_responses_by_qid(processed, args.answer_type)
     print('Selected answer type:', args.answer_type) 
     print(f'Total # Questions: {len(processed.keys())}')  # number of qids / questions 
     
@@ -213,30 +212,19 @@ def main(args):
             output_jsonl_path=f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl" ,
             client=setup_openai_client()
         )
+        combined_output_path = f"{output_dir}/vqa1k_{args.n}_blind_inst_mixed.jsonl"
+        mix_original("/home/work/yuna/HPA/data/training/vqa1k_374.jsonl", \
+                    f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl", combined_output_path) 
+        
     elif args.answer_type == 'choice':
-        # For multiple choice, no clustering needed - answers are already discrete
         build_training_data(
             ds=data,
             output_jsonl_path=f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl",
             client=None  # No API needed for choice questions
         )
     else:
-        raise ValueError(f"Unknown answer_type: {args.answer_type}. Expected 'text' or 'choice'.")
-
-    ### Mixed dataset 
-    data1 = read_and_clean_jsonl("/home/work/yuna/HPA/data/training/vqa1k_374.jsonl")
-    data2 = read_and_clean_jsonl(f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl")
-    combined = data1 + data2
-    random.shuffle(combined)
-    # Do something with shuffled combined
-    print(f"Loaded {len(data1)} + {len(data2)} = {len(combined)} examples. First example:")
-    # Save the combined shuffled data to a new JSONL file
-    combined_output_path = f"{output_dir}/vqa1k_{args.n}_blind_inst_mixed.jsonl"
-    with open(combined_output_path, "w", encoding="utf-8") as fout:
-        for ex in combined:
-            fout.write(json.dumps(ex, ensure_ascii=False) + "\n")
-    print(f"Combined dataset saved to {combined_output_path}")
-    # np.random.shuffle(examples) 
+        raise ValueError(f"Unknown answer_type: {args.answer_type}. Expected 'text' or 'choice'.") 
+    
 
 if __name__ == '__main__': 
     args = parse_args()

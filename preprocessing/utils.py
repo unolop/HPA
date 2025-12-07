@@ -1,11 +1,7 @@
-import numpy as np 
-import pandas as pd 
 import os 
 import re 
 import json
-import sys
-from collections import defaultdict
-from pathlib import Path
+import random 
 
 
 datasets = [ "mmstar","spubench","vqa_1k",  "vqa_5k" ]
@@ -42,6 +38,21 @@ def read_and_clean_jsonl(path):
                 # You might want to skip the bad line or raise the error here
                 continue
     return data
+
+def mix_original(original, new_data, combined_output_path ): 
+        ### Mixed dataset 
+        data1 = read_and_clean_jsonl(original)
+        data2 = read_and_clean_jsonl(new_data)
+        combined = data1 + data2
+        random.shuffle(combined)
+        # Do something with shuffled combined
+        print(f"Loaded {len(data1)} + {len(data2)} = {len(combined)} examples. First example:")
+        # Save the combined shuffled data to a new JSONL file
+        with open(combined_output_path, "w", encoding="utf-8") as fout:
+            for ex in combined:
+                fout.write(json.dumps(ex, ensure_ascii=False) + "\n")
+        print(f"Combined dataset saved to {combined_output_path}")
+    # np.random.shuffle(examples) 
 
 def get_conditions(path, datasets=datasets, conditions=conditions, modelnames=modelnames):
     filename = os.path.basename(path).replace(".jsonl", "")

@@ -337,7 +337,7 @@ def train_human_alignment(
     data_path: str,
     output_dir: str,
     run_name: str,
-    val_data_path: str = None,
+    val_data_path,
     mode: str = "JS",
     lambda_dist: float = 1.0,
     lambda_l2: float = 0.1,
@@ -370,7 +370,11 @@ def train_human_alignment(
     
     # Get tokenizer for answer token lookup
     _, tokenizer = get_model_tokenizer(model_path, torch_dtype=torch.bfloat16, device_map="cpu")
-    
+    if val_data_path is not None: 
+        val_data_path = [val_data_path] 
+    else: 
+        val_data_path = None 
+
     sft_args = HumanAlignmentArguments(
         model=model_path,
         dataset=[data_path],
