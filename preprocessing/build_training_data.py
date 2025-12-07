@@ -133,10 +133,11 @@ def build_training_data(
             unique_confidences = [item[1] for item in sorted_items]
             # Get the index of the highest value in unique_confidences
             max_conf_idx = unique_confidences.index(max(unique_confidences)) if unique_confidences else 0
-            if 'blind' in output_jsonl_path: 
+            if 'blind' in output_jsonl_path:
                 ans = unique_answers[max_conf_idx] if unique_answers else ''
-            else: 
-                ans = data[0].get('multiple_choice_answer', '') # TODO if not get the highest confidence answer 
+            else:
+                # Use highest confidence answer if available, otherwise fall back to ground truth
+                ans = unique_answers[max_conf_idx] if unique_answers else data[0].get('multiple_choice_answer', '') 
 
             
             item = {
@@ -203,15 +204,23 @@ def main(args):
     print('missing # questions from pilot: ', len(missingq))
     print(f"#Q pilot: {len(pilot_data.keys())}, #Q Experiments: {len(processed.keys())}")  
     
-    # Save training data file 
-    if args.answer_type == 'text': 
-        # need to cluster answers
+    # Save training data file
+    if args.answer_type == 'text':
+        # need to cluster answers for free-text responses
         build_training_data(
             ds=data,
-            output_jsonl_path=f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl" , 
+            output_jsonl_path=f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl" ,
             client=setup_openai_client()
-        ) 
-    ## TODO Need to implement answer_type=='choice' (No need to aggregate)
+        )
+    elif args.answer_type == 'choice':
+        # For multiple choice, no clustering needed - answers are already discrete
+        build_training_data(
+            ds=data,
+            output_jsonl_path=f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl",
+            client=None  # No API needed for choice questions
+        )
+    else:
+        raise ValueError(f"Unknown answer_type: {args.answer_type}. Expected 'text' or 'choice'.")
 
     ### Mixed dataset 
     data1 = read_and_clean_jsonl("/home/work/yuna/HPA/data/training/vqa1k_374.jsonl")
