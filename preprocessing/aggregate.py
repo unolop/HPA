@@ -205,6 +205,7 @@ class AnswerAggregator:
         self,
         answers_with_conf: List[Dict]
     ) -> Dict[str, float]:
+        
         unique_answers = list(set(item['answer_normalized'] for item in answers_with_conf))
         
         # Get clustering (from cache or LLM)

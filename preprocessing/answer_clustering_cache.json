@@ -36208,5 +36208,228 @@
         ]
       }
     ]
+  },
+  "[\"company email site\", \"google\", \"no\", \"nothing\", \"search engine\", \"search portal\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "search engine",
+        "original_answers_in_group": [
+          "search engine",
+          "google",
+          "search portal"
+        ]
+      },
+      {
+        "canonical_answer": "company email site",
+        "original_answers_in_group": [
+          "company email site"
+        ]
+      },
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no",
+          "nothing"
+        ]
+      }
+    ]
+  },
+  "[\"cooking\", \"he is smoking a cigarette\", \"nothing\", \"playing the guitar\", \"sleeping\", \"swimming\", \"tennis\", \"walking\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "tennis",
+        "original_answers_in_group": [
+          "tennis"
+        ]
+      },
+      {
+        "canonical_answer": "cooking",
+        "original_answers_in_group": [
+          "cooking"
+        ]
+      },
+      {
+        "canonical_answer": "walking",
+        "original_answers_in_group": [
+          "walking"
+        ]
+      },
+      {
+        "canonical_answer": "playing the guitar",
+        "original_answers_in_group": [
+          "playing the guitar"
+        ]
+      },
+      {
+        "canonical_answer": "sleeping",
+        "original_answers_in_group": [
+          "sleeping"
+        ]
+      },
+      {
+        "canonical_answer": "nothing",
+        "original_answers_in_group": [
+          "nothing"
+        ]
+      },
+      {
+        "canonical_answer": "he is smoking a cigarette",
+        "original_answers_in_group": [
+          "he is smoking a cigarette"
+        ]
+      },
+      {
+        "canonical_answer": "swimming",
+        "original_answers_in_group": [
+          "swimming"
+        ]
+      }
+    ]
+  },
+  "[\"biology\", \"dogs\", \"helicopter\", \"it seems they are studying geographical locations using maps\", \"medicine\", \"new drug\", \"nothing\", \"rock\", \"science\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "rock",
+        "original_answers_in_group": [
+          "rock"
+        ]
+      },
+      {
+        "canonical_answer": "science",
+        "original_answers_in_group": [
+          "science"
+        ]
+      },
+      {
+        "canonical_answer": "biology",
+        "original_answers_in_group": [
+          "biology"
+        ]
+      },
+      {
+        "canonical_answer": "dogs",
+        "original_answers_in_group": [
+          "dogs"
+        ]
+      },
+      {
+        "canonical_answer": "new drug",
+        "original_answers_in_group": [
+          "new drug"
+        ]
+      },
+      {
+        "canonical_answer": "medicine",
+        "original_answers_in_group": [
+          "medicine"
+        ]
+      },
+      {
+        "canonical_answer": "geographical study",
+        "original_answers_in_group": [
+          "it seems they are studying geographical locations using maps"
+        ]
+      },
+      {
+        "canonical_answer": "helicopter",
+        "original_answers_in_group": [
+          "helicopter"
+        ]
+      },
+      {
+        "canonical_answer": "nothing",
+        "original_answers_in_group": [
+          "nothing"
+        ]
+      }
+    ]
+  },
+  "[\"bird\", \"brain\", \"hat\", \"headband\", \"nobody\", \"none\", \"nothing\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "none",
+        "original_answers_in_group": [
+          "none",
+          "nobody",
+          "nothing"
+        ]
+      },
+      {
+        "canonical_answer": "hat",
+        "original_answers_in_group": [
+          "hat"
+        ]
+      },
+      {
+        "canonical_answer": "brain",
+        "original_answers_in_group": [
+          "brain"
+        ]
+      },
+      {
+        "canonical_answer": "bird",
+        "original_answers_in_group": [
+          "bird"
+        ]
+      },
+      {
+        "canonical_answer": "headband",
+        "original_answers_in_group": [
+          "headband"
+        ]
+      }
+    ]
+  },
+  "[\"0\", \"0 pieces\", \"2\", \"how many\", \"i dont know\", \"no\", \"nothing\", \"why are they wearing it\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "how many",
+        "original_answers_in_group": [
+          "how many"
+        ]
+      },
+      {
+        "canonical_answer": "nothing",
+        "original_answers_in_group": [
+          "nothing"
+        ]
+      },
+      {
+        "canonical_answer": "2",
+        "original_answers_in_group": [
+          "2"
+        ]
+      },
+      {
+        "canonical_answer": "0",
+        "original_answers_in_group": [
+          "0"
+        ]
+      },
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no"
+        ]
+      },
+      {
+        "canonical_answer": "i dont know",
+        "original_answers_in_group": [
+          "i dont know"
+        ]
+      },
+      {
+        "canonical_answer": "why are they wearing it",
+        "original_answers_in_group": [
+          "why are they wearing it"
+        ]
+      },
+      {
+        "canonical_answer": "0 pieces",
+        "original_answers_in_group": [
+          "0 pieces"
+        ]
+      }
+    ]
   }
 }

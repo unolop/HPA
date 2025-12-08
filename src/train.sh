@@ -1,17 +1,18 @@
 #!/bin/bash
 
 MODELS=(
-    # "Qwen/Qwen3-VL-8B-Instruct"
-    # "Qwen/Qwen3-VL-4B-Instruct"
-    "llava-hf/llava-v1.6-mistral-7b-hf"
+    "Qwen/Qwen3-VL-4B-Instruct"
+    "Qwen/Qwen3-VL-8B-Instruct"
+    # "llava-hf/llava-v1.6-mistral-7b-hf"
     # "OpenGVLab/InternVL3_5-8B"
 )
 
 data_path="/home/work/yuna/HPA/data/training/s1_text/train_agg_15_blind_inst.jsonl"
+data_path="/home/work/yuna/HPA/data/training/s1_choice/train_agg_15_blind_inst.jsonl"
 
 val_data=""
 # val_data="/home/work/yuna/HPA/data/training/vqa5k_agg.jsonl"
-RUNNAME="A1_JS_vqa1k_n15_blind_inst"
+RUNNAME="D1_JS_mmstar_n15_blind"
 
 for MODEL_8B in "${MODELS[@]}"; do
     # Build validation argument conditionally

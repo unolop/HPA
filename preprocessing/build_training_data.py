@@ -90,7 +90,8 @@ def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):
         prompt = "" 
 
     # get annotations 
-    annot = get_annot(answer_type, prompt) 
+    annot = get_annot(answer_type, prompt)
+    new_annot = {} 
         
     for resp in answers: 
         # breakpoint()
@@ -105,13 +106,28 @@ def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):
             confidence = set_confidence 
         confidence = CONF_MAP[str(confidence)]  
         resp['confidence'] = confidence
-        ann.pop('answers', None) # remove the ground truth answers 
-        resp['question_old'] = resp['question'] 
+        question_original = resp['question'] 
+        
+        if qid in new_annot.keys(): 
+            continue 
+        else: 
+            gt_answers = ann['answers'] 
+            ann.pop('answers', None) # remove the ground truth answers 
+        
         resp = {**ann, **resp}
         resp['question'] = ann['question']
         responses_by_qid[qid].append(resp)   
+        
+        # save ground truth answers 
+        new_annot[qid] = []
+        ann['question'] = question_original 
+        
+        for a in gt_answers: # has to be 10 
+            ann["answer_normalized"] = a['answer']
+            ann["confidence"] = CONF_MAP[str(a['answer_confidence'])] 
+            new_annot[qid].append(ann) 
 
-    return responses_by_qid 
+    return responses_by_qid, new_annot 
 
 def sample_data(processed, pilot=None, n=20): 
     
@@ -190,18 +206,11 @@ def build_training_data(
             max_conf_idx = unique_confidences.index(max(unique_confidences)) if unique_confidences else 0
             if 'blind' in output_jsonl_path:
                 ans = unique_answers[max_conf_idx] if unique_answers else ''
-            else:
-                # Use highest confidence answer if available, otherwise fall back to ground truth
-                ans = unique_answers[max_conf_idx] if unique_answers else data[0].get('multiple_choice_answer', '') 
-            
-            # Create a new dictionary for the output item (data is a list, not a dict)
-            # Determine image path
-            if image_path:
                 item_image_path = image_path
-            elif 'image' in data[0]:
-                item_image_path = data[0]['image']
             else:
-                item_image_path = f"images/{qid}.jpg"  # Fallback
+                ans = data[0].get('multiple_choice_answer', '') 
+                item_image_path = data[0]['image']
+                # item_image_path = f"images/{qid}.jpg"  # Fallback
                 
             item = {
                 'idx': i,
@@ -249,7 +258,7 @@ def main(args):
     pilot_data = read_pilot_data("/home/work/yuna/HPA/data/humans/_all_pilot_cleaned.jsonl")
     for d in pilot_data: 
         d['confidence'] = 3
-    pilot_data = get_responses_by_qid(pilot_data, args.answer_type) 
+    pilot_data, _ = get_responses_by_qid(pilot_data, args.answer_type) 
     print(f'Total # Pilot Questions: {len(pilot_data.keys())}')  # number of qids / questions 
     
     ### Actual data 
@@ -257,18 +266,22 @@ def main(args):
     # get data by answer type and normalized 
     processed = preprocess_pipeline(input_csvs, questions_path, output_dir) 
     processed = processed['responses'][args.answer_type] 
-    processed = get_responses_by_qid(processed, args.answer_type)
+    processed, gt = get_responses_by_qid(processed, args.answer_type) 
     print('Selected answer type:', args.answer_type) 
     print(f'Total # Questions: {len(processed.keys())}')  # number of qids / questions 
-    
     # sample n number of data per question 
+    if args.answer_type == 'text':
+        build_training_data(
+            ds=gt,
+            output_jsonl_path=f"{output_dir}/train_agg_vqa_gt.jsonl" , 
+            client=setup_openai_client()
+        )
+ 
     data, missingq = sample_data(processed, pilot_data, n=args.n) 
     print('missing # questions from pilot: ', len(missingq))
     print(f"#Q pilot: {len(pilot_data.keys())}, #Q Experiments: {len(processed.keys())}")  
-    
     # Save training data file
     if args.answer_type == 'text':
-        # need to cluster answers for free-text responses
         build_training_data(
             ds=data,
             output_jsonl_path=f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl" ,
