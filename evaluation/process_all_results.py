@@ -174,6 +174,7 @@ def compute_metrics_for_file(
     results: List[Dict],
     dataset_name: str,
     encoder=None,
+    verbose: bool = False,
 ) -> Dict[str, Any]:
     """
     Compute metrics for a result file.
@@ -182,11 +183,15 @@ def compute_metrics_for_file(
         results: List of result items
         dataset_name: Name of dataset
         encoder: Sentence transformer encoder
+        verbose: If True, print debug logging
 
     Returns:
         Dictionary of metrics
     """
     dataset_type = DATASET_TYPE.get(dataset_name, 'multi-choice')
+
+    if verbose:
+        print(f"  [METRICS] Dataset: {dataset_name}, Type: {dataset_type}, Encoder: {'available' if encoder else 'None'}")
 
     metrics = {
         'num_samples': len(results),
@@ -206,6 +211,9 @@ def compute_metrics_for_file(
         'total': 0,
         'similarities': [],
     })
+
+    embedding_calculated = 0
+    embedding_from_cache = 0
 
     for item in results:
         # Get ground truth and prediction
@@ -240,13 +248,28 @@ def compute_metrics_for_file(
         by_category[category]['correct'] += int(is_correct)
         by_category[category]['total'] += 1
 
-        # Compute embedding similarity
-        if encoder is not None and dataset_type == 'open-ended':
-            answers_for_sim = all_answers if all_answers else [gt]
-            sim = answer_similarity(answers_for_sim, pred, encoder)
+        # Handle embedding similarity for open-ended questions only
+        if dataset_type == 'open-ended':
+            # Check if already computed (from cached file)
+            if 'embedding_similarity' in item and item['embedding_similarity'] is not None:
+                sim = item['embedding_similarity']
+                embedding_from_cache += 1
+            elif encoder is not None:
+                # Calculate embedding similarity
+                answers_for_sim = all_answers if all_answers else [gt]
+                sim = answer_similarity(answers_for_sim, pred, encoder)
+                item['embedding_similarity'] = sim
+                embedding_calculated += 1
+            else:
+                # No encoder and no cached value
+                sim = 0.0
+                item['embedding_similarity'] = sim
+
             similarities.append(sim)
             by_category[category]['similarities'].append(sim)
-            item['embedding_similarity'] = sim
+
+    if verbose and dataset_type == 'open-ended':
+        print(f"  [EMBEDDING] Calculated: {embedding_calculated}, From cache: {embedding_from_cache}, Total: {len(similarities)}")
 
     metrics['num_correct'] = correct_count
     metrics['accuracy'] = correct_count / len(results) if results else 0.0
@@ -302,8 +325,8 @@ def process_result_file(
             # Already processed, load existing metrics
             results = load_results_file(str(output_path))
             if results and 'correct' in results[0]:
-                # Recompute summary metrics from processed file
-                metrics = compute_metrics_for_file(results, metadata['dataset'], None)
+                # Recompute summary metrics from processed file (with encoder to collect existing embeddings)
+                metrics = compute_metrics_for_file(results, metadata['dataset'], encoder, verbose=True)
                 return {
                     'filepath': str(filepath),
                     'output_path': str(output_path),
@@ -320,7 +343,7 @@ def process_result_file(
         return None
 
     # Compute metrics (this adds 'correct' and 'embedding_similarity' to each item)
-    metrics = compute_metrics_for_file(results, metadata['dataset'], encoder)
+    metrics = compute_metrics_for_file(results, metadata['dataset'], encoder, verbose=True)
 
     # Save processed results with per-question scores
     output_path.parent.mkdir(parents=True, exist_ok=True)
