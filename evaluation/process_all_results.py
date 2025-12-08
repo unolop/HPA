@@ -238,6 +238,7 @@ def process_result_file(
     filepath: str,
     output_dir: str,
     encoder=None,
+    force: bool = False,
 ) -> Dict[str, Any]:
     """
     Process a single result file.
@@ -246,12 +247,36 @@ def process_result_file(
         filepath: Path to result file
         output_dir: Output directory for processed files
         encoder: Sentence transformer encoder
+        force: If True, reprocess even if output exists
 
     Returns:
         Dictionary with metadata and metrics
     """
     # Parse filename
     metadata = parse_filename(filepath)
+
+    # Check if already processed
+    relative_path = Path(filepath).relative_to('/home/user/HPA/data')
+    output_path = Path(output_dir) / relative_path
+
+    if not force and output_path.exists():
+        # Check if file sizes match (same number of lines)
+        input_lines = sum(1 for _ in open(filepath, 'r'))
+        output_lines = sum(1 for _ in open(output_path, 'r'))
+
+        if input_lines == output_lines:
+            # Already processed, load existing metrics
+            results = load_results_file(str(output_path))
+            if results and 'correct' in results[0]:
+                # Recompute summary metrics from processed file
+                metrics = compute_metrics_for_file(results, metadata['dataset'], None)
+                return {
+                    'filepath': str(filepath),
+                    'output_path': str(output_path),
+                    **metadata,
+                    'metrics': metrics,
+                    'cached': True,
+                }
 
     # Load results
     results = load_results_file(filepath)
@@ -260,17 +285,27 @@ def process_result_file(
         print(f"⚠ Empty file: {filepath}")
         return None
 
-    # Compute metrics
+    # Compute metrics (this adds 'correct' and 'embedding_similarity' to each item)
     metrics = compute_metrics_for_file(results, metadata['dataset'], encoder)
 
+<<<<<<< HEAD
     # Save processed results
     relative_path = Path(filepath).relative_to('/home/work/yuna/HPA/data')
     output_path = Path(output_dir) / relative_path
+=======
+    # Save processed results with per-question scores
+>>>>>>> origin/claude/fix-todo-mipm6gpu6bovkh38-016Q75zSCnGerkx1wYHPhHvM
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, 'w', encoding='utf-8') as f:
         for item in results:
-            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+            # Keep all original fields plus computed scores
+            output_item = {
+                **item,
+                'correct': item.get('correct', False),
+                'embedding_similarity': item.get('embedding_similarity', 0.0),
+            }
+            f.write(json.dumps(output_item, ensure_ascii=False) + '\n')
 
     # Return summary
     return {
@@ -278,6 +313,7 @@ def process_result_file(
         'output_path': str(output_path),
         **metadata,
         'metrics': metrics,
+        'cached': False,
     }
 
 
@@ -340,6 +376,23 @@ def generate_summary_stats(all_results: List[Dict], output_dir: str):
     }).round(4)
     print(model_dataset_summary)
 
+    # Additional breakdowns
+    print("\n## By Dataset and Condition:")
+    dataset_condition = df.groupby(['dataset', 'condition']).agg({
+        'num_samples': 'sum',
+        'num_correct': 'sum',
+        'accuracy': 'mean',
+        'embedding_similarity': 'mean',
+    }).round(4)
+    print(dataset_condition)
+
+    print("\n## By Source and Model:")
+    source_model = df.groupby(['source', 'model']).agg({
+        'num_samples': 'sum',
+        'accuracy': 'mean',
+    }).round(4)
+    print(source_model)
+
     # Save detailed summary
     detailed_summary = {
         'overall': {
@@ -374,13 +427,38 @@ def generate_summary_stats(all_results: List[Dict], output_dir: str):
 
 def main():
     """Main processing pipeline."""
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Process all result files and compute metrics"
+    )
+    parser.add_argument(
+        '--force',
+        action='store_true',
+        help='Force reprocessing of all files (ignore cache)'
+    )
+    parser.add_argument(
+        '--output_dir',
+        type=str,
+        default='/home/user/HPA/data/processed',
+        help='Output directory for processed files'
+    )
+    args = parser.parse_args()
+
     print("=" * 80)
     print("📊 PROCESSING ALL RESULT FILES")
     print("=" * 80)
+    if args.force:
+        print("⚠ Force mode: reprocessing all files")
 
     # Setup paths
+<<<<<<< HEAD
     data_dir = Path('/home/work/yuna/HPA/data')
     output_dir = Path('/home/work/yuna/HPA/data/processed')
+=======
+    data_dir = Path('/home/user/HPA/data')
+    output_dir = Path(args.output_dir)
+>>>>>>> origin/claude/fix-todo-mipm6gpu6bovkh38-016Q75zSCnGerkx1wYHPhHvM
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Find all result files
@@ -409,16 +487,81 @@ def main():
     print("=" * 80)
 
     all_results = []
-    for filepath in tqdm(result_files, desc="Processing"):
+    cached_count = 0
+    processed_count = 0
+
+    # Track stats by source
+    stats_by_source = defaultdict(lambda: {'count': 0, 'samples': 0, 'correct': 0})
+
+    for i, filepath in enumerate(result_files, 1):
         try:
-            result = process_result_file(str(filepath), str(output_dir), encoder)
+            print(f"\n[{i}/{len(result_files)}] Processing: {filepath.name}")
+
+            result = process_result_file(
+                str(filepath),
+                str(output_dir),
+                encoder,
+                force=args.force
+            )
+
             if result:
                 all_results.append(result)
+
+                # Log detailed information
+                status = "✓ CACHED" if result.get('cached', False) else "✓ PROCESSED"
+                print(f"  {status}")
+                print(f"  Source: {result['source']}")
+                print(f"  Model: {result['model']}")
+                print(f"  Dataset: {result['dataset']}")
+                print(f"  Condition: {result['condition'] or '(none)'}")
+                if result.get('training_method'):
+                    print(f"  Training: {result['training_method']}")
+
+                # Show metrics
+                metrics = result['metrics']
+                print(f"  Samples: {metrics['num_samples']}")
+                print(f"  Accuracy: {metrics['accuracy']:.4f} ({metrics['num_correct']}/{metrics['num_samples']})")
+                if metrics['embedding_similarity'] > 0:
+                    print(f"  Embedding Sim: {metrics['embedding_similarity']:.4f}")
+
+                # Show per-category breakdown for small number of categories
+                if metrics['by_category'] and len(metrics['by_category']) <= 5:
+                    print(f"  By Category:")
+                    for cat, cat_metrics in metrics['by_category'].items():
+                        cat_name = cat[:30] + '...' if len(cat) > 30 else cat
+                        print(f"    • {cat_name}: {cat_metrics['accuracy']:.3f} ({cat_metrics['num_samples']} samples)")
+
+                # Update tracking stats
+                source = result['source']
+                stats_by_source[source]['count'] += 1
+                stats_by_source[source]['samples'] += metrics['num_samples']
+                stats_by_source[source]['correct'] += metrics['num_correct']
+
+                if result.get('cached', False):
+                    cached_count += 1
+                else:
+                    processed_count += 1
+
+            # Show progress summary every 10 files
+            if i % 10 == 0 or i == len(result_files):
+                print(f"\n{'='*60}")
+                print(f"Progress: {i}/{len(result_files)} files")
+                print(f"Cached: {cached_count} | Processed: {processed_count}")
+                for src, stats in stats_by_source.items():
+                    acc = stats['correct'] / stats['samples'] if stats['samples'] > 0 else 0
+                    print(f"  {src}: {stats['count']} files, {stats['samples']} samples, {acc:.3f} accuracy")
+                print(f"{'='*60}")
+
         except Exception as e:
-            print(f"\n⚠ Error processing {filepath}: {e}")
+            print(f"\n⚠ ERROR processing {filepath.name}")
+            print(f"   {str(e)}")
+            import traceback
+            traceback.print_exc()
             continue
 
     print(f"\n✓ Successfully processed {len(all_results)} files")
+    print(f"   • Cached (skipped): {cached_count}")
+    print(f"   • Newly processed: {processed_count}")
 
     # Generate summary statistics
     print("\n" + "=" * 80)
@@ -430,11 +573,14 @@ def main():
     print("\n" + "=" * 80)
     print("✅ PROCESSING COMPLETE")
     print("=" * 80)
-    print(f"   Processed files: {len(all_results)}")
+    print(f"   Total files: {len(all_results)}")
+    print(f"   Cached: {cached_count}")
+    print(f"   Processed: {processed_count}")
     print(f"   Total samples: {summary['overall']['total_samples']}")
     print(f"   Overall accuracy: {summary['overall']['overall_accuracy']:.4f}")
     print(f"   Output directory: {output_dir}")
     print("=" * 80)
+    print("\n💡 Tip: Use --force to reprocess all files")
 
 
 if __name__ == '__main__':
