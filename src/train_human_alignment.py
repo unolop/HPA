@@ -132,9 +132,13 @@ class HumanAlignmentTrainer(Trainer):
             
         elif self.mode == "JS":
             # Jensen-Shannon Divergence
+            # Clamp ALL distributions to avoid log(0) = -inf causing NaN
+            eps = 1e-12
+            human_dist = human_dist.clamp(min=eps)
+            model_probs = model_probs.clamp(min=eps)
             m_dist = (human_dist + model_probs) / 2.0
-            m_dist = m_dist.clamp(min=1e-12)
-            
+            m_dist = m_dist.clamp(min=eps)
+
             # JS = 0.5 * KL(H || M) + 0.5 * KL(P || M)
             kl_human_m = F.kl_div(
                 m_dist.log(), human_dist, reduction='sum', log_target=False
@@ -229,12 +233,18 @@ class HumanAlignmentTrainer(Trainer):
             total_loss = sft_loss + self.lambda_dist * dist_loss
             if self.use_l2_penalty:
                 total_loss = total_loss + self.lambda_l2 * l2_loss
-        
+
+        # Check for NaN/Inf in losses
+        if torch.isnan(total_loss) or torch.isinf(total_loss):
+            logger.warning(f"⚠️  NaN/Inf detected! sft={sft_loss.item():.4f}, dist={dist_loss.item():.4f}, l2={l2_loss.item():.4f}")
+            # Replace with SFT loss only to continue training
+            total_loss = sft_loss
+
         # Track losses
         self.stats['total_sft_loss'] += sft_loss.item()
-        self.stats['total_dist_loss'] += dist_loss.item()
-        self.stats['total_l2_loss'] += l2_loss.item()
-        
+        self.stats['total_dist_loss'] += dist_loss.item() if not torch.isnan(dist_loss) else 0.0
+        self.stats['total_l2_loss'] += l2_loss.item() if not torch.isnan(l2_loss) else 0.0
+
         # Logging
         if self.state.is_world_process_zero:
             log_dict = {
@@ -244,14 +254,14 @@ class HumanAlignmentTrainer(Trainer):
                 'total_loss': total_loss.detach().item(),
             }
             self.log(log_dict)
-            
+
             if self.state.global_step % 50 == 0 and self.state.global_step > 0:
                 self._log_statistics()
-        
+
         # Backward
         if self.args.n_gpu > 1:
             total_loss = total_loss.mean()
-        
+
         self.accelerator.backward(total_loss)
         
         del outputs
