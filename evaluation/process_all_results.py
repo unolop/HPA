@@ -370,6 +370,23 @@ def generate_summary_stats(all_results: List[Dict], output_dir: str):
     }).round(4)
     print(model_dataset_summary)
 
+    # Additional breakdowns
+    print("\n## By Dataset and Condition:")
+    dataset_condition = df.groupby(['dataset', 'condition']).agg({
+        'num_samples': 'sum',
+        'num_correct': 'sum',
+        'accuracy': 'mean',
+        'embedding_similarity': 'mean',
+    }).round(4)
+    print(dataset_condition)
+
+    print("\n## By Source and Model:")
+    source_model = df.groupby(['source', 'model']).agg({
+        'num_samples': 'sum',
+        'accuracy': 'mean',
+    }).round(4)
+    print(source_model)
+
     # Save detailed summary
     detailed_summary = {
         'overall': {
@@ -462,22 +479,71 @@ def main():
     cached_count = 0
     processed_count = 0
 
-    for filepath in tqdm(result_files, desc="Processing"):
+    # Track stats by source
+    stats_by_source = defaultdict(lambda: {'count': 0, 'samples': 0, 'correct': 0})
+
+    for i, filepath in enumerate(result_files, 1):
         try:
+            print(f"\n[{i}/{len(result_files)}] Processing: {filepath.name}")
+
             result = process_result_file(
                 str(filepath),
                 str(output_dir),
                 encoder,
                 force=args.force
             )
+
             if result:
                 all_results.append(result)
+
+                # Log detailed information
+                status = "✓ CACHED" if result.get('cached', False) else "✓ PROCESSED"
+                print(f"  {status}")
+                print(f"  Source: {result['source']}")
+                print(f"  Model: {result['model']}")
+                print(f"  Dataset: {result['dataset']}")
+                print(f"  Condition: {result['condition'] or '(none)'}")
+                if result.get('training_method'):
+                    print(f"  Training: {result['training_method']}")
+
+                # Show metrics
+                metrics = result['metrics']
+                print(f"  Samples: {metrics['num_samples']}")
+                print(f"  Accuracy: {metrics['accuracy']:.4f} ({metrics['num_correct']}/{metrics['num_samples']})")
+                if metrics['embedding_similarity'] > 0:
+                    print(f"  Embedding Sim: {metrics['embedding_similarity']:.4f}")
+
+                # Show per-category breakdown for small number of categories
+                if metrics['by_category'] and len(metrics['by_category']) <= 5:
+                    print(f"  By Category:")
+                    for cat, cat_metrics in metrics['by_category'].items():
+                        cat_name = cat[:30] + '...' if len(cat) > 30 else cat
+                        print(f"    • {cat_name}: {cat_metrics['accuracy']:.3f} ({cat_metrics['num_samples']} samples)")
+
+                # Update tracking stats
+                source = result['source']
+                stats_by_source[source]['count'] += 1
+                stats_by_source[source]['samples'] += metrics['num_samples']
+                stats_by_source[source]['correct'] += metrics['num_correct']
+
                 if result.get('cached', False):
                     cached_count += 1
                 else:
                     processed_count += 1
+
+            # Show progress summary every 10 files
+            if i % 10 == 0 or i == len(result_files):
+                print(f"\n{'='*60}")
+                print(f"Progress: {i}/{len(result_files)} files")
+                print(f"Cached: {cached_count} | Processed: {processed_count}")
+                for src, stats in stats_by_source.items():
+                    acc = stats['correct'] / stats['samples'] if stats['samples'] > 0 else 0
+                    print(f"  {src}: {stats['count']} files, {stats['samples']} samples, {acc:.3f} accuracy")
+                print(f"{'='*60}")
+
         except Exception as e:
-            print(f"\n⚠ Error processing {filepath}: {e}")
+            print(f"\n⚠ ERROR processing {filepath.name}")
+            print(f"   {str(e)}")
             import traceback
             traceback.print_exc()
             continue
