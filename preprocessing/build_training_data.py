@@ -66,7 +66,7 @@ def get_annot(answer_type, prompt):
                     # q += oq.split('\nOptions:')[1] 
                     annot[qid] = {**row, **data}   
                     annot[qid]['question'] = data['question']
-                    breakpoint()
+                    # breakpoint()
                     break 
 
     return annot 
@@ -98,9 +98,9 @@ def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):
         confidence = CONF_MAP[str(confidence)]  
         resp['confidence'] = confidence
         ann.pop('answers', None) # remove the ground truth answers 
-        resp['question'] = ann['question']
-        breakpoint()
+        resp['question_old'] = resp['question'] 
         resp = {**ann, **resp}
+        resp['question'] = ann['question']
         responses_by_qid[qid].append(resp)   
 
     return responses_by_qid 
@@ -148,23 +148,15 @@ def build_training_data(
     # Set image path based on output path
     if 'blind' in output_jsonl_path: 
         image_path = "/home/work/yuna/HPA/data/blank_224.png" 
-        print('processing blind image annotations') 
+        print('processing blind image annotations')
     else:
-        # Default: use actual image paths from data
-        image_path = None  # Will be set from data if available
-    
+        image_path = None  # Will be determined from data 
     print(f"Saving into file {output_jsonl_path}")
     
     with open(output_jsonl_path, "w") as f:
         for i, (qid, data) in enumerate(tqdm(ds.items(), desc="Processing questions")):
+            # data is a list of response dictionaries (length = n, e.g., 14)
             question = data[0]['question']
-            
-            # Use image_path from data if not using blind image
-            item_image_path = image_path
-            if item_image_path is None and 'image' in data[0]:
-                item_image_path = data[0]['image']
-            elif item_image_path is None:
-                item_image_path = f"images/{qid}.jpg"  # Fallback
             confidence_dist = aggregator.aggregate(data) 
             sorted_items = sorted(confidence_dist.items(), key=lambda x: -x[1])
             unique_answers = [item[0] for item in sorted_items]
@@ -176,8 +168,16 @@ def build_training_data(
             else:
                 # Use highest confidence answer if available, otherwise fall back to ground truth
                 ans = unique_answers[max_conf_idx] if unique_answers else data[0].get('multiple_choice_answer', '') 
-
             
+            # Create a new dictionary for the output item (data is a list, not a dict)
+            # Determine image path
+            if image_path:
+                item_image_path = image_path
+            elif 'image' in data[0]:
+                item_image_path = data[0]['image']
+            else:
+                item_image_path = f"images/{qid}.jpg"  # Fallback
+                
             item = {
                 'idx': i,
                 'images': [item_image_path],
@@ -191,7 +191,6 @@ def build_training_data(
                     'answers': unique_answers
                 }
             }
-            
             processed.append(item)
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
             f.flush()  # Force write to disk immediately so file updates per iteration

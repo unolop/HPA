@@ -2,7 +2,7 @@
 
 MODELS=(
     "Qwen/Qwen3-VL-4B-Instruct"
-    # "Qwen/Qwen3-VL-8B-Instruct"
+    "Qwen/Qwen3-VL-8B-Instruct"
     # "OpenGVLab/InternVL3_5-8B"
 )
 
@@ -12,7 +12,7 @@ data_path="/home/work/yuna/HPA/data/training/s1_choice/train_agg_14_blind_inst.j
 
 val_data=""
 # val_data="/home/work/yuna/HPA/data/training/vqa5k_agg.jsonl"
-RUNNAME="mmstar_alignment_js_blind_4b"
+RUNNAME="mmstar_alignment_js_blind"
 
 for MODEL_8B in "${MODELS[@]}"; do
     # Build validation argument conditionally
