@@ -264,7 +264,7 @@ def process_result_file(
     metrics = compute_metrics_for_file(results, metadata['dataset'], encoder)
 
     # Save processed results
-    relative_path = Path(filepath).relative_to('/home/user/HPA/data')
+    relative_path = Path(filepath).relative_to('/home/work/yuna/HPA/data')
     output_path = Path(output_dir) / relative_path
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -379,8 +379,8 @@ def main():
     print("=" * 80)
 
     # Setup paths
-    data_dir = Path('/home/user/HPA/data')
-    output_dir = Path('/home/user/HPA/data/processed')
+    data_dir = Path('/home/work/yuna/HPA/data')
+    output_dir = Path('/home/work/yuna/HPA/data/processed')
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Find all result files
