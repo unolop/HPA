@@ -174,8 +174,14 @@ def build_gt_training_data(
             continue
 
         # Aggregate using your pipeline
+        # Note: aggregator expects 'answer_normalized' and 'confidence' keys
+        from preprocess import normalize_answer
+
         answers_with_conf = [
-            {'answer': r['answer'], 'confidence': r['confidence']}
+            {
+                'answer_normalized': normalize_answer(r['answer']),
+                'confidence': r['confidence']
+            }
             for r in responses
         ]
 
