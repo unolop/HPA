@@ -39,17 +39,27 @@ def train_sft(
     max_pixels: int = 448,
 ):
     """Standard SFT training with CE loss on conversations."""
-    
+
     logger.info("=" * 80)
     logger.info("🚀 Standard SFT Training")
     logger.info(f"   Model: {model_path}")
     logger.info(f"   Data: {data_path}")
     logger.info("=" * 80)
-    
+
+    # Handle None/empty string for val_data_path
+    if val_data_path is not None and (val_data_path.lower() == 'none' or val_data_path.strip() == ''):
+        val_data_path = None
+
+    # Swift framework expects a list (can be empty) for val_dataset, not None
+    if val_data_path is not None:
+        val_dataset = [val_data_path]
+    else:
+        val_dataset = []  # Empty list instead of None to avoid len() error
+
     sft_args = SFTArguments(
         model=model_path,
         dataset=[data_path],
-        val_dataset=val_data_path,
+        val_dataset=val_dataset,
         output_dir=output_dir,
         
         train_type="lora",

@@ -19,12 +19,46 @@ import numpy as np
 from evaluate import (
     get_encoder,
     normalize_answer,
-    extract_mc_choice,
     vqa_accuracy,
     exact_match,
-    mc_accuracy,
     answer_similarity,
 )
+
+# Local improved version of extract_mc_choice
+def extract_mc_choice(output: str) -> str:
+    """Extract multiple choice answer (A, B, C, D) from output."""
+    output = output.strip()
+
+    # Try to find explicit answer patterns (more flexible)
+    patterns = [
+        r"[Aa]nswer\s*(?:is)?\s*:?\s*\n*\s*([A-Da-d])",  # "answer is:\n\nA" or "answer: A"
+        r"(?:correct|right)\s+(?:answer|choice)\s+(?:is)?\s*:?\s*\n*\s*([A-Da-d])",  # "correct answer is:\n\nA"
+        r"^([A-Da-d])[\.\)\s]",  # "A. " at start
+        r"\n([A-Da-d])\s*:",  # "\nA:" format
+        r"([A-Da-d])$",  # "A" at end
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, output, re.MULTILINE | re.IGNORECASE)
+        if match:
+            return match.group(1).upper()
+
+    # If output is just a single letter
+    if len(output) == 1 and output.upper() in 'ABCD':
+        return output.upper()
+
+    # Return first letter if it's A-D
+    if output and output[0].upper() in 'ABCD':
+        return output[0].upper()
+
+    return output
+
+# Local mc_accuracy function
+def mc_accuracy(gt: str, pred: str) -> bool:
+    """Multiple choice accuracy."""
+    gt_letter = gt.strip().upper()[0] if gt else ""
+    pred_letter = extract_mc_choice(pred)
+    return gt_letter == pred_letter
 
 
 # Dataset type mappings
