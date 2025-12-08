@@ -83,16 +83,13 @@ def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):
 
     answers = [a for a in answers if a.get("answer_type") == answer_type] 
     responses_by_qid = {}
+    new_annot = {} 
 
     if blind: 
         prompt = "\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
     else: 
         prompt = "" 
-
-<<<<<<< HEAD
-    # get annotations 
     annot = get_annot(answer_type, prompt)
-    new_annot = {} 
         
     for resp in answers: 
         # breakpoint()
@@ -101,54 +98,31 @@ def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):
 
         if qid not in responses_by_qid.keys() : 
             responses_by_qid[qid] = [] 
-=======
-    responses_by_qid = {}
-    for resp in answers:
-        qid = resp['qid'] # .get("qid", '')
-        if qid not in responses_by_qid.keys() :
-            responses_by_qid[qid] = []
->>>>>>> origin/claude/fix-val-data-path-016Q75zSCnGerkx1wYHPhHvM
+            new_annot[qid] = [] 
+            gt_answers = ann['answers']  
+            ann.pop('answers', None) # remove the ground truth answers 
+            for a in gt_answers: # has to be 10 
+                na = { 
+                    "answer_normalized": a['answer'], 
+                    "confidence": CONF_MAP[str(a['answer_confidence'])]  
+                } 
+                na = {**ann, **na}
+                new_annot[qid].append(na)  
+            # breakpoint() 
 
         confidence = resp.get("confidence", 3)
         if set_confidence is not None:
             confidence = set_confidence
         confidence = CONF_MAP[str(confidence)]
         resp['confidence'] = confidence
-<<<<<<< HEAD
         question_original = resp['question'] 
-        
-        if qid in new_annot.keys(): 
-            continue 
-        else: 
-            gt_answers = ann['answers'] 
-            ann.pop('answers', None) # remove the ground truth answers 
-        
+
         resp = {**ann, **resp}
         resp['question'] = ann['question']
         responses_by_qid[qid].append(resp)   
         
-        # save ground truth answers 
-        new_annot[qid] = []
         ann['question'] = question_original 
-        
-        for a in gt_answers: # has to be 10 
-            ann["answer_normalized"] = a['answer']
-            ann["confidence"] = CONF_MAP[str(a['answer_confidence'])] 
-            new_annot[qid].append(ann) 
-=======
-
-        # Add normalized answer for aggregator
-        if 'answer' in resp:
-            resp['answer_normalized'] = normalize_answer(resp['answer'])
-
-        if answer_type == 'text':
-            vqa_annot = vqa_val[qid]
-            vqa_annot.pop('answers', None) # remove the ground truth answers
-            resp = {**vqa_annot, **resp}
-            resp['question'] = vqa_annot['question']
-        responses_by_qid[qid].append(resp)  
->>>>>>> origin/claude/fix-val-data-path-016Q75zSCnGerkx1wYHPhHvM
-
+    # breakpoint() 
     return responses_by_qid, new_annot 
 
 def sample_data(processed, pilot=None, n=20): 
@@ -158,10 +132,9 @@ def sample_data(processed, pilot=None, n=20):
         resp = processed[qid] 
         deficit = n - len(resp)
         if deficit < 0: 
-            print(f'we have more than enough data {n} total: {len(resp)}') 
+            # print(f'we have more than enough data {n} total: {len(resp)}') 
             resp = resp[:n]
 
-<<<<<<< HEAD
     missing_qids = []
     for qid in processed.keys():
         resp = processed[qid]
@@ -171,20 +144,15 @@ def sample_data(processed, pilot=None, n=20):
         if deficit < 0:
             # We have more than enough data, truncate to n
             resp = resp[:n]
-            print(f"[QID {qid}] Truncated {original_count} → {len(resp)} responses")
+            # print(f"[QID {qid}] Truncated {original_count} → {len(resp)} responses")
 
         # Append pilot data if we still need more
         if len(resp) < n and pilot is not None:
             print(f"[QID {qid}] Need {n - len(resp)} more responses (have {len(resp)}/{n})")
-=======
-        # append pilot data
-        if len(resp) < n and pilot is not None :
->>>>>>> origin/claude/fix-val-data-path-016Q75zSCnGerkx1wYHPhHvM
             if qid in pilot.keys():
                 pilot_data = pilot[qid]
                 idx = 0
                 while len(resp) < n and idx < len(pilot_data):
-<<<<<<< HEAD
                     pilot_resp = pilot_data[idx].copy()  # Make a copy to avoid modifying original
                     # Ensure the qid field matches the current question
                     if 'qid' in pilot_resp and pilot_resp['qid'] != qid:
@@ -193,21 +161,13 @@ def sample_data(processed, pilot=None, n=20):
                     resp.append(pilot_resp)
                     idx += 1
                 print(f"[QID {qid}] Added {idx} pilot responses → now have {len(resp)}/{n}")
-=======
-                    pilot_resp = pilot_data[idx].copy()
-                    # Ensure answer_normalized exists for aggregator
-                    if 'answer' in pilot_resp and 'answer_normalized' not in pilot_resp:
-                        pilot_resp['answer_normalized'] = normalize_answer(pilot_resp['answer'])
-                    resp.append(pilot_resp)
-                    idx += 1
->>>>>>> origin/claude/fix-val-data-path-016Q75zSCnGerkx1wYHPhHvM
                 if len(resp) != n:
                     print(f"[QID {qid}] ⚠️ Still missing {n - len(resp)} responses after pilot data")
             else:
                 missing_qids.append(qid) 
                 # print(f"missing {deficit} pilot data for {qid}") 
 
-        print(f'Not enough pilot data qid: {qid} by {deficit}')
+        # print(f'Not enough pilot data qid: {qid} by {deficit}')
             
         processed[qid] = resp 
     
@@ -229,7 +189,6 @@ def build_training_data(
     else:
         image_path = None  # Will be determined from data 
     print(f"Saving into file {output_jsonl_path}")
-    
     with open(output_jsonl_path, "w") as f:
         for i, (qid, data) in enumerate(tqdm(ds.items(), desc="Processing questions")):
             # data is a list of response dictionaries (length = n, e.g., 14)
