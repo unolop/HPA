@@ -124,10 +124,49 @@ def build_gt_training_data(
             indices = np.random.choice(len(ds), size=min(subset_size, len(ds)), replace=False)
             ds = Subset(ds, indices)
 
-    print(f"✓ Loaded {len(ds)} questions")
+    print(f"✓ Loaded {len(ds)} items")
+
+    # Group annotations by question_id first
+    # VQADataset returns individual annotations, but we need all 10 per question
+    print("\n[2/4] Grouping annotations by question...")
+    from collections import defaultdict
+
+    qid_to_annotations = defaultdict(list)
+    qid_to_info = {}  # Store question text and image path
+
+    for item in tqdm(ds, desc="Grouping"):
+        if isinstance(item, dict):
+            qid = item.get('question_id')
+            question = item.get('question', '')
+            # VQA annotations have 'answers' as a list of 10 answer dicts
+            answers = item.get('answers', [])
+            image_path = item.get('image_path', item.get('image', '/home/work/yuna/HPA/data/blank_224.png'))
+        else:
+            qid = getattr(item, 'question_id', None)
+            question = getattr(item, 'question', '')
+            answers = getattr(item, 'answers', [])
+            image_path = getattr(item, 'image_path', getattr(item, 'image', '/home/work/yuna/HPA/data/blank_224.png'))
+
+        if qid is None:
+            continue
+
+        # Store question info (will be same for all annotations of this question)
+        if qid not in qid_to_info:
+            qid_to_info[qid] = {
+                'question': question,
+                'image_path': image_path
+            }
+
+        # Add all answers for this item
+        # VQA format: each item has 'answers' list with 10 answer dicts
+        if answers:
+            qid_to_annotations[qid].extend(answers)
+
+    print(f"✓ Grouped into {len(qid_to_annotations)} unique questions")
+    print(f"  Avg annotations per question: {sum(len(v) for v in qid_to_annotations.values()) / len(qid_to_annotations):.1f}")
 
     # Setup aggregator
-    print("\n[2/4] Setting up aggregator...")
+    print("\n[3/4] Setting up aggregator...")
     if use_clustering:
         from preprocess import setup_openai_client
         client = setup_openai_client()
@@ -144,23 +183,15 @@ def build_gt_training_data(
     )
 
     # Process each question
-    print("\n[3/4] Processing annotations...")
+    print("\n[4/4] Processing and aggregating...")
     examples = []
     skipped = 0
 
-    for item in tqdm(ds, desc="Processing"):
-        # Get question and annotations
-        if isinstance(item, dict):
-            qid = item['question_id']
-            question = item['question']
-            annotations = item.get('answers', [])  # List of 10 answer dicts
-            image_path = item.get('image_path', '/home/work/yuna/HPA/data/blank_224.png')
-        else:
-            # Dataset object
-            qid = item['question_id'] if isinstance(item, dict) else getattr(item, 'question_id', None)
-            question = item['question'] if isinstance(item, dict) else getattr(item, 'question', '')
-            annotations = item.get('answers', []) if isinstance(item, dict) else getattr(item, 'answers', [])
-            image_path = item.get('image_path') if isinstance(item, dict) else getattr(item, 'image_path', '/home/work/yuna/HPA/data/blank_224.png')
+    for qid, annotations in tqdm(qid_to_annotations.items(), desc="Processing"):
+        # Get question info
+        info = qid_to_info.get(qid, {})
+        question = info.get('question', '')
+        image_path = info.get('image_path', '/home/work/yuna/HPA/data/blank_224.png')
 
         if not annotations or not question:
             skipped += 1
@@ -224,7 +255,7 @@ def build_gt_training_data(
     print(f"✓ Processed {len(examples)} examples (skipped {skipped})")
 
     # Write output
-    print("\n[4/4] Writing output...")
+    print("\n[5/5] Writing output...")
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
