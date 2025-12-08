@@ -97,27 +97,29 @@ def normalize_answer(answer: str) -> str:
 def extract_mc_choice(output: str) -> str:
     """Extract multiple choice answer (A, B, C, D) from output."""
     output = output.strip()
-    
-    # Try to find explicit answer pattern
+
+    # Try to find explicit answer patterns (more flexible to handle newlines)
     patterns = [
-        r"[Aa]nswer\s*:?\s*([A-Da-d])",
-        r"^([A-Da-d])[\.\)\s]",
-        r"([A-Da-d])$",
+        r"[Aa]nswer\s*(?:is)?\s*:?\s*\n*\s*([A-Da-d])",  # "answer is:\n\nA" or "answer: A"
+        r"(?:correct|right)\s+(?:answer|choice)\s+(?:is)?\s*:?\s*\n*\s*([A-Da-d])",  # "correct answer is:\n\nA"
+        r"^([A-Da-d])[\.\)\s]",  # "A. " at start
+        r"\n([A-Da-d])\s*:",  # "\nA:" format
+        r"([A-Da-d])$",  # "A" at end
     ]
-    
+
     for pattern in patterns:
-        match = re.search(pattern, output)
+        match = re.search(pattern, output, re.MULTILINE | re.IGNORECASE)
         if match:
             return match.group(1).upper()
-    
+
     # If output is just a single letter
     if len(output) == 1 and output.upper() in 'ABCD':
         return output.upper()
-    
+
     # Return first letter if it's A-D
     if output and output[0].upper() in 'ABCD':
         return output[0].upper()
-    
+
     return output
 
 
