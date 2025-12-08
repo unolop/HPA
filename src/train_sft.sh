@@ -22,11 +22,12 @@ for MODEL in "${MODELS[@]}"; do
         val_arg="--val_data_path ${val_data}"
     fi
 
-    CUDA_VISIBLE_DEVICES=0 python train_sft_standard.py \
+    CUDA_VISIBLE_DEVICES=0 python train_supervised.py \
+        --ablation A3 \
         --model_path ${MODEL} \
-        --data_path ${data_path} \
-        --output_dir ./output/${MODEL}/${RUNNAME} \
+        --train_data ${data_path} \
         ${val_arg} \
+        --output_dir ./output/${MODEL}/${RUNNAME} \
         --run_name ${RUNNAME} \
         --max_steps 5000 \
         --num_epochs 50 \
