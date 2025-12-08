@@ -5,6 +5,8 @@ import json
 import numpy as np 
 import torch
 from utils import skip_processed_idx  
+import sys 
+sys.path.append('/home/work/yuna/HPA') 
 
 system_message = "Note: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
 
@@ -73,14 +75,14 @@ def load_dataset(data_name:str, prompt:str=''):
             dataset.append(ann) 
 
     elif data_name == "vqa_1k":
-        from data.vqav2 import VQADataset_json
+        from dataset.vqav2 import VQADataset_json
         dataset = VQADataset_json(prompt=prompt)
         
     elif data_name == "vqa_5k":
-        from data.vqav2 import VQADataset
+        from dataset.vqav2 import VQADataset
         from torch.utils.data import Subset
 
-        with open('/home/work/yuna/HPA/data/s1_qids.json', 'r') as file:
+        with open('/home/work/yuna/HPA/dataset/s1_qids.json', 'r') as file:
             qids = json.load(file)
 
         dataset = VQADataset(prompt=prompt, filter_qids=qids) 
@@ -150,7 +152,7 @@ def main(args):
                 if data[current_item_id] in processed_ids:
                     continue 
                 
-            if args.condition == '_inst_blind' and 'vqa' not in args.dataset:
+            if 'inst' in args.condition and 'vqa' not in args.dataset:
                 prompt += system_message
 
             if args.model_type == 'llm' and 'vqa' not in args.dataset:

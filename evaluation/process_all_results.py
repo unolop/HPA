@@ -256,7 +256,7 @@ def process_result_file(
     metadata = parse_filename(filepath)
 
     # Check if already processed
-    relative_path = Path(filepath).relative_to('/home/user/HPA/data')
+    relative_path = Path(filepath).relative_to('/home/work/yuna/HPA/data')
     output_path = Path(output_dir) / relative_path
 
     if not force and output_path.exists():
@@ -434,7 +434,7 @@ def main():
     parser.add_argument(
         '--output_dir',
         type=str,
-        default='/home/user/HPA/data/processed',
+        default='/home/work/yuna/HPA/data/processed',
         help='Output directory for processed files'
     )
     args = parser.parse_args()
@@ -446,7 +446,7 @@ def main():
         print("⚠ Force mode: reprocessing all files")
 
     # Setup paths
-    data_dir = Path('/home/user/HPA/data')
+    data_dir = Path('/home/work/yuna/HPA/data')
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 

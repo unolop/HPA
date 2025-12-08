@@ -7,7 +7,6 @@ import json
 import argparse
 import atexit
 from pathlib import Path
-from typing import Dict, List, Optional
 from tqdm import tqdm
 from collections import defaultdict
 from typing import Dict, List, Optional, Tuple
@@ -72,49 +71,6 @@ def create_train_val_split(
     print(f"✓ Val: {val_path} ({len(val_examples)} examples, {len(val_qids)} questions)")
     
     return str(train_path), str(val_path)
-
-
-def read_questions(dataset='s1', answer_type='text'): 
-    questions_path = f"/home/work/yuna/HPA/experiments/questions/{dataset}.csv" 
-    questions = []
-    if answer_type == 'text': 
-        vqa_val = VQADataset()
-        vqa_val = vqa_val.get_by_qid() 
-
-    if questions_path.endswith('.csv'):
-        with open(questions_path, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                qid = str(row.get('qid', row.get('question_id', '')))
-                atype = row.get('answer_type', '') 
-                if atype != answer_type: 
-                    continue 
-
-                if answer_type == 'choice': 
-                    answer = row.get('answer', row.get('multiple_choice_answer', ''))
-                    # annot = annotations[qid] 
-                    # annot['answer'] = answer 
-                    ### TODO Load the images for mmstar and mmspu and save into PIL image below 
-                    # questions.append(annot) 
-
-                else: # vqa questions 
-                    questions.append(vqa_val[qid]) 
-    else:
-        with open(questions_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        items = data if isinstance(data, list) else data.get('questions', [])
-        for item in items:
-            qid = str(item.get('qid', item.get('question_id', '')))
-            questions.append({
-                'qid': qid,
-                'question': item.get('question', item.get('question_en', '')),
-                'answer': item.get('answer', ''),
-                'image_id': item.get('image_id', ''),
-                'category': item.get('category', ''),
-            })
-
-    return questions 
 
 # =============================================================================
 # Translation Cache Manager
@@ -511,23 +467,19 @@ def preprocess_pipeline(
     print("=" * 60)
     print("📋 ANSWER PREPROCESSING PIPELINE")
     print("=" * 60)
-    
-    # Set default cache file
-    if cache_file is None:
-        cache_file = os.path.join(output_dir, 'translation_cache.json')
-    
+
     # Step 1: Load data
     print("\n[1/5] Loading data...")
-    questions = load_questions(questions_path)              # a dict of questions by qid 
+    questions = load_questions(questions_path)        
     n, responses = load_human_responses(input_csvs, session_length=len(questions)) 
     
     # Add question info to responses
     for r in responses:  
         qid = r['qid'] 
-        question_dict = questions.get(qid, {})
+        question_dict = questions[qid]
         answer_type = question_dict['answer_type'] 
-        question = questions.get(question_dict['question_en'], "")
-        r['question'] = question 
+        question = question_dict['question_en'].replace('\n', '').strip()
+        r['question'] = question  
         r['answer_type'] = answer_type 
         
     # Step 2: Translation
