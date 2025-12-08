@@ -38832,5 +38832,1807 @@
         ]
       }
     ]
+  },
+  "[\"brown\", \"no\", \"yes\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no"
+        ]
+      },
+      {
+        "canonical_answer": "brown",
+        "original_answers_in_group": [
+          "brown"
+        ]
+      },
+      {
+        "canonical_answer": "yes",
+        "original_answers_in_group": [
+          "yes"
+        ]
+      }
+    ]
+  },
+  "[\"flowers\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "flowers",
+        "original_answers_in_group": [
+          "flowers"
+        ]
+      }
+    ]
+  },
+  "[\"female\", \"male\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "male",
+        "original_answers_in_group": [
+          "male"
+        ]
+      },
+      {
+        "canonical_answer": "female",
+        "original_answers_in_group": [
+          "female"
+        ]
+      }
+    ]
+  },
+  "[\"clean\", \"dirty\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "dirty",
+        "original_answers_in_group": [
+          "dirty"
+        ]
+      },
+      {
+        "canonical_answer": "clean",
+        "original_answers_in_group": [
+          "clean"
+        ]
+      }
+    ]
+  },
+  "[\"black\", \"blue\", \"can't see\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "blue",
+        "original_answers_in_group": [
+          "blue"
+        ]
+      },
+      {
+        "canonical_answer": "black",
+        "original_answers_in_group": [
+          "black"
+        ]
+      },
+      {
+        "canonical_answer": "can't see",
+        "original_answers_in_group": [
+          "can't see"
+        ]
+      }
+    ]
+  },
+  "[\"cap\", \"hat\", \"helmet\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "hat",
+        "original_answers_in_group": [
+          "hat",
+          "cap",
+          "helmet"
+        ]
+      }
+    ]
+  },
+  "[\"blue\", \"green and blue\", \"green, blue, white\", \"green, white, blue\", \"teal\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "green, blue, white",
+        "original_answers_in_group": [
+          "green, blue, white",
+          "green, white, blue",
+          "green and blue"
+        ]
+      },
+      {
+        "canonical_answer": "blue",
+        "original_answers_in_group": [
+          "blue"
+        ]
+      },
+      {
+        "canonical_answer": "teal",
+        "original_answers_in_group": [
+          "teal"
+        ]
+      }
+    ]
+  },
+  "[\"no\", \"not sure\", \"yes\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no"
+        ]
+      },
+      {
+        "canonical_answer": "not sure",
+        "original_answers_in_group": [
+          "not sure"
+        ]
+      },
+      {
+        "canonical_answer": "yes",
+        "original_answers_in_group": [
+          "yes"
+        ]
+      }
+    ]
+  },
+  "[\"heels\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "heels",
+        "original_answers_in_group": [
+          "heels"
+        ]
+      }
+    ]
+  },
+  "[\"black\", \"black and white\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "black",
+        "original_answers_in_group": [
+          "black",
+          "black and white"
+        ]
+      }
+    ]
+  },
+  "[\"orange\", \"orange juice\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "orange juice",
+        "original_answers_in_group": [
+          "orange juice",
+          "orange"
+        ]
+      }
+    ]
+  },
+  "[\"no idea\", \"yes\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "yes",
+        "original_answers_in_group": [
+          "yes"
+        ]
+      },
+      {
+        "canonical_answer": "no idea",
+        "original_answers_in_group": [
+          "no idea"
+        ]
+      }
+    ]
+  },
+  "[\"no\", \"yes\", \"yes,\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no"
+        ]
+      },
+      {
+        "canonical_answer": "yes",
+        "original_answers_in_group": [
+          "yes,",
+          "yes"
+        ]
+      }
+    ]
+  },
+  "[\"no\", \"slightly\", \"yes\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no"
+        ]
+      },
+      {
+        "canonical_answer": "slightly",
+        "original_answers_in_group": [
+          "slightly"
+        ]
+      },
+      {
+        "canonical_answer": "yes",
+        "original_answers_in_group": [
+          "yes"
+        ]
+      }
+    ]
+  },
+  "[\"maybe\", \"no\", \"yes\", \"yes yes\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "yes",
+        "original_answers_in_group": [
+          "yes yes",
+          "yes"
+        ]
+      },
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no"
+        ]
+      },
+      {
+        "canonical_answer": "maybe",
+        "original_answers_in_group": [
+          "maybe"
+        ]
+      }
+    ]
+  },
+  "[\"food\", \"grass\", \"leaves\", \"nothing\", \"unknown\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "unknown",
+        "original_answers_in_group": [
+          "unknown"
+        ]
+      },
+      {
+        "canonical_answer": "nothing",
+        "original_answers_in_group": [
+          "nothing"
+        ]
+      },
+      {
+        "canonical_answer": "food",
+        "original_answers_in_group": [
+          "food"
+        ]
+      },
+      {
+        "canonical_answer": "grass",
+        "original_answers_in_group": [
+          "grass"
+        ]
+      },
+      {
+        "canonical_answer": "leaves",
+        "original_answers_in_group": [
+          "leaves"
+        ]
+      }
+    ]
+  },
+  "[\"red\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "red",
+        "original_answers_in_group": [
+          "red"
+        ]
+      }
+    ]
+  },
+  "[\"no\", \"no, on television\", \"yes\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no",
+          "no, on television"
+        ]
+      },
+      {
+        "canonical_answer": "yes",
+        "original_answers_in_group": [
+          "yes"
+        ]
+      }
+    ]
+  },
+  "[\"no\", \"right\", \"straight\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no"
+        ]
+      },
+      {
+        "canonical_answer": "straight",
+        "original_answers_in_group": [
+          "straight"
+        ]
+      },
+      {
+        "canonical_answer": "right",
+        "original_answers_in_group": [
+          "right"
+        ]
+      }
+    ]
+  },
+  "[\"caution\", \"curb\", \"fire lane\", \"median\", \"middle\", \"no parking\", \"slow\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "no parking",
+        "original_answers_in_group": [
+          "no parking"
+        ]
+      },
+      {
+        "canonical_answer": "middle",
+        "original_answers_in_group": [
+          "middle"
+        ]
+      },
+      {
+        "canonical_answer": "caution",
+        "original_answers_in_group": [
+          "caution"
+        ]
+      },
+      {
+        "canonical_answer": "fire lane",
+        "original_answers_in_group": [
+          "fire lane"
+        ]
+      },
+      {
+        "canonical_answer": "curb",
+        "original_answers_in_group": [
+          "curb"
+        ]
+      },
+      {
+        "canonical_answer": "median",
+        "original_answers_in_group": [
+          "median"
+        ]
+      },
+      {
+        "canonical_answer": "slow",
+        "original_answers_in_group": [
+          "slow"
+        ]
+      }
+    ]
+  },
+  "[\"skis\", \"snow\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "snow",
+        "original_answers_in_group": [
+          "snow"
+        ]
+      },
+      {
+        "canonical_answer": "skis",
+        "original_answers_in_group": [
+          "skis"
+        ]
+      }
+    ]
+  },
+  "[\"beans\", \"beans and carrots\", \"carrots and green beans\", \"green beans\", \"green beans and carrots\", \"rice\", \"rice, beans\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "beans",
+        "original_answers_in_group": [
+          "beans",
+          "rice, beans",
+          "beans and carrots"
+        ]
+      },
+      {
+        "canonical_answer": "rice",
+        "original_answers_in_group": [
+          "rice"
+        ]
+      },
+      {
+        "canonical_answer": "carrots and green beans",
+        "original_answers_in_group": [
+          "carrots and green beans",
+          "green beans and carrots"
+        ]
+      },
+      {
+        "canonical_answer": "green beans",
+        "original_answers_in_group": [
+          "green beans"
+        ]
+      }
+    ]
+  },
+  "[\"nintendo wii\", \"wi\", \"wii\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "nintendo wii",
+        "original_answers_in_group": [
+          "wii",
+          "wi",
+          "nintendo wii"
+        ]
+      }
+    ]
+  },
+  "[\"barrels\", \"cedar planters\", \"containers\", \"planters\", \"pot\", \"pots\", \"wooden barrel\", \"wooden tubs\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "wooden tubs",
+        "original_answers_in_group": [
+          "wooden tubs"
+        ]
+      },
+      {
+        "canonical_answer": "pots",
+        "original_answers_in_group": [
+          "pots",
+          "pot"
+        ]
+      },
+      {
+        "canonical_answer": "planters",
+        "original_answers_in_group": [
+          "cedar planters",
+          "planters"
+        ]
+      },
+      {
+        "canonical_answer": "containers",
+        "original_answers_in_group": [
+          "containers"
+        ]
+      },
+      {
+        "canonical_answer": "barrels",
+        "original_answers_in_group": [
+          "barrels",
+          "wooden barrel"
+        ]
+      }
+    ]
+  },
+  "[\"red\", \"yellow\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "yellow",
+        "original_answers_in_group": [
+          "yellow"
+        ]
+      },
+      {
+        "canonical_answer": "red",
+        "original_answers_in_group": [
+          "red"
+        ]
+      }
+    ]
+  },
+  "[\"sandal\", \"sandals\", \"shoe\", \"shoes\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "sandal",
+        "original_answers_in_group": [
+          "sandal",
+          "sandals"
+        ]
+      },
+      {
+        "canonical_answer": "shoe",
+        "original_answers_in_group": [
+          "shoe",
+          "shoes"
+        ]
+      }
+    ]
+  },
+  "[\"surfing\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "surfing",
+        "original_answers_in_group": [
+          "surfing"
+        ]
+      }
+    ]
+  },
+  "[\"blue\", \"gray\", \"gray and white\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "gray",
+        "original_answers_in_group": [
+          "gray",
+          "gray and white"
+        ]
+      },
+      {
+        "canonical_answer": "blue",
+        "original_answers_in_group": [
+          "blue"
+        ]
+      }
+    ]
+  },
+  "[\"pink\", \"white\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "white",
+        "original_answers_in_group": [
+          "white"
+        ]
+      },
+      {
+        "canonical_answer": "pink",
+        "original_answers_in_group": [
+          "pink"
+        ]
+      }
+    ]
+  },
+  "[\"20\", \"25\", \"26\", \"30\", \"32\", \"50\", \"many\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "20",
+        "original_answers_in_group": [
+          "20"
+        ]
+      },
+      {
+        "canonical_answer": "25",
+        "original_answers_in_group": [
+          "25"
+        ]
+      },
+      {
+        "canonical_answer": "26",
+        "original_answers_in_group": [
+          "26"
+        ]
+      },
+      {
+        "canonical_answer": "30",
+        "original_answers_in_group": [
+          "30"
+        ]
+      },
+      {
+        "canonical_answer": "32",
+        "original_answers_in_group": [
+          "32"
+        ]
+      },
+      {
+        "canonical_answer": "50",
+        "original_answers_in_group": [
+          "50"
+        ]
+      },
+      {
+        "canonical_answer": "many",
+        "original_answers_in_group": [
+          "many"
+        ]
+      }
+    ]
+  },
+  "[\"cowboy\", \"cowboy hat\", \"desert hat\", \"safari hat\", \"straw/cowboy\", \"sun hat\", \"white\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "cowboy hat",
+        "original_answers_in_group": [
+          "cowboy hat",
+          "cowboy",
+          "straw/cowboy"
+        ]
+      },
+      {
+        "canonical_answer": "sun hat",
+        "original_answers_in_group": [
+          "sun hat"
+        ]
+      },
+      {
+        "canonical_answer": "safari hat",
+        "original_answers_in_group": [
+          "safari hat"
+        ]
+      },
+      {
+        "canonical_answer": "desert hat",
+        "original_answers_in_group": [
+          "desert hat"
+        ]
+      },
+      {
+        "canonical_answer": "white",
+        "original_answers_in_group": [
+          "white"
+        ]
+      }
+    ]
+  },
+  "[\"paneling\", \"wood\", \"wood paneling\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "wood",
+        "original_answers_in_group": [
+          "wood",
+          "wood paneling",
+          "paneling"
+        ]
+      }
+    ]
+  },
+  "[\"2\", \"3\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "2",
+        "original_answers_in_group": [
+          "2"
+        ]
+      },
+      {
+        "canonical_answer": "3",
+        "original_answers_in_group": [
+          "3"
+        ]
+      }
+    ]
+  },
+  "[\"antlers\", \"deer antlers\", \"wood\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "antlers",
+        "original_answers_in_group": [
+          "deer antlers",
+          "antlers"
+        ]
+      },
+      {
+        "canonical_answer": "wood",
+        "original_answers_in_group": [
+          "wood"
+        ]
+      }
+    ]
+  },
+  "[\"stop\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "stop",
+        "original_answers_in_group": [
+          "stop"
+        ]
+      }
+    ]
+  },
+  "[\"banana\", \"bananas\", \"plantain\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "banana",
+        "original_answers_in_group": [
+          "banana",
+          "bananas",
+          "plantain"
+        ]
+      }
+    ]
+  },
+  "[\"beige\", \"brown\", \"coral\", \"tan\", \"yellow\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "yellow",
+        "original_answers_in_group": [
+          "yellow"
+        ]
+      },
+      {
+        "canonical_answer": "tan",
+        "original_answers_in_group": [
+          "tan"
+        ]
+      },
+      {
+        "canonical_answer": "beige",
+        "original_answers_in_group": [
+          "beige"
+        ]
+      },
+      {
+        "canonical_answer": "brown",
+        "original_answers_in_group": [
+          "brown"
+        ]
+      },
+      {
+        "canonical_answer": "coral",
+        "original_answers_in_group": [
+          "coral"
+        ]
+      }
+    ]
+  },
+  "[\"girl in orange top\", \"lady in orange shirt\", \"orange shirt woman\", \"orange top\", \"woman\", \"woman in orange\", \"woman in orange shirt\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "woman in orange",
+        "original_answers_in_group": [
+          "woman in orange",
+          "orange top",
+          "girl in orange top",
+          "woman in orange shirt",
+          "lady in orange shirt",
+          "orange shirt woman"
+        ]
+      },
+      {
+        "canonical_answer": "woman",
+        "original_answers_in_group": [
+          "woman"
+        ]
+      }
+    ]
+  },
+  "[\"ski\", \"ski down\", \"slide\", \"snow\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "snow",
+        "original_answers_in_group": [
+          "snow"
+        ]
+      },
+      {
+        "canonical_answer": "ski",
+        "original_answers_in_group": [
+          "ski",
+          "ski down",
+          "slide"
+        ]
+      }
+    ]
+  },
+  "[\"countryside\", \"field\", \"grass\", \"greenery\", \"trees\", \"trees and grass\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "grass",
+        "original_answers_in_group": [
+          "grass"
+        ]
+      },
+      {
+        "canonical_answer": "trees",
+        "original_answers_in_group": [
+          "trees"
+        ]
+      },
+      {
+        "canonical_answer": "countryside",
+        "original_answers_in_group": [
+          "countryside"
+        ]
+      },
+      {
+        "canonical_answer": "greenery",
+        "original_answers_in_group": [
+          "greenery"
+        ]
+      },
+      {
+        "canonical_answer": "field",
+        "original_answers_in_group": [
+          "field"
+        ]
+      },
+      {
+        "canonical_answer": "trees and grass",
+        "original_answers_in_group": [
+          "trees and grass"
+        ]
+      }
+    ]
+  },
+  "[\"1:30\", \"1:30 pm\", \"1:32\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "1:30",
+        "original_answers_in_group": [
+          "1:30",
+          "1:30 pm"
+        ]
+      },
+      {
+        "canonical_answer": "1:32",
+        "original_answers_in_group": [
+          "1:32"
+        ]
+      }
+    ]
+  },
+  "[\"35 ave\", \"35th\", \"35th ave\", \"35th avenue\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "35th ave",
+        "original_answers_in_group": [
+          "35 ave",
+          "35th avenue",
+          "35th",
+          "35th ave"
+        ]
+      }
+    ]
+  },
+  "[\"air\", \"in air\", \"nothing\", \"thin air\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "air",
+        "original_answers_in_group": [
+          "thin air",
+          "in air",
+          "air"
+        ]
+      },
+      {
+        "canonical_answer": "nothing",
+        "original_answers_in_group": [
+          "nothing"
+        ]
+      }
+    ]
+  },
+  "[\"flying kites\", \"frisbee\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "frisbee",
+        "original_answers_in_group": [
+          "frisbee"
+        ]
+      },
+      {
+        "canonical_answer": "flying kites",
+        "original_answers_in_group": [
+          "flying kites"
+        ]
+      }
+    ]
+  },
+  "[\"10 pm\", \"11 pm\", \"9\", \"900\", \"9:00 pm\", \"evening\", \"night\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "9:00 pm",
+        "original_answers_in_group": [
+          "9:00 pm",
+          "9",
+          "900"
+        ]
+      },
+      {
+        "canonical_answer": "10 pm",
+        "original_answers_in_group": [
+          "10 pm"
+        ]
+      },
+      {
+        "canonical_answer": "11 pm",
+        "original_answers_in_group": [
+          "11 pm"
+        ]
+      },
+      {
+        "canonical_answer": "evening",
+        "original_answers_in_group": [
+          "evening"
+        ]
+      },
+      {
+        "canonical_answer": "night",
+        "original_answers_in_group": [
+          "night"
+        ]
+      }
+    ]
+  },
+  "[\"car\", \"stop light\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "car",
+        "original_answers_in_group": [
+          "car"
+        ]
+      },
+      {
+        "canonical_answer": "stop light",
+        "original_answers_in_group": [
+          "stop light"
+        ]
+      }
+    ]
+  },
+  "[\"dead leaves\", \"grass\", \"moss\", \"none\", \"tree\", \"weed\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "moss",
+        "original_answers_in_group": [
+          "moss"
+        ]
+      },
+      {
+        "canonical_answer": "grass",
+        "original_answers_in_group": [
+          "grass"
+        ]
+      },
+      {
+        "canonical_answer": "dead leaves",
+        "original_answers_in_group": [
+          "dead leaves"
+        ]
+      },
+      {
+        "canonical_answer": "weed",
+        "original_answers_in_group": [
+          "weed"
+        ]
+      },
+      {
+        "canonical_answer": "tree",
+        "original_answers_in_group": [
+          "tree"
+        ]
+      },
+      {
+        "canonical_answer": "none",
+        "original_answers_in_group": [
+          "none"
+        ]
+      }
+    ]
+  },
+  "[\"blue\", \"neutral\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "blue",
+        "original_answers_in_group": [
+          "blue"
+        ]
+      },
+      {
+        "canonical_answer": "neutral",
+        "original_answers_in_group": [
+          "neutral"
+        ]
+      }
+    ]
+  },
+  "[\"buzz cut\", \"close-shaved head\", \"crew cut\", \"shaved\", \"shaved head\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "buzz cut",
+        "original_answers_in_group": [
+          "buzz cut",
+          "crew cut",
+          "close-shaved head",
+          "shaved",
+          "shaved head"
+        ]
+      }
+    ]
+  },
+  "[\"avocado\", \"bell pepper\", \"green bell pepper\", \"green pepper\", \"lime\", \"pepper\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "green pepper",
+        "original_answers_in_group": [
+          "green pepper",
+          "green bell pepper",
+          "bell pepper",
+          "pepper"
+        ]
+      },
+      {
+        "canonical_answer": "lime",
+        "original_answers_in_group": [
+          "lime"
+        ]
+      },
+      {
+        "canonical_answer": "avocado",
+        "original_answers_in_group": [
+          "avocado"
+        ]
+      }
+    ]
+  },
+  "[\"african mammals\", \"zebra and antelope\", \"zebra's and deer\", \"zebra, deer\", \"zebras and antelopes\", \"zebras and deer\", \"zebras and gazelles\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "zebras and deer",
+        "original_answers_in_group": [
+          "zebras and deer",
+          "zebra's and deer",
+          "zebra, deer"
+        ]
+      },
+      {
+        "canonical_answer": "zebras and antelopes",
+        "original_answers_in_group": [
+          "zebras and antelopes",
+          "zebra and antelope"
+        ]
+      },
+      {
+        "canonical_answer": "zebras and gazelles",
+        "original_answers_in_group": [
+          "zebras and gazelles"
+        ]
+      },
+      {
+        "canonical_answer": "african mammals",
+        "original_answers_in_group": [
+          "african mammals"
+        ]
+      }
+    ]
+  },
+  "[\"1\", \"2\", \"3\", \"6\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "3",
+        "original_answers_in_group": [
+          "3"
+        ]
+      },
+      {
+        "canonical_answer": "1",
+        "original_answers_in_group": [
+          "1"
+        ]
+      },
+      {
+        "canonical_answer": "2",
+        "original_answers_in_group": [
+          "2"
+        ]
+      },
+      {
+        "canonical_answer": "6",
+        "original_answers_in_group": [
+          "6"
+        ]
+      }
+    ]
+  },
+  "[\"5306\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "5306",
+        "original_answers_in_group": [
+          "5306"
+        ]
+      }
+    ]
+  },
+  "[\"backpack\", \"bed sheets and pillow\", \"blanket\", \"blanket, sheets, and pillows\", \"blankets\", \"comforter\", \"covers\", \"pillows\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "bed sheets and pillows",
+        "original_answers_in_group": [
+          "bed sheets and pillow",
+          "blanket, sheets, and pillows",
+          "pillows"
+        ]
+      },
+      {
+        "canonical_answer": "blanket",
+        "original_answers_in_group": [
+          "blanket",
+          "blankets"
+        ]
+      },
+      {
+        "canonical_answer": "comforter",
+        "original_answers_in_group": [
+          "comforter"
+        ]
+      },
+      {
+        "canonical_answer": "covers",
+        "original_answers_in_group": [
+          "covers"
+        ]
+      },
+      {
+        "canonical_answer": "backpack",
+        "original_answers_in_group": [
+          "backpack"
+        ]
+      }
+    ]
+  },
+  "[\"foodiebakercom\", \"http://foodiebakercom\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "http://foodiebakercom",
+        "original_answers_in_group": [
+          "http://foodiebakercom"
+        ]
+      },
+      {
+        "canonical_answer": "foodiebakercom",
+        "original_answers_in_group": [
+          "foodiebakercom"
+        ]
+      }
+    ]
+  },
+  "[\"america\", \"australia\", \"not sure\", \"united states\", \"unknown\", \"us\", \"usa\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "USA",
+        "original_answers_in_group": [
+          "us",
+          "usa",
+          "united states",
+          "america"
+        ]
+      },
+      {
+        "canonical_answer": "unknown",
+        "original_answers_in_group": [
+          "unknown",
+          "not sure"
+        ]
+      },
+      {
+        "canonical_answer": "Australia",
+        "original_answers_in_group": [
+          "australia"
+        ]
+      }
+    ]
+  },
+  "[\"0\", \"1\", \"10\", \"14\", \"15\", \"16\", \"3\", \"8\", \"few\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "0",
+        "original_answers_in_group": [
+          "0"
+        ]
+      },
+      {
+        "canonical_answer": "1",
+        "original_answers_in_group": [
+          "1"
+        ]
+      },
+      {
+        "canonical_answer": "3",
+        "original_answers_in_group": [
+          "3"
+        ]
+      },
+      {
+        "canonical_answer": "8",
+        "original_answers_in_group": [
+          "8"
+        ]
+      },
+      {
+        "canonical_answer": "10",
+        "original_answers_in_group": [
+          "10"
+        ]
+      },
+      {
+        "canonical_answer": "14",
+        "original_answers_in_group": [
+          "14"
+        ]
+      },
+      {
+        "canonical_answer": "15",
+        "original_answers_in_group": [
+          "15"
+        ]
+      },
+      {
+        "canonical_answer": "few",
+        "original_answers_in_group": [
+          "few"
+        ]
+      },
+      {
+        "canonical_answer": "16",
+        "original_answers_in_group": [
+          "16"
+        ]
+      }
+    ]
+  },
+  "[\"family\", \"her ride home\", \"luggage\", \"someone\", \"train\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "family",
+        "original_answers_in_group": [
+          "family"
+        ]
+      },
+      {
+        "canonical_answer": "luggage",
+        "original_answers_in_group": [
+          "luggage"
+        ]
+      },
+      {
+        "canonical_answer": "someone",
+        "original_answers_in_group": [
+          "someone"
+        ]
+      },
+      {
+        "canonical_answer": "her ride home",
+        "original_answers_in_group": [
+          "her ride home"
+        ]
+      },
+      {
+        "canonical_answer": "train",
+        "original_answers_in_group": [
+          "train"
+        ]
+      }
+    ]
+  },
+  "[\"30\", \"39\", \"40\", \"41\", \"47+\", \"50\", \"lot\", \"many\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "many",
+        "original_answers_in_group": [
+          "many",
+          "lot"
+        ]
+      },
+      {
+        "canonical_answer": "30",
+        "original_answers_in_group": [
+          "30"
+        ]
+      },
+      {
+        "canonical_answer": "39",
+        "original_answers_in_group": [
+          "39"
+        ]
+      },
+      {
+        "canonical_answer": "40",
+        "original_answers_in_group": [
+          "40"
+        ]
+      },
+      {
+        "canonical_answer": "41",
+        "original_answers_in_group": [
+          "41"
+        ]
+      },
+      {
+        "canonical_answer": "47+",
+        "original_answers_in_group": [
+          "47+"
+        ]
+      },
+      {
+        "canonical_answer": "50",
+        "original_answers_in_group": [
+          "50"
+        ]
+      }
+    ]
+  },
+  "[\"front\", \"front of building\", \"in front of brick building\", \"in front of restaurant\", \"in front of store\", \"on sidewalk\", \"on street\", \"outside\", \"sidewalk cafe\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "in front of building",
+        "original_answers_in_group": [
+          "in front of restaurant",
+          "in front of store",
+          "in front of brick building",
+          "front of building",
+          "front"
+        ]
+      },
+      {
+        "canonical_answer": "on sidewalk",
+        "original_answers_in_group": [
+          "on sidewalk",
+          "sidewalk cafe"
+        ]
+      },
+      {
+        "canonical_answer": "on street",
+        "original_answers_in_group": [
+          "on street"
+        ]
+      },
+      {
+        "canonical_answer": "outside",
+        "original_answers_in_group": [
+          "outside"
+        ]
+      }
+    ]
+  },
+  "[\"glove\", \"tennis racket\", \"tennis racquet\", \"towel\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "tennis racket",
+        "original_answers_in_group": [
+          "tennis racket",
+          "tennis racquet"
+        ]
+      },
+      {
+        "canonical_answer": "towel",
+        "original_answers_in_group": [
+          "towel"
+        ]
+      },
+      {
+        "canonical_answer": "glove",
+        "original_answers_in_group": [
+          "glove"
+        ]
+      }
+    ]
+  },
+  "[\"paper\", \"plastic\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "paper",
+        "original_answers_in_group": [
+          "paper"
+        ]
+      },
+      {
+        "canonical_answer": "plastic",
+        "original_answers_in_group": [
+          "plastic"
+        ]
+      }
+    ]
+  },
+  "[\"black\", \"black and white\", \"black/white\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "black",
+        "original_answers_in_group": [
+          "black",
+          "black and white",
+          "black/white"
+        ]
+      }
+    ]
+  },
+  "[\"akoba\", \"ariba\", \"aruba\", \"it's not readable\", \"ngoba\", \"nkoba\", \"noob\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "aruba",
+        "original_answers_in_group": [
+          "aruba",
+          "ariba"
+        ]
+      },
+      {
+        "canonical_answer": "nkoba",
+        "original_answers_in_group": [
+          "nkoba",
+          "ngoba",
+          "akoba"
+        ]
+      },
+      {
+        "canonical_answer": "it's not readable",
+        "original_answers_in_group": [
+          "it's not readable"
+        ]
+      },
+      {
+        "canonical_answer": "noob",
+        "original_answers_in_group": [
+          "noob"
+        ]
+      }
+    ]
+  },
+  "[\"avenue\", \"street\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "street",
+        "original_answers_in_group": [
+          "street"
+        ]
+      },
+      {
+        "canonical_answer": "avenue",
+        "original_answers_in_group": [
+          "avenue"
+        ]
+      }
+    ]
+  },
+  "[\"alongside tables\", \"around tables\", \"at tables\", \"behind people\", \"behind table\", \"ground\", \"market\", \"on ground\", \"outside\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "ground",
+        "original_answers_in_group": [
+          "ground",
+          "on ground"
+        ]
+      },
+      {
+        "canonical_answer": "tables",
+        "original_answers_in_group": [
+          "alongside tables",
+          "around tables",
+          "at tables",
+          "behind table"
+        ]
+      },
+      {
+        "canonical_answer": "market",
+        "original_answers_in_group": [
+          "market"
+        ]
+      },
+      {
+        "canonical_answer": "behind people",
+        "original_answers_in_group": [
+          "behind people"
+        ]
+      },
+      {
+        "canonical_answer": "outside",
+        "original_answers_in_group": [
+          "outside"
+        ]
+      }
+    ]
+  },
+  "[\"147\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "147",
+        "original_answers_in_group": [
+          "147"
+        ]
+      }
+    ]
+  },
+  "[\"fresh\", \"toasted\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "toasted",
+        "original_answers_in_group": [
+          "toasted"
+        ]
+      },
+      {
+        "canonical_answer": "fresh",
+        "original_answers_in_group": [
+          "fresh"
+        ]
+      }
+    ]
+  },
+  "[\"no\", \"twilight\", \"yes\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no"
+        ]
+      },
+      {
+        "canonical_answer": "twilight",
+        "original_answers_in_group": [
+          "twilight"
+        ]
+      },
+      {
+        "canonical_answer": "yes",
+        "original_answers_in_group": [
+          "yes"
+        ]
+      }
+    ]
+  },
+  "[\"bus\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "bus",
+        "original_answers_in_group": [
+          "bus"
+        ]
+      }
+    ]
+  },
+  "[\"no\", \"she's smiling\", \"smiling\", \"talking\", \"talking on phone\", \"yes\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "talking",
+        "original_answers_in_group": [
+          "talking",
+          "talking on phone"
+        ]
+      },
+      {
+        "canonical_answer": "no",
+        "original_answers_in_group": [
+          "no"
+        ]
+      },
+      {
+        "canonical_answer": "she's smiling",
+        "original_answers_in_group": [
+          "she's smiling",
+          "smiling"
+        ]
+      },
+      {
+        "canonical_answer": "yes",
+        "original_answers_in_group": [
+          "yes"
+        ]
+      }
+    ]
+  },
+  "[\"mirror\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "mirror",
+        "original_answers_in_group": [
+          "mirror"
+        ]
+      }
+    ]
+  },
+  "[\"blue\", \"blue/purple\", \"purple\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "blue",
+        "original_answers_in_group": [
+          "blue",
+          "blue/purple"
+        ]
+      },
+      {
+        "canonical_answer": "purple",
+        "original_answers_in_group": [
+          "purple"
+        ]
+      }
+    ]
+  },
+  "[\"0\", \"1\", \"2\", \"3\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "3",
+        "original_answers_in_group": [
+          "3"
+        ]
+      },
+      {
+        "canonical_answer": "1",
+        "original_answers_in_group": [
+          "1"
+        ]
+      },
+      {
+        "canonical_answer": "2",
+        "original_answers_in_group": [
+          "2"
+        ]
+      },
+      {
+        "canonical_answer": "0",
+        "original_answers_in_group": [
+          "0"
+        ]
+      }
+    ]
+  },
+  "[\"3\", \"4\", \"5\", \"7\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "4",
+        "original_answers_in_group": [
+          "4"
+        ]
+      },
+      {
+        "canonical_answer": "5",
+        "original_answers_in_group": [
+          "5"
+        ]
+      },
+      {
+        "canonical_answer": "3",
+        "original_answers_in_group": [
+          "3"
+        ]
+      },
+      {
+        "canonical_answer": "7",
+        "original_answers_in_group": [
+          "7"
+        ]
+      }
+    ]
+  },
+  "[\"backpack\", \"book bag\", \"nothing\", \"shirt\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "backpack",
+        "original_answers_in_group": [
+          "backpack",
+          "book bag"
+        ]
+      },
+      {
+        "canonical_answer": "nothing",
+        "original_answers_in_group": [
+          "nothing"
+        ]
+      },
+      {
+        "canonical_answer": "shirt",
+        "original_answers_in_group": [
+          "shirt"
+        ]
+      }
+    ]
+  },
+  "[\"open 24 hours\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "open 24 hours",
+        "original_answers_in_group": [
+          "open 24 hours"
+        ]
+      }
+    ]
+  },
+  "[\"melting\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "melting",
+        "original_answers_in_group": [
+          "melting"
+        ]
+      }
+    ]
+  },
+  "[\"airplane\", \"helicopter\", \"plane\", \"plane and helicopter\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "airplane",
+        "original_answers_in_group": [
+          "airplane",
+          "plane"
+        ]
+      },
+      {
+        "canonical_answer": "helicopter",
+        "original_answers_in_group": [
+          "helicopter"
+        ]
+      },
+      {
+        "canonical_answer": "plane and helicopter",
+        "original_answers_in_group": [
+          "plane and helicopter"
+        ]
+      }
+    ]
+  },
+  "[\"cheese\", \"cream\", \"cream cheese\", \"egg\", \"ice cream\", \"white egg\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "egg",
+        "original_answers_in_group": [
+          "egg",
+          "white egg"
+        ]
+      },
+      {
+        "canonical_answer": "cream",
+        "original_answers_in_group": [
+          "cream",
+          "cream cheese"
+        ]
+      },
+      {
+        "canonical_answer": "ice cream",
+        "original_answers_in_group": [
+          "ice cream"
+        ]
+      },
+      {
+        "canonical_answer": "cheese",
+        "original_answers_in_group": [
+          "cheese"
+        ]
+      }
+    ]
+  },
+  "[\"grey sweater and green shirt\", \"hoodie\", \"hoodie sweater\", \"hoody\", \"jacket\", \"sweatshirt\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "hoodie",
+        "original_answers_in_group": [
+          "hoodie sweater",
+          "hoodie",
+          "hoody",
+          "sweatshirt"
+        ]
+      },
+      {
+        "canonical_answer": "jacket",
+        "original_answers_in_group": [
+          "jacket"
+        ]
+      },
+      {
+        "canonical_answer": "grey sweater and green shirt",
+        "original_answers_in_group": [
+          "grey sweater and green shirt"
+        ]
+      }
+    ]
+  },
+  "[\"blue\", \"blue,white\", \"gray\", \"light blue\", \"purple\", \"purple, white\"]": {
+    "grouped_answers": [
+      {
+        "canonical_answer": "blue",
+        "original_answers_in_group": [
+          "blue",
+          "blue,white",
+          "light blue"
+        ]
+      },
+      {
+        "canonical_answer": "purple",
+        "original_answers_in_group": [
+          "purple",
+          "purple, white"
+        ]
+      },
+      {
+        "canonical_answer": "gray",
+        "original_answers_in_group": [
+          "gray"
+        ]
+      }
+    ]
   }
 }
