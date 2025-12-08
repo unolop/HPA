@@ -64,8 +64,16 @@ def get_annot(answer_type, prompt):
                     # q += prompt 
                     # q += '\nOptions:'
                     # q += oq.split('\nOptions:')[1] 
+                    question = data['question'] 
+                    question = (
+                        f"Question: {question}\n"
+                        "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
+                        "Answer:"
+                    )
+                    # \n{prompt}"
+                        # f"{choices_text} 
                     annot[qid] = {**row, **data}   
-                    annot[qid]['question'] = data['question']
+                    annot[qid]['question'] = question
                     # breakpoint()
                     break 
 
@@ -105,7 +113,6 @@ def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):
 
     return responses_by_qid 
 
-<<<<<<< HEAD
 def sample_data(processed, pilot=None, n=20): 
     
     missing_qids = []
@@ -115,9 +122,6 @@ def sample_data(processed, pilot=None, n=20):
         if deficit < 0: 
             print(f'we have more than enough data {n} total: {len(resp)}') 
             resp = resp[:n]
-=======
-def sample_data(processed, pilot=None, n=20):
->>>>>>> origin/claude/fix-build-training-data-016Q75zSCnGerkx1wYHPhHvM
 
     missing_qids = []
     for qid in processed.keys():
@@ -148,7 +152,6 @@ def sample_data(processed, pilot=None, n=20):
                 if len(resp) != n:
                     print(f"[QID {qid}] ⚠️ Still missing {n - len(resp)} responses after pilot data")
             else:
-<<<<<<< HEAD
                 missing_qids.append(qid) 
                 # print(f"missing {deficit} pilot data for {qid}") 
 
@@ -156,13 +159,6 @@ def sample_data(processed, pilot=None, n=20):
             
         processed[qid] = resp 
     
-=======
-                missing_qids.append(qid)  # Fixed: was appending list to itself!
-                print(f"[QID {qid}] ⚠️ No pilot data available, missing {n - len(resp)} responses")
-
-        processed[qid] = resp
-
->>>>>>> origin/claude/fix-build-training-data-016Q75zSCnGerkx1wYHPhHvM
     return processed, missing_qids 
 
 def build_training_data(
@@ -172,7 +168,6 @@ def build_training_data(
     verbose: bool = True
 ):  
     processed = []
-    # breakpoint()
     aggregator = AnswerAggregator(cache_path="/home/work/yuna/HPA/preprocessing/answer_clustering_cache.json", client=client)
 
     # Set image path based on output path
@@ -279,9 +274,9 @@ def main(args):
             output_jsonl_path=f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl" ,
             client=setup_openai_client()
         )
-        combined_output_path = f"{output_dir}/vqa1k_{args.n}_blind_inst_mixed.jsonl"
-        mix_original("/home/work/yuna/HPA/data/training/vqa1k_374.jsonl", \
-                    f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl", combined_output_path) 
+        # combined_output_path = f"{output_dir}/vqa1k_{args.n}_blind_inst_mixed.jsonl"
+        # mix_original("/home/work/yuna/HPA/data/training/vqa1k_374.jsonl", \
+        #             f"{output_dir}/train_agg_{args.n}_blind_inst.jsonl", combined_output_path) 
         
     elif args.answer_type == 'choice':
         build_training_data(

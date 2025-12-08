@@ -1,18 +1,17 @@
 #!/bin/bash
 
 MODELS=(
-    # "Qwen/Qwen3-VL-4B-Instruct"
     # "Qwen/Qwen3-VL-8B-Instruct"
-    "OpenGVLab/InternVL3_5-8B"
+    # "Qwen/Qwen3-VL-4B-Instruct"
+    "llava-hf/llava-v1.6-mistral-7b-hf"
+    # "OpenGVLab/InternVL3_5-8B"
 )
 
-data_path="/home/work/yuna/HPA/data/training/vqa1k_374.jsonl"
-data_path="/home/work/yuna/HPA/data/training/s1_text_10_blind_inst_mixed.jsonl"
-data_path="/home/work/yuna/HPA/data/training/s1_choice/train_agg_14_blind_inst.jsonl"
+data_path="/home/work/yuna/HPA/data/training/s1_text/train_agg_15_blind_inst.jsonl"
 
 val_data=""
 # val_data="/home/work/yuna/HPA/data/training/vqa5k_agg.jsonl"
-RUNNAME="mmstar_alignment_js_blind"
+RUNNAME="A1_JS_vqa1k_n15_blind_inst"
 
 for MODEL_8B in "${MODELS[@]}"; do
     # Build validation argument conditionally
@@ -21,12 +20,12 @@ for MODEL_8B in "${MODELS[@]}"; do
         val_arg="--val_data_path ${val_data}"
     fi
 
-    CUDA_VISIBLE_DEVICES=0 python train_human_alignment.py \
+    CUDA_VISIBLE_DEVICES=1 python train_human_alignment.py \
         --model_path ${MODEL_8B} \
         --data_path ${data_path} \
         --output_dir ./output/${MODEL_8B}/${RUNNAME} \
         ${val_arg} \
-        --run_name ${RUNNAME} \
+        --run_name ${MODEL_8B}/${RUNNAME} \
         --max_steps 5000 \
         --num_epochs 50 \
         --mode JS \

@@ -1,0 +1,2 @@
+{"loss": 3.03836966, "grad_norm": 15.39073944, "learning_rate": 8e-08, "token_acc": 0.70588235, "epoch": 0.02139037, "global_step/max_steps": "1/5000", "percentage": "0.02%", "elapsed_time": "10s", "remaining_time": "14h 11m 26s", "memory(GiB)": 8.86, "train_speed(iter/s)": 0.097853}
+{"loss": 2.57718578, "grad_norm": 10.86356926, "learning_rate": 1.6e-06, "token_acc": 0.6884273, "epoch": 0.42780749, "global_step/max_steps": "20/5000", "percentage": "0.40%", "elapsed_time": "2m 4s", "remaining_time": "8h 36m 38s", "memory(GiB)": 8.87, "train_speed(iter/s)": 0.160654}
