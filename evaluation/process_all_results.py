@@ -256,7 +256,7 @@ def process_result_file(
     metadata = parse_filename(filepath)
 
     # Check if already processed
-    relative_path = Path(filepath).relative_to('/home/user/HPA/data')
+    relative_path = Path(filepath).relative_to('/home/work/yuna/HPA/data')
     output_path = Path(output_dir) / relative_path
 
     if not force and output_path.exists():
@@ -288,13 +288,7 @@ def process_result_file(
     # Compute metrics (this adds 'correct' and 'embedding_similarity' to each item)
     metrics = compute_metrics_for_file(results, metadata['dataset'], encoder)
 
-<<<<<<< HEAD
-    # Save processed results
-    relative_path = Path(filepath).relative_to('/home/work/yuna/HPA/data')
-    output_path = Path(output_dir) / relative_path
-=======
     # Save processed results with per-question scores
->>>>>>> origin/claude/fix-todo-mipm6gpu6bovkh38-016Q75zSCnGerkx1wYHPhHvM
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -440,7 +434,7 @@ def main():
     parser.add_argument(
         '--output_dir',
         type=str,
-        default='/home/user/HPA/data/processed',
+        default='/home/work/yuna/HPA/data/processed',
         help='Output directory for processed files'
     )
     args = parser.parse_args()
@@ -452,13 +446,8 @@ def main():
         print("⚠ Force mode: reprocessing all files")
 
     # Setup paths
-<<<<<<< HEAD
     data_dir = Path('/home/work/yuna/HPA/data')
-    output_dir = Path('/home/work/yuna/HPA/data/processed')
-=======
-    data_dir = Path('/home/user/HPA/data')
     output_dir = Path(args.output_dir)
->>>>>>> origin/claude/fix-todo-mipm6gpu6bovkh38-016Q75zSCnGerkx1wYHPhHvM
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Find all result files

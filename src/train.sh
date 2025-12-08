@@ -1,8 +1,8 @@
 #!/bin/bash
 
 MODELS=(
-    "Qwen/Qwen3-VL-4B-Instruct"
     "Qwen/Qwen3-VL-8B-Instruct"
+    "Qwen/Qwen3-VL-4B-Instruct"
     # "llava-hf/llava-v1.6-mistral-7b-hf"
     # "OpenGVLab/InternVL3_5-8B"
 )
