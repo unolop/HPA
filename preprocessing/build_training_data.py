@@ -47,20 +47,24 @@ def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):
         vqa_val = vqa_val.get_by_qid() 
 
     responses_by_qid = {}
-    for resp in answers: 
-        qid = resp['qid'] # .get("qid", '') 
-        if qid not in responses_by_qid.keys() : 
-            responses_by_qid[qid] = [] 
+    for resp in answers:
+        qid = resp['qid'] # .get("qid", '')
+        if qid not in responses_by_qid.keys() :
+            responses_by_qid[qid] = []
 
-        confidence = resp.get("confidence", 3)  
-        if set_confidence is not None: 
-            confidence = set_confidence 
-        confidence = CONF_MAP[str(confidence)]  
+        confidence = resp.get("confidence", 3)
+        if set_confidence is not None:
+            confidence = set_confidence
+        confidence = CONF_MAP[str(confidence)]
         resp['confidence'] = confidence
-        
-        if answer_type == 'text':  
+
+        # Add normalized answer for aggregator
+        if 'answer' in resp:
+            resp['answer_normalized'] = normalize_answer(resp['answer'])
+
+        if answer_type == 'text':
             vqa_annot = vqa_val[qid]
-            vqa_annot.pop('answers', None) # remove the ground truth answers 
+            vqa_annot.pop('answers', None) # remove the ground truth answers
             resp = {**vqa_annot, **resp}
             resp['question'] = vqa_annot['question']
         responses_by_qid[qid].append(resp)  
@@ -77,14 +81,18 @@ def sample_data(processed, pilot=None, n=20):
             print(f'we have more than enough data {n} total: {len(resp)}') 
             resp = resp[:n]
 
-        # append pilot data 
+        # append pilot data
         if len(resp) < n and pilot is not None :
-            if qid in pilot.keys(): 
+            if qid in pilot.keys():
                 pilot_data = pilot[qid]
                 idx = 0
-                while len(resp) < n and idx < len(pilot_data): 
-                    resp.append(pilot_data[idx])
-                    idx += 1  
+                while len(resp) < n and idx < len(pilot_data):
+                    pilot_resp = pilot_data[idx].copy()
+                    # Ensure answer_normalized exists for aggregator
+                    if 'answer' in pilot_resp and 'answer_normalized' not in pilot_resp:
+                        pilot_resp['answer_normalized'] = normalize_answer(pilot_resp['answer'])
+                    resp.append(pilot_resp)
+                    idx += 1
                 if len(resp) != n:
                     print(f"still missing {n - len(resp)} after appending {idx} pilot data")
             else:
