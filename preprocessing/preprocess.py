@@ -302,6 +302,25 @@ def setup_openai_client(api_key: str = None):
     
     return OpenAI(api_key=api_key)
 
+def ask_gpt(client, prompt: str, model: str = "gpt-4o-mini"):
+    """
+    Call OpenAI API with the given prompt.
+
+    Args:
+        client: OpenAI client instance
+        prompt: The prompt to send
+        model: Model to use (default: gpt-4o-mini)
+
+    Returns:
+        str: The response content
+    """
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3,  # Lower temperature for more consistent translations
+    )
+    return response.choices[0].message.content.strip()
+
 def translate_prompt(question, answer): 
     prompt = f"""You are a precise translation assistant for VQA data.
 
