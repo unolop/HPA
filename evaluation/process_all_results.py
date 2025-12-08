@@ -238,6 +238,7 @@ def process_result_file(
     filepath: str,
     output_dir: str,
     encoder=None,
+    force: bool = False,
 ) -> Dict[str, Any]:
     """
     Process a single result file.
@@ -246,12 +247,36 @@ def process_result_file(
         filepath: Path to result file
         output_dir: Output directory for processed files
         encoder: Sentence transformer encoder
+        force: If True, reprocess even if output exists
 
     Returns:
         Dictionary with metadata and metrics
     """
     # Parse filename
     metadata = parse_filename(filepath)
+
+    # Check if already processed
+    relative_path = Path(filepath).relative_to('/home/user/HPA/data')
+    output_path = Path(output_dir) / relative_path
+
+    if not force and output_path.exists():
+        # Check if file sizes match (same number of lines)
+        input_lines = sum(1 for _ in open(filepath, 'r'))
+        output_lines = sum(1 for _ in open(output_path, 'r'))
+
+        if input_lines == output_lines:
+            # Already processed, load existing metrics
+            results = load_results_file(str(output_path))
+            if results and 'correct' in results[0]:
+                # Recompute summary metrics from processed file
+                metrics = compute_metrics_for_file(results, metadata['dataset'], None)
+                return {
+                    'filepath': str(filepath),
+                    'output_path': str(output_path),
+                    **metadata,
+                    'metrics': metrics,
+                    'cached': True,
+                }
 
     # Load results
     results = load_results_file(filepath)
@@ -260,17 +285,21 @@ def process_result_file(
         print(f"⚠ Empty file: {filepath}")
         return None
 
-    # Compute metrics
+    # Compute metrics (this adds 'correct' and 'embedding_similarity' to each item)
     metrics = compute_metrics_for_file(results, metadata['dataset'], encoder)
 
-    # Save processed results
-    relative_path = Path(filepath).relative_to('/home/user/HPA/data')
-    output_path = Path(output_dir) / relative_path
+    # Save processed results with per-question scores
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, 'w', encoding='utf-8') as f:
         for item in results:
-            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+            # Keep all original fields plus computed scores
+            output_item = {
+                **item,
+                'correct': item.get('correct', False),
+                'embedding_similarity': item.get('embedding_similarity', 0.0),
+            }
+            f.write(json.dumps(output_item, ensure_ascii=False) + '\n')
 
     # Return summary
     return {
@@ -278,6 +307,7 @@ def process_result_file(
         'output_path': str(output_path),
         **metadata,
         'metrics': metrics,
+        'cached': False,
     }
 
 
@@ -374,13 +404,33 @@ def generate_summary_stats(all_results: List[Dict], output_dir: str):
 
 def main():
     """Main processing pipeline."""
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Process all result files and compute metrics"
+    )
+    parser.add_argument(
+        '--force',
+        action='store_true',
+        help='Force reprocessing of all files (ignore cache)'
+    )
+    parser.add_argument(
+        '--output_dir',
+        type=str,
+        default='/home/user/HPA/data/processed',
+        help='Output directory for processed files'
+    )
+    args = parser.parse_args()
+
     print("=" * 80)
     print("📊 PROCESSING ALL RESULT FILES")
     print("=" * 80)
+    if args.force:
+        print("⚠ Force mode: reprocessing all files")
 
     # Setup paths
     data_dir = Path('/home/user/HPA/data')
-    output_dir = Path('/home/user/HPA/data/processed')
+    output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Find all result files
@@ -409,16 +459,32 @@ def main():
     print("=" * 80)
 
     all_results = []
+    cached_count = 0
+    processed_count = 0
+
     for filepath in tqdm(result_files, desc="Processing"):
         try:
-            result = process_result_file(str(filepath), str(output_dir), encoder)
+            result = process_result_file(
+                str(filepath),
+                str(output_dir),
+                encoder,
+                force=args.force
+            )
             if result:
                 all_results.append(result)
+                if result.get('cached', False):
+                    cached_count += 1
+                else:
+                    processed_count += 1
         except Exception as e:
             print(f"\n⚠ Error processing {filepath}: {e}")
+            import traceback
+            traceback.print_exc()
             continue
 
     print(f"\n✓ Successfully processed {len(all_results)} files")
+    print(f"   • Cached (skipped): {cached_count}")
+    print(f"   • Newly processed: {processed_count}")
 
     # Generate summary statistics
     print("\n" + "=" * 80)
@@ -430,11 +496,14 @@ def main():
     print("\n" + "=" * 80)
     print("✅ PROCESSING COMPLETE")
     print("=" * 80)
-    print(f"   Processed files: {len(all_results)}")
+    print(f"   Total files: {len(all_results)}")
+    print(f"   Cached: {cached_count}")
+    print(f"   Processed: {processed_count}")
     print(f"   Total samples: {summary['overall']['total_samples']}")
     print(f"   Overall accuracy: {summary['overall']['overall_accuracy']:.4f}")
     print(f"   Output directory: {output_dir}")
     print("=" * 80)
+    print("\n💡 Tip: Use --force to reprocess all files")
 
 
 if __name__ == '__main__':
