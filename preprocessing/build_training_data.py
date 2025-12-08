@@ -105,6 +105,7 @@ def get_responses_by_qid(answers, answer_type, blind=True, set_confidence=None):
 
     return responses_by_qid 
 
+<<<<<<< HEAD
 def sample_data(processed, pilot=None, n=20): 
     
     missing_qids = []
@@ -114,18 +115,40 @@ def sample_data(processed, pilot=None, n=20):
         if deficit < 0: 
             print(f'we have more than enough data {n} total: {len(resp)}') 
             resp = resp[:n]
+=======
+def sample_data(processed, pilot=None, n=20):
+>>>>>>> origin/claude/fix-build-training-data-016Q75zSCnGerkx1wYHPhHvM
 
-        # append pilot data 
-        if len(resp) < n and pilot is not None :
-            if qid in pilot.keys(): 
+    missing_qids = []
+    for qid in processed.keys():
+        resp = processed[qid]
+        original_count = len(resp)
+        deficit = n - len(resp)
+
+        if deficit < 0:
+            # We have more than enough data, truncate to n
+            resp = resp[:n]
+            print(f"[QID {qid}] Truncated {original_count} → {len(resp)} responses")
+
+        # Append pilot data if we still need more
+        if len(resp) < n and pilot is not None:
+            print(f"[QID {qid}] Need {n - len(resp)} more responses (have {len(resp)}/{n})")
+            if qid in pilot.keys():
                 pilot_data = pilot[qid]
                 idx = 0
-                while len(resp) < n and idx < len(pilot_data): 
-                    resp.append(pilot_data[idx])
-                    idx += 1  
+                while len(resp) < n and idx < len(pilot_data):
+                    pilot_resp = pilot_data[idx].copy()  # Make a copy to avoid modifying original
+                    # Ensure the qid field matches the current question
+                    if 'qid' in pilot_resp and pilot_resp['qid'] != qid:
+                        print(f"[QID {qid}] ⚠️ Pilot response has qid={pilot_resp['qid']}, correcting to {qid}")
+                        pilot_resp['qid'] = qid
+                    resp.append(pilot_resp)
+                    idx += 1
+                print(f"[QID {qid}] Added {idx} pilot responses → now have {len(resp)}/{n}")
                 if len(resp) != n:
-                    print(f"still missing {n - len(resp)} after appending {idx} pilot data")
+                    print(f"[QID {qid}] ⚠️ Still missing {n - len(resp)} responses after pilot data")
             else:
+<<<<<<< HEAD
                 missing_qids.append(qid) 
                 # print(f"missing {deficit} pilot data for {qid}") 
 
@@ -133,6 +156,13 @@ def sample_data(processed, pilot=None, n=20):
             
         processed[qid] = resp 
     
+=======
+                missing_qids.append(qid)  # Fixed: was appending list to itself!
+                print(f"[QID {qid}] ⚠️ No pilot data available, missing {n - len(resp)} responses")
+
+        processed[qid] = resp
+
+>>>>>>> origin/claude/fix-build-training-data-016Q75zSCnGerkx1wYHPhHvM
     return processed, missing_qids 
 
 def build_training_data(

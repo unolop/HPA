@@ -1,9 +1,9 @@
 #!/bin/bash
 
 MODELS=(
-    "Qwen/Qwen3-VL-4B-Instruct"
-    "Qwen/Qwen3-VL-8B-Instruct"
-    # "OpenGVLab/InternVL3_5-8B"
+    # "Qwen/Qwen3-VL-4B-Instruct"
+    # "Qwen/Qwen3-VL-8B-Instruct"
+    "OpenGVLab/InternVL3_5-8B"
 )
 
 data_path="/home/work/yuna/HPA/data/training/vqa1k_374.jsonl"
