@@ -33,15 +33,17 @@ class HumanAlignmentTrainer(Trainer):
         lambda_dist: float = 1.0,  # Weight for distributional matching
         lambda_l2: float = 0.1,  # Weight for L2 penalty
         use_l2_penalty: bool = True,
+        use_sft_loss: bool = False,  # Whether to include SFT loss on conversation
         **kwargs
     ):
         super().__init__(*args, **kwargs)
-        
+
         self.tokenizer = tokenizer
         self.mode = mode
         self.lambda_dist = lambda_dist
         self.lambda_l2 = lambda_l2
         self.use_l2_penalty = use_l2_penalty
+        self.use_sft_loss = use_sft_loss
         self._first_batch_logged = False
         
         # Pre-tokenize common answers for efficiency
@@ -57,6 +59,7 @@ class HumanAlignmentTrainer(Trainer):
         
         logger.info(f"[Human Alignment Trainer] Initialized")
         logger.info(f"   Mode: {self.mode}")
+        logger.info(f"   Use SFT loss: {self.use_sft_loss}")
         logger.info(f"   Lambda (dist): {self.lambda_dist}")
         logger.info(f"   Lambda (L2): {self.lambda_l2}")
         logger.info(f"   Use L2 penalty: {self.use_l2_penalty}")
@@ -230,9 +233,17 @@ class HumanAlignmentTrainer(Trainer):
             l2_loss = l2_loss / max(batch_size, 1)
             
             # Combine losses
-            total_loss = sft_loss + self.lambda_dist * dist_loss
+            if self.use_sft_loss:
+                total_loss = sft_loss + self.lambda_dist * dist_loss
+            else:
+                # Pure distributional loss (no SFT on conversation)
+                total_loss = self.lambda_dist * dist_loss
+
             if self.use_l2_penalty:
                 total_loss = total_loss + self.lambda_l2 * l2_loss
+        else:
+            # No labels info - use SFT loss only
+            total_loss = sft_loss
 
         # Check for NaN/Inf in losses
         if torch.isnan(total_loss) or torch.isinf(total_loss):
@@ -340,6 +351,7 @@ class HumanAlignmentArguments(TrainArguments):
     lambda_dist: float = field(default=1.0, metadata={'help': 'Weight for distributional loss'})
     lambda_l2: float = field(default=0.1, metadata={'help': 'Weight for L2 penalty'})
     use_l2_penalty: bool = field(default=True)
+    use_sft_loss: bool = field(default=False, metadata={'help': 'Whether to include SFT loss on conversation'})
 
 
 def train_human_alignment(
@@ -352,6 +364,7 @@ def train_human_alignment(
     lambda_dist: float = 1.0,
     lambda_l2: float = 0.1,
     use_l2_penalty: bool = True,
+    use_sft_loss: bool = False,
     learning_rate: float = 2e-5,
     num_epochs: int = 3,
     max_steps: int = 2000,
@@ -441,14 +454,16 @@ def train_human_alignment(
         lambda_dist=lambda_dist,
         lambda_l2=lambda_l2,
         use_l2_penalty=use_l2_penalty,
+        use_sft_loss=use_sft_loss,
     )
-    
+
     def create_trainer(*args, **kwargs):
         kwargs['tokenizer'] = tokenizer
         kwargs['mode'] = sft_args.mode
         kwargs['lambda_dist'] = sft_args.lambda_dist
         kwargs['lambda_l2'] = sft_args.lambda_l2
         kwargs['use_l2_penalty'] = sft_args.use_l2_penalty
+        kwargs['use_sft_loss'] = sft_args.use_sft_loss
         return HumanAlignmentTrainer(*args, **kwargs)
     
     import swift.trainers
@@ -474,6 +489,8 @@ def main():
     parser.add_argument("--lambda_dist", type=float, default=1.0)
     parser.add_argument("--lambda_l2", type=float, default=0.1)
     parser.add_argument("--use_l2_penalty", action="store_true", default=True)
+    parser.add_argument("--use_sft_loss", action="store_true", default=False,
+                        help="Include SFT loss on conversation (default: False, use only distributional loss)")
     parser.add_argument("--learning_rate", type=float, default=2e-5)
     parser.add_argument("--num_epochs", type=int, default=3)
     parser.add_argument("--max_steps", type=int, default=2000)
