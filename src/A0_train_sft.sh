@@ -20,8 +20,8 @@ for MODEL in "${MODELS[@]}"; do
         --output_dir ./output/${MODEL}/${RUNNAME} \
         ${val_arg} \
         --run_name ${RUNNAME} \
-        --max_steps 5000 \
-        --num_epochs 3 \
+        --max_steps -1 \
+        --num_epochs 10 \
         --learning_rate 2e-5 \
         --lora_rank 8 \
         --lora_alpha 16 \

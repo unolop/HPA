@@ -29,8 +29,8 @@ for MODEL_8B in "${MODELS[@]}"; do
         --output_dir ./output/${MODEL_8B}/${RUNNAME} \
         ${val_arg} \
         --run_name ${MODEL_8B}/${RUNNAME} \
-        --max_steps 5000 \
-        --num_epochs 50 \
+        --max_steps -1 \
+        --num_epochs 10 \
         --mode JS \
         --lambda_dist 1.0 \
         --lambda_l2 0.1 \

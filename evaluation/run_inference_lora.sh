@@ -2,7 +2,7 @@
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
 GPU=0
-DATASET_PATHS=("vqa_1k" "spubench"   ) #   # "mmstar" "vqa_5k" ) #  
+DATASET_PATHS=( "mmstar" ) #  "vqa_1k" "spubench"   ) #   # "vqa_5k" 
 CONDITION_LIST=("" "_inst_blind" ) #  "_sys_inst_blind" "_blind"  
 BASE_MODEL=(
     "Qwen/Qwen3-VL-4B-Instruct"
@@ -21,9 +21,6 @@ BASE_MODEL=(
     )
 
 ADAPTERS_PATHS=(
-    # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/vqa1k_374_alignment_js/v0-20251206-141535/checkpoint-4200"
-    # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/vqa1k_374_alignment_js_blind_mixed/v5-20251207-011638/checkpoint-4320"
-    # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/vqa1k_374_standard/v0-20251206-021720/checkpoint-4840"
     "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa1k_n10_blind_inst/v0-20251209-052435/checkpoint-5000"
     "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa1k_n15_blind_inst/v0-20251208-202445/checkpoint-5000"
     "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/D0_SFT_mmstar_gt/v0-20251209-083334/checkpoint-3300"

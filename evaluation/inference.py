@@ -162,7 +162,7 @@ def main(args):
                 if data[current_item_id] in processed_ids:
                     continue 
                 
-            if 'inst' in args.condition and 'vqa' not in args.dataset:
+            if 'inst' in args.condition and 'mmstar' in args.dataset:
                 prompt += system_message
 
             if 'vqa' not in args.dataset:
@@ -200,6 +200,7 @@ def main(args):
 
             # 6. 결과를 JSON 객체로 생성하고 JSONL에 즉시 작성
             data['output'] = output_text 
+            data['question'] = prompt 
             print('Q:', prompt, 'Output:', data['output'], 'Ans:', output_jsonl_path)
 
             data.pop('image')
