@@ -148,16 +148,20 @@ def get_vqa_mapper() -> VQAAnswerMapper:
 def get_conditions(path, datasets=DATASETS, conditions=CONDITIONS, modelnames=MODELNAMES):
     """Extract model, dataset, condition from filename."""
     filename = os.path.basename(path).replace(".jsonl", "")
+
     tokens = filename.split("_")
     short_models = {m.split("/")[-1]: m for m in modelnames}
 
     model_short = None
     model_full = None
     for short, full in short_models.items():
-        if short in filename:
+        if short in path:
             model_short = short
             model_full = full
             break
+    if 'finetuned' in path : 
+        trained = path.split('/')[-2] 
+        model_full += f"/{trained}" 
 
     dataset = None
     for d in datasets:
@@ -406,17 +410,17 @@ def score_file(
 def score_directory(
     input_dir: str,
     output_dir: str = None,
-    pattern: str = "*.jsonl",
 ) -> pd.DataFrame:
     """
     Score all JSONL files in directory and save processed versions.
 
     Returns DataFrame with all results.
     """
-    files = sorted(glob(os.path.join(input_dir, pattern)))
+    files = sorted(glob(f"{input_dir}/*.jsonl") + glob(f"{input_dir}/*/*/*.jsonl"))
 
     if not files:
-        print(f"❌ No files matching {pattern} in {input_dir}")
+        print(f"❌ No files matching in {input_dir}")
+        breakpoint()
         return pd.DataFrame()
 
     print(f"Found {len(files)} files to score")
@@ -494,8 +498,6 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
                         help="Directory with JSONL files")
     parser.add_argument("--output_dir", type=str, default=None,
                         help="Output directory for processed files with scores")
-    parser.add_argument("--pattern", type=str, default="*.jsonl",
-                        help="File pattern for input_dir")
 
     args = parser.parse_args()
 
@@ -504,7 +506,6 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
         score_directory(
             args.input_dir,
             args.output_dir,
-            args.pattern,
         )
 
     elif args.input:
