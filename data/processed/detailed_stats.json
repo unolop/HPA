@@ -1,0 +1,31 @@
+{
+  "overall": {
+    "total_files": 189,
+    "total_samples": 321400,
+    "overall_accuracy": 0.4641599253266957
+  },
+  "by_source": {
+    "num_samples": {
+      "finetuned": 70923,
+      "humans": 10584,
+      "models": 239893
+    },
+    "num_correct": {
+      "finetuned": 39393,
+      "humans": 0,
+      "models": 109788
+    },
+    "accuracy": {
+      "finetuned": 0.5633739458232525,
+      "humans": 0.0,
+      "models": 0.42645367181407595
+    },
+    "embedding_similarity": {
+      "finetuned": 0.3462062715564634,
+      "humans": 0.0,
+      "models": 0.3315082601859593
+    }
+  },
+  "by_model_dataset": {
+    "num_samples": {
+      
