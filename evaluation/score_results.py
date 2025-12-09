@@ -452,21 +452,12 @@ def score_file(
 
 def score_directory(
     input_dir: str,
-    output_dir: str = None,
-    pattern: str = "*.jsonl",
     skip_existing: bool = True,
 ) -> pd.DataFrame:
-    """
-    Score all JSONL files in directory and save processed versions.
 
-    Args:
-        input_dir: Input directory with JSONL files
-        output_dir: Output directory for scored files
-        pattern: File pattern to match
-        skip_existing: If True, skip files that already have output
+    output_dir = f"/home/work/yuna/HPA/evaluation/scored/{input_dir}" 
+    input_dir=f"/home/work/yuna/HPA/evaluation/results/{input_dir}" 
 
-    Returns DataFrame with all results.
-    """
     files = sorted(glob(f"{input_dir}/*.jsonl") + glob(f"{input_dir}/*/*/*.jsonl"))
 
     if not files:
@@ -481,12 +472,9 @@ def score_directory(
     skipped_count = 0
     for f in files:
         # Determine output path
-        out_path = None
-        if output_dir:
-            rel_path = os.path.relpath(f, input_dir)
-            out_path = os.path.join(output_dir, rel_path)
-
-        result = score_file(f, out_path, skip_existing=skip_existing)
+        filename = f.replace(f"{input_dir}/", '')
+        out_path = os.path.join(output_dir, filename) 
+        result = score_file(f, out_path, skip_existing=skip_existing) 
         if result:
             all_results.append(result)
         elif skip_existing and out_path and os.path.exists(out_path):
@@ -513,19 +501,18 @@ def score_directory(
         print(summary.to_string())
     
     # Save if output_dir provided
-    if output_dir:
-        os.makedirs(output_dir, exist_ok=True)
-        
-        # Save detailed results
-        results_path = os.path.join(output_dir, 'scored_results.json')
-        with open(results_path, 'w') as f:
-            json.dump(all_results, f, indent=2)
-        print(f"\n✓ Detailed results: {results_path}")
-        
-        # Save summary CSV
-        csv_path = os.path.join(output_dir, 'summary.csv')
-        df.to_csv(csv_path, index=False)
-        print(f"✓ Summary CSV: {csv_path}")
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Save detailed results
+    results_path = os.path.join(output_dir, 'scored_results.json')
+    with open(results_path, 'w') as f:
+        json.dump(all_results, f, indent=2)
+    print(f"\n✓ Detailed results: {results_path}")
+    
+    # Save summary CSV
+    csv_path = os.path.join(output_dir, 'summary.csv')
+    df.to_csv(csv_path, index=False)
+    print(f"✓ Summary CSV: {csv_path}")
     
     return df
 
@@ -558,10 +545,8 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
 
     parser.add_argument("--input", type=str, nargs='*', default=None,
                         help="Input JSONL file(s)")
-    parser.add_argument("--input_dir", type=str, default=None,
+    parser.add_argument("--input_dir", type=str, default="None",
                         help="Directory with JSONL files")
-    parser.add_argument("--output_dir", type=str, default=None,
-                        help="Output directory for processed files with scores")
     parser.add_argument("--force", action="store_true",
                         help="Force reprocessing even if output files exist")
     args = parser.parse_args()
@@ -571,59 +556,8 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
         # Score directory
         score_directory(
             args.input_dir,
-            args.output_dir,
+            skip_existing=skip_existing 
         )
-
-    elif args.input:
-        # Score individual files
-        all_results = []
-        skipped_count = 0
-        for input_path in args.input:
-            # Handle glob patterns
-            if '*' in input_path:
-                files = glob(input_path)
-            else:
-                files = [input_path]
-
-            for f in files:
-                # Determine output path
-                out_path = None
-                if args.output_dir:
-                    out_path = os.path.join(args.output_dir, os.path.basename(f))
-
-                result = score_file(f, out_path, skip_existing=skip_existing)
-                if result:
-                    all_results.append(result)
-                elif skip_existing and out_path and os.path.exists(out_path):
-                    skipped_count += 1
-
-        # Print summary
-        if len(all_results) > 0 or skipped_count > 0:
-            print(f"\n{'='*60}")
-            if len(all_results) > 0:
-                print(f"✓ Processed {len(all_results)} files")
-            if skipped_count > 0:
-                print(f"⏭️  Skipped {skipped_count} files (already processed)")
-            print(f"{'='*60}")
-
-        # Print detailed results if multiple files
-        if len(all_results) > 1:
-            print("\n" + "="*60)
-            print("📊 SUMMARY")
-            print("="*60)
-            df = pd.DataFrame(all_results)[['file', 'accuracy', 'correct', 'total']]
-            print(df.to_string(index=False))
-
-        # Save summary if output_dir
-        if args.output_dir and all_results:
-            os.makedirs(args.output_dir, exist_ok=True)
-            results_path = os.path.join(args.output_dir, 'summary.json')
-            with open(results_path, 'w') as f:
-                json.dump(all_results, f, indent=2)
-            print(f"\n✓ Summary saved: {results_path}")
-
-    else:
-        parser.print_help()
 
 
 if __name__ == "__main__":
