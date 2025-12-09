@@ -306,12 +306,26 @@ def answer_similarity(gt: str, pred: str, encoder) -> float:
 def score_file(
     input_path: str,
     output_path: str = None,
+    skip_existing: bool = True,
 ) -> Dict:
     """
     Score a single JSONL file and save processed version.
 
+    Args:
+        input_path: Path to input JSONL file
+        output_path: Path to save scored output (optional)
+        skip_existing: If True, skip if output file already exists
+
     Returns dict with accuracy, per-category breakdown, etc.
     """
+    # Check if output already exists
+    if skip_existing and output_path and os.path.exists(output_path):
+        print(f"\n{'='*60}")
+        print(f"⏭️  Skipping (already processed): {os.path.basename(input_path)}")
+        print(f"   Output exists: {output_path}")
+        print(f"{'='*60}")
+        return None
+
     # Parse filename
     model_full, dataset, condition = get_conditions(input_path)
     dataset_type = DATASET_TYPE.get(dataset, 'multi-choice')
@@ -432,9 +446,17 @@ def score_file(
 def score_directory(
     input_dir: str,
     output_dir: str = None,
+    pattern: str = "*.jsonl",
+    skip_existing: bool = True,
 ) -> pd.DataFrame:
     """
     Score all JSONL files in directory and save processed versions.
+
+    Args:
+        input_dir: Input directory with JSONL files
+        output_dir: Output directory for scored files
+        pattern: File pattern to match
+        skip_existing: If True, skip files that already have output
 
     Returns DataFrame with all results.
     """
@@ -449,6 +471,7 @@ def score_directory(
 
     # Score all files
     all_results = []
+    skipped_count = 0
     for f in files:
         # Determine output path
         out_path = None
@@ -456,10 +479,19 @@ def score_directory(
             rel_path = os.path.relpath(f, input_dir)
             out_path = os.path.join(output_dir, rel_path)
 
-        result = score_file(f, out_path)
+        result = score_file(f, out_path, skip_existing=skip_existing)
         if result:
             all_results.append(result)
-    
+        elif skip_existing and out_path and os.path.exists(out_path):
+            skipped_count += 1
+
+    # Print processing summary
+    print(f"\n{'='*60}")
+    print(f"✓ Processed {len(all_results)} files")
+    if skipped_count > 0:
+        print(f"⏭️  Skipped {skipped_count} files (already processed)")
+    print(f"{'='*60}")
+
     # Create summary DataFrame
     df = pd.DataFrame(all_results)
     
@@ -504,8 +536,11 @@ Examples:
   # Score single file
   python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl --output_dir scored/
 
-  # Score all files in directory
+  # Score all files in directory (skips already processed)
   python score_results.py --input_dir results/ --output_dir scored/
+
+  # Force reprocessing of all files
+  python score_results.py --input_dir results/ --output_dir scored/ --force
 
   # Multiple files with glob
   python score_results.py --input "results/*mmstar*.jsonl" --output_dir scored/
@@ -520,8 +555,10 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
                         help="Directory with JSONL files")
     parser.add_argument("--output_dir", type=str, default=None,
                         help="Output directory for processed files with scores")
-
+    parser.add_argument("--pattern", type=str, default="*.jsonl",
+                        help="Force reprocessing even if output files exist")
     args = parser.parse_args()
+    skip_existing = not args.force
 
     if args.input_dir:
         # Score directory
@@ -533,6 +570,7 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
     elif args.input:
         # Score individual files
         all_results = []
+        skipped_count = 0
         for input_path in args.input:
             # Handle glob patterns
             if '*' in input_path:
@@ -546,11 +584,22 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
                 if args.output_dir:
                     out_path = os.path.join(args.output_dir, os.path.basename(f))
 
-                result = score_file(f, out_path)
+                result = score_file(f, out_path, skip_existing=skip_existing)
                 if result:
                     all_results.append(result)
+                elif skip_existing and out_path and os.path.exists(out_path):
+                    skipped_count += 1
 
-        # Print summary if multiple files
+        # Print summary
+        if len(all_results) > 0 or skipped_count > 0:
+            print(f"\n{'='*60}")
+            if len(all_results) > 0:
+                print(f"✓ Processed {len(all_results)} files")
+            if skipped_count > 0:
+                print(f"⏭️  Skipped {skipped_count} files (already processed)")
+            print(f"{'='*60}")
+
+        # Print detailed results if multiple files
         if len(all_results) > 1:
             print("\n" + "="*60)
             print("📊 SUMMARY")
