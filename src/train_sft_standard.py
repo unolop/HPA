@@ -37,6 +37,7 @@ def train_sft(
     eval_steps: int = 40,
     logging_steps: int = 20,
     max_pixels: int = 448,
+    resume_from_checkpoint: str = None,  # Path to checkpoint dir or 'auto' for latest
 ):
     """Standard SFT training with CE loss on conversations."""
 
@@ -53,6 +54,13 @@ def train_sft(
         logger.warning(f"⚠️  To use num_epochs, set max_steps=-1 instead.")
     else:
         logger.info(f"📊 Training for {num_epochs} epochs (max_steps={max_steps})")
+
+    # Log checkpoint resumption
+    if resume_from_checkpoint:
+        if resume_from_checkpoint.lower() == 'auto':
+            logger.info(f"🔄 Will resume from latest checkpoint in {output_dir}")
+        else:
+            logger.info(f"🔄 Resuming from checkpoint: {resume_from_checkpoint}")
 
     # Handle None/empty string for val_data_path
     if val_data_path is not None and (val_data_path.lower() == 'none' or val_data_path.strip() == ''):
@@ -99,7 +107,8 @@ def train_sft(
         logging_steps=logging_steps,
         eval_steps=eval_steps,
         eval_strategy="steps",
-        
+        resume_from_checkpoint=resume_from_checkpoint if resume_from_checkpoint and resume_from_checkpoint.lower() != 'none' else None,
+
         max_length=1024,
         max_pixels=max_pixels,
         
@@ -132,7 +141,9 @@ def main():
     parser.add_argument("--eval_steps", type=int, default=40)
     parser.add_argument("--logging_steps", type=int, default=20)
     parser.add_argument("--max_pixels", type=int, default=448)
-    
+    parser.add_argument("--resume_from_checkpoint", type=str, default=None,
+                        help="Path to checkpoint directory to resume from, or 'auto' to resume from latest checkpoint")
+
     args = parser.parse_args()
     train_sft(**vars(args))
 

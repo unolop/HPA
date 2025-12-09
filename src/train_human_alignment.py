@@ -376,6 +376,7 @@ def train_human_alignment(
     eval_steps: int = 40,
     logging_steps: int = 20,
     max_pixels: int = 448,
+    resume_from_checkpoint: str = None,  # Path to checkpoint dir or 'auto' for latest
 ):
     """Train with Human Alignment Loss (JS Divergence)."""
     
@@ -394,6 +395,13 @@ def train_human_alignment(
         logger.warning(f"⚠️  To use num_epochs, set max_steps=-1 instead.")
     else:
         logger.info(f"📊 Training for {num_epochs} epochs (max_steps={max_steps})")
+
+    # Log checkpoint resumption
+    if resume_from_checkpoint:
+        if resume_from_checkpoint.lower() == 'auto':
+            logger.info(f"🔄 Will resume from latest checkpoint in {output_dir}")
+        else:
+            logger.info(f"🔄 Resuming from checkpoint: {resume_from_checkpoint}")
     
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
@@ -447,7 +455,8 @@ def train_human_alignment(
         logging_steps=logging_steps,
         eval_steps=eval_steps if len(val_data_path) > 0 else None,
         eval_strategy="steps" if len(val_data_path) > 0 else "no",
-        
+        resume_from_checkpoint=resume_from_checkpoint if resume_from_checkpoint and resume_from_checkpoint.lower() != 'none' else None,
+
         max_length=1024,
         max_pixels=max_pixels,
         
@@ -510,7 +519,9 @@ def main():
     parser.add_argument("--eval_steps", type=int, default=40)
     parser.add_argument("--logging_steps", type=int, default=20)
     parser.add_argument("--max_pixels", type=int, default=448)
-    
+    parser.add_argument("--resume_from_checkpoint", type=str, default=None,
+                        help="Path to checkpoint directory to resume from, or 'auto' to resume from latest checkpoint")
+
     args = parser.parse_args()
     train_human_alignment(**vars(args))
 
