@@ -229,7 +229,11 @@ def compute_metrics_for_file(
         if all_answers and isinstance(all_answers[0], dict):
             all_answers = [a.get('answer', '') for a in all_answers if 'answer' in a]
 
-        category = item.get('category', item.get('question_type', 'Unknown'))
+        # For mmstar, use both category and l2_category for grouping
+        if dataset_name == 'mmstar' and 'l2_category' in item:
+            category = f"{item.get('category', 'Unknown')} | {item.get('l2_category', 'Unknown')}"
+        else:
+            category = item.get('category', item.get('question_type', 'Unknown'))
 
         # Compute accuracy
         is_correct = False
@@ -445,14 +449,27 @@ def generate_summary_stats(all_results: List[Dict], output_dir: str):
     print(source_model)
 
     # Save detailed summary
+    # Convert MultiIndex DataFrames to JSON-serializable format
+    def serialize_dataframe(df_summary):
+        """Convert DataFrame with MultiIndex to JSON-serializable dict."""
+        if isinstance(df_summary.index, pd.MultiIndex):
+            # Convert MultiIndex tuples to string keys like "models|Qwen3-VL-4B|mmstar|inst_blind"
+            result = {}
+            for idx, row in df_summary.iterrows():
+                key = '|'.join(str(x) for x in idx)
+                result[key] = row.to_dict()
+            return result
+        else:
+            return df_summary.to_dict()
+
     detailed_summary = {
         'overall': {
             'total_files': len(all_results),
             'total_samples': int(df['num_samples'].sum()),
             'overall_accuracy': float(df['num_correct'].sum() / df['num_samples'].sum()),
         },
-        'by_source': source_summary.to_dict(),
-        'by_model_dataset': model_dataset_summary.to_dict(),
+        'by_source': serialize_dataframe(source_summary),
+        'by_model_dataset': serialize_dataframe(model_dataset_summary),
         'all_results': all_results,
     }
 
