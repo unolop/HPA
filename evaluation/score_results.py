@@ -70,37 +70,56 @@ VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotatio
 class VQAAnswerMapper:
     """
     Maps question_id to list of ground truth answers from VQA annotations.
-    
+
     Usage:
         mapper = VQAAnswerMapper()
         answers = mapper.get_answers(123456)  # Returns list of 10 annotator answers
     """
-    
+
     def __init__(self, annotations_path: str = VQA_ANNOTATIONS_PATH):
         self.annotations_path = annotations_path
         self._qid_to_answers = None  # Lazy load
-    
+        self._loading = False  # Prevent recursive loading
+
     def _load(self):
-        """Load annotations and build lookup dict."""
+        """Load annotations and build lookup dict (lazy loading)."""
         if self._qid_to_answers is not None:
             return
-        
-        print(f"📂 Loading VQA annotations from {self.annotations_path}...")
-        
-        with open(self.annotations_path, 'r') as f:
-            data = json.load(f)
-        
-        annotations = data.get('annotations', data)
-        
-        # Build qid -> answers lookup
-        self._qid_to_answers = {}
-        for ann in annotations:
-            qid = int(ann['question_id'])
-            # Extract answer strings from annotator responses
-            answers = [a['answer'] for a in ann['answers']]
-            self._qid_to_answers[qid] = answers
-        
-        print(f"   ✓ Loaded {len(self._qid_to_answers)} question annotations")
+
+        if self._loading:
+            return
+
+        self._loading = True
+
+        # Check if file exists before trying to load
+        if not os.path.exists(self.annotations_path):
+            print(f"⚠️  VQA annotations not found: {self.annotations_path}")
+            self._qid_to_answers = {}
+            self._loading = False
+            return
+
+        print(f"📂 Loading VQA annotations (this may take a moment)...")
+
+        try:
+            with open(self.annotations_path, 'r') as f:
+                data = json.load(f)
+
+            annotations = data.get('annotations', data)
+
+            # Build qid -> answers lookup
+            self._qid_to_answers = {}
+            for ann in annotations:
+                qid = int(ann['question_id'])
+                # Extract answer strings from annotator responses
+                answers = [a['answer'] for a in ann['answers']]
+                self._qid_to_answers[qid] = answers
+
+            print(f"   ✓ Loaded {len(self._qid_to_answers)} question annotations")
+        except Exception as e:
+            print(f"⚠️  Failed to load VQA annotations: {e}")
+            self._qid_to_answers = {}
+        finally:
+            self._loading = False
     
     def get_answers(self, question_id: int) -> List[str]:
         """
@@ -300,12 +319,7 @@ def score_file(
     print(f"   Condition: {condition or '(none)'}")
     print(f"{'='*60}")
 
-    # Load VQA mapper for open-ended datasets
-    vqa_mapper = None
-    if dataset_type == 'open-ended':
-        vqa_mapper = get_vqa_mapper()
-
-    # Load data
+    # Load data first (fast operation)
     data = []
     with open(input_path, 'r', encoding='utf-8') as f:
         for line in f:
@@ -315,6 +329,10 @@ def score_file(
     if not data:
         print("   ⚠️ Empty file!")
         return {}
+
+    # Only load VQA mapper if we actually need it (lazy initialization)
+    vqa_mapper = None
+    # We'll create it on-demand inside the loop only if dataset_type is open-ended
 
     # Score each example
     correct = 0
@@ -336,6 +354,10 @@ def score_file(
         else:
             # Open-ended: get all annotator answers
             qid = item.get('question_id', item.get('qid', item.get('index', None)))
+
+            # Lazy load VQA mapper only when we encounter the first VQA item
+            if vqa_mapper is None and qid is not None:
+                vqa_mapper = get_vqa_mapper()
 
             if vqa_mapper and qid is not None:
                 all_answers = vqa_mapper.get_answers(qid)
