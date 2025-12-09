@@ -114,9 +114,11 @@ def main(args):
     request_config = RequestConfig(max_tokens=args.max_token_length, temperature=0)
     
     save_name = args.model.split('/')[-1]
+    
     if args.lora_path is not None : 
-        save_name += args.lora_path.split('/')[-3] 
-    output_jsonl_path = f"{args.savedir}/{save_name}_{args.dataset}{args.condition}.jsonl"
+        finetuned = args.lora_path.split('/')[-3] 
+        save_name += f'/{finetuned}' 
+    output_jsonl_path = f"{args.savedir}/{save_name}/{args.dataset}{args.condition}.jsonl"
     prompt= ''
 
     if 'blind' in args.condition : 
@@ -155,11 +157,11 @@ def main(args):
             if 'inst' in args.condition and 'vqa' not in args.dataset:
                 prompt += system_message
 
-            if args.model_type == 'llm' and 'vqa' not in args.dataset:
-                prompt += "\nAnswer with the option's letter from the given choices directly, such as answer letter 'A' only. \n"
-            
-            if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
-                prompt += 'Please select the correct answer from the options above.'
+            if 'vqa' not in args.dataset:
+                prompt += "\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
+                # prompt += "\nAnswer with the option's letter from the given choices directly, such as answer letter 'A' only. \n"
+            # if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
+                # prompt += '\n select the correct answer from the options above.'
         
             messages = [] 
             if 'sys_inst' in args.condition: 
