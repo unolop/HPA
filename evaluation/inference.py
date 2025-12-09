@@ -50,19 +50,25 @@ def load_dataset(data_name:str, prompt:str=''):
         dataset = load_dataset("Lin-Chen/MMStar", split="val") 
     
     elif data_name == "spubench":
-        from datasets import load_dataset 
-        
-        with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f: 
+        from datasets import load_dataset
+
+        # Load annotations
+        with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f:
             annot = json.load(f)
 
-        dataset = [] 
+        dataset = []
 
-        ds = load_dataset("mmbench/MM-SpuBench", streaming=True)['train']
-        for (data, ann) in zip(ds, annot): 
+        # Use non-streaming mode for faster loading (downloads once and caches)
+        print("  Loading MM-SpuBench dataset from HuggingFace (will cache locally)...")
+        ds = load_dataset("mmbench/MM-SpuBench", split="train", trust_remote_code=True)
+
+        print(f"  Loaded {len(ds)} images, combining with {len(annot)} annotations...")
+
+        for data, ann in zip(ds, annot):
             image = data['image']
-            question = ann['question'] 
-            choices = ann['choices'] 
-            choices_text = "\n".join(choices)  
+            question = ann['question']
+            choices = ann['choices']
+            choices_text = "\n".join(choices)
             question = (
                 f"Question: {question}\n{prompt}"
                 f"{choices_text}\n"
@@ -72,7 +78,9 @@ def load_dataset(data_name:str, prompt:str=''):
             ann['question'] = question
             ann['image'] = image
 
-            dataset.append(ann) 
+            dataset.append(ann)
+
+        print(f"  ✓ Prepared {len(dataset)} examples") 
 
     elif data_name == "vqa_1k":
         from dataset.vqav2 import VQADataset_json
