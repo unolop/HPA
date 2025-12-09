@@ -43,7 +43,7 @@ def process_files(
 
     for filepath in file_paths:
         filepath = str(filepath)
-        print(f"Loading: {filepath}")
+        # print(f"Loading: {filepath}")
 
         # Parse metadata
         metadata = parse_filename(filepath)
@@ -100,7 +100,7 @@ def process_files(
                 stats_by_source[source_key]['similarities'].append(item['embedding_similarity'])
 
         acc = sum(1 for r in results if r.get('correct', False)) / len(results) if results else 0
-        print(f"  ✓ {len(results)} items, accuracy: {acc:.4f}")
+        print(f"  ✓ {metadata['model']} {len(results)} items, accuracy: {acc:.4f}")
 
     # Generate summary stats
     print(f"\n{'='*80}")
@@ -220,9 +220,9 @@ def main():
 
     # Filename: dataset_condition_combined.jsonl
     condition_str = f"_{args.condition}" if args.condition else ""
-    # combined_file = output_dir / f"{args.dataset}{condition_str}_combined.jsonl"
-    # save_jsonl(combined_results, str(combined_file))
-    # print(f"\n✓ Combined results saved: {combined_file}")
+    combined_file = output_dir / f"{args.dataset}{condition_str}.jsonl"
+    save_jsonl(combined_results, str(combined_file))
+    print(f"\n✓ Combined results saved: {combined_file}")
 
     # Save summary
     summary_file = output_dir / f"{args.dataset}{condition_str}_summary.json"

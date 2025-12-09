@@ -1,7 +1,7 @@
 {
   "dataset": "vqa1k",
   "condition": "inst_blind",
-  "total_items": 9000,
+  "total_items": 11000,
   "by_source": {
     "models": {
       "num_items": 8000,
@@ -10,402 +10,402 @@
       "embedding_similarity": 0.6391178919591812
     },
     "finetuned": {
-      "num_items": 1000,
-      "num_correct": 348,
-      "accuracy": 0.348,
-      "embedding_similarity": 0.6540203461700747
+      "num_items": 3000,
+      "num_correct": 1061,
+      "accuracy": 0.3536666666666667,
+      "embedding_similarity": 0.6575252205804075
     }
   },
   "by_category": {
     "what is the woman": {
-      "num_items": 36,
+      "num_items": 44,
       "num_correct": 0,
       "accuracy": 0.0,
-      "embedding_similarity": 0.3543660036742647
+      "embedding_similarity": 0.3537668412602733
     },
     "is the man": {
-      "num_items": 81,
-      "num_correct": 55,
-      "accuracy": 0.6790123456790124,
-      "embedding_similarity": 0.853596738390818
+      "num_items": 99,
+      "num_correct": 66,
+      "accuracy": 0.6666666666666666,
+      "embedding_similarity": 0.8494190064721094
     },
     "what is the": {
-      "num_items": 468,
-      "num_correct": 51,
-      "accuracy": 0.10897435897435898,
-      "embedding_similarity": 0.4109378168850169
+      "num_items": 572,
+      "num_correct": 61,
+      "accuracy": 0.10664335664335664,
+      "embedding_similarity": 0.4101318834704377
     },
     "is the": {
-      "num_items": 792,
-      "num_correct": 507,
-      "accuracy": 0.6401515151515151,
-      "embedding_similarity": 0.8377788308234564
+      "num_items": 968,
+      "num_correct": 624,
+      "accuracy": 0.6446280991735537,
+      "embedding_similarity": 0.8416853845298451
     },
     "is this": {
-      "num_items": 360,
-      "num_correct": 239,
-      "accuracy": 0.6638888888888889,
-      "embedding_similarity": 0.8544793807848574
+      "num_items": 440,
+      "num_correct": 290,
+      "accuracy": 0.6590909090909091,
+      "embedding_similarity": 0.8583378958068818
     },
     "does this": {
-      "num_items": 126,
-      "num_correct": 74,
-      "accuracy": 0.5873015873015873,
-      "embedding_similarity": 0.8253843966404439
+      "num_items": 154,
+      "num_correct": 94,
+      "accuracy": 0.6103896103896104,
+      "embedding_similarity": 0.8356486880243614
     },
     "what is": {
-      "num_items": 279,
-      "num_correct": 19,
-      "accuracy": 0.06810035842293907,
-      "embedding_similarity": 0.3566442890539258
+      "num_items": 341,
+      "num_correct": 25,
+      "accuracy": 0.07331378299120235,
+      "embedding_similarity": 0.36470995714753246
     },
     "is": {
-      "num_items": 117,
-      "num_correct": 81,
-      "accuracy": 0.6923076923076923,
-      "embedding_similarity": 0.8583024554865951
+      "num_items": 143,
+      "num_correct": 93,
+      "accuracy": 0.6503496503496503,
+      "embedding_similarity": 0.8508972787948933
     },
     "what": {
-      "num_items": 756,
-      "num_correct": 104,
-      "accuracy": 0.13756613756613756,
-      "embedding_similarity": 0.4716482787614896
+      "num_items": 924,
+      "num_correct": 121,
+      "accuracy": 0.13095238095238096,
+      "embedding_similarity": 0.4710717028594705
     },
     "none of the above": {
-      "num_items": 333,
-      "num_correct": 148,
-      "accuracy": 0.4444444444444444,
-      "embedding_similarity": 0.6350082885716465
+      "num_items": 407,
+      "num_correct": 181,
+      "accuracy": 0.44471744471744473,
+      "embedding_similarity": 0.6343572832185703
     },
     "what are": {
-      "num_items": 90,
-      "num_correct": 14,
-      "accuracy": 0.15555555555555556,
-      "embedding_similarity": 0.40001043083143173
+      "num_items": 110,
+      "num_correct": 16,
+      "accuracy": 0.14545454545454545,
+      "embedding_similarity": 0.3950520102241159
     },
     "what color is": {
-      "num_items": 72,
-      "num_correct": 16,
-      "accuracy": 0.2222222222222222,
-      "embedding_similarity": 0.7058077774645695
+      "num_items": 88,
+      "num_correct": 19,
+      "accuracy": 0.2159090909090909,
+      "embedding_similarity": 0.7066668804996491
     },
     "is the woman": {
-      "num_items": 27,
-      "num_correct": 13,
-      "accuracy": 0.48148148148148145,
-      "embedding_similarity": 0.8383721055536848
+      "num_items": 33,
+      "num_correct": 17,
+      "accuracy": 0.5151515151515151,
+      "embedding_similarity": 0.8499965534041952
     },
     "how many": {
-      "num_items": 765,
-      "num_correct": 175,
-      "accuracy": 0.22875816993464052,
-      "embedding_similarity": 0.6652096321538058
+      "num_items": 935,
+      "num_correct": 228,
+      "accuracy": 0.24385026737967913,
+      "embedding_similarity": 0.6817831574541812
     },
     "what type of": {
-      "num_items": 171,
-      "num_correct": 32,
-      "accuracy": 0.1871345029239766,
-      "embedding_similarity": 0.4679443417313969
+      "num_items": 209,
+      "num_correct": 34,
+      "accuracy": 0.16267942583732056,
+      "embedding_similarity": 0.4678495950224095
     },
     "what is in the": {
-      "num_items": 99,
+      "num_items": 121,
       "num_correct": 19,
-      "accuracy": 0.1919191919191919,
-      "embedding_similarity": 0.4484828765427139
+      "accuracy": 0.15702479338842976,
+      "embedding_similarity": 0.44147284325379554
     },
     "what does the": {
-      "num_items": 135,
-      "num_correct": 10,
-      "accuracy": 0.07407407407407407,
-      "embedding_similarity": 0.29663835070350975
+      "num_items": 165,
+      "num_correct": 12,
+      "accuracy": 0.07272727272727272,
+      "embedding_similarity": 0.3000881992250357
     },
     "what is this": {
-      "num_items": 90,
-      "num_correct": 15,
-      "accuracy": 0.16666666666666666,
-      "embedding_similarity": 0.3513763967978765
+      "num_items": 110,
+      "num_correct": 17,
+      "accuracy": 0.15454545454545454,
+      "embedding_similarity": 0.35602230804870827
     },
     "do": {
-      "num_items": 108,
-      "num_correct": 75,
-      "accuracy": 0.6944444444444444,
-      "embedding_similarity": 0.8573767317354906
+      "num_items": 132,
+      "num_correct": 91,
+      "accuracy": 0.6893939393939394,
+      "embedding_similarity": 0.8580630023207761
     },
     "is this a": {
-      "num_items": 369,
-      "num_correct": 201,
-      "accuracy": 0.5447154471544715,
-      "embedding_similarity": 0.8280082554657766
+      "num_items": 451,
+      "num_correct": 254,
+      "accuracy": 0.5631929046563193,
+      "embedding_similarity": 0.8349509981564482
     },
     "is there a": {
-      "num_items": 189,
-      "num_correct": 116,
-      "accuracy": 0.6137566137566137,
-      "embedding_similarity": 0.8599015702567301
+      "num_items": 231,
+      "num_correct": 140,
+      "accuracy": 0.6060606060606061,
+      "embedding_similarity": 0.8607572312447573
     },
     "is this an": {
-      "num_items": 45,
-      "num_correct": 21,
-      "accuracy": 0.4666666666666667,
-      "embedding_similarity": 0.7033304540188858
+      "num_items": 55,
+      "num_correct": 25,
+      "accuracy": 0.45454545454545453,
+      "embedding_similarity": 0.7095298374720742
     },
     "what is on the": {
-      "num_items": 117,
-      "num_correct": 21,
-      "accuracy": 0.1794871794871795,
-      "embedding_similarity": 0.40605434104591853
+      "num_items": 143,
+      "num_correct": 25,
+      "accuracy": 0.17482517482517482,
+      "embedding_similarity": 0.402338197002687
     },
     "is there": {
-      "num_items": 117,
-      "num_correct": 61,
-      "accuracy": 0.5213675213675214,
-      "embedding_similarity": 0.8382348288456974
+      "num_items": 143,
+      "num_correct": 75,
+      "accuracy": 0.5244755244755245,
+      "embedding_similarity": 0.8417430274502664
     },
     "where is the": {
-      "num_items": 135,
-      "num_correct": 13,
-      "accuracy": 0.0962962962962963,
-      "embedding_similarity": 0.419298086855834
+      "num_items": 165,
+      "num_correct": 15,
+      "accuracy": 0.09090909090909091,
+      "embedding_similarity": 0.41779823188502335
     },
     "why": {
-      "num_items": 63,
+      "num_items": 77,
       "num_correct": 1,
-      "accuracy": 0.015873015873015872,
-      "embedding_similarity": 0.3590131673262113
+      "accuracy": 0.012987012987012988,
+      "embedding_similarity": 0.3522776892930771
     },
     "what is the name": {
-      "num_items": 36,
+      "num_items": 44,
       "num_correct": 3,
-      "accuracy": 0.08333333333333333,
-      "embedding_similarity": 0.21166648079197894
+      "accuracy": 0.06818181818181818,
+      "embedding_similarity": 0.20949071426757895
     },
     "who is": {
-      "num_items": 54,
-      "num_correct": 9,
-      "accuracy": 0.16666666666666666,
-      "embedding_similarity": 0.36361185182960226
+      "num_items": 66,
+      "num_correct": 13,
+      "accuracy": 0.19696969696969696,
+      "embedding_similarity": 0.3725558775932944
     },
     "are they": {
-      "num_items": 54,
-      "num_correct": 34,
-      "accuracy": 0.6296296296296297,
-      "embedding_similarity": 0.8671033197838286
+      "num_items": 66,
+      "num_correct": 42,
+      "accuracy": 0.6363636363636364,
+      "embedding_similarity": 0.8718900030850033
     },
     "what kind of": {
-      "num_items": 216,
-      "num_correct": 52,
-      "accuracy": 0.24074074074074073,
-      "embedding_similarity": 0.49363484602264973
+      "num_items": 264,
+      "num_correct": 59,
+      "accuracy": 0.22348484848484848,
+      "embedding_similarity": 0.49952796781066744
     },
     "does the": {
-      "num_items": 126,
-      "num_correct": 103,
-      "accuracy": 0.8174603174603174,
-      "embedding_similarity": 0.8789680436422068
+      "num_items": 154,
+      "num_correct": 129,
+      "accuracy": 0.8376623376623377,
+      "embedding_similarity": 0.8880075646435251
     },
     "what color is the": {
-      "num_items": 531,
-      "num_correct": 91,
-      "accuracy": 0.1713747645951036,
-      "embedding_similarity": 0.6834055000389123
+      "num_items": 649,
+      "num_correct": 115,
+      "accuracy": 0.17719568567026195,
+      "embedding_similarity": 0.6817756075467477
     },
     "what color are the": {
-      "num_items": 99,
+      "num_items": 121,
       "num_correct": 11,
-      "accuracy": 0.1111111111111111,
-      "embedding_similarity": 0.6351812654480439
+      "accuracy": 0.09090909090909091,
+      "embedding_similarity": 0.6259967530500177
     },
     "what is the person": {
-      "num_items": 18,
+      "num_items": 22,
       "num_correct": 2,
-      "accuracy": 0.1111111111111111,
-      "embedding_similarity": 0.4219120486355887
+      "accuracy": 0.09090909090909091,
+      "embedding_similarity": 0.41675483476367775
     },
     "which": {
-      "num_items": 126,
-      "num_correct": 25,
-      "accuracy": 0.1984126984126984,
-      "embedding_similarity": 0.41852382621211937
+      "num_items": 154,
+      "num_correct": 29,
+      "accuracy": 0.18831168831168832,
+      "embedding_similarity": 0.4177151935849556
     },
     "what color": {
-      "num_items": 108,
-      "num_correct": 36,
-      "accuracy": 0.3333333333333333,
-      "embedding_similarity": 0.6986837306377344
+      "num_items": 132,
+      "num_correct": 45,
+      "accuracy": 0.3409090909090909,
+      "embedding_similarity": 0.7002081231938253
     },
     "are the": {
-      "num_items": 189,
-      "num_correct": 125,
-      "accuracy": 0.6613756613756614,
-      "embedding_similarity": 0.8338183168511842
+      "num_items": 231,
+      "num_correct": 150,
+      "accuracy": 0.6493506493506493,
+      "embedding_similarity": 0.8317350782165128
     },
     "what is the man": {
-      "num_items": 117,
-      "num_correct": 7,
-      "accuracy": 0.05982905982905983,
-      "embedding_similarity": 0.3575716625141308
+      "num_items": 143,
+      "num_correct": 9,
+      "accuracy": 0.06293706293706294,
+      "embedding_similarity": 0.36292171322220756
     },
     "why is the": {
-      "num_items": 45,
-      "num_correct": 2,
-      "accuracy": 0.044444444444444446,
-      "embedding_similarity": 0.3545491892943219
+      "num_items": 55,
+      "num_correct": 3,
+      "accuracy": 0.05454545454545454,
+      "embedding_similarity": 0.3448854534385313
     },
     "what are the": {
-      "num_items": 117,
-      "num_correct": 32,
-      "accuracy": 0.27350427350427353,
-      "embedding_similarity": 0.48285967916416905
+      "num_items": 143,
+      "num_correct": 39,
+      "accuracy": 0.2727272727272727,
+      "embedding_similarity": 0.48671673166352375
     },
     "what is the color of the": {
-      "num_items": 45,
-      "num_correct": 22,
-      "accuracy": 0.4888888888888889,
-      "embedding_similarity": 0.7914438522943222
+      "num_items": 55,
+      "num_correct": 29,
+      "accuracy": 0.5272727272727272,
+      "embedding_similarity": 0.7991438069920315
     },
     "are these": {
-      "num_items": 99,
-      "num_correct": 75,
-      "accuracy": 0.7575757575757576,
-      "embedding_similarity": 0.8583876073071274
+      "num_items": 121,
+      "num_correct": 94,
+      "accuracy": 0.7768595041322314,
+      "embedding_similarity": 0.8654255384924091
     },
     "where are the": {
-      "num_items": 63,
+      "num_items": 77,
       "num_correct": 7,
-      "accuracy": 0.1111111111111111,
-      "embedding_similarity": 0.39175585897752696
+      "accuracy": 0.09090909090909091,
+      "embedding_similarity": 0.3806060906803869
     },
     "could": {
-      "num_items": 63,
-      "num_correct": 37,
-      "accuracy": 0.5873015873015873,
-      "embedding_similarity": 0.8230770870591313
+      "num_items": 77,
+      "num_correct": 45,
+      "accuracy": 0.5844155844155844,
+      "embedding_similarity": 0.8268715191539272
     },
     "is it": {
-      "num_items": 135,
-      "num_correct": 97,
-      "accuracy": 0.7185185185185186,
-      "embedding_similarity": 0.8676963523898643
+      "num_items": 165,
+      "num_correct": 119,
+      "accuracy": 0.7212121212121212,
+      "embedding_similarity": 0.8727217605632053
     },
     "how": {
-      "num_items": 72,
+      "num_items": 88,
       "num_correct": 6,
-      "accuracy": 0.08333333333333333,
-      "embedding_similarity": 0.4299096387537746
+      "accuracy": 0.06818181818181818,
+      "embedding_similarity": 0.4309280087076805
     },
     "can you": {
-      "num_items": 45,
-      "num_correct": 26,
-      "accuracy": 0.5777777777777777,
-      "embedding_similarity": 0.8535617741529723
+      "num_items": 55,
+      "num_correct": 32,
+      "accuracy": 0.5818181818181818,
+      "embedding_similarity": 0.855965549804292
     },
     "how many people are": {
-      "num_items": 63,
-      "num_correct": 8,
-      "accuracy": 0.12698412698412698,
-      "embedding_similarity": 0.6274340310266268
+      "num_items": 77,
+      "num_correct": 12,
+      "accuracy": 0.15584415584415584,
+      "embedding_similarity": 0.6566866521636613
     },
     "what animal is": {
-      "num_items": 45,
+      "num_items": 55,
       "num_correct": 0,
       "accuracy": 0.0,
-      "embedding_similarity": 0.389996253709923
+      "embedding_similarity": 0.3901474043437107
     },
     "has": {
-      "num_items": 18,
-      "num_correct": 9,
-      "accuracy": 0.5,
-      "embedding_similarity": 0.8384083630049486
+      "num_items": 22,
+      "num_correct": 12,
+      "accuracy": 0.5454545454545454,
+      "embedding_similarity": 0.8556745035251514
     },
     "are": {
-      "num_items": 108,
-      "num_correct": 68,
-      "accuracy": 0.6296296296296297,
-      "embedding_similarity": 0.8257950256110654
+      "num_items": 132,
+      "num_correct": 88,
+      "accuracy": 0.6666666666666666,
+      "embedding_similarity": 0.838954361601766
     },
     "is that a": {
-      "num_items": 36,
-      "num_correct": 20,
-      "accuracy": 0.5555555555555556,
-      "embedding_similarity": 0.8479401360168883
+      "num_items": 44,
+      "num_correct": 26,
+      "accuracy": 0.5909090909090909,
+      "embedding_similarity": 0.8622661281721846
     },
     "was": {
-      "num_items": 18,
+      "num_items": 22,
       "num_correct": 7,
-      "accuracy": 0.3888888888888889,
-      "embedding_similarity": 0.8000855188977282
+      "accuracy": 0.3181818181818182,
+      "embedding_similarity": 0.7743798965909078
     },
     "are there": {
-      "num_items": 90,
-      "num_correct": 43,
-      "accuracy": 0.4777777777777778,
-      "embedding_similarity": 0.8039378264356553
+      "num_items": 110,
+      "num_correct": 53,
+      "accuracy": 0.4818181818181818,
+      "embedding_similarity": 0.8106423476328705
     },
     "do you": {
-      "num_items": 36,
-      "num_correct": 19,
-      "accuracy": 0.5277777777777778,
-      "embedding_similarity": 0.8550841826469769
+      "num_items": 44,
+      "num_correct": 23,
+      "accuracy": 0.5227272727272727,
+      "embedding_similarity": 0.8572120952127066
     },
     "what number is": {
-      "num_items": 36,
+      "num_items": 44,
       "num_correct": 0,
       "accuracy": 0.0,
-      "embedding_similarity": 0.42048834723699213
+      "embedding_similarity": 0.4303869672570095
     },
     "what sport is": {
-      "num_items": 45,
-      "num_correct": 7,
-      "accuracy": 0.15555555555555556,
-      "embedding_similarity": 0.6398025938153449
+      "num_items": 55,
+      "num_correct": 13,
+      "accuracy": 0.23636363636363636,
+      "embedding_similarity": 0.664448663461295
     },
     "is he": {
-      "num_items": 27,
-      "num_correct": 20,
-      "accuracy": 0.7407407407407407,
-      "embedding_similarity": 0.8812492067311646
+      "num_items": 33,
+      "num_correct": 24,
+      "accuracy": 0.7272727272727273,
+      "embedding_similarity": 0.8802298393623685
     },
     "how many people are in": {
-      "num_items": 36,
-      "num_correct": 3,
-      "accuracy": 0.08333333333333333,
-      "embedding_similarity": 0.6216898515162878
+      "num_items": 44,
+      "num_correct": 4,
+      "accuracy": 0.09090909090909091,
+      "embedding_similarity": 0.658249181846648
     },
     "are there any": {
-      "num_items": 81,
-      "num_correct": 48,
-      "accuracy": 0.5925925925925926,
-      "embedding_similarity": 0.8393921226270292
+      "num_items": 99,
+      "num_correct": 58,
+      "accuracy": 0.5858585858585859,
+      "embedding_similarity": 0.8412249628995149
     },
     "what time": {
-      "num_items": 27,
+      "num_items": 33,
       "num_correct": 4,
-      "accuracy": 0.14814814814814814,
-      "embedding_similarity": 0.6285178241145088
+      "accuracy": 0.12121212121212122,
+      "embedding_similarity": 0.5900202308962463
     },
     "what room is": {
-      "num_items": 18,
+      "num_items": 22,
       "num_correct": 1,
-      "accuracy": 0.05555555555555555,
-      "embedding_similarity": 0.5320563895928951
+      "accuracy": 0.045454545454545456,
+      "embedding_similarity": 0.5285188067256447
     },
     "is this person": {
-      "num_items": 9,
-      "num_correct": 5,
-      "accuracy": 0.5555555555555556,
-      "embedding_similarity": 0.8815507883538684
+      "num_items": 11,
+      "num_correct": 7,
+      "accuracy": 0.6363636363636364,
+      "embedding_similarity": 0.9030869327745261
     },
     "is the person": {
-      "num_items": 9,
-      "num_correct": 9,
+      "num_items": 11,
+      "num_correct": 11,
       "accuracy": 1.0,
-      "embedding_similarity": 0.827236116468276
+      "embedding_similarity": 0.8344241855978537
     }
   },
   "overall": {
-    "num_items": 9000,
-    "num_correct": 3154,
-    "accuracy": 0.35044444444444445,
-    "embedding_similarity": 0.6407739042061968
+    "num_items": 11000,
+    "num_correct": 3867,
+    "accuracy": 0.35154545454545455,
+    "embedding_similarity": 0.6441385289137843
   }
 }

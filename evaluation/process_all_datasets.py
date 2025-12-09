@@ -38,7 +38,7 @@ def find_all_files(data_dir: str) -> dict:
 
             # Determine dataset
             dataset = None
-            for ds in ['mmstar', 'spubench', 'vqa_5k', 'vqa_1k', 'vqa5k', 'vqa1k']:
+            for ds in ['mmstar', 'spubench', 'vqa5k', 'vqa1k']: # 'vqa_5k', 'vqa_1k', 
                 if ds in filename:
                     dataset = ds.replace('_', '')  # Normalize
                     break
