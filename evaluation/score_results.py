@@ -13,13 +13,13 @@ Computes:
 
 Usage:
     # Score single file
-    python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl
+    python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl --output_dir scored/
 
     # Score all files in directory
-    python score_results.py --input_dir /home/work/yuna/HPA/results/swift/ --output_dir /home/work/yuna/HPA/results/swift/scored/ 
+    python score_results.py --input_dir /home/work/yuna/HPA/results/swift/ --output_dir /home/work/yuna/HPA/results/swift/scored/
 
-    # With embedding similarity
-    python score_results.py --input results/*.jsonl --with_similarity
+    # With embedding similarity for VQA datasets
+    python score_results.py --input_dir results/ --output_dir scored/ --with_similarity
 """
 
 import os
@@ -314,6 +314,7 @@ def score_file(
     input_path: str,
     output_path: str = None,
     skip_existing: bool = True,
+    with_similarity: bool = False,
 ) -> Dict:
     """
     Score a single JSONL file and save processed version.
@@ -322,6 +323,7 @@ def score_file(
         input_path: Path to input JSONL file
         output_path: Path to save scored output (optional)
         skip_existing: If True, skip if output file already exists
+        with_similarity: If True, compute answer similarity for VQA datasets
 
     Returns dict with accuracy, per-category breakdown, etc.
     """
@@ -370,6 +372,16 @@ def score_file(
     vqa_mapper = None
     # We'll create it on-demand inside the loop only if dataset_type is open-ended
 
+    # Load encoder if similarity computation is requested
+    encoder = None
+    if with_similarity and dataset_type == 'open-ended':
+        print("   Loading sentence transformer for similarity computation...")
+        encoder = get_encoder()
+        if encoder:
+            print("   ✓ Encoder loaded")
+        else:
+            print("   ⚠️ Failed to load encoder, skipping similarity computation")
+
     # Score each example
     correct = 0
     total = 0
@@ -406,6 +418,13 @@ def score_file(
             if all_answers:
                 is_correct = vqa_accuracy(all_answers, output)
                 # is_correct = acc >= 0.5  # Binary for counting
+
+                # Compute answer similarity if requested
+                if encoder and all_answers:
+                    # Use majority answer for similarity computation
+                    majority_ans = max(set(all_answers), key=all_answers.count)
+                    sim = answer_similarity(majority_ans, output, encoder)
+                    item['answer_similarity'] = float(sim)
             else:
                 gt = item.get('answer', '')
                 is_correct = exact_match(gt, output)
@@ -464,10 +483,20 @@ def score_file(
 def score_directory(
     input_dir: str,
     skip_existing: bool = True,
+    with_similarity: bool = False,
 ) -> pd.DataFrame:
 
+<<<<<<< HEAD
     output_dir = f"/home/work/yuna/HPA/evaluation/scored/{input_dir}" 
     input_dir=f"/home/work/yuna/HPA/evaluation/results/{input_dir}" 
+=======
+    Args:
+        input_dir: Input directory with JSONL files
+        output_dir: Output directory for scored files
+        pattern: File pattern to match
+        skip_existing: If True, skip files that already have output
+        with_similarity: If True, compute answer similarity for VQA datasets
+>>>>>>> origin/claude/fix-todo-mipm6gpu6bovkh38-016Q75zSCnGerkx1wYHPhHvM
 
     files = sorted(glob(f"{input_dir}/*.jsonl") + glob(f"{input_dir}/*/*/*.jsonl"))
 
@@ -483,9 +512,18 @@ def score_directory(
     skipped_count = 0
     for f in files:
         # Determine output path
+<<<<<<< HEAD
         filename = f.replace(f"{input_dir}/", '')
         out_path = os.path.join(output_dir, filename) 
         result = score_file(f, out_path, skip_existing=skip_existing) 
+=======
+        out_path = None
+        if output_dir:
+            rel_path = os.path.relpath(f, input_dir)
+            out_path = os.path.join(output_dir, rel_path)
+
+        result = score_file(f, out_path, skip_existing=skip_existing, with_similarity=with_similarity)
+>>>>>>> origin/claude/fix-todo-mipm6gpu6bovkh38-016Q75zSCnGerkx1wYHPhHvM
         if result:
             all_results.append(result)
         elif skip_existing and out_path and os.path.exists(out_path):
@@ -550,7 +588,8 @@ Examples:
   # Multiple files with glob
   python score_results.py --input "results/*mmstar*.jsonl" --output_dir scored/
 
-Note: Use compute_similarity.py separately to add embedding similarity scores to VQA files.
+  # With embedding similarity for VQA datasets
+  python score_results.py --input_dir results/ --output_dir scored/ --with_similarity
         """
     )
 
@@ -560,6 +599,8 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
                         help="Directory with JSONL files")
     parser.add_argument("--force", action="store_true",
                         help="Force reprocessing even if output files exist")
+    parser.add_argument("--with_similarity", action="store_true",
+                        help="Compute answer similarity for VQA datasets (requires sentence-transformers)")
     args = parser.parse_args()
     skip_existing = not args.force
 
@@ -567,9 +608,68 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
         # Score directory
         score_directory(
             args.input_dir,
+<<<<<<< HEAD
             skip_existing=skip_existing 
         )
 
+=======
+            args.output_dir,
+            skip_existing=skip_existing,
+            with_similarity=args.with_similarity,
+        )
+
+    elif args.input:
+        # Score individual files
+        all_results = []
+        skipped_count = 0
+        for input_path in args.input:
+            # Handle glob patterns
+            if '*' in input_path:
+                files = glob(input_path)
+            else:
+                files = [input_path]
+
+            for f in files:
+                # Determine output path
+                out_path = None
+                if args.output_dir:
+                    out_path = os.path.join(args.output_dir, os.path.basename(f))
+
+                result = score_file(f, out_path, skip_existing=skip_existing, with_similarity=args.with_similarity)
+                if result:
+                    all_results.append(result)
+                elif skip_existing and out_path and os.path.exists(out_path):
+                    skipped_count += 1
+
+        # Print summary
+        if len(all_results) > 0 or skipped_count > 0:
+            print(f"\n{'='*60}")
+            if len(all_results) > 0:
+                print(f"✓ Processed {len(all_results)} files")
+            if skipped_count > 0:
+                print(f"⏭️  Skipped {skipped_count} files (already processed)")
+            print(f"{'='*60}")
+
+        # Print detailed results if multiple files
+        if len(all_results) > 1:
+            print("\n" + "="*60)
+            print("📊 SUMMARY")
+            print("="*60)
+            df = pd.DataFrame(all_results)[['file', 'accuracy', 'correct', 'total']]
+            print(df.to_string(index=False))
+
+        # Save summary if output_dir
+        if args.output_dir and all_results:
+            os.makedirs(args.output_dir, exist_ok=True)
+            results_path = os.path.join(args.output_dir, 'summary.json')
+            with open(results_path, 'w') as f:
+                json.dump(all_results, f, indent=2)
+            print(f"\n✓ Summary saved: {results_path}")
+
+    else:
+        parser.print_help()
+
+>>>>>>> origin/claude/fix-todo-mipm6gpu6bovkh38-016Q75zSCnGerkx1wYHPhHvM
 
 if __name__ == "__main__":
     main()
