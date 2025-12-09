@@ -197,9 +197,11 @@ def extract_mc_choice(output: str) -> str:
     """Extract the predicted answer (A, B, C, D) from model output."""
     if not output:
         return ""
-    
+
+    # Remove <think>...</think> content if present
+    output = re.sub(r'<think>.*?</think>', '', output, flags=re.DOTALL | re.IGNORECASE)
     output = output.strip()
-    
+
     # Pattern 1: Look for explicit answer statements
     patterns = [
         r"(?:the\s+)?(?:correct\s+)?answer\s+is[:\s]*([A-D])",
@@ -238,7 +240,12 @@ def normalize_answer(answer: str) -> str:
     """Normalize answer for comparison (open-ended)."""
     if not answer:
         return ""
-    answer = str(answer).lower().strip()
+    answer = str(answer)
+
+    # Remove <think>...</think> content if present
+    answer = re.sub(r'<think>.*?</think>', '', answer, flags=re.DOTALL | re.IGNORECASE)
+
+    answer = answer.lower().strip()
     # Remove articles
     for article in ['a ', 'an ', 'the ']:
         if answer.startswith(article):
