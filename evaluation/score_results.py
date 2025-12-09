@@ -41,15 +41,15 @@ from glob import glob
 DATASETS = ["mmstar", "spubench", "vqa_1k", "vqa_5k"]
 CONDITIONS = ["_inst_blind", "", "_sys_inst_blind", "_blind"]
 MODELNAMES = [
-    "Qwen/Qwen3-VL-2B-Instruct",
     "OpenGVLab/InternVL3_5-8B",
     "OpenGVLab/InternVL3_5-4B",
     "OpenGVLab/InternVL3_5-2B",
     "OpenGVLab/InternVL3_5-1B",
-    "llava-hf/llava-v1.6-mistral-7b-hf",
+    "Qwen/Qwen3-VL-2B-Instruct",
+    "Qwen/Qwen3-VL-4B-Instruct",
     "Qwen/Qwen3-VL-8B-Instruct",
     "llava-hf/llava-v1.6-vicuna-7b-hf",
-    "Qwen/Qwen3-VL-4B-Instruct",
+    "llava-hf/llava-v1.6-mistral-7b-hf",
     "llava-hf/llava-1.5-7b-hf",
 ]
 
@@ -393,8 +393,8 @@ def score_file(
                     all_answers = [all_answers]
 
             if all_answers:
-                acc = vqa_accuracy(all_answers, output)
-                is_correct = acc >= 0.5  # Binary for counting
+                is_correct = vqa_accuracy(all_answers, output)
+                # is_correct = acc >= 0.5  # Binary for counting
             else:
                 gt = item.get('answer', '')
                 is_correct = exact_match(gt, output)
@@ -562,7 +562,7 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
                         help="Directory with JSONL files")
     parser.add_argument("--output_dir", type=str, default=None,
                         help="Output directory for processed files with scores")
-    parser.add_argument("--pattern", type=str, default="*.jsonl",
+    parser.add_argument("--force", action="store_true",
                         help="Force reprocessing even if output files exist")
     args = parser.parse_args()
     skip_existing = not args.force
