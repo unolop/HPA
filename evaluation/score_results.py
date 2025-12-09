@@ -13,13 +13,13 @@ Computes:
 
 Usage:
     # Score single file
-    python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl
+    python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl --output_dir scored/
 
     # Score all files in directory
-    python score_results.py --input_dir /home/work/yuna/HPA/results/swift/ --output_dir /home/work/yuna/HPA/results/swift/scored/ 
+    python score_results.py --input_dir /home/work/yuna/HPA/results/swift/ --output_dir /home/work/yuna/HPA/results/swift/scored/
 
-    # With embedding similarity
-    python score_results.py --input results/*.jsonl --with_similarity
+    # With embedding similarity for VQA datasets
+    python score_results.py --input_dir results/ --output_dir scored/ --with_similarity
 """
 
 import os
@@ -314,6 +314,7 @@ def score_file(
     input_path: str,
     output_path: str = None,
     skip_existing: bool = True,
+    with_similarity: bool = False,
 ) -> Dict:
     """
     Score a single JSONL file and save processed version.
@@ -322,6 +323,7 @@ def score_file(
         input_path: Path to input JSONL file
         output_path: Path to save scored output (optional)
         skip_existing: If True, skip if output file already exists
+        with_similarity: If True, compute answer similarity for VQA datasets
 
     Returns dict with accuracy, per-category breakdown, etc.
     """
@@ -359,6 +361,16 @@ def score_file(
     vqa_mapper = None
     # We'll create it on-demand inside the loop only if dataset_type is open-ended
 
+    # Load encoder if similarity computation is requested
+    encoder = None
+    if with_similarity and dataset_type == 'open-ended':
+        print("   Loading sentence transformer for similarity computation...")
+        encoder = get_encoder()
+        if encoder:
+            print("   ✓ Encoder loaded")
+        else:
+            print("   ⚠️ Failed to load encoder, skipping similarity computation")
+
     # Score each example
     correct = 0
     total = 0
@@ -395,6 +407,13 @@ def score_file(
             if all_answers:
                 is_correct = vqa_accuracy(all_answers, output)
                 # is_correct = acc >= 0.5  # Binary for counting
+
+                # Compute answer similarity if requested
+                if encoder and all_answers:
+                    # Use majority answer for similarity computation
+                    majority_ans = max(set(all_answers), key=all_answers.count)
+                    sim = answer_similarity(majority_ans, output, encoder)
+                    item['answer_similarity'] = float(sim)
             else:
                 gt = item.get('answer', '')
                 is_correct = exact_match(gt, output)
@@ -455,6 +474,7 @@ def score_directory(
     output_dir: str = None,
     pattern: str = "*.jsonl",
     skip_existing: bool = True,
+    with_similarity: bool = False,
 ) -> pd.DataFrame:
     """
     Score all JSONL files in directory and save processed versions.
@@ -464,6 +484,7 @@ def score_directory(
         output_dir: Output directory for scored files
         pattern: File pattern to match
         skip_existing: If True, skip files that already have output
+        with_similarity: If True, compute answer similarity for VQA datasets
 
     Returns DataFrame with all results.
     """
@@ -486,7 +507,7 @@ def score_directory(
             rel_path = os.path.relpath(f, input_dir)
             out_path = os.path.join(output_dir, rel_path)
 
-        result = score_file(f, out_path, skip_existing=skip_existing)
+        result = score_file(f, out_path, skip_existing=skip_existing, with_similarity=with_similarity)
         if result:
             all_results.append(result)
         elif skip_existing and out_path and os.path.exists(out_path):
@@ -552,7 +573,8 @@ Examples:
   # Multiple files with glob
   python score_results.py --input "results/*mmstar*.jsonl" --output_dir scored/
 
-Note: Use compute_similarity.py separately to add embedding similarity scores to VQA files.
+  # With embedding similarity for VQA datasets
+  python score_results.py --input_dir results/ --output_dir scored/ --with_similarity
         """
     )
 
@@ -564,6 +586,8 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
                         help="Output directory for processed files with scores")
     parser.add_argument("--force", action="store_true",
                         help="Force reprocessing even if output files exist")
+    parser.add_argument("--with_similarity", action="store_true",
+                        help="Compute answer similarity for VQA datasets (requires sentence-transformers)")
     args = parser.parse_args()
     skip_existing = not args.force
 
@@ -572,6 +596,8 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
         score_directory(
             args.input_dir,
             args.output_dir,
+            skip_existing=skip_existing,
+            with_similarity=args.with_similarity,
         )
 
     elif args.input:
@@ -591,7 +617,7 @@ Note: Use compute_similarity.py separately to add embedding similarity scores to
                 if args.output_dir:
                     out_path = os.path.join(args.output_dir, os.path.basename(f))
 
-                result = score_file(f, out_path, skip_existing=skip_existing)
+                result = score_file(f, out_path, skip_existing=skip_existing, with_similarity=args.with_similarity)
                 if result:
                     all_results.append(result)
                 elif skip_existing and out_path and os.path.exists(out_path):
