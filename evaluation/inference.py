@@ -122,11 +122,15 @@ def main(args):
     request_config = RequestConfig(max_tokens=args.max_token_length, temperature=0)
     
     save_name = args.model.split('/')[-1]
-    
+    savedir = args.savedir 
     if args.lora_path is not None : 
         finetuned = args.lora_path.split('/')[-3] 
-        save_name += f'/{finetuned}' 
-    output_jsonl_path = f"{args.savedir}/{save_name}/{args.dataset}{args.condition}.jsonl"
+        save_name += f'_{finetuned}' 
+        savedir += '/finetuned'    
+    else: 
+        savedir += '/pretrained'     
+
+    output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}.jsonl" 
     prompt= ''
 
     if 'blind' in args.condition : 
@@ -219,7 +223,7 @@ if __name__ == "__main__":
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
     parser.add_argument("--dataset", type=str, default="mmstar", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
-    parser.add_argument('--savedir', type=str, default="/home/work/yuna/HPA/data/models", help='Save directory of inference') 
+    parser.add_argument('--savedir', type=str, default="/home/work/yuna/HPA/evaluation/results", help='Save directory of inference') 
     parser.add_argument("--condition", type=str, default='')
     
     args = parser.parse_args() 

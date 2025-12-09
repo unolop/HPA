@@ -327,22 +327,33 @@ def score_file(
     """
     # Check if output already exists
     if skip_existing and output_path and os.path.exists(output_path):
-        print(f"\n{'='*60}")
-        print(f"⏭️  Skipping (already processed): {os.path.basename(input_path)}")
-        print(f"   Output exists: {output_path}")
-        print(f"{'='*60}")
-        return None
+        # INSERT_YOUR_CODE
+        # If output_path exists and the input and output have the same number of lines, skip processing
+        try:
+            with open(input_path, 'r', encoding='utf-8') as fin:
+                input_lines = sum(1 for _ in fin if _.strip())
+            with open(output_path, 'r', encoding='utf-8') as fout:
+                output_lines = sum(1 for _ in fout if _.strip())
+            if input_lines == output_lines:
+                # print(f"\n{'='*60}")
+                # print(f"⏭️  Skipping (already processed, line count matches): {os.path.basename(input_path)}")
+                # print(f"   Output exists: {output_path}")
+                # print(f"{'='*60}")
+                return None
+        except Exception as e:
+            # If any problem opening/reading, proceed to full scoring
+            pass 
 
     # Parse filename
     model_full, dataset, condition = get_conditions(input_path)
     dataset_type = DATASET_TYPE.get(dataset, 'multi-choice')
 
-    print(f"\n{'='*60}")
-    print(f"📊 Scoring: {os.path.basename(input_path)}")
-    print(f"   Model: {model_full}")
-    print(f"   Dataset: {dataset} ({dataset_type})")
-    print(f"   Condition: {condition or '(none)'}")
-    print(f"{'='*60}")
+    # print(f"\n{'='*60}")
+    print(f"📊 Scoring: {input_path}") # {os.path.basename()} 
+    # print(f"   Model: {model_full}")
+    # print(f"   Dataset: {dataset} ({dataset_type})")
+    # print(f"   Condition: {condition or '(none)'}") 
+    # print(f"{'='*60}")
 
     # Load data first (fast operation)
     data = []

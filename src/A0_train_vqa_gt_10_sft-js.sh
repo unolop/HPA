@@ -1,17 +1,38 @@
 #!/bin/bash
 
 MODELS=(
-    "Qwen/Qwen3-VL-8B-Instruct"
     "Qwen/Qwen3-VL-4B-Instruct"
+    "Qwen/Qwen3-VL-8B-Instruct"
     # "llava-hf/llava-v1.6-mistral-7b-hf"
     # "OpenGVLab/InternVL3_5-8B"
 )
 
 data_path="/home/work/yuna/HPA/data/training/s1_text/train_agg_vqa_gt.jsonl" 
-# data_path="/home/work/yuna/HPA/data/training/s1_choice/train_agg_15_blind_inst.jsonl" # 
 val_data=""
-RUNNAME="A1_JS_vqa_gt_10"  
+RUNNAME="A0_SFT_vqa_gt"  
+GPU=1
 
+for MODEL in "${MODELS[@]}"; do
+
+    CUDA_VISIBLE_DEVICES=${GPU} python /home/work/yuna/HPA/src/train_sft_standard.py \
+        --model_path ${MODEL} \
+        --data_path ${data_path} \
+        --output_dir ./output/${MODEL}/${RUNNAME} \
+        ${val_arg} \
+        --run_name ${RUNNAME} \
+        --max_steps -1 \
+        --num_epochs 10 \
+        --learning_rate 2e-5 \
+        --lora_rank 8 \
+        --lora_alpha 16 \
+        --batch_size 1 \
+        --gradient_accumulation_steps 8 \
+        --save_steps 100 \
+        --eval_steps 100 \
+        --logging_steps 20
+done
+
+RUNNAME="A0_JS_vqa_gt_10"  
 for MODEL_8B in "${MODELS[@]}"; do
     # Build validation argument conditionally
     val_arg=""
@@ -19,7 +40,7 @@ for MODEL_8B in "${MODELS[@]}"; do
         val_arg="--val_data_path ${val_data}"
     fi
 
-    CUDA_VISIBLE_DEVICES=0 python /home/work/yuna/HPA/src/train_human_alignment.py \
+    CUDA_VISIBLE_DEVICES=${GPU} python /home/work/yuna/HPA/src/train_human_alignment.py \
         --model_path ${MODEL_8B} \
         --data_path ${data_path} \
         --output_dir ./output/${MODEL_8B}/${RUNNAME} \
@@ -36,5 +57,4 @@ for MODEL_8B in "${MODELS[@]}"; do
         --lora_alpha 16 \
         --batch_size 1 \
         --gradient_accumulation_steps 8
-    done 
-
+done 
