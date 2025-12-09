@@ -282,60 +282,61 @@ def answer_similarity(gt: str, pred: str, encoder) -> float:
 
 def score_file(
     input_path: str,
-    with_similarity: bool = False,
-    encoder = None,
+    output_path: str = None,
 ) -> Dict:
     """
-    Score a single JSONL file.
-    
+    Score a single JSONL file and save processed version.
+
     Returns dict with accuracy, per-category breakdown, etc.
     """
     # Parse filename
     model_full, dataset, condition = get_conditions(input_path)
     dataset_type = DATASET_TYPE.get(dataset, 'multi-choice')
-    
+
     print(f"\n{'='*60}")
     print(f"📊 Scoring: {os.path.basename(input_path)}")
     print(f"   Model: {model_full}")
     print(f"   Dataset: {dataset} ({dataset_type})")
     print(f"   Condition: {condition or '(none)'}")
     print(f"{'='*60}")
-    
+
     # Load VQA mapper for open-ended datasets
     vqa_mapper = None
     if dataset_type == 'open-ended':
         vqa_mapper = get_vqa_mapper()
-    
+
     # Load data
     data = []
     with open(input_path, 'r', encoding='utf-8') as f:
         for line in f:
             if line.strip():
                 data.append(json.loads(line))
-    
+
     if not data:
         print("   ⚠️ Empty file!")
         return {}
-    
+
     # Score each example
     correct = 0
     total = 0
-    similarities = []
-    by_category = defaultdict(lambda: {'correct': 0, 'total': 0, 'similarities': []})
-    
+    by_category = defaultdict(lambda: {'correct': 0, 'total': 0})
+
     for item in data:
         output = item.get('output', '')
         category = item.get('category', item.get('l2_category', item.get('question_type', 'Unknown')))
-        
-        # Get ground truth answers
+
+        # Get ground truth answers and score
         if dataset_type == 'multi-choice':
             gt = item.get('answer', '')
-            is_correct = mc_accuracy(gt, output)
-            gt_for_sim = gt
+            extracted_choice = extract_mc_choice(output)
+            is_correct = gt.strip().upper()[0] == extracted_choice if gt and extracted_choice else False
+
+            # Save extracted choice for MC datasets
+            item['extracted_choice'] = extracted_choice
         else:
             # Open-ended: get all annotator answers
             qid = item.get('question_id', item.get('qid', item.get('index', None)))
-            
+
             if vqa_mapper and qid is not None:
                 all_answers = vqa_mapper.get_answers(qid)
             else:
@@ -343,31 +344,34 @@ def score_file(
                 all_answers = item.get('answers', [item.get('answer', '')])
                 if isinstance(all_answers, str):
                     all_answers = [all_answers]
-            
+
             if all_answers:
                 acc = vqa_accuracy(all_answers, output)
                 is_correct = acc >= 0.5  # Binary for counting
-                gt_for_sim = all_answers[0]  # Use first for similarity
             else:
                 gt = item.get('answer', '')
                 is_correct = exact_match(gt, output)
-                gt_for_sim = gt
-        
+
+        # Save correctness
+        item['correct'] = is_correct
+
         # Update counts
         correct += int(is_correct)
         total += 1
         by_category[category]['correct'] += int(is_correct)
         by_category[category]['total'] += 1
-        
-        # Similarity
-        if with_similarity and encoder:
-            sim = answer_similarity(gt_for_sim, output, encoder)
-            similarities.append(sim)
-            by_category[category]['similarities'].append(sim)
+
+    # Save processed file with scores
+    if output_path:
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        with open(output_path, 'w', encoding='utf-8') as f:
+            for item in data:
+                f.write(json.dumps(item, ensure_ascii=False) + '\n')
+        print(f"   ✓ Saved scored file: {output_path}")
     
     # Compute metrics
     accuracy = correct / total if total > 0 else 0
-    
+
     results = {
         'file': os.path.basename(input_path),
         'model': model_full,
@@ -378,10 +382,7 @@ def score_file(
         'total': total,
         'by_category': {},
     }
-    
-    if similarities:
-        results['embedding_similarity'] = np.mean(similarities)
-    
+
     # Per-category
     for cat, cat_data in by_category.items():
         cat_acc = cat_data['correct'] / cat_data['total'] if cat_data['total'] > 0 else 0
@@ -390,19 +391,15 @@ def score_file(
             'correct': cat_data['correct'],
             'total': cat_data['total'],
         }
-        if cat_data['similarities']:
-            results['by_category'][cat]['similarity'] = np.mean(cat_data['similarities'])
-    
+
     # Print results
     print(f"\n📈 Results:")
     print(f"   Accuracy: {accuracy:.4f} ({correct}/{total})")
-    if 'embedding_similarity' in results:
-        print(f"   Embedding Similarity: {results['embedding_similarity']:.4f}")
-    
+
     print(f"\n   Per-category:")
     for cat, cat_data in sorted(results['by_category'].items(), key=lambda x: -x[1]['accuracy']):
         print(f"      {cat}: {cat_data['accuracy']:.3f} ({cat_data['correct']}/{cat_data['total']})")
-    
+
     return results
 
 
@@ -410,30 +407,30 @@ def score_directory(
     input_dir: str,
     output_dir: str = None,
     pattern: str = "*.jsonl",
-    with_similarity: bool = False,
 ) -> pd.DataFrame:
     """
-    Score all JSONL files in directory.
-    
+    Score all JSONL files in directory and save processed versions.
+
     Returns DataFrame with all results.
     """
     files = sorted(glob(os.path.join(input_dir, pattern)))
-    
+
     if not files:
         print(f"❌ No files matching {pattern} in {input_dir}")
         return pd.DataFrame()
-    
+
     print(f"Found {len(files)} files to score")
-    
-    # Load encoder once
-    encoder = None
-    if with_similarity:
-        encoder = get_encoder()
-    
+
     # Score all files
     all_results = []
     for f in files:
-        result = score_file(f, with_similarity, encoder)
+        # Determine output path
+        out_path = None
+        if output_dir:
+            rel_path = os.path.relpath(f, input_dir)
+            out_path = os.path.join(output_dir, rel_path)
+
+        result = score_file(f, out_path)
         if result:
             all_results.append(result)
     
@@ -474,51 +471,42 @@ def score_directory(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Score inference JSONL outputs",
+        description="Score inference JSONL outputs and save processed files with extracted choices and scores",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   # Score single file
-  python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl
+  python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl --output_dir scored/
 
   # Score all files in directory
   python score_results.py --input_dir results/ --output_dir scored/
 
   # Multiple files with glob
-  python score_results.py --input "results/*mmstar*.jsonl"
+  python score_results.py --input "results/*mmstar*.jsonl" --output_dir scored/
 
-  # With embedding similarity
-  python score_results.py --input results/*.jsonl --with_similarity
+Note: Use compute_similarity.py separately to add embedding similarity scores to VQA files.
         """
     )
-    
+
     parser.add_argument("--input", type=str, nargs='*', default=None,
                         help="Input JSONL file(s)")
     parser.add_argument("--input_dir", type=str, default=None,
                         help="Directory with JSONL files")
     parser.add_argument("--output_dir", type=str, default=None,
-                        help="Output directory for results")
-    parser.add_argument("--with_similarity", action="store_true",
-                        help="Compute embedding similarity")
+                        help="Output directory for processed files with scores")
     parser.add_argument("--pattern", type=str, default="*.jsonl",
                         help="File pattern for input_dir")
-    
+
     args = parser.parse_args()
-    
-    # Load encoder if needed
-    encoder = None
-    if args.with_similarity:
-        encoder = get_encoder()
-    
+
     if args.input_dir:
         # Score directory
         score_directory(
             args.input_dir,
             args.output_dir,
             args.pattern,
-            args.with_similarity,
         )
-    
+
     elif args.input:
         # Score individual files
         all_results = []
@@ -528,12 +516,17 @@ Examples:
                 files = glob(input_path)
             else:
                 files = [input_path]
-            
+
             for f in files:
-                result = score_file(f, args.with_similarity, encoder)
+                # Determine output path
+                out_path = None
+                if args.output_dir:
+                    out_path = os.path.join(args.output_dir, os.path.basename(f))
+
+                result = score_file(f, out_path)
                 if result:
                     all_results.append(result)
-        
+
         # Print summary if multiple files
         if len(all_results) > 1:
             print("\n" + "="*60)
@@ -541,15 +534,15 @@ Examples:
             print("="*60)
             df = pd.DataFrame(all_results)[['file', 'accuracy', 'correct', 'total']]
             print(df.to_string(index=False))
-        
-        # Save if output_dir
-        if args.output_dir:
+
+        # Save summary if output_dir
+        if args.output_dir and all_results:
             os.makedirs(args.output_dir, exist_ok=True)
-            results_path = os.path.join(args.output_dir, 'scored_results.json')
+            results_path = os.path.join(args.output_dir, 'summary.json')
             with open(results_path, 'w') as f:
                 json.dump(all_results, f, indent=2)
-            print(f"\n✓ Saved: {results_path}")
-    
+            print(f"\n✓ Summary saved: {results_path}")
+
     else:
         parser.print_help()
 
