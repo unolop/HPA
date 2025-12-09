@@ -1,0 +1,27 @@
+{
+  "dataset": "spubench",
+  "condition": "none",
+  "total_items": 21849,
+  "by_source": {
+    "models": {
+      "num_items": 21849,
+      "num_correct": 13299,
+      "accuracy": 0.6086777426884525,
+      "embedding_similarity": 0.0
+    }
+  },
+  "by_category": {
+    "Unknown": {
+      "num_items": 21849,
+      "num_correct": 13299,
+      "accuracy": 0.6086777426884525,
+      "embedding_similarity": 0.0
+    }
+  },
+  "overall": {
+    "num_items": 21849,
+    "num_correct": 13299,
+    "accuracy": 0.6086777426884525,
+    "embedding_similarity": 0.0
+  }
+}

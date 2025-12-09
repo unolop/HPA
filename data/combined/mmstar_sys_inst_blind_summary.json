@@ -1,0 +1,13 @@
+{
+  "dataset": "mmstar",
+  "condition": "sys_inst_blind",
+  "total_items": 0,
+  "by_source": {},
+  "by_category": {},
+  "overall": {
+    "num_items": 0,
+    "num_correct": 0,
+    "accuracy": 0.0,
+    "embedding_similarity": 0.0
+  }
+}
