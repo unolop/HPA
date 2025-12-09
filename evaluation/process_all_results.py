@@ -591,6 +591,8 @@ def main():
     print("Generating summary statistics...")
     print("=" * 80)
 
+    if isinstance(all_results, dict):
+        return {str(k): convert_keys(v) for k, v in obj.items()} 
     summary = generate_summary_stats(all_results, str(output_dir))
 
     print("\n" + "=" * 80)
