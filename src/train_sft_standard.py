@@ -28,7 +28,7 @@ def train_sft(
     val_data_path: str = None,
     learning_rate: float = 2e-5,
     num_epochs: int = 3,
-    max_steps: int = 2000,
+    max_steps: int = -1,  # Set to -1 to use num_epochs instead
     lora_rank: int = 32,
     lora_alpha: int = 64,
     batch_size: int = 1,
@@ -45,6 +45,14 @@ def train_sft(
     logger.info(f"   Model: {model_path}")
     logger.info(f"   Data: {data_path}")
     logger.info("=" * 80)
+
+    # Warn if both max_steps and num_epochs are set
+    if max_steps > 0:
+        logger.warning(f"⚠️  Both max_steps ({max_steps}) and num_epochs ({num_epochs}) are set.")
+        logger.warning(f"⚠️  Training will run for {max_steps} steps and IGNORE num_epochs.")
+        logger.warning(f"⚠️  To use num_epochs, set max_steps=-1 instead.")
+    else:
+        logger.info(f"📊 Training for {num_epochs} epochs (max_steps={max_steps})")
 
     # Handle None/empty string for val_data_path
     if val_data_path is not None and (val_data_path.lower() == 'none' or val_data_path.strip() == ''):
