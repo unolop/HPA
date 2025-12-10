@@ -9,7 +9,7 @@ Analyzes:
 4. Distribution differences (pretrained vs finetuned)
 
 Usage:
-    python comprehensive_analysis.py \
+    python evaluation/comprehensive_analysis.py \
         --human_dir evaluation/human_analysis/ \
         --model_dir evaluation/data/scored/ \
         --finetuned_dir evaluation/data/finetuned_scored/ \

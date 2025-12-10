@@ -6,7 +6,7 @@ Loads raw CSV data, computes per-question average accuracy and embedding similar
 against ground truth. Supports both VQA and MC tasks.
 
 Usage:
-    python process_raw_human_responses.py \
+    python evaluation/process_raw_human_responses.py \
         --human_data_dir data/humans/all_results_20251206_154732 \
         --session s1 \
         --output_dir evaluation/human_analysis/
@@ -16,11 +16,10 @@ import os
 import re
 import csv
 import json
-import glob
 import argparse
+from glob import glob 
 import sys
 import numpy as np
-import pandas as pd
 from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Tuple
@@ -28,7 +27,7 @@ from tqdm import tqdm
 
 # Add parent directory for imports
 sys.path.append(str(Path(__file__).parent.parent))
-from preprocessing.preprocess import normalize_answer
+from preprocessing.preprocess import normalize_answer, preprocess_pipeline
 
 
 # =============================================================================
@@ -121,7 +120,7 @@ def get_vqa_mapper() -> VQAAnswerMapper:
 def load_mmstar_annotations(session: str = "s1") -> Dict:
     """Load MMStar annotations from questions CSV and original dataset."""
     # Load from original model results to get full annotations
-    mmstar_path = "/home/work/yuna/HPA/data/models/InternVL3_5-1B_mmstar_inst_blind.jsonl"
+    mmstar_path = "/home/work/yuna/HPA/evaluation/results/pretrained/InternVL3_5-1B_mmstar_blind.jsonl"
 
     with open(mmstar_path, 'r', encoding='utf-8') as f:
         mmstar_data = [json.loads(line) for line in f]
@@ -232,21 +231,6 @@ def compute_similarity(gt: str, pred: str, encoder) -> float:
 # Data Loading
 # =============================================================================
 
-def load_raw_human_data(data_dir: str, questions_path: str) -> List[Dict]:
-    """Load raw human responses from CSV files."""
-    csv_files = glob.glob(f"{data_dir}/*/*.csv")
-
-    all_responses = []
-    for csv_file in csv_files:
-        with open(csv_file, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                all_responses.append(row)
-
-    print(f"   Loaded {len(all_responses)} raw responses from {len(csv_files)} files")
-    return all_responses
-
-
 def get_responses_by_qid(
     answers: List[Dict],
     answer_type: str,
@@ -261,10 +245,9 @@ def get_responses_by_qid(
         gt_by_qid: {qid: ground_truth_info}
     """
     answers = [a for a in answers if a.get("answer_type") == answer_type]
-
     responses_by_qid = defaultdict(list)
     gt_by_qid = {}
-
+    
     for resp in answers:
         qid = str(resp['qid'])
 
@@ -279,12 +262,22 @@ def get_responses_by_qid(
                     'answer_type': 'text'
                 }
             elif answer_type == 'choice' and mmstar_annot and qid in mmstar_annot:
+                old_qid = qid 
+                question = resp.get('question', resp.get('question', '')) 
+                # breakpoint()
+                for k, data in mmstar_annot.items():
+                    if question.strip()[:50] in data['question'] : 
+                        qid = k 
+
                 ann = mmstar_annot[qid]
                 gt_by_qid[qid] = {
                     'gt_answer': ann.get('answer', ''),
                     'category': ann.get('category', ''),
                     'l2_category': ann.get('l2-category', ''),
-                    'answer_type': 'choice'
+                    'answer_type': 'choice', 
+                    'human_qid': old_qid,  
+                    'human_question': question,  
+                    'model_question': data['question'],  
                 }
 
         # Map confidence
@@ -374,12 +367,18 @@ def process_question_responses(
 
     else:  # choice
         gt_answer = gt_info.get('gt_answer', '')
+        choices = {
+            1: "A", 
+            2: "B", 
+            3: "C", 
+            4: "D", 
+        }
 
         if not gt_answer:
             return None
 
         # Extract choices and compute accuracy
-        extracted_choices = [extract_mc_choice(ans) for ans in answers]
+        extracted_choices = [choices[int(ans)] for ans in answers] # [extract_mc_choice(ans) for ans in answers]
         correct = [1 if choice == gt_answer.strip().upper()[0] else 0
                   for choice in extracted_choices]
 
@@ -428,10 +427,6 @@ def process_all_responses(
 
     # Load questions
     questions_path = f"/home/work/yuna/HPA/dataset/questions/{session}.csv"
-
-    # Load raw responses
-    all_responses = load_raw_human_data(human_data_dir, questions_path)
-
     # Load annotations
     print("\n📚 Loading annotations...")
     vqa_mapper = get_vqa_mapper()
@@ -452,10 +447,12 @@ def process_all_responses(
     print("Processing VQA (text) responses...")
     print(f"{'='*60}")
 
+    # Load raw responses
+    # all_responses = load_raw_human_data(human_data_dir, questions_path) 
+    all_responses = preprocess_pipeline(glob(f"{human_data_dir}/*/*.csv"), questions_path, output_dir)  
     text_responses_by_qid, text_gt = get_responses_by_qid(
-        all_responses, 'text', vqa_mapper=vqa_mapper
+        all_responses['responses']['text'], 'text', vqa_mapper=vqa_mapper 
     )
-
     print(f"   Found {len(text_responses_by_qid)} VQA questions")
 
     text_results = []
@@ -466,7 +463,7 @@ def process_all_responses(
                 text_results.append(result)
 
     # Save VQA results
-    text_output = os.path.join(output_dir, 'human_vqa_per_question.jsonl')
+    text_output = os.path.join(output_dir, 'human_vqa_per_question.jsonl') 
     with open(text_output, 'w', encoding='utf-8') as f:
         for item in text_results:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -511,11 +508,11 @@ def process_all_responses(
     print(f"\n{'='*60}")
     print("Processing MC (choice) responses...")
     print(f"{'='*60}")
+    print(f"   Found {len(text_responses_by_qid)} VQA questions")
 
     choice_responses_by_qid, choice_gt = get_responses_by_qid(
-        all_responses, 'choice', mmstar_annot=mmstar_annot
+        all_responses['responses']['choice'], 'choice', mmstar_annot=mmstar_annot
     )
-
     print(f"   Found {len(choice_responses_by_qid)} MC questions")
 
     choice_results = []

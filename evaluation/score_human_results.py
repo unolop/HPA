@@ -9,7 +9,7 @@ Processes human responses from training data files, computes:
 - Saves QID mappings by answer_type for comparison with models
 
 Usage:
-    python score_human_results.py --text_data data/training/s1_text/train_agg_10_blind_inst.jsonl \
+    python evaluation/score_human_results.py --text_data data/training/s1_text/train_agg_10_blind_inst.jsonl \
                                    --choice_data data/training/s1_choice/train_agg_10_blind_inst.jsonl \
                                    --output_dir evaluation/human_scored/
 """
