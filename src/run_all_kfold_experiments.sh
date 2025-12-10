@@ -13,28 +13,31 @@ echo "=========================================="
 KFOLD_DIRS=(
     "/home/work/yuna/HPA/data/training/s1_text/kfold_vqa_gt"
     "/home/work/yuna/HPA/data/training/s1_text/kfold_10_blind_inst"
+    "/home/work/yuna/HPA/data/training/s1_text/kfold_15_blind_inst"
     "/home/work/yuna/HPA/data/training/s1_choice/kfold_15_blind_inst"
 )
 
 # Dataset names for output
 DATASET_NAMES=(
-    "vqa_gt"
-    "10_blind_inst"
-    "15_blind_inst"
+    "A1_vqa_gt"
+    "A2_vqa_10_blind_inst"
+    "A3_vqa_15_blind_inst"
+    "A4_mmstar_15_blind_inst"
 )
 
 # Models to train
 MODELS=(
     "Qwen/Qwen3-VL-8B-Instruct"
-    "OpenGVLab/InternVL3_5-8B"
-    "llava-hf/llava-v1.6-mistral-7b-hf"
+    # "Qwen/Qwen3-VL-4B-Instruct"
+    # "OpenGVLab/InternVL3_5-8B"
+    # "llava-hf/llava-v1.6-mistral-7b-hf"
 )
 
 # Model short names
 MODEL_NAMES=(
-    "qwen"
-    "internvl"
-    "llava"
+    "Qwen3-VL-8B-Instruct"
+    # "internvl"
+    # "llava"
 )
 
 # Run all combinations
@@ -44,14 +47,13 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
 
     for model_idx in "${!MODELS[@]}"; do
         model_path="${MODELS[$model_idx]}"
-        model_name="${MODEL_NAMES[$model_idx]}"
 
-        output_dir="./output/kfold/${model_name}_${dataset_name}"
-        run_name="kfold_${model_name}_${dataset_name}"
+        output_dir="./output/kfold/JS_${model_path}_${dataset_name}_K${dataset_idx}"
+        run_name="JS_kfold_${model_path}_${dataset_name}_K${dataset_idx}" 
 
         echo ""
         echo "=========================================="
-        echo "Experiment: ${model_name} on ${dataset_name}"
+        echo "Experiment: ${model_path} on ${dataset_name}"
         echo "=========================================="
 
         python train_kfold.py \
@@ -76,12 +78,12 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
             --logging_steps 20
 
         if [ $? -ne 0 ]; then
-            echo "❌ Experiment failed: ${model_name} on ${dataset_name}"
+            echo "❌ Experiment failed: ${model_path} on ${dataset_name}"
             echo "Stopping all experiments."
             exit 1
         fi
 
-        echo "✅ Completed: ${model_name} on ${dataset_name}"
+        echo "✅ Completed: ${model_path} on ${dataset_name}"
     done
 done
 

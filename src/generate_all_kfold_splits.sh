@@ -8,6 +8,7 @@ SEED=42
 DATASETS=(
     "/home/work/yuna/HPA/data/training/s1_text/train_agg_vqa_gt.jsonl"
     "/home/work/yuna/HPA/data/training/s1_text/train_agg_10_blind_inst.jsonl"
+    "/home/work/yuna/HPA/data/training/s1_text/train_agg_15_blind_inst.jsonl"
     "/home/work/yuna/HPA/data/training/s1_choice/train_agg_15_blind_inst.jsonl"
 )
 
@@ -15,6 +16,7 @@ DATASETS=(
 OUTPUT_DIRS=(
     "/home/work/yuna/HPA/data/training/s1_text/kfold_vqa_gt"
     "/home/work/yuna/HPA/data/training/s1_text/kfold_10_blind_inst"
+    "/home/work/yuna/HPA/data/training/s1_text/kfold_15_blind_inst"
     "/home/work/yuna/HPA/data/training/s1_choice/kfold_15_blind_inst"
 )
 
