@@ -1,0 +1,14 @@
+{
+  "input_path": "/home/work/yuna/HPA/data/training/s1_choice/train_agg_15_blind_inst.jsonl",
+  "total_samples": 267,
+  "k_folds": 5,
+  "seed": 42,
+  "shuffle": true,
+  "fold_sizes": [
+    54,
+    54,
+    53,
+    53,
+    53
+  ]
+}

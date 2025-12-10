@@ -1,0 +1,14 @@
+{
+  "input_path": "/home/work/yuna/HPA/data/training/s1_text/train_agg_vqa_gt.jsonl",
+  "total_samples": 374,
+  "k_folds": 5,
+  "seed": 42,
+  "shuffle": true,
+  "fold_sizes": [
+    75,
+    75,
+    75,
+    75,
+    74
+  ]
+}
