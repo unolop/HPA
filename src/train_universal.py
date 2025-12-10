@@ -11,7 +11,7 @@ import subprocess
 from pathlib import Path
 from typing import Dict, List
 import sys
-import os 
+
 
 def load_kfold_metadata(kfold_dir: str) -> Dict:
     """Load k-fold metadata."""
@@ -61,7 +61,6 @@ def train_single_fold(
 
     # Output directory for this fold
     output_dir = Path(output_base_dir) / f"fold_{fold_idx}"
-    os.makedirs(output_dir, exist_ok=True)
 
     print(f"\n{'=' * 80}")
     print(f"Training Fold {fold_idx}")
