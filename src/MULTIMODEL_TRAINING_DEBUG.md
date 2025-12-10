@@ -1,5 +1,7 @@
 # Multi-Model Training Debug Guide
 
+> **⚠️ NOTE**: This debug guide describes the old model-specific approach. For the simplified universal training approach, see **[UNIVERSAL_TRAINING_README.md](UNIVERSAL_TRAINING_README.md)** and use `train_universal.py` instead.
+
 ## Common Issues with InternVL and Llava (vs QwenVL)
 
 ### Problem Summary
