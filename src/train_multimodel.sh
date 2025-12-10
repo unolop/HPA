@@ -9,7 +9,7 @@ MODELS=(
     "OpenGVLab/InternVL3_5-8B"
     # "OpenGVLab/InternVL3_5-4B"
     # "OpenGVLab/InternVL3_5-2B"
-    # "llava-hf/llava-v1.6-mistral-7b-hf"
+    "llava-hf/llava-v1.6-mistral-7b-hf"
     # "llava-hf/llava-v1.6-vicuna-7b-hf"
 )
 
@@ -63,7 +63,7 @@ for MODEL in "${MODELS[@]}"; do
     echo ""
 
     # Run training
-    CUDA_VISIBLE_DEVICES=1 python train_sft_multimodel.py \
+    CUDA_VISIBLE_DEVICES=0 python train_sft_multimodel.py \
         --model_path "${MODEL}" \
         --data_path "${data_path}" \
         --output_dir ./output/${MODEL}/${RUNNAME} \

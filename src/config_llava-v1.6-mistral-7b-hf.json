@@ -1,0 +1,23 @@
+{
+  "freeze_vit": true,
+  "freeze_aligner": true,
+  "freeze_llm": false,
+  "max_pixels": 112896,
+  "lora_rank": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.05,
+  "lora_bias": "none",
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "learning_rate": 2e-05,
+  "gradient_checkpointing": true,
+  "image_aspect_ratio": "pad",
+  "vision_encoder_name": "CLIP"
+}
