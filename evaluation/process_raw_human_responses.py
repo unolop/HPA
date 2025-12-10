@@ -13,6 +13,7 @@ Usage:
 """
 
 import os
+import pandas as pd 
 import re
 import csv
 import json
@@ -264,28 +265,20 @@ def get_responses_by_qid(
             elif answer_type == 'choice' and mmstar_annot and qid in mmstar_annot:
                 old_qid = qid 
                 question = resp.get('question', resp.get('question', '')) 
-                # breakpoint()
-                for k, data in mmstar_annot.items():
-                    if question.strip()[:50] in data['question'] : 
+                for k, annot in mmstar_annot.items():
+                    if question.strip()[:50] in annot['question'] : 
                         qid = k 
-
-                ann = mmstar_annot[qid]
-                gt_by_qid[qid] = {
-                    'gt_answer': ann.get('answer', ''),
-                    'category': ann.get('category', ''),
-                    'l2_category': ann.get('l2-category', ''),
-                    'answer_type': 'choice', 
-                    'human_qid': old_qid,  
-                    'human_question': question,  
-                    'model_question': data['question'],  
-                }
+                        print(f"original qid found {k}")
+                        break 
+                annot['answer_type'] = 'choice'
+                annot['human_question'] = question 
+                gt_by_qid[qid] = annot  
+                resp['old_qid'] = old_qid
 
         # Map confidence
         confidence = resp.get("confidence", 3)
         resp['confidence'] = CONF_MAP.get(str(confidence), 0.5)
-
         responses_by_qid[qid].append(resp)
-
     return dict(responses_by_qid), gt_by_qid
 
 
@@ -366,7 +359,7 @@ def process_question_responses(
             result['visual_similarities'] = visual_similarities
 
     else:  # choice
-        gt_answer = gt_info.get('gt_answer', '')
+        gt_answer = gt_info.get('answer', '')
         choices = {
             1: "A", 
             2: "B", 
@@ -374,24 +367,17 @@ def process_question_responses(
             4: "D", 
         }
 
-        if not gt_answer:
-            return None
-
         # Extract choices and compute accuracy
         extracted_choices = [choices[int(ans)] for ans in answers] # [extract_mc_choice(ans) for ans in answers]
-        correct = [1 if choice == gt_answer.strip().upper()[0] else 0
-                  for choice in extracted_choices]
-
+        correct = [1 if choice == gt_answer.strip().upper()[0] else 0 for choice in extracted_choices]
         result = {
             'qid': qid,
             'answer_type': 'choice',
+            'answer_type': 'text',
             'num_responses': len(responses),
             'answers': answers,
             'extracted_choices': extracted_choices,
             'confidences': confidences,
-            'gt_answer': gt_answer,
-            'category': gt_info.get('category', ''),
-            'l2_category': gt_info.get('l2_category', ''),
             # Averages
             'mean_accuracy': float(np.mean(correct)),
             'std_accuracy': float(np.std(correct)),
@@ -400,6 +386,7 @@ def process_question_responses(
             # Individual metrics
             'accuracies': correct,
         }
+        result = {**result, **gt_info}
 
     return result
 
@@ -463,10 +450,11 @@ def process_all_responses(
                 text_results.append(result)
 
     # Save VQA results
-    text_output = os.path.join(output_dir, 'human_vqa_per_question.jsonl') 
-    with open(text_output, 'w', encoding='utf-8') as f:
-        for item in text_results:
-            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+    text_output = os.path.join(output_dir, 'human_vqa_per_question.csv') 
+    pd.DataFrame(text_results).to_csv(text_output) 
+    # with open(text_output, 'w', encoding='utf-8') as f:
+    #     for item in text_results:
+    #         f.write(json.dumps(item, ensure_ascii=False) + '\n')
     print(f"\n   ✓ Saved: {text_output}")
 
     # Compute VQA statistics
@@ -523,10 +511,11 @@ def process_all_responses(
                 choice_results.append(result)
 
     # Save MC results
-    choice_output = os.path.join(output_dir, 'human_mc_per_question.jsonl')
-    with open(choice_output, 'w', encoding='utf-8') as f:
-        for item in choice_results:
-            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+    choice_output = os.path.join(output_dir, 'human_mc_per_question.csv')
+    pd.DataFrame(choice_results).to_csv(choice_output) 
+    # with open(choice_output, 'w', encoding='utf-8') as f:
+    #     for item in choice_results:
+    #         f.write(json.dumps(item, ensure_ascii=False) + '\n')
     print(f"\n   ✓ Saved: {choice_output}")
 
     # Compute MC statistics
@@ -591,11 +580,11 @@ def main():
     )
 
     parser.add_argument("--human_data_dir", type=str,
-                        default="data/humans/all_results_20251206_154732",
+                        default="/home/work/yuna/HPA/data/humans/all_results_20251206_154732",
                         help="Directory with raw human CSV files")
     parser.add_argument("--session", type=str, default="s1",
                         help="Session identifier (for questions file)")
-    parser.add_argument("--output_dir", type=str, required=True,
+    parser.add_argument("--output_dir", type=str, default="/home/work/yuna/HPA/evaluation/scored/humans",
                         help="Output directory for processed results")
     parser.add_argument("--with_similarity", action="store_true",
                         help="Compute embedding similarity (requires sentence-transformers)")

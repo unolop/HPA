@@ -125,7 +125,7 @@ def main(args):
     savedir = args.savedir 
     if args.lora_path is not None : 
         finetuned = args.lora_path.split('/')[-3] 
-        save_name += f'_{finetuned}' 
+        save_name += f'/{finetuned}' 
         savedir += '/finetuned'    
     else: 
         savedir += '/pretrained'     

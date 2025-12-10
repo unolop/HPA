@@ -1,16 +1,48 @@
 [
   {
+    "file": "spubench.jsonl",
+    "model": "Qwen/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_JS_vqa_n15_blind_inst",
+    "dataset": "spubench",
+    "condition": "",
+    "accuracy": 0.7529411764705882,
+    "correct": 64,
+    "total": 85,
+    "by_category": {
+      "Unknown": {
+        "accuracy": 0.7529411764705882,
+        "correct": 64,
+        "total": 85
+      }
+    }
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "model": "Qwen/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_JS_vqa_n15_blind_inst",
+    "dataset": "spubench",
+    "condition": "_inst_blind",
+    "accuracy": 0.43583333333333335,
+    "correct": 1046,
+    "total": 2400,
+    "by_category": {
+      "Unknown": {
+        "accuracy": 0.43583333333333335,
+        "correct": 1046,
+        "total": 2400
+      }
+    }
+  },
+  {
     "file": "mmstar.jsonl",
-    "model": "Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst",
+    "model": "Qwen/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A1_JS_vqa_blind_n15",
     "dataset": "mmstar",
     "condition": "",
-    "accuracy": 0.586,
-    "correct": 879,
+    "accuracy": 0.6366666666666667,
+    "correct": 955,
     "total": 1500,
     "by_category": {
       "coarse perception": {
-        "accuracy": 0.704,
-        "correct": 176,
+        "accuracy": 0.748,
+        "correct": 187,
         "total": 250
       },
       "fine-grained perception": {
@@ -19,743 +51,65 @@
         "total": 250
       },
       "instance reasoning": {
-        "accuracy": 0.7,
-        "correct": 175,
+        "accuracy": 0.748,
+        "correct": 187,
         "total": 250
       },
       "logical reasoning": {
-        "accuracy": 0.596,
-        "correct": 149,
+        "accuracy": 0.66,
+        "correct": 165,
         "total": 250
       },
       "math": {
-        "accuracy": 0.564,
-        "correct": 141,
+        "accuracy": 0.628,
+        "correct": 157,
         "total": 250
       },
       "science & technology": {
-        "accuracy": 0.4,
-        "correct": 100,
+        "accuracy": 0.484,
+        "correct": 121,
         "total": 250
       }
     }
   },
   {
     "file": "mmstar_inst_blind.jsonl",
-    "model": "Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst",
+    "model": "Qwen/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A1_JS_vqa_blind_n15",
     "dataset": "mmstar",
     "condition": "_inst_blind",
-    "accuracy": 0.2673333333333333,
-    "correct": 401,
+    "accuracy": 0.288,
+    "correct": 432,
     "total": 1500,
     "by_category": {
       "coarse perception": {
-        "accuracy": 0.28,
-        "correct": 70,
+        "accuracy": 0.3,
+        "correct": 75,
         "total": 250
       },
       "fine-grained perception": {
-        "accuracy": 0.276,
-        "correct": 69,
+        "accuracy": 0.24,
+        "correct": 60,
         "total": 250
       },
       "instance reasoning": {
-        "accuracy": 0.276,
-        "correct": 69,
+        "accuracy": 0.304,
+        "correct": 76,
         "total": 250
       },
       "logical reasoning": {
-        "accuracy": 0.232,
-        "correct": 58,
+        "accuracy": 0.304,
+        "correct": 76,
         "total": 250
       },
       "math": {
-        "accuracy": 0.38,
-        "correct": 95,
+        "accuracy": 0.368,
+        "correct": 92,
         "total": 250
       },
       "science & technology": {
-        "accuracy": 0.16,
-        "correct": 40,
+        "accuracy": 0.212,
+        "correct": 53,
         "total": 250
-      }
-    }
-  },
-  {
-    "file": "spubench.jsonl",
-    "model": "Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst",
-    "dataset": "spubench",
-    "condition": "",
-    "accuracy": 0.7426229508196721,
-    "correct": 1359,
-    "total": 1830,
-    "by_category": {
-      "Unknown": {
-        "accuracy": 0.7426229508196721,
-        "correct": 1359,
-        "total": 1830
-      }
-    }
-  },
-  {
-    "file": "vqa_1k.jsonl",
-    "model": "Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst",
-    "dataset": "vqa_1k",
-    "condition": "",
-    "accuracy": 0.75,
-    "correct": 750,
-    "total": 1000,
-    "by_category": {
-      "what is the woman": {
-        "accuracy": 0.25,
-        "correct": 1,
-        "total": 4
-      },
-      "is the man": {
-        "accuracy": 1.0,
-        "correct": 9,
-        "total": 9
-      },
-      "what is the": {
-        "accuracy": 0.6538461538461539,
-        "correct": 34,
-        "total": 52
-      },
-      "is the": {
-        "accuracy": 0.9431818181818182,
-        "correct": 83,
-        "total": 88
-      },
-      "is this": {
-        "accuracy": 0.875,
-        "correct": 35,
-        "total": 40
-      },
-      "does this": {
-        "accuracy": 1.0,
-        "correct": 14,
-        "total": 14
-      },
-      "what is": {
-        "accuracy": 0.5483870967741935,
-        "correct": 17,
-        "total": 31
-      },
-      "is": {
-        "accuracy": 0.7692307692307693,
-        "correct": 10,
-        "total": 13
-      },
-      "what": {
-        "accuracy": 0.6071428571428571,
-        "correct": 51,
-        "total": 84
-      },
-      "none of the above": {
-        "accuracy": 0.7297297297297297,
-        "correct": 27,
-        "total": 37
-      },
-      "what are": {
-        "accuracy": 0.7,
-        "correct": 7,
-        "total": 10
-      },
-      "what color is": {
-        "accuracy": 0.875,
-        "correct": 7,
-        "total": 8
-      },
-      "is the woman": {
-        "accuracy": 0.6666666666666666,
-        "correct": 2,
-        "total": 3
-      },
-      "how many": {
-        "accuracy": 0.6823529411764706,
-        "correct": 58,
-        "total": 85
-      },
-      "what type of": {
-        "accuracy": 0.5263157894736842,
-        "correct": 10,
-        "total": 19
-      },
-      "what is in the": {
-        "accuracy": 0.5454545454545454,
-        "correct": 6,
-        "total": 11
-      },
-      "what does the": {
-        "accuracy": 0.6,
-        "correct": 9,
-        "total": 15
-      },
-      "what is this": {
-        "accuracy": 0.6,
-        "correct": 6,
-        "total": 10
-      },
-      "do": {
-        "accuracy": 0.8333333333333334,
-        "correct": 10,
-        "total": 12
-      },
-      "is this a": {
-        "accuracy": 0.975609756097561,
-        "correct": 40,
-        "total": 41
-      },
-      "is there a": {
-        "accuracy": 1.0,
-        "correct": 21,
-        "total": 21
-      },
-      "is this an": {
-        "accuracy": 1.0,
-        "correct": 5,
-        "total": 5
-      },
-      "what is on the": {
-        "accuracy": 0.6153846153846154,
-        "correct": 8,
-        "total": 13
-      },
-      "is there": {
-        "accuracy": 1.0,
-        "correct": 13,
-        "total": 13
-      },
-      "where is the": {
-        "accuracy": 0.4666666666666667,
-        "correct": 7,
-        "total": 15
-      },
-      "why": {
-        "accuracy": 0.14285714285714285,
-        "correct": 1,
-        "total": 7
-      },
-      "what is the name": {
-        "accuracy": 0.75,
-        "correct": 3,
-        "total": 4
-      },
-      "who is": {
-        "accuracy": 0.5,
-        "correct": 3,
-        "total": 6
-      },
-      "are they": {
-        "accuracy": 1.0,
-        "correct": 6,
-        "total": 6
-      },
-      "what kind of": {
-        "accuracy": 0.5833333333333334,
-        "correct": 14,
-        "total": 24
-      },
-      "does the": {
-        "accuracy": 1.0,
-        "correct": 14,
-        "total": 14
-      },
-      "what color is the": {
-        "accuracy": 0.847457627118644,
-        "correct": 50,
-        "total": 59
-      },
-      "what color are the": {
-        "accuracy": 0.9090909090909091,
-        "correct": 10,
-        "total": 11
-      },
-      "what is the person": {
-        "accuracy": 1.0,
-        "correct": 2,
-        "total": 2
-      },
-      "which": {
-        "accuracy": 0.5,
-        "correct": 7,
-        "total": 14
-      },
-      "what color": {
-        "accuracy": 0.9166666666666666,
-        "correct": 11,
-        "total": 12
-      },
-      "are the": {
-        "accuracy": 0.8095238095238095,
-        "correct": 17,
-        "total": 21
-      },
-      "what is the man": {
-        "accuracy": 0.38461538461538464,
-        "correct": 5,
-        "total": 13
-      },
-      "why is the": {
-        "accuracy": 0.2,
-        "correct": 1,
-        "total": 5
-      },
-      "what are the": {
-        "accuracy": 0.5384615384615384,
-        "correct": 7,
-        "total": 13
-      },
-      "what is the color of the": {
-        "accuracy": 1.0,
-        "correct": 5,
-        "total": 5
-      },
-      "are these": {
-        "accuracy": 0.8181818181818182,
-        "correct": 9,
-        "total": 11
-      },
-      "where are the": {
-        "accuracy": 0.2857142857142857,
-        "correct": 2,
-        "total": 7
-      },
-      "could": {
-        "accuracy": 1.0,
-        "correct": 7,
-        "total": 7
-      },
-      "is it": {
-        "accuracy": 1.0,
-        "correct": 15,
-        "total": 15
-      },
-      "how": {
-        "accuracy": 0.25,
-        "correct": 2,
-        "total": 8
-      },
-      "can you": {
-        "accuracy": 0.8,
-        "correct": 4,
-        "total": 5
-      },
-      "how many people are": {
-        "accuracy": 0.5714285714285714,
-        "correct": 4,
-        "total": 7
-      },
-      "what animal is": {
-        "accuracy": 0.8,
-        "correct": 4,
-        "total": 5
-      },
-      "has": {
-        "accuracy": 1.0,
-        "correct": 2,
-        "total": 2
-      },
-      "are": {
-        "accuracy": 0.8333333333333334,
-        "correct": 10,
-        "total": 12
-      },
-      "is that a": {
-        "accuracy": 1.0,
-        "correct": 4,
-        "total": 4
-      },
-      "was": {
-        "accuracy": 1.0,
-        "correct": 2,
-        "total": 2
-      },
-      "are there": {
-        "accuracy": 1.0,
-        "correct": 10,
-        "total": 10
-      },
-      "do you": {
-        "accuracy": 1.0,
-        "correct": 4,
-        "total": 4
-      },
-      "what number is": {
-        "accuracy": 0.75,
-        "correct": 3,
-        "total": 4
-      },
-      "what sport is": {
-        "accuracy": 1.0,
-        "correct": 5,
-        "total": 5
-      },
-      "is he": {
-        "accuracy": 0.6666666666666666,
-        "correct": 2,
-        "total": 3
-      },
-      "how many people are in": {
-        "accuracy": 0.5,
-        "correct": 2,
-        "total": 4
-      },
-      "are there any": {
-        "accuracy": 1.0,
-        "correct": 9,
-        "total": 9
-      },
-      "what time": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 3
-      },
-      "what room is": {
-        "accuracy": 1.0,
-        "correct": 2,
-        "total": 2
-      },
-      "is this person": {
-        "accuracy": 1.0,
-        "correct": 1,
-        "total": 1
-      },
-      "is the person": {
-        "accuracy": 1.0,
-        "correct": 1,
-        "total": 1
-      }
-    }
-  },
-  {
-    "file": "vqa_1k_inst_blind.jsonl",
-    "model": "Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst",
-    "dataset": "vqa_1k",
-    "condition": "_inst_blind",
-    "accuracy": 0.33,
-    "correct": 330,
-    "total": 1000,
-    "by_category": {
-      "what is the woman": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 4
-      },
-      "is the man": {
-        "accuracy": 0.5555555555555556,
-        "correct": 5,
-        "total": 9
-      },
-      "what is the": {
-        "accuracy": 0.11538461538461539,
-        "correct": 6,
-        "total": 52
-      },
-      "is the": {
-        "accuracy": 0.6136363636363636,
-        "correct": 54,
-        "total": 88
-      },
-      "is this": {
-        "accuracy": 0.6,
-        "correct": 24,
-        "total": 40
-      },
-      "does this": {
-        "accuracy": 0.7142857142857143,
-        "correct": 10,
-        "total": 14
-      },
-      "what is": {
-        "accuracy": 0.0967741935483871,
-        "correct": 3,
-        "total": 31
-      },
-      "is": {
-        "accuracy": 0.5384615384615384,
-        "correct": 7,
-        "total": 13
-      },
-      "what": {
-        "accuracy": 0.10714285714285714,
-        "correct": 9,
-        "total": 84
-      },
-      "none of the above": {
-        "accuracy": 0.40540540540540543,
-        "correct": 15,
-        "total": 37
-      },
-      "what are": {
-        "accuracy": 0.1,
-        "correct": 1,
-        "total": 10
-      },
-      "what color is": {
-        "accuracy": 0.25,
-        "correct": 2,
-        "total": 8
-      },
-      "is the woman": {
-        "accuracy": 0.3333333333333333,
-        "correct": 1,
-        "total": 3
-      },
-      "how many": {
-        "accuracy": 0.3058823529411765,
-        "correct": 26,
-        "total": 85
-      },
-      "what type of": {
-        "accuracy": 0.15789473684210525,
-        "correct": 3,
-        "total": 19
-      },
-      "what is in the": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 11
-      },
-      "what does the": {
-        "accuracy": 0.06666666666666667,
-        "correct": 1,
-        "total": 15
-      },
-      "what is this": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 10
-      },
-      "do": {
-        "accuracy": 0.6666666666666666,
-        "correct": 8,
-        "total": 12
-      },
-      "is this a": {
-        "accuracy": 0.6097560975609756,
-        "correct": 25,
-        "total": 41
-      },
-      "is there a": {
-        "accuracy": 0.5238095238095238,
-        "correct": 11,
-        "total": 21
-      },
-      "is this an": {
-        "accuracy": 0.4,
-        "correct": 2,
-        "total": 5
-      },
-      "what is on the": {
-        "accuracy": 0.15384615384615385,
-        "correct": 2,
-        "total": 13
-      },
-      "is there": {
-        "accuracy": 0.46153846153846156,
-        "correct": 6,
-        "total": 13
-      },
-      "where is the": {
-        "accuracy": 0.06666666666666667,
-        "correct": 1,
-        "total": 15
-      },
-      "why": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 7
-      },
-      "what is the name": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 4
-      },
-      "who is": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 6
-      },
-      "are they": {
-        "accuracy": 0.6666666666666666,
-        "correct": 4,
-        "total": 6
-      },
-      "what kind of": {
-        "accuracy": 0.16666666666666666,
-        "correct": 4,
-        "total": 24
-      },
-      "does the": {
-        "accuracy": 0.6428571428571429,
-        "correct": 9,
-        "total": 14
-      },
-      "what color is the": {
-        "accuracy": 0.13559322033898305,
-        "correct": 8,
-        "total": 59
-      },
-      "what color are the": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 11
-      },
-      "what is the person": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 2
-      },
-      "which": {
-        "accuracy": 0.14285714285714285,
-        "correct": 2,
-        "total": 14
-      },
-      "what color": {
-        "accuracy": 0.25,
-        "correct": 3,
-        "total": 12
-      },
-      "are the": {
-        "accuracy": 0.47619047619047616,
-        "correct": 10,
-        "total": 21
-      },
-      "what is the man": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 13
-      },
-      "why is the": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 5
-      },
-      "what are the": {
-        "accuracy": 0.15384615384615385,
-        "correct": 2,
-        "total": 13
-      },
-      "what is the color of the": {
-        "accuracy": 0.6,
-        "correct": 3,
-        "total": 5
-      },
-      "are these": {
-        "accuracy": 0.8181818181818182,
-        "correct": 9,
-        "total": 11
-      },
-      "where are the": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 7
-      },
-      "could": {
-        "accuracy": 0.5714285714285714,
-        "correct": 4,
-        "total": 7
-      },
-      "is it": {
-        "accuracy": 0.6666666666666666,
-        "correct": 10,
-        "total": 15
-      },
-      "how": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 8
-      },
-      "can you": {
-        "accuracy": 0.8,
-        "correct": 4,
-        "total": 5
-      },
-      "how many people are": {
-        "accuracy": 0.2857142857142857,
-        "correct": 2,
-        "total": 7
-      },
-      "what animal is": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 5
-      },
-      "has": {
-        "accuracy": 1.0,
-        "correct": 2,
-        "total": 2
-      },
-      "are": {
-        "accuracy": 0.6666666666666666,
-        "correct": 8,
-        "total": 12
-      },
-      "is that a": {
-        "accuracy": 0.75,
-        "correct": 3,
-        "total": 4
-      },
-      "was": {
-        "accuracy": 0.5,
-        "correct": 1,
-        "total": 2
-      },
-      "are there": {
-        "accuracy": 0.4,
-        "correct": 4,
-        "total": 10
-      },
-      "do you": {
-        "accuracy": 0.5,
-        "correct": 2,
-        "total": 4
-      },
-      "what number is": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 4
-      },
-      "what sport is": {
-        "accuracy": 0.6,
-        "correct": 3,
-        "total": 5
-      },
-      "is he": {
-        "accuracy": 0.6666666666666666,
-        "correct": 2,
-        "total": 3
-      },
-      "how many people are in": {
-        "accuracy": 0.25,
-        "correct": 1,
-        "total": 4
-      },
-      "are there any": {
-        "accuracy": 0.6666666666666666,
-        "correct": 6,
-        "total": 9
-      },
-      "what time": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 3
-      },
-      "what room is": {
-        "accuracy": 0.0,
-        "correct": 0,
-        "total": 2
-      },
-      "is this person": {
-        "accuracy": 1.0,
-        "correct": 1,
-        "total": 1
-      },
-      "is the person": {
-        "accuracy": 1.0,
-        "correct": 1,
-        "total": 1
       }
     }
   }

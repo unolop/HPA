@@ -1,20 +1,22 @@
 #!/bin/bash
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
-GPU=1
-DATASET_PATHS=(  "mmstar" "vqa_5k" "vqa_1k"  "spubench"   ) #   #
+GPU=0
+DATASET_PATHS=( "mmstar") #   #  "vqa_5k" "vqa_1k"  "spubench"   
 CONDITION_LIST=("" "_inst_blind") #  "_sys_inst_blind"   "_blind" 
 BASE_MODEL=(
     "Qwen/Qwen3-VL-8B-Instruct")
 
 ADAPTERS_PATHS=(
+    "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/A0_JS_vqa_gt_10/v0-20251209-200826/checkpoint-470"
     # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/A1_JS_vqa_blind_n10/v0-20251209-195135/checkpoint-470"
     # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/D0_SFT_mmstar_blind/v0-20251209-182646/checkpoint-340" 
     # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/A0_JS_vqa_gt_10/v0-20251209-200826/checkpoint-470"
     # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/A0_SFT_vqa_gt/v0-20251209-201403/checkpoint-470"
-    ### NOT DONE YET 
-    "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/A1_JS_vqa_blind_n15/v3-20251210-005806/checkpoint-470"
+    # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/A1_JS_vqa_blind_n15/v3-20251210-005806/checkpoint-470"
     "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/D1_JS_mmstar_blind/v1-20251210-021127/checkpoint-340"
+
+    ### Old ones 
     # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/A1_JS_vqa1k_n10_blind_inst/v0-20251208-203338/checkpoint-5000"
     # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/A1_JS_vqa1k_n15_blind_inst/v0-20251208-201254/checkpoint-5000"
     # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-8B-Instruct/A2_JS_vqa_gt/v0-20251209-081458/checkpoint-3520" 

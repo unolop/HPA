@@ -4,10 +4,10 @@
 CONDITION_LIST=("_inst_blind") # "_blind" 
 DATASET_PATHS=( "vqa_1k" "vqa_5k" "mmstar" "spubench") #   )  #   
 BASE_MODEL=(
+            "Qwen/Qwen3-8B"
             "Qwen/Qwen3-4B"
             # "Qwen/Qwen3-1.7B" 
             # "Qwen/Qwen3-0.6B" 
-            # "Qwen/Qwen3-8B"
             # "Qwen/Qwen3-0.6B-Base" # doesnt work 
             # "Qwen/Qwen3-1.7B-Base" 
             # "Qwen/Qwen3-8B-Base"

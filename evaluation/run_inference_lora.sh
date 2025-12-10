@@ -20,8 +20,7 @@ BASE_MODEL=(
     )
 
 ADAPTERS_PATHS=(
-    
-    "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst/v1-20251209-183814/checkpoint-470"
+#     "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst/v1-20251209-183814/checkpoint-470"
     # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/A1_JS_vqa_blind_n10/v1-20251209-204249/checkpoint-470"
     # "/home/work/yuna/HPA/src/output/Qwen/Qwen3-VL-4B-Instruct/D1_JS_mmstar_blind/v1-20251209-202250/checkpoint-340" 
 
