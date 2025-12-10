@@ -1,0 +1,20 @@
+,,mean,mean,mean,mean,count,count,count,count
+,,correct,correct,correct,correct,correct,correct,correct,correct
+condition,,inst blind,vqa 1k,vqa 1k blind,vqa 1k inst blind,inst blind,vqa 1k,vqa 1k blind,vqa 1k inst blind
+model,folder,,,,,,,,
+InternVL3_5-1B,pretrained,,0.8048,0.4358,0.4385,,374.0,374.0,374.0
+InternVL3_5-2B,pretrained,,0.8209,0.4554,0.4528,,374.0,374.0,374.0
+InternVL3_5-4B,pretrained,,0.8298,0.4501,0.4724,,374.0,374.0,374.0
+InternVL3_5-8B,pretrained,,0.869,0.4715,0.4537,,374.0,374.0,374.0
+Qwen3-VL-2B-Instruct,pretrained,,0.8298,0.4545,0.4617,,374.0,374.0,374.0
+Qwen3-VL-4B-Instruct,A0_SFT_vqa_gt,,0.8948,,0.5749,,374.0,,374.0
+Qwen3-VL-4B-Instruct,A1_JS_vqa_blind_n10,,0.828,0.4635,0.4537,,374.0,374.0,374.0
+Qwen3-VL-4B-Instruct,A1_JS_vqa_n15_blind_inst,,0.8333,,0.4572,,374.0,,374.0
+Qwen3-VL-4B-Instruct,D1_JS_mmstar_blind,,0.8547,0.4795,0.4884,,374.0,374.0,374.0
+Qwen3-VL-4B-Instruct,pretrained,,0.8592,0.4545,0.4742,,374.0,374.0,374.0
+Qwen3-VL-8B-Instruct,A0_JS_vqa_gt_10,,0.9055,,0.5615,,374.0,,374.0
+Qwen3-VL-8B-Instruct,A1_JS_vqa_blind_n10,,0.8619,,0.4643,,374.0,,374.0
+Qwen3-VL-8B-Instruct,D0_SFT_mmstar_blind,,0.8868,,0.4661,,374.0,,374.0
+Qwen3-VL-8B-Instruct,pretrained,,0.8939,0.443,0.4742,,374.0,374.0,374.0
+humans,humans,0.2739,,,,223.0,,,
+llava-v1.6-mistral-7b-hf,pretrained,,0.8627,0.451,0.467,,374.0,374.0,374.0
