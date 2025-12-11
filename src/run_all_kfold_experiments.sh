@@ -63,7 +63,7 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
             --output_base_dir "${output_dir}" \
             --run_name "${run_name}" \
             --gpu_id ${GPU_ID} \
-            --num_epochs 10 \
+            --num_epochs 5 \
             --max_steps -1 \
             --mode JS \
             --lambda_dist 1.0 \
