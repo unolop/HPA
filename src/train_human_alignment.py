@@ -1,12 +1,9 @@
-#!/usr/bin/env python3
-
 import torch
 import torch.nn.functional as F
 import gc
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict
 import argparse
-import json
 
 from swift.llm import sft_main, TrainArguments, get_model_tokenizer
 from swift.utils import get_logger
@@ -17,23 +14,24 @@ logger = get_logger()
 
 class HumanAlignmentTrainer(Trainer):
     """
-    Custom Trainer with Human Alignment Loss using JS Divergence.
+    Custom Trainer with Human Alignment Loss using JS Divergence (or CE).
     
     Combines:
-    1. Standard SFT loss (CE) on conversations
-    2. JS Divergence loss to match human confidence distributions
-    3. Optional L2 penalty (Brier-style)
+    1. (Optional) Standard SFT loss (CE) on conversations (outputs.loss)
+    2. JS Divergence (or CE) loss to match human confidence distributions
+       over the vocabulary at the answer position.
+    3. Optional L2 penalty (Brier-style) between distributions.
     """
-    
+
     def __init__(
         self,
         *args,
         tokenizer=None,
-        mode: str = "JS",  # "CE" or "JS"
-        lambda_dist: float = 1.0,  # Weight for distributional matching
-        lambda_l2: float = 0.1,  # Weight for L2 penalty
+        mode: str = "JS",        # "CE" or "JS"
+        lambda_dist: float = 1.0,
+        lambda_l2: float = 0.1,
         use_l2_penalty: bool = True,
-        use_sft_loss: bool = False,  # Whether to include SFT loss on conversation
+        use_sft_loss: bool = False,
         **kwargs
     ):
         super().__init__(*args, **kwargs)
@@ -45,10 +43,10 @@ class HumanAlignmentTrainer(Trainer):
         self.use_l2_penalty = use_l2_penalty
         self.use_sft_loss = use_sft_loss
         self._first_batch_logged = False
-        
-        # Pre-tokenize common answers for efficiency
-        self._answer_token_cache = {}
-        
+
+        # Cache tokenizations for efficiency
+        self._answer_token_cache: Dict[str, List[int]] = {}
+
         self.stats = {
             'total_samples': 0,
             'samples_with_labels': 0,
@@ -56,7 +54,7 @@ class HumanAlignmentTrainer(Trainer):
             'total_dist_loss': 0.0,
             'total_l2_loss': 0.0,
         }
-        
+
         logger.info(f"[Human Alignment Trainer] Initialized")
         logger.info(f"   Mode: {self.mode}")
         logger.info(f"   Use SFT loss: {self.use_sft_loss}")
@@ -64,95 +62,114 @@ class HumanAlignmentTrainer(Trainer):
         logger.info(f"   Lambda (L2): {self.lambda_l2}")
         logger.info(f"   Use L2 penalty: {self.use_l2_penalty}")
 
+    # -------------------------------------------------------------------------
+    #  Helpers for distributions
+    # -------------------------------------------------------------------------
+
     def _get_answer_token_ids(self, answer: str) -> List[int]:
-        """Get token IDs for an answer, with caching."""
+        """Get token IDs for an answer string, with caching."""
         if answer not in self._answer_token_cache:
             tokens = self.tokenizer.encode(answer, add_special_tokens=False)
             self._answer_token_cache[answer] = tokens
         return self._answer_token_cache[answer]
 
     def _build_human_distribution(
-        self, 
-        answers: List[str], 
+        self,
+        answers: List[str],
         confidences: List[float],
         vocab_size: int,
-        device: torch.device
+        device: torch.device,
     ) -> torch.Tensor:
         """
-        Build human confidence distribution over vocabulary.
-        
+        Build human confidence distribution over the vocabulary.
+
+        We spread each answer's confidence mass over ALL of its tokens
+        (rather than only the first token). This is still a crude vocab-level
+        approximation, but much more faithful than first-token-only.
+
         Args:
-            answers: List of possible answers
-            confidences: Corresponding confidence scores (should sum to 1)
+            answers: List of possible answers (strings)
+            confidences: Corresponding confidence scores (need not sum to 1)
             vocab_size: Model vocabulary size
             device: Target device
-            
+
         Returns:
-            Tensor of shape [vocab_size] with probability mass on answer tokens
+            Tensor of shape [vocab_size] with probability mass on answer tokens.
         """
         dist = torch.zeros(vocab_size, device=device, dtype=torch.float32)
-        
-        # Normalize confidences if they don't sum to 1
-        total_conf = sum(confidences)
-        if total_conf > 0:
+
+        # Normalize confidences to sum to 1 (if possible)
+        total_conf = float(sum(confidences))
+        if total_conf > 0.0:
             confidences = [c / total_conf for c in confidences]
-        
-        for answer, conf in zip(answers, confidences):
-            token_ids = self._get_answer_token_ids(answer)
-            if token_ids:
-                # Put confidence on first token of answer
-                # (for multi-token answers, could distribute or use first token)
-                first_token = token_ids[0]
-                dist[first_token] += conf
-        
-        # Ensure it's a valid distribution
-        if dist.sum() > 0:
-            dist = dist / dist.sum()
+
+        for ans, conf in zip(answers, confidences):
+            token_ids = self._get_answer_token_ids(ans)
+            if not token_ids:
+                continue
+            # Spread this answer's confidence evenly across its tokens
+            share = conf / len(token_ids)
+            for tid in token_ids:
+                if 0 <= tid < vocab_size:
+                    dist[tid] += share
+
+        # Ensure valid distribution
+        mass = dist.sum()
+        if mass > 0:
+            dist = dist / mass
         else:
-            # Fallback to uniform if no valid tokens
-            dist = torch.ones(vocab_size, device=device) / vocab_size
-            
+            # Fallback: uniform distribution if we somehow have no valid tokens
+            dist = torch.ones(vocab_size, device=device, dtype=torch.float32)
+            dist = dist / dist.sum()
+
         return dist
 
     def _compute_distributional_loss(
         self,
-        model_logits: torch.Tensor,
-        human_dist: torch.Tensor
-    ) -> torch.Tensor:
+        model_logits: torch.Tensor,   # [vocab_size]
+        human_dist: torch.Tensor,     # [vocab_size]
+    ):
         """
-        Compute distributional matching loss.
-        
+        Compute distributional matching loss between model and human distributions.
+
         Args:
-            model_logits: [vocab_size] logits from model
-            human_dist: [vocab_size] target distribution
+            model_logits: [vocab_size] logits from model at the answer position
+            human_dist:   [vocab_size] human target distribution
+
+        Returns:
+            dist_loss: scalar loss
+            model_probs: [vocab_size] model probability distribution (softmax)
         """
+        # Model probabilities
         model_probs = F.softmax(model_logits, dim=-1)
-        
+
         if self.mode == "CE":
             # Cross-Entropy: -sum(H(a) * log M(a))
             log_probs = F.log_softmax(model_logits, dim=-1)
-            dist_loss = -torch.sum(human_dist * log_probs)
-            
-        elif self.mode == "JS":
-            # Jensen-Shannon Divergence
-            # Clamp ALL distributions to avoid log(0) = -inf causing NaN
-            eps = 1e-12
-            human_dist = human_dist.clamp(min=eps)
-            model_probs = model_probs.clamp(min=eps)
-            m_dist = (human_dist + model_probs) / 2.0
-            m_dist = m_dist.clamp(min=eps)
+            dist_loss = -(human_dist * log_probs).sum()
 
-            # JS = 0.5 * KL(H || M) + 0.5 * KL(P || M)
-            kl_human_m = F.kl_div(
-                m_dist.log(), human_dist, reduction='sum', log_target=False
-            )
-            kl_model_m = F.kl_div(
-                m_dist.log(), model_probs, reduction='sum', log_target=False
-            )
-            dist_loss = 0.5 * kl_human_m + 0.5 * kl_model_m
+        elif self.mode == "JS":
+            # Correct Jensen-Shannon Divergence:
+            # JS(P || Q) = 0.5 * KL(P || M) + 0.5 * KL(Q || M),
+            # where M = 0.5 * (P + Q)
+
+            eps = 1e-12
+
+            p = human_dist.clamp(min=eps)
+            q = model_probs.clamp(min=eps)
+            m = 0.5 * (p + q)
+            m = m.clamp(min=eps)
+
+            # KL(P || M) = sum P * (log P - log M)
+            kl_pm = (p * (p.log() - m.log())).sum()
+            # KL(Q || M) = sum Q * (log Q - log M)
+            kl_qm = (q * (q.log() - m.log())).sum()
+
+            dist_loss = 0.5 * kl_pm + 0.5 * kl_qm
+
         else:
             raise ValueError(f"Unknown mode: {self.mode}")
-        
+
         return dist_loss, model_probs
 
     def _compute_l2_penalty(
@@ -160,109 +177,119 @@ class HumanAlignmentTrainer(Trainer):
         model_probs: torch.Tensor,
         human_dist: torch.Tensor
     ) -> torch.Tensor:
-        """Brier-style L2 penalty between distributions."""
+        """Brier-style L2 penalty between distributions (squared L2 norm)."""
         return torch.norm(human_dist - model_probs, p=2).pow(2)
+
+    # -------------------------------------------------------------------------
+    #  Training loop override
+    # -------------------------------------------------------------------------
 
     def training_step(self, model, inputs):
         """Override training step with human alignment loss."""
         model.train()
         inputs = self._prepare_inputs(inputs)
-        
-        # Extract labels info (human confidences)
+
+        # Extract labels info (human confidences for this batch)
         labels_info = inputs.pop('labels_info', None)
-        
+
         self.stats['total_samples'] += 1
-        
+
         if not self._first_batch_logged:
             self._log_first_batch(inputs, labels_info)
             self._first_batch_logged = True
-        
-        # Standard forward pass
+
+        # Standard forward pass (SFT loss etc.)
         with self.compute_loss_context_manager():
             outputs = model(**inputs)
-        
+
         sft_loss = outputs.loss
         if sft_loss is None:
             raise ValueError("SFT loss is None!")
-        
+
+        # Initialize losses
         total_loss = sft_loss
         dist_loss = torch.tensor(0.0, device=sft_loss.device)
         l2_loss = torch.tensor(0.0, device=sft_loss.device)
-        
+
         # Compute alignment loss if we have label info
         if labels_info is not None and self._has_valid_labels(labels_info):
             self.stats['samples_with_labels'] += 1
-            
-            # Get logits at the answer position
-            # For VQA, the answer is typically the last assistant turn
+
             logits = outputs.logits  # [batch, seq, vocab]
-            labels = inputs.get("labels")
-            
-            # Find position of the answer token (last non-padding label)
+            labels = inputs.get("labels")  # [batch, seq]
+
             if labels is not None:
+                # Find positions corresponding to the answer token(s).
+                # Here we use the LAST non-ignored label token as the "answer position".
                 answer_positions = self._find_answer_positions(labels)
-                
-                for batch_idx, pos in enumerate(answer_positions):
-                    if pos >= 0 and pos < logits.shape[1]:
-                        # Get logits at answer position
-                        answer_logits = logits[batch_idx, pos, :]
-                        
-                        # Build human distribution
-                        answers = labels_info['answers']
-                        confidences = labels_info['confidences']
-                        
-                        human_dist = self._build_human_distribution(
-                            answers, confidences, 
-                            logits.shape[-1], logits.device
-                        )
-                        
-                        # Compute distributional loss
+
+                batch_size = logits.shape[0]
+                vocab_size = logits.shape[-1]
+
+                # NOTE: labels_info is assumed to be per-batch (same answers for all items).
+                # If your collator stores one dict PER ITEM, adapt this to index into it.
+                answers = labels_info['answers']
+                confidences = labels_info['confidences']
+
+                human_dist = self._build_human_distribution(
+                    answers=answers,
+                    confidences=confidences,
+                    vocab_size=vocab_size,
+                    device=logits.device,
+                )
+
+                for b_idx, pos in enumerate(answer_positions):
+                    if 0 <= pos < logits.shape[1]:
+                        answer_logits = logits[b_idx, pos, :]  # [vocab]
+
+                        # Distributional loss at this position
                         batch_dist_loss, model_probs = self._compute_distributional_loss(
                             answer_logits, human_dist
                         )
                         dist_loss = dist_loss + batch_dist_loss
-                        
-                        # Compute L2 penalty
+
                         if self.use_l2_penalty:
                             batch_l2_loss = self._compute_l2_penalty(model_probs, human_dist)
                             l2_loss = l2_loss + batch_l2_loss
-            
-            # Average over batch
-            batch_size = logits.shape[0]
-            dist_loss = dist_loss / max(batch_size, 1)
-            l2_loss = l2_loss / max(batch_size, 1)
-            
-            # Combine losses
-            if self.use_sft_loss:
-                total_loss = sft_loss + self.lambda_dist * dist_loss
-            else:
-                # Pure distributional loss (no SFT on conversation)
-                total_loss = self.lambda_dist * dist_loss
 
-            if self.use_l2_penalty:
-                total_loss = total_loss + self.lambda_l2 * l2_loss
+                # Average over batch
+                dist_loss = dist_loss / max(batch_size, 1)
+                l2_loss = l2_loss / max(batch_size, 1)
+
+                # Combine losses
+                if self.use_sft_loss:
+                    total_loss = sft_loss + self.lambda_dist * dist_loss
+                else:
+                    # Pure distributional loss (ignore SFT on the conversation)
+                    total_loss = self.lambda_dist * dist_loss
+
+                if self.use_l2_penalty:
+                    total_loss = total_loss + self.lambda_l2 * l2_loss
+
         else:
-            # No labels info - use SFT loss only
+            # No labels_info - either debug or plain SFT training
             total_loss = sft_loss
 
-        # Check for NaN/Inf in losses
+        # Safety: avoid NaN / Inf
         if torch.isnan(total_loss) or torch.isinf(total_loss):
-            logger.warning(f"⚠️  NaN/Inf detected! sft={sft_loss.item():.4f}, dist={dist_loss.item():.4f}, l2={l2_loss.item():.4f}")
-            # Replace with SFT loss only to continue training
+            logger.warning(
+                f"⚠️ NaN/Inf detected! "
+                f"sft={sft_loss.item():.4f}, dist={dist_loss.item():.4f}, l2={l2_loss.item():.4f}"
+            )
             total_loss = sft_loss
 
-        # Track losses
-        self.stats['total_sft_loss'] += sft_loss.item()
-        self.stats['total_dist_loss'] += dist_loss.item() if not torch.isnan(dist_loss) else 0.0
-        self.stats['total_l2_loss'] += l2_loss.item() if not torch.isnan(l2_loss) else 0.0
+        # Track running sums
+        self.stats['total_sft_loss'] += float(sft_loss.item())
+        self.stats['total_dist_loss'] += float(dist_loss.item()) if not torch.isnan(dist_loss) else 0.0
+        self.stats['total_l2_loss'] += float(l2_loss.item()) if not torch.isnan(l2_loss) else 0.0
 
         # Logging
         if self.state.is_world_process_zero:
             log_dict = {
-                'sft_loss': sft_loss.detach().item(),
-                'dist_loss': dist_loss.detach().item(),
-                'l2_loss': l2_loss.detach().item(),
-                'total_loss': total_loss.detach().item(),
+                'sft_loss': float(sft_loss.detach().item()),
+                'dist_loss': float(dist_loss.detach().item()),
+                'l2_loss': float(l2_loss.detach().item()),
+                'total_loss': float(total_loss.detach().item()),
             }
             self.log(log_dict)
 
@@ -274,14 +301,18 @@ class HumanAlignmentTrainer(Trainer):
             total_loss = total_loss.mean()
 
         self.accelerator.backward(total_loss)
-        
+
         del outputs
         torch.cuda.empty_cache()
-        
+
         return total_loss.detach()
 
+    # -------------------------------------------------------------------------
+    #  Utilities
+    # -------------------------------------------------------------------------
+
     def _has_valid_labels(self, labels_info: Dict) -> bool:
-        """Check if labels_info has valid data."""
+        """Check if labels_info has valid human annotation data."""
         if labels_info is None:
             return False
         answers = labels_info.get('answers', [])
@@ -289,38 +320,44 @@ class HumanAlignmentTrainer(Trainer):
         return len(answers) > 0 and len(confidences) > 0
 
     def _find_answer_positions(self, labels: torch.Tensor) -> List[int]:
-        """Find positions where answers start (first non -100 after -100 sequence)."""
+        """
+        Find positions where answers end.
+
+        We treat the LAST non -100 label as the "answer position" for
+        distributional supervision. This is consistent with SFT setups
+        where the assistant's final token comes last in the label sequence.
+        """
         batch_size = labels.shape[0]
-        positions = []
-        
+        positions: List[int] = []
+
         for b in range(batch_size):
-            label_seq = labels[b]
-            # Find last valid (non -100) position
+            label_seq = labels[b]  # [seq]
             valid_mask = (label_seq != -100)
             valid_indices = valid_mask.nonzero(as_tuple=True)[0]
-            
+
             if len(valid_indices) > 0:
-                # Use the first valid position as answer start
-                positions.append(valid_indices[0].item())
+                # Use the LAST valid position as answer position
+                positions.append(int(valid_indices[-1].item()))
             else:
                 positions.append(-1)
-        
+
         return positions
 
     def _log_statistics(self):
-        """Log cumulative statistics."""
+        """Log cumulative statistics (averages over all processed samples)."""
         n = self.stats['total_samples']
         if n == 0:
             return
-        
+
         logger.info("=" * 60)
         logger.info(f"[Statistics] Step {self.state.global_step}")
         logger.info(f"   Total samples: {n}")
-        logger.info(f"   Samples with labels: {self.stats['samples_with_labels']} ({self.stats['samples_with_labels']/n*100:.1f}%)")
+        logger.info(f"   Samples with labels: {self.stats['samples_with_labels']} "
+                    f"({self.stats['samples_with_labels']/n*100:.1f}%)")
         logger.info(f"   Avg SFT loss:  {self.stats['total_sft_loss']/n:.4f}")
         logger.info(f"   Avg Dist loss: {self.stats['total_dist_loss']/n:.4f}")
         logger.info(f"   Avg L2 loss:   {self.stats['total_l2_loss']/n:.4f}")
-        
+
         if torch.cuda.is_available():
             allocated = torch.cuda.memory_allocated() / 1024**3
             logger.info(f"   GPU Memory: {allocated:.2f}GB allocated")
@@ -331,18 +368,23 @@ class HumanAlignmentTrainer(Trainer):
         logger.info("=" * 80)
         logger.info("[First Batch Debug]")
         logger.info(f"Input keys: {list(inputs.keys())}")
-        
+
         for k, v in inputs.items():
             if isinstance(v, torch.Tensor):
                 size_mb = v.numel() * v.element_size() / 1024**2
-                logger.info(f"   {k}: shape={v.shape}, dtype={v.dtype}, size={size_mb:.2f}MB")
-        
+                logger.info(f"   {k}: shape={tuple(v.shape)}, dtype={v.dtype}, size={size_mb:.2f}MB")
+
         if labels_info is not None:
-            logger.info(f"✅ Labels info: answers={labels_info.get('answers')}, confidences={labels_info.get('confidences')}")
+            logger.info(f"✅ Labels info: answers={labels_info.get('answers')}, "
+                        f"confidences={labels_info.get('confidences')}")
         else:
             logger.warning("❌ No labels info found!")
         logger.info("=" * 80)
 
+
+# -------------------------------------------------------------------------
+#  Extended arguments
+# -------------------------------------------------------------------------
 
 @dataclass
 class HumanAlignmentArguments(TrainArguments):
@@ -351,15 +393,19 @@ class HumanAlignmentArguments(TrainArguments):
     lambda_dist: float = field(default=1.0, metadata={'help': 'Weight for distributional loss'})
     lambda_l2: float = field(default=0.1, metadata={'help': 'Weight for L2 penalty'})
     use_l2_penalty: bool = field(default=True)
-    use_sft_loss: bool = field(default=False, metadata={'help': 'Whether to include SFT loss on conversation'})
+    use_sft_loss: bool = field(default=False, metadata={'help': 'Include SFT loss on conversation'})
 
+
+# -------------------------------------------------------------------------
+#  Training entrypoint
+# -------------------------------------------------------------------------
 
 def train_human_alignment(
     model_path: str,
     data_path: str,
     output_dir: str,
     run_name: str,
-    val_data_path,
+    val_data_path: Optional[str],
     mode: str = "JS",
     lambda_dist: float = 1.0,
     lambda_l2: float = 0.1,
@@ -367,7 +413,7 @@ def train_human_alignment(
     use_sft_loss: bool = False,
     learning_rate: float = 2e-5,
     num_epochs: int = 3,
-    max_steps: int = -1,  # Set to -1 to use num_epochs instead
+    max_steps: int = -1,
     lora_rank: int = 8,
     lora_alpha: int = 16,
     batch_size: int = 1,
@@ -376,10 +422,10 @@ def train_human_alignment(
     eval_steps: int = 40,
     logging_steps: int = 20,
     max_pixels: int = 448,
-    resume_from_checkpoint: str = None,  # Path to checkpoint dir or 'auto' for latest
+    resume_from_checkpoint: Optional[str] = None,
 ):
-    """Train with Human Alignment Loss (JS Divergence)."""
-    
+    """Train with Human Alignment Loss (JS Divergence or CE)."""
+
     logger.info("=" * 80)
     logger.info("🚀 Human Alignment Training")
     logger.info(f"   Model: {model_path}")
@@ -388,42 +434,44 @@ def train_human_alignment(
     logger.info(f"   Lambda (L2): {lambda_l2}")
     logger.info("=" * 80)
 
-    # Warn if both max_steps and num_epochs are set
     if max_steps > 0:
-        logger.warning(f"⚠️  Both max_steps ({max_steps}) and num_epochs ({num_epochs}) are set.")
-        logger.warning(f"⚠️  Training will run for {max_steps} steps and IGNORE num_epochs.")
-        logger.warning(f"⚠️  To use num_epochs, set max_steps=-1 instead.")
+        logger.warning(f"⚠️ Both max_steps ({max_steps}) and num_epochs ({num_epochs}) are set.")
+        logger.warning("⚠️ Training will run for max_steps and IGNORE num_epochs.")
+        logger.warning("⚠️ To use num_epochs, set max_steps = -1.")
     else:
         logger.info(f"📊 Training for {num_epochs} epochs (max_steps={max_steps})")
 
-    # Log checkpoint resumption
+    # Checkpoint info
     if resume_from_checkpoint:
         if resume_from_checkpoint.lower() == 'auto':
             logger.info(f"🔄 Will resume from latest checkpoint in {output_dir}")
         else:
             logger.info(f"🔄 Resuming from checkpoint: {resume_from_checkpoint}")
-    
+
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
         gc.collect()
-    
-    # Get tokenizer for answer token lookup
-    _, tokenizer = get_model_tokenizer(model_path, torch_dtype=torch.bfloat16, device_map="cpu")
 
-    # Handle None/empty string for val_data_path
+    # Get tokenizer for answer token lookup
+    _, tokenizer = get_model_tokenizer(
+        model_path,
+        torch_dtype=torch.bfloat16,
+        device_map="cpu",
+    )
+
+    # Handle validation data path
     if val_data_path is not None and (val_data_path.lower() == 'none' or val_data_path.strip() == ''):
         val_data_path = None
 
-    # Swift framework expects a list (can be empty) for val_dataset, not None
     if val_data_path is not None:
-        val_data_path = [val_data_path]
+        val_dataset_list = [val_data_path]
     else:
-        val_data_path = []  # Empty list instead of None to avoid len() error
+        val_dataset_list = []
 
     sft_args = HumanAlignmentArguments(
         model=model_path,
         dataset=[data_path],
-        val_dataset=val_data_path,
+        val_dataset=val_dataset_list,
         output_dir=output_dir,
 
         train_type="lora",
@@ -441,9 +489,12 @@ def train_human_alignment(
 
         lora_rank=lora_rank,
         lora_alpha=lora_alpha,
-        lora_dropout=0.1,  # Higher dropout for small dataset regularization
+        lora_dropout=0.1,
         lora_bias="none",
-        target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+        target_modules=[
+            "q_proj", "k_proj", "v_proj", "o_proj",
+            "gate_proj", "up_proj", "down_proj"
+        ],
 
         freeze_llm=False,
         freeze_vit=True,
@@ -453,20 +504,24 @@ def train_human_alignment(
         save_steps=save_steps,
         save_total_limit=3,
         logging_steps=logging_steps,
-        eval_steps=eval_steps if len(val_data_path) > 0 else None,
-        eval_strategy="steps" if len(val_data_path) > 0 else "no",
-        resume_from_checkpoint=resume_from_checkpoint if resume_from_checkpoint and resume_from_checkpoint.lower() != 'none' else None,
+        eval_steps=eval_steps if len(val_dataset_list) > 0 else None,
+        eval_strategy="steps" if len(val_dataset_list) > 0 else "no",
+        resume_from_checkpoint=(
+            resume_from_checkpoint if resume_from_checkpoint
+            and resume_from_checkpoint.lower() != 'none'
+            else None
+        ),
 
         max_length=1024,
         max_pixels=max_pixels,
-        
+
         dataloader_num_workers=2,
         gradient_checkpointing=True,
         seed=42,
         bf16=True,
         report_to="wandb",
         run_name=run_name,
-        
+
         mode=mode,
         lambda_dist=lambda_dist,
         lambda_l2=lambda_l2,
@@ -482,16 +537,16 @@ def train_human_alignment(
         kwargs['use_l2_penalty'] = sft_args.use_l2_penalty
         kwargs['use_sft_loss'] = sft_args.use_sft_loss
         return HumanAlignmentTrainer(*args, **kwargs)
-    
+
     import swift.trainers
-    original_trainer = swift.trainers.Trainer
+    original_trainer_cls = swift.trainers.Trainer
     swift.trainers.Trainer = create_trainer
-    
+
     try:
         result = sft_main(sft_args)
         return result
     finally:
-        swift.trainers.Trainer = original_trainer
+        swift.trainers.Trainer = original_trainer_cls
 
 
 def main():
