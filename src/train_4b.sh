@@ -1,8 +1,11 @@
 #!/bin/bash
 # Run k-fold cross-validation on all datasets and models (Standard SFT)
 
-GPU_ID=0
+GPU_ID=1
 MODELS=(
+    "Qwen/Qwen3-VL-8B-Instruct"
+    "OpenGVLab/InternVL3_5-8B"
+    "llava-hf/llava-v1.6-mistral-7b-hf"
     "Qwen/Qwen3-VL-4B-Instruct"
 )
 KFOLD_DIRS=(
@@ -22,8 +25,8 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
     for model_idx in "${!MODELS[@]}"; do
         model_path="${MODELS[$model_idx]}"
 
-        output_dir="./output/kfold/SFT_${model_path}_${dataset_name}"
-        run_name="SFT_kfold_${model_path}_${dataset_name}" 
+        output_dir="./output/SFT/${model_path}_${dataset_name}"
+        run_name="${model_path}_${dataset_name}" 
         python train_kfold_sft.py \
             --kfold_dir "${kfold_dir}" \
             --model_path "${model_path}" \
@@ -60,15 +63,6 @@ DATASET_NAMES=(
     "A3_vqa_15_blind_inst"
     "A4_mmstar_15_blind_inst"
 )
-
-# Models to train
-MODELS=(
-    "Qwen/Qwen3-VL-8B-Instruct"
-    # "Qwen/Qwen3-VL-4B-Instruct"
-    "OpenGVLab/InternVL3_5-8B"
-    "llava-hf/llava-v1.6-mistral-7b-hf"
-)
-
 # Run all combinations
 for dataset_idx in "${!KFOLD_DIRS[@]}"; do
     kfold_dir="${KFOLD_DIRS[$dataset_idx]}"
@@ -77,8 +71,8 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
     for model_idx in "${!MODELS[@]}"; do
         model_path="${MODELS[$model_idx]}"
 
-        output_dir="./output/JS_${model_path}_${dataset_name}_K5"
-        run_name="JS_kfold_${model_path}_${dataset_name}_K5" 
+        output_dir="./output/JS/${model_path}_${dataset_name}"
+        run_name="JS/${model_path}_${dataset_name}" 
 
         echo ""
         echo "=========================================="
