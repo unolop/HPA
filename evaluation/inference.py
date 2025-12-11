@@ -124,7 +124,8 @@ def main(args):
     save_name = args.model.split('/')[-1]
     savedir = args.savedir 
     if args.lora_path is not None : 
-        finetuned = args.lora_path.split('/')[-3] 
+        finetuned = args.lora_path.split('/')[-4] 
+        finetuned += args.lora_path.split('/')[-3] 
         save_name += f'/{finetuned}' 
         savedir += '/finetuned'    
     else: 
@@ -166,11 +167,13 @@ def main(args):
                 if data[current_item_id] in processed_ids:
                     continue 
                 
-            if 'inst' in args.condition and 'mmstar' in args.dataset:
-                prompt += system_message
+            if 'mmstar' in args.dataset:
+                prompt += "Provide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
+                if 'inst' in args.condition: 
+                    prompt += f"\n{system_message}"
 
-            if 'vqa' not in args.dataset:
-                prompt += "\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
+            # if 'vqa' not in args.dataset:
+            #     prompt += "\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
                 # prompt += "\nAnswer with the option's letter from the given choices directly, such as answer letter 'A' only. \n"
             # if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
                 # prompt += '\n select the correct answer from the options above.'

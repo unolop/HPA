@@ -50,7 +50,8 @@ python train_kfold.py \
     --gradient_accumulation_steps 8 \
     --save_steps 40 \
     --eval_steps 40 \
-    --logging_steps 20
+    --logging_steps 20 \
+    --max_pixels 448
 
 if [ $? -eq 0 ]; then
     echo ""

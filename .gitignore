@@ -23,6 +23,7 @@ wandb/
 checkpoint/
 experiments/output
 checkpoint*
+src/output
 
 # Model files
 *.pth

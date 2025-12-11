@@ -1,7 +1,7 @@
 #!/bin/bash
 # Run k-fold cross-validation on all datasets and models
 
-GPU_ID=${1:-0}
+GPU_ID=0
 
 echo "=========================================="
 echo "Running All K-Fold CV Experiments"
@@ -11,6 +11,7 @@ echo "=========================================="
 
 # Define datasets (k-fold directories)
 KFOLD_DIRS=(
+    # 5HRS for 1 dataset * 5 = 25HRS for training 1 model 
     "/home/work/yuna/HPA/data/training/s1_text/kfold_vqa_gt"
     "/home/work/yuna/HPA/data/training/s1_text/kfold_10_blind_inst"
     "/home/work/yuna/HPA/data/training/s1_text/kfold_15_blind_inst"
@@ -27,8 +28,8 @@ DATASET_NAMES=(
 
 # Models to train
 MODELS=(
-    "Qwen/Qwen3-VL-8B-Instruct"
-    # "Qwen/Qwen3-VL-4B-Instruct"
+    # "Qwen/Qwen3-VL-8B-Instruct"
+    "Qwen/Qwen3-VL-4B-Instruct"
     # "OpenGVLab/InternVL3_5-8B"
     # "llava-hf/llava-v1.6-mistral-7b-hf"
 )
@@ -48,8 +49,8 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
     for model_idx in "${!MODELS[@]}"; do
         model_path="${MODELS[$model_idx]}"
 
-        output_dir="./output/kfold/JS_${model_path}_${dataset_name}_K${dataset_idx}"
-        run_name="JS_kfold_${model_path}_${dataset_name}_K${dataset_idx}" 
+        output_dir="./output/kfold/JS_${model_path}_${dataset_name}_K5"
+        run_name="JS_kfold_${model_path}_${dataset_name}_K5" 
 
         echo ""
         echo "=========================================="
@@ -75,7 +76,8 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
             --gradient_accumulation_steps 8 \
             --save_steps 40 \
             --eval_steps 40 \
-            --logging_steps 20
+            --logging_steps 20 \
+            --max_pixels 448
 
         if [ $? -ne 0 ]; then
             echo "❌ Experiment failed: ${model_path} on ${dataset_name}"

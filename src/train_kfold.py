@@ -71,9 +71,9 @@ def train_single_fold(
     print(f"  Output: {output_dir}")
     print(f"{'=' * 80}\n")
 
-    # Build command
+    # Build command - call train_human_alignment.py
     cmd = [
-        "python", "train_universal.py",
+        "python", "train_human_alignment.py",
         "--model_path", model_path,
         "--data_path", str(train_path),
         "--val_data_path", str(val_path),

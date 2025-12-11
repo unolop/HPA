@@ -10,7 +10,11 @@
     4
   ],
   "results": {
-    "fold_0": "failed"
+    "fold_0": "success",
+    "fold_1": "success",
+    "fold_2": "success",
+    "fold_3": "success",
+    "fold_4": "success"
   },
   "training_params": {
     "mode": "JS",
@@ -29,6 +33,6 @@
     "eval_steps": 40,
     "logging_steps": 20,
     "max_pixels": 448,
-    "gpu_id": 0
+    "gpu_id": 1
   }
 }

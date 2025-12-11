@@ -2,6 +2,17 @@
 
 Complete workflow for k-fold cross-validation training on VLM models with human alignment loss.
 
+## ⚠️ Important: Fixed Training Script Call
+
+**The k-fold training now correctly calls `train_human_alignment.py`** instead of `train_universal.py`.
+
+Training flow:
+```
+run_all_kfold_experiments.sh
+  → train_kfold.py
+    → train_human_alignment.py (for each fold)
+```
+
 ## Overview
 
 K-fold cross-validation provides robust model evaluation by:
