@@ -168,7 +168,7 @@ def main(args):
                     continue 
                 
             if 'mmstar' in args.dataset:
-                prompt += "Provide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
+                prompt += "\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
                 if 'inst' in args.condition: 
                     prompt += f"\n{system_message}"
 

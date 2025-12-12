@@ -8,8 +8,9 @@ BASE_MODEL=(
     "Qwen/Qwen3-VL-8B-Instruct")
 
 ADAPTERS_PATHS=(
-    "/home/work/yuna/HPA/src/output/SFT/Qwen/Qwen3-VL-8B-Instruct_SFT_vqa_gt/fold_0/v3-20251212-132105/checkpoint-80"
-
+    "/home/work/yuna/HPA/src/output/SFT/Qwen/Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst/fold_0/v0-20251212-035646/checkpoint-80"  
+    "/home/work/yuna/HPA/src/output/SFT/Qwen/Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_inst/fold_0/v0-20251212-085620/checkpoint-40"
+    
     # "/home/work/yuna/HPA/src/output/kfold/JS_Qwen/Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_inst_K3/fold_3/v0-20251211-021230/checkpoint-200" 
     # "/home/work/yuna/HPA/src/output/kfold/JS_Qwen/Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_inst_K3/fold_4/v0-20251211-024406/checkpoint-160" 
 

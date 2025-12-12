@@ -245,6 +245,7 @@ def train_human_alignment(
 
     _, tokenizer = get_model_tokenizer(
         model_path,
+        use_hf=True, 
         torch_dtype=torch.bfloat16,
         device_map="cpu",
     )

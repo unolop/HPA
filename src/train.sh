@@ -1,7 +1,7 @@
 #!/bin/bash
 # Run k-fold cross-validation on all datasets and models (Standard SFT)
 
-GPU_ID=1
+GPU_ID=0
 MODELS=(
     "Qwen/Qwen3-VL-8B-Instruct"
     "OpenGVLab/InternVL3_5-8B"
@@ -58,8 +58,8 @@ KFOLD_DIRS=(
 
 # Dataset names for output
 DATASET_NAMES=(
-    "A1_vqa_gt"
-    "A2_vqa_10_blind_inst"
+    # "A1_vqa_gt"
+    # "A2_vqa_10_blind_inst"
     "A3_vqa_15_blind_inst"
     "A4_mmstar_15_blind_inst"
 )
