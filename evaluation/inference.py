@@ -8,7 +8,6 @@ from utils import skip_processed_idx
 import sys 
 sys.path.append('/home/work/yuna/HPA') 
 
-system_message = "Note: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
 
 seed = 42
 np.random.seed(seed)
@@ -51,35 +50,9 @@ def load_dataset(data_name:str, prompt:str=''):
     
     elif data_name == "spubench":
         from datasets import load_dataset
-
-        # Load annotations
-        with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f:
-            annot = json.load(f)
-
-        dataset = []
-
         # Use non-streaming mode for faster loading (downloads once and caches)
         print("  Loading MM-SpuBench dataset from HuggingFace (will cache locally)...")
-        ds = load_dataset("mmbench/MM-SpuBench", split="train", trust_remote_code=True)
-
-        print(f"  Loaded {len(ds)} images, combining with {len(annot)} annotations...")
-
-        for data, ann in zip(ds, annot):
-            image = data['image']
-            question = ann['question']
-            choices = ann['choices']
-            choices_text = "\n".join(choices)
-            question = (
-                f"Question: {question}\n{prompt}"
-                f"{choices_text}\n"
-                "Provide only the letter corresponding to the correct choice (A, B, C, or D).\n"
-                "Answer:"
-            )
-            ann['question'] = question
-            ann['image'] = image
-
-            dataset.append(ann)
-
+        dataset = load_dataset("mmbench/MM-SpuBench", split="train", trust_remote_code=True)
         print(f"  ✓ Prepared {len(dataset)} examples") 
 
     elif data_name == "vqa_1k":
@@ -133,14 +106,12 @@ def main(args):
 
     output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}.jsonl" 
     prompt= ''
-
-    if 'blind' in args.condition : 
-        print('blind condition')
-        if 'inst' in args.condition and 'sys' not in args.condition:  
-            print('instructions appending in vqav2 question')
-            prompt = '\n' + system_message 
             
     dataset = load_dataset(args.dataset, prompt) 
+    if args.dataset == 'spubench': 
+        with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f:
+            annot = json.load(f) 
+
     try: 
         processed_ids, current_item_id = skip_processed_idx(existing_keys=dataset[0].keys(), output_jsonl_path=output_jsonl_path)
     except Exception as e: 
@@ -155,10 +126,9 @@ def main(args):
 
     os.makedirs(os.path.dirname(output_jsonl_path), exist_ok=True)
     with open(output_jsonl_path, write_mode, encoding='utf-8') as f:
-        for i in tqdm(range(len(dataset))):
-            data = dataset[i] 
+        
+        for i, data in enumerate(tqdm(dataset)): # for i in tqdm(range(len(dataset))): 
             data['pid'] = i 
-            prompt = data['question'] 
 
             if 'blind' in args.condition: 
                 data['image'] = "/home/work/yuna/HPA/data/blank_224.png"
@@ -168,14 +138,32 @@ def main(args):
                     continue 
                 
             if 'mmstar' in args.dataset:
-                prompt += "\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
+                prompt = data['question']       
                 if 'inst' in args.condition: 
-                    prompt += f"\n{system_message}"
+                    prompt = f"{prompt}\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
+                prompt += "\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
 
-            # if 'vqa' not in args.dataset:
-            #     prompt += "\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
-                # prompt += "\nAnswer with the option's letter from the given choices directly, such as answer letter 'A' only. \n"
-            # if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
+            elif 'spubench' in args.dataset:
+                ann = annot[i] 
+                image = data['image']
+                question = ann['question']
+                choices = ann['choices']
+                choices_text = "\n".join(choices)
+                prompt = (
+                    f"Question: {question}\n"
+                    f"{choices_text}\n"
+                )
+                if 'inst' in args.condition: 
+                    prompt = f"{prompt}\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
+                
+                prompt = f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
+                ann['question'] = prompt   
+            else: 
+                prompt = data['question']       
+                if 'inst' in args.condition: 
+                    prompt += f"\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
+                
+                # if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
                 # prompt += '\n select the correct answer from the options above.'
         
             messages = [] 
@@ -208,7 +196,7 @@ def main(args):
             # 6. 결과를 JSON 객체로 생성하고 JSONL에 즉시 작성
             data['output'] = output_text 
             data['question'] = prompt 
-            print('Q:', prompt, 'Output:', data['output'], 'Ans:', output_jsonl_path)
+            print('Q:', prompt, 'Output:', data['output'], output_jsonl_path)
 
             data.pop('image')
             f.write(json.dumps(data, ensure_ascii=False) + '\n')

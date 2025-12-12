@@ -287,7 +287,7 @@ def train_human_alignment(
         eval_steps=eval_steps if val_dataset else None,
         eval_strategy="steps" if val_dataset else "no",
         resume_from_checkpoint=resume_from_checkpoint,
-        max_length=1024,
+        max_length=4096,
         max_pixels=max_pixels,
         dataloader_num_workers=2,
         gradient_checkpointing=True,

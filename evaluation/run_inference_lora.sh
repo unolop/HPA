@@ -1,7 +1,7 @@
 #!/bin/bash
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
-GPU=1
+GPU=0
 DATASET_PATHS=( "spubench"   "mmstar"  "vqa_1k" "vqa_5k"  ) 
 CONDITION_LIST=("" "_inst_blind") #  "_sys_inst_blind"  "_blind"  
 BASE_MODEL=(
@@ -9,8 +9,12 @@ BASE_MODEL=(
     )
 
 ADAPTERS_PATHS=(
+    "/home/work/yuna/HPA/src/output/JS/Qwen/Qwen3-VL-4B-Instruct_A2_vqa_10_blind_inst/fold_0/v0-20251212-154601/checkpoint-160"
+    "/home/work/yuna/HPA/src/output/JS/Qwen/Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_inst/fold_0/v0-20251212-163818/checkpoint-80"
     "/home/work/yuna/HPA/src/output/SFT/Qwen/Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_inst/fold_0/v0-20251212-070155/checkpoint-80"
     "/home/work/yuna/HPA/src/output/SFT/Qwen/Qwen3-VL-4B-Instruct_SFT_vqa_gt/fold_0/v0-20251212-020158/checkpoint-80"
+    "/home/work/yuna/HPA/src/output/JS/Qwen/Qwen3-VL-4B-Instruct_A3_vqa_15_blind_inst/fold_0/v0-20251212-161156/checkpoint-190"
+    "/home/work/yuna/HPA/src/output/JS/Qwen/Qwen3-VL-4B-Instruct_A1_vqa_gt/fold_0/v0-20251212-152247/checkpoint-190"
     )
 
 for ADAPTER in "${ADAPTERS_PATHS[@]}"; do 
@@ -22,8 +26,7 @@ for ADAPTER in "${ADAPTERS_PATHS[@]}"; do
                 --dataset "${VAL_DATASET}" \
                 --condition "${CONDITION}" \
                 --lora_path "${ADAPTER}" \
-                --savedir "/home/work/yuna/HPA/evaluation/results" \
-                --resume
+                --savedir "/home/work/yuna/HPA/evaluation/results"
         done 
     done
 done 
