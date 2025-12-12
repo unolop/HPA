@@ -69,9 +69,9 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
     dataset_name="${DATASET_NAMES[$dataset_idx]}"
 
     for model_idx in "${!MODELS[@]}"; do
-        model_path="${MODELS[$model_idx]}"
+        model_path="${model_idx}"
 
-        output_dir="./output/JS/${model_path}_${dataset_name}"
+        output_dir="/home/work/yuna/HPA/src/output/JS/${model_path}_${dataset_name}"
         run_name="JS/${model_path}_${dataset_name}" 
 
         echo ""
@@ -79,7 +79,7 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
         echo "Experiment: ${model_path} on ${dataset_name}"
         echo "=========================================="
 
-        python train_kfold.py \
+        python /home/work/yuna/HPA/src/train_kfold.py \
             --kfold_dir "${kfold_dir}" \
             --model_path "${model_path}" \
             --output_base_dir "${output_dir}" \
@@ -87,13 +87,12 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
             --gpu_id ${GPU_ID} \
             --num_epochs 5 \
             --max_steps -1 \
-            --mode JS \
             --lambda_dist 1.0 \
             --lambda_l2 0.1 \
             --use_l2_penalty \
             --learning_rate 2e-5 \
             --lora_rank 8 \
-            --folds 1 \
+            --folds 0 \
             --lora_alpha 16 \
             --batch_size 1 \
             --gradient_accumulation_steps 8 \

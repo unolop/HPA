@@ -1,27 +1,37 @@
 #!/usr/bin/env python3
 """
-K-fold cross-validation training wrapper.
+K-fold (or single-fold) wrapper for HUMAN-ALIGNMENT TRAINING (JS divergence).
 
-Runs training on each fold and aggregates results.
+This script calls:
+  - train_human_alignment.py
+
+It is JS-only (no standard SFT).
 """
 
 import argparse
 import json
 import subprocess
 from pathlib import Path
-from typing import Dict, List
 import sys
-import os 
+import os
+from typing import Dict, List
+
+
+# ---------------------------------------------------------------------
+# Utilities
+# ---------------------------------------------------------------------
 
 def load_kfold_metadata(kfold_dir: str) -> Dict:
-    """Load k-fold metadata."""
     metadata_path = Path(kfold_dir) / "kfold_metadata.json"
     if not metadata_path.exists():
         raise FileNotFoundError(f"Metadata not found: {metadata_path}")
-
-    with open(metadata_path, 'r') as f:
+    with open(metadata_path, "r") as f:
         return json.load(f)
 
+
+# ---------------------------------------------------------------------
+# Single fold training
+# ---------------------------------------------------------------------
 
 def train_single_fold(
     fold_idx: int,
@@ -29,28 +39,11 @@ def train_single_fold(
     model_path: str,
     output_base_dir: str,
     run_name: str,
-    mode: str = "JS",
-    lambda_dist: float = 1.0,
-    lambda_l2: float = 0.1,
-    use_l2_penalty: bool = True,
-    use_sft_loss: bool = False,
-    learning_rate: float = 2e-5,
-    num_epochs: int = 10,
-    max_steps: int = -1,
-    lora_rank: int = 8,
-    lora_alpha: int = 16,
-    batch_size: int = 1,
-    gradient_accumulation_steps: int = 8,
-    save_steps: int = 40,
-    eval_steps: int = 40,
-    logging_steps: int = 20,
-    max_pixels: int = 448,
     gpu_id: int = 0,
-):
-    """Train a single fold."""
+    **train_kwargs,
+) -> bool:
     kfold_path = Path(kfold_dir)
 
-    # Get train and val paths
     train_path = kfold_path / f"fold_{fold_idx}_train.jsonl"
     val_path = kfold_path / f"fold_{fold_idx}_val.jsonl"
 
@@ -59,19 +52,17 @@ def train_single_fold(
     if not val_path.exists():
         raise FileNotFoundError(f"Val file not found: {val_path}")
 
-    # Output directory for this fold
     output_dir = Path(output_base_dir) / f"fold_{fold_idx}"
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"\n{'=' * 80}")
-    print(f"Training Fold {fold_idx}")
-    print(f"{'=' * 80}")
-    print(f"  Train: {train_path}")
-    print(f"  Val:   {val_path}")
-    print(f"  Output: {output_dir}")
-    print(f"{'=' * 80}\n")
+    print("=" * 80)
+    print(f"JS Alignment Training — Fold {fold_idx}")
+    print("=" * 80)
+    print(f"Train:  {train_path}")
+    print(f"Val:    {val_path}")
+    print(f"Output: {output_dir}")
+    print("=" * 80)
 
-    # Build command - call train_human_alignment.py
     cmd = [
         "python", "train_human_alignment.py",
         "--model_path", model_path,
@@ -79,44 +70,38 @@ def train_single_fold(
         "--val_data_path", str(val_path),
         "--output_dir", str(output_dir),
         "--run_name", f"{run_name}/fold_{fold_idx}",
-        "--mode", mode,
-        "--lambda_dist", str(lambda_dist),
-        "--lambda_l2", str(lambda_l2),
-        "--learning_rate", str(learning_rate),
-        "--num_epochs", str(num_epochs),
-        "--max_steps", str(max_steps),
-        "--lora_rank", str(lora_rank),
-        "--lora_alpha", str(lora_alpha),
-        "--batch_size", str(batch_size),
-        "--gradient_accumulation_steps", str(gradient_accumulation_steps),
-        "--save_steps", str(save_steps),
-        "--eval_steps", str(eval_steps),
-        "--logging_steps", str(logging_steps),
-        "--max_pixels", str(max_pixels),
+        "--mode", "JS",
     ]
 
-    if use_l2_penalty:
-        cmd.append("--use_l2_penalty")
+    # Append remaining JS trainer args
+    for k, v in train_kwargs.items():
+        if isinstance(v, bool):
+            if v:
+                cmd.append(f"--{k}")
+        else:
+            cmd.extend([f"--{k}", str(v)])
 
-    if use_sft_loss:
-        cmd.append("--use_sft_loss")
+    env = os.environ.copy()
+    env["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
 
-    # Set GPU
-    env = {"CUDA_VISIBLE_DEVICES": str(gpu_id)}
+    print("Command:")
+    print(" ".join(cmd))
+    print(f"GPU: {gpu_id}")
+    print()
 
-    # Run training
-    print(f"Command: {' '.join(cmd)}")
-    print(f"GPU: {gpu_id}\n")
-
-    result = subprocess.run(cmd, env={**subprocess.os.environ, **env})
+    result = subprocess.run(cmd, env=env)
 
     if result.returncode != 0:
-        print(f"\n❌ Fold {fold_idx} training failed!")
+        print(f"❌ Fold {fold_idx} FAILED")
         return False
-    else:
-        print(f"\n✅ Fold {fold_idx} training completed successfully!")
-        return True
 
+    print(f"✅ Fold {fold_idx} completed successfully")
+    return True
+
+
+# ---------------------------------------------------------------------
+# K-fold runner
+# ---------------------------------------------------------------------
 
 def run_kfold_training(
     kfold_dir: str,
@@ -124,49 +109,25 @@ def run_kfold_training(
     output_base_dir: str,
     run_name: str,
     folds: List[int] = None,
-    num_folds: int = None,
-    **train_kwargs
+    gpu_id: int = 0,
+    **train_kwargs,
 ):
-    """
-    Run k-fold cross-validation training.
-
-    Args:
-        kfold_dir: Directory containing k-fold splits
-        model_path: Model to train
-        output_base_dir: Base output directory (will create fold_i subdirs)
-        run_name: Experiment name
-        folds: List of fold indices to train (None = all folds)
-        num_folds: Number of folds to train (None = all folds, 1 = first fold only)
-        **train_kwargs: Training hyperparameters
-    """
-    # Load metadata
     metadata = load_kfold_metadata(kfold_dir)
-    k_folds = metadata['k_folds']
+    k_folds = metadata["k_folds"]
 
-    print(f"\n{'=' * 80}")
-    print(f"K-Fold Cross-Validation Training")
-    print(f"{'=' * 80}")
-    print(f"  Dataset: {metadata['input_path']}")
-    print(f"  Total samples: {metadata['total_samples']}")
-    print(f"  K-folds available: {k_folds}")
-    print(f"  Model: {model_path}")
-    print(f"  Output: {output_base_dir}")
-    print(f"{'=' * 80}\n")
-
-    # Determine which folds to train
     if folds is None:
-        if num_folds is not None and num_folds > 0:
-            # Train only the first num_folds
-            folds = list(range(min(num_folds, k_folds)))
-            print(f"Training first {num_folds} fold(s) out of {k_folds} available")
-        else:
-            # Train all folds
-            folds = list(range(k_folds))
+        folds = list(range(k_folds))
 
-    print(f"Training folds: {folds}\n")
+    print("=" * 80)
+    print("Human Alignment Training (JS Divergence)")
+    print("=" * 80)
+    print(f"Dataset: {metadata['input_path']}")
+    print(f"Model:   {model_path}")
+    print(f"Folds:   {folds}")
+    print("=" * 80)
 
-    # Train each fold
     results = {}
+
     for fold_idx in folds:
         success = train_single_fold(
             fold_idx=fold_idx,
@@ -174,67 +135,58 @@ def run_kfold_training(
             model_path=model_path,
             output_base_dir=output_base_dir,
             run_name=run_name,
-            **train_kwargs
+            gpu_id=gpu_id,
+            **train_kwargs,
         )
-
         results[f"fold_{fold_idx}"] = "success" if success else "failed"
-
         if not success:
-            print(f"\n⚠️  Stopping k-fold training due to failure in fold {fold_idx}")
             break
 
-    # Save results summary
-    summary_path = Path(output_base_dir) / "kfold_training_summary.json"
     summary = {
-        'model': model_path,
-        'kfold_dir': kfold_dir,
-        'k_folds': k_folds,
-        'trained_folds': folds,
-        'results': results,
-        'training_params': train_kwargs,
+        "trainer": "human_alignment_js",
+        "model": model_path,
+        "kfold_dir": kfold_dir,
+        "folds": folds,
+        "results": results,
+        "train_kwargs": train_kwargs,
     }
 
-    with open(summary_path, 'w') as f:
+    summary_path = Path(output_base_dir) / "kfold_js_summary.json"
+    with open(summary_path, "w") as f:
         json.dump(summary, f, indent=2)
 
-    print(f"\n{'=' * 80}")
-    print(f"K-Fold Training Summary")
-    print(f"{'=' * 80}")
-    for fold, status in results.items():
-        icon = "✅" if status == "success" else "❌"
-        print(f"  {icon} {fold}: {status}")
-    print(f"\nSummary saved: {summary_path}")
-    print(f"{'=' * 80}\n")
+    print("=" * 80)
+    print("K-Fold Summary")
+    print("=" * 80)
+    for k, v in results.items():
+        print(f"{k}: {v}")
+    print(f"Saved summary → {summary_path}")
+    print("=" * 80)
 
-    # Return success if all folds succeeded
-    return all(status == "success" for status in results.values())
+    return all(v == "success" for v in results.values())
 
+
+# ---------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser(description="K-fold cross-validation training")
+    parser = argparse.ArgumentParser("K-fold JS alignment training")
 
-    # K-fold settings
-    parser.add_argument("--kfold_dir", type=str, required=True,
-                        help="Directory containing k-fold splits")
-    parser.add_argument("--model_path", type=str, required=True,
-                        help="Model to train")
-    parser.add_argument("--output_base_dir", type=str, required=True,
-                        help="Base output directory (will create fold_i subdirs)")
-    parser.add_argument("--run_name", type=str, required=True,
-                        help="Experiment name")
-    parser.add_argument("--folds", type=int, nargs='+', default=None,
-                        help="Specific folds to train (default: all)")
-    parser.add_argument("--num_folds", type=int, default=None,
-                        help="Number of folds to train (1=first fold only, None=all folds)")
+    parser.add_argument("--kfold_dir", type=str, required=True)
+    parser.add_argument("--model_path", type=str, required=True)
+    parser.add_argument("--output_base_dir", type=str, required=True)
+    parser.add_argument("--run_name", type=str, required=True)
+    parser.add_argument("--folds", type=int, nargs="+", default=None)
+    parser.add_argument("--gpu_id", type=int, default=0)
 
-    # Training hyperparameters
-    parser.add_argument("--mode", type=str, default="JS", choices=["CE", "JS"])
+    # JS trainer arguments (must match train_human_alignment.py)
     parser.add_argument("--lambda_dist", type=float, default=1.0)
     parser.add_argument("--lambda_l2", type=float, default=0.1)
-    parser.add_argument("--use_l2_penalty", action="store_true", default=True)
-    parser.add_argument("--use_sft_loss", action="store_true", default=False)
+    parser.add_argument("--use_l2_penalty", action="store_true")
+    parser.add_argument("--use_sft_loss", action="store_true")
     parser.add_argument("--learning_rate", type=float, default=2e-5)
-    parser.add_argument("--num_epochs", type=int, default=10)
+    parser.add_argument("--num_epochs", type=int, default=3)
     parser.add_argument("--max_steps", type=int, default=-1)
     parser.add_argument("--lora_rank", type=int, default=8)
     parser.add_argument("--lora_alpha", type=int, default=16)
@@ -244,25 +196,28 @@ def main():
     parser.add_argument("--eval_steps", type=int, default=40)
     parser.add_argument("--logging_steps", type=int, default=20)
     parser.add_argument("--max_pixels", type=int, default=448)
-    parser.add_argument("--gpu_id", type=int, default=0)
 
     args = parser.parse_args()
 
-    # Extract k-fold settings
-    kfold_args = {
-        'kfold_dir': args.kfold_dir,
-        'model_path': args.model_path,
-        'output_base_dir': args.output_base_dir,
-        'run_name': args.run_name,
-        'folds': args.folds,
-        'num_folds': args.num_folds,
+    kfold_keys = {
+        "kfold_dir", "model_path", "output_base_dir",
+        "run_name", "folds", "gpu_id"
     }
 
-    # Extract training hyperparameters
-    train_kwargs = {k: v for k, v in vars(args).items() if k not in kfold_args}
+    train_kwargs = {
+        k: v for k, v in vars(args).items()
+        if k not in kfold_keys
+    }
 
-    # Run k-fold training
-    success = run_kfold_training(**kfold_args, **train_kwargs)
+    success = run_kfold_training(
+        kfold_dir=args.kfold_dir,
+        model_path=args.model_path,
+        output_base_dir=args.output_base_dir,
+        run_name=args.run_name,
+        folds=args.folds,
+        gpu_id=args.gpu_id,
+        **train_kwargs,
+    )
 
     sys.exit(0 if success else 1)
 
