@@ -394,6 +394,7 @@ class HumanAlignmentArguments(TrainArguments):
     lambda_l2: float = field(default=0.1, metadata={'help': 'Weight for L2 penalty'})
     use_l2_penalty: bool = field(default=True)
     use_sft_loss: bool = field(default=False, metadata={'help': 'Include SFT loss on conversation'})
+    use_hf: bool = field(default=True, metadata={'help': 'Include SFT loss on conversation'})
 
 
 # -------------------------------------------------------------------------
