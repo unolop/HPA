@@ -68,7 +68,7 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
     kfold_dir="${KFOLD_DIRS[$dataset_idx]}"
     dataset_name="${DATASET_NAMES[$dataset_idx]}"
 
-    for model_idx in "${!MODELS[@]}"; do
+    for model_idx in "${MODELS[@]}"; do
         model_path="${model_idx}"
 
         output_dir="/home/work/yuna/HPA/src/output/JS/${model_path}_${dataset_name}"
@@ -78,8 +78,7 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
         echo "=========================================="
         echo "Experiment: ${model_path} on ${dataset_name}"
         echo "=========================================="
-
-        python /home/work/yuna/HPA/src/train_kfold.py \
+        python /home/work/yuna/HPA/src/train_kfold_js.py \
             --kfold_dir "${kfold_dir}" \
             --model_path "${model_path}" \
             --output_base_dir "${output_dir}" \
@@ -92,14 +91,15 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
             --use_l2_penalty \
             --learning_rate 2e-5 \
             --lora_rank 8 \
-            --folds 0 \
             --lora_alpha 16 \
+            --folds 0 \
             --batch_size 1 \
             --gradient_accumulation_steps 8 \
             --save_steps 40 \
             --eval_steps 40 \
             --logging_steps 20 \
             --max_pixels 448
+
 
         if [ $? -ne 0 ]; then
             echo "❌ Experiment failed: ${model_path} on ${dataset_name}"
