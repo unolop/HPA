@@ -118,8 +118,9 @@ def train_sft(
         bf16=True,
         report_to="wandb",
         run_name=run_name,
+        use_hf=True,
     )
-    
+
     return sft_main(sft_args)
 
 
