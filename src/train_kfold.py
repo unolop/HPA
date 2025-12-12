@@ -124,6 +124,7 @@ def run_kfold_training(
     output_base_dir: str,
     run_name: str,
     folds: List[int] = None,
+    num_folds: int = None,
     **train_kwargs
 ):
     """
@@ -135,6 +136,7 @@ def run_kfold_training(
         output_base_dir: Base output directory (will create fold_i subdirs)
         run_name: Experiment name
         folds: List of fold indices to train (None = all folds)
+        num_folds: Number of folds to train (None = all folds, 1 = first fold only)
         **train_kwargs: Training hyperparameters
     """
     # Load metadata
@@ -146,14 +148,20 @@ def run_kfold_training(
     print(f"{'=' * 80}")
     print(f"  Dataset: {metadata['input_path']}")
     print(f"  Total samples: {metadata['total_samples']}")
-    print(f"  K-folds: {k_folds}")
+    print(f"  K-folds available: {k_folds}")
     print(f"  Model: {model_path}")
     print(f"  Output: {output_base_dir}")
     print(f"{'=' * 80}\n")
 
     # Determine which folds to train
     if folds is None:
-        folds = list(range(k_folds))
+        if num_folds is not None and num_folds > 0:
+            # Train only the first num_folds
+            folds = list(range(min(num_folds, k_folds)))
+            print(f"Training first {num_folds} fold(s) out of {k_folds} available")
+        else:
+            # Train all folds
+            folds = list(range(k_folds))
 
     print(f"Training folds: {folds}\n")
 
@@ -216,6 +224,8 @@ def main():
                         help="Experiment name")
     parser.add_argument("--folds", type=int, nargs='+', default=None,
                         help="Specific folds to train (default: all)")
+    parser.add_argument("--num_folds", type=int, default=None,
+                        help="Number of folds to train (1=first fold only, None=all folds)")
 
     # Training hyperparameters
     parser.add_argument("--mode", type=str, default="JS", choices=["CE", "JS"])
@@ -245,6 +255,7 @@ def main():
         'output_base_dir': args.output_base_dir,
         'run_name': args.run_name,
         'folds': args.folds,
+        'num_folds': args.num_folds,
     }
 
     # Extract training hyperparameters
