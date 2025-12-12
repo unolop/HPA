@@ -521,6 +521,7 @@ def train_human_alignment(
         bf16=True,
         report_to="wandb",
         run_name=run_name,
+        use_hf=True,
 
         mode=mode,
         lambda_dist=lambda_dist,
