@@ -71,9 +71,9 @@ def train_single_fold(
     print(f"  Output: {output_dir}")
     print(f"{'=' * 80}\n")
 
-    # Build command - call train_human_alignment.py
+    # Build command - call train_js.py (has argparse main)
     cmd = [
-        "python", "train_human_alignment.py",
+        "python", "train_js.py",
         "--model_path", model_path,
         "--data_path", str(train_path),
         "--val_data_path", str(val_path),
@@ -258,8 +258,25 @@ def main():
         'num_folds': args.num_folds,
     }
 
+    # Define keys to exclude (use explicit key list instead of dictionary)
+    kfold_keys = {'kfold_dir', 'model_path', 'output_base_dir', 'run_name', 'folds', 'num_folds'}
+
     # Extract training hyperparameters
-    train_kwargs = {k: v for k, v in vars(args).items() if k not in kfold_args}
+    train_kwargs = {k: v for k, v in vars(args).items() if k not in kfold_keys}
+
+    # Debug: Print argument distributions
+    print(f"\n{'=' * 80}")
+    print("Argument Distribution:")
+    print(f"{'=' * 80}")
+    print(f"K-fold args: {list(kfold_args.keys())}")
+    print(f"  model_path: {kfold_args['model_path']}")
+    print(f"  output_base_dir: {kfold_args['output_base_dir']}")
+    print(f"\nTraining kwargs: {list(train_kwargs.keys())}")
+    if 'gpu_id' in train_kwargs:
+        print(f"  gpu_id: {train_kwargs['gpu_id']}")
+    if 'model_path' in train_kwargs:
+        print(f"  WARNING: model_path in train_kwargs: {train_kwargs['model_path']}")
+    print(f"{'=' * 80}\n")
 
     # Run k-fold training
     success = run_kfold_training(**kfold_args, **train_kwargs)
