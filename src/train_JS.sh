@@ -44,8 +44,6 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
             --num_epochs 5 \
             --max_steps -1 \
             --lambda_dist 1.0 \
-            --lambda_l2 0.1 \
-            --use_l2_penalty \
             --learning_rate 2e-5 \
             --lora_rank 8 \
             --lora_alpha 16 \
