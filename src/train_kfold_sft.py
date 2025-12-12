@@ -230,8 +230,11 @@ def main():
         'folds': args.folds,
     }
 
+    # Define keys to exclude (use explicit key list instead of dictionary)
+    kfold_keys = {'kfold_dir', 'model_path', 'output_base_dir', 'run_name', 'folds'}
+
     # Extract training hyperparameters
-    train_kwargs = {k: v for k, v in vars(args).items() if k not in kfold_args}
+    train_kwargs = {k: v for k, v in vars(args).items() if k not in kfold_keys}
 
     # Run k-fold training
     success = run_kfold_training(**kfold_args, **train_kwargs)
