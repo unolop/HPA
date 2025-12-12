@@ -599,6 +599,15 @@ def train_human_alignment(
 
 
 def main():
+    import sys
+    print(f"\n{'=' * 80}")
+    print(f"train_js.py STARTED")
+    print(f"{'=' * 80}")
+    print(f"Python: {sys.executable}")
+    print(f"Script: {__file__}")
+    print(f"Args: {sys.argv}")
+    print(f"{'=' * 80}\n")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_path", type=str, required=True)
     parser.add_argument("--data_path", type=str, required=True)
@@ -644,6 +653,15 @@ def main():
     )
 
     args = parser.parse_args()
+
+    print(f"\n{'=' * 80}")
+    print(f"PARSED ARGUMENTS:")
+    print(f"{'=' * 80}")
+    for key, value in vars(args).items():
+        print(f"  {key}: {value}")
+    print(f"{'=' * 80}\n")
+
+    print(f"Calling train_human_alignment()...\n")
     train_human_alignment(**vars(args))
 
 

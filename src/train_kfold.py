@@ -72,8 +72,12 @@ def train_single_fold(
     print(f"{'=' * 80}\n")
 
     # Build command - call train_js.py (has argparse main)
+    # Get the directory where this script is located
+    script_dir = Path(__file__).parent
+    train_js_path = script_dir / "train_js.py"
+
     cmd = [
-        "python", "train_js.py",
+        "python", str(train_js_path),
         "--model_path", model_path,
         "--data_path", str(train_path),
         "--val_data_path", str(val_path),
@@ -105,17 +109,40 @@ def train_single_fold(
     env = {"CUDA_VISIBLE_DEVICES": str(gpu_id)}
 
     # Run training
+    print(f"\n{'=' * 80}")
+    print(f"EXECUTING TRAINING COMMAND:")
+    print(f"{'=' * 80}")
     print(f"Command: {' '.join(cmd)}")
-    print(f"GPU: {gpu_id}\n")
+    print(f"GPU: CUDA_VISIBLE_DEVICES={gpu_id}")
+    print(f"Working directory: {os.getcwd()}")
+    print(f"Script path: {train_js_path}")
+    print(f"Script exists: {train_js_path.exists()}")
+    print(f"{'=' * 80}\n")
 
-    result = subprocess.run(cmd, env={**subprocess.os.environ, **env})
+    # Run subprocess with output streaming to console
+    try:
+        result = subprocess.run(
+            cmd,
+            env={**os.environ, **env},
+            check=False  # Don't raise exception, we'll handle return code
+        )
 
-    if result.returncode != 0:
-        print(f"\n❌ Fold {fold_idx} training failed!")
+        print(f"\n{'=' * 80}")
+        print(f"Training subprocess exited with code: {result.returncode}")
+        print(f"{'=' * 80}\n")
+
+        if result.returncode != 0:
+            print(f"\n❌ Fold {fold_idx} training failed with return code {result.returncode}!")
+            return False
+        else:
+            print(f"\n✅ Fold {fold_idx} training completed successfully!")
+            return True
+
+    except Exception as e:
+        print(f"\n❌ Exception while running training subprocess: {e}")
+        import traceback
+        traceback.print_exc()
         return False
-    else:
-        print(f"\n✅ Fold {fold_idx} training completed successfully!")
-        return True
 
 
 def run_kfold_training(
