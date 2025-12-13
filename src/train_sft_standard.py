@@ -109,7 +109,7 @@ def train_sft(
         eval_strategy="steps",
         resume_from_checkpoint=resume_from_checkpoint if resume_from_checkpoint and resume_from_checkpoint.lower() != 'none' else None,
 
-        max_length=1024,
+        max_length=4096,
         max_pixels=max_pixels,
         
         dataloader_num_workers=2,

@@ -15,32 +15,6 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 torch.cuda.empty_cache() 
 
-DATASET_TYPE = {
-    'mmstar': 'multi-choice', 
-    # 'mmstar': 'multi-choice', 
-    # 'mmstar': 'multi-choice', 
-}
-
-def build_prompt(line, for_llm=False): 
-    prompt = line['question'] 
-    if DATASET_TYPE(dataset) == 'multi-choice':
-        question = line['question']
-        options = {
-            cand: line[cand]
-            for cand in string.ascii_uppercase
-            if cand in line and not pd.isna(line[cand])
-        }
-        prompt = ''
-        if hint is not None:
-            prompt += f'Hint: {hint}\n'
-        prompt += f'Question: {question}\n'
-        if len(options):
-            prompt += options_prompt
-    elif DATASET_TYPE(dataset) == 'Y/N' and for_llm:
-        prompt += 'Answer the question using a single word or phrase. \n'
-
-    return dict(image=tgt_path, text=prompt)
-    
 def load_dataset(data_name:str, prompt:str=''): 
     print("Loading dataset...")
     
@@ -106,7 +80,9 @@ def main(args):
 
     output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}.jsonl" 
     prompt= ''
-            
+    if 'inst' in args.condition: 
+        prompt = f"\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
+    
     dataset = load_dataset(args.dataset, prompt) 
     if args.dataset == 'spubench': 
         with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f:
@@ -129,6 +105,7 @@ def main(args):
         
         for i, data in enumerate(tqdm(dataset)): # for i in tqdm(range(len(dataset))): 
             data['pid'] = i 
+            prompt = data['question']       
 
             if 'blind' in args.condition: 
                 data['image'] = "/home/work/yuna/HPA/data/blank_224.png"
@@ -158,11 +135,6 @@ def main(args):
                 
                 prompt = f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
                 ann['question'] = prompt   
-            else: 
-                prompt = data['question']       
-                if 'inst' in args.condition: 
-                    prompt += f"\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
-                
                 # if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
                 # prompt += '\n select the correct answer from the options above.'
         

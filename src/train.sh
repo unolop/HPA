@@ -1,11 +1,11 @@
 #!/bin/bash
 # Run k-fold cross-validation on all datasets and models (Standard SFT)
 
-GPU_ID=0
+GPU_ID=1
 MODELS=(
     # "Qwen/Qwen3-VL-8B-Instruct"
-    "OpenGVLab/InternVL3_5-8B"
     "llava-hf/llava-v1.6-mistral-7b-hf"
+    "OpenGVLab/InternVL3_5-8B"
     # "Qwen/Qwen3-VL-4B-Instruct"
 )
 KFOLD_DIRS=(
@@ -35,6 +35,7 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
             --gpu_id ${GPU_ID} \
             --num_epochs 5 \
             --max_steps -1 \
+            --folds 0 \
             --learning_rate 2e-5 \
             --lora_rank 32 \
             --lora_alpha 64 \
