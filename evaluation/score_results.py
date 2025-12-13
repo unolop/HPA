@@ -131,8 +131,6 @@ def score_file(
     """
     # Check if output already exists
     if skip_existing and output_path and os.path.exists(output_path):
-        # INSERT_YOUR_CODE
-        # If output_path exists and the input and output have the same number of lines, skip processing
         try:
             with open(input_path, 'r', encoding='utf-8') as fin:
                 input_lines = sum(1 for _ in fin if _.strip())
