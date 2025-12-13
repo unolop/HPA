@@ -18,11 +18,12 @@ ADAPTERS_PATHS=(
     # "/home/work/yuna/HPA/src/output/SFT/Qwen/Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst/fold_0/v0-20251212-035646/checkpoint-80"  
     # "/home/work/yuna/HPA/src/output/SFT/Qwen/Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_inst/fold_0/v0-20251212-085620/checkpoint-40"
 
-    "/home/work/yuna/HPA/src/output/JS/OpenGVLab/InternVL3_5-8B_A1_vqa_gt/fold_0/v1-20251213-140543/checkpoint-190"
-    "/home/work/yuna/HPA/src/output/SFT/OpenGVLab/InternVL3_5-8B_SFT_mmstar_15_blind_inst/fold_0/v0-20251213-121127/checkpoint-40"
-    "/home/work/yuna/HPA/src/output/SFT/OpenGVLab/InternVL3_5-8B_SFT_vqa_15_blind_inst/fold_0/v1-20251213-084254/checkpoint-80"
-    "/home/work/yuna/HPA/src/output/SFT/OpenGVLab/InternVL3_5-8B_SFT_vqa_gt/fold_0/v2-20251213-011915/checkpoint-80"
-
+    # "/home/work/yuna/HPA/src/output/JS/OpenGVLab/InternVL3_5-8B_A1_vqa_gt/fold_0/v1-20251213-140543/checkpoint-190"
+    # "/home/work/yuna/HPA/src/output/SFT/OpenGVLab/InternVL3_5-8B_SFT_mmstar_15_blind_inst/fold_0/v0-20251213-121127/checkpoint-40"
+    # "/home/work/yuna/HPA/src/output/SFT/OpenGVLab/InternVL3_5-8B_SFT_vqa_15_blind_inst/fold_0/v1-20251213-084254/checkpoint-80"
+    # "/home/work/yuna/HPA/src/output/SFT/OpenGVLab/InternVL3_5-8B_SFT_vqa_gt/fold_0/v2-20251213-011915/checkpoint-80"
+    
+    "/home/work/yuna/HPA/src/output/JS/OpenGVLab/InternVL3_5-8B_A2_vqa_10_blind_inst/fold_0/v0-20251213-153452/checkpoint-160" 
     # "/home/work/yuna/HPA/src/output/JS/llava-hf/llava-v1.6-mistral-7b-hf_A1_vqa_gt/fold_0/v0-20251213-133418/checkpoint-120"
     
 )
@@ -34,7 +35,8 @@ for ADAPTER in "${ADAPTERS_PATHS[@]}"; do
                 --model "${BASE_MODEL}" \
                 --dataset "${VAL_DATASET}" \
                 --condition "${CONDITION}" \
-                --lora_path "${ADAPTER}"
+                --lora_path "${ADAPTER}" \
+                --resume 
         done 
     done
 done 

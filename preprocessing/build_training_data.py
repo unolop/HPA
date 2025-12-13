@@ -56,14 +56,8 @@ def get_annot(answer_type, prompt):
         for row in questions: 
             qid = row['qid'] 
             question = row.get('question_en', row.get('question', '')) 
-            # breakpoint()
             for data in mmstar: 
                 if question.strip()[:50] in data['question'] : 
-                    # oq = d['question']
-                    # q = oq.split('\nOptions:')[0] 
-                    # q += prompt 
-                    # q += '\nOptions:'
-                    # q += oq.split('\nOptions:')[1] 
                     question = data['question'] 
                     question = (
                         f"Question: {question}\n"
@@ -142,7 +136,6 @@ def sample_data(processed, pilot=None, n=20):
         deficit = n - len(resp)
 
         if deficit < 0:
-            # We have more than enough data, truncate to n
             resp = resp[:n]
             # print(f"[QID {qid}] Truncated {original_count} → {len(resp)} responses")
 
@@ -165,10 +158,6 @@ def sample_data(processed, pilot=None, n=20):
                     print(f"[QID {qid}] ⚠️ Still missing {n - len(resp)} responses after pilot data")
             else:
                 missing_qids.append(qid) 
-                # print(f"missing {deficit} pilot data for {qid}") 
-
-        # print(f'Not enough pilot data qid: {qid} by {deficit}')
-            
         processed[qid] = resp 
     
     return processed, missing_qids 

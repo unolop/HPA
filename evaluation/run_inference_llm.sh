@@ -21,8 +21,7 @@ for CONDITION in "${CONDITION_LIST[@]}"; do
                 --model "${BASE_MODEL}" \
                 --dataset "${VAL_DATASET}" \
                 --condition "${CONDITION}" \
-                --model_type "llm" \
-                --resume 
+                --model_type "llm" 
         done
     done 
 done 

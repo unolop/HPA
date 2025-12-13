@@ -105,7 +105,6 @@ def main(args):
         
         for i, data in enumerate(tqdm(dataset)): # for i in tqdm(range(len(dataset))): 
             data['pid'] = i 
-            prompt = data['question']       
 
             if 'blind' in args.condition: 
                 data['image'] = "/home/work/yuna/HPA/data/blank_224.png"
@@ -137,7 +136,9 @@ def main(args):
                 ann['question'] = prompt   
                 # if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
                 # prompt += '\n select the correct answer from the options above.'
-        
+            else: 
+                prompt = data['question']       
+
             messages = [] 
             if 'sys_inst' in args.condition: 
                 messages.append({'role': 'system', 'content': system_message}) 
@@ -182,7 +183,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, default="OpenGVLab/InternVL3_5-2B", help="Model name") 
     parser.add_argument("--model_type", type=str, default="vlm")
     parser.add_argument("--resume", action="store_true") 
-    parser.add_argument("--max_token_length", default=512) 
+    parser.add_argument("--max_token_length", default=4096) 
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
     parser.add_argument("--dataset", type=str, default="mmstar", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
