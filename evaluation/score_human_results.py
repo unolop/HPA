@@ -6,29 +6,17 @@ Processes human responses from training data files, computes:
 - VQA accuracy and embedding similarity for text answers
 - MC accuracy for choice answers
 - Confidence distributions and statistics
-- Saves QID mappings by answer_type for comparison with models
-
-Usage:
-    python evaluation/score_human_results.py --text_data data/training/s1_text/train_agg_10_blind_inst.jsonl \
-                                   --choice_data data/training/s1_choice/train_agg_10_blind_inst.jsonl \
-                                   --output_dir evaluation/human_scored/
+- Saves QID mappings by answer_type for comparison with models 
 """
 
-import os
-import re
+import os 
 import json
 import argparse
 import numpy as np
 from collections import defaultdict
-from typing import Dict, List 
+from typing import Dict 
 from tqdm import tqdm
-
-
-# =============================================================================
-# Configuration
-# =============================================================================
-
-VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
+from utils import * 
 
 CONF_MAP = {
     'yes': 1.0,
@@ -42,46 +30,7 @@ CONF_MAP = {
 }
 
 
-# =============================================================================
-# VQA Annotation Loading
-# =============================================================================
-
-class VQAAnswerMapper:
-    """Maps question_id to list of ground truth answers from VQA annotations."""
-
-    def __init__(self, annotations_path: str = VQA_ANNOTATIONS_PATH):
-        self.annotations_path = annotations_path
-        self._qid_to_answers = None
-
-    def _load(self):
-        """Load annotations and build lookup dict."""
-        if self._qid_to_answers is not None:
-            return
-
-        if not os.path.exists(self.annotations_path):
-            print(f"⚠️  VQA annotations not found: {self.annotations_path}")
-            self._qid_to_answers = {}
-            return
-
-        print(f"   Loading VQA annotations from {self.annotations_path}...")
-        with open(self.annotations_path, 'r', encoding='utf-8') as f:
-            annotations = json.load(f)
-
-        self._qid_to_answers = {}
-        for ann in annotations['annotations']:
-            qid = int(ann['question_id'])
-            answers = [a['answer'] for a in ann['answers']]
-            self._qid_to_answers[qid] = answers
-
-        print(f"   ✓ Loaded {len(self._qid_to_answers)} VQA annotations")
-
-    def get_answers(self, question_id: int) -> List[str]:
-        """Get list of 10 annotator answers for a question."""
-        self._load()
-        qid = int(question_id)
-        return self._qid_to_answers.get(qid, [])
-
-
+# Global mapper instance (lazy loaded)
 _vqa_mapper = None
 
 def get_vqa_mapper() -> VQAAnswerMapper:
@@ -90,103 +39,6 @@ def get_vqa_mapper() -> VQAAnswerMapper:
     if _vqa_mapper is None:
         _vqa_mapper = VQAAnswerMapper()
     return _vqa_mapper
-
-
-# =============================================================================
-# Answer Normalization and Scoring
-# =============================================================================
-
-def normalize_answer(answer: str) -> str:
-    """Normalize answer for comparison (open-ended)."""
-    if not answer:
-        return ""
-    answer = str(answer)
-
-    # Remove <think>...</think> content if present
-    answer = re.sub(r'<think>.*?</think>', '', answer, flags=re.DOTALL | re.IGNORECASE)
-
-    answer = answer.lower().strip()
-    # Remove articles
-    for article in ['a ', 'an ', 'the ']:
-        if answer.startswith(article):
-            answer = answer[len(article):]
-    # Remove punctuation
-    import string
-    answer = answer.translate(str.maketrans('', '', string.punctuation))
-    return ' '.join(answer.split()).strip()
-
-
-def vqa_accuracy(gt_answers: List[str], pred: str) -> float:
-    """VQA accuracy: min(1, #matches / 3)."""
-    pred = normalize_answer(pred)
-    matches = sum([pred == normalize_answer(ans) for ans in gt_answers])
-    return min(1.0, matches / 3.0)
-
-
-def extract_mc_choice(output: str) -> str:
-    """Extract the predicted answer (A, B, C, D) from model output."""
-    if not output:
-        return ""
-
-    # Remove <think>...</think> content if present
-    output = re.sub(r'<think>.*?</think>', '', output, flags=re.DOTALL | re.IGNORECASE)
-    output = output.strip()
-
-    # Pattern 1: Look for explicit answer statements
-    patterns = [
-        r"(?:the\s+)?(?:correct\s+)?answer\s+is[:\s]*([A-D])",
-        r"(?:the\s+)?(?:correct\s+)?answer[:\s]*([A-D])",
-        r"(?:option\s+)?([A-D])\s+is\s+(?:the\s+)?correct",
-        r"(?:I\s+)?(?:would\s+)?choose\s+(?:option\s+)?([A-D])",
-        r"(?:I\s+)?(?:would\s+)?select\s+(?:option\s+)?([A-D])",
-        r"^([A-D])(?:[:\.\)]|\s|$)",  # Answer at the start
-        r"\n([A-D])(?:[:\.\)]|\s|$)",  # Answer after newline
-        r"(?:Therefore|Thus|So|Hence)[,\s]+(?:the\s+)?(?:answer\s+is\s+)?(?:option\s+)?([A-D])",
-    ]
-
-    for pattern in patterns:
-        match = re.search(pattern, output, re.IGNORECASE)
-        if match:
-            return match.group(1).upper()
-
-    # Pattern 2: Last capital letter A-D
-    matches = re.findall(r'\b([A-D])\b', output)
-    if matches:
-        return matches[-1].upper()
-
-    # Pattern 3: Look for choice at end
-    if output and output[-1].upper() in 'ABCD':
-        return output[-1].upper()
-
-    # Pattern 4: Check format like "A: Hanging Posters"
-    match = re.match(r'^([A-D]):', output)
-    if match:
-        return match.group(1).upper()
-
-    return ""
-
-
-def get_encoder():
-    """Lazy load sentence transformer."""
-    try:
-        from sentence_transformers import SentenceTransformer
-        return SentenceTransformer("all-MiniLM-L6-v2").to('cuda')
-    except:
-        return None
-
-
-def answer_similarity(gt: str, pred: str, encoder) -> float:
-    """Compute embedding similarity."""
-    if encoder is None:
-        return 0.0
-    try:
-        pred = pred.strip().lower()
-        gt = str(gt).strip().lower()
-        emb = encoder.encode([pred, gt])
-        similarities = encoder.similarity(emb, emb)
-        return float(similarities[1, 0])
-    except:
-        return 0.0
 
 
 # =============================================================================

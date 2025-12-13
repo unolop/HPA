@@ -1,14 +1,6 @@
-# Human-Model Alignment Analysis Pipeline
-
-Complete pipeline for analyzing human responses and comparing with vision-language model outputs.
-
-## Overview
+# Human-Model Alignment Analysis Pipeline 
 
 This pipeline processes human crowdsourced responses, computes evaluation metrics, and generates comparative visualizations to assess human-model alignment on VQA and multiple-choice tasks.
-
-## Files
-
-### Core Scripts
 
 1. **`score_human_results.py`** - Process and score human responses
    - Computes VQA accuracy and embedding similarity

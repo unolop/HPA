@@ -10,16 +10,6 @@ Computes:
 - VQA accuracy (for open-ended)
 - Embedding similarity
 - Per-category breakdown
-
-Usage:
-    # Score single file
-    python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl --output_dir scored/
-
-    # Score all files in directory
-    python score_results.py --input_dir /home/work/yuna/HPA/results/swift/ --output_dir /home/work/yuna/HPA/results/swift/scored/
-
-    # With embedding similarity for VQA datasets
-    python score_results.py --input_dir results/ --output_dir scored/ --with_similarity
 """
 
 import os
@@ -30,11 +20,8 @@ import pandas as pd
 from collections import defaultdict
 from typing import Dict, List
 from glob import glob
+from utils import *  
 
-
-# =============================================================================
-# Constants
-# =============================================================================
 
 DATASETS = ["mmstar", "spubench", "vqa_1k", "vqa_5k"]
 CONDITIONS = ["_inst_blind", "", "_sys_inst_blind", "_blind"]
@@ -57,94 +44,6 @@ DATASET_TYPE = {
     'vqa_1k': 'open-ended',
     'vqa_5k': 'open-ended',
 }
-
-VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
-
-
-# =============================================================================
-# VQA Answer Mapping
-# =============================================================================
-
-class VQAAnswerMapper:
-    """
-    Maps question_id to list of ground truth answers from VQA annotations.
-
-    Usage:
-        mapper = VQAAnswerMapper()
-        answers = mapper.get_answers(123456)  # Returns list of 10 annotator answers
-    """
-
-    def __init__(self, annotations_path: str = VQA_ANNOTATIONS_PATH):
-        self.annotations_path = annotations_path
-        self._qid_to_answers = None  # Lazy load
-        self._loading = False  # Prevent recursive loading
-
-    def _load(self):
-        """Load annotations and build lookup dict (lazy loading)."""
-        if self._qid_to_answers is not None:
-            return
-
-        if self._loading:
-            return
-
-        self._loading = True
-
-        # Check if file exists before trying to load
-        if not os.path.exists(self.annotations_path):
-            print(f"⚠️  VQA annotations not found: {self.annotations_path}")
-            self._qid_to_answers = {}
-            self._loading = False
-            return
-
-        print(f"📂 Loading VQA annotations (this may take a moment)...")
-
-        try:
-            with open(self.annotations_path, 'r') as f:
-                data = json.load(f)
-
-            annotations = data.get('annotations', data)
-
-            # Build qid -> answers lookup
-            self._qid_to_answers = {}
-            for ann in annotations:
-                qid = int(ann['question_id'])
-                # Extract answer strings from annotator responses
-                answers = [a['answer'] for a in ann['answers']]
-                self._qid_to_answers[qid] = answers
-
-            print(f"   ✓ Loaded {len(self._qid_to_answers)} question annotations")
-        except Exception as e:
-            print(f"⚠️  Failed to load VQA annotations: {e}")
-            self._qid_to_answers = {}
-        finally:
-            self._loading = False
-    
-    def get_answers(self, question_id: int) -> List[str]:
-        """
-        Get list of ground truth answers for a question.
-        
-        Args:
-            question_id: VQA question ID
-            
-        Returns:
-            List of 10 annotator answers (strings)
-        """
-        self._load()
-        qid = int(question_id)
-        return self._qid_to_answers.get(qid, [])
-    
-    def get_majority_answer(self, question_id: int) -> str:
-        """Get most common answer for a question."""
-        answers = self.get_answers(question_id)
-        if not answers:
-            return ""
-        from collections import Counter
-        return Counter(answers).most_common(1)[0][0]
-    
-    def has_question(self, question_id: int) -> bool:
-        """Check if question_id exists in annotations."""
-        self._load()
-        return int(question_id) in self._qid_to_answers
 
 
 # Global mapper instance (lazy loaded)
@@ -169,11 +68,9 @@ def get_conditions(path, datasets=DATASETS, conditions=CONDITIONS, modelnames=MO
     tokens = filename.split("_")
     short_models = {m.split("/")[-1]: m for m in modelnames}
 
-    model_short = None
     model_full = None
     for short, full in short_models.items():
         if short in path:
-            model_short = short
             model_full = full
             break
     if 'finetuned' in path : 
@@ -415,9 +312,6 @@ def score_file(
 
             if all_answers:
                 is_correct = vqa_accuracy(all_answers, output)
-                # is_correct = acc >= 0.5  # Binary for counting
-
-                # Compute answer similarity if requested
                 if encoder and all_answers:
                     # Use majority answer for similarity computation
                     majority_ans = max(set(all_answers), key=all_answers.count)
@@ -500,7 +394,6 @@ def score_directory(
     all_results = []
     skipped_count = 0
     for f in files:
-        # Determine output path
         filename = f.replace(f"{input_dir}/", '')
         out_path = os.path.join(output_dir, filename) 
         result = score_file(f, out_path, skip_existing=skip_existing) 

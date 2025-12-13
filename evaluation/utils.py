@@ -1,5 +1,184 @@
 import os 
+import re  
 import json 
+from typing import List 
+
+VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
+
+def normalize_answer(answer: str) -> str:
+    """Normalize answer for comparison (open-ended)."""
+    if not answer:
+        return ""
+    answer = str(answer)
+
+    # Remove <think>...</think> content if present
+    answer = re.sub(r'<think>.*?</think>', '', answer, flags=re.DOTALL | re.IGNORECASE)
+
+    answer = answer.lower().strip()
+    # Remove articles
+    for article in ['a ', 'an ', 'the ']:
+        if answer.startswith(article):
+            answer = answer[len(article):]
+    # Remove punctuation
+    import string
+    answer = answer.translate(str.maketrans('', '', string.punctuation))
+    return ' '.join(answer.split()).strip()
+
+
+def vqa_accuracy(gt_answers: List[str], pred: str) -> float:
+    """VQA accuracy: min(1, #matches / 3)."""
+    pred = normalize_answer(pred)
+    matches = sum([pred == normalize_answer(ans) for ans in gt_answers])
+    return min(1.0, matches / 3.0)
+
+
+def extract_mc_choice(output: str) -> str:
+    """Extract the predicted answer (A, B, C, D) from model output."""
+    if not output:
+        return ""
+
+    # Remove <think>...</think> content if present
+    output = re.sub(r'<think>.*?</think>', '', output, flags=re.DOTALL | re.IGNORECASE)
+    output = output.strip()
+
+    # Pattern 1: Look for explicit answer statements
+    patterns = [
+        r"(?:the\s+)?(?:correct\s+)?answer\s+is[:\s]*([A-D])",
+        r"(?:the\s+)?(?:correct\s+)?answer[:\s]*([A-D])",
+        r"(?:option\s+)?([A-D])\s+is\s+(?:the\s+)?correct",
+        r"(?:I\s+)?(?:would\s+)?choose\s+(?:option\s+)?([A-D])",
+        r"(?:I\s+)?(?:would\s+)?select\s+(?:option\s+)?([A-D])",
+        r"^([A-D])(?:[:\.\)]|\s|$)",  # Answer at the start
+        r"\n([A-D])(?:[:\.\)]|\s|$)",  # Answer after newline
+        r"(?:Therefore|Thus|So|Hence)[,\s]+(?:the\s+)?(?:answer\s+is\s+)?(?:option\s+)?([A-D])",
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, output, re.IGNORECASE)
+        if match:
+            return match.group(1).upper()
+
+    # Pattern 2: Last capital letter A-D
+    matches = re.findall(r'\b([A-D])\b', output)
+    if matches:
+        return matches[-1].upper()
+
+    # Pattern 3: Look for choice at end
+    if output and output[-1].upper() in 'ABCD':
+        return output[-1].upper()
+
+    # Pattern 4: Check format like "A: Hanging Posters"
+    match = re.match(r'^([A-D]):', output)
+    if match:
+        return match.group(1).upper()
+
+    return ""
+
+
+def get_encoder():
+    """Lazy load sentence transformer."""
+    try:
+        from sentence_transformers import SentenceTransformer
+        return SentenceTransformer("all-MiniLM-L6-v2").to('cuda')
+    except:
+        return None
+
+
+def answer_similarity(gt: str, pred: str, encoder) -> float:
+    """Compute embedding similarity."""
+    if encoder is None:
+        return 0.0
+    try:
+        pred = pred.strip().lower()
+        gt = str(gt).strip().lower()
+        emb = encoder.encode([pred, gt])
+        similarities = encoder.similarity(emb, emb)
+        return float(similarities[1, 0])
+    except:
+        return 0.0
+
+
+
+class VQAAnswerMapper:
+    """
+    Maps question_id to list of ground truth answers from VQA annotations.
+
+    Usage:
+        mapper = VQAAnswerMapper()
+        answers = mapper.get_answers(123456)  # Returns list of 10 annotator answers
+    """
+
+    def __init__(self, annotations_path: str = VQA_ANNOTATIONS_PATH):
+        self.annotations_path = annotations_path
+        self._qid_to_answers = None  # Lazy load
+        self._loading = False  # Prevent recursive loading
+
+    def _load(self):
+        """Load annotations and build lookup dict (lazy loading)."""
+        if self._qid_to_answers is not None:
+            return
+
+        if self._loading:
+            return
+
+        self._loading = True
+
+        # Check if file exists before trying to load
+        if not os.path.exists(self.annotations_path):
+            print(f"⚠️  VQA annotations not found: {self.annotations_path}")
+            self._qid_to_answers = {}
+            self._loading = False
+            return
+
+        print(f"📂 Loading VQA annotations (this may take a moment)...")
+
+        try:
+            with open(self.annotations_path, 'r') as f:
+                data = json.load(f)
+
+            annotations = data.get('annotations', data)
+
+            # Build qid -> answers lookup
+            self._qid_to_answers = {}
+            for ann in annotations:
+                qid = int(ann['question_id'])
+                # Extract answer strings from annotator responses
+                answers = [a['answer'] for a in ann['answers']]
+                self._qid_to_answers[qid] = answers
+
+            print(f"   ✓ Loaded {len(self._qid_to_answers)} question annotations")
+        except Exception as e:
+            print(f"⚠️  Failed to load VQA annotations: {e}")
+            self._qid_to_answers = {}
+        finally:
+            self._loading = False
+    
+    def get_answers(self, question_id: int) -> List[str]:
+        """
+        Get list of ground truth answers for a question.
+        
+        Args:
+            question_id: VQA question ID
+            
+        Returns:
+            List of 10 annotator answers (strings)
+        """
+        self._load()
+        qid = int(question_id)
+        return self._qid_to_answers.get(qid, [])
+    
+    def get_majority_answer(self, question_id: int) -> str:
+        """Get most common answer for a question."""
+        answers = self.get_answers(question_id)
+        if not answers:
+            return ""
+        from collections import Counter
+        return Counter(answers).most_common(1)[0][0]
+    
+    def has_question(self, question_id: int) -> bool:
+        """Check if question_id exists in annotations."""
+        self._load()
+        return int(question_id) in self._qid_to_answers
 
 def skip_processed_idx(existing_keys, output_jsonl_path): 
     id_keys = ['idx', 'qid', 'question_id', 'index']
