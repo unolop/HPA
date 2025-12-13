@@ -26,11 +26,9 @@ import os
 import re
 import json
 import argparse
-import numpy as np
 import pandas as pd
-from pathlib import Path
 from collections import defaultdict
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List
 from glob import glob
 
 
@@ -390,13 +388,13 @@ def score_file(
     for item in data:
         output = item.get('output', '')
         category = item.get('category', item.get('l2_category', item.get('question_type', 'Unknown')))
-
+        breakpoint() 
         # Get ground truth answers and score
         if dataset_type == 'multi-choice':
             gt = item.get('answer', '')
             extracted_choice = extract_mc_choice(output)
             is_correct = gt.strip().upper()[0] == extracted_choice if gt and extracted_choice else False
-
+            
             # Save extracted choice for MC datasets
             item['extracted_choice'] = extracted_choice
         else:

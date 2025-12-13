@@ -136,19 +136,63 @@ def load_mmstar_annotations(session: str = "s1") -> Dict:
 
     # Filter for choice questions
     questions = [row for row in questions if row.get('answer_type') == 'choice']
-
     # Map questions to annotations
     annot = {}
+    not_matched = {}
     for row in questions:
         qid = row['qid']
         question = row.get('question_en', row.get('question', ''))
-
-        # Match with mmstar data
+        matched = False 
+        # DEBUGGED MATCHING LOGIC
+        not_matched[qid] = []
         for data in mmstar_data:
-            if question.strip()[:50] in data['question']:
-                annot[qid] = {**row, **data}
-                break
+            if (
+                    (qid == "802" and str(data.get('pid')) == "715")
+                    or
+                    (qid == "287" and str(data.get('pid')) == "1499")
+                    or
+                    (qid == "588" and str(data.get('pid')) == "541") 
+                    or
+                    (qid == "214" and str(data.get('pid')) == "284") 
+                ):
+                    print(f'manually matched {qid}')
+                    data['human_qid'] = qid
+                    data['original_question'] = data['question']
+                    annot[qid] = data
+                    matched = True
+                    break  # Once manually matched, break out of the loop
 
+            if question.strip()[:50] in data['question'] and qid not in annot:
+                mmstar_options_str = data['question'].split('\nOptions: ')[-1] 
+                mmstar_options = [opt.strip() for opt in mmstar_options_str.split(',')]
+                row_options = row.get('options', '')
+                row_options_list = [opt.strip() for opt in row_options.split(',')]
+                matched = all(any(mo.lower()[:5] in ro.lower() for ro in row_options_list[:2]) for mo in mmstar_options[:2])
+                
+                if matched:
+                    data['human_qid'] = qid
+                    data['original_question'] = data['question']
+                    annot[qid] = data
+                    # print(f'[!] Matched options by relaxed approach for QID {qid}\n  MMStar: {mmstar_options}\n  Human : {row_options_list}\n  Data: {data}\n  Row:  {row}')
+                    break
+                else: 
+                    not_matched[qid].append(data) 
+                    
+        if not matched: 
+            print(f"Not matching {row_options_list, mmstar_options}") 
+            if len(not_matched[qid]) == 1 : 
+                data = not_matched[qid][0] 
+                data['human_qid'] = qid 
+                data['original_question'] = data['question']
+                annot[qid] = data
+            else :
+                breakpoint()          
+                    
+    print('Length of MMStar questions:', len(annot))  
+    annot_keys = list(annot.keys())
+    if len(annot_keys) != len(set(annot_keys)):
+        dupes = set([k for k in annot_keys if annot_keys.count(k) > 1])
+        print(f"[!] Duplicate QIDs found in annot: {dupes}") 
     return annot
 
 
@@ -251,7 +295,6 @@ def get_responses_by_qid(
     
     for resp in answers:
         qid = str(resp['qid'])
-
         # Initialize ground truth for this QID if not seen
         if qid not in gt_by_qid:
             if answer_type == 'text' and vqa_mapper:
@@ -263,17 +306,15 @@ def get_responses_by_qid(
                     'answer_type': 'text'
                 }
             elif answer_type == 'choice' and mmstar_annot and qid in mmstar_annot:
-                old_qid = qid 
-                question = resp.get('question', resp.get('question', '')) 
-                for k, annot in mmstar_annot.items():
-                    if question.strip()[:50] in annot['question'] : 
-                        qid = k 
-                        print(f"original qid found {k}")
-                        break 
+                annot = mmstar_annot[qid]  
+                # for k, annot in mmstar_annot.items():
+                #     if question.strip()[:50] in annot['question'] : 
+                #         qid = k 
+                #         print(f"original qid found {k}")
+                #         break 
                 annot['answer_type'] = 'choice'
-                annot['human_question'] = question 
+                # annot['human_question'] = question 
                 gt_by_qid[qid] = annot  
-                resp['old_qid'] = old_qid
 
         # Map confidence
         confidence = resp.get("confidence", 3)
