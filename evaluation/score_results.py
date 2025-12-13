@@ -183,7 +183,6 @@ def score_file(
     for item in data:
         output = item.get('output', '')
         category = item.get('category', item.get('l2_category', item.get('question_type', 'Unknown')))
-        breakpoint() 
         # Get ground truth answers and score
         if dataset_type == 'multi-choice':
             gt = item.get('answer', '')
