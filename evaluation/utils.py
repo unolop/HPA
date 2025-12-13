@@ -221,3 +221,88 @@ def find_id_key(existing_keys):
         current_item_id = 'pid'
 
     return current_item_id 
+
+
+# =============================================================================
+# Parsing Functions (from your processor.py)
+# =============================================================================
+
+
+def extract_mc_choice(output: str) -> str:
+    """Extract the predicted answer (A, B, C, D) from model output."""
+    if not output:
+        return ""
+
+    # Remove <think>...</think> content if present
+    output = re.sub(r'<think>.*?</think>', '', output, flags=re.DOTALL | re.IGNORECASE)
+    output = output.strip()
+
+    # Pattern 1: Look for explicit answer statements
+    patterns = [
+        r"(?:the\s+)?(?:correct\s+)?answer\s+is[:\s]*([A-D])",
+        r"(?:the\s+)?(?:correct\s+)?answer[:\s]*([A-D])",
+        r"(?:option\s+)?([A-D])\s+is\s+(?:the\s+)?correct",
+        r"(?:I\s+)?(?:would\s+)?choose\s+(?:option\s+)?([A-D])",
+        r"(?:I\s+)?(?:would\s+)?select\s+(?:option\s+)?([A-D])",
+        r"^([A-D])(?:[:\.\)]|\s|$)",  # Answer at the start
+        r"\n([A-D])(?:[:\.\)]|\s|$)",  # Answer after newline
+        r"(?:Therefore|Thus|So|Hence)[,\s]+(?:the\s+)?(?:answer\s+is\s+)?(?:option\s+)?([A-D])",
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, output, re.IGNORECASE)
+        if match:
+            return match.group(1).upper()
+    
+    # Pattern 2: Look for the last standalone letter A-D
+    matches = re.findall(r'\b([A-D])\b', output)
+    if matches:
+        return matches[-1].upper()
+    
+    # Pattern 3: Check if output is just a single letter
+    if len(output) == 1 and output.upper() in 'ABCD':
+        return output.upper()
+    
+    # Pattern 4: Check format like "A: Hanging Posters"
+    match = re.match(r'^([A-D]):', output)
+    if match:
+        return match.group(1).upper()
+    
+    return ""
+
+
+def normalize_answer(answer: str) -> str:
+    """Normalize answer for comparison (open-ended)."""
+    if not answer:
+        return ""
+    answer = str(answer)
+
+    # Remove <think>...</think> content if present
+    answer = re.sub(r'<think>.*?</think>', '', answer, flags=re.DOTALL | re.IGNORECASE)
+
+    answer = answer.lower().strip()
+    # Remove articles
+    for article in ['a ', 'an ', 'the ']:
+        if answer.startswith(article):
+            answer = answer[len(article):]
+    # Remove punctuation
+    import string
+    answer = answer.translate(str.maketrans('', '', string.punctuation))
+    return ' '.join(answer.split()).strip()
+
+
+# =============================================================================
+# Scoring Functions
+# =============================================================================
+
+def mc_accuracy(gt: str, pred: str) -> bool:
+    """Multiple choice accuracy."""
+    gt_letter = gt.strip().upper()[0] if gt else ""
+    pred_letter = extract_mc_choice(pred)
+    return gt_letter == pred_letter
+
+
+def exact_match(gt: str, pred: str) -> bool:
+    """Exact match after normalization."""
+    return normalize_answer(pred) == normalize_answer(gt)
+

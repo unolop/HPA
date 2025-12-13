@@ -1,8 +1,4 @@
 # 📊 Complete Human-Model Analysis Pipeline - Overview
-
-## 🎯 What You Asked For
-
-You requested a comprehensive pipeline to:
 1. Calculate average accuracy and embedding similarity per question against ground truth
 2. Use raw human data (not aggregated) with `get_responses_by_qid` logic
 3. Analyze correlations between model accuracy and human-model similarity
@@ -11,42 +7,6 @@ You requested a comprehensive pipeline to:
 6. Compare pretrained vs finetuned distributions
 7. Provide a full notebook for the paper
 
-## ✅ What Was Built
-
-### Core Pipeline (3 Scripts + 1 Notebook)
-
-#### 1. `process_raw_human_responses.py`
-**Purpose**: Process raw CSV data to compute per-question human metrics
-
-**Input**:
-- Raw CSV files from `data/humans/all_results_20251206_154732/`
-- Uses `get_responses_by_qid` logic from preprocessing
-
-**Processing**:
-```python
-For each question:
-    ├── Load all human responses (n=10)
-    ├── Calculate per-question averages:
-    │   ├── mean_accuracy (average across responses)
-    │   ├── mean_confidence
-    │   ├── mean_gt_similarity (vs 10 GT annotators)
-    │   └── mean_visual_similarity (vs oracle humans who saw images)
-    ├── Preserve individual responses for further analysis
-    └── Save per-question metrics
-```
-
-**Output**:
-- `human_vqa_per_question.jsonl` - Individual question metrics
-- `human_vqa_stats.json` - Aggregate statistics
-
-**Command**:
-```bash
-python evaluation/process_raw_human_responses.py \
-    --human_data_dir data/humans/all_results_20251206_154732 \
-    --session s1 \
-    --output_dir evaluation/human_analysis/ \
-    --with_similarity
-```
 
 ---
 
@@ -116,32 +76,6 @@ jupyter notebook evaluation/paper_analysis_notebook.ipynb
 - High-resolution figures (publication quality)
 - Statistical summaries
 - Interpretation guidelines
-
----
-
-## 🔑 Key Questions Answered
-
-### Q1: "Should I calculate similarity against ground truth or visual answers?"
-
-**Answer**: **Both!** Here's why:
-
-| Metric | What It Measures | When to Use |
-|--------|-----------------|-------------|
-| **GT Similarity** | Alignment with all 10 VQA annotators | Objective correctness evaluation |
-| **Visual Similarity** | Alignment with "oracle" humans who saw images | Understanding human-like reasoning |
-
-**Interpretation**:
-- **High GT, High Visual** → Model is correct AND thinks like humans
-- **High GT, Low Visual** → Model is correct but reasons differently
-- **Low GT, High Visual** → Model makes human-like mistakes
-- **Low GT, Low Visual** → Model needs improvement
-
-**In Paper**: Report correlation with both, discuss the gap:
-```
-Model accuracy showed r = 0.75 correlation with GT similarity and
-r = 0.82 with visual similarity, suggesting the model aligns more
-closely with human visual reasoning than pure objective correctness.
-```
 
 ---
 
@@ -818,56 +752,6 @@ python evaluation/comprehensive_analysis.py \
 | 0.5-0.8 | Medium | Meaningful improvement |
 | >0.8 | Large | Substantial improvement |
 
-## 📚 Dependencies
-
-```bash
-pip install numpy pandas matplotlib seaborn scipy jupyter tqdm sentence-transformers torch
-```
-
-## 🐛 Troubleshooting
-
-### Issue: "No matching QIDs"
-
-**Cause**: QID format mismatch (string vs int)
-
-**Fix**: Check QID types in both datasets:
-```python
-human_df['qid'] = human_df['qid'].astype(str)
-model_df['qid'] = model_df['qid'].astype(str)
-```
-
-### Issue: "VQA annotations not found"
-
-**Cause**: Missing ground truth file
-
-**Fix**: Update path in scripts:
-```python
-VQA_ANNOTATIONS_PATH = "/path/to/v2_mscoco_val2014_annotations.json"
-```
-
-### Issue: "CUDA out of memory"
-
-**Cause**: Sentence transformer on GPU
-
-**Fix**: Use CPU:
-```python
-def get_encoder():
-    from sentence_transformers import SentenceTransformer
-    return SentenceTransformer("all-MiniLM-L6-v2")  # Remove .to('cuda')
-```
-
-## 📖 Citation
-
-If you use this pipeline, please cite:
-
-```bibtex
-@article{yourpaper2025,
-  title={Your Paper Title},
-  author={Your Name},
-  journal={Your Venue},
-  year={2025}
-}
-```
 
 ## 🤝 Contributing
 
@@ -877,9 +761,3 @@ This pipeline is designed to be modular and extensible. To add new analyses:
 2. Add visualization function
 3. Update notebook with new section
 4. Document in this README
-
----
-
-**Version**: 1.0
-**Last Updated**: 2025-12-09
-**Contact**: [Your contact info]

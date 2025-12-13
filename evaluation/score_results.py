@@ -13,12 +13,11 @@ Computes:
 """
 
 import os
-import re
 import json
 import argparse
 import pandas as pd
 from collections import defaultdict
-from typing import Dict, List
+from typing import Dict
 from glob import glob
 from utils import *  
 
@@ -45,21 +44,6 @@ DATASET_TYPE = {
     'vqa_5k': 'open-ended',
 }
 
-
-# Global mapper instance (lazy loaded)
-_vqa_mapper = None
-
-def get_vqa_mapper() -> VQAAnswerMapper:
-    """Get or create global VQA mapper."""
-    global _vqa_mapper
-    if _vqa_mapper is None:
-        _vqa_mapper = VQAAnswerMapper()
-    return _vqa_mapper
-
-
-# =============================================================================
-# Parsing Functions (from your processor.py)
-# =============================================================================
 
 def get_conditions(path, datasets=DATASETS, conditions=CONDITIONS, modelnames=MODELNAMES):
     """Extract model, dataset, condition from filename."""
@@ -91,115 +75,38 @@ def get_conditions(path, datasets=DATASETS, conditions=CONDITIONS, modelnames=MO
 
     return model_full, dataset, condition
 
+# Global mapper instance (lazy loaded)
+_vqa_mapper = None
 
-def extract_mc_choice(output: str) -> str:
-    """Extract the predicted answer (A, B, C, D) from model output."""
-    if not output:
-        return ""
+def get_vqa_mapper() -> VQAAnswerMapper:
+    """Get or create global VQA mapper."""
+    global _vqa_mapper
+    if _vqa_mapper is None:
+        _vqa_mapper = VQAAnswerMapper()
+    return _vqa_mapper
 
-    # Remove <think>...</think> content if present
-    output = re.sub(r'<think>.*?</think>', '', output, flags=re.DOTALL | re.IGNORECASE)
-    output = output.strip()
+def get_spubench(): 
+    '''
+    data example :  
+        {'core_attributes': ['compact design', 'branding', 'cosmetic container'],
+        'spurious_attributes': ['round shape',
+        'marble-like background',
+        'shiny surface'],
+        'spurious_correlation_type': ['Shape', 'Background'],
+        'question': 'Question: Which feature best indicates the identity of the round object on the marble-like surface?\nA. The branding on it\nB. The marble-like background\nC. The round shape\nD. Its shiny surface\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:',
+        'choices': ['A. The branding on it',
+        'B. The marble-like background',
+        'C. The round shape',
+        'D. Its shiny surface'],
+        'answer': 'A',
+        'image': <PIL.PngImagePlugin.PngImageFile image mode=RGB size=1444x2564>}
+    '''
+    # from inference import load_dataset 
+    # spubench = load_dataset("spubench") 
 
-    # Pattern 1: Look for explicit answer statements
-    patterns = [
-        r"(?:the\s+)?(?:correct\s+)?answer\s+is[:\s]*([A-D])",
-        r"(?:the\s+)?(?:correct\s+)?answer[:\s]*([A-D])",
-        r"(?:option\s+)?([A-D])\s+is\s+(?:the\s+)?correct",
-        r"(?:I\s+)?(?:would\s+)?choose\s+(?:option\s+)?([A-D])",
-        r"(?:I\s+)?(?:would\s+)?select\s+(?:option\s+)?([A-D])",
-        r"^([A-D])(?:[:\.\)]|\s|$)",  # Answer at the start
-        r"\n([A-D])(?:[:\.\)]|\s|$)",  # Answer after newline
-        r"(?:Therefore|Thus|So|Hence)[,\s]+(?:the\s+)?(?:answer\s+is\s+)?(?:option\s+)?([A-D])",
-    ]
-    
-    for pattern in patterns:
-        match = re.search(pattern, output, re.IGNORECASE)
-        if match:
-            return match.group(1).upper()
-    
-    # Pattern 2: Look for the last standalone letter A-D
-    matches = re.findall(r'\b([A-D])\b', output)
-    if matches:
-        return matches[-1].upper()
-    
-    # Pattern 3: Check if output is just a single letter
-    if len(output) == 1 and output.upper() in 'ABCD':
-        return output.upper()
-    
-    # Pattern 4: Check format like "A: Hanging Posters"
-    match = re.match(r'^([A-D]):', output)
-    if match:
-        return match.group(1).upper()
-    
-    return ""
-
-
-def normalize_answer(answer: str) -> str:
-    """Normalize answer for comparison (open-ended)."""
-    if not answer:
-        return ""
-    answer = str(answer)
-
-    # Remove <think>...</think> content if present
-    answer = re.sub(r'<think>.*?</think>', '', answer, flags=re.DOTALL | re.IGNORECASE)
-
-    answer = answer.lower().strip()
-    # Remove articles
-    for article in ['a ', 'an ', 'the ']:
-        if answer.startswith(article):
-            answer = answer[len(article):]
-    # Remove punctuation
-    import string
-    answer = answer.translate(str.maketrans('', '', string.punctuation))
-    return ' '.join(answer.split()).strip()
-
-
-# =============================================================================
-# Scoring Functions
-# =============================================================================
-
-def mc_accuracy(gt: str, pred: str) -> bool:
-    """Multiple choice accuracy."""
-    gt_letter = gt.strip().upper()[0] if gt else ""
-    pred_letter = extract_mc_choice(pred)
-    return gt_letter == pred_letter
-
-
-def vqa_accuracy(gt_answers: List[str], pred: str) -> float:
-    """VQA accuracy: min(1, #matches / 3)."""
-    pred = normalize_answer(pred)
-    matches = sum([pred == normalize_answer(ans) for ans in gt_answers])
-    return min(1.0, matches / 3.0)
-
-
-def exact_match(gt: str, pred: str) -> bool:
-    """Exact match after normalization."""
-    return normalize_answer(pred) == normalize_answer(gt)
-
-
-def get_encoder():
-    """Lazy load sentence transformer."""
-    try:
-        from sentence_transformers import SentenceTransformer
-        return SentenceTransformer("all-MiniLM-L6-v2").to('cuda')
-    except:
-        return None
-
-
-def answer_similarity(gt: str, pred: str, encoder) -> float:
-    """Compute embedding similarity."""
-    if encoder is None:
-        return 0.0
-    try:
-        pred = pred.strip().lower()
-        gt = str(gt).strip().lower()
-        emb = encoder.encode([pred, gt])
-        similarities = encoder.similarity(emb, emb)
-        return float(similarities[1, 0])
-    except:
-        return 0.0
-
+    with open('/home/work/yuna/HPA/data/annotation.json', 'r', encoding='utf-8') as f: 
+        annot = json.load(f) 
+    return annot 
 
 # =============================================================================
 # Main Scoring
@@ -243,14 +150,8 @@ def score_file(
 
     # Parse filename
     model_full, dataset, condition = get_conditions(input_path)
-    dataset_type = DATASET_TYPE.get(dataset, 'multi-choice')
-
-    # print(f"\n{'='*60}")
-    print(f"📊 Scoring: {input_path}") # {os.path.basename()} 
-    # print(f"   Model: {model_full}")
-    # print(f"   Dataset: {dataset} ({dataset_type})")
-    # print(f"   Condition: {condition or '(none)'}") 
-    # print(f"{'='*60}")
+    dataset_type = DATASET_TYPE.get(dataset, 'multi-choice') 
+    print(f"📊 Scoring: {input_path}") 
 
     # Load data first (fast operation)
     data = []
@@ -265,9 +166,6 @@ def score_file(
 
     # Only load VQA mapper if we actually need it (lazy initialization)
     vqa_mapper = None
-    # We'll create it on-demand inside the loop only if dataset_type is open-ended
-
-    # Load encoder if similarity computation is requested
     encoder = None
     if with_similarity and dataset_type == 'open-ended':
         print("   Loading sentence transformer for similarity computation...")

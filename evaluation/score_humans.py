@@ -25,6 +25,7 @@ from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Tuple
 from tqdm import tqdm
+from utils import get_encoder, answer_similarity 
 
 # Add parent directory for imports
 sys.path.append(str(Path(__file__).parent.parent))
