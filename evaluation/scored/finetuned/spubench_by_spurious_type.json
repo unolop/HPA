@@ -1,0 +1,3262 @@
+[
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "InternVL3_5-8B/InternVL3_5-8B_A1_vqa_gtfold_0",
+    "path": "evaluation/scored/finetuned/InternVL3_5-8B/InternVL3_5-8B_A1_vqa_gtfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "InternVL3_5-8B/InternVL3_5-8B_A1_vqa_gtfold_0",
+    "path": "evaluation/scored/finetuned/InternVL3_5-8B/InternVL3_5-8B_A1_vqa_gtfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "InternVL3_5-8B/InternVL3_5-8B_SFT_mmstar_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/InternVL3_5-8B/InternVL3_5-8B_SFT_mmstar_15_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 742,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 138
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 618
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 297
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 243
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 70
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 37
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 19
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 31
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 29
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "InternVL3_5-8B/InternVL3_5-8B_SFT_mmstar_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/InternVL3_5-8B/InternVL3_5-8B_SFT_mmstar_15_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.7294117647058823,
+    "overall_correct": 62,
+    "overall_total": 85,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.6666666666666666,
+        "correct": 14,
+        "total": 21
+      },
+      "Background": {
+        "accuracy": 0.7230769230769231,
+        "correct": 47,
+        "total": 65
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.7714285714285715,
+        "correct": 27,
+        "total": 35
+      },
+      "Orientation": {
+        "accuracy": 0.7272727272727273,
+        "correct": 16,
+        "total": 22
+      },
+      "Colorization": {
+        "accuracy": 0.7272727272727273,
+        "correct": 8,
+        "total": 11
+      },
+      "Texture and Noise": {
+        "accuracy": 0.6666666666666666,
+        "correct": 4,
+        "total": 6
+      },
+      "Lighting and Shadows": {
+        "accuracy": 1.0,
+        "correct": 2,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.8333333333333334,
+        "correct": 5,
+        "total": 6
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.5,
+        "correct": 1,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/A0_SFT_vqa_gt",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/A0_SFT_vqa_gt/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.49375,
+    "overall_correct": 1185,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.4538653366583541,
+        "correct": 182,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.5026205450733753,
+        "correct": 959,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.46179401993355484,
+        "correct": 417,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.5287958115183246,
+        "correct": 404,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.4798387096774194,
+        "correct": 119,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.5138888888888888,
+        "correct": 148,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.5533980582524272,
+        "correct": 57,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.56,
+        "correct": 42,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.41,
+        "correct": 41,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.3333333333333333,
+        "correct": 1,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/A0_SFT_vqa_gt",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/A0_SFT_vqa_gt/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.6907216494845361,
+    "overall_correct": 67,
+    "overall_total": 97,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.625,
+        "correct": 15,
+        "total": 24
+      },
+      "Background": {
+        "accuracy": 0.684931506849315,
+        "correct": 50,
+        "total": 73
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.7142857142857143,
+        "correct": 30,
+        "total": 42
+      },
+      "Orientation": {
+        "accuracy": 0.7916666666666666,
+        "correct": 19,
+        "total": 24
+      },
+      "Colorization": {
+        "accuracy": 0.6153846153846154,
+        "correct": 8,
+        "total": 13
+      },
+      "Texture and Noise": {
+        "accuracy": 0.5714285714285714,
+        "correct": 4,
+        "total": 7
+      },
+      "Lighting and Shadows": {
+        "accuracy": 1.0,
+        "correct": 2,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.7142857142857143,
+        "correct": 5,
+        "total": 7
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.5,
+        "correct": 1,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/A1_JS_vqa_blind_n10",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/A1_JS_vqa_blind_n10/spubench.jsonl"
+  },
+  {
+    "file": "spubench_blind.jsonl",
+    "overall_accuracy": 0.4625,
+    "overall_correct": 1110,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.42643391521197005,
+        "correct": 171,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.4753668763102725,
+        "correct": 907,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.45071982281284606,
+        "correct": 407,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.4725130890052356,
+        "correct": 361,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.40725806451612906,
+        "correct": 101,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.4548611111111111,
+        "correct": 131,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.5242718446601942,
+        "correct": 54,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.5333333333333333,
+        "correct": 40,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.44,
+        "correct": 44,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.6666666666666666,
+        "correct": 2,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/A1_JS_vqa_blind_n10",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/A1_JS_vqa_blind_n10/spubench_blind.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.38625,
+    "overall_correct": 927,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.3566084788029925,
+        "correct": 143,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.3941299790356394,
+        "correct": 752,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.34551495016611294,
+        "correct": 312,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.4109947643979058,
+        "correct": 314,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.35080645161290325,
+        "correct": 87,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.4375,
+        "correct": 126,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.4854368932038835,
+        "correct": 50,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.4266666666666667,
+        "correct": 32,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.34,
+        "correct": 34,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.6666666666666666,
+        "correct": 2,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/A1_JS_vqa_blind_n10",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/A1_JS_vqa_blind_n10/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.7404166666666666,
+    "overall_correct": 1777,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.6882793017456359,
+        "correct": 276,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.7672955974842768,
+        "correct": 1464,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.7098560354374308,
+        "correct": 641,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.8075916230366492,
+        "correct": 617,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.6290322580645161,
+        "correct": 156,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.65625,
+        "correct": 189,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.7475728155339806,
+        "correct": 77,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.7866666666666666,
+        "correct": 59,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.68,
+        "correct": 68,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 1.0,
+        "correct": 3,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.43583333333333335,
+    "overall_correct": 1046,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.4014962593516209,
+        "correct": 161,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.44549266247379454,
+        "correct": 850,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.3875968992248062,
+        "correct": 350,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.4725130890052356,
+        "correct": 361,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.3790322580645161,
+        "correct": 94,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.4826388888888889,
+        "correct": 139,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.5436893203883495,
+        "correct": 56,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.4666666666666667,
+        "correct": 35,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.42,
+        "correct": 42,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.6666666666666666,
+        "correct": 2,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/A1_JS_vqa_n15_blind_inst/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.7294117647058823,
+    "overall_correct": 62,
+    "overall_total": 85,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.6190476190476191,
+        "correct": 13,
+        "total": 21
+      },
+      "Background": {
+        "accuracy": 0.7230769230769231,
+        "correct": 47,
+        "total": 65
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.7714285714285715,
+        "correct": 27,
+        "total": 35
+      },
+      "Orientation": {
+        "accuracy": 0.7727272727272727,
+        "correct": 17,
+        "total": 22
+      },
+      "Colorization": {
+        "accuracy": 0.7272727272727273,
+        "correct": 8,
+        "total": 11
+      },
+      "Texture and Noise": {
+        "accuracy": 0.6666666666666666,
+        "correct": 4,
+        "total": 6
+      },
+      "Lighting and Shadows": {
+        "accuracy": 1.0,
+        "correct": 2,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.8333333333333334,
+        "correct": 5,
+        "total": 6
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.5,
+        "correct": 1,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/D1_JS_mmstar_blind",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/D1_JS_mmstar_blind/spubench.jsonl"
+  },
+  {
+    "file": "spubench_blind.jsonl",
+    "overall_accuracy": 0.5091666666666667,
+    "overall_correct": 1222,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.46384039900249374,
+        "correct": 186,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.5220125786163522,
+        "correct": 996,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.4839424141749723,
+        "correct": 437,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.5471204188481675,
+        "correct": 418,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.4435483870967742,
+        "correct": 110,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.4791666666666667,
+        "correct": 138,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.5631067961165048,
+        "correct": 58,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.6133333333333333,
+        "correct": 46,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.51,
+        "correct": 51,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.6666666666666666,
+        "correct": 2,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/D1_JS_mmstar_blind",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/D1_JS_mmstar_blind/spubench_blind.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.4741666666666667,
+    "overall_correct": 1138,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.3790523690773067,
+        "correct": 152,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.4916142557651992,
+        "correct": 938,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.45071982281284606,
+        "correct": 407,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.5274869109947644,
+        "correct": 403,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.4153225806451613,
+        "correct": 103,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.4722222222222222,
+        "correct": 136,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.5242718446601942,
+        "correct": 54,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.52,
+        "correct": 39,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.4,
+        "correct": 40,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.6666666666666666,
+        "correct": 2,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/D1_JS_mmstar_blind",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/D1_JS_mmstar_blind/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.7529411764705882,
+    "overall_correct": 64,
+    "overall_total": 85,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.6666666666666666,
+        "correct": 14,
+        "total": 21
+      },
+      "Background": {
+        "accuracy": 0.7538461538461538,
+        "correct": 49,
+        "total": 65
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.8,
+        "correct": 28,
+        "total": 35
+      },
+      "Orientation": {
+        "accuracy": 0.7727272727272727,
+        "correct": 17,
+        "total": 22
+      },
+      "Colorization": {
+        "accuracy": 0.7272727272727273,
+        "correct": 8,
+        "total": 11
+      },
+      "Texture and Noise": {
+        "accuracy": 0.6666666666666666,
+        "correct": 4,
+        "total": 6
+      },
+      "Lighting and Shadows": {
+        "accuracy": 1.0,
+        "correct": 2,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.8333333333333334,
+        "correct": 5,
+        "total": 6
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.5,
+        "correct": 1,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_JS_vqa_n15_blind_inst",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_JS_vqa_n15_blind_inst/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.43583333333333335,
+    "overall_correct": 1046,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.4014962593516209,
+        "correct": 161,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.44549266247379454,
+        "correct": 850,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.3875968992248062,
+        "correct": 350,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.4725130890052356,
+        "correct": 361,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.3790322580645161,
+        "correct": 94,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.4826388888888889,
+        "correct": 139,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.5436893203883495,
+        "correct": 56,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.4666666666666667,
+        "correct": 35,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.42,
+        "correct": 42,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.6666666666666666,
+        "correct": 2,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_JS_vqa_n15_blind_inst",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_JS_vqa_n15_blind_inst/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 85,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 21
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 65
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 35
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 22
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 11
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_vqa_gtfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_vqa_gtfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_vqa_gtfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A1_vqa_gtfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A2_vqa_10_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A2_vqa_10_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A2_vqa_10_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A2_vqa_10_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 281,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 50
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 222
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 121
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 89
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 30
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 14
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 9
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 12
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 14
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A3_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A3_vqa_15_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A3_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A3_vqa_15_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 281,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 50
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 222
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 121
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 89
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 30
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 14
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 9
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 12
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 14
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 281,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 50
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 222
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 121
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 89
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 30
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 14
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 9
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 12
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 14
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 281,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 50
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 222
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 121
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 89
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 30
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 14
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 9
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 12
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 14
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_SFT_vqa_gtfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_SFT_vqa_gtfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_SFT_vqa_gtfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-4B-Instruct/Qwen3-VL-4B-Instruct_SFT_vqa_gtfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 85,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 21
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 65
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 35
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 22
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 11
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A1_vqa_gtfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A1_vqa_gtfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A1_vqa_gtfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A1_vqa_gtfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 826,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 153
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 684
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 341
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 265
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 82
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 42
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 21
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 33
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 29
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A2_vqa_10_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A2_vqa_10_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A2_vqa_10_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A2_vqa_10_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 85,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 21
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 65
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 35
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 22
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 11
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A3_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A3_vqa_15_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A3_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A3_vqa_15_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 85,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 21
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 65
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 35
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 22
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 11
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 85,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 21
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 65
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 35
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 22
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 11
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 85,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 21
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 65
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 35
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 22
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 11
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 6
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_instfold_0/spubench_inst_blind.jsonl"
+  },
+  {
+    "file": "spubench.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "llava-v1.6-mistral-7b-hf/llava-v1.6-mistral-7b-hf_A3_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/llava-v1.6-mistral-7b-hf/llava-v1.6-mistral-7b-hf_A3_vqa_15_blind_instfold_0/spubench.jsonl"
+  },
+  {
+    "file": "spubench_inst_blind.jsonl",
+    "overall_accuracy": 0.0,
+    "overall_correct": 0,
+    "overall_total": 2400,
+    "by_spurious_type": {
+      "Shape": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 401
+      },
+      "Background": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1908
+      },
+      "Co-occurring Objects": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 903
+      },
+      "Orientation": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 764
+      },
+      "Colorization": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 248
+      },
+      "Texture and Noise": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 288
+      },
+      "Lighting and Shadows": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 103
+      },
+      "Relative Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 75
+      },
+      "Perspective and Angle": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 100
+      },
+      "Context": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 3
+      },
+      "Packaging": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Position": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Material": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 2
+      },
+      "Size": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Appearance": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "Motion Blur": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 1
+      }
+    },
+    "model": "llava-v1.6-mistral-7b-hf/llava-v1.6-mistral-7b-hf_A3_vqa_15_blind_instfold_0",
+    "path": "evaluation/scored/finetuned/llava-v1.6-mistral-7b-hf/llava-v1.6-mistral-7b-hf_A3_vqa_15_blind_instfold_0/spubench_inst_blind.jsonl"
+  }
+]
