@@ -1,32 +1,66 @@
-,mean,mean,mean,count,count,count
-,correct,correct,correct,correct,correct,correct
-condition,,blind,inst blind,,blind,inst blind
-model,,,,,,
-InternVL3_5-1B,0.8048,0.4358,0.4385,374.0,374.0,374.0
-InternVL3_5-2B,0.8209,0.4554,0.4528,374.0,374.0,374.0
-InternVL3_5-4B,0.8298,0.4501,0.4724,374.0,374.0,374.0
-InternVL3_5-8B,0.869,0.4715,0.4537,374.0,374.0,374.0
-InternVL3_5-8B_A1_vqa_gt,0.8725,,0.5169,374.0,,374.0
-InternVL3_5-8B_A2_vqa_10_blind_inst,0.861,,0.5071,374.0,,374.0
-InternVL3_5-8B_A4_mmstar_15_blind_inst,0.8636,,0.4643,374.0,,374.0
-Qwen3-4B,0.1212,,,374.0,,
-Qwen3-VL-2B-Instruct,0.8298,0.4545,0.4617,374.0,374.0,374.0
-Qwen3-VL-4B-Instruct,0.8592,0.4545,0.4742,374.0,374.0,374.0
-Qwen3-VL-4B-Instruct_A1_vqa_gt,0.8815,,0.4929,374.0,,374.0
-Qwen3-VL-4B-Instruct_A2_vqa_10_blind_inst,0.844,,0.4742,374.0,,374.0
-Qwen3-VL-4B-Instruct_A3_vqa_15_blind_inst,0.8494,,0.4848,374.0,,374.0
-Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_inst,0.8565,,0.4733,374.0,,374.0
-Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_inst,0.8476,,0.4724,374.0,,374.0
-Qwen3-VL-4B-Instruct_SFT_vqa_gt,0.8868,,0.5169,374.0,,374.0
-Qwen3-VL-8B-Instruct,0.8939,0.443,0.4742,374.0,374.0,374.0
-Qwen3-VL-8B-Instruct_A1_vqa_gt,0.893,,0.4617,374.0,,374.0
-Qwen3-VL-8B-Instruct_A2_vqa_10_blind_inst,0.8699,,0.4608,374.0,,374.0
-Qwen3-VL-8B-Instruct_A3_vqa_15_blind_inst,0.893,,0.4617,374.0,,374.0
-Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_inst,0.8913,,0.4679,374.0,,374.0
-Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_inst,0.8886,,0.4706,374.0,,374.0
-Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst,0.8752,,0.4688,374.0,,374.0
-humans,,,0.3894,,,374.0
-llava-v1.6-mistral-7b-hf,0.8627,0.451,0.467,374.0,374.0,374.0
-llava-v1.6-mistral-7b-hf_A1_vqa_gt,0.877,,0.5633,374.0,,374.0
-llava-v1.6-mistral-7b-hf_A2_vqa_10_blind_inst,0.8369,,0.475,374.0,,374.0
-llava-v1.6-mistral-7b-hf_A4_mmstar_15_blind_inst,0.8592,,0.5214,374.0,,374.0
+model,condition,correct
+InternVL3_5-1B,,0.8048128342245989
+InternVL3_5-1B,blind,0.4358288770053476
+InternVL3_5-1B,inst blind,0.4385026737967914
+InternVL3_5-2B,,0.820855614973262
+InternVL3_5-2B,blind,0.45543672014260245
+InternVL3_5-2B,inst blind,0.4527629233511586
+InternVL3_5-4B,,0.8297682709447415
+InternVL3_5-4B,blind,0.4500891265597147
+InternVL3_5-4B,inst blind,0.47237076648841353
+InternVL3_5-8B,,0.8689839572192514
+InternVL3_5-8B,blind,0.47147950089126556
+InternVL3_5-8B,inst blind,0.45365418894830656
+InternVL3_5-8B_A1_vqa_gt,,0.872549019607843
+InternVL3_5-8B_A1_vqa_gt,inst blind,0.516934046345811
+InternVL3_5-8B_A2_vqa_10_blind_inst,,0.8609625668449198
+InternVL3_5-8B_A2_vqa_10_blind_inst,inst blind,0.5071301247771836
+InternVL3_5-8B_A3_vqa_15_blind_inst,,0.8609625668449198
+InternVL3_5-8B_A3_vqa_15_blind_inst,inst blind,0.4955436720142602
+InternVL3_5-8B_A4_mmstar_15_blind_inst,,0.8636363636363636
+InternVL3_5-8B_A4_mmstar_15_blind_inst,inst blind,0.46434937611408195
+Qwen3-VL-2B-Instruct,,0.8297682709447415
+Qwen3-VL-2B-Instruct,blind,0.45454545454545453
+Qwen3-VL-2B-Instruct,inst blind,0.46167557932263814
+Qwen3-VL-4B-Instruct,,0.8591800356506238
+Qwen3-VL-4B-Instruct,blind,0.45454545454545453
+Qwen3-VL-4B-Instruct,inst blind,0.4741532976827094
+Qwen3-VL-4B-Instruct_A1_vqa_gt,,0.8814616755793225
+Qwen3-VL-4B-Instruct_A1_vqa_gt,inst blind,0.49286987522281633
+Qwen3-VL-4B-Instruct_A2_vqa_10_blind_inst,,0.8440285204991086
+Qwen3-VL-4B-Instruct_A2_vqa_10_blind_inst,inst blind,0.4741532976827094
+Qwen3-VL-4B-Instruct_A3_vqa_15_blind_inst,,0.8493761140819963
+Qwen3-VL-4B-Instruct_A3_vqa_15_blind_inst,inst blind,0.4848484848484848
+Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_inst,,0.85650623885918
+Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_inst,inst blind,0.4732620320855615
+Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_inst,,0.8475935828877005
+Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_inst,inst blind,0.47237076648841353
+Qwen3-VL-4B-Instruct_SFT_vqa_gt,,0.8868092691622103
+Qwen3-VL-4B-Instruct_SFT_vqa_gt,inst blind,0.516934046345811
+Qwen3-VL-8B-Instruct,,0.8939393939393939
+Qwen3-VL-8B-Instruct,blind,0.44295900178253117
+Qwen3-VL-8B-Instruct,inst blind,0.4741532976827094
+Qwen3-VL-8B-Instruct_A1_vqa_gt,,0.893048128342246
+Qwen3-VL-8B-Instruct_A1_vqa_gt,inst blind,0.46167557932263814
+Qwen3-VL-8B-Instruct_A2_vqa_10_blind_inst,,0.8698752228163993
+Qwen3-VL-8B-Instruct_A2_vqa_10_blind_inst,inst blind,0.46078431372549017
+Qwen3-VL-8B-Instruct_A3_vqa_15_blind_inst,,0.893048128342246
+Qwen3-VL-8B-Instruct_A3_vqa_15_blind_inst,inst blind,0.46167557932263814
+Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_inst,,0.8912655971479501
+Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_inst,inst blind,0.4679144385026738
+Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_inst,,0.8885918003565062
+Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_inst,inst blind,0.47058823529411764
+Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst,,0.8752228163992869
+Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst,inst blind,0.4688057040998217
+humans,inst blind,0.3893940678565429
+llava-v1.6-mistral-7b-hf,,0.8627450980392156
+llava-v1.6-mistral-7b-hf,blind,0.4509803921568627
+llava-v1.6-mistral-7b-hf,inst blind,0.4670231729055258
+llava-v1.6-mistral-7b-hf_A1_vqa_gt,,0.8770053475935828
+llava-v1.6-mistral-7b-hf_A1_vqa_gt,inst blind,0.5632798573975044
+llava-v1.6-mistral-7b-hf_A2_vqa_10_blind_inst,,0.8368983957219251
+llava-v1.6-mistral-7b-hf_A2_vqa_10_blind_inst,inst blind,0.4750445632798574
+llava-v1.6-mistral-7b-hf_A4_mmstar_15_blind_inst,,0.8591800356506238
+llava-v1.6-mistral-7b-hf_A4_mmstar_15_blind_inst,inst blind,0.5213903743315508
+llava-v1.6-mistral-7b-hf_SFT_mmstar_15_blind_inst,,0.8654188948306595
+llava-v1.6-mistral-7b-hf_SFT_mmstar_15_blind_inst,inst blind,0.5320855614973262
