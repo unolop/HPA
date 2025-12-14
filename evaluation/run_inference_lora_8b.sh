@@ -1,7 +1,7 @@
 #!/bin/bash
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
-GPU=1
+GPU=0
 DATASET_PATHS=( "spubench" "mmstar" "vqa_5k" "vqa_1k"  )  
 CONDITION_LIST=("" "_inst_blind") #  "_sys_inst_blind"   "_blind" 
 BASE_MODEL=(

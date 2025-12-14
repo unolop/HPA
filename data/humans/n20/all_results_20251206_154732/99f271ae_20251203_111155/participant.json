@@ -1,0 +1,16 @@
+{
+  "participant_id": "99f271ae-0e27-40ef-9589-585e1ece4923",
+  "name": "Boldrini Rodríguez Lara Estefanía ",
+  "age": "23",
+  "gender": "female",
+  "email": "estefaniaboldrini@gmail.com",
+  "session": "s1",
+  "experiment_start_time": "2025-12-03T11:11:41.025686",
+  "experiment_end_time": null,
+  "total_questions": 641,
+  "current_question": 152,
+  "is_completed": false,
+  "total_time_spent_ms": 19338308,
+  "save_timestamp": "20251203_163417",
+  "result_folder": "99f271ae_20251203_111155"
+}

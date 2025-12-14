@@ -25,7 +25,7 @@ from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Tuple
 from tqdm import tqdm
-from utils import get_encoder, answer_similarity 
+from analysis.utils import get_encoder 
 
 # Add parent directory for imports
 sys.path.append(str(Path(__file__).parent.parent))
@@ -156,7 +156,7 @@ def load_mmstar_annotations(session: str = "s1") -> Dict:
                     or
                     (qid == "214" and str(data.get('pid')) == "284") 
                 ):
-                    print(f'manually matched {qid}')
+                    # print(f'manually matched {qid}')
                     data['human_qid'] = qid
                     data['original_question'] = data['question']
                     annot[qid] = data
@@ -180,7 +180,7 @@ def load_mmstar_annotations(session: str = "s1") -> Dict:
                     not_matched[qid].append(data) 
                     
         if not matched: 
-            print(f"Not matching {row_options_list, mmstar_options}") 
+            # print(f"Not matching {row_options_list, mmstar_options}")  
             if len(not_matched[qid]) == 1 : 
                 data = not_matched[qid][0] 
                 data['human_qid'] = qid 
@@ -446,6 +446,7 @@ def process_all_responses(
     """
     Process all raw human responses and compute per-question metrics.
     """
+    human_data_dir =f"/home/work/yuna/HPA/data/humans/{human_data_dir}" 
     print(f"\n{'='*60}")
     print(f"📊 Processing Raw Human Responses")
     print(f"   Session: {session}")
@@ -622,13 +623,15 @@ def main():
     )
 
     parser.add_argument("--human_data_dir", type=str,
-                        default="/home/work/yuna/HPA/data/humans/all_results_20251206_154732",
+                        default="all_results_20251206_154732",
                         help="Directory with raw human CSV files")
     parser.add_argument("--session", type=str, default="s1",
                         help="Session identifier (for questions file)")
     parser.add_argument("--output_dir", type=str, default="/home/work/yuna/HPA/evaluation/scored/humans",
                         help="Output directory for processed results")
     parser.add_argument("--with_similarity", action="store_true",
+                        help="Compute embedding similarity (requires sentence-transformers)")
+    parser.add_argument("--debug", action="store_true",
                         help="Compute embedding similarity (requires sentence-transformers)")
 
     args = parser.parse_args()

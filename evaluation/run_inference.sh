@@ -5,12 +5,12 @@ GPU=0
 DATASET_PATHS=("spubench" "mmstar" "vqa_1k"  "vqa_5k"  )  # 
 CONDITION_LIST=("" "_inst_blind") #  "_sys_inst_blind" "_blind"
 BASE_MODEL=(
-    # "llava-hf/llava-1.5-7b-hf"
-    "OpenGVLab/InternVL3_5-8B"
+    "llava-hf/llava-1.5-7b-hf"
+    # "OpenGVLab/InternVL3_5-8B"
     # "llava-hf/llava-v1.6-mistral-7b-hf"
     # "Qwen/Qwen3-VL-8B-Instruct"
     # "Qwen/Qwen3-VL-4B-Instruct"
-    # "llava-hf/llava-v1.6-vicuna-7b-hf"
+    "llava-hf/llava-v1.6-vicuna-7b-hf"
     )
     
 ADAPTERS_PATHS=(

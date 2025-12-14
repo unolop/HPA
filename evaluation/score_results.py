@@ -19,7 +19,7 @@ import pandas as pd
 from collections import defaultdict
 from typing import Dict
 from glob import glob
-from utils import *  
+from analysis.utils import *  
 
 
 DATASETS = ["mmstar", "spubench", "vqa_1k", "vqa_5k"]
@@ -108,10 +108,6 @@ def get_spubench():
         annot = json.load(f) 
     return annot 
 
-# =============================================================================
-# Main Scoring
-# =============================================================================
-
 def score_file(
     input_path: str,
     output_path: str = None,
@@ -128,8 +124,7 @@ def score_file(
         with_similarity: If True, compute answer similarity for VQA datasets
 
     Returns dict with accuracy, per-category breakdown, etc.
-    """
-    # Check if output already exists
+    """ 
     if skip_existing and output_path and os.path.exists(output_path):
         try:
             with open(input_path, 'r', encoding='utf-8') as fin:

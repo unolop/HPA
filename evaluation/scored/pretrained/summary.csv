@@ -1,2 +1,1 @@
-file,model,dataset,condition,accuracy,correct,total,by_category
-Qwen3-8B-Base_mmstar.jsonl,,mmstar,,0.212,318,1500,"{'coarse perception': {'accuracy': 0.188, 'correct': 47, 'total': 250}, 'fine-grained perception': {'accuracy': 0.22, 'correct': 55, 'total': 250}, 'instance reasoning': {'accuracy': 0.148, 'correct': 37, 'total': 250}, 'logical reasoning': {'accuracy': 0.212, 'correct': 53, 'total': 250}, 'math': {'accuracy': 0.316, 'correct': 79, 'total': 250}, 'science & technology': {'accuracy': 0.188, 'correct': 47, 'total': 250}}"
+

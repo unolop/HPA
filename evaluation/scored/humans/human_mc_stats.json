@@ -1,7 +1,7 @@
 {
-  "num_questions": 267,
-  "total_responses": 4006,
-  "mean_accuracy": 0.26773898698056003,
-  "mean_confidence": 0.5872019350811486,
-  "correlation_conf_acc": 0.09349762869245574
+  "num_questions": 0,
+  "total_responses": 0,
+  "mean_accuracy": NaN,
+  "mean_confidence": NaN,
+  "correlation_conf_acc": 0.0
 }
