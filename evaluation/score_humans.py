@@ -48,12 +48,6 @@ CONF_MAP = {
     '4': 0.75,
     '5': 1.0
 }
-
-
-# =============================================================================
-# VQA Annotation Loading
-# =============================================================================
-
 class VQAAnswerMapper:
     """Maps question_id to list of ground truth answers from VQA annotations."""
 
