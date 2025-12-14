@@ -20,60 +20,10 @@ from collections import defaultdict
 from typing import Dict
 from glob import glob
 from analysis.utils import *  
+import sys  
+sys.path.append('/home/work/yuna/HPA') 
+from preprocessing.utils import *  
 
-
-DATASETS = ["mmstar", "spubench", "vqa_1k", "vqa_5k"]
-CONDITIONS = ["_inst_blind", "", "_sys_inst_blind", "_blind"]
-MODELNAMES = [
-    "OpenGVLab/InternVL3_5-8B",
-    "OpenGVLab/InternVL3_5-4B",
-    "OpenGVLab/InternVL3_5-2B",
-    "OpenGVLab/InternVL3_5-1B",
-    "Qwen/Qwen3-VL-2B-Instruct",
-    "Qwen/Qwen3-VL-4B-Instruct",
-    "Qwen/Qwen3-VL-8B-Instruct",
-    "llava-hf/llava-v1.6-vicuna-7b-hf",
-    "llava-hf/llava-v1.6-mistral-7b-hf",
-    "llava-hf/llava-1.5-7b-hf",
-]
-
-DATASET_TYPE = {
-    'mmstar': 'multi-choice',
-    'spubench': 'multi-choice',
-    'vqa_1k': 'open-ended',
-    'vqa_5k': 'open-ended',
-}
-
-
-def get_conditions(path, datasets=DATASETS, conditions=CONDITIONS, modelnames=MODELNAMES):
-    """Extract model, dataset, condition from filename."""
-    filename = os.path.basename(path).replace(".jsonl", "")
-
-    tokens = filename.split("_")
-    short_models = {m.split("/")[-1]: m for m in modelnames}
-
-    model_full = None
-    for short, full in short_models.items():
-        if short in path:
-            model_full = full
-            break
-    if 'finetuned' in path : 
-        trained = path.split('/')[-2] 
-        model_full += f"/{trained}" 
-
-    dataset = None
-    for d in datasets:
-        if d in tokens or d in filename:
-            dataset = d
-            break
-
-    condition = ""
-    for c in conditions:
-        if c != "" and c in filename:
-            condition = c
-            break
-
-    return model_full, dataset, condition
 
 # Global mapper instance (lazy loaded)
 _vqa_mapper = None
@@ -104,7 +54,7 @@ def get_spubench():
     # from inference import load_dataset 
     # spubench = load_dataset("spubench") 
 
-    with open('/home/work/yuna/HPA/data/annotation.json', 'r', encoding='utf-8') as f: 
+    with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f: 
         annot = json.load(f) 
     return annot 
 
@@ -145,8 +95,9 @@ def score_file(
     model_full, dataset, condition = get_conditions(input_path)
     dataset_type = DATASET_TYPE.get(dataset, 'multi-choice') 
     print(f"📊 Scoring: {input_path}") 
+    if dataset == 'spubench': 
+        annotations = get_spubench()
 
-    # Load data first (fast operation)
     data = []
     with open(input_path, 'r', encoding='utf-8') as f:
         for line in f:
@@ -157,7 +108,6 @@ def score_file(
         print("   ⚠️ Empty file!")
         return {}
 
-    # Only load VQA mapper if we actually need it (lazy initialization)
     vqa_mapper = None
     encoder = None
     if with_similarity and dataset_type == 'open-ended':
@@ -172,30 +122,32 @@ def score_file(
     correct = 0
     total = 0
     by_category = defaultdict(lambda: {'correct': 0, 'total': 0})
+    
 
     for item in data:
         output = item.get('output', '')
         category = item.get('category', item.get('l2_category', item.get('question_type', 'Unknown')))
         # Get ground truth answers and score
         if dataset_type == 'multi-choice':
+            
+            if 'answer' not in item.keys(): 
+                ### Get annotations  
+                qid = item.get('pid', '') 
+                annot = annotations[qid]
+                item = {**annot, **item} 
+                
             gt = item.get('answer', '')
             extracted_choice = extract_mc_choice(output)
-            is_correct = gt.strip().upper()[0] == extracted_choice if gt and extracted_choice else False
-            
-            # Save extracted choice for MC datasets
-            item['extracted_choice'] = extracted_choice
+            is_correct = gt.strip().upper()[0] == extracted_choice if gt and extracted_choice else False 
+            item['extracted_choice'] = extracted_choice  
         else:
-            # Open-ended: get all annotator answers
             qid = item.get('question_id', item.get('qid', item.get('index', None)))
-
-            # Lazy load VQA mapper only when we encounter the first VQA item
-            if vqa_mapper is None and qid is not None:
+            if vqa_mapper is None and qid is not None: 
                 vqa_mapper = get_vqa_mapper()
 
             if vqa_mapper and qid is not None:
                 all_answers = vqa_mapper.get_answers(qid)
-            else:
-                # Fallback to item's answers field
+            else: 
                 all_answers = item.get('answers', [item.get('answer', '')])
                 if isinstance(all_answers, str):
                     all_answers = [all_answers]
@@ -292,8 +244,7 @@ def score_directory(
         elif skip_existing and out_path and os.path.exists(out_path):
             skipped_count += 1
 
-    # Print processing summary
-    print(f"\n{'='*60}")
+    # Print processing summary 
     print(f"✓ Processed {len(all_results)} files")
     if skipped_count > 0:
         print(f"⏭️  Skipped {skipped_count} files (already processed)")
@@ -304,9 +255,7 @@ def score_directory(
     
     # Pivot for easy comparison
     if len(all_results) > 0:
-        print("\n" + "="*60)
         print("📊 SUMMARY")
-        print("="*60)
         
         # Group by model and condition
         summary = df.groupby(['model', 'dataset', 'condition'])['accuracy'].first().unstack(fill_value=0)
@@ -316,15 +265,15 @@ def score_directory(
     os.makedirs(output_dir, exist_ok=True)
     
     # Save detailed results
-    results_path = os.path.join(output_dir, 'scored_results.json')
-    with open(results_path, 'w') as f:
-        json.dump(all_results, f, indent=2)
-    print(f"\n✓ Detailed results: {results_path}")
+    # results_path = os.path.join(output_dir, 'scored_results.json')
+    # with open(results_path, 'w') as f:
+    #     json.dump(all_results, f, indent=2)
+    # print(f"\n✓ Detailed results: {results_path}")
     
-    # Save summary CSV
-    csv_path = os.path.join(output_dir, 'summary.csv')
-    df.to_csv(csv_path, index=False)
-    print(f"✓ Summary CSV: {csv_path}")
+    # # Save summary CSV
+    # csv_path = os.path.join(output_dir, 'summary.csv')
+    # df.to_csv(csv_path, index=False)
+    # print(f"✓ Summary CSV: {csv_path}") 
     
     return df
 

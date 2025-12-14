@@ -4,20 +4,27 @@ import json
 import random 
 
 
-datasets = [ "mmstar","spubench","vqa_1k",  "vqa_5k" ]
-conditions = ["_inst_blind", "" ,"_sys_inst_blind", "_blind"]
-modelnames = [
-    "Qwen/Qwen3-VL-2B-Instruct",
+DATASETS = ["mmstar", "spubench", "vqa_1k", "vqa_5k"]
+CONDITIONS = ["_inst_blind", "", "_sys_inst_blind", "_blind"]
+MODELNAMES = [
     "OpenGVLab/InternVL3_5-8B",
     "OpenGVLab/InternVL3_5-4B",
     "OpenGVLab/InternVL3_5-2B",
     "OpenGVLab/InternVL3_5-1B",
-    "llava-hf/llava-v1.6-mistral-7b-hf",
-    "OpenGVLab/InternVL3_5-8B",
+    "Qwen/Qwen3-VL-2B-Instruct",
+    "Qwen/Qwen3-VL-4B-Instruct",
     "Qwen/Qwen3-VL-8B-Instruct",
     "llava-hf/llava-v1.6-vicuna-7b-hf",
-    "Qwen/Qwen3-VL-4B-Instruct",
-    "llava-hf/llava-1.5-7b-hf"]
+    "llava-hf/llava-v1.6-mistral-7b-hf",
+    "llava-hf/llava-1.5-7b-hf",
+]
+
+DATASET_TYPE = {
+    'mmstar': 'multi-choice',
+    'spubench': 'multi-choice',
+    'vqa_1k': 'open-ended',
+    'vqa_5k': 'open-ended',
+}
 
 def read_and_clean_jsonl(path):
     data = []
@@ -54,18 +61,21 @@ def mix_original(original, new_data, combined_output_path ):
         print(f"Combined dataset saved to {combined_output_path}")
     # np.random.shuffle(examples) 
 
-def get_conditions(path, datasets=datasets, conditions=conditions, modelnames=modelnames):
+def get_conditions(path, datasets=DATASETS, conditions=CONDITIONS, modelnames=MODELNAMES):
+    """Extract model, dataset, condition from filename."""
     filename = os.path.basename(path).replace(".jsonl", "")
+
     tokens = filename.split("_")
     short_models = {m.split("/")[-1]: m for m in modelnames}
 
-    model_short = None
     model_full = None
     for short, full in short_models.items():
-        if short in filename:
-            model_short = short
+        if short in path:
             model_full = full
             break
+    if 'finetuned' in path : 
+        trained = path.split('/')[-2] 
+        model_full += f"/{trained}" 
 
     dataset = None
     for d in datasets:

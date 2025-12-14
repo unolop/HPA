@@ -447,12 +447,9 @@ def process_all_responses(
     Process all raw human responses and compute per-question metrics.
     """
     human_data_dir =f"/home/work/yuna/HPA/data/humans/{human_data_dir}" 
-    print(f"\n{'='*60}")
-    print(f"📊 Processing Raw Human Responses")
     print(f"   Session: {session}")
     print(f"   Data dir: {human_data_dir}")
-    print(f"{'='*60}")
-
+    
     os.makedirs(output_dir, exist_ok=True)
 
     # Load questions
@@ -473,9 +470,7 @@ def process_all_responses(
             print("   ⚠️ Failed to load encoder, skipping similarity")
 
     # Process VQA (text)
-    print(f"\n{'='*60}")
     print("Processing VQA (text) responses...")
-    print(f"{'='*60}")
 
     # Load raw responses
     # all_responses = load_raw_human_data(human_data_dir, questions_path) 
@@ -536,9 +531,7 @@ def process_all_responses(
     print(f"   ✓ Saved: {stats_output}")
 
     # Process MC (choice)
-    print(f"\n{'='*60}")
     print("Processing MC (choice) responses...")
-    print(f"{'='*60}")
     print(f"   Found {len(text_responses_by_qid)} VQA questions")
 
     choice_responses_by_qid, choice_gt = get_responses_by_qid(
@@ -588,9 +581,7 @@ def process_all_responses(
     with open(os.path.join(output_dir, 'human_mc_qids.json'), 'w') as f:
         json.dump({'qids': mc_qids, 'count': len(mc_qids)}, f, indent=2)
 
-    print(f"\n{'='*60}")
     print("📈 Summary")
-    print(f"{'='*60}")
     print(f"VQA Questions: {len(text_results)}")
     print(f"  Mean Accuracy: {vqa_stats['mean_accuracy']:.4f}")
     print(f"  Mean Confidence: {vqa_stats['mean_confidence']:.4f}")
