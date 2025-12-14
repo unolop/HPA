@@ -285,7 +285,7 @@ def setup_openai_client(api_key: str = None):
     except ImportError:
         print("❌ OpenAI package not installed. Run: pip install openai")
         return None
-    
+
     # Try to get API key from various sources
     if api_key is None:
         try:
@@ -293,14 +293,41 @@ def setup_openai_client(api_key: str = None):
             load_dotenv()
         except ImportError:
             pass
-        
+
         api_key = os.getenv('OPENAI_API_KEY') or os.getenv('API_KEY')
-    
+
     if not api_key:
         print("❌ No OpenAI API key found. Set OPENAI_API_KEY environment variable.")
         return None
-    
+
     return OpenAI(api_key=api_key)
+
+
+def ask_gpt(client, prompt: str, model: str = "gpt-4o-mini") -> str:
+    """
+    Send a prompt to GPT and get the response.
+
+    Args:
+        client: OpenAI client instance
+        prompt: The prompt to send
+        model: Model to use (default: gpt-4o-mini)
+
+    Returns:
+        The text response from the model
+    """
+    if client is None:
+        return ""
+
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3,
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"⚠️  Error calling GPT: {e}")
+        return ""
 
 def translate_prompt(question, answer): 
     prompt = f"""You are a precise translation assistant for VQA data.
