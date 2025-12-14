@@ -1,0 +1,14 @@
+{
+  "mmstar": {
+    "n_questions": 2444,
+    "human_mean_accuracy": 0.2677930890031954,
+    "model_mean_accuracy": 0.5368248772504092,
+    "correlation_pearson": 0.021509174948447916
+  },
+  "vqa_1k": {
+    "n_questions": 3366,
+    "human_mean_accuracy": 0.386323363194607,
+    "model_mean_accuracy": 0.7293523469994059,
+    "correlation_pearson": 0.25025383823067426
+  }
+}
