@@ -5,13 +5,13 @@ model,,,,,,
 InternVL3_5-1B,0.434,0.2767,0.2573,1500.0,1500.0,1500.0
 InternVL3_5-2B,0.5173,0.254,0.2607,1500.0,1500.0,1500.0
 InternVL3_5-4B,0.6427,0.274,0.2453,1500.0,1500.0,1500.0
-InternVL3_5-8B,0.6266,0.2953,0.2873,1074.0,1500.0,1500.0
+InternVL3_5-8B,0.6266,0.2967,0.284,1074.0,1500.0,1500.0
 InternVL3_5-8B_A1_vqa_gt,0.6747,,0.3047,1500.0,,1500.0
-InternVL3_5-8B_A2_vqa_10_blind_inst,0.6713,,0.3213,1500.0,,1500.0
+InternVL3_5-8B_A2_vqa_10_blind_inst,0.6713,,0.3207,1500.0,,1500.0
 InternVL3_5-8B_A3_vqa_15_blind_inst,0.6713,,0.3207,1500.0,,1500.0
 InternVL3_5-8B_A4_mmstar_15_blind_inst,0.6753,,0.3113,1500.0,,1500.0
 InternVL3_5-8B_SFT_mmstar_15_blind_inst,0.664,,0.32,1500.0,,1500.0
-Qwen3-0.6B,0.2991,,,107.0,,
+Qwen3-0.6B,0.2804,,,107.0,,
 Qwen3-8B-Base,0.212,,,1500.0,,
 Qwen3-VL-2B-Instruct,0.5167,0.206,0.2387,1500.0,1500.0,1500.0
 Qwen3-VL-4B-Instruct,0.638,0.248,0.218,1500.0,1500.0,1500.0
@@ -34,4 +34,3 @@ llava-v1.6-mistral-7b-hf_A2_vqa_10_blind_inst,0.3627,,0.258,1500.0,,1500.0
 llava-v1.6-mistral-7b-hf_A3_vqa_15_blind_inst,0.3687,,0.248,1500.0,,1500.0
 llava-v1.6-mistral-7b-hf_A4_mmstar_15_blind_inst,0.384,,0.2753,1500.0,,1500.0
 llava-v1.6-mistral-7b-hf_SFT_mmstar_15_blind_inst,0.3973,,0.2807,1500.0,,1500.0
-llava-v1.6-mistral-7b-hf_SFT_vqa_15_blind_inst,0.3673,,0.252,1500.0,,1500.0

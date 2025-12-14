@@ -9,14 +9,14 @@ MODELS=(
     "Qwen/Qwen3-VL-4B-Instruct"
 )
 KFOLD_DIRS=(
-    "/home/work/yuna/HPA/data/training/s1_text/kfold_vqa_gt"
-    "/home/work/yuna/HPA/data/training/s1_text/kfold_10_blind_inst"
+    # "/home/work/yuna/HPA/data/training/s1_text/kfold_vqa_gt"
+    # "/home/work/yuna/HPA/data/training/s1_text/kfold_10_blind_inst"
     "/home/work/yuna/HPA/data/training/s1_text/kfold_15_blind_inst"
     "/home/work/yuna/HPA/data/training/s1_choice/kfold_15_blind_inst"
 )
 DATASET_NAMES=(
-    "A1_vqa_gt"
-    "A2_vqa_10_blind_inst"
+    # "A1_vqa_gt"
+    # "A2_vqa_10_blind_inst"
     "A3_vqa_15_blind_inst"
     "A4_mmstar_15_blind_inst"
 )
@@ -47,7 +47,7 @@ for dataset_idx in "${!KFOLD_DIRS[@]}"; do
             --learning_rate 2e-5 \
             --lora_rank 8 \
             --lora_alpha 16 \
-            --folds 0 \
+            --folds 1 2 3 4 \
             --batch_size 1 \
             --gradient_accumulation_steps 8 \
             --save_steps 40 \
