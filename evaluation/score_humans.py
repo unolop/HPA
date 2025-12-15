@@ -26,6 +26,8 @@ from collections import defaultdict
 from typing import Dict, List, Tuple
 from tqdm import tqdm
 from analysis.utils import get_encoder 
+from scipy.stats import pearsonr
+from math import atanh, tanh, sqrt 
 
 # Add parent directory for imports
 sys.path.append(str(Path(__file__).parent.parent))
@@ -357,10 +359,10 @@ def process_question_responses(
             accuracies.append(acc)
 
             # Similarity to GT (use majority answer)
-            if encoder and gt_answers:
-                majority_gt = max(set(gt_answers), key=gt_answers.count)
-                sim_gt = compute_similarity(majority_gt, answer, encoder)
-                gt_similarities.append(sim_gt)
+            # if encoder and gt_answers:
+            #     majority_gt = max(set(gt_answers), key=gt_answers.count)
+            #     sim_gt = compute_similarity(majority_gt, answer, encoder)
+            #     gt_similarities.append(sim_gt)
 
             # Similarity to visual GT
             if encoder and visual_gt:
@@ -384,10 +386,10 @@ def process_question_responses(
             'accuracies': accuracies,
         }
 
-        if gt_similarities:
-            result['mean_gt_similarity'] = float(np.mean(gt_similarities))
-            result['std_gt_similarity'] = float(np.std(gt_similarities))
-            result['gt_similarities'] = gt_similarities
+        # if gt_similarities:
+        #     result['mean_gt_similarity'] = float(np.mean(gt_similarities))
+        #     result['std_gt_similarity'] = float(np.std(gt_similarities))
+        #     result['gt_similarities'] = gt_similarities
 
         if visual_similarities:
             result['mean_visual_similarity'] = float(np.mean(visual_similarities))
@@ -501,23 +503,55 @@ def process_all_responses(
         )[0, 1]) if len(text_results) > 1 else 0.0,
     }
 
-    if with_similarity and any('mean_gt_similarity' in r for r in text_results):
-        vqa_stats['mean_gt_similarity'] = float(np.mean([
-            r['mean_gt_similarity'] for r in text_results if 'mean_gt_similarity' in r
-        ]))
-        vqa_stats['correlation_gt_sim_acc'] = float(np.corrcoef(
-            [r['mean_gt_similarity'] for r in text_results if 'mean_gt_similarity' in r],
-            [r['mean_accuracy'] for r in text_results if 'mean_gt_similarity' in r]
-        )[0, 1])
+    if with_similarity: #  and any('mean_gt_similarity' in r for r in text_results):
+        # vqa_stats['mean_gt_similarity'] = float(np.mean([
+        #     r['mean_gt_similarity'] for r in text_results if 'mean_gt_similarity' in r
+        # ]))
+        # vqa_stats['correlation_gt_sim_acc'] = float(np.corrcoef(
+        #     [r['mean_gt_similarity'] for r in text_results if 'mean_gt_similarity' in r],
+        #     [r['mean_accuracy'] for r in text_results if 'mean_gt_similarity' in r]
+        # )[0, 1])
 
         if any('mean_visual_similarity' in r for r in text_results):
-            vqa_stats['mean_visual_similarity'] = float(np.mean([
-                r['mean_visual_similarity'] for r in text_results if 'mean_visual_similarity' in r
-            ]))
-            vqa_stats['correlation_visual_sim_acc'] = float(np.corrcoef(
-                [r['mean_visual_similarity'] for r in text_results if 'mean_visual_similarity' in r],
-                [r['mean_accuracy'] for r in text_results if 'mean_visual_similarity' in r]
-            )[0, 1])
+            visual_sim = np.array([
+                r['mean_visual_similarity']
+                for r in text_results
+                if 'mean_visual_similarity' in r and 'mean_accuracy' in r
+            ])
+
+            accuracy = np.array([
+                r['mean_accuracy']
+                for r in text_results
+                if 'mean_visual_similarity' in r and 'mean_accuracy' in r
+            ])
+            n = len(visual_sim)
+
+            # Mean
+            mean_visual_similarity = float(visual_sim.mean())
+            r_val, p_val = pearsonr(visual_sim, accuracy)
+
+            # 95% CI via Fisher z
+            z = atanh(r_val)
+            se = 1 / sqrt(n - 3)
+            z_crit = 1.96  # 95% CI
+
+            ci_low = tanh(z - z_crit * se)
+            ci_high = tanh(z + z_crit * se)
+
+            vqa_stats['correlation_visual_sim_acc'] = {
+                "mean_visual_similarity": mean_visual_similarity,
+                "correlation_visual_sim_acc": {
+                    "method": "pearson",
+                    "r": round(float(r_val), 3),
+                    "p_value": round(float(p_val), 4),
+                    "n": n,
+                    "ci_95": [round(float(ci_low), 3), round(float(ci_high), 3)]
+                }
+            } 
+            # float(np.corrcoef(
+            #     [r['mean_visual_similarity'] for r in text_results if 'mean_visual_similarity' in r],
+            #     [r['mean_accuracy'] for r in text_results if 'mean_visual_similarity' in r]
+            # )[0, 1])
 
     stats_output = os.path.join(output_dir, 'human_vqa_stats.json')
     with open(stats_output, 'w', encoding='utf-8') as f:
@@ -543,9 +577,6 @@ def process_all_responses(
     # Save MC results
     choice_output = os.path.join(output_dir, 'human_mc_per_question.csv')
     pd.DataFrame(choice_results).to_csv(choice_output) 
-    # with open(choice_output, 'w', encoding='utf-8') as f:
-    #     for item in choice_results:
-    #         f.write(json.dumps(item, ensure_ascii=False) + '\n')
     print(f"\n   ✓ Saved: {choice_output}")
 
     # Compute MC statistics
@@ -580,9 +611,9 @@ def process_all_responses(
     print(f"  Mean Accuracy: {vqa_stats['mean_accuracy']:.4f}")
     print(f"  Mean Confidence: {vqa_stats['mean_confidence']:.4f}")
     print(f"  Correlation (Conf-Acc): {vqa_stats['correlation_conf_acc']:.4f}")
-    if 'mean_gt_similarity' in vqa_stats:
-        print(f"  Mean GT Similarity: {vqa_stats['mean_gt_similarity']:.4f}")
-        print(f"  Correlation (GT Sim-Acc): {vqa_stats['correlation_gt_sim_acc']:.4f}")
+    # if 'mean_gt_similarity' in vqa_stats:
+    #     print(f"  Mean GT Similarity: {vqa_stats['mean_gt_similarity']:.4f}")
+    #     print(f"  Correlation (GT Sim-Acc): {vqa_stats['correlation_gt_sim_acc']:.4f}")
     if 'mean_visual_similarity' in vqa_stats:
         print(f"  Mean Visual Similarity: {vqa_stats['mean_visual_similarity']:.4f}")
         print(f"  Correlation (Visual Sim-Acc): {vqa_stats['correlation_visual_sim_acc']:.4f}")

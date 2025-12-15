@@ -14,10 +14,8 @@ import json
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 from glob import glob
 from collections import defaultdict
-from pathlib import Path
 from scipy import stats
 
 # Set paper-ready style
@@ -45,7 +43,7 @@ COLORS = {
 # Data Loading
 # =============================================================================
 
-def load_human_mc_data(path='/home/user/HPA/evaluation/scored/humans/human_mc_per_question.csv'):
+def load_human_mc_data(path='/home/work/yuna/HPA/evaluation/scored/humans/human_mc_per_question.csv'):
     """Load human MC (multiple choice) data."""
     print(f"Loading human MC data from {path}")
     df = pd.read_csv(path)
@@ -58,14 +56,14 @@ def load_human_mc_data(path='/home/user/HPA/evaluation/scored/humans/human_mc_pe
     # Create dict keyed by qid
     human_data = {}
     for _, row in df.iterrows():
-        qid = str(row['qid'])
+        qid = str(row['index'])
         human_data[qid] = row.to_dict()
 
     print(f"  Loaded {len(human_data)} MC questions")
     return human_data
 
 
-def load_human_vqa_data(path='/home/user/HPA/evaluation/scored/humans/human_vqa_per_question.csv'):
+def load_human_vqa_data(path='/home/work/yuna/HPA/evaluation/scored/humans/human_vqa_per_question.csv'):
     """Load human VQA (open-ended) data."""
     print(f"Loading human VQA data from {path}")
     df = pd.read_csv(path)
@@ -108,7 +106,7 @@ def identify_dataset(filename):
     return 'unknown'
 
 
-def load_all_model_results(results_dir='/home/user/HPA/evaluation/scored/pretrained'):
+def load_all_model_results(results_dir='/home/work/yuna/HPA/evaluation/scored/pretrained'):
     """Load all model results organized by dataset."""
     print(f"\nLoading model results from {results_dir}")
 
@@ -247,11 +245,10 @@ def plot_scatter_correlation(matched_data, dataset_name, output_path,
         title_suffix: Additional text for title
     """
     df = pd.DataFrame(matched_data)
-
     if len(df) == 0:
         print(f"  ⚠️  No data for {dataset_name}")
         return
-
+    breakpoint() 
     # Calculate correlation
     x = df[x_metric]
     y = df['model_score']
@@ -445,7 +442,7 @@ def main():
     print("="*80)
 
     # Output directory
-    output_dir = '/home/user/HPA/analysis/figures'
+    output_dir = '/home/work/yuna/HPA/analysis/figures'
     os.makedirs(output_dir, exist_ok=True)
 
     # Load human data

@@ -3,5 +3,7 @@
   "total_responses": 7487,
   "mean_accuracy": 0.3893940678565429,
   "mean_confidence": 0.6696032635116569,
-  "correlation_conf_acc": 0.1232621227376874
+  "correlation_conf_acc": 0.1232621227376874,
+  "mean_visual_similarity": 0.6399605738807068,
+  "correlation_visual_sim_acc": 0.7994462797592308
 }

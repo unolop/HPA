@@ -59,10 +59,10 @@ def get_spubench():
     return annot 
 
 def score_file(
+    encoder, 
     input_path: str,
     output_path: str = None,
     skip_existing: bool = True,
-    with_similarity: bool = False,
 ) -> Dict:
     """
     Score a single JSONL file and save processed version.
@@ -109,20 +109,13 @@ def score_file(
         return {}
 
     vqa_mapper = None
-    encoder = None
-    if with_similarity and dataset_type == 'open-ended':
+    if encoder:  
         print("   Loading sentence transformer for similarity computation...")
-        encoder = get_encoder()
-        if encoder:
-            print("   ✓ Encoder loaded")
-        else:
-            print("   ⚠️ Failed to load encoder, skipping similarity computation")
-
+        
     # Score each example
     correct = 0
     total = 0
     by_category = defaultdict(lambda: {'correct': 0, 'total': 0})
-    
 
     for item in data:
         output = item.get('output', '')
@@ -151,10 +144,10 @@ def score_file(
                 all_answers = item.get('answers', [item.get('answer', '')])
                 if isinstance(all_answers, str):
                     all_answers = [all_answers]
-
+                    
             if all_answers:
-                is_correct = vqa_accuracy(all_answers, output)
-                if encoder and all_answers:
+                is_correct = vqa_accuracy(all_answers, output) 
+                if encoder: 
                     # Use majority answer for similarity computation
                     majority_ans = max(set(all_answers), key=all_answers.count)
                     sim = answer_similarity(majority_ans, output, encoder)
@@ -217,7 +210,7 @@ def score_file(
 def score_directory(
     input_dir: str,
     skip_existing: bool = True,
-    with_similarity: bool = False,
+    with_similarity: bool = True,
 ) -> pd.DataFrame:
 
     output_dir = f"/home/work/yuna/HPA/evaluation/scored/{input_dir}" 
@@ -232,13 +225,20 @@ def score_directory(
 
     print(f"Found {len(files)} files to score")
 
+    if with_similarity: 
+        encoder = get_encoder()
+        if encoder:
+            print("   ✓ Encoder loaded")
+        else:
+            print("   ⚠️ Failed to load encoder, skipping similarity computation")
+
     # Score all files
     all_results = []
     skipped_count = 0
     for f in files:
         filename = f.replace(f"{input_dir}/", '')
         out_path = os.path.join(output_dir, filename) 
-        result = score_file(f, out_path, skip_existing=skip_existing) 
+        result = score_file(encoder, f, out_path, skip_existing=skip_existing) 
         if result:
             all_results.append(result)
         elif skip_existing and out_path and os.path.exists(out_path):
@@ -278,31 +278,10 @@ def score_directory(
     return df
 
 
-# =============================================================================
-# CLI
-# =============================================================================
-
 def main():
     parser = argparse.ArgumentParser(
         description="Score inference JSONL outputs and save processed files with extracted choices and scores",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  # Score single file
-  python score_results.py --input results/InternVL3_5-2B_mmstar_inst_blind.jsonl --output_dir scored/
-
-  # Score all files in directory (skips already processed)
-  python score_results.py --input_dir results/ --output_dir scored/
-
-  # Force reprocessing of all files
-  python score_results.py --input_dir results/ --output_dir scored/ --force
-
-  # Multiple files with glob
-  python score_results.py --input "results/*mmstar*.jsonl" --output_dir scored/
-
-  # With embedding similarity for VQA datasets
-  python score_results.py --input_dir results/ --output_dir scored/ --with_similarity
-        """
+        formatter_class=argparse.RawDescriptionHelpFormatter
     )
 
     parser.add_argument("--input", type=str, nargs='*', default=None,
@@ -320,7 +299,8 @@ Examples:
         # Score directory
         score_directory(
             args.input_dir,
-            skip_existing=skip_existing 
+            skip_existing=skip_existing , 
+            with_similarity=args.with_similarity, 
         )
 
 
