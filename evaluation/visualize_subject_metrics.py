@@ -45,6 +45,7 @@ def create_participant_heatmap(df: pd.DataFrame, dataset_type: str, output_path:
     """
     Create heatmap showing average similarity/agreement per participant.
     """
+    breakpoint() 
     metric_col = 'avg_similarity_to_others' if dataset_type == 'vqa' else 'avg_agreement_with_others'
     metric_label = 'Average Similarity' if dataset_type == 'vqa' else 'Average Agreement'
 
@@ -211,8 +212,8 @@ def main():
     print("="*70)
 
     # Paths
-    base_dir = Path('/home/user/HPA/evaluation/scored/humans')
-    output_dir = Path('/home/user/HPA/analysis/figures/subject_metrics')
+    base_dir = Path('/home/work/yuna/HPA/evaluation/scored/humans')
+    output_dir = Path('/home/work/yuna/HPA/analysis/figures/subject_metrics')
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Process VQA

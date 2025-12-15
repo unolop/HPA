@@ -1,0 +1,17 @@
+{
+  "total_subject_question_pairs": 7487,
+  "unique_questions": 374,
+  "unique_participants": 20,
+  "mean_similarity_to_others": 0.6573337400564135,
+  "std_similarity_to_others": 0.2348384331732986,
+  "median_similarity_to_others": 0.7155208838613409,
+  "min_similarity_to_others": -0.013790793324771681,
+  "max_similarity_to_others": 1.0,
+  "similarity_distribution": {
+    "very_low_<0.3": 818,
+    "low_0.3-0.5": 1164,
+    "medium_0.5-0.7": 1589,
+    "high_0.7-0.9": 2675,
+    "very_high_>0.9": 1241
+  }
+}
