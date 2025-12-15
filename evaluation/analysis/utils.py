@@ -84,20 +84,6 @@ def get_encoder():
         return None
 
 
-def answer_similarity(gt: str, pred: str, encoder) -> float:
-    """Compute embedding similarity."""
-    if encoder is None:
-        return 0.0
-    try:
-        pred = pred.strip().lower()
-        gt = str(gt).strip().lower()
-        emb = encoder.encode([pred, gt])
-        similarities = encoder.similarity(emb, emb)
-        return float(similarities[1, 0])
-    except:
-        return 0.0
-
-
 
 class VQAAnswerMapper:
     """

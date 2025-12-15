@@ -20,6 +20,7 @@ from collections import defaultdict
 from typing import Dict
 from glob import glob
 from analysis.utils import *  
+from utils import compute_similarity  
 import sys  
 sys.path.append('/home/work/yuna/HPA') 
 from preprocessing.utils import *  
@@ -150,7 +151,7 @@ def score_file(
                 if encoder: 
                     # Use majority answer for similarity computation
                     majority_ans = max(set(all_answers), key=all_answers.count)
-                    sim = answer_similarity(majority_ans, output, encoder)
+                    sim = compute_similarity(majority_ans, output, encoder)
                     item['answer_similarity'] = float(sim)
             else:
                 gt = item.get('answer', '')

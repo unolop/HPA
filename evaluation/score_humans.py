@@ -14,7 +14,6 @@ Usage:
 
 import os
 import pandas as pd 
-import re
 import csv
 import json
 import argparse
@@ -25,9 +24,8 @@ from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Tuple
 from tqdm import tqdm
-from analysis.utils import get_encoder 
-from scipy.stats import pearsonr
-from math import atanh, tanh, sqrt 
+from analysis.utils import get_encoder, vqa_accuracy 
+from utils import *  
 
 # Add parent directory for imports
 sys.path.append(str(Path(__file__).parent.parent))
@@ -192,83 +190,6 @@ def load_mmstar_annotations(session: str = "s1") -> Dict:
         print(f"[!] Duplicate QIDs found in annot: {dupes}") 
     return annot
 
-
-# =============================================================================
-# Scoring Functions
-# =============================================================================
-
-def vqa_accuracy(gt_answers: List[str], pred: str) -> float:
-    """VQA accuracy: min(1, #matches / 3)."""
-    pred = normalize_answer(pred)
-    matches = sum([pred == normalize_answer(ans) for ans in gt_answers])
-    return min(1.0, matches / 3.0)
-
-
-def extract_mc_choice(output: str) -> str:
-    """Extract the predicted answer (A, B, C, D) from model output."""
-    if not output:
-        return ""
-
-    output = re.sub(r'<think>.*?</think>', '', output, flags=re.DOTALL | re.IGNORECASE)
-    output = output.strip()
-
-    patterns = [
-        r"(?:the\s+)?(?:correct\s+)?answer\s+is[:\s]*([A-D])",
-        r"(?:the\s+)?(?:correct\s+)?answer[:\s]*([A-D])",
-        r"(?:option\s+)?([A-D])\s+is\s+(?:the\s+)?correct",
-        r"(?:I\s+)?(?:would\s+)?choose\s+(?:option\s+)?([A-D])",
-        r"(?:I\s+)?(?:would\s+)?select\s+(?:option\s+)?([A-D])",
-        r"^([A-D])(?:[:\.\)]|\s|$)",
-        r"\n([A-D])(?:[:\.\)]|\s|$)",
-        r"(?:Therefore|Thus|So|Hence)[,\s]+(?:the\s+)?(?:answer\s+is\s+)?(?:option\s+)?([A-D])",
-    ]
-
-    for pattern in patterns:
-        match = re.search(pattern, output, re.IGNORECASE)
-        if match:
-            return match.group(1).upper()
-
-    matches = re.findall(r'\b([A-D])\b', output)
-    if matches:
-        return matches[-1].upper()
-
-    if output and output[-1].upper() in 'ABCD':
-        return output[-1].upper()
-
-    match = re.match(r'^([A-D]):', output)
-    if match:
-        return match.group(1).upper()
-
-    return ""
-
-
-def get_encoder():
-    """Lazy load sentence transformer."""
-    try:
-        from sentence_transformers import SentenceTransformer
-        return SentenceTransformer("all-MiniLM-L6-v2").to('cuda')
-    except:
-        try:
-            from sentence_transformers import SentenceTransformer
-            return SentenceTransformer("all-MiniLM-L6-v2")  # CPU fallback
-        except:
-            return None
-
-
-def compute_similarity(gt: str, pred: str, encoder) -> float:
-    """Compute embedding similarity."""
-    if encoder is None or not gt or not pred:
-        return 0.0
-    try:
-        pred = pred.strip().lower()
-        gt = str(gt).strip().lower()
-        emb = encoder.encode([pred, gt])
-        similarities = encoder.similarity(emb, emb)
-        return float(similarities[1, 0])
-    except:
-        return 0.0
-
-
 # =============================================================================
 # Data Loading
 # =============================================================================
@@ -355,7 +276,7 @@ def process_question_responses(
 
         for answer in answers:
             # Accuracy against GT
-            acc = vqa_accuracy(gt_answers, answer)
+            acc = vqa_accuracy(gt_answers, normalize_answer(answer)) 
             accuracies.append(acc)
 
             # Similarity to GT (use majority answer)
@@ -503,15 +424,7 @@ def process_all_responses(
         )[0, 1]) if len(text_results) > 1 else 0.0,
     }
 
-    if with_similarity: #  and any('mean_gt_similarity' in r for r in text_results):
-        # vqa_stats['mean_gt_similarity'] = float(np.mean([
-        #     r['mean_gt_similarity'] for r in text_results if 'mean_gt_similarity' in r
-        # ]))
-        # vqa_stats['correlation_gt_sim_acc'] = float(np.corrcoef(
-        #     [r['mean_gt_similarity'] for r in text_results if 'mean_gt_similarity' in r],
-        #     [r['mean_accuracy'] for r in text_results if 'mean_gt_similarity' in r]
-        # )[0, 1])
-
+    if with_similarity:
         if any('mean_visual_similarity' in r for r in text_results):
             visual_sim = np.array([
                 r['mean_visual_similarity']
@@ -524,30 +437,10 @@ def process_all_responses(
                 for r in text_results
                 if 'mean_visual_similarity' in r and 'mean_accuracy' in r
             ])
-            n = len(visual_sim)
 
             # Mean
-            mean_visual_similarity = float(visual_sim.mean())
-            r_val, p_val = pearsonr(visual_sim, accuracy)
-
-            # 95% CI via Fisher z
-            z = atanh(r_val)
-            se = 1 / sqrt(n - 3)
-            z_crit = 1.96  # 95% CI
-
-            ci_low = tanh(z - z_crit * se)
-            ci_high = tanh(z + z_crit * se)
-
-            vqa_stats['correlation_visual_sim_acc'] = {
-                "mean_visual_similarity": mean_visual_similarity,
-                "correlation_visual_sim_acc": {
-                    "method": "pearson",
-                    "r": round(float(r_val), 3),
-                    "p_value": round(float(p_val), 4),
-                    "n": n,
-                    "ci_95": [round(float(ci_low), 3), round(float(ci_high), 3)]
-                }
-            } 
+            corr = get_pearsonr_correlation({"visual_sim":visual_sim, "accuracy":accuracy})  
+            vqa_stats['correlation_visual_sim_acc'] = corr
             # float(np.corrcoef(
             #     [r['mean_visual_similarity'] for r in text_results if 'mean_visual_similarity' in r],
             #     [r['mean_accuracy'] for r in text_results if 'mean_visual_similarity' in r]
@@ -585,12 +478,9 @@ def process_all_responses(
         'total_responses': sum(r['num_responses'] for r in choice_results),
         'mean_accuracy': float(np.mean([r['mean_accuracy'] for r in choice_results])),
         'mean_confidence': float(np.mean([r['mean_confidence'] for r in choice_results])),
-        'correlation_conf_acc': float(np.corrcoef(
-            [r['mean_confidence'] for r in choice_results],
-            [r['mean_accuracy'] for r in choice_results]
-        )[0, 1]) if len(choice_results) > 1 else 0.0,
+        'correlation_conf_acc': get_pearsonr_correlation({"confidence":[r['mean_confidence'] for r in choice_results], 
+                                                            "accuracy":[r['mean_accuracy'] for r in choice_results]})  
     }
-
     stats_output = os.path.join(output_dir, 'human_mc_stats.json')
     with open(stats_output, 'w', encoding='utf-8') as f:
         json.dump(mc_stats, f, indent=2)

@@ -4,6 +4,17 @@
   "mean_accuracy": 0.3893940678565429,
   "mean_confidence": 0.6696032635116569,
   "correlation_conf_acc": 0.1232621227376874,
-  "mean_visual_similarity": 0.6399605738807068,
-  "correlation_visual_sim_acc": 0.7994462797592308
+  "correlation_visual_sim_acc": {
+    "mean_visual_similarity": 0.639960637706796,
+    "correlation_visual_sim_acc": {
+      "method": "pearson",
+      "r": 0.799,
+      "p_value": 0.0,
+      "n": 374,
+      "ci_95": [
+        0.76,
+        0.833
+      ]
+    }
+  }
 }
