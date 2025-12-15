@@ -83,13 +83,8 @@ def score_file(
             with open(output_path, 'r', encoding='utf-8') as fout:
                 output_lines = sum(1 for _ in fout if _.strip())
             if input_lines == output_lines:
-                # print(f"\n{'='*60}")
-                # print(f"⏭️  Skipping (already processed, line count matches): {os.path.basename(input_path)}")
-                # print(f"   Output exists: {output_path}")
-                # print(f"{'='*60}")
                 return None
         except Exception as e:
-            # If any problem opening/reading, proceed to full scoring
             pass 
 
     # Parse filename
@@ -152,10 +147,10 @@ def score_file(
                     # Use majority answer for similarity computation
                     majority_ans = max(set(all_answers), key=all_answers.count)
                     sim = compute_similarity(majority_ans, output, encoder)
-                    item['answer_similarity'] = float(sim)
+                    item['answer_similarity'] = float(sim) 
             else:
                 gt = item.get('answer', '')
-                is_correct = exact_match(gt, output)
+                is_correct = exact_match(gt, output) 
 
         # Save correctness
         item['correct'] = is_correct
@@ -217,8 +212,8 @@ def score_directory(
     output_dir = f"/home/work/yuna/HPA/evaluation/scored/{input_dir}" 
     input_dir=f"/home/work/yuna/HPA/evaluation/results/{input_dir}" 
 
-    files = sorted(glob(f"{input_dir}/*.jsonl") + glob(f"{input_dir}/*/*/*.jsonl"))
-
+    files = sorted(glob(f"{input_dir}/*.jsonl") + glob(f"{input_dir}/*/*/*.jsonl")) + glob(f"{input_dir}/*/*.jsonl")
+    
     if not files:
         print(f"❌ No files matching in {input_dir}")
         breakpoint()
@@ -249,10 +244,8 @@ def score_directory(
     print(f"✓ Processed {len(all_results)} files")
     if skipped_count > 0:
         print(f"⏭️  Skipped {skipped_count} files (already processed)")
-    print(f"{'='*60}")
-
-    # Create summary DataFrame
-    df = pd.DataFrame(all_results)
+    print(f"{'='*60}")  
+    df = pd.DataFrame(all_results) 
     
     # Pivot for easy comparison
     if len(all_results) > 0:

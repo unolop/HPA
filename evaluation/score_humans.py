@@ -269,7 +269,7 @@ def process_question_responses(
             return None
 
         accuracies = []
-        agreement = []  # Similarity to ground truth (10 annotators)
+        agreement = [] 
         visual_similarities = []  # Similarity to visual GT (humans who saw image) 
 
         for i, answer in enumerate(answers): 
@@ -281,10 +281,9 @@ def process_question_responses(
                 sim_visual = compute_similarity(visual_gt, answer, encoder)
                 visual_similarities.append(sim_visual)
 
-                #### Calculate the interrater agreement 
-                for j in range(len(answers)):
-                    if i != j: 
-                        agreement.append(compute_similarity(answers[j], answer, encoder)  )
+                for j in range(i + 1, len(answers)):
+                    sim = compute_similarity(answers[i], answers[j], encoder)  
+                    agreement.append((i,j, sim))   
 
         result = {
             'qid': qid,
@@ -307,7 +306,7 @@ def process_question_responses(
             result['mean_visual_similarity'] = float(np.mean(visual_similarities))
             result['std_visual_similarity'] = float(np.std(visual_similarities))
             result['visual_similarities'] = visual_similarities
-            result['agreement'] = agreement 
+            result['agreement'] = agreement  
         # print(answers, 'interrater agreement', np.mean(agreement).round(4))  
 
     else:  # choice
@@ -408,8 +407,8 @@ def process_all_responses(
         'total_responses': sum(r['num_responses'] for r in text_results),
         'mean_accuracy': float(np.mean([r['mean_accuracy'] for r in text_results])),
         'mean_confidence': float(np.mean([r['mean_confidence'] for r in text_results])),
-        'correlation_conf_acc': get_pearsonr_correlation({"confidence":[r['mean_confidence'] for r in choice_results],  
-                                                            "accuracy":[r['mean_accuracy'] for r in choice_results]})  ,                                                        
+        'correlation_conf_acc': get_pearsonr_correlation({"confidence":[r['mean_confidence'] for r in text_results],  
+                                                            "accuracy":[r['mean_accuracy'] for r in text_results]})  ,                                                        
     }
 
     if with_similarity: # get correlations 

@@ -48,16 +48,13 @@ def get_encoder():
 
 
 def compute_similarity(gt: str, pred: str, encoder) -> float:
-    """Compute embedding similarity."""
     if encoder is None or not gt or not pred:
         return 0.0
-    try:
 
-        emb = encoder.encode(
-            [pred.strip(), gt.strip()],
-            normalize_embeddings=True
-        )
+    emb = encoder.encode(
+        [pred.strip(), gt.strip()],
+        normalize_embeddings=True
+    )
 
-        return float(cosine_similarity(emb[0:1], emb[1:2])[0, 0])
-    except:
-        return 0.0
+    sim = float((emb[0] @ emb[1]))
+    return float(np.clip(sim, -1.0, 1.0)) 
