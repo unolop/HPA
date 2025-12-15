@@ -1,3 +1,4 @@
+import numpy as np 
 from scipy.stats import pearsonr 
 from math import atanh, tanh, sqrt 
 from sklearn.metrics.pairwise import cosine_similarity
@@ -11,8 +12,8 @@ def get_pearsonr_correlation(values_dict):
     y = values_dict[y_name] 
 
     n = len(x) 
-    x_mean = float(x.mean())
-    y_mean = float(y.mean()) 
+    x_mean = float(np.mean(x))
+    y_mean = float(np.mean(y))  
     r_val, p_val = pearsonr(x, y) 
 
     # 95% CI via Fisher z
