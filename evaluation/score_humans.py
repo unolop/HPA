@@ -317,8 +317,6 @@ def process_question_responses(
             3: "C", 
             4: "D", 
         }
-
-        # Extract choices and compute accuracy
         extracted_choices = [choices[int(ans)] for ans in answers] # [extract_mc_choice(ans) for ans in answers]
         correct = [1 if choice == gt_answer.strip().upper()[0] else 0 for choice in extracted_choices]
         result = {
