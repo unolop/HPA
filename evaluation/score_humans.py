@@ -13,7 +13,6 @@ Usage:
 """
 
 import os
-import pandas as pd 
 import csv
 import json
 import argparse
@@ -24,10 +23,11 @@ from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Tuple
 from tqdm import tqdm
-from analysis.utils import get_encoder, vqa_accuracy 
-from utils import *  
-sys.path.append(str(Path(__file__).parent.parent))
-from preprocessing.preprocess import normalize_answer, preprocess_pipeline
+from similarity_score import * 
+from analysis.utils.align import get_pearsonr_correlation 
+from analysis.utils.score import *   
+sys.path.append(str(Path(__file__).parent.parent)) 
+from preprocessing.preprocess import preprocess_pipeline 
 
 
 # =============================================================================
@@ -53,6 +53,7 @@ class VQAAnswerMapper:
         self.annotations_path = annotations_path
         self._qid_to_answers = None
         self._qid_to_gt_visual = None  # Store visual GT for VQA
+        self.annotations = {} 
 
     def _load(self):
         """Load annotations and build lookup dict."""
@@ -73,9 +74,9 @@ class VQAAnswerMapper:
         self._qid_to_gt_visual = {}
 
         for ann in annotations['annotations']:
-            qid = int(ann['question_id'])
-            # All 10 annotator answers
-            answers = [a['answer'] for a in ann['answers']]
+            qid = int(ann['question_id']) 
+            self.annotations[qid] = ann 
+            answers = [a['answer'] for a in ann['answers']] 
             self._qid_to_answers[qid] = answers
 
             # Multiple choice answer (consensus from humans who saw image)
@@ -269,7 +270,8 @@ def process_question_responses(
         if answer_type == 'text':
             gt_answers = gt_info['gt_answers']
             # visual_gt = gt_info.get('visual_gt', '')  # what is this ? 
-            resp['acc'] = vqa_accuracy(gt_answers, answer)     
+            resp['correct'] = vqa_accuracy(gt_answers, answer)     
+            resp['answer_similarity'] = np.mean([compute_similarity(gt, answer, encoder) for gt in gt_answers]     )
             for j, rj in enumerate(range(len(responses))):   # compute other answer simlarities 
                 if encoder: 
                     if i == j:  
@@ -285,7 +287,10 @@ def process_question_responses(
 
             for j, choice_j in enumerate(range(len(responses))): 
                 if i != j: 
-                    agreement.append(1 if choice == choice_j else 0 ) 
+                    a = 1 if choice == choice_j else 0  
+                    agreement[responses[choice_j]['participant_id']] = a  
+        
+        resp['agreement'] = agreement 
         results.append({**resp, **gt_info})   
 
     return results 
@@ -334,53 +339,51 @@ def process_all_responses(
     )
     print(f"   Found {len(text_responses_by_qid)} VQA questions")
 
+    text_output = os.path.join(output_dir, 'human_vqa_per_question.json')  
     text_results = []
     for qid, responses in tqdm(text_responses_by_qid.items(), desc="Processing VQA"):
         if qid in text_gt:
             result = process_question_responses(qid, responses, text_gt[qid], encoder)
             if result:
-                # Extend text_results in case result is a list of per-question metrics
                 if isinstance(result, list):
                     text_results.extend(result)
                 else:
                     text_results.append(result)
-
-    # Save VQA results
-    text_output = os.path.join(output_dir, 'human_vqa_per_question.json') 
-    with open(text_output, 'w', encoding='utf-8') as f:
-        json.dump(text_results, f, indent=2, ensure_ascii=False)
-    print(f"\n   ✓ Saved: {text_output}")
+                with open(text_output, 'w', encoding='utf-8') as f:
+                    json.dump(text_results, f, indent=2, ensure_ascii=False)
+                    f.flush()
+                    os.fsync(f.fileno())
 
     # Compute VQA statistics
-    vqa_stats = {
-        'num_questions': len(text_results),
-        'total_responses': sum(r['num_responses'] for r in text_results),
-        'mean_accuracy': float(np.mean([r['mean_accuracy'] for r in text_results])),
-        'mean_confidence': float(np.mean([r['mean_confidence'] for r in text_results])),
-        'correlation_conf_acc': get_pearsonr_correlation({"confidence":[r['mean_confidence'] for r in text_results],  
-                                                            "accuracy":[r['mean_accuracy'] for r in text_results]})  ,                                                        
-    }
+    # vqa_stats = {
+    #     'num_questions': len(text_results),
+    #     # 'total_responses': sum(r['num_responses'] for r in text_results),
+    #     'mean_accuracy': float(np.mean([r['mean_accuracy'] for r in text_results])),
+    #     'mean_confidence': float(np.mean([r['mean_confidence'] for r in text_results])),
+    #     'correlation_conf_acc': get_pearsonr_correlation({"confidence":[r['mean_confidence'] for r in text_results],  
+    #                                                         "accuracy":[r['mean_accuracy'] for r in text_results]})  ,                                                        
+    # }
 
-    if with_similarity: # get correlations 
-        if any('mean_visual_similarity' in r for r in text_results):
-            visual_sim = np.array([
-                r['mean_visual_similarity']
-                for r in text_results
-                if 'mean_visual_similarity' in r and 'mean_accuracy' in r
-            ])
+    # if with_similarity: # get correlations 
+    #     if any('mean_visual_similarity' in r for r in text_results):
+    #         visual_sim = np.array([
+    #             r['mean_visual_similarity']
+    #             for r in text_results
+    #             if 'mean_visual_similarity' in r and 'mean_accuracy' in r
+    #         ])
 
-            accuracy = np.array([
-                r['mean_accuracy']
-                for r in text_results
-                if 'mean_visual_similarity' in r and 'mean_accuracy' in r
-            ])
-            corr = get_pearsonr_correlation({"visual_sim":visual_sim, "accuracy":accuracy})  
-            vqa_stats['correlation_visual_sim_acc'] = corr
+    #         accuracy = np.array([
+    #             r['mean_accuracy']
+    #             for r in text_results
+    #             if 'mean_visual_similarity' in r and 'mean_accuracy' in r
+    #         ])
+    #         corr = get_pearsonr_correlation({"visual_sim":visual_sim, "accuracy":accuracy})  
+    #         vqa_stats['correlation_visual_sim_acc'] = corr
 
-    stats_output = os.path.join(output_dir, 'human_vqa_stats.json')
-    with open(stats_output, 'w', encoding='utf-8') as f:
-        json.dump(vqa_stats, f, indent=2)
-    print(f"   ✓ Saved: {stats_output}") 
+    # stats_output = os.path.join(output_dir, 'human_vqa_stats.json')
+    # with open(stats_output, 'w', encoding='utf-8') as f:
+    #     json.dump(vqa_stats, f, indent=2)
+    # print(f"   ✓ Saved: {stats_output}") 
 
     # Process MC (choice)
     print("Processing MC (choice) responses...")
@@ -402,31 +405,31 @@ def process_all_responses(
     print(f"\n   ✓ Saved: {choice_output}")
 
     # Compute MC statistics
-    mc_stats = {
-        'num_questions': len(choice_results),
-        'total_responses': sum(r['num_responses'] for r in choice_results),
-        'mean_accuracy': float(np.mean([r['mean_accuracy'] for r in choice_results])),
-        'mean_confidence': float(np.mean([r['mean_confidence'] for r in choice_results])),
-        'correlation_conf_acc': get_pearsonr_correlation({"confidence":[r['mean_confidence'] for r in choice_results], 
-                                                            "accuracy":[r['mean_accuracy'] for r in choice_results]})  
-    }
-    stats_output = os.path.join(output_dir, 'human_mc_stats.json')
-    with open(stats_output, 'w', encoding='utf-8') as f:
-        json.dump(mc_stats, f, indent=2)
-    print(f"   ✓ Saved: {stats_output}")
+    # mc_stats = {
+    #     'num_questions': len(choice_results),
+    #     'total_responses': sum(r['num_responses'] for r in choice_results),
+    #     'mean_accuracy': float(np.mean([r['mean_accuracy'] for r in choice_results])),
+    #     'mean_confidence': float(np.mean([r['mean_confidence'] for r in choice_results])),
+    #     'correlation_conf_acc': get_pearsonr_correlation({"confidence":[r['mean_confidence'] for r in choice_results], 
+    #                                                         "accuracy":[r['mean_accuracy'] for r in choice_results]})  
+    # }
+    # stats_output = os.path.join(output_dir, 'human_mc_stats.json')
+    # with open(stats_output, 'w', encoding='utf-8') as f:
+    #     json.dump(mc_stats, f, indent=2)
+    # print(f"   ✓ Saved: {stats_output}")
 
-    print("📈 Summary")
-    print(f"VQA Questions: {len(text_results)}")
-    print(f"  Mean Accuracy: {vqa_stats['mean_accuracy']:.4f}")
-    print(f"  Mean Confidence: {vqa_stats['mean_confidence']:.4f}")
-    # print(f"  Correlation (Conf-Acc): {vqa_stats['correlation_conf_acc']:.4f}") 
+    # print("📈 Summary")
+    # print(f"VQA Questions: {len(text_results)}")
+    # print(f"  Mean Accuracy: {vqa_stats['mean_accuracy']:.4f}")
+    # print(f"  Mean Confidence: {vqa_stats['mean_confidence']:.4f}")
+    # # print(f"  Correlation (Conf-Acc): {vqa_stats['correlation_conf_acc']:.4f}") 
 
-    print(f"\nMC Questions: {len(choice_results)}")
-    print(f"  Mean Accuracy: {mc_stats['mean_accuracy']:.4f}")
-    print(f"  Mean Confidence: {mc_stats['mean_confidence']:.4f}")
-    # print(f"  Correlation (Conf-Acc): {mc_stats['correlation_conf_acc']:.4f}")
+    # print(f"\nMC Questions: {len(choice_results)}")
+    # print(f"  Mean Accuracy: {mc_stats['mean_accuracy']:.4f}")
+    # print(f"  Mean Confidence: {mc_stats['mean_confidence']:.4f}")
+    # # print(f"  Correlation (Conf-Acc): {mc_stats['correlation_conf_acc']:.4f}")
     
-    print(f"\n✅ Processing complete! Results saved to: {output_dir}")
+    # print(f"\n✅ Processing complete! Results saved to: {output_dir}")
 
     return text_results, choice_results
 

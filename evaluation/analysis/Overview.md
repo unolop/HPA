@@ -7,6 +7,12 @@
 6. Compare pretrained vs finetuned distributions
 7. Provide a full notebook for the paper
 
+## Processing pipeline 
+```
+python /home/work/yuna/HPA/evaluation/score_humans.py --human_data_dir n20 --with_similarity 
+python /home/work/yuna/HPA/evaluation/score_results.py  --input_dir finetuned  
+python /home/work/yuna/HPA/evaluation/score_results.py  --input_dir pretrained --with_similarity 
+```
 
 ---
 
