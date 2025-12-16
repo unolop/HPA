@@ -53,7 +53,7 @@ def compute_similarity(gt: str, pred: str, encoder) -> float:
 
     emb = encoder.encode(
         [pred.strip(), gt.strip()],
-        normalize_embeddings=True
+        # normalize_embeddings=True
     )
 
     sim = float((emb[0] @ emb[1]))

@@ -217,7 +217,7 @@ def create_per_subject_dataframe_vqa(grouped_responses: Dict[str, List[Dict]], e
 
 def main():
     # Paths
-    base_dir = Path("/home/user/HPA/evaluation/scored/humans")
+    base_dir = Path("/home/work/yuna/HPA/evaluation/scored/humans") 
     mc_path = base_dir / "cleaned_n15_choice.json"
     vqa_path = base_dir / "cleaned_n15_text.json"
     output_dir = base_dir / "cross_subject_analysis"

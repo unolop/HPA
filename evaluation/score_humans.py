@@ -248,275 +248,47 @@ def process_question_responses(
     responses: List[Dict],
     gt_info: Dict,
     encoder=None
-) -> Dict:
-    """
-    Process all responses for a single question.
-
-    Computes per-question average accuracy and similarity against ground truth.
-    """
+) -> Dict: 
     answer_type = gt_info.get('answer_type', 'text')
-
-    # Extract answers and confidences
-    answers = [r['answer'] for r in responses]
-    confidences = [r['confidence'] for r in responses]
-
-    if answer_type == 'text':
-        # VQA: Compute accuracy and similarity for each response
-        gt_answers = gt_info['gt_answers']
-        visual_gt = gt_info.get('visual_gt', '')
-
-        if not gt_answers:
-            return None
-
-        accuracies = []
-        agreement = [] 
-        visual_similarities = []  # Similarity to visual GT (humans who saw image) 
-
-        for i, answer in enumerate(answers): 
-            # Accuracy against GT
-            acc = vqa_accuracy(gt_answers, normalize_answer(answer)) 
-            accuracies.append(acc)
-
-            if encoder and visual_gt:
-                sim_visual = compute_similarity(visual_gt, answer, encoder)
-                visual_similarities.append(sim_visual)
-
-                for j in range(i + 1, len(answers)):
-                    sim = compute_similarity(answers[i], answers[j], encoder)  
-                    agreement.append((i,j, sim))   
-
-        result = {
-            'qid': qid,
-            'answer_type': 'text',
-            'num_responses': len(responses),
-            'answers': answers,
-            'confidences': confidences,
-            'gt_answers': gt_answers,
-            'visual_gt': visual_gt, 
-            # Averages
-            'mean_accuracy': float(np.mean(accuracies)),
-            'std_accuracy': float(np.std(accuracies)),
-            'mean_confidence': float(np.mean(confidences)),
-            'std_confidence': float(np.std(confidences)),
-            # Individual metrics
-            'accuracies': accuracies,
-        }
-
-        if visual_similarities:
-            result['mean_visual_similarity'] = float(np.mean(visual_similarities))
-            result['std_visual_similarity'] = float(np.std(visual_similarities))
-            result['visual_similarities'] = visual_similarities
-            result['agreement'] = agreement  
-        # print(answers, 'interrater agreement', np.mean(agreement).round(4))  
-
-        # Compute pairwise inter-rater similarity (each subject vs all others)
-        if encoder and len(answers) > 1:
-            subject_similarities = []
-            participant_ids = [r.get('participant_id', f'subject_{i}') for i, r in enumerate(responses)]
-
-            for i, answer_i in enumerate(answers):
-                # Compute this subject's similarity to all other subjects
-                similarities_to_others = []
-                for j, answer_j in enumerate(answers):
-                    if i != j:
-                        sim = compute_similarity(answer_i, answer_j, encoder)
-                        similarities_to_others.append(sim)
-
-                avg_sim_to_others = float(np.mean(similarities_to_others)) if similarities_to_others else 0.0
-                subject_similarities.append({
-                    'participant_id': participant_ids[i],
-                    'answer': answer_i,
-                    'avg_similarity_to_others': avg_sim_to_others,
-                    'min_similarity': float(np.min(similarities_to_others)) if similarities_to_others else 0.0,
-                    'max_similarity': float(np.max(similarities_to_others)) if similarities_to_others else 0.0,
-                })
-
-            result['subject_similarities'] = subject_similarities
-            result['agreement'] = float(np.mean([s['avg_similarity_to_others'] for s in subject_similarities]))
-
-    else:  # choice
-        gt_answer = gt_info.get('answer', '')
-        choices = {
-            1: "A", 
-            2: "B", 
-            3: "C", 
-            4: "D", 
-        }
-        extracted_choices = [choices[int(ans)] for ans in answers] # [extract_mc_choice(ans) for ans in answers]
-        correct = [1 if choice == gt_answer.strip().upper()[0] else 0 for choice in extracted_choices]
-
-        # Compute pairwise inter-rater agreement (each subject vs all others)
-        participant_ids = [r.get('participant_id', f'subject_{i}') for i, r in enumerate(responses)]
-        subject_agreements = []
-
-        if len(extracted_choices) > 1:
-            for i, choice_i in enumerate(extracted_choices):
-                # Compute this subject's agreement with all other subjects
-                agreements_with_others = []
-                for j, choice_j in enumerate(extracted_choices):
-                    if i != j:
-                        agreement = 1 if choice_i == choice_j else 0
-                        agreements_with_others.append(agreement)
-
-                avg_agreement = float(np.mean(agreements_with_others)) if agreements_with_others else 0.0
-                subject_agreements.append({
-                    'participant_id': participant_ids[i],
-                    'choice': choice_i,
-                    'answer': answers[i],
-                    'correct': bool(correct[i]),
-                    'avg_agreement_with_others': avg_agreement,
-                    'num_agree': sum(agreements_with_others),
-                    'num_disagree': len(agreements_with_others) - sum(agreements_with_others),
-                })
-
-        result = {
-            'qid': qid,
-            'answer_type': 'choice',
-            'num_responses': len(responses),
-            'answers': answers,
-            'extracted_choices': extracted_choices,
-            'confidences': confidences,
-            # Averages
-            'mean_accuracy': float(np.mean(correct)),
-            'std_accuracy': float(np.std(correct)),
-            'mean_confidence': float(np.mean(confidences)),
-            'std_confidence': float(np.std(confidences)),
-            # Individual metrics
-            'accuracies': correct,
-        }
-
-        if subject_agreements:
-            result['subject_agreements'] = subject_agreements
-            result['agreement'] = float(np.mean([s['avg_agreement_with_others'] for s in subject_agreements]))
-
-        result = {**result, **gt_info}
-
-    return result
-
-
-def save_subject_level_metrics(results: List[Dict], output_dir: str, dataset_type: str):
-    """
-    Extract and save per-subject metrics for visualization (heatmaps, barcharts, histograms).
-
-    Args:
-        results: List of per-question results with subject_similarities/agreements
-        output_dir: Directory to save outputs
-        dataset_type: 'vqa' or 'mc'
-    """
-    print(f"\n📊 Extracting subject-level metrics for {dataset_type.upper()}...")
-
-    # Collect all subject-level records
-    subject_records = []
-
-    for question_result in results:
-        qid = question_result.get('qid', '')
-
-        if dataset_type == 'vqa' and 'subject_similarities' in question_result:
-            # VQA: similarity-based metrics
-            for subject_data in question_result['subject_similarities']:
-                record = {
-                    'qid': qid,
-                    'participant_id': subject_data['participant_id'],
-                    'answer': subject_data['answer'],
-                    'avg_similarity_to_others': subject_data['avg_similarity_to_others'],
-                    'min_similarity': subject_data['min_similarity'],
-                    'max_similarity': subject_data['max_similarity'],
-                    'question_mean_similarity': question_result.get('agreement', 0),
-                    'num_raters': question_result.get('num_responses', 0),
-                }
-
-                # Add accuracy if available
-                if 'accuracies' in question_result:
-                    idx = question_result['subject_similarities'].index(subject_data)
-                    if idx < len(question_result['accuracies']):
-                        record['accuracy'] = question_result['accuracies'][idx]
-
-                subject_records.append(record)
-
-        elif dataset_type == 'mc' and 'subject_agreements' in question_result:
-            # MC: agreement-based metrics
-            for subject_data in question_result['subject_agreements']:
-                record = {
-                    'qid': qid,
-                    'participant_id': subject_data['participant_id'],
-                    'choice': subject_data['choice'],
-                    'answer': subject_data['answer'],
-                    'correct': subject_data['correct'],
-                    'avg_agreement_with_others': subject_data['avg_agreement_with_others'],
-                    'num_agree': subject_data['num_agree'],
-                    'num_disagree': subject_data['num_disagree'],
-                    'question_mean_agreement': question_result.get('agreement', 0),
-                    'num_raters': question_result.get('num_responses', 0),
-                }
-                subject_records.append(record)
-
-    if not subject_records:
-        print(f"  ⚠️  No subject-level metrics found for {dataset_type}")
-        return
-
-    # Create DataFrame and save
-    df = pd.DataFrame(subject_records)
-
-    # Save as CSV
-    csv_path = os.path.join(output_dir, f'{dataset_type}_subject_level_metrics.csv')
-    df.to_csv(csv_path, index=False)
-    print(f"  ✓ Saved CSV: {csv_path}")
-    print(f"    {len(df)} subject-question pairs")
-
-    # Save as JSON for full flexibility
-    json_path = os.path.join(output_dir, f'{dataset_type}_subject_level_metrics.json')
-    with open(json_path, 'w') as f:
-        json.dump(subject_records, f, indent=2)
-    print(f"  ✓ Saved JSON: {json_path}")
-
-    # Create summary statistics for quick analysis
-    summary = {
-        'total_subject_question_pairs': len(df),
-        'unique_questions': df['qid'].nunique(),
-        'unique_participants': df['participant_id'].nunique(),
+    '''
+    process subject answers per question 
+    returns a list (by subject number) of dictionary scored each answer  
+    '''
+    choices = {
+        1: "A", 
+        2: "B", 
+        3: "C", 
+        4: "D", 
     }
+    results = []
+    for i, resp in enumerate(responses):  
+        agreement = {}
+        answer = normalize_answer(resp['answer'] )
+        resp['qid'] = qid 
 
-    if dataset_type == 'vqa':
-        summary.update({
-            'mean_similarity_to_others': float(df['avg_similarity_to_others'].mean()),
-            'std_similarity_to_others': float(df['avg_similarity_to_others'].std()),
-            'median_similarity_to_others': float(df['avg_similarity_to_others'].median()),
-            'min_similarity_to_others': float(df['avg_similarity_to_others'].min()),
-            'max_similarity_to_others': float(df['avg_similarity_to_others'].max()),
-        })
+        if answer_type == 'text':
+            gt_answers = gt_info['gt_answers']
+            # visual_gt = gt_info.get('visual_gt', '')  # what is this ? 
+            resp['acc'] = vqa_accuracy(gt_answers, answer)     
+            for j, rj in enumerate(range(len(responses))):   # compute other answer simlarities 
+                if encoder: 
+                    if i == j:  
+                        sim = 1 
+                    else: 
+                        sim = compute_similarity(answer, responses[rj]['answer'], encoder)  
+                    agreement[responses[rj]['participant_id']]=sim  
 
-        # Distribution of similarity levels
-        summary['similarity_distribution'] = {
-            'very_low_<0.3': int((df['avg_similarity_to_others'] < 0.3).sum()),
-            'low_0.3-0.5': int(((df['avg_similarity_to_others'] >= 0.3) & (df['avg_similarity_to_others'] < 0.5)).sum()),
-            'medium_0.5-0.7': int(((df['avg_similarity_to_others'] >= 0.5) & (df['avg_similarity_to_others'] < 0.7)).sum()),
-            'high_0.7-0.9': int(((df['avg_similarity_to_others'] >= 0.7) & (df['avg_similarity_to_others'] < 0.9)).sum()),
-            'very_high_>0.9': int((df['avg_similarity_to_others'] >= 0.9).sum()),
-        }
+        else:  # choice
+            gt_answer = gt_info.get('answer', '')
+            choice = choices[int(answer)]  
+            resp['correct'] = 1 if choice == gt_answer.strip().upper()[0] else 0  
 
-    else:  # mc
-        summary.update({
-            'mean_agreement_with_others': float(df['avg_agreement_with_others'].mean()),
-            'std_agreement_with_others': float(df['avg_agreement_with_others'].std()),
-            'median_agreement_with_others': float(df['avg_agreement_with_others'].median()),
-            'overall_accuracy': float(df['correct'].mean()),
-        })
+            for j, choice_j in enumerate(range(len(responses))): 
+                if i != j: 
+                    agreement.append(1 if choice == choice_j else 0 ) 
+        results.append({**resp, **gt_info})   
 
-        # Distribution of agreement levels
-        summary['agreement_distribution'] = {
-            'no_agreement_0%': int((df['avg_agreement_with_others'] == 0).sum()),
-            'low_<50%': int(((df['avg_agreement_with_others'] > 0) & (df['avg_agreement_with_others'] < 0.5)).sum()),
-            'medium_50-80%': int(((df['avg_agreement_with_others'] >= 0.5) & (df['avg_agreement_with_others'] < 0.8)).sum()),
-            'high_>80%': int((df['avg_agreement_with_others'] >= 0.8).sum()),
-        }
-
-    summary_path = os.path.join(output_dir, f'{dataset_type}_subject_level_summary.json')
-    with open(summary_path, 'w') as f:
-        json.dump(summary, f, indent=2)
-    print(f"  ✓ Saved summary: {summary_path}")
-
-    return df, summary
-
+    return results 
 
 # =============================================================================
 # Main Processing
@@ -555,10 +327,7 @@ def process_all_responses(
             print("   ⚠️ Failed to load encoder, skipping similarity")
 
     # Process VQA (text)
-    print("Processing VQA (text) responses...")
-
-    # Load raw responses
-    # all_responses = load_raw_human_data(human_data_dir, questions_path) 
+    print("Processing VQA (text) responses...") 
     all_responses = preprocess_pipeline(glob(f"{human_data_dir}/*/*.csv"), questions_path, output_dir)  
     text_responses_by_qid, text_gt = get_responses_by_qid(
         all_responses['responses']['text'], 'text', vqa_mapper=vqa_mapper 
@@ -570,11 +339,16 @@ def process_all_responses(
         if qid in text_gt:
             result = process_question_responses(qid, responses, text_gt[qid], encoder)
             if result:
-                text_results.append(result)
+                # Extend text_results in case result is a list of per-question metrics
+                if isinstance(result, list):
+                    text_results.extend(result)
+                else:
+                    text_results.append(result)
 
     # Save VQA results
-    text_output = os.path.join(output_dir, 'human_vqa_per_question.csv') 
-    pd.DataFrame(text_results).to_csv(text_output) 
+    text_output = os.path.join(output_dir, 'human_vqa_per_question.json') 
+    with open(text_output, 'w', encoding='utf-8') as f:
+        json.dump(text_results, f, indent=2, ensure_ascii=False)
     print(f"\n   ✓ Saved: {text_output}")
 
     # Compute VQA statistics
@@ -606,11 +380,7 @@ def process_all_responses(
     stats_output = os.path.join(output_dir, 'human_vqa_stats.json')
     with open(stats_output, 'w', encoding='utf-8') as f:
         json.dump(vqa_stats, f, indent=2)
-    print(f"   ✓ Saved: {stats_output}")
-
-    # Save subject-level metrics for VQA (for heatmaps/barcharts/histograms)
-    if with_similarity:
-        save_subject_level_metrics(text_results, output_dir, 'vqa')
+    print(f"   ✓ Saved: {stats_output}") 
 
     # Process MC (choice)
     print("Processing MC (choice) responses...")
@@ -623,14 +393,12 @@ def process_all_responses(
 
     choice_results = []
     for qid, responses in tqdm(choice_responses_by_qid.items(), desc="Processing MC"):
-        if qid in choice_gt:
-            result = process_question_responses(qid, responses, choice_gt[qid])
-            if result:
-                choice_results.append(result)
+        choice_results.append(process_question_responses(qid, responses, choice_gt[qid])) 
 
     # Save MC results
-    choice_output = os.path.join(output_dir, 'human_mc_per_question.csv')
-    pd.DataFrame(choice_results).to_csv(choice_output) 
+    choice_output = os.path.join(output_dir, 'human_mc_per_question.json') 
+    with open(choice_output, 'w', encoding='utf-8') as f: 
+        json.dump(choice_results, f, indent=2) 
     print(f"\n   ✓ Saved: {choice_output}")
 
     # Compute MC statistics
@@ -646,19 +414,6 @@ def process_all_responses(
     with open(stats_output, 'w', encoding='utf-8') as f:
         json.dump(mc_stats, f, indent=2)
     print(f"   ✓ Saved: {stats_output}")
-
-    # Save subject-level metrics for MC (for heatmaps/barcharts/histograms)
-    save_subject_level_metrics(choice_results, output_dir, 'mc')
-
-    # Save QID lists
-    vqa_qids = [r['qid'] for r in text_results]
-    mc_qids = [r['qid'] for r in choice_results]
-
-    with open(os.path.join(output_dir, 'human_vqa_qids.json'), 'w') as f:
-        json.dump({'qids': vqa_qids, 'count': len(vqa_qids)}, f, indent=2)
-
-    with open(os.path.join(output_dir, 'human_mc_qids.json'), 'w') as f:
-        json.dump({'qids': mc_qids, 'count': len(mc_qids)}, f, indent=2)
 
     print("📈 Summary")
     print(f"VQA Questions: {len(text_results)}")
@@ -687,15 +442,13 @@ def main():
     )
 
     parser.add_argument("--human_data_dir", type=str,
-                        default="all_results_20251206_154732",
+                        default="n20",
                         help="Directory with raw human CSV files")
     parser.add_argument("--session", type=str, default="s1",
                         help="Session identifier (for questions file)")
     parser.add_argument("--output_dir", type=str, default="/home/work/yuna/HPA/evaluation/scored/humans",
                         help="Output directory for processed results")
     parser.add_argument("--with_similarity", action="store_true",
-                        help="Compute embedding similarity (requires sentence-transformers)")
-    parser.add_argument("--debug", action="store_true",
                         help="Compute embedding similarity (requires sentence-transformers)")
 
     args = parser.parse_args()
