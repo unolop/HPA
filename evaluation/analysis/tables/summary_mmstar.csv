@@ -11,6 +11,8 @@ InternVL3_5-8B_A2_vqa_10_blind_inst,67.1333,,32.1333,1500.0,,1500.0
 InternVL3_5-8B_A3_vqa_15_blind_inst,67.1333,,32.0667,1500.0,,1500.0
 InternVL3_5-8B_A4_mmstar_15_blind_inst,67.5333,,31.1333,1500.0,,1500.0
 InternVL3_5-8B_SFT_mmstar_15_blind_inst,66.4,,32.0,1500.0,,1500.0
+Qwen3-0.6B,29.9065,,,107.0,,
+Qwen3-8B-Base,21.2,,,1500.0,,
 Qwen3-VL-2B-Instruct,51.6667,20.6,23.8667,1500.0,1500.0,1500.0
 Qwen3-VL-4B-Instruct,63.8,24.8,21.8,1500.0,1500.0,1500.0
 Qwen3-VL-4B-Instruct_A1_vqa_gt,60.6667,,26.2,1500.0,,1500.0

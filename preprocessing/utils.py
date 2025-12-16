@@ -17,6 +17,12 @@ MODELNAMES = [
     "llava-hf/llava-v1.6-vicuna-7b-hf",
     "llava-hf/llava-v1.6-mistral-7b-hf",
     "llava-hf/llava-1.5-7b-hf",
+    "Qwen3-4B-Base", 
+    "Qwen3-0.6B-Base", 
+    "Qwen3-8B-Base", 
+    "Qwen3-4B", 
+    "Qwen3-0.6B", 
+    "Qwen3-8B", 
 ]
 
 DATASET_TYPE = {

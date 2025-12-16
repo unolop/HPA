@@ -4,7 +4,50 @@ import json
 from typing import List 
 
 VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
+import pandas as pd 
+from glob import glob 
+import sys 
+sys.path.append('/home/work/yuna/HPA') 
+from preprocessing.utils import MODELNAMES 
+root_dir = '/home/work/yuna/HPA/evaluation/scored'
 
+def find_matching(f, targets): 
+    for t in targets : 
+        if t in f : 
+            f = f.replace(f'{t}', '')   
+            return t, f 
+    print(f"cannot find matching {f} in {targets}") 
+
+def get_summary(dataset='mmstar'): 
+    files = glob(f"{root_dir}/*/*{dataset}*.jsonl")  + glob(f"{root_dir}/*/*/*/{dataset}*.jsonl")
+
+    dfs= []
+    for f in files: 
+        try: 
+            df = pd.read_json(f, lines=True)
+            if 'finetuned' in f : 
+                df['model'] = f.split('/')[-2].replace('fold_0', '')
+            else: 
+                df['model'], f = find_matching(f, [model.split('/')[-1] for model in MODELNAMES])  
+            df['condition'] = f.split('/')[-1][:-6].replace(f'_', ' ').replace('vqa 1k', '').replace(f'{dataset}', '').strip()
+            dfs.append(df)
+        except Exception as e: 
+            print(e)
+    df = pd.concat(dfs)
+    df['correct'] = pd.to_numeric(df['correct'], errors='coerce')
+    df['correct'] = (df['correct'] * 100).round(1)
+    print(len(files) ) 
+
+    # pt = df.pivot_table(
+    #     index=['model'],  
+    #     columns=['condition'], 
+    #     values=['correct'],
+    #     aggfunc=['mean', 'count']
+    # )
+    # pt = pt.round(4)
+    # pt.to_csv(f"./tables/summary_{dataset}.csv")
+    return df 
+    
 def normalize_answer(answer: str) -> str:
     """Normalize answer for comparison (open-ended)."""
     if not answer:

@@ -61,7 +61,7 @@ def compute_subject_to_subject_matrix(responses: List[str],
 
 
 def aggregate_subject_matrices(human_data: pd.DataFrame,
-                               qid_col='qid',
+                               qid_col='question_id',
                                similarity_func=None,
                                metric_type='agreement') -> Tuple[Dict, pd.DataFrame]:
     """
@@ -117,7 +117,7 @@ def aggregate_subject_matrices(human_data: pd.DataFrame,
 # Data Aggregation by Metadata
 # =============================================================================
 
-def load_vqa_metadata(vqa_json_path='/home/user/HPA/dataset/vqav2_1k_val.json') -> Dict:
+def load_vqa_metadata(vqa_json_path='/home/work/yuna/HPA/dataset/vqav2_1k_val.json') -> Dict:
     """Load VQA metadata with question_type and answer_type."""
     with open(vqa_json_path, 'r') as f:
         vqa_data = json.load(f)
@@ -135,7 +135,7 @@ def load_vqa_metadata(vqa_json_path='/home/user/HPA/dataset/vqav2_1k_val.json') 
     return metadata
 
 
-def load_mmstar_metadata(annotation_json_path='/home/user/HPA/dataset/annotation.json') -> Dict:
+def load_mmstar_metadata(annotation_json_path='/home/work/yuna/HPA/dataset/annotation.json') -> Dict:
     """Load MMStar metadata with category and l2_category."""
     with open(annotation_json_path, 'r') as f:
         mmstar_data = json.load(f)
@@ -450,6 +450,10 @@ def plot_subject_matrix_heatmap(matrix: pd.DataFrame,
     ax.set_title(title, fontsize=12)
     ax.set_xlabel('Subject ID', fontsize=11)
     ax.set_ylabel('Subject ID', fontsize=11)
+    ax.set_xticks(range(len(matrix.index)))
+    ax.set_xticklabels(matrix.index, rotation=45, ha='right')
+    ax.set_yticks(range(len(matrix.index)))
+    ax.set_yticklabels(matrix.index, rotation=0)
 
     plt.tight_layout()
 
@@ -466,7 +470,7 @@ def plot_subject_matrix_heatmap(matrix: pd.DataFrame,
 
 def analyze_vqa_by_types(human_data: pd.DataFrame,
                         model_data: pd.DataFrame,
-                        output_dir: str = '/home/user/HPA/analysis/figures'):
+                        output_dir: str = '/home/work/yuna/HPA/analysis/figures'):
     """
     Complete analysis of VQA data by question_type and answer_type.
 
@@ -480,9 +484,6 @@ def analyze_vqa_by_types(human_data: pd.DataFrame,
     """
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-
-    # Load metadata
-    vqa_metadata = load_vqa_metadata()
 
     results = {}
 
@@ -539,7 +540,7 @@ def analyze_vqa_by_types(human_data: pd.DataFrame,
 
 def analyze_mmstar_by_categories(human_data: pd.DataFrame,
                                  model_data: pd.DataFrame,
-                                 output_dir: str = '/home/user/HPA/analysis/figures'):
+                                 output_dir: str = '/home/work/yuna/HPA/analysis/figures'):
     """
     Complete analysis of MMStar data by category and l2_category.
 
