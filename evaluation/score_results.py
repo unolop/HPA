@@ -19,8 +19,7 @@ import pandas as pd
 from collections import defaultdict
 from typing import Dict
 from glob import glob
-from analysis.utils import *  
-from utils import compute_similarity  
+from analysis.utils.score import compute_similarity, VQAAnswerMapper, vqa_accuracy, exact_match, get_encoder
 import sys  
 sys.path.append('/home/work/yuna/HPA') 
 from preprocessing.utils import *  
@@ -37,24 +36,8 @@ def get_vqa_mapper() -> VQAAnswerMapper:
     return _vqa_mapper
 
 def get_spubench(): 
-    '''
-    data example :  
-        {'core_attributes': ['compact design', 'branding', 'cosmetic container'],
-        'spurious_attributes': ['round shape',
-        'marble-like background',
-        'shiny surface'],
-        'spurious_correlation_type': ['Shape', 'Background'],
-        'question': 'Question: Which feature best indicates the identity of the round object on the marble-like surface?\nA. The branding on it\nB. The marble-like background\nC. The round shape\nD. Its shiny surface\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:',
-        'choices': ['A. The branding on it',
-        'B. The marble-like background',
-        'C. The round shape',
-        'D. Its shiny surface'],
-        'answer': 'A',
-        'image': <PIL.PngImagePlugin.PngImageFile image mode=RGB size=1444x2564>}
-    '''
     # from inference import load_dataset 
     # spubench = load_dataset("spubench") 
-
     with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f: 
         annot = json.load(f) 
     return annot 
@@ -116,11 +99,8 @@ def score_file(
     for item in data:
         output = item.get('output', '')
         category = item.get('category', item.get('l2_category', item.get('question_type', 'Unknown')))
-        # Get ground truth answers and score
         if dataset_type == 'multi-choice':
-            
             if 'answer' not in item.keys(): 
-                ### Get annotations  
                 qid = item.get('pid', '') 
                 annot = annotations[qid]
                 item = {**annot, **item} 
@@ -129,6 +109,7 @@ def score_file(
             extracted_choice = extract_mc_choice(output)
             is_correct = gt.strip().upper()[0] == extracted_choice if gt and extracted_choice else False 
             item['extracted_choice'] = extracted_choice  
+
         else:
             qid = item.get('question_id', item.get('qid', item.get('index', None)))
             if vqa_mapper is None and qid is not None: 
@@ -151,8 +132,6 @@ def score_file(
             else:
                 gt = item.get('answer', '')
                 is_correct = exact_match(gt, output) 
-
-        # Save correctness
         item['correct'] = is_correct
 
         # Update counts
@@ -208,7 +187,7 @@ def score_directory(
     skip_existing: bool = True,
     with_similarity: bool = True,
 ) -> pd.DataFrame:
-
+    # /home/work/yuna/HPA/evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A2_vqa_10_blind_instfold_0 
     output_dir = f"/home/work/yuna/HPA/evaluation/scored/{input_dir}" 
     input_dir=f"/home/work/yuna/HPA/evaluation/results/{input_dir}" 
 
