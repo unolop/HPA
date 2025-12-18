@@ -28,10 +28,11 @@ def compute_similarity(gt: str, pred: str, encoder=encoder) -> float:
 
     emb = encoder.encode(
         [pred.strip(), gt.strip()],
-        # normalize_embeddings=True
+        normalize_embeddings=True
     )
 
     sim = float((emb[0] @ emb[1]))
+    # print(gt, pred, sim) 
     return float(np.clip(sim, -1.0, 1.0)) 
     
 def find_matching(f, targets): 

@@ -197,20 +197,12 @@ def get_responses_by_qid(
     vqa_mapper: VQAAnswerMapper = None,
     mmstar_annot: Dict = None
 ) -> Tuple[Dict, Dict]:
-    """
-    Group responses by QID and attach ground truth.
-
-    Returns:
-        responses_by_qid: {qid: [responses]}
-        gt_by_qid: {qid: ground_truth_info}
-    """
     answers = [a for a in answers if a.get("answer_type") == answer_type]
     responses_by_qid = defaultdict(list)
     gt_by_qid = {}
     
     for resp in answers:
         qid = str(resp['qid'])
-        # Initialize ground truth for this QID if not seen
         if qid not in gt_by_qid:
             if answer_type == 'text' and vqa_mapper:
                 gt_answers = vqa_mapper.get_answers(int(qid))
@@ -261,34 +253,36 @@ def process_question_responses(
     }
     results = []
     for i, resp in enumerate(responses):  
-        agreement = {}
+        # agreement = {}
         answer = normalize_answer(resp['answer'] )
         resp['qid'] = qid 
 
         if answer_type == 'text':
             gt_answers = gt_info['gt_answers']
             # visual_gt = gt_info.get('visual_gt', '')  # what is this ? 
-            resp['correct'] = vqa_accuracy(gt_answers, answer)     
-            resp['answer_similarity'] = np.mean([compute_similarity(gt, answer, encoder) for gt in gt_answers]     )
-            for j, rj in enumerate(range(len(responses))):   # compute other answer simlarities 
-                if encoder: 
-                    if i == j:  
-                        sim = 1 
-                    else: 
-                        sim = compute_similarity(answer, responses[rj]['answer'], encoder)  
-                    agreement[responses[rj]['participant_id']]=sim  
-
+            resp['correct'] = vqa_accuracy(gt_answers, answer)
+            if resp['correct'] is None or (isinstance(resp['correct'], float) and np.isnan(resp['correct'])):
+                print(f"⚠️  NaN or None value in 'correct': qid={qid}, answer={answer}, gt_answers={gt_answers}, resp={resp}")
+            resp['answer_similarity'] = np.mean([compute_similarity(gt, answer, encoder) for gt in gt_answers]) 
+            # for j, rj in enumerate(range(len(responses))):   # compute other answer simlarities 
+            #     if encoder: 
+            #         if i == j:  
+            #             sim = 1 
+            #         else: 
+            #             sim = compute_similarity(answer, responses[rj]['answer'], encoder)  
+            #         agreement[responses[rj]['participant_id']]=sim  
+            print(resp) 
         else:  # choice
             gt_answer = gt_info.get('answer', '')
             choice = choices[int(answer)]  
             resp['correct'] = 1 if choice == gt_answer.strip().upper()[0] else 0  
 
-            for j, choice_j in enumerate(range(len(responses))): 
-                if i != j: 
-                    a = 1 if choice == choice_j else 0  
-                    agreement[responses[choice_j]['participant_id']] = a  
+            # for j, choice_j in enumerate(range(len(responses))): 
+            #     if i != j: 
+            #         a = 1 if choice == choice_j else 0  
+            #         agreement[responses[choice_j]['participant_id']] = a  
         
-        resp['agreement'] = agreement 
+        # resp['agreement'] = agreement 
         results.append({**resp, **gt_info})   
 
     return results 
@@ -442,8 +436,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
 
-    parser.add_argument("--human_data_dir", type=str,
-                        default="n20",
+    parser.add_argument("--human_data_dir", type=str, default="n20", 
                         help="Directory with raw human CSV files")
     parser.add_argument("--session", type=str, default="s1",
                         help="Session identifier (for questions file)")
