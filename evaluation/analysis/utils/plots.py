@@ -12,6 +12,31 @@ from scipy import stats
 from scipy.stats import wasserstein_distance, ks_2samp
 
 
+def plot_correlation_matrix(corr_mat, participants): 
+    for i, p1 in enumerate(participants):
+        for j, p2 in enumerate(participants):
+            if i >= j:
+                continue
+
+            r = answers[p1].corr(answers[p2], method="pearson")
+            corr_mat.loc[p1, p2] = r
+            corr_mat.loc[p2, p1] = r
+
+    plt.figure(figsize=(10, 9))
+    sns.heatmap(
+        corr_mat,
+        vmin=-1, vmax=1,
+        cmap="coolwarm", 
+        annot=True, 
+        square=True,
+        xticklabels=range(len(participants)), 
+        yticklabels=range(len(participants))
+    )
+
+    plt.title("Pairwise Inter-Participant Correlation Matrix")
+    plt.tight_layout()
+    plt.show()
+
 
 def plot_vqa_distributions_with_metrics(H, M, model_name): 
 
