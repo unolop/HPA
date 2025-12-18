@@ -1,0 +1,16 @@
+{
+  "participant_id": "6b3a1a8d-1d21-41a0-b98a-6e7ff341db56",
+  "name": "김지원",
+  "age": "31",
+  "gender": "female",
+  "email": "",
+  "session": "s1",
+  "experiment_start_time": "2025-11-25T13:54:09.572502",
+  "experiment_end_time": "2025-11-25T15:10:39.222849",
+  "total_questions": 641,
+  "current_question": 641,
+  "is_completed": true,
+  "total_time_spent_ms": 4456941,
+  "save_timestamp": "20251125_151039",
+  "result_folder": "6b3a1a8d_20251125_135446"
+}

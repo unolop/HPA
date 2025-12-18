@@ -4,7 +4,7 @@ from tqdm import tqdm
 import json
 import numpy as np 
 import torch
-from analysis.utils import skip_processed_idx  
+from analysis.utils.score import skip_processed_idx  
 import sys 
 sys.path.append('/home/work/yuna/HPA') 
 

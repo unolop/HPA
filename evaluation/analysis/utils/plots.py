@@ -12,26 +12,6 @@ from scipy import stats
 from scipy.stats import wasserstein_distance, ks_2samp
 
 
-# Paper-ready styling
-plt.rcParams.update({
-    'font.family': 'serif',
-    'font.size': 10,
-    'axes.labelsize': 11,
-    'axes.titlesize': 12,
-    'xtick.labelsize': 9,
-    'ytick.labelsize': 9,
-    'legend.fontsize': 9,
-    'figure.dpi': 300,
-    'savefig.dpi': 300,
-    'savefig.bbox': 'tight',
-})
-
-COLORS = {
-    'mmstar': '#E74C3C',
-    'vqa_1k': '#3498DB',
-    'vqa_5k': '#2ECC71',
-}
-
 
 def plot_vqa_distributions_with_metrics(H, M, model_name): 
 

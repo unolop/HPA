@@ -23,8 +23,6 @@ from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Tuple
 from tqdm import tqdm
-from similarity_score import * 
-from analysis.utils.align import get_pearsonr_correlation 
 from analysis.utils.score import *   
 sys.path.append(str(Path(__file__).parent.parent)) 
 from preprocessing.preprocess import preprocess_pipeline 

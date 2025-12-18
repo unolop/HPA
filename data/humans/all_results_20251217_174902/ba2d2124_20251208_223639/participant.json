@@ -1,0 +1,16 @@
+{
+  "participant_id": "ba2d2124-d98d-4ed0-a2d9-c1cea0597e81",
+  "name": "Park Jungwon",
+  "age": "23",
+  "gender": "male",
+  "email": "",
+  "session": "s1",
+  "experiment_start_time": "2025-12-08T22:36:17.860577",
+  "experiment_end_time": null,
+  "total_questions": 641,
+  "current_question": 316,
+  "is_completed": false,
+  "total_time_spent_ms": 399235,
+  "save_timestamp": "20251208_224408",
+  "result_folder": "ba2d2124_20251208_223639"
+}

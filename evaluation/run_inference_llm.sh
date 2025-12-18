@@ -2,7 +2,7 @@
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
 CONDITION_LIST=("_inst_blind" ) # "_blind" 
-DATASET_PATHS=( "mmstar" "spubench"  ) #   )  #   "vqa_1k" "vqa_5k"
+DATASET_PATHS=(  "spubench"  ) #   )  #   "vqa_1k" "vqa_5k" "mmstar"
 BASE_MODEL=(
             # "Qwen/Qwen3-8B"
             "Qwen/Qwen3-4B"
@@ -21,7 +21,8 @@ for CONDITION in "${CONDITION_LIST[@]}"; do
                 --model "${BASE_MODEL}" \
                 --dataset "${VAL_DATASET}" \
                 --condition "${CONDITION}" \
-                --model_type "llm" 
+                --model_type "llm" \
+                --resume
         done
     done 
 done 

@@ -1,0 +1,16 @@
+{
+  "participant_id": "9d6d8564-5de0-4fed-9743-be2ed519cc79",
+  "name": "김주연",
+  "age": "32",
+  "gender": "female",
+  "email": "wndus3403@naver.com",
+  "session": "s1",
+  "experiment_start_time": "2025-12-10T23:36:05.560394",
+  "experiment_end_time": null,
+  "total_questions": 641,
+  "current_question": 628,
+  "is_completed": false,
+  "total_time_spent_ms": 5219810,
+  "save_timestamp": "20251211_010600",
+  "result_folder": "9d6d8564_20251210_233650"
+}

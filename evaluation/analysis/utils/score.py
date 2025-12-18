@@ -12,7 +12,17 @@ from preprocessing.utils import MODELNAMES
 root_dir = '/home/work/yuna/HPA/evaluation/scored'
 import numpy as np 
 
-def compute_similarity(gt: str, pred: str, encoder) -> float:
+def get_encoder():
+    """Lazy load sentence transformer."""
+    try:
+        from sentence_transformers import SentenceTransformer
+        return SentenceTransformer("all-MiniLM-L6-v2").to('cuda')
+    except:
+        return None
+    
+encoder=get_encoder() 
+
+def compute_similarity(gt: str, pred: str, encoder=encoder) -> float:
     if encoder is None or not gt or not pred:
         return 0.0
 
@@ -42,18 +52,22 @@ def get_summary(dataset='mmstar'):
                 df['model'] = f.split('/')[-2].replace('fold_0', '')
             else: 
                 df['model'], f = find_matching(f, [model.split('/')[-1] for model in MODELNAMES])  
-            df['condition'] = f.split('/')[-1][:-6].replace(f'_', ' ').replace('vqa 1k', '').replace(f'{dataset}', '').strip()
+            df['condition'] = f.split('/')[-1][:-6].replace(f'_', ' ').replace('vqa 1k', '').replace('vqa 5k', '').replace(f'{dataset}', '').strip()
             dfs.append(df)
         except Exception as e: 
             print(e)
     df = pd.concat(dfs)
     df['correct'] = pd.to_numeric(df['correct'], errors='coerce')
     df['correct'] = (df['correct'] * 100).round(1)
-    df['answer_similarity'] = pd.to_numeric(df['answer_similarity'], errors='coerce')
-    df['answer_similarity'] = (df['answer_similarity'] * 100).round(1)
-    df['meta_model'] = 'open-source model'
+    
+    if dataset != 'mmstar': 
+        df['answer_similarity'] = pd.to_numeric(df['answer_similarity'], errors='coerce')
+        df['answer_similarity'] = (df['answer_similarity'] * 100).round(1)
+        
+    if 'meta_model' not in df.keys(): 
+        df['meta_model'] = 'open-source model'
+        
     print(len(files) ) 
-
     # pt = df.pivot_table(
     #     index=['model'],  
     #     columns=['condition'], 
@@ -134,13 +148,6 @@ def extract_mc_choice(output: str) -> str:
     return ""
 
 
-def get_encoder():
-    """Lazy load sentence transformer."""
-    try:
-        from sentence_transformers import SentenceTransformer
-        return SentenceTransformer("all-MiniLM-L6-v2").to('cuda')
-    except:
-        return None
 
 
 

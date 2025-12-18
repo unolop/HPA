@@ -14,96 +14,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import torch 
 from math import atanh, tanh, sqrt 
-
-
-def get_pearsonr_correlation(values_dict):   
-    """
-    dictionary of 2 keys each with an array of same legnth
-    """  
-    x_name,y_name = values_dict.keys()  
-    x = values_dict[x_name]
-    y = values_dict[y_name] 
-
-    n = len(x) 
-    x_mean = float(np.mean(x))
-    y_mean = float(np.mean(y))  
-    r_val, p_val = pearsonr(x, y) 
-
-    # 95% CI via Fisher z
-    z = atanh(r_val)
-    se = 1 / sqrt(n - 3)
-    z_crit = 1.96  # 95% CI
-
-    ci_low = tanh(z - z_crit * se)
-    ci_high = tanh(z + z_crit * se)
-    return {
-        f"mean_{x_name}": x_mean, 
-        f"mean_{y_name}": y_mean,  
-        "method": "pearson",
-        "r": round(float(r_val), 3),
-        "p_value": round(float(p_val), 4),
-        "n": n,
-        "ci_95": [round(float(ci_low), 3), round(float(ci_high), 3)]
-    } 
-
-def distributional_alignment(
-    human_probs: torch.Tensor,
-    model_probs: torch.Tensor,
-    mode: str = "JS",
-    eps: float = 1e-12,
-) -> float:
-    """
-    Compute distributional alignment between human and model distributions.
-
-    Args:
-        human_probs: Tensor [K] — human answer distribution (sums to 1)
-        model_probs: Tensor [K] — model answer distribution (sums to 1)
-        mode: "JS" or "CE"
-        eps: numerical stability
-
-    Returns:
-        Scalar alignment loss (lower = more aligned)
-    """
-    h = human_probs.clamp(min=eps)
-    m = model_probs.clamp(min=eps)
-
-    if mode == "CE":
-        # Cross-entropy H(h, m)
-        return float(-(h * torch.log(m)).sum())
-
-    if mode == "JS":
-        # Jensen–Shannon divergence
-        mid = 0.5 * (h + m)
-        js = 0.5 * (h * (torch.log(h) - torch.log(mid))).sum() + \
-             0.5 * (m * (torch.log(m) - torch.log(mid))).sum()
-        return float(js)
-
-    raise ValueError(f"Unknown mode: {mode}")
-
-
-def question_alignment(
-    human_confidences: list,
-    model_counts: list,
-    mode: str = "JS",
-) -> float:
-    """
-    Compute alignment for one question.
-
-    Args:
-        human_confidences: list[float], e.g. [0.5, 0.3, 0.2]
-        model_counts: list[int], number of times model produced each answer
-        mode: "JS" or "CE"
-
-    Returns:
-        alignment score
-    """
-    human = torch.tensor(human_confidences, dtype=torch.float32)
-    human = human / human.sum()
-
-    model = torch.tensor(model_counts, dtype=torch.float32)
-    model = model / model.sum()
-
-    return distributional_alignment(human, model, mode=mode)
+import numpy as np
+import pandas as pd
+from scipy.stats import pearsonr, spearmanr, ks_2samp, wasserstein_distance
+from scipy.spatial.distance import jensenshannon
+from sklearn.metrics import cohen_kappa_score
+from math import atanh, tanh, sqrt
 
 def js_divergence_scores(a, b, bins=20):
     a = np.asarray(a); b = np.asarray(b)
@@ -112,43 +28,56 @@ def js_divergence_scores(a, b, bins=20):
     eps = 1e-8
     ha = ha + eps; hb = hb + eps
     ha /= ha.sum(); hb /= hb.sum()
+
     return (jensenshannon(ha, hb, base=2) ** 2)
 
-def alignment_metrics(human, model, bins=20):
-    human = np.asarray(human)
-    model = np.asarray(model)
+def calculate_alignment_suite(human, model, bins=20):
+    h = np.array(human)
+    m = np.array(model)
+    n = len(h)
 
-    # Question-wise agreement
-    rho, _ = spearmanr(human, model)
-    r, _   = pearsonr(human, model)
+    # 1. CONSISTENCY & PRECISION (Pearson + 95% CI)
+    r_val, p_val = pearsonr(h, m)
+    r_clip = np.clip(r_val, -0.9999, 0.9999)
+    z = atanh(r_clip)
+    se = 1 / sqrt(n - 3)
+    ci_low, ci_high = tanh(z - 1.96 * se), tanh(z + 1.96 * se)
+    
+    rho, _ = spearmanr(h, m)
 
-    # Magnitude error
-    mae  = np.mean(np.abs(model - human))
-    rmse = np.sqrt(np.mean((model - human)**2))
+    # 2. AGREEMENT (Quadratic Kappa)
+    # Bins scores into deciles to measure ordinal agreement
+    h_binned = np.round(h / 10).astype(int)
+    m_binned = np.round(m / 10).astype(int)
+    kappa = cohen_kappa_score(h_binned, m_binned, weights='quadratic')
 
-    # Distribution shape distances
-    wd  = wasserstein_distance(human, model)
-    jsd = js_divergence_scores(human, model, bins=bins)
+    # 3. DISTRIBUTIONAL DISTANCE (TVD, JS, KS)
+    bin_edges = np.linspace(0, 100, bins + 1)
+    h_counts, _ = np.histogram(h, bins=bin_edges)
+    m_counts, _ = np.histogram(m, bins=bin_edges)
+    
+    # Probability Mass Function (Sum to 1)
+    h_pmf = h_counts / (np.sum(h_counts) + 1e-10)
+    m_pmf = m_counts / (np.sum(m_counts) + 1e-10)
+    
+    tvd = 0.5 * np.sum(np.abs(h_pmf - m_pmf))
+    js_dist = jensenshannon(h_pmf, m_pmf, base=2)
+    ks_stat, ks_p = ks_2samp(h, m)
+    wd = wasserstein_distance(h, m)
 
-    # Distribution test
-    ks, ks_p = ks_2samp(human, model)
-
-    # Bias summaries
-    dmean = float(np.mean(model) - np.mean(human))
-    dstd  = float(np.std(model) - np.std(human))
+    # 4. BIAS SUMMARY
+    d_mean = np.mean(m) - np.mean(h)
 
     return {
-        "spearman_rho": float(rho),
-        "pearson_r": float(r),
-        "mae": float(mae),
-        "rmse": float(rmse),
-        "wasserstein": float(wd),
-        "jsd_hist": float(jsd),
-        "ks": float(ks),
-        "ks_p": float(ks_p),
-        "delta_mean": dmean,
-        "delta_std": dstd,
-        "n": int(len(human)),
+        "Pearson_r": round(r_val, 3),
+        "r_95_CI": [round(ci_low, 3), round(ci_high, 3)],
+        "Spearman_rho": round(rho, 3),
+        "Kappa_Quad": round(kappa, 3),
+        "TVD": round(tvd, 3),
+        "JS_Dist": round(js_dist, 3),
+        "KS_Stat": round(ks_stat, 3),
+        "Wasserstein": round(wd, 3),
+        "Delta_Mean": round(d_mean, 3)
     }
 
 def make_alignment_table(df, group_cols=("dataset","condition","model"), bins=20):

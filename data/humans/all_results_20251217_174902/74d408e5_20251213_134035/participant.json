@@ -1,0 +1,16 @@
+{
+  "participant_id": "74d408e5-98ac-431b-948a-ebb5e0cf1c63",
+  "name": "신재안",
+  "age": "26",
+  "gender": "male",
+  "email": "qtlswodks@naver.com",
+  "session": "s1",
+  "experiment_start_time": "2025-12-13T13:40:09.813547",
+  "experiment_end_time": "2025-12-14T14:18:14.579846",
+  "total_questions": 641,
+  "current_question": 641,
+  "is_completed": true,
+  "total_time_spent_ms": 6510636,
+  "save_timestamp": "20251214_141814",
+  "result_folder": "74d408e5_20251213_134035"
+}
