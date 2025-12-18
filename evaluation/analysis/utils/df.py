@@ -6,6 +6,22 @@ KEYS = [
     'answer_type'
 ]
 
+model_name_map = {
+    'InternVL3_5-1B': 'InternVL 3.5 (1B)',
+    'InternVL3_5-2B': 'InternVL 3.5 (2B)',
+    'InternVL3_5-4B': 'InternVL 3.5 (4B)',
+    'InternVL3_5-8B': 'InternVL 3.5 (8B)',
+    'Qwen3-VL-2B-Instruct': 'Qwen3-VL (2B)',
+    'Qwen3-VL-4B-Instruct': 'Qwen3-VL (4B)',
+    'Qwen3-VL-8B-Instruct': 'Qwen3-VL (8B)',
+    'Qwen3-4B':  'Qwen3 (4B)', 
+    'Qwen3-8B':  'Qwen3 (8B)',  
+    'llava-v1.6-mistral-7b-hf': 'LLaVA-v1.6-Mistral (7B)',
+    'llava-1.5-7b-hf': 'LLaVA-v1.5 (7B)',
+    'llava-v1.6-vicuna-7b-hf': 'LLaVA-v1.6-Vicuna (7B)',
+    'humans': 'Humans'
+}
+
 def aggregate_vqa(df): 
     # 1. Fix the missing comma in groupby and aggregate
     # We do NOT drop question_id here to avoid macro-averaging bias later

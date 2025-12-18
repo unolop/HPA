@@ -1,41 +1,28 @@
-
-
-import json
-import os
-from pathlib import Path
-from collections import defaultdict
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 from scipy.stats import wasserstein_distance, ks_2samp
+import numpy as np 
+import matplotlib.pyplot as plt
+import re
+
+def parse_size(name):
+    # Extracts numbers followed by 'B' or 'b' (e.g., InternVL3_5-1B -> 1.0)
+    match = re.search(r'(\d+(?:\.\d+)?)B', name, re.IGNORECASE)
+    if match:
+        return float(match.group(1))
+    return 7.0  # Default size if not found
 
 
-def plot_correlation_matrix(corr_mat, participants): 
-    for i, p1 in enumerate(participants):
-        for j, p2 in enumerate(participants):
-            if i >= j:
-                continue
-
-            r = answers[p1].corr(answers[p2], method="pearson")
-            corr_mat.loc[p1, p2] = r
-            corr_mat.loc[p2, p1] = r
-
-    plt.figure(figsize=(10, 9))
-    sns.heatmap(
-        corr_mat,
-        vmin=-1, vmax=1,
-        cmap="coolwarm", 
-        annot=True, 
-        square=True,
-        xticklabels=range(len(participants)), 
-        yticklabels=range(len(participants))
-    )
-
-    plt.title("Pairwise Inter-Participant Correlation Matrix")
-    plt.tight_layout()
-    plt.show()
+def get_family(model_name):
+    name = model_name.lower()
+    if 'llama' in name: return 'Llama'
+    if 'internvl' in name: return 'InternVL'
+    if 'gpt' in name: return 'OpenAI'
+    if 'claude' in name: return 'Anthropic'
+    if 'qwen' in name: return 'Qwen'
+    return 'Other'
 
 
 def plot_vqa_distributions_with_metrics(H, M, model_name): 
