@@ -294,8 +294,7 @@ def process_question_responses(
 def process_all_responses(
     human_data_dir: str,
     session: str,
-    output_dir: str,
-    with_similarity: bool = False
+    output_dir: str
 ):
     """
     Process all raw human responses and compute per-question metrics.
@@ -312,16 +311,7 @@ def process_all_responses(
     print("\n📚 Loading annotations...")
     vqa_mapper = get_vqa_mapper()
     mmstar_annot = load_mmstar_annotations(session) 
-
-    # Load encoder if needed
-    encoder = None
-    if with_similarity:
-        print("\n🔧 Loading sentence transformer...")
-        encoder = get_encoder()
-        if encoder:
-            print("   ✓ Encoder loaded")
-        else:
-            print("   ⚠️ Failed to load encoder, skipping similarity")
+    encoder = get_encoder()
 
     # Process VQA (text)
     print("Processing VQA (text) responses...") 
@@ -442,16 +432,14 @@ def main():
                         help="Session identifier (for questions file)")
     parser.add_argument("--output_dir", type=str, default="/home/work/yuna/HPA/evaluation/scored/humans",
                         help="Output directory for processed results")
-    parser.add_argument("--with_similarity", action="store_true",
-                        help="Compute embedding similarity (requires sentence-transformers)")
+    
 
     args = parser.parse_args()
 
     process_all_responses(
         args.human_data_dir,
         args.session,
-        args.output_dir,
-        args.with_similarity
+        args.output_dir
     )
 
 

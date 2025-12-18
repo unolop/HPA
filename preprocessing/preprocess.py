@@ -561,7 +561,6 @@ def preprocess_pipeline(
             r['answer_normalized'] = normalize_answer(r['answer_raw'])
             r['answer_normalized'] = normalize_number_words(r['answer_normalized'])
     
-    # Create a dict to group responses by answer_type
     responses_by_type = defaultdict(list)
     for r in responses:
         responses_by_type[r['answer_type']].append(r)
