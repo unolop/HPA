@@ -1,3 +1,4 @@
+import pandas as pd 
 
 KEYS = [
     'model',
@@ -22,36 +23,33 @@ model_name_map = {
     'humans': 'Humans'
 }
 
-def aggregate_vqa(df): 
-    # 1. Fix the missing comma in groupby and aggregate
-    # We do NOT drop question_id here to avoid macro-averaging bias later
-    pt = df.pivot_table( 
-        index=['model', 'answer_type'], 
-        columns=['condition'],   
-        values=['correct', 'answer_similarity'],
-        aggfunc='mean'
-    )
-    
-    # 2. FLATTEN COLUMNS IMMEDIATELY
-    # This turns ('correct', 'inst blind') into 'correct_inst_blind'
-    # And ('correct', '') [the visual condition] into 'correct_visual'
-    pt.columns = [f"{val}_{col}".strip('_').replace(' ', '_') for val, col in pt.columns]
-    
-    return pt.reset_index()
+def extract_size(text):
+    if pd.isna(text): return 1.0 # Default fallback
+    match = re.search(r'\((\d+(?:\.\d+)?)[Bb]\)', text)
+    return float(match.group(1)) if match else 1.0
 
-def calculate_mg(pt, filename=None, answer_similarity=True, categories='answer_type'): 
-    # Use the new flattened names (much safer than tuples)
-    # Mapping: '' -> 'visual', 'inst blind' -> 'inst_blind'
+def result_to_df(res):
+    # Extract everything except 'corr_mat'
+    data = {k: v for k, v in res.items() if k != 'corr_mat'}
+    return pd.DataFrame([data])
     
-    # Check what your columns are actually named if 'visual' isn't there:
-    # If the visual condition had an empty string name, it might just be 'correct'
+def calculate_mg(pt, filename=None, answer_similarity=True, categories='answer_type'): 
+
+    pt = pt.pivot_table( 
+            index=['model', 'answer_type', 'question_type', 'question_id'], 
+            columns=['condition'],   
+            values=['correct', 'answer_similarity'],
+            aggfunc='mean'
+        )  
+    pt.columns = [f"{val}_{col}".strip('_').replace(' ', '_') for val, col in pt.columns]
+    pt = pt.reset_index()
+
     vis_col = 'correct' if 'correct' in pt.columns else 'correct_visual'
     sim_vis_col = 'answer_similarity' if 'answer_similarity' in pt.columns else 'answer_similarity_visual'
-
-    pt['Acc_Visual'] = pt[vis_col]
+    pt['Acc_Visual'] = pt[vis_col] 
     pt['Acc_Blind_inst'] = pt['correct_inst_blind']
     pt['MG_Acc'] = pt['Acc_Visual'] - pt['Acc_Blind_inst']
-    
+
     if answer_similarity: 
         pt['S_Visual'] = pt[sim_vis_col]
         pt['S_Blind_inst'] = pt['answer_similarity_inst_blind']
@@ -85,8 +83,7 @@ def calculate_mg(pt, filename=None, answer_similarity=True, categories='answer_t
             pt.pivot_table(
                 index='model', columns=categories, values=['S_Visual', 'MG_S'], aggfunc='mean'
             ).to_latex(f'./tables/VQA_{filename}_similarity_atype.tex', float_format="%.1f")
-            
-    return pt
+    return pt  
 
 def prep(df_sub, suffix):
     return df_sub[
