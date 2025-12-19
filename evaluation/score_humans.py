@@ -106,6 +106,28 @@ def get_vqa_mapper() -> VQAAnswerMapper:
     return _vqa_mapper
 
 
+def load_human_results(jsonl_path: str) -> pd.DataFrame:
+    """
+    Load human results from JSONL file (preserves nested structures).
+
+    Args:
+        jsonl_path: Path to .jsonl file (e.g., 'human_mc_per_question.jsonl')
+
+    Returns:
+        DataFrame with properly parsed nested structures (lists, dicts)
+
+    Example:
+        >>> df = load_human_results('/path/to/human_mc_per_question.jsonl')
+        >>> df['extracted_choices']  # This is now a list, not a string!
+    """
+    data = []
+    with open(jsonl_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            if line.strip():
+                data.append(json.loads(line))
+    return pd.DataFrame(data)
+
+
 # =============================================================================
 # MMStar Data Loading
 # =============================================================================
@@ -327,6 +349,7 @@ def process_all_responses(
         if qid in text_gt:
             result = process_question_responses(qid, responses, text_gt[qid], encoder)
             if result:
+<<<<<<< HEAD
                 if isinstance(result, list):
                     text_results.extend(result)
                 else:
@@ -335,6 +358,21 @@ def process_all_responses(
                     json.dump(text_results, f, indent=2, ensure_ascii=False)
                     f.flush()
                     os.fsync(f.fileno())
+=======
+                text_results.append(result)
+
+    # Save VQA results (as JSONL to preserve nested structures)
+    text_output_jsonl = os.path.join(output_dir, 'human_vqa_per_question.jsonl')
+    with open(text_output_jsonl, 'w', encoding='utf-8') as f:
+        for item in text_results:
+            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+    print(f"\n   ✓ Saved: {text_output_jsonl}")
+
+    # Also save as CSV for quick viewing (but nested structures will be strings)
+    text_output_csv = os.path.join(output_dir, 'human_vqa_per_question.csv')
+    pd.DataFrame(text_results).to_csv(text_output_csv, index=False)
+    print(f"   ✓ Saved (CSV): {text_output_csv}")
+>>>>>>> origin/claude/audit-dependencies-mj4a7dso1vb9s2ea-015XXoHuK91NLAPiXkpPXDho
 
     # Compute VQA statistics
     # vqa_stats = {
@@ -380,11 +418,25 @@ def process_all_responses(
     for qid, responses in tqdm(choice_responses_by_qid.items(), desc="Processing MC"):
         choice_results.append(process_question_responses(qid, responses, choice_gt[qid])) 
 
+<<<<<<< HEAD
     # Save MC results
     choice_output = os.path.join(output_dir, 'human_mc_per_question.json') 
     with open(choice_output, 'w', encoding='utf-8') as f: 
         json.dump(choice_results, f, indent=2) 
     print(f"\n   ✓ Saved: {choice_output}")
+=======
+    # Save MC results (as JSONL to preserve nested structures)
+    choice_output_jsonl = os.path.join(output_dir, 'human_mc_per_question.jsonl')
+    with open(choice_output_jsonl, 'w', encoding='utf-8') as f:
+        for result in choice_results:
+            f.write(json.dumps(result, ensure_ascii=False) + '\n')
+    print(f"\n   ✓ Saved: {choice_output_jsonl}")
+
+    # Also save as CSV for quick viewing (but nested structures will be strings)
+    choice_output_csv = os.path.join(output_dir, 'human_mc_per_question.csv')
+    pd.DataFrame(choice_results).to_csv(choice_output_csv, index=False)
+    print(f"   ✓ Saved (CSV): {choice_output_csv}")
+>>>>>>> origin/claude/audit-dependencies-mj4a7dso1vb9s2ea-015XXoHuK91NLAPiXkpPXDho
 
     # Compute MC statistics
     # mc_stats = {
