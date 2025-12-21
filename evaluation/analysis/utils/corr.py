@@ -2,6 +2,7 @@ from tqdm import tqdm
 import pandas as pd 
 import numpy as np 
 import matplotlib.pyplot as plt
+from collections import Counter
 
 import numpy as np
 import pandas as pd
@@ -52,9 +53,36 @@ def transform_corr_table(df):
     return pivot 
 
 
+def gwet_ac1(a, b):
+    """
+    Compute Gwet's AC1 for two raters.
+    a, b: 1D arrays / lists of categorical labels (same length)
+    """
+    a = np.asarray(a)
+    b = np.asarray(b)
+
+    # observed agreement
+    po = np.mean(a == b)
+
+    # category proportions
+    cats = np.unique(np.concatenate([a, b]))
+    pa = Counter(a)
+    pb = Counter(b)
+
+    n = len(a)
+    pe = 0.0
+    for c in cats:
+        pa_c = pa[c] / n
+        pb_c = pb[c] / n
+        pe += pa_c * (1 - pb_c) + pb_c * (1 - pa_c)
+    pe *= 0.5
+
+    return (po - pe) / (1 - pe) if (1 - pe) > 0 else np.nan 
+    
 # ---------------------------
 # Pairwise metric
 # ---------------------------
+
 def pairwise_metric(a, b, metric="spearman"):
     """
     a, b: pandas Series (aligned, no NaNs)
@@ -70,7 +98,6 @@ def pairwise_metric(a, b, metric="spearman"):
         return matthews_corrcoef(a, b)
     else:
         raise ValueError(f"Unknown metric: {metric}")
-
 
 # ---------------------------
 # Core agreement function
@@ -206,12 +233,11 @@ def interrater_agreement(
 
 
 def get_agreements(human_vqa, model_vqa, metrics="correct", n_boot=200): 
-    human_acc = human_vqa.pivot(
+    human_acc = human_vqa.drop_duplicates(subset=['question_id', 'participant_id']).pivot(
         index="question_id",
         columns="participant_id",
         values=metrics
     )
-
     score_type = 'Accuracy' if metrics =='correct' else "Embedding Similarity"
 
     res_HH = interrater_agreement(

@@ -329,18 +329,33 @@ def process_all_responses(
 
     # Load questions
     questions_path = f"/home/work/yuna/HPA/dataset/questions/{session}.csv"
+    all_responses = preprocess_pipeline(glob(f"{human_data_dir}/*/*.csv"), questions_path, output_dir)  
+    
     # Load annotations
     print("\n📚 Loading annotations...")
     vqa_mapper = get_vqa_mapper()
     mmstar_annot = load_mmstar_annotations(session) 
-    encoder = get_encoder()
+    encoder = get_encoder() 
+
+    choice_responses_by_qid, choice_gt = get_responses_by_qid(
+        all_responses['responses']['choice'], 'choice', mmstar_annot=mmstar_annot
+    )
+    print(f"   Found {len(choice_responses_by_qid)} MC questions")
+
+    choice_results = []
+    for qid, responses in tqdm(choice_responses_by_qid.items(), desc="Processing MC"):
+        choice_results.append(process_question_responses(qid, responses, choice_gt[qid])) 
+    
+    # Save MC results
+    choice_output = os.path.join(output_dir, 'human_mc_per_question.json') 
+    with open(choice_output, 'w', encoding='utf-8') as f: 
+        json.dump([item for sublist in choice_results for item in sublist] , f, indent=2) 
+    print(f"\n   ✓ Saved: {choice_output}")
 
     # Process VQA (text)
     print("Processing VQA (text) responses...") 
-    all_responses = preprocess_pipeline(glob(f"{human_data_dir}/*/*.csv"), questions_path, output_dir)  
     text_responses_by_qid, text_gt = get_responses_by_qid(
-        all_responses['responses']['text'], 'text', vqa_mapper=vqa_mapper 
-    )
+        all_responses['responses']['text'], 'text', vqa_mapper=vqa_mapper )
     print(f"   Found {len(text_responses_by_qid)} VQA questions")
 
     text_output = os.path.join(output_dir, 'human_vqa_per_question.json')  
@@ -348,31 +363,11 @@ def process_all_responses(
     for qid, responses in tqdm(text_responses_by_qid.items(), desc="Processing VQA"):
         if qid in text_gt:
             result = process_question_responses(qid, responses, text_gt[qid], encoder)
-            if result:
-<<<<<<< HEAD
-                if isinstance(result, list):
-                    text_results.extend(result)
-                else:
-                    text_results.append(result)
-                with open(text_output, 'w', encoding='utf-8') as f:
-                    json.dump(text_results, f, indent=2, ensure_ascii=False)
-                    f.flush()
-                    os.fsync(f.fileno())
-=======
-                text_results.append(result)
-
-    # Save VQA results (as JSONL to preserve nested structures)
-    text_output_jsonl = os.path.join(output_dir, 'human_vqa_per_question.jsonl')
-    with open(text_output_jsonl, 'w', encoding='utf-8') as f:
-        for item in text_results:
-            f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"\n   ✓ Saved: {text_output_jsonl}")
-
-    # Also save as CSV for quick viewing (but nested structures will be strings)
-    text_output_csv = os.path.join(output_dir, 'human_vqa_per_question.csv')
-    pd.DataFrame(text_results).to_csv(text_output_csv, index=False)
-    print(f"   ✓ Saved (CSV): {text_output_csv}")
->>>>>>> origin/claude/audit-dependencies-mj4a7dso1vb9s2ea-015XXoHuK91NLAPiXkpPXDho
+            text_results.append(result)
+            with open(text_output, 'w', encoding='utf-8') as f:
+                json.dump(text_results, f, indent=2, ensure_ascii=False)
+                f.flush()
+                os.fsync(f.fileno())
 
     # Compute VQA statistics
     # vqa_stats = {
@@ -405,38 +400,6 @@ def process_all_responses(
     #     json.dump(vqa_stats, f, indent=2)
     # print(f"   ✓ Saved: {stats_output}") 
 
-    # Process MC (choice)
-    print("Processing MC (choice) responses...")
-    print(f"   Found {len(text_responses_by_qid)} VQA questions")
-
-    choice_responses_by_qid, choice_gt = get_responses_by_qid(
-        all_responses['responses']['choice'], 'choice', mmstar_annot=mmstar_annot
-    )
-    print(f"   Found {len(choice_responses_by_qid)} MC questions")
-
-    choice_results = []
-    for qid, responses in tqdm(choice_responses_by_qid.items(), desc="Processing MC"):
-        choice_results.append(process_question_responses(qid, responses, choice_gt[qid])) 
-
-<<<<<<< HEAD
-    # Save MC results
-    choice_output = os.path.join(output_dir, 'human_mc_per_question.json') 
-    with open(choice_output, 'w', encoding='utf-8') as f: 
-        json.dump(choice_results, f, indent=2) 
-    print(f"\n   ✓ Saved: {choice_output}")
-=======
-    # Save MC results (as JSONL to preserve nested structures)
-    choice_output_jsonl = os.path.join(output_dir, 'human_mc_per_question.jsonl')
-    with open(choice_output_jsonl, 'w', encoding='utf-8') as f:
-        for result in choice_results:
-            f.write(json.dumps(result, ensure_ascii=False) + '\n')
-    print(f"\n   ✓ Saved: {choice_output_jsonl}")
-
-    # Also save as CSV for quick viewing (but nested structures will be strings)
-    choice_output_csv = os.path.join(output_dir, 'human_mc_per_question.csv')
-    pd.DataFrame(choice_results).to_csv(choice_output_csv, index=False)
-    print(f"   ✓ Saved (CSV): {choice_output_csv}")
->>>>>>> origin/claude/audit-dependencies-mj4a7dso1vb9s2ea-015XXoHuK91NLAPiXkpPXDho
 
     # Compute MC statistics
     # mc_stats = {

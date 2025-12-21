@@ -3,10 +3,9 @@ import re
 from tqdm import tqdm
 import json
 import numpy as np
-from analysis.utils import skip_processed_idx
+from analysis.utils.score import skip_processed_idx
 import sys
 import base64
-from pathlib import Path
 import time
 
 sys.path.append('/home/work/yuna/HPA')
@@ -313,7 +312,7 @@ if __name__ == "__main__":
                         help="Model type (vlm for vision, lm for text-only)")
     parser.add_argument("--resume", action="store_true",
                         help="Resume from existing output file")
-    parser.add_argument("--max_token_length", type=int, default=4096,
+    parser.add_argument("--max_token_length", type=int, default=1024,
                         help="Maximum token length")
     parser.add_argument("--dataset", type=str, default="mmstar",
                         help="Dataset name (mmstar, spubench, vqa_1k, vqa_5k)")
