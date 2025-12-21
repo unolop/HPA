@@ -24,6 +24,9 @@ def gwet_ac1(a, b):
 
     return (po - pe) / (1 - pe) if (1 - pe) > 0 else np.nan
     
+def ci_to_pm(mean, ci):
+    lo, hi = ci
+    return (hi - lo) / 2
     
 def interrater_agreement_ac1(
     answers_pivot: pd.DataFrame,
@@ -33,22 +36,7 @@ def interrater_agreement_ac1(
     title="Agreement (AC1)",
     plot=True,
     save=None,
-):
-    """
-    answers_pivot:
-        rows = questions
-        columns = raters (humans or models)
-        values = categorical answers
-
-    grp1, grp2:
-        lists of column names
-        - same list → within-group (HH or MM)
-        - different lists → cross-group (HM)
-
-    Returns:
-        dict with mean AC1 + bootstrap CI
-    """
-
+): 
     # ---------------------------
     # Pairwise AC1 matrix
     # ---------------------------
@@ -67,7 +55,7 @@ def interrater_agreement_ac1(
 
     # ---------------------------
     # Flatten AC1 values
-    # ---------------------------
+    # --------------------------- 
     if list(grp1) == list(grp2):
         mask = np.triu(np.ones(ac1_mat.shape), k=1).astype(bool)
         flat_vals = ac1_mat.where(mask).stack()
@@ -75,16 +63,14 @@ def interrater_agreement_ac1(
         flat_vals = ac1_mat.stack()
 
     flat_vals = flat_vals.dropna()
-
     mean_ac1 = flat_vals.mean()
 
+    ci_low = np.nan
+    ci_high = np.nan
     # ---------------------------
     # Bootstrap CI over questions
     # ---------------------------
     q_ids = answers_pivot.index.values
-    ci_low = np.nan
-    ci_high = np.nan
-
     if n_boot:
         boot_means = []
 
@@ -108,6 +94,13 @@ def interrater_agreement_ac1(
                 boot_means.append(np.mean(tmp))
 
         ci_low, ci_high = np.percentile(boot_means, [2.5, 97.5])
+        ci = ci_to_pm(mean_ac1, [ci_low, ci_high])
+            
+        print(
+            f"{title} AC1:",
+            f"{mean_ac1:.3f}", f"±{mean_ac1:.2f}", 
+            f"[{ci[0]:.3f}, {ci[1]:.3f}]"
+        )
 
     # ---------------------------
     # Plot heatmap (optional)

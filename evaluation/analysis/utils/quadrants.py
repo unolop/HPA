@@ -63,3 +63,15 @@ def median_mg_table(df, mg_col="model_MG_acc_q"):
     )
 
     return summary
+
+
+def get_examples(quad, df, mms):  
+    
+    both_wrong = mms[mms["cc_quadrant"] == quad]
+    target_ids = both_wrong.sort_values("MG_Acc").head(2)["question_id"].tolist()
+    result_df = df[df['question_id'].isin(target_ids)].copy()
+    print(target_ids, len(result_df))
+    result_df['quadrant'] = quad
+    # result_df = result_df.dropna(axis=1)
+
+    return result_df

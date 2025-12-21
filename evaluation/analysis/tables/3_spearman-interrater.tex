@@ -1,10 +1,17 @@
-\begin{tabular}{lll}
-\toprule
-signal & Accuracy $\rho$  & Embedding $\rho$  \\
-comparison &  &  \\
-\midrule
-Human–Human & 0.576 [0, 0] & 0.629 [0, 0] \\
-Human–Model & 0.481 [0, 0] & 0.54 [0, 0] \\
-Model–Model & 0.639 [0, 0] & 0.69 [0, 0] \\
-\bottomrule
-\end{tabular}
+
+\begin{table}[t]
+    \centering 
+    \caption{Inter-rater agreement (Mean $\rho \pm$ 95\% CI).}
+    \label{tab:agreement}
+    % \small % Reduces font size slightly to fit better
+    \setlength{\tabcolsep}{4pt} % Shrinks the space between columns
+    \begin{tabular}{l cc}
+    \toprule
+    Comparison & Accuracy $\rho$ & Embedding $\rho$ \\
+    \midrule
+    Human--Human & $0.58 \pm .04$ & $0.63 \pm .04$ \\
+    Human--Model & $0.51 \pm .05$ & $0.54 \pm .05$ \\
+    Model--Model & $0.63 \pm .04$ & $0.69 \pm .04$ \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
