@@ -1,4 +1,29 @@
-import pandas as pd
+import re 
+
+def map_question_type(question: str) -> str:
+    q = question.lower().strip()
+
+    # Counting
+    if re.match(r"^how (many|much)\b", q):
+        return "Number"
+
+    # Yes / No
+    if re.match(r"^(is|are|was|were|do|does|did|can|could|will|would|should|has|have|had)\b", q):
+        return "Yes/No"
+
+    # Person
+    if q.startswith("who"):
+        return "Person"
+
+    # Reason
+    if q.startswith("why"):
+        return "Reason"
+
+    # Attribute / Object
+    if q.startswith(("what", "which")):
+        return "Attribute/Object"
+
+    return "Other"
 
 def cc_quadrant(row):
     if row["human_correct"] == 1 and row["model_correct"] == 1:
