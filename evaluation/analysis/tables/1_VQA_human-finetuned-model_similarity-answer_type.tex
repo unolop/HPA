@@ -1,0 +1,45 @@
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \multicolumn{6}{r}{mean} \\
+ & \multicolumn{3}{r}{answer_similarity} & \multicolumn{3}{r}{correct} \\
+answer_type & number & other & yes/no & number & other & yes/no \\
+model &  &  &  &  &  &  \\
+\midrule
+Humans & 55.0 & 45.2 & 82.9 & 15.2 & 12.7 & 68.0 \\
+InternVL3_5-1B & 67.5 & 52.0 & 85.9 & 24.8 & 20.0 & 68.3 \\
+InternVL3_5-2B & 61.7 & 52.7 & 88.8 & 11.4 & 19.2 & 74.6 \\
+InternVL3_5-4B & 62.4 & 54.3 & 78.6 & 11.4 & 24.0 & 74.4 \\
+InternVL3_5-8B & 66.3 & 53.7 & 82.4 & 20.0 & 22.4 & 70.3 \\
+InternVL3_5-8B_A1_vqa_gt & 73.5 & 58.7 & 87.8 & 41.9 & 29.7 & 72.7 \\
+InternVL3_5-8B_A2_vqa_10_blind_inst & 74.4 & 58.6 & 87.5 & 43.8 & 29.1 & 70.9 \\
+InternVL3_5-8B_A3_vqa_15_blind_inst & 73.3 & 58.6 & 87.7 & 34.3 & 28.3 & 71.1 \\
+InternVL3_5-8B_A4_mmstar_15_blind_inst & 70.1 & 54.4 & 84.6 & 24.8 & 22.2 & 71.8 \\
+InternVL3_5-8B_SFT_vqa_15_blind_inst & 73.9 & 57.9 & 87.5 & 37.1 & 28.1 & 70.9 \\
+InternVL3_5-8B_SFT_vqa_gt & 73.8 & 61.2 & 88.2 & 39.0 & 34.0 & 74.6 \\
+Qwen3-VL-2B-Instruct & 63.3 & 55.7 & 87.4 & 15.2 & 23.6 & 71.8 \\
+Qwen3-VL-4B-Instruct & 61.6 & 57.2 & 86.8 & 12.4 & 28.9 & 70.3 \\
+Qwen3-VL-4B-Instruct_A1_vqa_gt & 65.6 & 58.2 & 87.9 & 17.1 & 29.5 & 72.7 \\
+Qwen3-VL-4B-Instruct_A2_vqa_10_blind_inst & 74.1 & 56.8 & 86.2 & 33.3 & 25.3 & 69.4 \\
+Qwen3-VL-4B-Instruct_A3_vqa_15_blind_inst & 73.7 & 57.4 & 86.6 & 32.4 & 26.8 & 70.5 \\
+Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_inst & 69.4 & 55.4 & 87.8 & 21.0 & 24.7 & 72.2 \\
+Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_inst & 74.7 & 56.6 & 86.8 & 32.4 & 24.9 & 69.6 \\
+Qwen3-VL-4B-Instruct_SFT_vqa_gt & 65.9 & 62.4 & 88.2 & 20.0 & 35.4 & 72.0 \\
+Qwen3-VL-8B-Instruct & 55.4 & 55.1 & 86.8 & 17.1 & 26.6 & 71.5 \\
+Qwen3-VL-8B-Instruct_A1_vqa_gt & 62.6 & 55.9 & 87.2 & 20.0 & 24.7 & 70.0 \\
+Qwen3-VL-8B-Instruct_A2_vqa_10_blind_inst & 71.9 & 56.8 & 86.5 & 30.5 & 23.4 & 68.9 \\
+Qwen3-VL-8B-Instruct_A3_vqa_15_blind_inst & 62.6 & 55.9 & 87.2 & 20.0 & 24.7 & 70.0 \\
+Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_inst & 63.9 & 53.7 & 87.4 & 17.1 & 24.7 & 71.8 \\
+Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_inst & 66.0 & 54.6 & 87.2 & 20.0 & 24.9 & 71.6 \\
+Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst & 71.4 & 57.3 & 86.9 & 35.2 & 22.6 & 70.3 \\
+llava-1.5-7b-hf & 58.4 & 48.7 & 87.9 & 14.3 & 19.6 & 70.3 \\
+llava-v1.6-mistral-7b-hf & 60.8 & 55.8 & 87.7 & 17.1 & 27.0 & 69.6 \\
+llava-v1.6-mistral-7b-hf_A1_vqa_gt & 68.7 & 66.6 & 88.8 & 34.3 & 41.6 & 73.5 \\
+llava-v1.6-mistral-7b-hf_A2_vqa_10_blind_inst & 70.8 & 58.5 & 86.9 & 34.3 & 25.3 & 69.4 \\
+llava-v1.6-mistral-7b-hf_A3_vqa_15_blind_inst & 69.5 & 58.5 & 87.7 & 29.5 & 27.0 & 70.3 \\
+llava-v1.6-mistral-7b-hf_A4_mmstar_15_blind_inst & 61.8 & 61.3 & 88.8 & 17.1 & 34.0 & 74.8 \\
+llava-v1.6-mistral-7b-hf_SFT_mmstar_15_blind_inst & 66.2 & 62.4 & 89.1 & 23.8 & 35.2 & 74.6 \\
+llava-v1.6-mistral-7b-hf_SFT_vqa_15_blind_inst & 65.9 & 55.2 & 88.2 & 26.7 & 22.8 & 71.6 \\
+llava-v1.6-mistral-7b-hf_SFT_vqa_gt & 72.6 & 65.8 & 88.7 & 37.1 & 40.7 & 72.0 \\
+llava-v1.6-vicuna-7b-hf & 59.0 & 56.5 & 89.6 & 17.1 & 27.2 & 74.4 \\
+\bottomrule
+\end{tabular}

@@ -61,7 +61,7 @@ def get_summary(dataset='mmstar'):
     df['correct'] = pd.to_numeric(df['correct'], errors='coerce')
     df['correct'] = (df['correct'] * 100).round(1)
     
-    if dataset != 'mmstar': 
+    if "answer_similarity" in df.columns: 
         df['answer_similarity'] = pd.to_numeric(df['answer_similarity'], errors='coerce')
         df['answer_similarity'] = (df['answer_similarity'] * 100).round(1)
         

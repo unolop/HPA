@@ -2,6 +2,8 @@ from collections import Counter
 import numpy as np
 import pandas as pd 
 import matplotlib.pyplot as plt 
+import seaborn as sns 
+from tqdm import tqdm 
 
 
 def gwet_ac1(a, b):
