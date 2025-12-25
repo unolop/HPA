@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 from scipy.stats import wasserstein_distance, ks_2samp 
+from matplotlib.lines import Line2D
 from adjustText import adjust_text
 import re
 
@@ -25,6 +26,100 @@ def get_family(model_name):
     if 'qwen' in name: return 'Qwen'
     return 'Other'
 
+regime_colors = {
+    "Pretrained": "#7A7A7A",      # neutral gray
+    "SFT-VQA": "#4C72B0",         # muted blue
+    "JS-Blind VQA": "#DD8452",    # soft muted orange
+    "SFT-Blind VQA": "#8172B3",   # muted purple
+}
+family_markers = {
+    "Qwen-VL": "o",
+    "LLaVA": "s",
+    "InternVL": "^",
+}
+
+def scatterplot_finetuned(subset, x_col='pearson_r', y_col='model_avg', title='accuracy'):
+    fig, ax = plt.subplots(figsize=(9, 6.5))
+    x = subset[x_col].to_numpy()
+    y = subset[y_col].to_numpy()
+
+    # drop NaNs
+    mask = ~np.isnan(x) & ~np.isnan(y)
+    x, y = x[mask], y[mask]
+
+    # Linear regression
+    slope, intercept, r_val, p_val, _ = stats.linregress(x, y)
+
+    # Spearman correlation
+    rho, _ = stats.spearmanr(x, y)
+
+    used_labels = set()   # ✅ RESET per plot
+    sns.regplot(
+        data=subset,
+        x=x_col,
+        y=y_col,
+        scatter=False,
+        ci=68,
+        ax=ax,
+        line_kws=dict(
+            color="gray",
+            linestyle="--",
+            linewidth=1.5,
+            alpha=0.8,
+            zorder=5,   # ✅ critical
+        ),
+    )
+    for reg in regime_colors.keys():          # ✅ enforce order + color consistency
+        for fam in subset["family"].unique():
+            data = subset[
+                (subset["family"] == fam) &
+                (subset["regime"] == reg)
+            ]
+            if data.empty:
+                continue
+
+            show_label = reg not in used_labels
+            used_labels.add(reg)
+            ax.scatter(
+                data[x_col],
+                data[y_col],
+                s=data["model_size"] * 65,
+                color=regime_colors[reg],
+                marker='o', 
+                alpha=0.85,
+                edgecolors="white",
+                linewidth=0.6,
+                zorder=3,
+                label=reg if show_label else None,
+            )
+    eq_text = (
+    rf"$y = {slope:.2f}x {intercept:+.2f}$" "\n"
+    rf"Pearson $r = {r_val:.2f}$, $R^2 = {r_val**2:.2f}$" "\n"
+    rf"Spearman $\rho = {rho:.2f}$"
+    )
+    ax.text(
+        0.02, 0.98,
+        eq_text,
+        transform=ax.transAxes,
+        ha="left",
+        va="top",
+        fontsize=10,
+        color="black",
+        zorder=6,   # above scatter + reg line
+    )
+    regime_legend = ax.legend(
+        title="Training regime",
+        loc="upper right",
+        ncols=2,
+        frameon=True,
+        fancybox=True,
+        framealpha=0.9,
+        edgecolor="black",
+    )
+    ax.add_artist(regime_legend)
+    ax.set_title(title)
+    plt.tight_layout()
+    plt.show()
 
 def plot_vqa_distributions_with_metrics(H, M, model_name): 
 

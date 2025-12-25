@@ -1,16 +1,17 @@
 import os 
+import numpy as np 
 import re  
 import json 
+from utils.df import MODEL_DISPLAY_MAP 
 from typing import List 
-
-VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
 import pandas as pd 
 from glob import glob 
 import sys 
 sys.path.append('/home/work/yuna/HPA') 
 from preprocessing.utils import MODELNAMES 
+
 root_dir = '/home/work/yuna/HPA/evaluation/scored'
-import numpy as np 
+VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
 
 def get_encoder():
     """Lazy load sentence transformer."""
@@ -76,6 +77,8 @@ def get_summary(dataset='mmstar'):
     #     aggfunc=['mean', 'count']
     # )
     # pt = pt.round(4)
+    df['model'] = df['model'].map(MODEL_DISPLAY_MAP)  
+    df = df.drop_duplicates(subset=['condition', 'question_id', 'model'])  
     # pt.to_csv(f"./tables/summary_{dataset}.csv")
     return df 
     

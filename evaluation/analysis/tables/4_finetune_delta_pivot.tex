@@ -1,0 +1,20 @@
+\begin{tabular}{llrrr}
+\toprule
+ & supervision & \multicolumn{2}{r}{Blind} & GT \\
+ & dataset & MMStar & VQA & VQA \\
+model & trainer &  &  &  \\
+\midrule
+\multirow[t]{2}{*}{InternVL3.5‑8B} & JS & 0.002 & 0.002 & -0.001 \\
+ & SFT & NaN & 0.004 & 0.000 \\
+\cline{1-5}
+\multirow[t]{2}{*}{LLaVA‑Mistral‑7B} & JS & -0.012 & 0.068 & -0.004 \\
+ & SFT & -0.015 & 0.028 & -0.064 \\
+\cline{1-5}
+\multirow[t]{2}{*}{Qwen3‑VL‑4B} & JS & 0.004 & 0.002 & 0.000 \\
+ & SFT & NaN & -0.011 & -0.011 \\
+\cline{1-5}
+\multirow[t]{2}{*}{Qwen3‑VL‑8B} & JS & 0.000 & 0.007 & -0.012 \\
+ & SFT & 0.024 & -0.012 & NaN \\
+\cline{1-5}
+\bottomrule
+\end{tabular}

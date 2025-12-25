@@ -8,8 +8,38 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from scipy.stats import spearmanr
+from scipy.stats import pearsonr, spearmanr
 from sklearn.metrics import matthews_corrcoef
+
+def corr_by_regime(
+    df,
+    x_col="acc_corr",
+    y_col="MG_Acc",
+    regime_col="regime",
+):
+    rows = []
+
+    for reg, sub in df.groupby(regime_col):
+        # drop NaNs pairwise
+        print(reg, sub.model.unique())
+        sub = sub[[x_col, y_col]].dropna()
+
+        if len(sub) < 3:
+            # too few points for meaningful correlation
+            r, rho = float("nan"), float("nan")
+        else:
+            r, _ = pearsonr(sub[x_col], sub[y_col])
+            rho, _ = spearmanr(sub[x_col], sub[y_col])
+
+        rows.append({
+            "Regime": reg,
+            "models": len(sub), 
+            "Pearson r": r,
+            "Spearman ρ": rho,
+            "R²": r**2 if pd.notna(r) else float("nan"),
+        })
+
+    return pd.DataFrame(rows)
 
 def transform_corr_table(df): 
     df["comparison"] = df["title"].str.extract(
