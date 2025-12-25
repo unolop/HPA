@@ -1,28 +1,30 @@
 import re 
 
 def map_question_type(question: str) -> str:
-    q = question.lower().strip()
+    try: 
+        q = question.lower().strip()
+        # Counting
+        if re.match(r"^how (many|much)\b", q):
+            return "Number"
 
-    # Counting
-    if re.match(r"^how (many|much)\b", q):
-        return "Number"
+        # Yes / No
+        if re.match(r"^(is|are|was|were|do|does|did|can|could|will|would|should|has|have|had)\b", q):
+            return "Yes/No"
 
-    # Yes / No
-    if re.match(r"^(is|are|was|were|do|does|did|can|could|will|would|should|has|have|had)\b", q):
-        return "Yes/No"
+        # Person
+        if q.startswith("who"):
+            return "Person"
 
-    # Person
-    if q.startswith("who"):
-        return "Person"
+        # Reason
+        if q.startswith("why"):
+            return "Reason"
 
-    # Reason
-    if q.startswith("why"):
-        return "Reason"
+        # Attribute / Object
+        if q.startswith(("what", "which")):
+            return "Attribute/Object"
 
-    # Attribute / Object
-    if q.startswith(("what", "which")):
-        return "Attribute/Object"
-
+    except Exception as e : 
+        print(question, 'cannot be mapped')
     return "Other"
 
 def cc_quadrant(row):

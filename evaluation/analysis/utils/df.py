@@ -12,12 +12,16 @@ KEYS = [
 MODEL_DISPLAY_MAP = {
     # ---------- Humans ----------
     "Humans": "Humans",
-
+    'Qwen3-0.6B' : 'Qwen3 (0.6B)',
+    'Qwen3-4B' : 'Qwen3 (4B)' , 
+    'Qwen3-8B-Base': 'Qwen3 Base (8B)', 
+    'Qwen3-8B' : 'Qwen3 (8B)',  
+    
     # ---------- InternVL ----------
-    "InternVL3_5-1B": "InternVL3.5‑1B",
-    "InternVL3_5-2B": "InternVL3.5‑2B",
-    "InternVL3_5-4B": "InternVL3.5‑4B",
-    "InternVL3_5-8B": "InternVL3.5‑8B",
+    "InternVL3_5-1B": "InternVL 3.5 (1B)",
+    "InternVL3_5-2B": "InternVL 3.5 (2B)",
+    "InternVL3_5-4B": "InternVL 3.5 (4B)",
+    "InternVL3_5-8B": "InternVL 3.5 (8B)",
 
     "InternVL3_5-8B_A1_vqa_gt": "InternVL3.5‑8B | JS VQA (GT)",
     "InternVL3_5-8B_A2_vqa_10_blind_inst": "InternVL3.5‑8B | JS‑Blind VQA (n=10)",
@@ -25,11 +29,12 @@ MODEL_DISPLAY_MAP = {
     "InternVL3_5-8B_A4_mmstar_15_blind_inst": "InternVL3.5‑8B | JS‑Blind MMStar (n=15)",
     "InternVL3_5-8B_SFT_vqa_15_blind_inst": "InternVL3.5‑8B | SFT‑Blind VQA",
     "InternVL3_5-8B_SFT_vqa_gt": "InternVL3.5‑8B | SFT‑VQA",
+    'InternVL3_5-8B_SFT_mmstar_15_blind_inst' : "InternVL3.5‑8B | SFT‑Blind MMStar (n=15)", 
 
     # ---------- Qwen ----------
-    "Qwen3-VL-2B-Instruct": "Qwen3‑VL‑2B",
-    "Qwen3-VL-4B-Instruct": "Qwen3‑VL‑4B",
-    "Qwen3-VL-8B-Instruct": "Qwen3‑VL‑8B",
+    "Qwen3-VL-2B-Instruct": "Qwen3‑VL (2B)",
+    "Qwen3-VL-4B-Instruct": "Qwen3‑VL (4B)",
+    "Qwen3-VL-8B-Instruct": "Qwen3‑VL (8B)",
 
     "Qwen3-VL-4B-Instruct_A1_vqa_gt": "Qwen3‑VL‑4B | JS VQA (GT)",
     "Qwen3-VL-4B-Instruct_A2_vqa_10_blind_inst": "Qwen3‑VL‑4B | JS‑Blind VQA (n=10)",
@@ -46,9 +51,9 @@ MODEL_DISPLAY_MAP = {
     "Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst": "Qwen3‑VL‑8B | SFT‑Blind VQA",
 
     # ---------- LLaVA ----------
-    "llava-v1.6-mistral-7b-hf": "LLaVA‑Mistral‑7B",
-    "llava-v1.6-vicuna-7b-hf": "LLaVA‑Vicuna‑7B",
-    "llava-1.5-7b-hf": "LLaVA‑1.5‑7B",
+    "llava-v1.6-mistral-7b-hf": "LLaVA‑Mistral (7B)",
+    "llava-v1.6-vicuna-7b-hf": "LLaVA‑Vicuna (7B)",
+    "llava-1.5-7b-hf": "LLaVA‑1.5 (7B)",
 
     "llava-v1.6-mistral-7b-hf_A1_vqa_gt": "LLaVA‑Mistral‑7B | JS VQA (GT)",
     "llava-v1.6-mistral-7b-hf_A2_vqa_10_blind_inst": "LLaVA‑Mistral‑7B | JS‑Blind VQA (n=10)",

@@ -52,6 +52,7 @@ class VQAAnswerMapper:
         self._qid_to_answers = None
         self._qid_to_gt_visual = None  # Store visual GT for VQA
         self.annotations = {} 
+        self._load() 
 
     def _load(self):
         """Load annotations and build lookup dict."""
