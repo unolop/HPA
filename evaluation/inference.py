@@ -4,7 +4,6 @@ from tqdm import tqdm
 import json
 import numpy as np 
 import torch
-from analysis.utils.score import skip_processed_idx  
 import sys 
 sys.path.append('/home/work/yuna/HPA') 
 
@@ -14,6 +13,34 @@ np.random.seed(seed)
 torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 torch.cuda.empty_cache() 
+
+def skip_processed_idx(existing_keys, output_jsonl_path): 
+    id_keys = ['idx', 'qid', 'question_id', 'index']
+    current_item_id = None
+    processed_ids=set()
+
+    for key in id_keys:
+        if key in existing_keys:
+            current_item_id = key
+            break
+    
+    if current_item_id is None : 
+        current_item_id = 'pid'
+
+    if os.path.exists(output_jsonl_path):
+        print(f"'{output_jsonl_path}' exists.")
+        with open(output_jsonl_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line:  # Skip empty lines
+                    try:
+                        item = json.loads(line)
+                        # Assuming the ID field is called 'qid'
+                        processed_ids.add(item[current_item_id])
+                    except json.JSONDecodeError:
+                        continue  # Skip malformed lines
+        print(f"Skipping {len(processed_ids)} items.")
+    return processed_ids, current_item_id
 
 def load_dataset(data_name:str, prompt:str=''): 
     print("Loading dataset...")
@@ -145,11 +172,13 @@ def main(args):
             
             if args.model_type == 'vlm':  
                 messages.append({'role': 'user', 'content': f'<image>{prompt}' })
-                
-                infer_request = InferRequest(
-                    messages=messages,
-                    images=[data['image']] 
-                )
+                try: 
+                    infer_request = InferRequest(
+                        messages=messages,
+                        images=[data['image']] 
+                    )
+                except Exception as e: 
+                    continue
 
             else : 
                 messages.append({'role': 'user', 'content': prompt})
@@ -157,23 +186,26 @@ def main(args):
                     messages=messages 
                 ) 
 
-            resp_list = engine.infer([infer_request], request_config)
-            output_text = resp_list[0].choices[0].message.content 
-        
-            matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)
-            if matches:
-                output_text = matches[-1].strip().replace('*', '')
-            else:
-                output_text = output_text.strip().replace('*', '')
+            try: 
+                resp_list = engine.infer([infer_request], request_config)
+                output_text = resp_list[0].choices[0].message.content 
+            
+                matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)
+                if matches:
+                    output_text = matches[-1].strip().replace('*', '')
+                else:
+                    output_text = output_text.strip().replace('*', '')
 
-            # 6. 결과를 JSON 객체로 생성하고 JSONL에 즉시 작성
-            data['output'] = output_text 
-            data['question'] = prompt 
-            print('Q:', prompt, 'Output:', data['output'], output_jsonl_path)
+                # 6. 결과를 JSON 객체로 생성하고 JSONL에 즉시 작성
+                data['output'] = output_text 
+                data['question'] = prompt 
+                print('Q:', prompt, 'Output:', data['output'], output_jsonl_path)
 
-            data.pop('image')
-            f.write(json.dumps(data, ensure_ascii=False) + '\n')
-            f.flush()  # 버퍼를 비워 파일에 즉시 쓰도록 강제
+                data.pop('image')
+                f.write(json.dumps(data, ensure_ascii=False) + '\n')
+                f.flush()  # 버퍼를 비워 파일에 즉시 쓰도록 강제
+            except Exception as e: 
+                continue
 
     print(f"모든 작업 완료. 결과가 '{output_jsonl_path}'에 저장되었습니다.")
 

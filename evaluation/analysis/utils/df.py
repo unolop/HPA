@@ -23,47 +23,55 @@ MODEL_DISPLAY_MAP = {
     "InternVL3_5-4B": "InternVL 3.5 (4B)",
     "InternVL3_5-8B": "InternVL 3.5 (8B)",
 
-    "InternVL3_5-8B_A1_vqa_gt": "InternVL3.5‑8B | JS VQA (GT)",
-    "InternVL3_5-8B_A2_vqa_10_blind_inst": "InternVL3.5‑8B | JS‑Blind VQA (n=10)",
-    "InternVL3_5-8B_A3_vqa_15_blind_inst": "InternVL3.5‑8B | JS‑Blind VQA (n=15)",
-    "InternVL3_5-8B_A4_mmstar_15_blind_inst": "InternVL3.5‑8B | JS‑Blind MMStar (n=15)",
-    "InternVL3_5-8B_SFT_vqa_15_blind_inst": "InternVL3.5‑8B | SFT‑Blind VQA",
-    "InternVL3_5-8B_SFT_vqa_gt": "InternVL3.5‑8B | SFT‑VQA",
-    'InternVL3_5-8B_SFT_mmstar_15_blind_inst' : "InternVL3.5‑8B | SFT‑Blind MMStar (n=15)", 
+    "InternVL3_5-8B_A1_vqa_gt": "InternVL 3.5 (8B) | JS VQA (GT)",
+    "InternVL3_5-8B_A2_vqa_10_blind_inst": "InternVL 3.5 (8B) | JS‑Blind VQA (n=10)",
+    "InternVL3_5-8B_A3_vqa_15_blind_inst": "InternVL 3.5 (8B) | JS‑Blind VQA (n=15)",
+    "InternVL3_5-8B_A4_mmstar_15_blind_inst": "InternVL 3.5 (8B) | JS‑Blind MMStar (n=15)",
+    "InternVL3_5-8B_SFT_vqa_15_blind_inst": "InternVL 3.5 (8B) | SFT‑Blind VQA",
+    "InternVL3_5-8B_SFT_vqa_gt": "InternVL 3.5 (8B) | SFT‑VQA",
+    'InternVL3_5-8B_SFT_mmstar_15_blind_inst' : "InternVL 3.5 (8B) | SFT‑Blind MMStar (n=15)", 
 
     # ---------- Qwen ----------
     "Qwen3-VL-2B-Instruct": "Qwen3‑VL (2B)",
     "Qwen3-VL-4B-Instruct": "Qwen3‑VL (4B)",
     "Qwen3-VL-8B-Instruct": "Qwen3‑VL (8B)",
 
-    "Qwen3-VL-4B-Instruct_A1_vqa_gt": "Qwen3‑VL‑4B | JS VQA (GT)",
-    "Qwen3-VL-4B-Instruct_A2_vqa_10_blind_inst": "Qwen3‑VL‑4B | JS‑Blind VQA (n=10)",
-    "Qwen3-VL-4B-Instruct_A3_vqa_15_blind_inst": "Qwen3‑VL‑4B | JS‑Blind VQA (n=15)",
-    "Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_inst": "Qwen3‑VL‑4B | JS‑Blind MMStar (n=15)",
-    "Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_inst": "Qwen3‑VL‑4B | SFT‑Blind VQA",
-    "Qwen3-VL-4B-Instruct_SFT_vqa_gt": "Qwen3‑VL‑4B | SFT‑VQA",
+    "Qwen3-VL-4B-Instruct_A1_vqa_gt": "Qwen3‑VL (4B) | JS VQA (GT)",
+    "Qwen3-VL-4B-Instruct_A2_vqa_10_blind_inst": "Qwen3‑VL (4B) | JS‑Blind VQA (n=10)",
+    # "Qwen3-VL-4B-Instruct_A1_JS_vqa_n15_blind_inst": "Qwen3‑VL‑4B | JS‑Blind VQA (n=15)", 
+    "Qwen3-VL-4B-Instruct_A3_vqa_15_blind_inst": "Qwen3‑VL (4B) | JS‑Blind VQA (n=15)",
+    "Qwen3-VL-4B-Instruct_A4_mmstar_15_blind_inst": "Qwen3‑VL (4B) | JS‑Blind MMStar (n=15)",
+    "Qwen3-VL-4B-Instruct_SFT_vqa_15_blind_inst": "Qwen3‑VL (4B) | SFT‑Blind VQA",
+    "Qwen3-VL-4B-Instruct_SFT_vqa_gt": "Qwen3‑VL (4B) | SFT‑VQA",
 
-    "Qwen3-VL-8B-Instruct_A1_vqa_gt": "Qwen3‑VL‑8B | JS VQA (GT)",
-    "Qwen3-VL-8B-Instruct_A2_vqa_10_blind_inst": "Qwen3‑VL‑8B | JS‑Blind VQA (n=10)",
-    "Qwen3-VL-8B-Instruct_A3_vqa_15_blind_inst": "Qwen3‑VL‑8B | JS‑Blind VQA (n=15)",
-    "Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_inst": "Qwen3‑VL‑8B | JS‑Blind MMStar (n=15)",
-    "Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_inst": "Qwen3‑VL‑8B | SFT‑Blind MMStar",
-    "Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst": "Qwen3‑VL‑8B | SFT‑Blind VQA",
+    "Qwen3-VL-8B-Instruct_A1_vqa_gt": "Qwen3‑VL (8B) | JS VQA (GT)",
+    "Qwen3-VL-8B-Instruct_A2_vqa_10_blind_inst": "Qwen3‑VL (8B) | JS‑Blind VQA (n=10)",
+    "Qwen3-VL-8B-Instruct_A3_vqa_15_blind_inst": "Qwen3‑VL (8B) | JS‑Blind VQA (n=15)",
+    "Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_inst": "Qwen3‑VL (8B) | JS‑Blind MMStar (n=15)",
+    "Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_inst": "Qwen3‑VL (8B) | SFT‑Blind MMStar",
+    "Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst": "Qwen3‑VL (8B) | SFT‑Blind VQA",
 
     # ---------- LLaVA ----------
     "llava-v1.6-mistral-7b-hf": "LLaVA‑Mistral (7B)",
     "llava-v1.6-vicuna-7b-hf": "LLaVA‑Vicuna (7B)",
     "llava-1.5-7b-hf": "LLaVA‑1.5 (7B)",
 
-    "llava-v1.6-mistral-7b-hf_A1_vqa_gt": "LLaVA‑Mistral‑7B | JS VQA (GT)",
-    "llava-v1.6-mistral-7b-hf_A2_vqa_10_blind_inst": "LLaVA‑Mistral‑7B | JS‑Blind VQA (n=10)",
-    "llava-v1.6-mistral-7b-hf_A3_vqa_15_blind_inst": "LLaVA‑Mistral‑7B | JS‑Blind VQA (n=15)",
-    "llava-v1.6-mistral-7b-hf_A4_mmstar_15_blind_inst": "LLaVA‑Mistral‑7B | JS‑Blind MMStar (n=15)",
-    "llava-v1.6-mistral-7b-hf_SFT_mmstar_15_blind_inst": "LLaVA‑Mistral‑7B | SFT‑Blind MMStar",
-    "llava-v1.6-mistral-7b-hf_SFT_vqa_15_blind_inst": "LLaVA‑Mistral‑7B | SFT‑Blind VQA",
-    "llava-v1.6-mistral-7b-hf_SFT_vqa_gt": "LLaVA‑Mistral‑7B | SFT‑VQA",
+    "llava-v1.6-mistral-7b-hf_A1_vqa_gt": "LLaVA‑Mistral (7B) | JS VQA (GT)",
+    "llava-v1.6-mistral-7b-hf_A2_vqa_10_blind_inst": "LLaVA‑Mistral (7B) | JS‑Blind VQA (n=10)",
+    "llava-v1.6-mistral-7b-hf_A3_vqa_15_blind_inst": "LLaVA‑Mistral (7B) | JS‑Blind VQA (n=15)",
+    "llava-v1.6-mistral-7b-hf_A4_mmstar_15_blind_inst": "LLaVA‑Mistral (7B) | JS‑Blind MMStar (n=15)",
+    "llava-v1.6-mistral-7b-hf_SFT_mmstar_15_blind_inst": "LLaVA‑Mistral (7B) | SFT‑Blind MMStar",
+    "llava-v1.6-mistral-7b-hf_SFT_vqa_15_blind_inst": "LLaVA‑Mistral (7B) | SFT‑Blind VQA",
+    "llava-v1.6-mistral-7b-hf_SFT_vqa_gt": "LLaVA‑Mistral (7B) | SFT‑VQA",
 }
 
+def parse_finetuned(s):
+    return pd.Series({
+        'trainer': 'JS' if 'JS' in s else 'SFT',
+        'supervision': 'Blind' if 'Blind' in s else 'GT', 
+        'dataset': 'MMStar' if 'MMStar' in s else 'VQA',
+        'n': int(re.search(r'n=(\d+)', s).group(1)) if 'n=' in s else None
+    })
 
 def extract_size(text):
     if pd.isna(text): return 1.0 # Default fallback
