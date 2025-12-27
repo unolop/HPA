@@ -105,8 +105,14 @@ def get_summary(dataset='mmstar'):
             df['filename'] = f 
             if 'finetuned' in f : 
                 df['model'] = f.split('/')[-2].replace('fold_0', '')
+                df['trained_dataset'] = 'VQA' if 'vqa' in f else 'MMStar'
+                df['strategy'] = 'SFT' if 'SFT' in f else 'JS' 
+                df['blind'] = 'Blind' if 'blind' in f.lower() else 'GT' 
+                
             else: 
                 df['model'], f = find_matching(f, [model.split('/')[-1] for model in MODELNAMES])  
+                df['trained_dataset'] = 'Pretrained'
+                df['strategy'] = 'Pretrained'
             df['condition'] = f.split('/')[-1][:-6].replace(f'_', ' ').replace('vqa 1k', '').replace('vqa 5k', '').replace(f'{dataset}', '').strip()
             dfs.append(df)
         except Exception as e: 

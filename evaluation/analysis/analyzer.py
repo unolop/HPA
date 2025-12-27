@@ -12,6 +12,20 @@ from utils.plots import scatterplot, get_family, parse_size
 import sys 
 sys.path.append('..')
 
+def test_human_data(human_vqa): 
+        
+    # with open("/home/work/yuna/HPA/data/training/s1_text/cleaned_n15_text.json", 'r') as f:
+    with open("/home/work/yuna/HPA/data/training/s1_choice/cleaned_n15_choice.json", 'r') as f:
+        data = json.load(f)
+    pids = pd.DataFrame(data).participant_id.unique() 
+    pids = np.append(pids, "2e184452_20251205_141511_cleaned")
+
+    trainh = human_vqa[human_vqa['participant_id'].isin(pids)] 
+    human_vqa = human_vqa[~human_vqa['participant_id'].isin(pids)] 
+    print(len(trainh.participant_id.unique()) , len(human_vqa.participant_id.unique()))  
+    
+    return human_vqa 
+
 def get_training_regime(pcorr): 
     pcorr['model'] = pcorr['model'].map(MODEL_DISPLAY_MAP)  
 
@@ -23,7 +37,6 @@ def get_training_regime(pcorr):
     pcorr['model'] = pcorr['model'].astype(str)
     pcorr['family'] = pcorr['model'].map(get_family)
     pcorr['model_size'] = pcorr['model'].map(parse_size).astype(int)
-
     pcorr["finetuned"] = (
         pcorr['model']
         .str.split('|').str[1]
@@ -45,7 +58,8 @@ class SpubenchResults():
     def __init__(self):
         self.annot = pd.read_json("/home/work/yuna/HPA/dataset/annotation.json").reset_index()
         self.annot.rename(columns={'index': "pid"}, inplace=True)
-        self.results = self.get_df()  
+        df = self.get_df()  
+        self.results = df[df['condition'] == ''] 
         # self.results.groupby(['model'])['correct'].mean().reset_index().to_csv('./spubench.csv', encoding="utf-8-sig")
 
     def get_df(self): 
@@ -53,6 +67,7 @@ class SpubenchResults():
         df = pd.merge(df, self.annot, on="pid", how="left", suffixes=("", "_annot"))
         # df = df.loc[:, ~df.columns.duplicated()]
         df = df[df['condition'] == '']
+        df['dataset'] = 'Spubench'  
         # df = df.dropna(axis=0, subset=['model'])
         df["mc_choice"] = df["output"].apply(extract_mc_choice)
         df["answer"] = df["answer"].fillna(df["answer_annot"])
@@ -60,9 +75,10 @@ class SpubenchResults():
         df["correct"] = (
             (df["mc_choice"].str.strip().str[0].str.upper()
             == df["answer"].str.upper())
-        )
+        ) * 100 
         df = self.get_bias(df) 
-        df = df.drop_duplicates(['model', 'pid']) # 
+        df = df.drop_duplicates(['model', 'pid']) 
+        df = get_training_regime(df) 
         return df # .dropna(axis=1, how="all") 
 
     def get_bias(self,df):
@@ -90,23 +106,23 @@ class SpubenchResults():
         return df 
     
     def finetuning_effect(self, df ): 
-        df = get_training_regime(df) 
-        df = df[df['condition'] == '']
+
+        # merged with delta 
         bs = df[df["finetuned"] == 'Pretrained']
         ft = df[df["finetuned"] != 'Pretrained'] 
 
         df = pd.merge(bs,ft, on=['model', 'pid', "bias"], how='right', suffixes=("_baseline", "")).dropna(axis=1) 
         df['delta'] = df['correct'].astype(float) - df['correct_baseline'].astype(float)
-        df = df[['model', 'finetuned', 'pid', 'bias', 'delta']]
+        # df = df[['model', 'finetuned', 'pid', 'bias', 'delta']]
+
         pt = df.pivot_table(
             index=['model', 'finetuned',], 
             columns=['bias'] , 
-            values=['delta']).dropna(axis=1) 
-        pt.reset_index(level=0, drop=True)
-        pt.columns = pt.columns.droplevel(0)
-
-        pt.to_latex('./tables/spubench-finetuned-delta.tex', float_format="%.3f")        
-        return df, pt  
+            values=['delta']).dropna(axis=1).reset_index(level=0, drop=True) 
+        # pt.columns = pt.columns.droplevel(0)
+        # pt.to_latex('./tables/spubench-finetuned-delta.tex', float_format="%.3f")   
+             
+        return df, pt   
 
 class MMStarResults(): 
     def __init__(self, results_path='/home/work/yuna/HPA/evaluation/scored/humans/human_mc_per_question.json'): 
@@ -122,6 +138,7 @@ class MMStarResults():
         self.human = self.human.rename(columns={'pid': 'question_id'}) #   = self.clean_df(human_mc)
         self.qids = self.human.question_id.unique()    
         # self.model = self.get_mg(blind_model[blind_model['question_id'].isin(self.qids)]) 
+        self.test_human = test_human_data(self.human) 
 
         ### MODEL RESULTS 
         model_mc = get_summary('mmstar').drop_duplicates(subset=['model', 'pid', 'condition'])
@@ -138,8 +155,25 @@ class MMStarResults():
         # model_mc = self.clean_df(model_mc)
 
     def clean_df(self, df): 
+        
+        mmstar_cat_map = {'coarse perception': "CP", 'fine-grained perception': "FP",
+                'instance reasoning': "IR", 'logical reasoning': "LR", 'math': "Math",
+                'science & technology': 'S&T'} 
         df['question_id'] = df['question_id'].astype('Int64') 
+        df['category'] = df['category'].map(mmstar_cat_map)
         return df 
+
+    def get_quadrants(self): 
+        mms= pd.merge(self.model, self.human.groupby(['question_id', 'l2_category', 'category']).mean(numeric_only=True).reset_index(), 
+                        on=['question_id', 'l2_category', 'category'], how='left', suffixes=("_model", "_human")) 
+        mms["human_correct"] = (mms["correct_human"] >= 50).astype(int)  
+        mms["model_correct"] = (mms["correct_model"] >= 50).astype(int) 
+        mms["cc_quadrant"] = mms.apply(cc_quadrant, axis=1) 
+        mms = pd.merge(self.model_mg, mms, on=['question_id', 'category', 'finetuned', 'model'], how='left')  # .groupby("cc_quadrant")["MG"].agg(['count', 'mean']).to_latex('./tables/appendix/vqa-quadrant.tex', float_format="%.1f")  
+        mms['dataset'] = "MMStar" 
+        # mms.groupby("cc_quadrant")["MG"].agg(['count', 'mean']).to_latex('./tables/appendix/vqa-quadrant.tex', float_format="%.1f")
+        
+        return mms
 
     def get_mg(self, df, filename='inst-blind_only'): 
         pt = df.pivot_table(
@@ -166,7 +200,7 @@ class MMStarResults():
         self,
         pt,
     ):
-        KEY_COLS = ['model', 'family', 'model_size', 'category', 'question_id']
+        KEY_COLS = ['model', 'family', 'model_size',  'model_raw',  'category', 'l2_category', 'question_id']
         VALUE_COL = 'correct'
         baseline = pt[pt['finetuned'] == "Pretrained"].copy()
         finetuned = pt[pt['finetuned'] != "Pretrained"].copy()
@@ -177,21 +211,12 @@ class MMStarResults():
             how='inner',
             suffixes=('', '_baseline')
         )
+        df['dataset'] = 'MMStar'  
         df['delta'] = (
             df[VALUE_COL].astype(float) -
             df[f'{VALUE_COL}_baseline'].astype(float)
         )
-        pt_delta = df.pivot_table(
-            index=['model', 'family', 'model_size', 'finetuned'],
-            columns='category',
-            values='delta',
-            aggfunc='mean'
-        )
-
-        return {
-            "row_level": df,
-            "pivot": pt_delta,
-        }
+        return df # .drop_duplicates(subset=KEY_COLS) 
 
     def get_tables(self): 
         pd.concat([self.model, self.human]).pivot_table(    
@@ -277,16 +302,6 @@ class MMStarResults():
         acc_corr = res_HM['corr_mat'].mean().sort_values().reset_index(name='corr') 
         return acc_corr 
 
-    def get_quadrants(self): 
-        mms = get_training_regime(self.model) 
-        mms= pd.merge(mms, self.human.groupby(['question_id', 'l2_category', 'category']).mean(numeric_only=True).reset_index(), 
-                        on=['question_id', 'l2_category', 'category'], how='left', suffixes=("_model", "_human")) 
-        mms["human_correct"] = (mms["correct_human"] >= 50).astype(int)  
-        mms["model_correct"] = (mms["correct_model"] >= 50).astype(int) 
-        mms["cc_quadrant"] = mms.apply(cc_quadrant, axis=1) 
-        mms = pd.merge(self.model_mg, mms, on=['question_id', 'l2_category', 'category', 'model']) 
-        mms.groupby("cc_quadrant")["MG"].agg(['count', 'mean']).to_latex('./tables/appendix/vqa-quadrant.tex', float_format="%.1f")
-        return mms 
 
 class VQAResults():  
     def __init__(self, results_path='/home/work/yuna/HPA/evaluation/scored/humans/human_vqa_per_question.json'): 
@@ -320,6 +335,7 @@ class VQAResults():
         
         self.model_mg = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))], 'subset')  
         self.test_model_mg = self.get_mg(self.test_model, '5k-test')   
+        self.quadrants = self.get_quadrants()
     
     def finetuning_effect(self, test_model):  
         df = test_model[test_model['condition'] == ''] 
@@ -337,6 +353,38 @@ class VQAResults():
             aggfunc='mean' 
         ) 
         return df, pt 
+    
+    def get_quadrants(self): 
+        # model_vqa.groupby(['question_id', 'answer_type', 'question_type']).mean(numeric_only=True).reset_index()
+        mms= pd.merge(self.model, self.human.groupby(['question_id', 'answer_type', 'question_type']).mean(numeric_only=True).reset_index(), 
+                        on=['question_type', 'question_id', 'answer_type'], how='left', suffixes=("_model", "_human")) 
+        mms = pd.merge(mms, self.model_mg.groupby(['model', 'finetuned', 'question_id'])['MG'].mean(), on=['model', 'finetuned', 'question_id'], how='left') # .head() # , 'question_id', 'answer_type', 'question_type'
+        
+        # mms = pd.merge(model, human_vqa.groupby(['question_id', 'answer_type', 'question_type']).mean(numeric_only=True).reset_index(), 
+        #             on=['question_type', 'question_id', 'answer_type'], how='left', suffixes=("_model", "_human")) 
+        mms["human_correct"] = (mms["correct_human"] >= 50).astype(int)  
+        mms["model_correct"] = (mms["correct_model"] >= 50).astype(int) 
+        mms["cc_quadrant"] = mms.apply(cc_quadrant, axis=1) 
+
+        # mms.groupby("cc_quadrant")["MG"].agg(['count', 'mean']).to_latex('./tables/appendix/vqa-quadrant.tex', float_format="%.1f")
+        return mms 
+
+    def get_examples_quadrants(self): 
+        from utils.quadrants import get_examples 
+
+        for i in [0, 1, -2, -1]: 
+            for quad in self.quadrants.cc_quadrant.unique(): 
+                ex = get_examples(self.quadrants, i, self.human, self.model, quad)  
+
+                ex["model"].to_csv(
+                    f"/home/work/yuna/HPA/evaluation/analysis/quadrant_examples/"
+                    f"{ex['target_group']}_{i}_model.csv"
+                )
+
+                ex["human"].to_csv(
+                    f"/home/work/yuna/HPA/evaluation/analysis/quadrant_examples/"
+                    f"{ex['target_group']}_{i}_human.csv"
+                )
 
     def get_pivots(self): 
         hm = pd.concat([self.model, self.human]) 
@@ -409,21 +457,6 @@ class VQAResults():
         # pt.groupby(['model']).mean(numeric_only=True).to_latex(f'./tables/appendix/mmstar-mg_{filename}.tex', float_format="%.1f")
 
         return pt 
-
-    def get_quadrants(self): 
-        # model_vqa.groupby(['question_id', 'answer_type', 'question_type']).mean(numeric_only=True).reset_index()
-        mms= pd.merge(self.model, self.human.groupby(['question_id', 'answer_type', 'question_type']).mean(numeric_only=True).reset_index(), 
-                        on=['question_type', 'question_id', 'answer_type'], how='left', suffixes=("_model", "_human")) 
-        mms = pd.merge(mms, self.model_mg.groupby(['model', 'finetuned', 'question_id'])['MG'].mean(), on=['model', 'finetuned', 'question_id'], how='left') # .head() # , 'question_id', 'answer_type', 'question_type'
-        
-        # mms = pd.merge(model, human_vqa.groupby(['question_id', 'answer_type', 'question_type']).mean(numeric_only=True).reset_index(), 
-        #             on=['question_type', 'question_id', 'answer_type'], how='left', suffixes=("_model", "_human")) 
-        mms["human_correct"] = (mms["correct_human"] >= 50).astype(int)  
-        mms["model_correct"] = (mms["correct_model"] >= 50).astype(int) 
-        mms["cc_quadrant"] = mms.apply(cc_quadrant, axis=1) 
-
-        mms.groupby("cc_quadrant")["MG"].agg(['count', 'mean']).to_latex('./tables/appendix/vqa-quadrant.tex', float_format="%.1f")
-        return mms 
 
     ### UTILS 
     def make_numeric_cols(pm): 

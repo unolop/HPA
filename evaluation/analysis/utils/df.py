@@ -1,4 +1,4 @@
-import pandas as pd 
+
 import re
 import pandas as pd
 
@@ -78,32 +78,3 @@ def calculate_mg(pt, filename=None, answer_similarity=True, categories='answer_t
                 index='model', columns=categories, values=['S_Visual', 'MG_S'], aggfunc='mean'
             ).to_latex(f'./tables/VQA_{filename}_similarity_atype.tex', float_format="%.1f")
     return pt  
-
-def prep(df_sub, suffix):
-    return df_sub[
-        KEYS + ['correct', 'answer_similarity']
-    ].rename(columns={
-        'correct': f'correct_{suffix}',
-        'answer_similarity': f'answer_similarity_{suffix}'
-    })
-
-def get_merged(df):  
-    df['condition_clean'] = (
-        df['condition'].fillna('').astype(str).str.strip().replace({'': 'full'})
-    )
-
-    df_full  = prep(df[df['condition_clean'] == 'full'], 'full')
-    df_blind = prep(df[df['condition_clean'] == 'blind'], 'blind')
-    df_inst  = prep(df[df['condition_clean'] == 'inst blind'], 'inst_blind')
-
-    merged = (
-        df_full
-        .merge(df_blind, on=KEYS, how='inner')
-        .merge(df_inst,  on=KEYS, how='inner')
-    )
-    merged['inst_acc'] = merged['correct_inst_blind'] - merged['correct_blind']
-    merged['MG'] = merged['correct_full'] - merged['correct_inst_blind'] 
-
-    merged['inst_sim'] = merged['answer_similarity_inst_blind'] - merged['answer_similarity_blind']
-    merged['MG_sim'] = merged['answer_similarity_full'] - merged['answer_similarity_inst_blind']
-    return merged

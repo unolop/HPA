@@ -1,6 +1,40 @@
 import re 
 import numpy as np 
 import pandas as pd 
+from scipy.stats import mannwhitneyu
+
+
+### SANITY CHECKS 
+def cliffs_delta(x, y):
+    nx, ny = len(x), len(y)
+    return (np.sum(x[:,None] > y) - np.sum(x[:,None] < y)) / (nx * ny)
+    
+def bootstrap_ci(mms, n=10000):
+
+    ho = mms.loc[mms.cc_quadrant == 'Human-Only', 'MG']
+    sc = mms.loc[mms.cc_quadrant == 'Shared Correct', 'MG']
+
+    u, p = mannwhitneyu(ho, sc, alternative='greater')
+    delta = cliffs_delta(ho.values, sc.values)
+    bootstrap_ci(ho.values, sc.values) 
+    
+    diffs = []
+    for _ in range(n):
+        xs = np.random.choice(ho.values, size=len(ho.values), replace=True)
+        ys = np.random.choice(sc.values, size=len(sc.values), replace=True)
+        diffs.append(xs.mean() - ys.mean())
+    return np.percentile(diffs, [2.5, 97.5])
+
+
+def cc_quadrant(row):
+    if row["human_correct"] == 1 and row["model_correct"] == 1:
+        return "Shared Correct"
+    elif row["human_correct"] == 1 and row["model_correct"] == 0:
+        return "Human-Only"
+    elif row["human_correct"] == 0 and row["model_correct"] == 1:
+        return "Model-Only"
+    else:
+        return "Shared Wrong"
 
 def get_examples(vqq, i, human_vqa, model, target_group='Human-Only'): 
     df = vqq[vqq['cc_quadrant'] == target_group].sort_values(by=['MG'], ascending=False)
@@ -65,67 +99,3 @@ def map_question_type(question: str) -> str:
     except Exception as e : 
         print(question, 'cannot be mapped')
     return "Other"
-
-def cc_quadrant(row):
-    if row["human_correct"] == 1 and row["model_correct"] == 1:
-        return "Shared Correct"
-    elif row["human_correct"] == 1 and row["model_correct"] == 0:
-        return "Human-Only"
-    elif row["human_correct"] == 0 and row["model_correct"] == 1:
-        return "Model-Only"
-    else:
-        return "Shared Wrong"
-
-def quadrants_qusetion_types(mms): 
-    # by questions types  
-    qt_cc = (
-        mms.groupby(["question_type", "cc_quadrant"])
-        .size()
-        .reset_index(name="count")
-    )
-
-    qt_cc["fraction"] = (
-        qt_cc["count"] /
-        qt_cc.groupby("question_type")["count"].transform("sum")
-    )
-    qt_cc_table = qt_cc.pivot(
-        index="question_type",
-        columns="cc_quadrant",
-        values="fraction"
-    ).fillna(0) 
-    
-    return qt_cc_table 
-    
-def quadrant_proportions_table(df):
-    """
-    Returns fraction of questions in each blind correctness quadrant.
-    """
-    counts = (
-        df["cc_quadrant"]
-        .value_counts()
-        .rename("count")
-        .reset_index()
-        .rename(columns={"index": "Blind Correctness Pattern"})
-    )
-
-    total = counts["count"].sum()
-    counts["fraction"] = counts["count"] / total
-
-    return counts # .sort_values("Blind Correctness Pattern")
-
-
-def median_mg_table(df, mg_col="model_MG_acc_q"):
-    """
-    Computes mean and median grounded performance per blind correctness quadrant.
-    """
-    summary = (
-        df.groupby("cc_quadrant")[mg_col]
-          .agg(
-              mean="mean",
-              median="median",
-              n="count"
-          )
-          .reset_index()
-    )
-
-    return summary
