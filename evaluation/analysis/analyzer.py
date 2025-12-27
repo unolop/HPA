@@ -146,6 +146,7 @@ class MMStarResults():
         model_mc= get_training_regime(model_mc)
 
         test_model = model_mc[~model_mc['question_id'].isin(self.qids)]
+        test_model = self.clean_df(test_model) 
         self.test_model = test_model[test_model['condition'] == '']
 
         model_mc = model_mc[model_mc['question_id'].isin(self.qids) ]     
@@ -155,12 +156,12 @@ class MMStarResults():
         # model_mc = self.clean_df(model_mc)
 
     def clean_df(self, df): 
-        
         mmstar_cat_map = {'coarse perception': "CP", 'fine-grained perception': "FP",
                 'instance reasoning': "IR", 'logical reasoning': "LR", 'math': "Math",
                 'science & technology': 'S&T'} 
-        df['question_id'] = df['question_id'].astype('Int64') 
         df['category'] = df['category'].map(mmstar_cat_map)
+        df['question_id'] = df['question_id'].astype('Int64') 
+
         return df 
 
     def get_quadrants(self): 
@@ -196,12 +197,11 @@ class MMStarResults():
 
         return pt 
 
-    def finetuning_effect(
+    def finetuning_effect( 
         self,
-        pt,
+        pt, VALUE_COL = 'correct' 
     ):
-        KEY_COLS = ['model', 'family', 'model_size',  'model_raw',  'category', 'l2_category', 'question_id']
-        VALUE_COL = 'correct'
+        KEY_COLS = ['model', 'category', 'l2_category', 'question_id']
         baseline = pt[pt['finetuned'] == "Pretrained"].copy()
         finetuned = pt[pt['finetuned'] != "Pretrained"].copy()
         
@@ -217,25 +217,6 @@ class MMStarResults():
             df[f'{VALUE_COL}_baseline'].astype(float)
         )
         return df # .drop_duplicates(subset=KEY_COLS) 
-
-    def get_tables(self): 
-        pd.concat([self.model, self.human]).pivot_table(    
-                    index=['model'], 
-                    values=['correct'], 
-                    columns=['category'], 
-                    aggfunc=['mean'], # ,'count' 
-                    margins=True,
-                    margins_name='Total Average'
-                ).to_latex('/home/work/yuna/HPA/evaluation/analysis/tables/MMStar_blind_by-category.tex', float_format="%.1f")   
-
-        pd.concat([self.model, self.human]).pivot_table(    
-                    index=['model'], 
-                    values=['correct', 'MG'] , 
-                    columns=['condition'], 
-                    aggfunc=['mean'], # ,'count' 
-                    margins=True,
-                    margins_name='Total Average'
-                ).to_latex('/home/work/yuna/HPA/evaluation/analysis/tables/MMStar_blind_by-conditions.tex', float_format="%.1f")   
 
     def combine_mh(self, metrics='correct'): 
         
@@ -322,6 +303,7 @@ class VQAResults():
         self.human = self.new_score(self.human)
         # self.human = self.score_answer_types(self.human, answer_column="answer_normalized", gt_column="visual_gt") 
         self.qids= self.human.question_id.unique().astype(int)
+        self.test_human = test_human_data(self.human) 
         
         # get model intersection subset 
         vqa_1k = get_summary('vqa_1k').drop_duplicates(subset=['condition', 'question_id', 'model'])
@@ -342,17 +324,17 @@ class VQAResults():
         bs = df[df['finetuned'] == 'Pretrained']
         ft = df[df['finetuned'] != 'Pretrained']
         df = pd.merge(bs, ft, on =['model', 'answer_type', 'model_size', 'question_id'], suffixes=['_baseline', ''], how ='inner') 
+        df['dataset'] = 'VQA'
+        df['answer_similarity'] = df['answer_similarity'] - df['answer_similarity_baseline']
+        df['accuracy'] = df['correct'] - df['correct_baseline']
         
-        df['delta_sim'] = df['answer_similarity'] - df['answer_similarity_baseline']
-        df['delta_acc'] = df['correct'] - df['correct_baseline']
-        
-        pt = df.pivot_table( 
-            index=['family', 'model_size', 'finetuned'], 
-            columns=['answer_type'], 
-            values=['delta_sim', 'delta_acc'], 
-            aggfunc='mean' 
-        ) 
-        return df, pt 
+        df = df.melt(
+                    id_vars=[col for col in df.columns if col not in ['answer_similarity', 'accuracy']],
+                    value_vars=['answer_similarity', 'accuracy'],
+                    var_name='score_type',
+                    value_name='delta' 
+                    )
+        return df
     
     def get_quadrants(self): 
         # model_vqa.groupby(['question_id', 'answer_type', 'question_type']).mean(numeric_only=True).reset_index()
