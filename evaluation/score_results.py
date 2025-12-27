@@ -206,7 +206,8 @@ def score_directory(
             print("   ✓ Encoder loaded")
         else:
             print("   ⚠️ Failed to load encoder, skipping similarity computation")
-
+    else : 
+        encoder=None 
     # Score all files
     all_results = []
     skipped_count = 0

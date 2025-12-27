@@ -1,4 +1,43 @@
 import re 
+import numpy as np 
+import pandas as pd 
+
+def get_examples(vqq, i, human_vqa, model, target_group='Human-Only'): 
+    df = vqq[vqq['cc_quadrant'] == target_group].sort_values(by=['MG'], ascending=False)
+    ex = df.iloc[i] 
+    qid = ex['question_id']   
+    qid = int(qid)
+
+    print(target_group, qid , ex['question'], ex['multiple_choice_answer'] )  
+
+    hdf = human_vqa.loc[
+        human_vqa["question_id"] == qid
+    ].sort_values("correct", ascending=False)
+ 
+    # print(target_group, ex)
+    model_answers = model[model["question_id"] == qid].sort_values(by=['correct'], ascending=False)  
+    human_answers = hdf['processed_ans'].values  
+
+    print('Human answers', human_answers, hdf['correct'].values, np.mean(hdf['correct'].values)) 
+    print('Model answers') # : human_answers) 
+
+    for i, row in model_answers.iterrows(): 
+        print(
+            f"{row['model']:<15} | "
+            f"{row['finetuned']:<5} | "
+            f"Output: {row['processed_ans']} | "
+            f"Score: {row['correct']}"
+        )
+    model_answers = pd.merge(df, model_answers, on=['question_type', 'answer_type', 'question', 'model', 'question_id', 'condition', 'finetuned', 'multiple_choice_answer', 'image_id'])
+    return {
+        "target_group": target_group , 
+        "question_id": qid, 
+        "question": ex['question'], 
+        "model": model_answers , 
+        "human": hdf, 
+        'Human answers': human_answers, 
+        "human_acc": hdf['correct'].values, 
+    }  
 
 def map_question_type(question: str) -> str:
     try: 
@@ -90,15 +129,3 @@ def median_mg_table(df, mg_col="model_MG_acc_q"):
     )
 
     return summary
-
-
-def get_examples(quad, df, mms):  
-    
-    both_wrong = mms[mms["cc_quadrant"] == quad]
-    target_ids = both_wrong.sort_values("MG_Acc").head(2)["question_id"].tolist()
-    result_df = df[df['question_id'].isin(target_ids)].copy()
-    print(target_ids, len(result_df))
-    result_df['quadrant'] = quad
-    # result_df = result_df.dropna(axis=1)
-
-    return result_df
