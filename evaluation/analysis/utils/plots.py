@@ -9,6 +9,14 @@ from matplotlib.lines import Line2D
 from adjustText import adjust_text
 import re
 
+bigger_font = 15
+plt.rc('axes', titlesize=bigger_font)    # Axes title font size
+plt.rc('axes', labelsize=bigger_font)    # Axes labels font size
+plt.rc('xtick', labelsize=bigger_font)   # X tick labels font size
+plt.rc('ytick', labelsize=bigger_font)   # Y tick labels font size
+plt.rc('legend', fontsize=bigger_font)   # Legend font size
+plt.rc('legend', title_fontsize=bigger_font) # Legend title font size
+
 def parse_size(name):
     # Extracts numbers followed by 'B' or 'b' (e.g., InternVL3_5-1B -> 1.0)
     match = re.search(r'(\d+(?:\.\d+)?)B', name, re.IGNORECASE)
@@ -37,6 +45,98 @@ family_markers = {
     "LLaVA": "s",
     "InternVL": "^",
 }
+
+def melt_df(df, xlabel):
+    return df.reset_index().melt(
+        id_vars=df.index.name or "index", 
+        var_name=xlabel, 
+        value_name="value"
+    )
+
+def get_barplot(df1, df2, title, title1, title2,  
+                xlabel="Model", xlabel=""):
+                 
+        df1_long = melt_df(df1, xlabel)
+        df2_long = melt_df(df2, xlabel)
+        hue_col = df1.index.name or "index"
+        
+        fig, axes = plt.subplots(
+            1, 2, 
+            figsize=(max(len(df1.columns), 4) *2, max(len(df1), 4) * 1.5),
+            sharey=True
+        )
+
+        # First subplot
+        ax1 = axes[0]
+        sns.barplot(
+            x=xlabel,
+            y="value",
+            hue=hue_col,
+            data=df1_long,
+            palette="viridis",
+            ax=ax1
+        )
+        ax1.grid(axis='y', linestyle='--', linewidth=0.7, alpha=0.7)
+        ax1.legend_.remove()  # Remove legend from this axis
+        ax1.set_xlabel(xlabel) 
+        ax1.set_ylabel(r"$\Delta$ Accuracy")
+        ax1.set_title(title1)
+
+        # Second subplot
+        ax2 = axes[1]
+        sns.barplot(
+            x=xlabel,
+            y="value",
+            hue=hue_col,
+            data=df2_long,
+            palette="viridis",
+            ax=ax2
+        )
+        ax2.set_xlabel(xlabel) 
+        ax2.set_title(title2)
+        ax2.legend_.remove()  # Remove legend from this axis
+        
+        ax2.grid(axis='y', linestyle='--', linewidth=0.7, alpha=0.7)
+        # Put the legend only on the second subplot, at the bottom with 4 columns
+        handles, labels = ax2.get_legend_handles_labels()
+
+        # ✅ Place legend in figure coordinates
+        fig.legend(
+            handles,
+            labels,
+            title=ylabel,
+            loc="center",
+            bbox_to_anchor=(0.5, -0.1),  # middle between subplots
+            ncol=4,
+            frameon=True
+        )
+
+        for ax in (ax1, ax2):
+            ax.set_ylim(-15, 17)
+        plt.tight_layout()
+        plt.tight_layout()
+        plt.suptitle(title)
+        plt.show() 
+
+        return df1_long, df2_long
+        
+def get_heatmap(df, ylabel="Model", xlabel="Spurious correlation type", 
+                title="Accuracy by model and spurious correlation type"): 
+    
+    plt.figure(figsize=(len(df.columns), len(df)))
+    sns.heatmap(
+        df, # , aggfunc=['mean'] 
+        annot=True,
+        fmt=".2f",
+        cmap="viridis",
+        # vmin=0, vmax=1,
+        linewidths=0.5
+    )
+    plt.ylabel(ylabel)
+    plt.xlabel(xlabel)
+    plt.title(title)
+    plt.tight_layout()
+    plt.show() # spu-corr-finetune.png 
 
 def scatterplot_finetuned(subset, x_col='pearson_r', y_col='model_avg', title='accuracy'):
     fig, ax = plt.subplots(figsize=(9, 6.5))
