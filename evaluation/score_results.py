@@ -123,11 +123,11 @@ def score_file(
                     all_answers = [all_answers]
                     
             if all_answers:
-                is_correct = vqa_accuracy(all_answers, output) 
+                is_correct = vqa_accuracy( output, all_answers) 
                 if encoder: 
                     # Use majority answer for similarity computation
                     majority_ans = max(set(all_answers), key=all_answers.count)
-                    sim = compute_similarity(majority_ans, output, encoder)
+                    sim = compute_similarity(majority_ans, output, encoder) 
                     item['answer_similarity'] = float(sim) 
             else:
                 gt = item.get('answer', '')

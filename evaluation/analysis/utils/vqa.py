@@ -32,6 +32,7 @@ NUMBER_REGEX = re.compile(
     """,
     re.VERBOSE
 )
+
 def vqa_accuracy(pred, gt_answers):
     # pred가 리스트인 경우 처리
     if isinstance(pred, list):
@@ -55,7 +56,7 @@ def vqa_accuracy(pred, gt_answers):
             matches += 1
     
     acc = min(1.0, matches / 3.0)
-    return acc * 100 
+    return acc 
 
 class VQAAnswerMapper:
     """Maps question_id to list of ground truth answers from VQA annotations."""

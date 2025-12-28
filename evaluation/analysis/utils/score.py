@@ -50,7 +50,7 @@ MODEL_DISPLAY_MAP = {
     "Qwen3-VL-8B-Instruct_A4_mmstar_15_blind_inst": "Qwen3‑VL (8B) | JS‑Blind MMStar (n=15)",
     "Qwen3-VL-8B-Instruct_SFT_mmstar_15_blind_inst": "Qwen3‑VL (8B) | SFT‑Blind MMStar",
     "Qwen3-VL-8B-Instruct_SFT_vqa_15_blind_inst": "Qwen3‑VL (8B) | SFT‑Blind VQA",
-
+    "Qwen3-VL-8B-Instruct_SFT_vqa_gt_sft": "Qwen3‑VL (8B) | SFT‑VQA",
     # ---------- LLaVA ----------
     "llava-v1.6-mistral-7b-hf": "LLaVA‑Mistral (7B)",
     "llava-v1.6-vicuna-7b-hf": "LLaVA‑Vicuna (7B)",
@@ -106,13 +106,14 @@ def get_summary(dataset='mmstar'):
             if 'finetuned' in f : 
                 df['model'] = f.split('/')[-2].replace('fold_0', '')
                 df['trained_dataset'] = 'VQA' if 'vqa' in f else 'MMStar'
-                df['strategy'] = 'SFT' if 'SFT' in f else 'JS' 
+                df['strategy'] = 'SFT' if 'sft' in f.lower() else 'JS' 
                 df['blind'] = 'Blind' if 'blind' in f.lower() else 'GT' 
                 
             else: 
                 df['model'], f = find_matching(f, [model.split('/')[-1] for model in MODELNAMES])  
                 df['trained_dataset'] = 'Pretrained'
                 df['strategy'] = 'Pretrained'
+                df['blind'] = 'Pretrained'
             df['condition'] = f.split('/')[-1][:-6].replace(f'_', ' ').replace('vqa 1k', '').replace('vqa 5k', '').replace(f'{dataset}', '').strip()
             dfs.append(df)
         except Exception as e: 

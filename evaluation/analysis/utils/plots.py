@@ -53,8 +53,7 @@ def melt_df(df, xlabel):
         value_name="value"
     )
 
-def get_barplot(df1, df2, title, title1, title2,  
-                xlabel="Model", xlabel=""):
+def get_barplot(df1, df2, title, title1, title2, xlabel=""):
                  
         df1_long = melt_df(df1, xlabel)
         df2_long = melt_df(df2, xlabel)
@@ -119,7 +118,7 @@ def get_barplot(df1, df2, title, title1, title2,
         plt.show() 
 
         return df1_long, df2_long
-        
+
 def get_heatmap(df, ylabel="Model", xlabel="Spurious correlation type", 
                 title="Accuracy by model and spurious correlation type"): 
     

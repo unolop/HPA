@@ -27,7 +27,7 @@ def test_human_data(human_vqa):
     return human_vqa 
 
 def get_training_regime(pcorr): 
-    pcorr['model'] = pcorr['model'].map(MODEL_DISPLAY_MAP)  
+    pcorr['model'] = pcorr['model'].map(MODEL_DISPLAY_MAP)   # TODO needs to be fixed no manaual mapping  
 
     pcorr = pcorr[
         pcorr['model'].notna() &
@@ -311,7 +311,7 @@ class VQAResults():
         vqa_1k = get_training_regime(vqa_1k) 
         
         self.model = vqa_1k[(vqa_1k['question_id'].isin(self.qids)) & (vqa_1k['condition'] == 'inst blind')] # .replace(MODEL_DISPLAY_MAP)
-        vqa_5k = get_summary('vqa_5k').drop_duplicates(subset=['condition', 'question_id', 'model'])
+        vqa_5k = get_summary('vqa_5k').drop_duplicates(subset=['condition', 'question_id', 'model', 'strategy', 'blind', 'trained_dataset'])
         vqa_5k = self.new_score(vqa_5k, "output", "multiple_choice_answer") 
         self.test_model = get_training_regime(vqa_5k)  
         
@@ -391,7 +391,7 @@ class VQAResults():
         human_vqa['correct'] = human_vqa.apply(
             lambda row: max(
                 row['correct'] if pd.notna(row.get('correct')) else 0,
-                vqa_accuracy(row["processed_ans"], row[gt_col]) 
+                vqa_accuracy(row["processed_ans"], row[gt_col]) * 100 
             ),
             axis=1
         ) 
