@@ -32,7 +32,7 @@ from preprocessing.preprocess import preprocess_pipeline
 # Configuration
 # =============================================================================
 
-VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
+VQA_ANNOTATIONS_PATH = "/home/work/yuna/data/v2_mscoco_val2014_annotations.json"
 
 CONF_MAP = {
     'yes': 1.0,

@@ -5,7 +5,7 @@ import pandas as pd
 import math
 from typing import List , Union, Optional
 
-VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
+VQA_ANNOTATIONS_PATH = "/home/work/yuna/data/data/v2_mscoco_val2014_annotations.json"
 
 NUMBER_WORDS = {
     "zero": 0,
