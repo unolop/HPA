@@ -546,3 +546,91 @@ def plot_distribution_histogram(stats_by_dataset, output_path):
     plt.close()
 
     print(f"  ✓ Saved: {output_path}") 
+
+def plot_unified_agreement_heatmap(
+    corr_mat,
+    human_cols,
+    model_cols,
+    title="Unified Human–Model Agreement",
+    cmap="viridis",
+    margin=0.02,
+    figsize_base=6,
+    figsize_scale=0.35,
+    save=None,
+):
+    metric_label="Spearman $\\rho$" 
+    ordered = list(human_cols) + list(model_cols)
+    corr_mat = corr_mat.loc[ordered, ordered]
+
+    # -------------------------------------------------
+    # 2. Compute color limits from data
+    vals = corr_mat.values
+    vals = vals[np.isfinite(vals)]
+
+    vmin = vals.min() - margin
+    vmax = vals.max() + margin
+
+    n = len(ordered)
+    fig_size = figsize_base + figsize_scale * n
+
+    plt.figure(figsize=(fig_size, fig_size))
+    ax = sns.heatmap(
+        corr_mat,
+        cmap=cmap,
+        vmin=vmin,
+        vmax=vmax,
+        square=True,
+        cbar_kws={"label": metric_label},
+        linewidths=0.3,
+        linecolor="white",
+    )
+    h = len(human_cols)
+    ax.axhline(h, color="black", lw=2)
+    ax.axvline(h, color="black", lw=2)
+
+    for label in ax.get_xticklabels():
+        label.set_rotation(90)
+        if label.get_text() in human_cols:
+            label.set_color("tab:blue")
+            label.set_fontweight("bold")
+        else:
+            label.set_color("tab:orange")
+
+    for label in ax.get_yticklabels():
+        if label.get_text() in human_cols:
+            label.set_color("tab:blue")
+            label.set_fontweight("bold")
+        else:
+            label.set_color("tab:orange")
+
+    # --------------------------------------------------
+    # 6. Optional group annotations
+    # --------------------------------------------------
+    ax.text(
+        h / 2,
+        -1.5,
+        "Humans",
+        ha="center",
+        va="center",
+        fontsize=12,
+        fontweight="bold",
+        color="tab:blue",
+    )
+    ax.text(
+        h + (n - h) / 2,
+        -1.5,
+        "Models",
+        ha="center",
+        va="center",
+        fontsize=12,
+        fontweight="bold",
+        color="tab:orange",
+    )
+    plt.title(title, fontsize=16)
+    plt.tight_layout()
+
+    if save:
+        plt.savefig(save, dpi=300, bbox_inches="tight")
+        plt.close()
+    else:
+        plt.show()

@@ -2,15 +2,15 @@ import numpy as np
 import json
 import pandas as pd 
 from utils.df import *  # result_to_df   aggregate_vqa, model_name_map, calculate_mg   
-from utils.corr import get_all_cm, get_agreements, transform_corr_table, plot_unified_agreement_heatmap
+# from utils.corr import interrater_agreement, get_all_cm, get_agreements, transform_corr_table, plot_unified_agreement_heatmap
 from utils.quadrants import * # quadrant_proportions_table, median_mg_table   
 from utils.score import get_summary, extract_mc_choice, MODEL_DISPLAY_MAP
 from utils.vqa import score_number, score_yes_no, VQAAnswerMapper, vqa_accuracy , PostProcessor 
-from utils.ac1 import interrater_agreement_ac1 
 from utils.plots import scatterplot, get_family, parse_size  
 
 import sys 
 sys.path.append('..')
+
 
 def test_human_data(human_vqa): 
         
@@ -45,6 +45,12 @@ def get_training_regime(pcorr):
         .str.replace("\u2014", "-", regex=False)
         .str.strip()
     ).fillna('Pretrained')
+
+    pcorr['model_type'] = 'vlm'
+    pcorr.loc[
+        pcorr['model'].isin(['Qwen3 (4B)', 'Qwen3 (8B)']),
+        'model_type'
+    ] = 'llm' 
 
     pcorr['model'] = (
         pcorr['model']
@@ -135,15 +141,16 @@ class MMStarResults():
         human_mc['condition'] = 'inst blind' 
         self.human = human_mc[human_mc['participant_id']!= '13f54aa2_20251204_125847'] 
         self.human['correct'] = self.human['correct'] * 100  
-        self.human = self.human.rename(columns={'pid': 'question_id'}) #   = self.clean_df(human_mc)
+        self.human = self.human.rename(columns={'pid': 'question_id'}).drop_duplicates(['category', 'l2_category', 'question_id', "participant_id"]) #   = self.clean_df(human_mc)
         self.qids = self.human.question_id.unique()    
         # self.model = self.get_mg(blind_model[blind_model['question_id'].isin(self.qids)]) 
         self.test_human = test_human_data(self.human) 
 
         ### MODEL RESULTS 
-        model_mc = get_summary('mmstar').drop_duplicates(subset=['model', 'pid', 'condition'])
+        model_mc = get_summary('mmstar')
         model_mc = model_mc.rename(columns={'pid': 'question_id'})  
-        model_mc= get_training_regime(model_mc)
+        model_mc = get_training_regime(model_mc)
+        model_mc = model_mc.drop_duplicates(subset=['category', 'l2_category', 'model', 'question_id', 'condition']) 
 
         test_model = model_mc[~model_mc['question_id'].isin(self.qids)]
         test_model = self.clean_df(test_model) 
@@ -154,6 +161,12 @@ class MMStarResults():
         self.model_mg = self.get_mg(model_mc, filename='model') 
         self.test_model_mg = self.get_mg(test_model, filename='test_model_only') 
         # model_mc = self.clean_df(model_mc)
+
+        self.model_list = ['InternVL 3.5 (1B)', 'InternVL 3.5 (2B)', 'InternVL 3.5 (4B)',
+                    'InternVL 3.5 (8B)', 'LLaVA-1.5 (7B)', 'LLaVA-Mistral (7B)',
+                    'LLaVA-Vicuna (7B)', 'Qwen3 (4B)', 'Qwen3 (8B)', 'Qwen3-VL (2B)',
+                    'Qwen3-VL (4B)', 'Qwen3-VL (8B)']
+
 
     def clean_df(self, df): 
         mmstar_cat_map = {'coarse perception': "CP", 'fine-grained perception': "FP",
@@ -218,19 +231,24 @@ class MMStarResults():
         )
         return df # .drop_duplicates(subset=KEY_COLS) 
 
-    def combine_mh(self, metrics='correct'): 
-        
-        grouping = ['category', 'l2_category', 'question_id', 'question', 'answer'] 
+    def combine_mh(self, human_acc=None, model_acc=None, metrics='correct'):
+
+        if human_acc is None:
+            human_acc = self.human
+        if model_acc is None:
+            model_acc = self.model
+
+        grouping = ['category', 'l2_category', 'question_id'] # , 'question', 'answer'] 
         # mm = pd.merge(self.model, self.human, on=grouping, how='left', suffixes=('_model', '_human')).groupby().agg({'correct_human': 'mean', 'correct_model': 'mean'}).reset_index()
         # mms = pd.merge(mms, pt.groupby(['category', 'l2_category', 'question_id']).agg({'MG': 'mean'}).reset_index(), on=['category', 'l2_category', 'question_id']) # 'model', , 'correct_model': 'mean'
         # print('combined model and human questions example: ', mm.iloc[0]['question_model'], mm.iloc[0]['question_human']) # .model.unique()   
 
-        human_acc = self.human.pivot(
+        human_acc = human_acc.pivot(
                 index=grouping, 
                 columns="participant_id",
                 values=metrics
             )
-        model_acc = self.model.pivot_table( 
+        model_acc = model_acc.pivot_table( 
             index=grouping,  
             columns="model",
             values=metrics, 
@@ -239,49 +257,6 @@ class MMStarResults():
         answers_pivot = human_acc.join(model_acc, how="inner").reset_index() 
 
         return answers_pivot    
-
-    def get_corr(self, answers_pivot, n_boot=200): 
-        
-        ### GET CATEGORY WISE CORRELATION 
-        category_corr = [] 
-        for category in answers_pivot.category.unique():  
-            res = interrater_agreement_ac1(
-                answers_pivot[answers_pivot['category'] == category],
-                grp1=self.human_list,
-                grp2=self.model_list,
-                n_boot=0,
-                ) 
-            res['category'] = category 
-            category_corr.append(res)
-        category_corr = pd.DataFrame(category_corr).dropna(axis=0, subset=['mean_r']).dropna(axis=1).drop(columns=['corr_mat', 'title', 'metric'])
-        category_corr.to_latex(f"/home/work/yuna/HPA/evaluation/analysis/tables/appendix/mmstar-ac1-category.tex", float_format="%.1f")  
-
-        model_corr = [] 
-        for i, cc in category_corr.iterrows(): 
-            corr_mat=cc['corr_mat'].T.reset_index().melt(
-                id_vars=['model'], var_name='subj', value_name='corr')    
-            corr_mat['category'] = cc['category']
-            model_corr.append(corr_mat) 
-        model_corr= pd.concat(model_corr).dropna()
-        model_corr.groupby(['model', 'category'])['corr'].mean().reset_index().to_csv('./corr-mmstar-MH-cat.csv', encoding="utf-8-sig")
- 
-        res_HH = interrater_agreement_ac1(answers_pivot, self.human_list, self.human_list, title="Human–Human", plot=False ) 
-        res_MM = interrater_agreement_ac1(answers_pivot, self.human_list, self.model_list, title="Human–Model", plot=False ) 
-        res_HM = interrater_agreement_ac1(answers_pivot, self.model_list, self.model_list, title="Model–Model",  plot=False )  
-        
-        corr_mat = get_all_cm(res_HH, res_MM, res_HM )
-        # res['corr_mat'] = res['corr_mat'].fillna(1)
-        plot_unified_agreement_heatmap(
-            corr_mat, self.human_list, self.model_list , 
-            f'Human–Model Agreement (AC1)', 
-            f'/home/work/yuna/HPA/evaluation/analysis/figures/mmstar-AC1_{len(self.model_list)}.png') 
-        
-        if n_boot:  
-            transform_corr_table(pd.concat([result_to_df(res_HH), result_to_df(res_MM), result_to_df(res_HM)])).to_latex(
-                '/home/work/yuna/HPA/evaluation/analysis/tables/mmstar_ac1.tex', float_format="%.3f")    
-        
-        acc_corr = res_HM['corr_mat'].mean().sort_values().reset_index(name='corr') 
-        return acc_corr 
 
 
 class VQAResults():  
@@ -317,8 +292,9 @@ class VQAResults():
         
         self.model_mg = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))], 'subset')  
         self.test_model_mg = self.get_mg(self.test_model, '5k-test')   
-        self.quadrants = self.get_quadrants()
-    
+        # self.quadrants = self.get_quadrants()
+
+
     def finetuning_effect(self, test_model):  
         df = test_model[test_model['condition'] == ''] 
         bs = df[df['finetuned'] == 'Pretrained']
@@ -425,7 +401,7 @@ class VQAResults():
             values='correct',
             columns='condition',
             aggfunc='mean'
-        ).reset_index()
+        ).reset_index() 
 
         pt['MG'] = pt[''] - pt['inst blind']
         pt['Delta_Inst'] = pt['blind'] - pt['inst blind']
@@ -471,51 +447,6 @@ class AlignmentAnalysis:
             df = calculate_mg(self.test_model, filename='vqa_5k').groupby(['model']).mean(numeric_only=True).reset_index()  
 
             ### PLOT SCATTER  
-            pcorr = self.get_corr('accuracy')  # pcorr = pd.merge(acc_corr, sim_corr, on =['model']) 
-            pcorr = pd.merge(pcorr, df, on=['model']) 
-            pcorr = pcorr[['model', 'acc_corr', 'sim_corr', 'MG_Acc', 'MG_S']]
-            pcorr['family'] = pcorr['model'].map(get_family)
-            pcorr['model_size'] = pcorr['model'].map(parse_size)  
-            scatterplot(pcorr, x_col='acc_corr', y_col='MG_Acc', title='accuracy') 
-            
-            sim_corr = self.get_corr()   
-            sim_corr = pd.merge(pcorr, df, on=['model']) 
-            sim_corr = pcorr[['model', 'acc_corr', 'sim_corr', 'MG_Acc', 'MG_S']]
-            sim_corr['family'] = pcorr['model'].map(get_family)
-            sim_corr['model_size'] = pcorr['model'].map(parse_size)  
-            scatterplot(sim_corr, x_col='sim_corr', y_col='MG_S', title='simliarity')  
-
-            pcorr = pd.merge(acc_corr, sim_corr, on =['model']) 
-            self.pcorr   
-
-        else: 
-            results = MMStarResults() 
-            self.human = results.human 
-            self.model = results.model 
-            self.test_model = results.test_model 
-            self.df_qid = self.combine_vqa() 
-
-    def get_corr(self, model_cols=None, metric='answer_similarity', n_boot=0): 
-
-        human_cols = self.human.participant_id.unique()
-        if model_cols is None : 
-            model_cols = self.model['model'].unique() 
-        # print(len(human_cols), len(model_cols), human_vqa.groupby('participant_id')['question_id'].nunique()   )
-
-        res_HH, res_MM, res_HM  = get_agreements(self.human, self.model, n_boot=0)  # accuarcy 
-        corr_mat = get_all_cm(res_HH, res_MM, res_HM )
-        acc_corr = res_HM['corr_mat'].mean().sort_values().reset_index(name=f'{metric}_corr') 
-
-        if n_boot:  
-            transform_corr_table(pd.concat([result_to_df(res_HH), result_to_df(res_MM), result_to_df(res_HM)])).to_latex(
-                '/home/work/yuna/HPA/evaluation/analysis/tables/3_spearman-interrater-vqa.tex', float_format="%.3f")    
-        
-        plot_unified_agreement_heatmap(
-            corr_mat, human_cols, model_cols , 
-            f'Human–Model Agreement ({metric})', 
-            f'/home/work/yuna/HPA/evaluation/analysis/figures/agreement-{metric}_{len(model_cols)}.png') 
-        
-        return acc_corr
 
     def combine_vqa(self):   ### combine human and model ! 
         hm = pd.concat([self.model, self.human]) # just the blind conditions 
