@@ -141,7 +141,8 @@ class MMStarResults():
         human_mc['condition'] = 'inst blind' 
         self.human = human_mc[human_mc['participant_id']!= '13f54aa2_20251204_125847'] 
         self.human['correct'] = self.human['correct'] * 100  
-        self.human = self.human.rename(columns={'pid': 'question_id'}).drop_duplicates(['category', 'l2_category', 'question_id', "participant_id"]) #   = self.clean_df(human_mc)
+        self.human = self.human.rename(columns={'pid': 'question_id'}).drop_duplicates(
+            ['category', 'l2_category', 'question_id', "participant_id"]) #   = self.clean_df(human_mc)
         self.qids = self.human.question_id.unique()    
         # self.model = self.get_mg(blind_model[blind_model['question_id'].isin(self.qids)]) 
         self.test_human = test_human_data(self.human) 
@@ -150,16 +151,17 @@ class MMStarResults():
         model_mc = get_summary('mmstar')
         model_mc = model_mc.rename(columns={'pid': 'question_id'})  
         model_mc = get_training_regime(model_mc)
-        model_mc = model_mc.drop_duplicates(subset=['category', 'l2_category', 'model', 'question_id', 'condition']) 
+        model_mc = model_mc.drop_duplicates(subset=['category', 'l2_category', 'model', 'question_id', 'condition', 'family', 'model_size', 'finetuned', 'model_type']) 
 
         test_model = model_mc[~model_mc['question_id'].isin(self.qids)]
         test_model = self.clean_df(test_model) 
-        self.test_model = test_model[test_model['condition'] == '']
-
-        model_mc = model_mc[model_mc['question_id'].isin(self.qids) ]     
-        self.model = model_mc[model_mc['condition'] == 'inst blind'] 
-        self.model_mg = self.get_mg(model_mc, filename='model') 
-        self.test_model_mg = self.get_mg(test_model, filename='test_model_only') 
+        self.test_model_blind = test_model[test_model['condition'] == '']
+        self.test_model = test_model 
+        
+        self.model_mc = model_mc[model_mc['question_id'].isin(self.qids) ]     
+        self.model_blind = model_mc[model_mc['condition'] == 'inst blind'] 
+        # self.model_mg = self.get_mg(model_mc, filename='model') 
+        # self.test_model_mg = self.get_mg(test_model, filename='test_model_only') 
         # model_mc = self.clean_df(model_mc)
 
         self.model_list = ['InternVL 3.5 (1B)', 'InternVL 3.5 (2B)', 'InternVL 3.5 (4B)',
@@ -275,7 +277,7 @@ class VQAResults():
         vqa_annot._load()
         self.vqa_annot = vqa_annot.annotations 
         self.human = self.clean_df(human_vqa.rename(columns={'qid': 'question_id'}) )
-        self.human = self.new_score(self.human)
+        self.human = self.new_score(self.human) 
         # self.human = self.score_answer_types(self.human, answer_column="answer_normalized", gt_column="visual_gt") 
         self.qids= self.human.question_id.unique().astype(int)
         self.test_human = test_human_data(self.human) 
@@ -288,12 +290,14 @@ class VQAResults():
         self.model = vqa_1k[(vqa_1k['question_id'].isin(self.qids)) & (vqa_1k['condition'] == 'inst blind')] # .replace(MODEL_DISPLAY_MAP)
         vqa_5k = get_summary('vqa_5k').drop_duplicates(subset=['condition', 'question_id', 'model', 'strategy', 'blind', 'trained_dataset'])
         vqa_5k = self.new_score(vqa_5k, "output", "multiple_choice_answer") 
-        self.test_model = get_training_regime(vqa_5k)  
         
-        self.model_mg = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))], 'subset')  
-        self.test_model_mg = self.get_mg(self.test_model, '5k-test')   
-        # self.quadrants = self.get_quadrants()
-
+        # self.model_mg = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))] ) 
+        # self.model_mg_sim = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))], 'answer_similarity' ) 
+        
+        self.test_model = get_training_regime(vqa_5k)  
+        self.test_model_mg_acc = self.get_mg(self.test_model, 'correct')   
+        self.test_model_mg_sim = self.get_mg(self.test_model, 'answer_similarity')   
+        # self.quadrants = self.get_quadrants() 
 
     def finetuning_effect(self, test_model):  
         df = test_model[test_model['condition'] == ''] 
@@ -393,12 +397,12 @@ class VQAResults():
         human_vqa.to_csv('/home/work/yuna/HPA/evaluation/analysis/human_vqa.csv') 
         return human_vqa 
 
-    def get_mg(self, df, filename='inst-blind_only'): 
+    def get_mg(self, df, metric='correct', filename='inst-blind_only'): 
         df['new_question_type'] = df["question_type"].apply(map_question_type) 
 
         pt = df.pivot_table(
             index=['model', 'finetuned', 'answer_type', 'question_type', 'new_question_type', 'question_id'],
-            values='correct',
+            values=metric,
             columns='condition',
             aggfunc='mean'
         ).reset_index() 
@@ -410,11 +414,11 @@ class VQAResults():
             index=['model'],
             values=['MG'],
             columns=['answer_type'],
-            aggfunc='mean'
-        ).to_latex(f'/home/work/yuna/HPA/evaluation/analysis/tables/VQA_MG_{filename}-by-answer_type.tex', float_format="%.1f")
+            aggfunc='mean' 
+        ).to_latex(f'/home/work/yuna/HPA/evaluation/analysis/tables/VQA_MG_{filename}-by-answer_type_{metric}.tex', float_format="%.1f")
         # pt.groupby(['model']).mean(numeric_only=True).to_latex(f'./tables/appendix/mmstar-mg_{filename}.tex', float_format="%.1f")
 
-        return pt 
+        return pt.dropna(axis=0, subset=['MG']) # .dropna(axis=1)  
 
     ### UTILS 
     def make_numeric_cols(pm): 

@@ -141,7 +141,10 @@ def scatterplot_finetuned(subset, x_col='pearson_r', y_col='model_avg', title='a
     fig, ax = plt.subplots(figsize=(9, 6.5))
     x = subset[x_col].to_numpy()
     y = subset[y_col].to_numpy()
-
+    regime_markers = {
+        "Pretrained": "o",
+        "finetuned": "^",
+    }
     # drop NaNs
     mask = ~np.isnan(x) & ~np.isnan(y)
     x, y = x[mask], y[mask]
