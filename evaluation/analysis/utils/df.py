@@ -1,6 +1,8 @@
 
 import re
 import pandas as pd
+import ast
+import numpy as np  
 
 KEYS = [
     'model',
@@ -16,6 +18,28 @@ def parse_finetuned(s):
         'dataset': 'MMStar' if 'MMStar' in s else 'VQA',
         'n': int(re.search(r'n=(\d+)', s).group(1)) if 'n=' in s else None
     })
+
+def parse_ci(x):
+    # Case 1: NumPy array
+    if isinstance(x, np.ndarray):
+        return x.tolist()
+
+    # Case 2: Python list or tuple
+    if isinstance(x, (list, tuple)):
+        return list(x)
+
+    # Case 3: String
+    if isinstance(x, str):
+        try:
+            parsed = ast.literal_eval(x)
+            if isinstance(parsed, np.ndarray):
+                return parsed.tolist()
+            if isinstance(parsed, (list, tuple)):
+                return list(parsed)
+        except Exception:
+            return np.nan
+
+    return np.nan
 
 def extract_size(text):
     if pd.isna(text): return 1.0 # Default fallback

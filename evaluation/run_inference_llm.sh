@@ -4,8 +4,8 @@
 CONDITION_LIST=("_inst_blind" ) # "_blind" 
 DATASET_PATHS=(   "vqa_1k"    ) #   )  # "spubench" "vqa_5k" "mmstar"
 BASE_MODEL=(
-            "Qwen/Qwen3-8B"
-            # "Qwen/Qwen3-4B"
+            # "Qwen/Qwen3-8B"
+            "Qwen/Qwen3-4B"
             # "Qwen/Qwen3-1.7B" 
             # "Qwen/Qwen3-0.6B" 
             # "Qwen/Qwen3-0.6B-Base" # doesnt work 
@@ -17,7 +17,7 @@ BASE_MODEL=(
 for CONDITION in "${CONDITION_LIST[@]}"; do 
     for BASE_MODEL in "${BASE_MODEL[@]}"; do 
         for VAL_DATASET in "${DATASET_PATHS[@]}"; do 
-            CUDA_VISIBLE_DEVICES=0 python /home/work/yuna/HPA/evaluation/inference.py \
+            CUDA_VISIBLE_DEVICES=1 python /home/work/yuna/HPA/evaluation/inference.py \
                 --model "${BASE_MODEL}" \
                 --dataset "${VAL_DATASET}" \
                 --condition "${CONDITION}" \

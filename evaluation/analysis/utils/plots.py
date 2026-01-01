@@ -53,6 +53,58 @@ def melt_df(df, xlabel):
         value_name="value"
     )
 
+def plot_model_corr(ax, rhos, ci_lows, ci_highs, models, 
+                    low, high, mu, dataset="MMStar", color="#1f77b4", marker='*'): 
+    y=np.arange(len(models))
+    ax.errorbar(
+        rhos,
+        y,
+        xerr = np.vstack([
+            rhos - ci_lows,
+            ci_highs - rhos
+        ]) , 
+        fmt=marker,
+        color=color,
+        ecolor="#333333",
+        elinewidth=1,
+        capsize=6,
+        markersize=8,
+        markeredgecolor="#333333",
+        zorder=3
+    )
+    ax.set_yticks(y)
+    ax.set_yticklabels(models, fontsize=11)
+    ax.axvspan(
+        low,
+        high,
+        color=color, # "gray" 
+        alpha=0.1,
+        zorder=0,
+        linewidth=1.8,
+        label="Human baseline (95%)" 
+    )
+
+    ax.axvline(
+        mu,
+        color=color, #$ "darkred" 
+        linestyle="--",
+        linewidth=1,
+        alpha=0.7,
+        zorder=2
+    )
+
+    ax.text(
+        mu,
+        -0.8,
+        f"{dataset} \nμ = {mu:.2f}", #  \n Human baseline
+        ha="center",
+        va="bottom",
+        fontsize=10,
+        color=color 
+    )
+
+    return ax 
+    
 def get_barplot(df1, df2, title, title1, title2, xlabel=""):
                  
         df1_long = melt_df(df1, xlabel)
@@ -141,10 +193,6 @@ def scatterplot_finetuned(subset, x_col='pearson_r', y_col='model_avg', title='a
     fig, ax = plt.subplots(figsize=(9, 6.5))
     x = subset[x_col].to_numpy()
     y = subset[y_col].to_numpy()
-    regime_markers = {
-        "Pretrained": "o",
-        "finetuned": "^",
-    }
     # drop NaNs
     mask = ~np.isnan(x) & ~np.isnan(y)
     x, y = x[mask], y[mask]

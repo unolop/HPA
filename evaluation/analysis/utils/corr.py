@@ -21,7 +21,14 @@ def human_vs_consensus(human_correct):
         rho, _ = spearmanr(hi, consensus_minus_i)
         rhos.append(rho)
 
-    return np.array(rhos)
+    return np.array(rhos) 
+
+def get_corr_from_pivot(pivoted, dataset, metric):
+    return (
+        pivoted[('theta_hat', dataset, metric)].to_numpy(),
+        pivoted[('ci_low', dataset, metric)].to_numpy(),
+        pivoted[('ci_high', dataset, metric)].to_numpy(),
+    )
 
 def pairwise_metric(a, b, metric="spearman"):
     """

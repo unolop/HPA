@@ -15,6 +15,7 @@ Computes:
 import os
 import json
 import argparse
+import numpy as np 
 import pandas as pd
 from collections import defaultdict
 from typing import Dict
@@ -88,6 +89,7 @@ def score_file(
         return {}
 
     vqa_mapper = None
+    pp = PostProcessor() 
     if encoder:  
         print("   Loading sentence transformer for similarity computation...")
         
@@ -99,6 +101,7 @@ def score_file(
     for item in data:
         output = item.get('output', '')
         category = item.get('category', item.get('l2_category', item.get('question_type', 'Unknown')))
+
         if dataset_type == 'multi-choice':
             if 'answer' not in item.keys(): 
                 qid = item.get('pid', '') 
@@ -122,13 +125,14 @@ def score_file(
                 if isinstance(all_answers, str):
                     all_answers = [all_answers]
                     
-            if all_answers:
-                is_correct = vqa_accuracy( output, all_answers) 
+            if all_answers:                
+                item['processed_ans'] = pp.postprocess_answer(output)
+                is_correct = vqa_accuracy( item['processed_ans'], all_answers) 
                 if encoder: 
-                    # Use majority answer for similarity computation
-                    majority_ans = max(set(all_answers), key=all_answers.count)
-                    sim = compute_similarity(majority_ans, output, encoder) 
-                    item['answer_similarity'] = float(sim) 
+                    sims=[] 
+                    for ans in all_answers: 
+                        sims.append(compute_similarity(ans, output, encoder) )
+                    item['answer_similarity'] = float(np.mean(sims)) 
             else:
                 gt = item.get('answer', '')
                 is_correct = exact_match(gt, output) 
