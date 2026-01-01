@@ -129,10 +129,8 @@ def score_file(
                 item['processed_ans'] = pp.postprocess_answer(output)
                 is_correct = vqa_accuracy( item['processed_ans'], all_answers) 
                 if encoder: 
-                    sims=[] 
-                    for ans in all_answers: 
-                        sims.append(compute_similarity(ans, output, encoder) )
-                    item['answer_similarity'] = float(np.mean(sims)) 
+                     item['answer_similarity'] = compute_similarity(item['multiple_choice_answer'], item['processed_ans'], encoder)
+                   
             else:
                 gt = item.get('answer', '')
                 is_correct = exact_match(gt, output) 

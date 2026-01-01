@@ -277,19 +277,19 @@ class VQAResults():
         vqa_annot._load()
         self.vqa_annot = vqa_annot.annotations 
         self.human = self.clean_df(human_vqa.rename(columns={'qid': 'question_id'}) )
-        self.human = self.new_score(self.human) 
+        # self.human = self.new_score(self.human) 
         # self.human = self.score_answer_types(self.human, answer_column="answer_normalized", gt_column="visual_gt") 
         self.qids= self.human.question_id.unique().astype(int)
         self.test_human = test_human_data(self.human) 
         
         # get model intersection subset 
         vqa_1k = get_summary('vqa_1k').drop_duplicates(subset=['condition', 'question_id', 'model'])
-        vqa_1k = self.new_score(vqa_1k, 'output', 'multiple_choice_answer')
+        # vqa_1k = self.new_score(vqa_1k, 'output', 'multiple_choice_answer')
         vqa_1k = get_training_regime(vqa_1k) 
         
         self.model = vqa_1k[(vqa_1k['question_id'].isin(self.qids)) & (vqa_1k['condition'] == 'inst blind')] # .replace(MODEL_DISPLAY_MAP)
         vqa_5k = get_summary('vqa_5k').drop_duplicates(subset=['condition', 'question_id', 'model', 'strategy', 'blind', 'trained_dataset'])
-        vqa_5k = self.new_score(vqa_5k, "output", "multiple_choice_answer") 
+        # vqa_5k = self.new_score(vqa_5k, "output", "multiple_choice_answer") 
         
         # self.model_mg = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))] ) 
         # self.model_mg_sim = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))], 'answer_similarity' ) 

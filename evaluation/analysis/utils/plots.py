@@ -68,12 +68,11 @@ def plot_model_corr(ax, rhos, ci_lows, ci_highs, models,
         ecolor="#333333",
         elinewidth=1,
         capsize=6,
-        markersize=8,
+        markersize=6,
         markeredgecolor="#333333",
         zorder=3
     )
     ax.set_yticks(y)
-    ax.set_yticklabels(models, fontsize=11)
     ax.axvspan(
         low,
         high,
