@@ -49,7 +49,7 @@ def get_examples(vqq, i, human_vqa, model, target_group='Human-Only'):
     ].sort_values("correct", ascending=False)
  
     # print(target_group, ex)
-    model_answers = model[model["question_id"] == qid].sort_values(by=['correct'], ascending=False)  
+    model_answers = model[model["question_id"] == qid].sort_values(by=['correct'], ascending=False)[[ 'model','MG']]  
     human_answers = hdf['processed_ans'].values  
 
     print('Human answers', human_answers, hdf['correct'].values, np.mean(hdf['correct'].values)) 
@@ -62,7 +62,7 @@ def get_examples(vqq, i, human_vqa, model, target_group='Human-Only'):
             f"Output: {row['processed_ans']} | "
             f"Score: {row['correct']}"
         )
-    model_answers = pd.merge(df, model_answers, on=['question_type', 'answer_type', 'question', 'model', 'question_id', 'condition', 'finetuned', 'multiple_choice_answer', 'image_id'])
+    # model_answers = pd.merge(df, model_answers, on=['question_type', 'answer_type', 'question', 'model', 'question_id', 'condition', 'finetuned', 'multiple_choice_answer', 'image_id'])
     return {
         "target_group": target_group , 
         "question_id": qid, 

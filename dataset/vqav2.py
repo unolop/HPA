@@ -4,9 +4,9 @@ from torch.utils.data import Dataset
 
 class VQADataset(Dataset):
     def __init__(self, 
-                 image_dir_path="/home/work/yuna/data/val2014", 
-                 question_path="/home/work/yuna/data/v2_OpenEnded_mscoco_val2014_questions.json", 
-                 annotations_path="/home/work/yuna/data/v2_mscoco_val2014_annotations.json", 
+                 image_dir_path="/home/work/yuna/data/data/val2014", 
+                 question_path="/home/work/yuna/data/data/v2_OpenEnded_mscoco_val2014_questions.json", 
+                 annotations_path="/home/work/yuna/data/data/v2_mscoco_val2014_annotations.json", 
                  prompt='', 
                  filter_qids=[],
                 ):  

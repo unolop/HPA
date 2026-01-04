@@ -105,7 +105,7 @@ def get_summary(dataset='mmstar'):
             df['filename'] = f 
             if 'finetuned' in f : 
                 df['model'] = f.split('/')[-2].replace('fold_0', '')
-                df['trained_dataset'] = 'VQA' if 'vqa' in f else 'MMStar'
+                df['trained_dataset'] = 'VQA' if 'vqa' in f.split('/')[-2].lower() else 'MMStar'
                 df['strategy'] = 'SFT' if 'sft' in f.lower() else 'JS' 
                 df['blind'] = 'Blind' if 'blind' in f.lower() else 'GT' 
                 

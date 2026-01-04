@@ -37,6 +37,7 @@ def get_training_regime(pcorr):
     pcorr['model'] = pcorr['model'].astype(str)
     pcorr['family'] = pcorr['model'].map(get_family)
     pcorr['model_size'] = pcorr['model'].map(parse_size).astype(int)
+
     pcorr["finetuned"] = (
         pcorr['model']
         .str.split('|').str[1]
@@ -160,7 +161,7 @@ class MMStarResults():
         
         self.model_mc = model_mc[model_mc['question_id'].isin(self.qids) ]     
         self.model_blind = model_mc[model_mc['condition'] == 'inst blind'] 
-        # self.model_mg = self.get_mg(model_mc, filename='model') 
+        self.model_mg = self.get_mg(model_mc, filename='model') 
         # self.test_model_mg = self.get_mg(test_model, filename='test_model_only') 
         # model_mc = self.clean_df(model_mc)
 
@@ -180,7 +181,7 @@ class MMStarResults():
         return df 
 
     def get_quadrants(self): 
-        mms= pd.merge(self.model, self.human.groupby(['question_id', 'l2_category', 'category']).mean(numeric_only=True).reset_index(), 
+        mms= pd.merge(self.model_blind, self.human.groupby(['question_id', 'l2_category', 'category']).mean(numeric_only=True).reset_index(), 
                         on=['question_id', 'l2_category', 'category'], how='left', suffixes=("_model", "_human")) 
         mms["human_correct"] = (mms["correct_human"] >= 50).astype(int)  
         mms["model_correct"] = (mms["correct_model"] >= 50).astype(int) 
@@ -277,27 +278,27 @@ class VQAResults():
         vqa_annot._load()
         self.vqa_annot = vqa_annot.annotations 
         self.human = self.clean_df(human_vqa.rename(columns={'qid': 'question_id'}) )
-        # self.human = self.new_score(self.human) 
+        self.human = self.new_score(self.human) 
         # self.human = self.score_answer_types(self.human, answer_column="answer_normalized", gt_column="visual_gt") 
         self.qids= self.human.question_id.unique().astype(int)
         self.test_human = test_human_data(self.human) 
         
         # get model intersection subset 
         vqa_1k = get_summary('vqa_1k').drop_duplicates(subset=['condition', 'question_id', 'model'])
-        # vqa_1k = self.new_score(vqa_1k, 'output', 'multiple_choice_answer')
+        vqa_1k = self.new_score(vqa_1k, 'output', 'multiple_choice_answer')
         vqa_1k = get_training_regime(vqa_1k) 
         
         self.model = vqa_1k[(vqa_1k['question_id'].isin(self.qids)) & (vqa_1k['condition'] == 'inst blind')] # .replace(MODEL_DISPLAY_MAP)
         vqa_5k = get_summary('vqa_5k').drop_duplicates(subset=['condition', 'question_id', 'model', 'strategy', 'blind', 'trained_dataset'])
-        # vqa_5k = self.new_score(vqa_5k, "output", "multiple_choice_answer") 
+        vqa_5k = self.new_score(vqa_5k, "output", "multiple_choice_answer") 
         
-        # self.model_mg = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))] ) 
-        # self.model_mg_sim = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))], 'answer_similarity' ) 
+        self.model_mg = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))] ) 
+        self.model_mg_sim = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))], 'answer_similarity' ) 
         
         self.test_model = get_training_regime(vqa_5k)  
         self.test_model_mg_acc = self.get_mg(self.test_model, 'correct')   
         self.test_model_mg_sim = self.get_mg(self.test_model, 'answer_similarity')   
-        # self.quadrants = self.get_quadrants() 
+        self.quadrants = self.get_quadrants() 
 
     def finetuning_effect(self, test_model):  
         df = test_model[test_model['condition'] == ''] 
@@ -340,12 +341,16 @@ class VQAResults():
 
                 ex["model"].to_csv(
                     f"/home/work/yuna/HPA/evaluation/analysis/quadrant_examples/"
-                    f"{ex['target_group']}_{i}_model.csv"
+                    f"{ex['target_group']}_{i}_model.csv", 
+                        encoding="utf-8",
+                        index=False
                 )
 
                 ex["human"].to_csv(
                     f"/home/work/yuna/HPA/evaluation/analysis/quadrant_examples/"
-                    f"{ex['target_group']}_{i}_human.csv"
+                    f"{ex['target_group']}_{i}_human.csv",
+                        encoding="utf-8",
+                        index=False
                 )
 
     def get_pivots(self): 
@@ -439,117 +444,3 @@ class VQAResults():
                     )
         print(hm_melted.columns)
         return hm_melted   
-
-class AlignmentAnalysis:
-    def __init__(self, dataset):
-        if dataset == 'vqa': 
-            results = VQAResults() 
-            self.human = results.human 
-            self.model = results.model 
-            self.test_model = results.test_model 
-            self.df_qid = self.combine_vqa() 
-            df = calculate_mg(self.test_model, filename='vqa_5k').groupby(['model']).mean(numeric_only=True).reset_index()  
-
-            ### PLOT SCATTER  
-
-    def combine_vqa(self):   ### combine human and model ! 
-        hm = pd.concat([self.model, self.human]) # just the blind conditions 
-        hm.pivot_table(  
-            index=['model'], 
-            values=['correct', 'answer_similarity'], 
-            columns=['answer_type'], 
-            aggfunc=['mean'] ,
-            margins=True,
-            margins_name='Average'
-        ).to_latex('/home/work/yuna/HPA/evaluation/analysis/tables/1_VQA_human-pretrained-model_similarity-answer_type.tex', float_format="%.1f")   
-        
-        ### filtered datafrmes 
-        df = hm[['meta_model', 'question_id', 'answer_type', 'question_type', 'model', 'question', 'answer', 'output', 'correct', 'answer_similarity']]
-        MH_qid = pd.merge( self.model, 
-                            self.human.groupby(['question_id', 'answer_type', 'question_type']).mean(numeric_only=True).reset_index() , 
-                            on=['question_id', 'answer_type', 'question_type'], 
-                            how='left', suffixes=('_model', '_human') )# .dropna(axis=1)
-        # len(qids), # model_vqa.groupby(['model', 'question_id']).count()    
-        return MH_qid 
-
-    def get_quadrants(pt):
-        human_avg_by_qid = human.groupby(['question_type', 'answer_type', 'question_id'])['correct'].mean().reset_index()
-
-        mms=pt.groupby(['question_id', 'question_type', 'answer_type']).mean(numeric_only=True).reset_index() 
-        mms = pd.merge(human_avg_by_qid, mms, on =['question_type', 'answer_type', 'question_id'], how='inner', suffixes=('_human', '_model')) 
-        # pd.merge(hm, mms, on =['question_id', 'question_type','answer_type'], how='left', suffixes=("", '_avg')).to_csv('./examples/quadrants.csv', encoding="utf-8-sig")   
-        
-        mms["human_correct"] = (mms["mean_correct"] >= 50).astype(int)  
-        mms["model_correct"] = (mms["mean_correct_inst blind"] >= 50).astype(int) 
-        mms["cc_quadrant"] = mms.apply(cc_quadrant, axis=1) 
-
-        mms.groupby("cc_quadrant")["MG"].agg(['count', 'mean']).to_latex('/home/work/yuna/HPA/evaluation/analysis/tables/appendix/vqa-quadrant.tex', float_format="%.1f")  
-        mms.groupby(["cc_quadrant", 'answer_type', 'new_question_type'])["MG"].agg(['count', 'mean']).to_latex('/home/work/yuna/HPA/evaluation/analysis/tables/appendix/vqa-quadrant-qtype.tex', float_format="%.1f")  
-        mms.to_csv('./vqa_quadrants.csv')   
-        
-        ### BY QUESTION TYPES 
-        qt_summary = (
-            df[df.dataset == "VQAv2"]
-            .groupby(["question_type", "cc_quadrant"])
-            .agg(
-                MG_mean=("MG", "mean"),
-                MG_sem=("MG", lambda x: x.std(ddof=1) / np.sqrt(len(x))),
-                n=("MG", "count")
-            )
-            .reset_index()
-        ) 
-        quad_stat = pd.merge(median_mg_table(mms, "MG"), quadrant_proportions_table(mms), on =['cc_quadrant'], suffixes=('_MG_Acc', ''))
-        quad_stat.to_latex('/home/work/yuna/HPA/evaluation/analysis/tables/4_VQA_quad_stat.tex', float_format="%.1f")   
-        
-        return quad_stat  
-
-class distributional_alignment(): 
-    def __init__(): 
-        for model in mg.model.unique():  
-            df = mg[mg['model'] == model] 
-            acc_stat, emb_stat = self.aligned_histogram(df['correct_human'], df['correct_model'], df['answer_similarity_human'], df['answer_similarity_model'], model) 
-
-            alignments = [] 
-
-            alignments.append(acc_stat)
-            alignments.append(emb_stat)
-        results_df = pd.DataFrame(alignments)
-        rename_map = {
-            "Spearman_rho": "Spearman_ρ (↑)",
-            "Kappa_Quad": "Kappa_Quad (↑)",
-            "TVD": "TVD (↓)",
-            "JS_Dist": "JS_Dist (↓)",
-            "KS_Stat": "KS_Stat (↓)",
-            "Wasserstein": "Wasserstein (↓)",
-            "Delta_Mean": "Δ_Mean (→0)",  # Bias is best when close to zero
-            "metric": "Metric"
-        }
-
-        results_df = results_df.rename(columns=rename_map)
-        # Debug: Some columns may not be numeric, causing aggfunc='mean' to fail. Select only numeric columns.
-        numeric_cols = results_df.select_dtypes(include='number').columns
-        # Keep 'model' and 'Metric' for pivot
-        pivot_cols = ['model', 'Metric'] + list(numeric_cols.difference(['model', 'Metric']))
-        pivot_df = results_df[pivot_cols]
-        pivot_df = pivot_df.pivot_table(index='model', columns='Metric', aggfunc='mean')
-        pivot_df.to_csv('/home/work/yuna/HPA/evaluation/analysis/tables/alignment.csv')
-        pivot_df 
-        
-    def aligned_histogram(human_acc, model_acc, human_emb, model_emb, modelname='Pretrained VLMs'):  
-
-        x,y,x2,y2= human_acc, model_acc, human_emb, model_emb 
-        
-        acc_stat = calculate_alignment_suite(x, y) 
-        acc_stat['metric'] = 'accuracy' 
-        acc_stat['model'] = modelname 
-
-        emb_stat = calculate_alignment_suite(x2, y2) 
-        emb_stat['metric'] = 'answer_similarity'
-        emb_stat['model'] = modelname 
-        
-        ### ECDF Plot  
-        draw_histograms_vqa(x, y, x2, y2, acc_stat['Pearson_r'], acc_stat['KS_Stat'], emb_stat['Pearson_r'], emb_stat['KS_Stat'], modelname) 
-
-        print(f"Accuracy\n$r={acc_stat['Pearson_r']:.2f}$, KS={acc_stat['KS_Stat']:.2f}")
-        print(f"Embedding\n$r={emb_stat['Pearson_r']:.2f}$, KS={emb_stat['KS_Stat']:.2f}") 
-        return acc_stat, emb_stat
