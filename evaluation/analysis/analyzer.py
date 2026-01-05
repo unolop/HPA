@@ -2,29 +2,31 @@ import numpy as np
 import json
 import pandas as pd 
 from utils.df import *  # result_to_df   aggregate_vqa, model_name_map, calculate_mg   
-# from utils.corr import interrater_agreement, get_all_cm, get_agreements, transform_corr_table, plot_unified_agreement_heatmap
+from utils.corr import interrater_agreement, get_finetuned_model_corr # get_all_cm, get_agreements, transform_corr_table, plot_unified_agreement_heatmap
 from utils.quadrants import * # quadrant_proportions_table, median_mg_table   
 from utils.score import get_summary, extract_mc_choice, MODEL_DISPLAY_MAP
 from utils.vqa import score_number, score_yes_no, VQAAnswerMapper, vqa_accuracy , PostProcessor 
 from utils.plots import scatterplot, get_family, parse_size  
+import warnings 
 
+warnings.filterwarnings("ignore") 
 import sys 
 sys.path.append('..')
 
-
+    
 def test_human_data(human_vqa): 
         
     # with open("/home/work/yuna/HPA/data/training/s1_text/cleaned_n15_text.json", 'r') as f:
     with open("/home/work/yuna/HPA/data/training/s1_choice/cleaned_n15_choice.json", 'r') as f:
         data = json.load(f)
     pids = pd.DataFrame(data).participant_id.unique() 
-    pids = np.append(pids, "2e184452_20251205_141511_cleaned")
+    # pids = np.append(pids, "2e184452_20251205_141511_cleaned")
 
     trainh = human_vqa[human_vqa['participant_id'].isin(pids)] 
     human_vqa = human_vqa[~human_vqa['participant_id'].isin(pids)] 
     print(len(trainh.participant_id.unique()) , len(human_vqa.participant_id.unique()))  
     
-    return human_vqa 
+    return trainh, human_vqa 
 
 def get_training_regime(pcorr): 
     pcorr['model'] = pcorr['model'].map(MODEL_DISPLAY_MAP)   # TODO needs to be fixed no manaual mapping  
@@ -146,7 +148,7 @@ class MMStarResults():
             ['category', 'l2_category', 'question_id', "participant_id"]) #   = self.clean_df(human_mc)
         self.qids = self.human.question_id.unique()    
         # self.model = self.get_mg(blind_model[blind_model['question_id'].isin(self.qids)]) 
-        self.test_human = test_human_data(self.human) 
+        self.train_human, self.test_human = test_human_data(self.human) 
 
         ### MODEL RESULTS 
         model_mc = get_summary('mmstar')
@@ -156,11 +158,12 @@ class MMStarResults():
 
         test_model = model_mc[~model_mc['question_id'].isin(self.qids)]
         test_model = self.clean_df(test_model) 
-        self.test_model_blind = test_model[test_model['condition'] == '']
+        # self.test_model = test_model[test_model['condition'] == '']
         self.test_model = test_model 
         
         self.model_mc = model_mc[model_mc['question_id'].isin(self.qids) ]     
-        self.model_blind = model_mc[model_mc['condition'] == 'inst blind'] 
+        self.model_blind = model_mc[(model_mc['condition'] == 'inst blind') & 
+                                    (model_mc['trained_dataset'] == 'MMStar') | (model_mc['trained_dataset'] == 'Pretrained')] 
         self.model_mg = self.get_mg(model_mc, filename='model') 
         # self.test_model_mg = self.get_mg(test_model, filename='test_model_only') 
         # model_mc = self.clean_df(model_mc)
@@ -169,7 +172,7 @@ class MMStarResults():
                     'InternVL 3.5 (8B)', 'LLaVA-1.5 (7B)', 'LLaVA-Mistral (7B)',
                     'LLaVA-Vicuna (7B)', 'Qwen3 (4B)', 'Qwen3 (8B)', 'Qwen3-VL (2B)',
                     'Qwen3-VL (4B)', 'Qwen3-VL (8B)']
-
+    
 
     def clean_df(self, df): 
         mmstar_cat_map = {'coarse perception': "CP", 'fine-grained perception': "FP",
@@ -181,15 +184,18 @@ class MMStarResults():
         return df 
 
     def get_quadrants(self): 
-        mms= pd.merge(self.model_blind, self.human.groupby(['question_id', 'l2_category', 'category']).mean(numeric_only=True).reset_index(), 
-                        on=['question_id', 'l2_category', 'category'], how='left', suffixes=("_model", "_human")) 
+        mms = pd.merge(
+            self.model_blind, 
+            self.human.groupby(['question_id', 'l2_category', 'category']).mean(numeric_only=True).reset_index(),
+            on=['question_id', 'l2_category', 'category'], 
+            how='left', 
+            suffixes=("_model", "_human")
+        )
+
         mms["human_correct"] = (mms["correct_human"] >= 50).astype(int)  
         mms["model_correct"] = (mms["correct_model"] >= 50).astype(int) 
         mms["cc_quadrant"] = mms.apply(cc_quadrant, axis=1) 
-        mms = pd.merge(self.model_mg, mms, on=['question_id', 'category', 'finetuned', 'model'], how='left')  # .groupby("cc_quadrant")["MG"].agg(['count', 'mean']).to_latex('./tables/appendix/vqa-quadrant.tex', float_format="%.1f")  
         mms['dataset'] = "MMStar" 
-        # mms.groupby("cc_quadrant")["MG"].agg(['count', 'mean']).to_latex('./tables/appendix/vqa-quadrant.tex', float_format="%.1f")
-        
         return mms
 
     def get_mg(self, df, filename='inst-blind_only'): 
@@ -261,6 +267,38 @@ class MMStarResults():
 
         return answers_pivot    
 
+    def get_corr(self, human_vqa, model_vqa, 
+                test_subjects, n_boot = 0 , metrics='correct'): 
+        
+        human_acc = human_vqa.pivot(
+            index="question_id",
+            columns="participant_id",
+            values=metrics
+        )
+
+        res_HH = interrater_agreement(
+            human_acc,
+            grp1=self.trainh.participant_id.unique(),
+            grp2=test_subjects, 
+            n_boot=n_boot,
+            metric="spearman",
+            title=f"Human-Human {metrics}",
+        )
+        corr = res_HH['corr_mat'].values
+        mean_corr = np.nanmean(corr) 
+        std_corr  = np.nanstd(corr) 
+                
+        model_corr = get_finetuned_model_corr(model_vqa, human_vqa, test_subjects)  
+        model_corr['family'] = model_corr['model'].map(get_family) 
+        model_corr['model_size'] = model_corr['model'].map(parse_size).astype(int)
+
+        # Merge with performance on test set  
+        model_correct = self.test_model[self.test_model['condition'] == ''].groupby(
+                                    ['model', 'finetuned', 'trained_dataset'])['correct'].mean().reset_index()   
+        # model_correct = model_correct[~model_correct['model'].isin(['Qwen3 (4B)', 'Qwen3 (8B)'])] 
+        pcorr = pd.merge(model_corr, model_correct, how='left', on=['model', 'finetuned'])   
+        
+        return mean_corr, std_corr, pcorr  
 
 class VQAResults():  
     def __init__(self, results_path='/home/work/yuna/HPA/evaluation/scored/humans/human_vqa_per_question.json'): 
@@ -281,7 +319,7 @@ class VQAResults():
         self.human = self.new_score(self.human) 
         # self.human = self.score_answer_types(self.human, answer_column="answer_normalized", gt_column="visual_gt") 
         self.qids= self.human.question_id.unique().astype(int)
-        self.test_human = test_human_data(self.human) 
+        self.train_human, self.test_human = test_human_data(self.human) 
         
         # get model intersection subset 
         vqa_1k = get_summary('vqa_1k').drop_duplicates(subset=['condition', 'question_id', 'model'])
@@ -299,6 +337,37 @@ class VQAResults():
         self.test_model_mg_acc = self.get_mg(self.test_model, 'correct')   
         self.test_model_mg_sim = self.get_mg(self.test_model, 'answer_similarity')   
         self.quadrants = self.get_quadrants() 
+
+    def get_corr(self, human_vqa, model_vqa, metrics='correct'): 
+        n_boot = 0 
+        test_subjects = self.test_human.participant_id.unique()
+        human_acc = human_vqa.pivot(
+            index="question_id",
+            columns="participant_id",
+            values=metrics
+        )
+
+        res_HH = interrater_agreement(
+            human_acc,
+            grp1=self.trainh.participant_id.unique(),
+            grp2=test_subjects,
+            n_boot=n_boot,
+            metric="spearman",
+            title=f"Human-Human {metrics}",
+        )
+        corr = res_HH['corr_mat'].values
+        mean_corr = np.nanmean(corr) 
+        std_corr  = np.nanstd(corr)
+                
+        model_corr = get_finetuned_model_corr(model_vqa, human_vqa, test_subjects)  
+        model_corr['family'] = model_corr['model'].map(get_family) 
+        model_corr['model_size'] = model_corr['model'].map(parse_size).astype(int)
+        # model_correct = model_vqa.groupby(['model', 'finetuned'])['correct'].mean().reset_index() 
+        model_correct = self.test_human[self.test_human['condition'] == ''].groupby(['model', 'finetuned'])['correct'].mean().reset_index()   
+        model_correct = model_correct[~model_correct['model'].isin(['Qwen3 (4B)', 'Qwen3 (8B)'])] 
+        pcorr = pd.merge(model_corr, model_correct, how='left', on=['model', 'finetuned'])   
+        
+        return mean_corr, std_corr   
 
     def finetuning_effect(self, test_model):  
         df = test_model[test_model['condition'] == ''] 
@@ -370,7 +439,7 @@ class VQAResults():
         ).to_latex('./tables/appendix/1_VQA_human-finetuned-model_similarity-answer_type.tex', float_format="%.1f")    
 
     def new_score(self, human_vqa, ans_col='answer_normalized', gt_col='gt_answers'):
-        print('before' , np.mean(human_vqa['correct']))
+        # print('before' , np.mean(human_vqa['correct']))
         pp = PostProcessor() 
         human_vqa['processed_ans'] = human_vqa[ans_col].apply(pp.postprocess_answer)
         human_vqa['correct'] = human_vqa.apply(
@@ -380,7 +449,7 @@ class VQAResults():
             ),
             axis=1
         ) 
-        print('after ', np.mean(human_vqa['correct']))
+        # print('after ', np.mean(human_vqa['correct']))
 
         return human_vqa 
 

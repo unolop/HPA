@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
-import seaborn as sns
 from scipy import stats
-import pandas as pd 
-from matplotlib.lines import Line2D 
+import numpy as np 
+from scipy.stats import t
+from matplotlib.lines import Line2D
 
 JS_REGIMES  = ["JS VQA (GT)", "JS-Blind VQA (n=15)"]
 SFT_REGIMES = ["SFT-Blind VQA", "SFT-VQA"] 
@@ -10,194 +10,79 @@ REGIME_GROUPS = {
     "JS":  JS_REGIMES,
     "SFT": SFT_REGIMES,
 }
+family_markers = {
+    'InternVL': 'o', 
+    'LLaVA': 's', 
+    'Qwen': '^',
+}
+family_colors = {
+    'InternVL': '#4C72B0',
+    'LLaVA': '#DD8452',
+    'Qwen': '#55A868'}  
+
 regime_colors  = {
     # Ground‑truth supervised (blue family)
     "JS VQA (GT)":  "#4C72B0",  # darker muted blue
     "SFT-VQA":      "#8DA0CB",  # lighter blue
 
     # Blind training (gray family)
-    "JS-Blind VQA (n=15)": "#7F7F7F",  # darker gray
-    "SFT-Blind VQA":       "#B0B0B0",  # lighter gray
-}
-REGIME_LINESTYLE = {'JS': {'color': '#4C72B0', 'linestyle': '--'},
-                    'SFT': {'color': "gray", 'linestyle': '--'}}  # '#DD8452' 
-family_markers = {
-    'InternVL': 'o', 
-    'LLaVA': 's', 
-    'Qwen': '^',
-    'BLIP': '^',  
-}
-family_colors = {
-    "InternVL": "#4C72B0",        # muted blue
-    "LLaVA":    "#DD8452",        # muted orange
-    "Qwen":     "#55A868",        # muted green
-    "BLIP":     "#C44E52",        # muted red
+    "JS-Blind VQA (n=15)": "#D9A066",  
+    "JS-Blind VQA (n=10)": "#D9A066",  
+    "SFT-Blind VQA":       "#B65F2E",  
+
+    'SFT-Blind MMStar' : "#D9A066", 
+    'JS-Blind MMStar': "#D9A066",   
+
+    "Pretrained": "#B0B0B0"
 }
 
 regime_markers = {
     'Pretrained': 'o', 
-    'JS VQA (GT)': 's', 
+    'JS VQA (GT)': '^', 
     'SFT-VQA': 's',
+    'JS-Blind VQA (n=10)': '^',  
     'JS-Blind VQA (n=15)': '^',  
-    'SFT-Blind VQA': '^', 
+    'SFT-Blind VQA': 's', 
+
+    'SFT-Blind MMStar' : "s", 
+    'JS-Blind MMStar': "^",   
+
 }
 
+def plot_families_corr(llm_mean, llm_sd, mean_corr, std_corr): 
+    nrows, ncols = 1, 3
+    max_panels = nrows * ncols
 
-def get_stats(delta_df): 
-    regression_stats = {}
-    for regime, labels in REGIME_GROUPS.items():
-        data = delta_df[delta_df["finetuned"].isin(labels)]
-        if len(data) < 3:
-            continue
-
-        x = data["delta_theta"].to_numpy()
-        y = data["delta_mg"].to_numpy()
-
-        slope, intercept, r_val, _, _ = stats.linregress(x, y)
-        rho, _ = stats.spearmanr(x, y)
-
-        regression_stats[regime] = {
-            "slope": slope,
-            "intercept": intercept,
-            "r": r_val,
-            "rho": rho,
-        } 
-    return regression_stats 
-
-def get_delta_df(df): 
-    delta_rows = []
-
-    for fam in df["family"].unique():
-        fam_data = df[df["family"] == fam]
-
-        for _, fin in fam_data[fam_data["finetuned"] != "Pretrained"].iterrows():
-            pre = fam_data[
-                (fam_data["model"] == fin["model"]) &
-                (fam_data["finetuned"] == "Pretrained")
-            ]
-            if pre.empty:
-                continue
-
-            pre = pre.iloc[0]
-
-            delta_rows.append({
-                "family": fam,
-                "model": fin["model"],
-                "finetuned": fin["finetuned"],
-                "delta_theta": fin["theta_hat"] - pre["theta_hat"],
-                "delta_mg": fin["MG_acc"] - pre["MG_acc"],
-                "model_size": fin["model_size"],
-            })
-
-    delta_df = pd.DataFrame(delta_rows)
-    size_vals = delta_df["model_size"].astype(float)
-    size_norm = (size_vals - size_vals.min()) / (size_vals.max() - size_vals.min() + 1e-6)
-    delta_df["_size_norm"] = 0.5 + size_norm
-    return delta_df 
-
-def scatterplot_delta_alignment_vs_mg(
-    delta_df,
-    title,
-    colors,          # keyed by finetuned regime
-    markers,         # keyed by family (or regime if you prefer)
-    regression_stats,
-    EQ_POS, 
-    size_scale=500,
-    figsize=(12, 7),
-):
-    fig, ax = plt.subplots(figsize=figsize)
-    # --------------------------------------------------
-    # Regression per regime group
-    # --------------------------------------------------
-    for regime, labels in REGIME_GROUPS.items():
-        data = delta_df[delta_df["finetuned"].isin(labels)]
-        if len(data) < 3:
-            continue
-
-        sns.regplot(
-            data=data,
-            x="delta_theta",
-            y="delta_mg",
-            scatter=False,
-            ci=68,
-            # n_boot=200,          # ✅ bootstrap
-            truncate=True,        # ✅ KEY FIX
-            ax=ax,
-            line_kws=dict(
-                linewidth=2.0,
-                alpha=0.9,
-                zorder=2,
-                **REGIME_LINESTYLE[regime],
-            ),
-        )
-    for regime, stats_ in regression_stats.items():
-        slope = stats_["slope"]
-        intercept = stats_["intercept"]
-        r_val = stats_["r"]
-
-        eq_text = (
-            rf"$\Delta$MG $= {slope:.2f}\,\Delta\hat{{\theta}} {intercept:+.2f}$" "\n"
-            rf"$r = {r_val:.2f}$"
-        )
-
-        ax.text(
-            EQ_POS[regime][0],
-            EQ_POS[regime][1],
-            eq_text,
-            transform=ax.transAxes,
-            ha="left",
-            va="top",
-            fontsize=14,
-            color=REGIME_LINESTYLE[regime]["color"],
-            # alpha=0.9,
-        )
-    # --------------------------------------------------
-    # Scatter points
-    # --------------------------------------------------
-    used_regime_labels = set()
-
-    for _, row in delta_df.iterrows():
-        reg = row["finetuned"]
-        fam = row["family"]
-
-        show_regime = reg not in used_regime_labels
-
-        ax.scatter(
-            row["delta_theta"],
-            row["delta_mg"],
-            s=row["_size_norm"] * size_scale,
-            color=colors[reg],
-            marker=markers[fam],
-            alpha=0.75,
-            edgecolors="white",
-            linewidth=0.4,
-            zorder=3,
-            label=reg if show_regime else None,
-        )
-
-        if show_regime:
-            used_regime_labels.add(reg)
-    ax.axhline(0, color="black", lw=1.1, alpha=0.7)
-    ax.axvline(0, color="black", lw=1.1, alpha=0.7)
-
-    # --------------------------------------------------
-    # Labels, title, legend
-    # --------------------------------------------------
-    ax.set_xlabel(r"$\Delta\ \hat{\theta}$ (alignment change)", fontsize=11)
-    ax.set_ylabel(r"$\Delta$ MG accuracy", fontsize=11)
-    ax.set_title(title, fontsize=12)
-    ax.grid(
-        True,
-        which="major",
-        linewidth=0.5,
-        alpha=0.2,
+    fig, axes = plt.subplots(
+        nrows, ncols, 
+        figsize=(3.2 * ncols, 2.3 * nrows),
+        constrained_layout=True,
+        sharey=True,  # Share y axis
+        # sharex=True, # if xshared else False,
+        squeeze=False
     )
-    ax.set_axisbelow(True)
-    handles, labels = ax.get_legend_handles_labels()
-    desired_order = ['JS VQA (GT)', 'SFT-VQA', 'JS-Blind VQA (n=15)', 'SFT-Blind VQA']
-    order = [labels.index(reg) for reg in desired_order if reg in labels]
-    ordered_handles = [handles[idx] for idx in order]
-    ordered_labels = [labels[idx] for idx in order]
+    ylabel, xlabel = "Accuracy", r"${\rho}$" 
+    axes_flat = axes.flatten() 
+
+    for idx, fam in enumerate(model_corr.family.unique()) : 
+        ax = axes_flat[idx] 
+        ax.set_title(fam, fontsize=10)
+        if idx == 0 : 
+            ax.set_ylabel(ylabel, fontsize=10) 
+
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+            label.set_fontsize(10)
+        if idx == 0 : 
+            ax.set_ylabel(ylabel) 
+        ax = plot_family_scatter(
+            pcorr[pcorr['family'] == fam], ax, value_col='correct', mu=mean_corr, sd=std_corr 
+        ) 
+        ci_low, ci_high = get_ci(llm_mean, llm_sd, len(test_subjects)) 
+        ax.axvspan(ci_low, ci_high, alpha=0.05, color='gray', zorder=1)
+        ax.axvline(qwen, color='gray', linestyle='--', linewidth=1, alpha=0.7, zorder=1, label='Qwen') 
+    plt.show() 
+    
+def legend_handler(ax): 
 
     regime_handles = [
         Line2D(
@@ -210,8 +95,7 @@ def scatterplot_delta_alignment_vs_mg(
             markersize=9,
             label=reg,
         )
-        for reg in ['JS VQA (GT)', 'SFT-VQA',
-                    'JS-Blind VQA (n=15)', 'SFT-Blind VQA']
+        for reg in regime_colors # ['JS VQA (GT)', 'SFT-VQA', 'JS-Blind VQA (n=15)', 'SFT-Blind VQA']
     ]
 
     leg1 = ax.legend(
@@ -247,6 +131,75 @@ def scatterplot_delta_alignment_vs_mg(
         fontsize=11,
         frameon=False,
     )
-    plt.subplots_adjust(bottom=0.35)
-    plt.tight_layout()
-    plt.show()
+    return ax
+ 
+def get_ci(mean_corr, std_corr, n): 
+    alpha = 0.05
+    tcrit = t.ppf(1 - alpha/2, df=n-1)
+
+    ci_low  = mean_corr - tcrit * std_corr / np.sqrt(n)
+    ci_high = mean_corr + tcrit * std_corr / np.sqrt(n) 
+
+    return(ci_low, ci_high)
+
+def plot_family_scatter(
+    df, ax,
+    value_col,
+    mu=None,
+    sd=None,
+):
+
+    if mu is not None and sd is not None:
+        ci_low, ci_high = get_ci(mu, sd, 6) 
+        ax.axvspan(ci_low, ci_high, alpha=0.01, color='red', zorder=1)
+        ax.axvline(mu, color='red', linestyle='--', linewidth=1, alpha=0.5, 
+                    zorder=2, label='Human mean')
+    
+    for _, row in df.iterrows():
+        color = regime_colors[row["finetuned"]]
+        ax.errorbar(
+            row["mean_corr"],
+            row[value_col],
+            xerr=row["std_corr"],
+            fmt=regime_markers.get(row["finetuned"], "o"),
+            markerfacecolor=color,
+            markeredgewidth=0.0,  # Remove edge on marker
+            markeredgecolor=color,
+            markersize=np.sqrt(row['model_size'] * 10),  # scale marker size
+            capsize=2,
+            zorder=3,
+            ecolor=color,
+            elinewidth=0,  # Slightly thinner error line for softness
+            alpha=0.8,       # Make the error bars softer and more transparent
+            errorevery=1,
+        )
+
+    ax.xaxis.set_major_locator(plt.MaxNLocator(nbins=5))
+    ax.grid(True, linestyle="--", linewidth=0.5, alpha=0.5)
+    ax.set_axisbelow(True)
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False) 
+
+    return ax  
+  
+
+def get_stats(delta_df): 
+    regression_stats = {}
+    for regime, labels in REGIME_GROUPS.items():
+        data = delta_df[delta_df["finetuned"].isin(labels)]
+        if len(data) < 3:
+            continue
+
+        x = data["delta_theta"].to_numpy()
+        y = data["delta_mg"].to_numpy()
+
+        slope, intercept, r_val, _, _ = stats.linregress(x, y)
+        rho, _ = stats.spearmanr(x, y)
+
+        regression_stats[regime] = {
+            "slope": slope,
+            "intercept": intercept,
+            "r": r_val,
+            "rho": rho,
+        } 
+    return regression_stats 

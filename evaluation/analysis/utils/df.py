@@ -50,6 +50,7 @@ def result_to_df(res):
     # Extract everything except 'corr_mat'
     data = {k: v for k, v in res.items() if k != 'corr_mat'}
     return pd.DataFrame([data])
+     
     
 def calculate_mg(pt, filename=None, answer_similarity=True, categories='answer_type'): 
 
@@ -102,3 +103,34 @@ def calculate_mg(pt, filename=None, answer_similarity=True, categories='answer_t
                 index='model', columns=categories, values=['S_Visual', 'MG_S'], aggfunc='mean'
             ).to_latex(f'./tables/VQA_{filename}_similarity_atype.tex', float_format="%.1f")
     return pt  
+
+def get_delta_df(df): 
+    delta_rows = []
+
+    for fam in df["family"].unique():
+        fam_data = df[df["family"] == fam]
+
+        for _, fin in fam_data[fam_data["finetuned"] != "Pretrained"].iterrows():
+            pre = fam_data[
+                (fam_data["model"] == fin["model"]) &
+                (fam_data["finetuned"] == "Pretrained")
+            ]
+            if pre.empty:
+                continue
+
+            pre = pre.iloc[0]
+
+            delta_rows.append({
+                "family": fam,
+                "model": fin["model"],
+                "finetuned": fin["finetuned"],
+                "delta_theta": fin["theta_hat"] - pre["theta_hat"],
+                "delta_mg": fin["MG_acc"] - pre["MG_acc"],
+                "model_size": fin["model_size"],
+            })
+
+    delta_df = pd.DataFrame(delta_rows)
+    size_vals = delta_df["model_size"].astype(float)
+    size_norm = (size_vals - size_vals.min()) / (size_vals.max() - size_vals.min() + 1e-6)
+    delta_df["_size_norm"] = 0.5 + size_norm
+    return delta_df  

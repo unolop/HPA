@@ -4,31 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.pyplot as plt
-from scipy.stats import pearsonr, spearmanr
+from scipy.stats import pearsonr, spearmanr, kendalltau 
 from sklearn.metrics import matthews_corrcoef
 from utils.df import result_to_df 
-
-def human_vs_consensus(human_correct):
-    H, Q = human_correct.shape
-    rhos = []
-
-    for i in range(H):
-        hi = human_correct[i]
-        consensus_minus_i = (
-            human_correct.sum(axis=0) - hi
-        ) / (H - 1)
-
-        rho, _ = spearmanr(hi, consensus_minus_i)
-        rhos.append(rho)
-
-    return np.array(rhos) 
-
-def get_corr_from_pivot(pivoted, dataset, metric):
-    return (
-        pivoted[('theta_hat', dataset, metric)].to_numpy(),
-        pivoted[('ci_low', dataset, metric)].to_numpy(),
-        pivoted[('ci_high', dataset, metric)].to_numpy(),
-    )
 
 def pairwise_metric(a, b, metric="spearman"):
     """
@@ -37,6 +15,8 @@ def pairwise_metric(a, b, metric="spearman"):
 
     if metric == "spearman":
         return spearmanr(a, b).statistic
+    elif metric == 'kendall':
+        return kendalltau(a, b).statistic 
     elif metric == "pearson":
         return a.corr(b)
     elif metric == "mcc":
@@ -44,17 +24,23 @@ def pairwise_metric(a, b, metric="spearman"):
     else:
         raise ValueError(f"Unknown metric: {metric}")
 
-def bootstrap_spearman(a, b, n_boot=1000, random_state=None):
-    rng = np.random.default_rng(random_state)
-    n = len(a)
+def combine_mh(human_acc, model_acc, 
+                grouping=['category', 'l2_category', 'question_id'], 
+                metrics='correct'):
+    human_acc = human_acc.pivot(
+            index=grouping, 
+            columns="participant_id",
+            values=metrics
+        ) 
+    model_acc = model_acc.pivot_table( 
+        index=grouping,  
+        columns="model",
+        values=metrics, 
+        aggfunc='mean'
+    ) 
+    answers_pivot = human_acc.join(model_acc, how="inner").reset_index() 
 
-    boot_stats = np.empty(n_boot)
-
-    for i in range(n_boot):
-        idx = rng.integers(0, n, size=n)   # resample indices
-        boot_stats[i] = spearmanr(a[idx], b[idx]).statistic
-
-    return boot_stats
+    return answers_pivot    
 
 def interrater_agreement(
     answers_pivot: pd.DataFrame,
@@ -133,6 +119,36 @@ def interrater_agreement(
         "corr_mat": corr_mat,   
     }
 
+def get_corr(human_vqa, model_vqa_sub, test_subjects, finetuned, n_boot=0, metrics='correct'): 
+    model = model_vqa_sub.model.unique()[0] 
+    answers_pivot = combine_mh(human_vqa, 
+                                model_vqa_sub[model_vqa_sub['finetuned'] == finetuned] , 
+                                grouping=['question_id']) 
+    res_HH = interrater_agreement( 
+        answers_pivot,
+        grp1= test_subjects,
+        grp2=[model],
+        n_boot=n_boot,
+        metric="spearman",
+        title=f"Human–Model {metrics}",
+    )
+    return res_HH['corr_mat']  
+
+def get_finetuned_model_corr(model_vqa, human_vqa, test_subjects, n_boot=0, metrics='correct'):  
+    model_corr = [] 
+    for model in model_vqa.model.unique():  
+        model_vqa_sub = model_vqa[model_vqa['model'] == model]
+        for finetuned in model_vqa_sub.finetuned.unique():   
+            corr = get_corr(human_vqa, model_vqa_sub, test_subjects, finetuned, n_boot, metrics)
+
+            model_corr.append({
+                'model': model, 
+                'finetuned': finetuned,  
+                'mean_corr': np.nanmean(corr), 
+                'std_corr': np.nanstd(corr) ,  
+            })
+    model_corr = pd.DataFrame(model_corr) 
+    return model_corr   
 
 def get_agreements(human_vqa, model_vqa, metrics="correct", n_boot=200): 
     score_type = 'Accuracy' if metrics =='correct' else "Embedding Similarity"
