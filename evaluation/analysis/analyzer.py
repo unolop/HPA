@@ -2,7 +2,7 @@ import numpy as np
 import json
 import pandas as pd 
 from utils.df import *  # result_to_df   aggregate_vqa, model_name_map, calculate_mg   
-from utils.corr import interrater_agreement, get_finetuned_model_corr # get_all_cm, get_agreements, transform_corr_table, plot_unified_agreement_heatmap
+from utils.corr import interrater_agreement  # get_all_cm, get_agreements, get_finetuned_model_corr, transform_corr_table, plot_unified_agreement_heatmap
 from utils.quadrants import * # quadrant_proportions_table, median_mg_table   
 from utils.score import get_summary, extract_mc_choice, MODEL_DISPLAY_MAP
 from utils.vqa import score_number, score_yes_no, VQAAnswerMapper, vqa_accuracy , PostProcessor 
@@ -316,7 +316,7 @@ class VQAResults():
         vqa_annot._load()
         self.vqa_annot = vqa_annot.annotations 
         self.human = self.clean_df(human_vqa.rename(columns={'qid': 'question_id'}) )
-        self.human = self.new_score(self.human) 
+        self.human = self.new_score(self.human).drop_duplicates(subset=['question_id', 'participant_id'])  
         # self.human = self.score_answer_types(self.human, answer_column="answer_normalized", gt_column="visual_gt") 
         self.qids= self.human.question_id.unique().astype(int)
         self.train_human, self.test_human = test_human_data(self.human) 
@@ -367,7 +367,7 @@ class VQAResults():
         model_correct = model_correct[~model_correct['model'].isin(['Qwen3 (4B)', 'Qwen3 (8B)'])] 
         pcorr = pd.merge(model_corr, model_correct, how='left', on=['model', 'finetuned'])   
         
-        return mean_corr, std_corr   
+        return pcorr, mean_corr, std_corr   
 
     def finetuning_effect(self, test_model):  
         df = test_model[test_model['condition'] == ''] 

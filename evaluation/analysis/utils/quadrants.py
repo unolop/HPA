@@ -36,35 +36,35 @@ def cc_quadrant(row):
     else:
         return "Shared Wrong"
 
-def get_examples(vqq, i, human_vqa, model, target_group='Human-Only'): 
-    df = vqq[vqq['cc_quadrant'] == target_group].sort_values(by=['MG'], ascending=False)
-    ex = df.iloc[i] 
-    qid = ex['question_id']   
-    qid = int(qid)
+def get_examples(vqq, finetuned_models, human_vqa, qid=None): 
 
-    print(target_group, qid , ex['question'], ex['multiple_choice_answer'] )  
+    vqq = vqq[vqq['model'].isin(['InternVL 3.5 (8B)', 'Qwen3‑VL (8B)', 'LLaVA‑Mistral (7B)'])]
 
+    if qid is None: 
+        qid = np.random.choice(vqq.question_id.unique())
+    print('QID', int(qid), vqq.category.unique()[0])
+    df = vqq[vqq['question_id'] == qid]
     hdf = human_vqa.loc[
         human_vqa["question_id"] == qid
-    ].sort_values("correct", ascending=False)
- 
-    # print(target_group, ex)
-    model_answers = model[model["question_id"] == qid].sort_values(
-                                            by=['model', 'finetuned', 'correct', 'processed_ans'], ascending=False)[[ 'model', 'finetuned', 'correct', 'processed_ans']]  
-    human_answers = hdf['processed_ans'].values  
+    ].sort_values("correct", ascending=False) 
+    human_answers = hdf['answer_normalized'].values
 
-    print('Human answers', human_answers, hdf['correct'].values, np.mean(hdf['correct'].values)) 
+    print('Question', df['question'].unique()[0], 'Answer:', df['answer'].unique()[0])
+    print('Humans', human_answers, np.mean(hdf['correct'].values))  # hdf['correct'].values,  
     print('Model answers') # : human_answers) 
 
-    for i, row in model_answers.iterrows(): 
-        print(
-            f"{row['model']:<15} | "
-            f"{row['finetuned']:<5} | "
-            f"Output: {row['processed_ans']} | "
-            f"Score: {row['correct']}"
-        )
-    # model_answers = pd.merge(df, model_answers, on=['question_type', 'answer_type', 'question', 'model', 'question_id', 'condition', 'finetuned', 'multiple_choice_answer', 'image_id'])
+    # finetuned_models = mm.model_blind  
+    finetuned_models = finetuned_models[(finetuned_models['finetuned'] != 'Pretrained') & (finetuned_models['question_id'] == qid)]
 
+    for i, row in df.sort_values(by=['model', 'finetuned'], ascending=False).iterrows():  
+        print(  
+            # f"{target_group} {qid} {ex['question']} {ex['answer']}\n"
+            f"{row['model']:<15} | "
+            f"{row['cc_quadrant']:<15} | " 
+            f"{row['finetuned']:<5} | "
+            f"Output: {row['extracted_choice']} | "
+            f"Score: {row['correct_model']}"
+        )  
 
 def map_question_type(question: str) -> str:
     try: 
