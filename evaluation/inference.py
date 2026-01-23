@@ -56,13 +56,21 @@ def load_dataset(data_name:str, prompt:str=''):
         dataset = load_dataset("mmbench/MM-SpuBench", split="train", trust_remote_code=True)
         print(f"  ✓ Prepared {len(dataset)} examples") 
 
+    elif data_name == "textvqa":
+        from datasets import load_dataset
+        dataset = load_dataset("lmms-lab/textvqa", split="test")  
+        
+    elif data_name == "okvqa":
+        from datasets import load_dataset
+        dataset = load_dataset("lmms-lab/OK-VQA", split="val2014") 
+
     elif data_name == "vqa_1k":
         from dataset.vqav2 import VQADataset_json
         dataset = VQADataset_json(prompt=prompt)
         
     elif data_name == "vqa_5k":
         from dataset.vqav2 import VQADataset
-        from torch.utils.data import Subset
+        from torch.utils.data import Subset 
 
         with open('/home/work/yuna/HPA/dataset/s1_qids.json', 'r') as file:
             qids = json.load(file)
@@ -163,6 +171,17 @@ def main(args):
                 ann['question'] = prompt   
                 # if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
                 # prompt += '\n select the correct answer from the options above.'
+            
+            elif 'textvqa' in args.dataset: 
+                prompt = f"Question: {data['question']} Answer the question using a single word or phrase. \nAnswer:" 
+                if 'inst' in args.condition: 
+                    prompt = f"{prompt}\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
+                
+            elif 'okvqa' in args.dataset:
+                prompt = f"Question: {data['question']} Answer the question using a single word or phrase. \nAnswer:" 
+                if 'inst' in args.condition: 
+                    prompt = f"{prompt}\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
+                
             else: 
                 prompt = data['question']       
 
@@ -215,7 +234,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, default="OpenGVLab/InternVL3_5-2B", help="Model name") 
     parser.add_argument("--model_type", type=str, default="vlm")
     parser.add_argument("--resume", action="store_true") 
-    parser.add_argument("--max_token_length", default=4096) 
+    parser.add_argument("--max_token_length", default=512) 
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
     parser.add_argument("--dataset", type=str, default="mmstar", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
