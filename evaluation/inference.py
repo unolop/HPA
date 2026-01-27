@@ -58,7 +58,7 @@ def load_dataset(data_name:str, prompt:str=''):
 
     elif data_name == "textvqa":
         from datasets import load_dataset
-        dataset = load_dataset("lmms-lab/textvqa", split="test")  
+        dataset = load_dataset("lmms-lab/textvqa", split="validation")  
         
     elif data_name == "okvqa":
         from datasets import load_dataset

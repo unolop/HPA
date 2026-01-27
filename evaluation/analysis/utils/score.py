@@ -73,9 +73,8 @@ def get_encoder():
     except:
         return None
     
-encoder=get_encoder() 
 
-def compute_similarity(gt: str, pred: str, encoder=encoder) -> float:
+def compute_similarity(gt: str, pred: str, encoder) -> float:
     if encoder is None or not gt or not pred:
         return 0.0
 

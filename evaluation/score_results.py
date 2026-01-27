@@ -90,9 +90,6 @@ def score_file(
 
     vqa_mapper = None
     pp = PostProcessor() 
-    if encoder:  
-        print("   Loading sentence transformer for similarity computation...")
-        
     # Score each example
     correct = 0
     total = 0
@@ -113,9 +110,9 @@ def score_file(
             is_correct = gt.strip().upper()[0] == extracted_choice if gt and extracted_choice else False 
             item['extracted_choice'] = extracted_choice  
 
-        else:
+        elif dataset_type == 'vqav2': 
             qid = item.get('question_id', item.get('qid', item.get('index', None)))
-            if vqa_mapper is None and qid is not None: 
+            if vqa_mapper is None: 
                 vqa_mapper = get_vqa_mapper()
 
             if vqa_mapper and qid is not None:
@@ -131,9 +128,11 @@ def score_file(
                 if encoder: 
                      item['answer_similarity'] = compute_similarity(item['multiple_choice_answer'], item['processed_ans'], encoder)
                    
-            else:
-                gt = item.get('answer', '')
-                is_correct = exact_match(gt, output) 
+        else:
+            all_answers = item.get('answers', [item.get('answer', '')])
+            item['processed_ans'] = pp.postprocess_answer(output)
+            is_correct = vqa_accuracy( item['processed_ans'], all_answers) 
+
         item['correct'] = is_correct
 
         # Update counts
@@ -239,17 +238,6 @@ def score_directory(
     
     # Save if output_dir provided
     os.makedirs(output_dir, exist_ok=True)
-    
-    # Save detailed results
-    # results_path = os.path.join(output_dir, 'scored_results.json')
-    # with open(results_path, 'w') as f:
-    #     json.dump(all_results, f, indent=2)
-    # print(f"\n✓ Detailed results: {results_path}")
-    
-    # # Save summary CSV
-    # csv_path = os.path.join(output_dir, 'summary.csv')
-    # df.to_csv(csv_path, index=False)
-    # print(f"✓ Summary CSV: {csv_path}") 
     
     return df
 

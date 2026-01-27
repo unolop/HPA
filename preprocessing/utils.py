@@ -4,7 +4,7 @@ import json
 import random 
 
 
-DATASETS = ["mmstar", "spubench", "vqa_1k", "vqa_5k"]
+DATASETS = ["mmstar", "spubench", "vqa_1k", "vqa_5k", 'okvqa', 'textvqa']
 CONDITIONS = ["_inst_blind", "", "_sys_inst_blind", "_blind"]
 MODELNAMES = [
     "OpenGVLab/InternVL3_5-8B",
@@ -28,8 +28,10 @@ MODELNAMES = [
 DATASET_TYPE = {
     'mmstar': 'multi-choice',
     'spubench': 'multi-choice',
-    'vqa_1k': 'open-ended',
-    'vqa_5k': 'open-ended',
+    'vqa_1k': 'vqav2',
+    'vqa_5k': 'vqav2',
+    'textvqa': 'open-ended', 
+    'okvqa': 'open-ended',  
 }
 
 def read_and_clean_jsonl(path):
