@@ -91,12 +91,13 @@ def find_matching(f, targets):
     for t in targets : 
         if t in f : 
             f = f.replace(f'{t}', '')   
+            print(f'found {t} in {f}')
             return t, f 
     print(f"cannot find matching {f} in {targets}") 
 
 def get_summary(dataset='mmstar'): 
-    files = glob(f"{root_dir}/*/*{dataset}*.jsonl")  + glob(f"{root_dir}/*/*/*/{dataset}*.jsonl") + glob(f"{root_dir}/*/*/{dataset}*.jsonl") 
-
+    files = glob(f"{root_dir}/*/*{dataset}*.jsonl")  + glob(f"{root_dir}/*/*/*/*{dataset}*.jsonl") + glob(f"{root_dir}/*/*/*{dataset}*.jsonl") 
+    
     dfs= []
     for f in files: 
         try: 
