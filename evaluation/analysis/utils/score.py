@@ -2,12 +2,9 @@ import numpy as np
 import re  
 import pandas as pd 
 from glob import glob 
-import sys 
-sys.path.append('/home/work/yuna/HPA') 
-from preprocessing.utils import MODELNAMES 
-from .vqa import score_number, score_yes_no, VQAAnswerMapper, vqa_accuracy 
+from .preprocess import MODELNAMES  
 
-root_dir = '/home/work/yuna/HPA/evaluation/scored'
+root_dir = '/home/yuna/workspace/HPA/evaluation/scored'
 
 MODEL_DISPLAY_MAP = {
     # ---------- Humans ----------

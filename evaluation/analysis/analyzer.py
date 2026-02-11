@@ -17,7 +17,7 @@ sys.path.append('..')
 def test_human_data(human_vqa): 
         
     # with open("/home/work/yuna/HPA/data/training/s1_text/cleaned_n15_text.json", 'r') as f:
-    with open("/home/work/yuna/HPA/data/training/s1_choice/cleaned_n15_choice.json", 'r') as f:
+    with open("/home/yuna/workspace/HPA/data/training/s1_choice/cleaned_n15_choice.json", 'r') as f:
         data = json.load(f)
     pids = pd.DataFrame(data).participant_id.unique() 
     # pids = np.append(pids, "2e184452_20251205_141511_cleaned")
@@ -162,9 +162,11 @@ class MMStarResults():
         self.test_model = test_model 
         
         self.model_mc = model_mc[model_mc['question_id'].isin(self.qids) ]     
+        # if trained_dataset is empty, set it to Pretrained 
+        model_mc['trained_dataset'] = model_mc['trained_dataset'].fillna('Pretrained') 
         self.model_blind = model_mc[(model_mc['condition'] == 'inst blind') & 
                                     (model_mc['trained_dataset'] == 'MMStar') | (model_mc['trained_dataset'] == 'Pretrained')] 
-        self.model_mg = self.get_mg(model_mc, filename='model') 
+        # self.model_mg = self.get_mg(model_mc, filename='model') 
         # self.test_model_mg = self.get_mg(test_model, filename='test_model_only') 
         # model_mc = self.clean_df(model_mc)
 
@@ -214,7 +216,7 @@ class MMStarResults():
             values='MG',
             columns=['category'], # , 'l2_category'
             aggfunc='mean'
-        ).to_latex(f'/home/work/yuna/HPA/evaluation/analysis/tables/MMSTAR_MG_{filename}-by-category.tex', float_format="%.1f")
+        ) # .to_latex(f'/home/work/yuna/HPA/evaluation/analysis/tables/MMSTAR_MG_{filename}-by-category.tex', float_format="%.1f")
         # pt.groupby(['model']).mean(numeric_only=True).to_latex(f'./tables/appendix/mmstar-mg_{filename}.tex', float_format="%.1f")
 
         return pt 
