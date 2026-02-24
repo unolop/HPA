@@ -104,6 +104,13 @@ class VQADataset_json(Dataset):
 
     def __getitem__(self, idx): 
         annot = self.questions[idx] 
-        annot['question'] = self.prompt + self.questions[idx]['question']  
-        annot['image'] = os.path.join(self.image_dir_path, annot['image_id'])
+        annot['question'] = self.prompt + self.questions[idx]['question'] 
+
+        image_id = annot.get('image_id')
+        if isinstance(image_id, int):
+            padded_id = str(image_id).zfill(12)
+            filename = f"COCO_val2014_{padded_id}.jpg" 
+        else: 
+            filename = str(image_id) 
+        annot['image'] = os.path.join(self.image_dir_path, filename) 
         return annot 

@@ -25,8 +25,8 @@ def load_dataset(data_name:str, prompt:str=''):
         from dataset.vqav2 import VQADataset_json
         dataset = VQADataset_json(
             prompt=prompt,
-            image_dir_path="/home/david/Desktop/yuna/HPA/data/val2014",
-            json_path="/home/david/Desktop/yuna/HPA/dataset/vqa1k_control.json",
+            image_dir_path="/home/david/Desktop/yuna/data/val2014",
+            json_path="/home/david/Desktop/yuna/HPA/dataset/vqa1k_control.jsonl",
         )
         
     return dataset 
@@ -39,10 +39,10 @@ def main(args):
     )
     from swift.tuners import Swift
     
-    def get_output(data, prompt): 
+    def get_output(args, data, prompt): 
 
         if 'blind' in args.condition: 
-            data['image'] = "/home/work/yuna/HPA/data/blank_224.png"
+            data['image'] = "/home/david/Desktop/yuna/HPA/data/blank_224.png"
             prompt = format_prompt(prompt)
             
         messages = [] 
@@ -96,32 +96,35 @@ def main(args):
     else: 
         savedir += '/pretrained'     
 
-    output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}_control_{args.condition}.jsonl" 
+    output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}_control{args.condition}.jsonl" 
     prompt= ''
-    if 'inst' in args.condition: 
-        prompt = f"\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
-    
     dataset = load_dataset(args.dataset, prompt)  
     os.makedirs(os.path.dirname(output_jsonl_path), exist_ok=True)
     
     with open(output_jsonl_path, 'w', encoding='utf-8') as f:
-                    
-        for i, data in enumerate(tqdm(dataset)): # for i in tqdm(range(len(dataset))):             
-            answers = {} 
-            for k, prompt in data.items(): 
-                if 'id' not in k:  
-                    try: 
-                        output_text = get_output(data, prompt) 
-                        answers[k] = output_text 
-                        print('Q:', prompt, 'Output:', output_text, output_jsonl_path)
-                    except Exception as e : 
-                        print(data, 'cannot be processed', e) 
-                        continue 
+        for data in tqdm(dataset):
+            record_id = data.get('id', 'unknown') 
+            generated_answers = {}
 
-            data['answers'] = answers 
-            data.pop('image', None)
+            for k, val in data.items():
+                if k in ['id', 'image', 'answers'] or 'id' in k:
+                    continue
+                
+                prompt = format_prompt(val)
+                if 'inst' in args.condition:
+                    prompt += "\nNote: No images provided..."
+
+                try:
+                    output_text = get_output(args, data, prompt)
+                    generated_answers[k] = output_text 
+                except Exception as e:
+                    print(f"Error processing {record_id} at {k}: {e}")
+                    continue
+            # breakpoint()
+            # Build the final clean output object
+            data['answers'] = generated_answers
             f.write(json.dumps(data, ensure_ascii=False) + '\n')
-            f.flush()   
+            f.flush()
 
     print(f"모든 작업 완료. 결과가 '{output_jsonl_path}'에 저장되었습니다.")
 
