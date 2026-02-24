@@ -2,7 +2,7 @@
 # https://swift.readthedocs.io/en/latest/Instruction/Supported-models-and-datasets.html 
 
 GPU=0
-CONDITION_LIST=("_inst_blind" ) #  "_sys_inst_blind" "_blind" ""
+CONDITION_LIST=("" ) #  "_sys_inst_blind" "_blind" ""_inst_blind
 BASE_MODEL=(
     # "OpenGVLab/InternVL3_5-1B"
     # "OpenGVLab/InternVL3_5-2B"
