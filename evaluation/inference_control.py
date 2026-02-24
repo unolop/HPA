@@ -10,10 +10,9 @@ np.random.seed(seed)
 torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 torch.cuda.empty_cache() 
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 
-
-image_dir_path="/home/david/Desktop/yuna/HPA/data/val2014" 
-json_path="/home/david/Desktop/yuna/HPA/dataset/vqav2_1k_val.json" 
 
 def format_prompt(question): 
     return f"Question: {question} Answer the question using a single word or phrase. \nAnswer:" 
@@ -22,9 +21,14 @@ def load_dataset(data_name:str, prompt:str=''):
     print("Loading dataset...") 
     if data_name == "vqa_1k": 
         from dataset.vqav2 import VQADataset_json
-        dataset = VQADataset_json(prompt=prompt)
+        dataset = VQADataset_json(
+            prompt=prompt,
+            image_dir_path="/home/david/Desktop/yuna/HPA/data/val2014",
+            json_path="/home/david/Desktop/yuna/HPA/dataset/vqa1k_control.json",
+        )
         
     return dataset 
+
 
 def main(args):
 
@@ -32,9 +36,39 @@ def main(args):
         PtEngine, RequestConfig, safe_snapshot_download, get_model_tokenizer, get_template, InferRequest
     )
     from swift.tuners import Swift
-    # Please adjust the following lines
-    model = args.model
+    
+    def get_output(data, prompt): 
 
+        if 'blind' in args.condition: 
+            data['image'] = "/home/work/yuna/HPA/data/blank_224.png"
+            prompt = format_prompt(prompt)
+            
+        messages = [] 
+        
+        if args.model_type == 'vlm':  
+            messages.append({'role': 'user', 'content': f'<image>{prompt}' })
+            infer_request = InferRequest(
+                messages=messages,
+                images=[data['image']] 
+            )
+
+        else : 
+            messages.append({'role': 'user', 'content': prompt})
+            infer_request = InferRequest(
+                messages=messages 
+            ) 
+
+        resp_list = engine.infer([infer_request], request_config)
+        output_text = resp_list[0].choices[0].message.content 
+    
+        matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)
+        if matches:
+            output_text = matches[-1].strip().replace('*', '')
+        else:
+            output_text = output_text.strip().replace('*', '') 
+        return output_text
+
+    model = args.model
     template_type = None  # None: use the default template_type of the corresponding model
     default_system = None  # None: use the default system prompt of the corresponding model
 
@@ -43,6 +77,7 @@ def main(args):
     if args.lora_path is not None:
         lora_checkpoint = safe_snapshot_download(args.lora_path)  # Change to your checkpoint_dir
         model = Swift.from_pretrained(model, lora_checkpoint)
+    
     model.eval()
     template_type = template_type or model.model_meta.template
     template = get_template(template_type, tokenizer, default_system=default_system)
@@ -68,52 +103,23 @@ def main(args):
     os.makedirs(os.path.dirname(output_jsonl_path), exist_ok=True)
     
     with open(output_jsonl_path, 'w', encoding='utf-8') as f:
-        
-        for i, data in enumerate(tqdm(dataset)): # for i in tqdm(range(len(dataset))): 
-            data['pid'] = i 
-            prompt = data['question']       
- 
-            if 'blind' in args.condition: 
-                data['image'] = "/home/work/yuna/HPA/data/blank_224.png"
-                prompt = format_prompt(prompt)
-                
-            messages = [] 
-            
-            if args.model_type == 'vlm':  
-                messages.append({'role': 'user', 'content': f'<image>{prompt}' })
-                try: 
-                    infer_request = InferRequest(
-                        messages=messages,
-                        images=[data['image']] 
-                    )
-                except Exception as e: 
-                    continue
+                    
+        for i, data in enumerate(tqdm(dataset)): # for i in tqdm(range(len(dataset))):             
+            answers = {} 
+            for k, prompt in data.items(): 
+                if 'id' not in k:  
+                    try: 
+                        output_text = get_output(data, prompt) 
+                        answers[k] = output_text 
+                        print('Q:', prompt, 'Output:', output_text, output_jsonl_path)
+                    except Exception as e : 
+                        print(data, 'cannot be processed', e) 
+                        continue 
 
-            else : 
-                messages.append({'role': 'user', 'content': prompt})
-                infer_request = InferRequest(
-                    messages=messages 
-                ) 
-
-            try: 
-                resp_list = engine.infer([infer_request], request_config)
-                output_text = resp_list[0].choices[0].message.content 
-            
-                matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)
-                if matches:
-                    output_text = matches[-1].strip().replace('*', '')
-                else:
-                    output_text = output_text.strip().replace('*', '')
- 
-                data['output'] = output_text 
-                data['question'] = prompt 
-                print('Q:', prompt, 'Output:', data['output'], output_jsonl_path)
-
-                data.pop('image')
-                f.write(json.dumps(data, ensure_ascii=False) + '\n')
-                f.flush()  # 버퍼를 비워 파일에 즉시 쓰도록 강제
-            except Exception as e: 
-                continue
+            data['answers'] = answers 
+            data.pop('image', None)
+            f.write(json.dumps(data, ensure_ascii=False) + '\n')
+            f.flush()   
 
     print(f"모든 작업 완료. 결과가 '{output_jsonl_path}'에 저장되었습니다.")
 
@@ -125,7 +131,7 @@ if __name__ == "__main__":
     parser.add_argument("--resume", action="store_true") 
     parser.add_argument("--max_token_length", default=512) 
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
-    parser.add_argument("--dataset", type=str, default="mmstar", help="Dataset name") 
+    parser.add_argument("--dataset", type=str, default="vqa_1k", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
     parser.add_argument('--savedir', type=str, default="/home/work/yuna/HPA/evaluation/results", help='Save directory of inference') 
     parser.add_argument("--condition", type=str, default='')
