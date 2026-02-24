@@ -1,0 +1,17 @@
+Collecting qwen_vl_utils
+  Downloading qwen_vl_utils-0.0.14-py3-none-any.whl.metadata (9.0 kB)
+Collecting av (from qwen_vl_utils)
+  Downloading av-15.1.0-cp39-cp39-manylinux_2_28_x86_64.whl.metadata (4.6 kB)
+Requirement already satisfied: packaging in /home/david/miniconda3/envs/zero/lib/python3.9/site-packages (from qwen_vl_utils) (25.0)
+Requirement already satisfied: pillow in /home/david/miniconda3/envs/zero/lib/python3.9/site-packages (from qwen_vl_utils) (10.4.0)
+Requirement already satisfied: requests in /home/david/miniconda3/envs/zero/lib/python3.9/site-packages (from qwen_vl_utils) (2.32.4)
+Requirement already satisfied: charset_normalizer<4,>=2 in /home/david/miniconda3/envs/zero/lib/python3.9/site-packages (from requests->qwen_vl_utils) (3.4.2)
+Requirement already satisfied: idna<4,>=2.5 in /home/david/miniconda3/envs/zero/lib/python3.9/site-packages (from requests->qwen_vl_utils) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /home/david/miniconda3/envs/zero/lib/python3.9/site-packages (from requests->qwen_vl_utils) (2.5.0)
+Requirement already satisfied: certifi>=2017.4.17 in /home/david/miniconda3/envs/zero/lib/python3.9/site-packages (from requests->qwen_vl_utils) (2025.7.14)
+Downloading qwen_vl_utils-0.0.14-py3-none-any.whl (8.1 kB)
+Downloading av-15.1.0-cp39-cp39-manylinux_2_28_x86_64.whl (39.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 39.1/39.1 MB 34.5 MB/s eta 0:00:00
+Installing collected packages: av, qwen_vl_utils
+
+Successfully installed av-15.1.0 qwen_vl_utils-0.0.14

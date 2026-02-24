@@ -4,6 +4,8 @@ from tqdm import tqdm
 import json
 import numpy as np 
 import torch 
+import sys
+sys.path.append('/home/david/Desktop/yuna/HPA')
 
 seed = 42
 np.random.seed(seed)
@@ -94,7 +96,7 @@ def main(args):
     else: 
         savedir += '/pretrained'     
 
-    output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}.jsonl" 
+    output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}_control_{args.condition}.jsonl" 
     prompt= ''
     if 'inst' in args.condition: 
         prompt = f"\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
@@ -133,7 +135,7 @@ if __name__ == "__main__":
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
     parser.add_argument("--dataset", type=str, default="vqa_1k", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
-    parser.add_argument('--savedir', type=str, default="/home/work/yuna/HPA/evaluation/results", help='Save directory of inference') 
+    parser.add_argument('--savedir', type=str, default="./results", help='Save directory of inference') 
     parser.add_argument("--condition", type=str, default='')
     
     args = parser.parse_args() 

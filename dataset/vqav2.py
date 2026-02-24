@@ -91,9 +91,14 @@ class VQADataset_json(Dataset):
                 prompt=''): 
         self.prompt = prompt 
         self.image_dir_path=image_dir_path
-        with open(os.path.join(json_path), 'r') as f:
-            self.questions = json.load(f)
         
+        if json_path.endswith('json'): 
+            with open(json_path, 'r') as f:
+                self.questions = json.load(f)
+        else: 
+            with open(json_path, 'r', encoding='utf-8') as f: 
+                self.questions = [json.loads(line) for line in f if line.strip()]  
+    
     def __len__(self):
         return len(self.questions) 
 
