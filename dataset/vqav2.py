@@ -7,12 +7,14 @@ class VQADataset(Dataset):
                  image_dir_path="/home/work/yuna/data/data/val2014", 
                  question_path="/home/work/yuna/data/data/v2_OpenEnded_mscoco_val2014_questions.json", 
                  annotations_path="/home/work/yuna/data/data/v2_mscoco_val2014_annotations.json", 
-                 prompt='', 
+                 prompt='',
+                 format=True, 
                  filter_qids=[],
                 ):  
         
         self.image_dir_path = image_dir_path
         self.prompt = prompt
+        self.format = format 
         
         with open(question_path, 'r') as f:
             questions_data = json.load(f)
@@ -25,7 +27,6 @@ class VQADataset(Dataset):
 
         if len(filter_qids): 
             self.annotations, self.questions = self.filter_dataset(filter_qids) 
-        
         
     def filter_dataset(self, qids):
         
@@ -52,13 +53,17 @@ class VQADataset(Dataset):
         ann = self.annotations[idx]
 
         question = q['question']
-        ann['question'] = f"Question: {question} Answer the question using a single word or phrase. {self.prompt}\nAnswer:" 
+        if self.format: 
+            ann['question'] = f"Question: {question} Answer the question using a single word or phrase. {self.prompt}\nAnswer:" 
+        else: 
+            ann['question'] = question
         
         padded_id = str(ann['image_id']).zfill(12)
         filename = f"COCO_val2014_{padded_id}.jpg"
         image = os.path.join(self.image_dir_path, filename)
         ann = {**q, **ann} 
         ann['image'] = image
+
         return ann 
     
     def get_by_qid(self): # TODO: A bit repetitive with the getitem 
@@ -77,10 +82,7 @@ class VQADataset(Dataset):
             image = os.path.join(self.image_dir_path, filename)
             processed_ann = {**q, **ann}
             processed_ann['image'] = image
-            
-            # Store with both int and string keys for flexibility
             qid_to_ann[int(qid)] = processed_ann
-            qid_to_ann[str(qid)] = processed_ann
         
         return qid_to_ann 
 

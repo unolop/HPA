@@ -1,8 +1,8 @@
 import json 
 from prompts import *
 from gpt_utils import call_api, make_batches 
-from ..dataset.vqav2 import VQADataset_json, VQADataset
-from ..dataset.paths import VQA_IMAGE_DIR, VQA_QUESTIONS, VQA_ANNOT, VQA_1K 
+from dataset.vqav2 import VQADataset_json, VQADataset
+from dataset.paths import VQA_IMAGE_DIR, VQA_QUESTIONS, VQA_ANNOT, VQA_1K 
 
 BATCH_SIZE = 50 
 
@@ -57,7 +57,7 @@ def process(questions, mode='CTL', output_path: str = "vqa_extracted.jsonl", bat
 def main(args): 
 
     questions = get_vqa_questions() 
-    mode=args.mode  
+    mode = args.mode  
     output = process(questions, mode, output_path=f"./dataset/vqa1k_{mode}.jsonl" )   # control semantics 
     
     return output 
