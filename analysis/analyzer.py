@@ -148,7 +148,7 @@ class MMStarResults():
             ['category', 'l2_category', 'question_id', "participant_id"]) #   = self.clean_df(human_mc)
         self.qids = self.human.question_id.unique()    
         # self.model = self.get_mg(blind_model[blind_model['question_id'].isin(self.qids)]) 
-        self.train_human, self.test_human = test_human_data(self.human) 
+        # self.train_human, self.test_human = test_human_data(self.human) 
 
         ### MODEL RESULTS 
         model_mc = get_summary('mmstar')
@@ -321,7 +321,7 @@ class VQAResults():
         self.human = self.new_score(self.human).drop_duplicates(subset=['question_id', 'participant_id'])  
         # self.human = self.score_answer_types(self.human, answer_column="answer_normalized", gt_column="visual_gt") 
         self.qids= self.human.question_id.unique().astype(int)
-        self.train_human, self.test_human = test_human_data(self.human) 
+        # self.train_human, self.test_human = test_human_data(self.human) 
         
         # get model intersection subset 
         vqa_1k = get_summary('vqa_1k').drop_duplicates(subset=['condition', 'question_id', 'model'])
@@ -332,13 +332,12 @@ class VQAResults():
         vqa_5k = get_summary('vqa_5k').drop_duplicates(subset=['condition', 'question_id', 'model', 'strategy', 'blind', 'trained_dataset'])
         vqa_5k = self.new_score(vqa_5k, "output", "multiple_choice_answer") 
         
-        self.model_mg = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))] ) 
-        self.model_mg_sim = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))], 'answer_similarity' ) 
-        
-        self.test_model = get_training_regime(vqa_5k)  
-        self.test_model_mg_acc = self.get_mg(self.test_model, 'correct')   
-        self.test_model_mg_sim = self.get_mg(self.test_model, 'answer_similarity')   
-        self.quadrants = self.get_quadrants() 
+        # self.model_mg = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))] ) 
+        # self.model_mg_sim = self.get_mg(vqa_1k[(vqa_1k['question_id'].isin(self.qids))], 'answer_similarity' ) 
+        # self.test_model = get_training_regime(vqa_5k)  
+        # self.test_model_mg_acc = self.get_mg(self.test_model, 'correct')   
+        # self.test_model_mg_sim = self.get_mg(self.test_model, 'answer_similarity')   
+        # self.quadrants = self.get_quadrants() 
 
     def get_corr(self, human_vqa, model_vqa, metrics='correct'): 
         n_boot = 0 
@@ -470,7 +469,7 @@ class VQAResults():
         human_vqa = human_vqa.drop_duplicates(subset=['participant_id', 'question_id'])
         human_vqa = human_vqa[human_vqa['participant_id'] != '13f54aa2_20251204_125847']
         human_vqa['correct'] = human_vqa['correct'] * 100 
-        human_vqa.to_csv('/home/work/yuna/HPA/evaluation/analysis/human_vqa.csv') 
+        # human_vqa.to_csv('/home/work/yuna/HPA/evaluation/analysis/human_vqa.csv') 
         return human_vqa 
 
     def get_mg(self, df, metric='correct', filename='inst-blind_only'): 
