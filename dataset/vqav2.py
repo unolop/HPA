@@ -88,8 +88,8 @@ class VQADataset(Dataset):
 
 class VQADataset_json(Dataset):
     def __init__(self, 
-                image_dir_path="/home/work/yuna/VLMEval/data/val2014", 
-                json_path="/home/work/yuna/HPA/dataset/vqav2_1k_val.json",
+                image_dir_path="/home/david/Desktop/yuna/data/val2014", 
+                json_path="/home/david/Desktop/yuna/HPA/dataset/vqa/vqav2_1k_val.json",
                 prompt=''): 
         self.prompt = prompt 
         self.image_dir_path=image_dir_path

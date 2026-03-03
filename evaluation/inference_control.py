@@ -5,6 +5,7 @@ import json
 import numpy as np 
 import torch 
 import sys
+from utils import clean_logprobs
 sys.path.append('/home/david/Desktop/yuna/HPA')
 
 seed = 42
@@ -14,7 +15,6 @@ torch.cuda.manual_seed_all(seed)
 torch.cuda.empty_cache() 
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
-
 
 def format_prompt(question): 
     return f"Question: {question} Answer the question using a single word or phrase. \nAnswer:" 
@@ -26,7 +26,7 @@ def load_dataset(data_name:str, prompt:str=''):
         dataset = VQADataset_json(
             prompt=prompt,
             image_dir_path="/home/david/Desktop/yuna/data/val2014",
-            json_path="/home/david/Desktop/yuna/HPA/dataset/vqa1k_control.jsonl",
+            json_path="/home/david/Desktop/yuna/HPA/dataset/vqa/vqa1k_control.jsonl",
         )
         
     return dataset 
@@ -61,14 +61,16 @@ def main(args):
             ) 
 
         resp_list = engine.infer([infer_request], request_config)
-        output_text = resp_list[0].choices[0].message.content 
-    
+        response = resp_list[0].choices[0]
+        output_text = response.message.content 
+        logprobs_data = response.logprobs  # LogProbs object 
+
         matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)
         if matches:
             output_text = matches[-1].strip().replace('*', '')
         else:
             output_text = output_text.strip().replace('*', '') 
-        return output_text
+        return output_text, logprobs_data
 
     model = args.model
     template_type = None  # None: use the default template_type of the corresponding model
@@ -84,8 +86,10 @@ def main(args):
     template_type = template_type or model.model_meta.template
     template = get_template(template_type, tokenizer, default_system=default_system)
     engine = PtEngine.from_model_template(model, template, max_batch_size=1)
-    request_config = RequestConfig(max_tokens=args.max_token_length, temperature=0)
-    
+    request_config = RequestConfig( max_tokens=args.max_token_length,                         
+                                logprobs=True,
+                                top_logprobs=5, 
+                                temperature=0)
     save_name = args.model.split('/')[-1]
     savedir = args.savedir 
     if args.lora_path is not None : 
@@ -105,6 +109,7 @@ def main(args):
         for data in tqdm(dataset):
             record_id = data.get('id', 'unknown') 
             generated_answers = {}
+            generated_logits = {}
 
             for k, val in data.items():
                 if k in ['id', 'image', 'answers'] or 'id' in k:
@@ -115,14 +120,17 @@ def main(args):
                     prompt += "\nNote: No images provided..."
 
                 try:
-                    output_text = get_output(args, data, prompt)
+                    output_text, logprobs_data = get_output(args, data, prompt)
+                    generated_logits[k] = clean_logprobs(logprobs_data)
                     generated_answers[k] = output_text 
+                    
                 except Exception as e:
                     print(f"Error processing {record_id} at {k}: {e}")
                     continue
             # breakpoint()
             # Build the final clean output object
             data['answers'] = generated_answers
+            data['generated_logits'] = generated_logits
             f.write(json.dumps(data, ensure_ascii=False) + '\n')
             f.flush()
 
@@ -138,7 +146,7 @@ if __name__ == "__main__":
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
     parser.add_argument("--dataset", type=str, default="vqa_1k", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
-    parser.add_argument('--savedir', type=str, default="./results", help='Save directory of inference') 
+    parser.add_argument('--savedir', type=str, default="/home/david/Desktop/yuna/HPA/evaluation/logits", help='Save directory of inference') 
     parser.add_argument("--condition", type=str, default='')
     
     args = parser.parse_args() 

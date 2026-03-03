@@ -1,11 +1,14 @@
+import math 
 import os 
-import re 
+import re
+import zoneinfo 
 from tqdm import tqdm
 import json
 import numpy as np 
 import torch
 import sys 
 sys.path.append('/home/work/yuna/HPA') 
+from utils import clean_logprobs
 
 
 seed = 42
@@ -13,6 +16,8 @@ np.random.seed(seed)
 torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 torch.cuda.empty_cache() 
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 
 def skip_processed_idx(existing_keys, output_jsonl_path): 
     id_keys = ['idx', 'qid', 'question_id', 'index']
@@ -31,8 +36,8 @@ def skip_processed_idx(existing_keys, output_jsonl_path):
         print(f"'{output_jsonl_path}' exists.")
         with open(output_jsonl_path, 'r', encoding='utf-8') as f:
             for line in f:
-                line = line.strip()
-                if line:  # Skip empty lines
+                line = line.strip() 
+                if line:  # Skip empty lines 
                     try:
                         item = json.loads(line)
                         # Assuming the ID field is called 'qid'
@@ -101,7 +106,10 @@ def main(args):
     template_type = template_type or model.model_meta.template
     template = get_template(template_type, tokenizer, default_system=default_system)
     engine = PtEngine.from_model_template(model, template, max_batch_size=1)
-    request_config = RequestConfig(max_tokens=args.max_token_length, temperature=0)
+    request_config = RequestConfig( max_tokens=args.max_token_length,                         
+                                    logprobs=True,
+                                    top_logprobs=5, 
+                                    temperature=0)
     
     save_name = args.model.split('/')[-1]
     savedir = args.savedir 
@@ -185,10 +193,7 @@ def main(args):
             else: 
                 prompt = data['question']       
 
-            messages = [] 
-            if 'sys_inst' in args.condition: 
-                messages.append({'role': 'system', 'content': system_message}) 
-            
+            messages = []
             if args.model_type == 'vlm':  
                 messages.append({'role': 'user', 'content': f'<image>{prompt}' })
                 try: 
@@ -207,9 +212,15 @@ def main(args):
 
             try: 
                 resp_list = engine.infer([infer_request], request_config)
-                output_text = resp_list[0].choices[0].message.content 
-            
-                matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)
+                response = resp_list[0].choices[0]
+                output_text = response.message.content 
+                logprobs_data = response.logprobs  # LogProbs object 
+
+                # Per-token logprobs
+                # for token_info in logprobs_data['content']: 
+                #     print(token_info['token'], token_info.logprob, math.exp(token_info.logprob))  # token, logprob, prob 
+
+                matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)  
                 if matches:
                     output_text = matches[-1].strip().replace('*', '')
                 else:
@@ -217,6 +228,7 @@ def main(args):
 
                 # 6. 결과를 JSON 객체로 생성하고 JSONL에 즉시 작성
                 data['output'] = output_text 
+                data['logprobs_data'] = clean_logprobs(logprobs_data)
                 data['question'] = prompt 
                 print('Q:', prompt, 'Output:', data['output'], output_jsonl_path)
 
@@ -238,7 +250,7 @@ if __name__ == "__main__":
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
     parser.add_argument("--dataset", type=str, default="mmstar", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
-    parser.add_argument('--savedir', type=str, default="/home/work/yuna/HPA/evaluation/results", help='Save directory of inference') 
+    parser.add_argument('--savedir', type=str, default="/home/david/Desktop/yuna/HPA/evaluation/logits", help='Save directory of inference') 
     parser.add_argument("--condition", type=str, default='')
     
     args = parser.parse_args() 
