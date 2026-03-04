@@ -9,18 +9,6 @@ def wrap_every_n_words(text, n=3):
     words = text.split()
     lines = [" ".join(words[i:i+n]) for i in range(0, len(words), n)]
     return "\n".join(lines) 
-    
-def get_labels(qtype, df=sdf, qs=qs): 
-    q_to_w = (
-        df[["question", qtype]]
-        .drop_duplicates()
-        .set_index("question")[qtype] 
-        .to_dict()
-    )
-
-    labels = [q_to_w[q] for q in qs] 
-    print(len(qs), len(labels) )
-    return labels  
 
 def show_qtype_proportion(dataset): 
     df = pd.DataFrame(list(dataset), columns=['answer_type', 'question_type', 'question_id']) 

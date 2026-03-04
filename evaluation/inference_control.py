@@ -42,7 +42,7 @@ def main(args):
     def get_output(args, data, prompt): 
 
         if 'blind' in args.condition: 
-            data['image'] = "/home/david/Desktop/yuna/HPA/data/blank_224.png"
+            data['image'] = "/home/david/Desktop/yuna/HPA/dataset/blank_224.png"
             prompt = format_prompt(prompt)
             
         messages = [] 

@@ -1,6 +1,7 @@
 # Environment
 .env
 *.env
+output
 
 # Python
 __pycache__/

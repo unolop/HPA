@@ -1,5 +1,5 @@
 import json 
-from prompts import *
+from api.prompts import *
 from dataset.vqav2 import VQADataset_json, VQADataset
 from dataset.paths import VQA_IMAGE_DIR, VQA_QUESTIONS, VQA_ANNOT, VQA_1K 
 

@@ -1,13 +1,11 @@
-import math 
 import os 
 import re
-import zoneinfo 
 from tqdm import tqdm
 import json
 import numpy as np 
 import torch
 import sys 
-sys.path.append('/home/work/yuna/HPA') 
+sys.path.append('/home/david/Desktop/yuna/HPA') 
 from utils import clean_logprobs
 
 
@@ -150,8 +148,8 @@ def main(args):
             data['pid'] = i 
 
             if 'blind' in args.condition: 
-                data['image'] = "/home/work/yuna/HPA/data/blank_224.png"
-                
+                data['image'] = "/home/david/Desktop/yuna/HPA/dataset/blank_224.png"
+            
             if processed_ids is not None: 
                 if data[current_item_id] in processed_ids:
                     continue 
@@ -209,7 +207,6 @@ def main(args):
                 infer_request = InferRequest(
                     messages=messages 
                 ) 
-
             try: 
                 resp_list = engine.infer([infer_request], request_config)
                 response = resp_list[0].choices[0]
@@ -236,6 +233,7 @@ def main(args):
                 f.write(json.dumps(data, ensure_ascii=False) + '\n')
                 f.flush()  # 버퍼를 비워 파일에 즉시 쓰도록 강제
             except Exception as e: 
+                print(e)
                 continue
 
     print(f"모든 작업 완료. 결과가 '{output_jsonl_path}'에 저장되었습니다.")
