@@ -2,38 +2,12 @@ import os
 import re 
 from tqdm import tqdm
 import json
-import numpy as np 
-import torch 
 import sys
-from utils import clean_logprobs
+from utils import clean_logprobs, set_seed, format_prompt, get_dataset
 sys.path.append('/home/david/Desktop/yuna/HPA')
 
-seed = 42
-np.random.seed(seed)
-torch.manual_seed(seed)
-torch.cuda.manual_seed_all(seed)
-torch.cuda.empty_cache() 
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
-
-def format_prompt(question): 
-    return f"Question: {question} Answer the question using a single word or phrase. \nAnswer:" 
- 
-def load_dataset(data_name:str, prompt:str=''): 
-    print("Loading dataset...") 
-    if data_name == "vqa_1k": 
-        from dataset.vqav2 import VQADataset_json
-        dataset = VQADataset_json(
-            prompt=prompt,
-            image_dir_path="/home/david/Desktop/yuna/data/val2014",
-            json_path="/home/david/Desktop/yuna/HPA/dataset/vqa/vqa1k_control.jsonl",
-        )
-        
-    return dataset 
-
-
 def main(args):
-
+    set_seed() 
     from swift.llm import (
         PtEngine, RequestConfig, safe_snapshot_download, get_model_tokenizer, get_template, InferRequest
     )
@@ -101,8 +75,7 @@ def main(args):
         savedir += '/pretrained'     
 
     output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}_control{args.condition}.jsonl" 
-    prompt= ''
-    dataset = load_dataset(args.dataset, prompt)  
+    dataset = get_dataset("vqa_1k_control", prompt)  
     os.makedirs(os.path.dirname(output_jsonl_path), exist_ok=True)
     
     with open(output_jsonl_path, 'w', encoding='utf-8') as f:
@@ -115,9 +88,7 @@ def main(args):
                 if k in ['id', 'image', 'answers'] or 'id' in k:
                     continue
                 
-                prompt = format_prompt(val)
-                if 'inst' in args.condition:
-                    prompt += "\nNote: No images provided..."
+                prompt = format_prompt(val) 
 
                 try:
                     output_text, logprobs_data = get_output(args, data, prompt)
@@ -127,8 +98,6 @@ def main(args):
                 except Exception as e:
                     print(f"Error processing {record_id} at {k}: {e}")
                     continue
-            # breakpoint()
-            # Build the final clean output object
             data['answers'] = generated_answers
             data['generated_logits'] = generated_logits
             f.write(json.dumps(data, ensure_ascii=False) + '\n')

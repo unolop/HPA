@@ -2,96 +2,53 @@ import os
 import re
 from tqdm import tqdm
 import json
-import numpy as np 
-import torch
 import sys 
 sys.path.append('/home/david/Desktop/yuna/HPA') 
-from utils import clean_logprobs
-
-
-seed = 42
-np.random.seed(seed)
-torch.manual_seed(seed)
-torch.cuda.manual_seed_all(seed)
-torch.cuda.empty_cache() 
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
-
-def skip_processed_idx(existing_keys, output_jsonl_path): 
-    id_keys = ['idx', 'qid', 'question_id', 'index']
-    current_item_id = None
-    processed_ids=set()
-
-    for key in id_keys:
-        if key in existing_keys:
-            current_item_id = key
-            break
-    
-    if current_item_id is None : 
-        current_item_id = 'pid'
-
-    if os.path.exists(output_jsonl_path):
-        print(f"'{output_jsonl_path}' exists.")
-        with open(output_jsonl_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip() 
-                if line:  # Skip empty lines 
-                    try:
-                        item = json.loads(line)
-                        # Assuming the ID field is called 'qid'
-                        processed_ids.add(item[current_item_id])
-                    except json.JSONDecodeError:
-                        continue  # Skip malformed lines
-        print(f"Skipping {len(processed_ids)} items.")
-    return processed_ids, current_item_id
-
-def load_dataset(data_name:str, prompt:str=''): 
-    print("Loading dataset...")
-    
-    if data_name == "mmstar":
-        from datasets import load_dataset 
-        dataset = load_dataset("Lin-Chen/MMStar", split="val") 
-    
-    elif data_name == "spubench":
-        from datasets import load_dataset
-        # Use non-streaming mode for faster loading (downloads once and caches)
-        print("  Loading MM-SpuBench dataset from HuggingFace (will cache locally)...")
-        dataset = load_dataset("mmbench/MM-SpuBench", split="train", trust_remote_code=True)
-        print(f"  ✓ Prepared {len(dataset)} examples") 
-
-    elif data_name == "textvqa":
-        from datasets import load_dataset
-        dataset = load_dataset("lmms-lab/textvqa", split="validation")  
-        
-    elif data_name == "okvqa":
-        from datasets import load_dataset
-        dataset = load_dataset("lmms-lab/OK-VQA", split="val2014") 
-
-    elif data_name == "vqa_1k":
-        from dataset.vqav2 import VQADataset_json
-        dataset = VQADataset_json(prompt=prompt)
-        
-    elif data_name == "vqa_5k":
-        from dataset.vqav2 import VQADataset
-        from torch.utils.data import Subset 
-
-        with open('/home/work/yuna/HPA/dataset/s1_qids.json', 'r') as file:
-            qids = json.load(file)
-
-        dataset = VQADataset(prompt=prompt, filter_qids=qids) 
-        dataset = Subset(dataset, np.random.choice(len(dataset), size=5000, replace=False))
-
-    return dataset 
+from utils import clean_logprobs, skip_processed_idx, get_dataset, set_seed, format_prompt
 
 def main(args):
+    set_seed()
 
     from swift.llm import (
         PtEngine, RequestConfig, safe_snapshot_download, get_model_tokenizer, get_template, InferRequest
     )
     from swift.tuners import Swift
-    # Please adjust the following lines
-    model = args.model
+    
 
+    def get_output(args, data, prompt): 
+
+        if 'blind' in args.condition: 
+            data['image'] = "/home/david/Desktop/yuna/HPA/dataset/blank_224.png"
+            prompt = format_prompt(prompt)
+            
+        messages = [] 
+        
+        if args.model_type == 'vlm':  
+            messages.append({'role': 'user', 'content': f'<image>{prompt}' })
+            infer_request = InferRequest(
+                messages=messages,
+                images=[data['image']] 
+            )
+
+        else : 
+            messages.append({'role': 'user', 'content': prompt})
+            infer_request = InferRequest(
+                messages=messages 
+            ) 
+
+        resp_list = engine.infer([infer_request], request_config)
+        response = resp_list[0].choices[0]
+        output_text = response.message.content 
+        logprobs_data = response.logprobs  # LogProbs object 
+
+        matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)
+        if matches:
+            output_text = matches[-1].strip().replace('*', '')
+        else:
+            output_text = output_text.strip().replace('*', '') 
+        return output_text, logprobs_data
+    
+    model = args.model
     template_type = None  # None: use the default template_type of the corresponding model
     default_system = None  # None: use the default system prompt of the corresponding model
 
@@ -100,6 +57,7 @@ def main(args):
     if args.lora_path is not None:
         lora_checkpoint = safe_snapshot_download(args.lora_path)  # Change to your checkpoint_dir
         model = Swift.from_pretrained(model, lora_checkpoint)
+        
     model.eval()
     template_type = template_type or model.model_meta.template
     template = get_template(template_type, tokenizer, default_system=default_system)
@@ -124,7 +82,8 @@ def main(args):
     if 'inst' in args.condition: 
         prompt = f"\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
     
-    dataset = load_dataset(args.dataset, prompt) 
+    dataset = get_dataset(f"{args.dataset}{args.condition}", prompt) 
+
     if args.dataset == 'spubench': 
         with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f:
             annot = json.load(f) 
@@ -132,7 +91,7 @@ def main(args):
     try: 
         processed_ids, current_item_id = skip_processed_idx(existing_keys=dataset[0].keys(), output_jsonl_path=output_jsonl_path)
     except Exception as e: 
-        print(e)
+        print('cannot process the key', e)
         processed_ids = set()
 
     if not args.resume: 
@@ -142,99 +101,51 @@ def main(args):
         write_mode = 'a' 
 
     os.makedirs(os.path.dirname(output_jsonl_path), exist_ok=True)
+
     with open(output_jsonl_path, write_mode, encoding='utf-8') as f:
         
         for i, data in enumerate(tqdm(dataset)): # for i in tqdm(range(len(dataset))): 
             data['pid'] = i 
+            generated_answers = {}
+            generated_logits = {}
 
+            if processed_ids is not None: 
+                if data[current_item_id] in processed_ids:
+                    print('skip ', current_item_id)
+                    continue 
+            
             if 'blind' in args.condition: 
                 data['image'] = "/home/david/Desktop/yuna/HPA/dataset/blank_224.png"
             
-            if processed_ids is not None: 
-                if data[current_item_id] in processed_ids:
-                    continue 
-                
-            if 'mmstar' in args.dataset:
-                prompt = data['question']       
-                if 'inst' in args.condition: 
-                    prompt = f"{prompt}\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
-                prompt += "\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
-
-            elif 'spubench' in args.dataset:
-                ann = annot[i] 
-                image = data['image']
-                question = ann['question']
-                choices = ann['choices']
-                choices_text = "\n".join(choices)
+            if 'spubench' in dataset: 
+                data = annot[i]  
                 prompt = (
-                    f"Question: {question}\n"
-                    f"{choices_text}\n"
+                    f"Question: {data['question'] }\n"
+                    f"{ "\n".join(data['choices'])}\n"
                 )
-                if 'inst' in args.condition: 
-                    prompt = f"{prompt}\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
-                
-                prompt = f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
-                ann['question'] = prompt   
-                # if args.model_type == 'vlm' and 'vqa' not in args.dataset: # VLM MCQ  
-                # prompt += '\n select the correct answer from the options above.'
-            
-            elif 'textvqa' in args.dataset: 
-                prompt = f"Question: {data['question']} Answer the question using a single word or phrase. \nAnswer:" 
-                if 'inst' in args.condition: 
-                    prompt = f"{prompt}\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
-                
-            elif 'okvqa' in args.dataset:
-                prompt = f"Question: {data['question']} Answer the question using a single word or phrase. \nAnswer:" 
-                if 'inst' in args.condition: 
-                    prompt = f"{prompt}\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
-                
-            else: 
-                prompt = data['question']       
+                data['question'] = f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
+                 
+            data['question'] = format_prompt(data['question'], args.dataset, args.condition)  
+            record_id = data.get('id', 'unknown') 
 
-            messages = []
-            if args.model_type == 'vlm':  
-                messages.append({'role': 'user', 'content': f'<image>{prompt}' })
-                try: 
-                    infer_request = InferRequest(
-                        messages=messages,
-                        images=[data['image']] 
-                    )
-                except Exception as e: 
+            for k, val in data.items():
+                if k in ['id', 'image', 'answers'] or 'id' in k:
+                    continue
+                prompt = format_prompt(val) 
+
+                try:
+                    output_text, logprobs_data = get_output(args, data, prompt)
+                    generated_logits[k] = clean_logprobs(logprobs_data)
+                    generated_answers[k] = output_text 
+                    
+                except Exception as e:
+                    print(f"Error processing {record_id} at {k}: {e}")
                     continue
 
-            else : 
-                messages.append({'role': 'user', 'content': prompt})
-                infer_request = InferRequest(
-                    messages=messages 
-                ) 
-            try: 
-                resp_list = engine.infer([infer_request], request_config)
-                response = resp_list[0].choices[0]
-                output_text = response.message.content 
-                logprobs_data = response.logprobs  # LogProbs object 
-
-                # Per-token logprobs
-                # for token_info in logprobs_data['content']: 
-                #     print(token_info['token'], token_info.logprob, math.exp(token_info.logprob))  # token, logprob, prob 
-
-                matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)  
-                if matches:
-                    output_text = matches[-1].strip().replace('*', '')
-                else:
-                    output_text = output_text.strip().replace('*', '')
-
-                # 6. 결과를 JSON 객체로 생성하고 JSONL에 즉시 작성
-                data['output'] = output_text 
-                data['logprobs_data'] = clean_logprobs(logprobs_data)
-                data['question'] = prompt 
-                print('Q:', prompt, 'Output:', data['output'], output_jsonl_path)
-
-                data.pop('image')
-                f.write(json.dumps(data, ensure_ascii=False) + '\n')
-                f.flush()  # 버퍼를 비워 파일에 즉시 쓰도록 강제
-            except Exception as e: 
-                print(e)
-                continue
+            data['generated_answers'] = generated_answers
+            data['generated_logits'] = generated_logits
+            f.write(json.dumps(data, ensure_ascii=False) + '\n')
+            f.flush()
 
     print(f"모든 작업 완료. 결과가 '{output_jsonl_path}'에 저장되었습니다.")
 

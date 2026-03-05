@@ -1,0 +1,30 @@
+{
+  "model": "Qwen/Qwen3-VL-4B-Instruct",
+  "kfold_dir": "/home/work/yuna/HPA/data/training/s1_text/kfold_vqa_gt",
+  "k_folds": 5,
+  "trained_folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "results": {
+    "fold_0": "failed"
+  },
+  "training_params": {
+    "learning_rate": 2e-05,
+    "num_epochs": 5,
+    "max_steps": -1,
+    "lora_rank": 32,
+    "lora_alpha": 64,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "save_steps": 40,
+    "eval_steps": 40,
+    "logging_steps": 20,
+    "max_pixels": 448,
+    "gpu_id": 1
+  },
+  "training_type": "standard_sft"
+}
