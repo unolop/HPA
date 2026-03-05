@@ -1,17 +1,10 @@
 #!/usr/bin/env python3
-"""
-process_raw_human_responses.py - Process raw human responses and compute per-question metrics
-
-Loads raw CSV data, computes per-question average accuracy and embedding similarity
-against ground truth. Supports both VQA and MC tasks.
-
-Usage:
+"""  
     python evaluation/process_raw_human_responses.py \
         --human_data_dir data/humans/all_results_20251206_154732 \
         --session s1 \
         --output_dir evaluation/human_analysis/
 """
-
 import os
 import csv
 import json
@@ -26,13 +19,7 @@ from tqdm import tqdm
 from analysis.utils.score import *   
 sys.path.append(str(Path(__file__).parent.parent)) 
 from preprocessing.preprocess import preprocess_pipeline 
-
-
-# =============================================================================
-# Configuration
-# =============================================================================
-
-VQA_ANNOTATIONS_PATH = "/home/work/yuna/data/v2_mscoco_val2014_annotations.json"
+from analysis.utils.vqa import get_vqa_mapper, vqa_accuracy 
 
 CONF_MAP = {
     'yes': 1.0,
@@ -44,94 +31,14 @@ CONF_MAP = {
     '4': 0.75,
     '5': 1.0
 }
-class VQAAnswerMapper:
-    """Maps question_id to list of ground truth answers from VQA annotations."""
 
-    def __init__(self, annotations_path: str = VQA_ANNOTATIONS_PATH):
-        self.annotations_path = annotations_path
-        self._qid_to_answers = None
-        self._qid_to_gt_visual = None  # Store visual GT for VQA
-        self.annotations = {} 
-        self._load() 
-
-    def _load(self):
-        """Load annotations and build lookup dict."""
-        if self._qid_to_answers is not None:
-            return
-
-        if not os.path.exists(self.annotations_path):
-            print(f"⚠️  VQA annotations not found: {self.annotations_path}")
-            self._qid_to_answers = {}
-            self._qid_to_gt_visual = {}
-            return
-
-        print(f"   Loading VQA annotations from {self.annotations_path}...")
-        with open(self.annotations_path, 'r', encoding='utf-8') as f:
-            annotations = json.load(f)
-
-        self._qid_to_answers = {}
-        self._qid_to_gt_visual = {}
-
-        for ann in annotations['annotations']:
-            qid = int(ann['question_id']) 
-            self.annotations[qid] = ann 
-            answers = [a['answer'] for a in ann['answers']] 
-            self._qid_to_answers[qid] = answers
-
-            # Multiple choice answer (consensus from humans who saw image)
-            if 'multiple_choice_answer' in ann:
-                self._qid_to_gt_visual[qid] = ann['multiple_choice_answer']
-
-        print(f"   ✓ Loaded {len(self._qid_to_answers)} VQA annotations")
-
-    def get_answers(self, question_id: int) -> List[str]:
-        """Get list of 10 annotator answers for a question."""
-        self._load()
-        qid = int(question_id)
-        return self._qid_to_answers.get(qid, [])
-
-    def get_visual_gt(self, question_id: int) -> str:
-        """Get visual ground truth (multiple choice answer from humans who saw image)."""
-        self._load()
-        qid = int(question_id)
-        return self._qid_to_gt_visual.get(qid, "")
-
-
-_vqa_mapper = None
-
-def get_vqa_mapper() -> VQAAnswerMapper:
-    """Get or create global VQA mapper."""
-    global _vqa_mapper
-    if _vqa_mapper is None:
-        _vqa_mapper = VQAAnswerMapper()
-    return _vqa_mapper
-
-
-def load_human_results(jsonl_path: str) -> pd.DataFrame:
-    """
-    Load human results from JSONL file (preserves nested structures).
-
-    Args:
-        jsonl_path: Path to .jsonl file (e.g., 'human_mc_per_question.jsonl')
-
-    Returns:
-        DataFrame with properly parsed nested structures (lists, dicts)
-
-    Example:
-        >>> df = load_human_results('/path/to/human_mc_per_question.jsonl')
-        >>> df['extracted_choices']  # This is now a list, not a string!
-    """
+def load_human_results(jsonl_path: str) -> pd.DataFrame: 
     data = []
     with open(jsonl_path, 'r', encoding='utf-8') as f:
         for line in f:
             if line.strip():
                 data.append(json.loads(line))
     return pd.DataFrame(data)
-
-
-# =============================================================================
-# MMStar Data Loading
-# =============================================================================
 
 def load_mmstar_annotations(session: str = "s1") -> Dict:
     """Load MMStar annotations from questions CSV and original dataset."""
@@ -287,32 +194,15 @@ def process_question_responses(
             if resp['correct'] is None or (isinstance(resp['correct'], float) and np.isnan(resp['correct'])):
                 print(f"⚠️  NaN or None value in 'correct': qid={qid}, answer={answer}, gt_answers={gt_answers}, resp={resp}")
             resp['answer_similarity'] = np.mean([compute_similarity(gt, answer, encoder) for gt in gt_answers]) 
-            # for j, rj in enumerate(range(len(responses))):   # compute other answer simlarities 
-            #     if encoder: 
-            #         if i == j:  
-            #             sim = 1 
-            #         else: 
-            #             sim = compute_similarity(answer, responses[rj]['answer'], encoder)  
-            #         agreement[responses[rj]['participant_id']]=sim  
             print(resp) 
         else:  # choice
             gt_answer = gt_info.get('answer', '')
             choice = choices[int(answer)]  
             resp['correct'] = 1 if choice == gt_answer.strip().upper()[0] else 0  
-
-            # for j, choice_j in enumerate(range(len(responses))): 
-            #     if i != j: 
-            #         a = 1 if choice == choice_j else 0  
-            #         agreement[responses[choice_j]['participant_id']] = a  
-        
-        # resp['agreement'] = agreement 
+ 
         results.append({**resp, **gt_info})   
 
-    return results 
-
-# =============================================================================
-# Main Processing
-# =============================================================================
+    return results  
 
 def process_all_responses(
     human_data_dir: str,
@@ -369,72 +259,8 @@ def process_all_responses(
                 json.dump(text_results, f, indent=2, ensure_ascii=False)
                 f.flush()
                 os.fsync(f.fileno())
-
-    # Compute VQA statistics
-    # vqa_stats = {
-    #     'num_questions': len(text_results),
-    #     # 'total_responses': sum(r['num_responses'] for r in text_results),
-    #     'mean_accuracy': float(np.mean([r['mean_accuracy'] for r in text_results])),
-    #     'mean_confidence': float(np.mean([r['mean_confidence'] for r in text_results])),
-    #     'correlation_conf_acc': get_pearsonr_correlation({"confidence":[r['mean_confidence'] for r in text_results],  
-    #                                                         "accuracy":[r['mean_accuracy'] for r in text_results]})  ,                                                        
-    # }
-
-    # if with_similarity: # get correlations 
-    #     if any('mean_visual_similarity' in r for r in text_results):
-    #         visual_sim = np.array([
-    #             r['mean_visual_similarity']
-    #             for r in text_results
-    #             if 'mean_visual_similarity' in r and 'mean_accuracy' in r
-    #         ])
-
-    #         accuracy = np.array([
-    #             r['mean_accuracy']
-    #             for r in text_results
-    #             if 'mean_visual_similarity' in r and 'mean_accuracy' in r
-    #         ])
-    #         corr = get_pearsonr_correlation({"visual_sim":visual_sim, "accuracy":accuracy})  
-    #         vqa_stats['correlation_visual_sim_acc'] = corr
-
-    # stats_output = os.path.join(output_dir, 'human_vqa_stats.json')
-    # with open(stats_output, 'w', encoding='utf-8') as f:
-    #     json.dump(vqa_stats, f, indent=2)
-    # print(f"   ✓ Saved: {stats_output}") 
-
-
-    # Compute MC statistics
-    # mc_stats = {
-    #     'num_questions': len(choice_results),
-    #     'total_responses': sum(r['num_responses'] for r in choice_results),
-    #     'mean_accuracy': float(np.mean([r['mean_accuracy'] for r in choice_results])),
-    #     'mean_confidence': float(np.mean([r['mean_confidence'] for r in choice_results])),
-    #     'correlation_conf_acc': get_pearsonr_correlation({"confidence":[r['mean_confidence'] for r in choice_results], 
-    #                                                         "accuracy":[r['mean_accuracy'] for r in choice_results]})  
-    # }
-    # stats_output = os.path.join(output_dir, 'human_mc_stats.json')
-    # with open(stats_output, 'w', encoding='utf-8') as f:
-    #     json.dump(mc_stats, f, indent=2)
-    # print(f"   ✓ Saved: {stats_output}")
-
-    # print("📈 Summary")
-    # print(f"VQA Questions: {len(text_results)}")
-    # print(f"  Mean Accuracy: {vqa_stats['mean_accuracy']:.4f}")
-    # print(f"  Mean Confidence: {vqa_stats['mean_confidence']:.4f}")
-    # # print(f"  Correlation (Conf-Acc): {vqa_stats['correlation_conf_acc']:.4f}") 
-
-    # print(f"\nMC Questions: {len(choice_results)}")
-    # print(f"  Mean Accuracy: {mc_stats['mean_accuracy']:.4f}")
-    # print(f"  Mean Confidence: {mc_stats['mean_confidence']:.4f}")
-    # # print(f"  Correlation (Conf-Acc): {mc_stats['correlation_conf_acc']:.4f}")
-    
-    # print(f"\n✅ Processing complete! Results saved to: {output_dir}")
-
     return text_results, choice_results
 
-
-# =============================================================================
-# CLI
-# =============================================================================
 
 def main():
     parser = argparse.ArgumentParser(

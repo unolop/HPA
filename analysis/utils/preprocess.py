@@ -3,9 +3,9 @@ import re
 import json
 import random 
 
-
 DATASETS = ["mmstar", "spubench", "vqa_1k", "vqa_5k", 'okvqa', 'textvqa']
 CONDITIONS = ["_inst_blind", "", "_sys_inst_blind", "_blind"]
+
 MODELNAMES = [
     "OpenGVLab/InternVL3_5-8B",
     "OpenGVLab/InternVL3_5-4B",
@@ -359,7 +359,7 @@ punctuations = [
             "?",
             "!",
         ]
-
+        
 class PostProcessor: 
     
     def __init__(self):
@@ -368,7 +368,35 @@ class PostProcessor:
         self.articles = ["a", "an", "the"]
         self.periodStrip = re.compile(r"(?!<=\d)(\.)(?!\d)")
         self.commaStrip = re.compile(r"(\d)(\,)(\d)")
-        self.punct = punctuations 
+        self.punct = punctuations
+        
+        # 숫자 단어 -> 숫자 매핑 추가
+        self.word_to_num = {
+            'zero': '0', 'one': '1', 'two': '2', 'three': '3', 'four': '4',
+            'five': '5', 'six': '6', 'seven': '7', 'eight': '8', 'nine': '9',
+            'ten': '10', 'eleven': '11', 'twelve': '12', 'thirteen': '13',
+            'fourteen': '14', 'fifteen': '15', 'sixteen': '16', 'seventeen': '17',
+            'eighteen': '18', 'nineteen': '19', 'twenty': '20',
+            'first': '1', 'second': '2', 'third': '3', 'fourth': '4', 'fifth': '5',
+            'once': '1', 'twice': '2', 'single': '1', 'double': '2', 'triple': '3',
+        }
+
+    def extract_number(self, text):
+        """텍스트에서 숫자 추출"""
+        text_lower = text.lower()
+        
+        # 1. 숫자 단어가 있으면 변환
+        for word, num in self.word_to_num.items():
+            if word in text_lower.split():
+                return num
+        
+        # 2. 숫자가 직접 있으면 추출
+        numbers_found = re.findall(r'\d+', text)
+        if numbers_found:
+            return numbers_found[0]
+        
+        return text 
+
 
     def processPunctuation(self, inText):
         outText = inText
@@ -402,7 +430,6 @@ class PostProcessor:
         
         if isinstance(answer, str):
             answer = answer.split("\n")[-1].split("\t")[-1]
-            # generation = generation.replace("\n", " ").replace("\t", " ").strip()
 
         if isinstance(answer, dict):
             answer = answer.get("answer", "")
@@ -424,23 +451,20 @@ class PostProcessor:
         if "Answer:" in answer: 
             answer = answer.split("Answer: ")[-1]
 
-        if "answer:" in answer:  ## FOR LLAVA 1.5 
+        if "answer:" in answer:
             answer = answer.split("answer: ")[-1]
-        # else:
-        #     answer = answer.strip().split()[-1] if isinstance(answer, str) else ""
 
-        # Remove extraneous tokens
         for token in [
             '<s>', '</s>', '<|im_end|>', '[/INST]', '<|im_start|>', 
             'ASSISTANT:', 'assistant\n', 'inst'
         ]:
             answer = answer.replace(token, '')
 
-        # answer = answer.strip()
         if not answer:
             answer = ""
 
         answer = self.processPunctuation(answer)
         answer = self.processDigitArticle(answer)
+        answer = self.extract_number(answer)
         
-        return answer
+        return answer.strip()

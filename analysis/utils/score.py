@@ -224,3 +224,4 @@ def mc_accuracy(gt: str, pred: str) -> bool:
 def exact_match(gt: str, pred: str) -> bool:
     """Exact match after normalization."""
     return normalize_answer(pred) == normalize_answer(gt) 
+

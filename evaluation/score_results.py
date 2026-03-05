@@ -15,26 +15,18 @@ Computes:
 import os
 import json
 import argparse
-import numpy as np 
 import pandas as pd
 from collections import defaultdict
 from typing import Dict
 from glob import glob
-from analysis.utils.score import compute_similarity, VQAAnswerMapper, vqa_accuracy, exact_match, get_encoder
+
 import sys  
-sys.path.append('/home/work/yuna/HPA') 
-from preprocessing.utils import *  
+sys.path.append('/home/david/Desktop/yuna/HPA') 
+from analysis.utils.score import compute_similarity, get_encoder, extract_mc_choice
+from analysis.utils.vqa import get_vqa_mapper, vqa_accuracy, PostProcessor 
+from analysis.utils.preprocess import get_conditions, DATASET_TYPE  
 
-
-# Global mapper instance (lazy loaded)
 _vqa_mapper = None
-
-def get_vqa_mapper() -> VQAAnswerMapper:
-    """Get or create global VQA mapper."""
-    global _vqa_mapper
-    if _vqa_mapper is None:
-        _vqa_mapper = VQAAnswerMapper()
-    return _vqa_mapper
 
 def get_spubench(): 
     # from inference import load_dataset 
