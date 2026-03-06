@@ -119,10 +119,10 @@ def main(args):
             
             if 'spubench' in dataset: 
                 data = annot[i]  
-                prompt = (
-                    f"Question: {data['question'] }\n"
-                    f"{ "\n".join(data['choices'])}\n"
-                )
+                prompt = "Question: {}\n{}\n".format(
+                            data['question'], 
+                            "\n".join(data['choices'])
+                        )
                 data['question'] = f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
                  
             data['question'] = format_prompt(data['question'], args.dataset, args.condition)  
@@ -140,12 +140,16 @@ def main(args):
                     
                 except Exception as e:
                     print(f"Error processing {record_id} at {k}: {e}")
-                    continue
-
-            data['generated_answers'] = generated_answers
-            data['generated_logits'] = generated_logits
-            f.write(json.dumps(data, ensure_ascii=False) + '\n')
-            f.flush()
+                    all_fields_successful = False # Mark as failed
+                    break # Stop processing other fields for this specific record 
+            
+            if all_fields_successful:
+                data['generated_answers'] = generated_answers
+                data['generated_logits'] = generated_logits
+                f.write(json.dumps(data, ensure_ascii=False) + '\n')
+                f.flush()
+            else:
+                print(f"Skipping saving record {record_id} due to previous error.")  
 
     print(f"모든 작업 완료. 결과가 '{output_jsonl_path}'에 저장되었습니다.")
 

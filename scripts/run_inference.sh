@@ -28,12 +28,7 @@ for BASE_MODEL in "${BASE_MODEL[@]}"; do
         CUDA_VISIBLE_DEVICES=${GPU} python /home/david/Desktop/yuna/HPA/evaluation/inference.py \
             --model "${BASE_MODEL}" \
             --condition "${CONDITION}" \
-            --dataset "vqa_1k"
-            # --resume
-    
-        CUDA_VISIBLE_DEVICES=${GPU} python /home/david/Desktop/yuna/HPA/evaluation/inference_control.py \
-            --model "${BASE_MODEL}" \
-            --condition "${CONDITION}" \
+            --dataset "vqa_1k_control"
             # --resume
     done 
 done 
