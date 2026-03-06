@@ -23,7 +23,6 @@ def load_kfold_metadata(kfold_dir: str) -> Dict:
     with open(metadata_path, 'r') as f:
         return json.load(f)
 
-
 def train_single_fold(
     fold_idx: int,
     kfold_dir: str,
@@ -141,7 +140,6 @@ def run_kfold_training(
     # Determine which folds to train
     if folds is None:
         folds = list(range(k_folds))
-
     print(f"Training folds: {folds}\n")
 
     # Train each fold

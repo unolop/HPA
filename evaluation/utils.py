@@ -5,6 +5,9 @@ import random
 import numpy as np 
 from datasets import load_dataset
  
+
+blind_inst = '\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.'
+
 def set_seed(seed=42):
     random.seed(seed)
     np.random.seed(seed)
@@ -18,31 +21,69 @@ def set_seed(seed=42):
     # 필요하다면 환경 변수까지 고정 (일부 특수 연산 대비)
     os.environ['PYTHONHASHSEED'] = str(seed)
 
-def format_prompt(prompt, dataset='vqa_1k', condition=''): 
+def format_prompt(data, qkey= 'question', dataset='vqa_1k', condition=''): 
+    prompt = data[qkey] 
 
-    if 'mmstar' in dataset:
+    if "vqa_1k" in dataset: 
+        return prompt 
+
+    elif 'spubench' in dataset: 
+        prompt = "Question: {}\n{}\n".format(
+                    data['question'], 
+                    "\n".join(data['choices'])
+                )
+        data['question'] = f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D)."
+            
+    elif 'mmstar' in dataset:
         prompt += f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D)."
         
     else:  # spubench elif 'okvqa' textvqa in args.dataset: 
         prompt = f"Question: {prompt} Answer the question using a single word or phrase." 
 
-    ### ADD BLIND INSTRUCTION     
-    if 'inst' in condition: 
-            prompt = f"{prompt}\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario."
+    if 'inst' in condition:  ### ADD BLIND INSTRUCTION      
+        prompt += blind_inst 
     
     prompt += "\nAnswer:"
 
     return prompt  
 
-def get_dataset(data_name:str, prompt:str=''): 
+def get_dataset(data_name:str ): 
     print("Loading dataset...", data_name)
         
     if data_name == "mmstar":
         dataset = load_dataset("Lin-Chen/MMStar", split="val") 
     
     elif data_name == "spubench":
-        dataset = load_dataset("mmbench/MM-SpuBench", split="train", trust_remote_code=True)
+        remote_dataset = load_dataset("mmbench/MM-SpuBench", split="train", trust_remote_code=True)
+        with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f:
+            local_annotations = json.load(f)
+        remote_map = {item.get("id", idx): item for idx, item in enumerate(remote_dataset)}
+        if isinstance(local_annotations, dict):
+            combined = []
+            for ann_id, ann_val in local_annotations.items():
+                origin = remote_map.get(ann_id, {})
+                merged = origin.copy()
+                merged.update(ann_val)
+                combined.append(merged)
+            dataset = combined
         
+        elif isinstance(local_annotations, list): 
+            combined = []
+            if all(isinstance(x, dict) and 'id' in x for x in local_annotations):
+                ann_map = {x['id']: x for x in local_annotations}
+                for item in remote_dataset:
+                    item_id = item.get('id')
+                    merged = item.copy()
+                    if item_id in ann_map:
+                        merged.update(ann_map[item_id])
+                    combined.append(merged)
+            else:
+                # Fallback: just return local_annotations if you want only that.
+                combined = local_annotations
+            dataset = combined
+        else:
+            dataset = local_annotations
+
     elif data_name == "textvqa":
         dataset = load_dataset("lmms-lab/textvqa", split="validation")  
         
@@ -51,6 +92,7 @@ def get_dataset(data_name:str, prompt:str=''):
 
     elif "vqa_1k" in data_name :
         from dataset.vqav2 import VQADataset_json
+        prompt = blind_inst if "inst" in data_name else ''
         
         if 'control' in data_name: 
             dataset = VQADataset_json(

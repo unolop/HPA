@@ -20,7 +20,6 @@ class VQADataset(Dataset):
             questions_data = json.load(f)
         self.questions = questions_data['questions']
     
-        # Load annotations if provided
         if annotations_path is not None:
             with open(annotations_path, 'r') as f:
                 self.annotations = json.load(f)['annotations'] 
@@ -90,9 +89,11 @@ class VQADataset_json(Dataset):
     def __init__(self, 
                 image_dir_path="/home/david/Desktop/yuna/data/val2014", 
                 json_path="/home/david/Desktop/yuna/HPA/dataset/vqa/vqav2_1k_val.json",
-                prompt=''): 
+                prompt='' 
+                ): 
         self.prompt = prompt 
         self.image_dir_path=image_dir_path
+        self.json_path=json_path
         
         if json_path.endswith('json'): 
             with open(json_path, 'r') as f:
@@ -106,8 +107,13 @@ class VQADataset_json(Dataset):
 
     def __getitem__(self, idx): 
         annot = self.questions[idx] 
-        annot['question'] = self.prompt + self.questions[idx]['question'] 
-
+        if 'control' in self.json_path:  
+            for k in annot.keys():  
+                if k in ['id', 'image', 'answers'] or 'id' in k:
+                    continue 
+                else: 
+                    annot[k] = f"Question: {annot[k]} Answer the question using a single word or phrase. {self.prompt}\nAnswer:"  
+ 
         image_id = annot.get('image_id')
         if isinstance(image_id, int):
             padded_id = str(image_id).zfill(12)

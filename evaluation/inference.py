@@ -12,15 +12,10 @@ def main(args):
     from swift.llm import (
         PtEngine, RequestConfig, safe_snapshot_download, get_model_tokenizer, get_template, InferRequest
     )
-    from swift.tuners import Swift
-    
+    from swift.tuners import Swift 
 
     def get_output(args, data, prompt): 
-
-        if 'blind' in args.condition: 
-            data['image'] = "/home/david/Desktop/yuna/HPA/dataset/blank_224.png"
-            prompt = format_prompt(prompt)
-            
+ 
         messages = [] 
         
         if args.model_type == 'vlm':  
@@ -38,22 +33,21 @@ def main(args):
 
         resp_list = engine.infer([infer_request], request_config)
         response = resp_list[0].choices[0]
-        output_text = response.message.content 
-        logprobs_data = response.logprobs  # LogProbs object 
+        output_text = response.message.content  
 
         matches = re.findall(r"Answer\s*:?\s*(.+)", output_text)
         if matches:
             output_text = matches[-1].strip().replace('*', '')
         else:
             output_text = output_text.strip().replace('*', '') 
-        return output_text, logprobs_data
+        
+        print(f'{prompt}\n{output_text}') 
+        return output_text, response.logprobs  
     
     model = args.model
     template_type = None  # None: use the default template_type of the corresponding model
     default_system = None  # None: use the default system prompt of the corresponding model
-
-    # Load model and dialogue template
-    model, tokenizer = get_model_tokenizer(model, use_hf=True) #, max_pixels=448)
+    model, tokenizer = get_model_tokenizer(model, use_hf=True) #, max_pixels=448) 
     if args.lora_path is not None:
         lora_checkpoint = safe_snapshot_download(args.lora_path)  # Change to your checkpoint_dir
         model = Swift.from_pretrained(model, lora_checkpoint)
@@ -78,33 +72,21 @@ def main(args):
         savedir += '/pretrained'     
 
     output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}.jsonl" 
-    prompt= ''
-    if 'inst' in args.condition: 
-        prompt = f"\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.\n"
-    
-    dataset = get_dataset(f"{args.dataset}{args.condition}", prompt) 
-
-    if args.dataset == 'spubench': 
-        with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f:
-            annot = json.load(f) 
-
+    dataset = get_dataset(f"{args.dataset}{args.condition}") 
+    processed_ids = set() 
     try: 
-        processed_ids, current_item_id = skip_processed_idx(existing_keys=dataset[0].keys(), output_jsonl_path=output_jsonl_path)
+        processed_ids, current_item_id = skip_processed_idx(
+            existing_keys=dataset[0].keys(), output_jsonl_path=output_jsonl_path
+            )
     except Exception as e: 
         print('cannot process the key', e)
-        processed_ids = set()
-
-    if not args.resume: 
-        processed_ids = set()
-        write_mode = 'w'
-    else :
-        write_mode = 'a' 
+    write_mode = 'a' if args.resume else 'w'  
 
     os.makedirs(os.path.dirname(output_jsonl_path), exist_ok=True)
 
     with open(output_jsonl_path, write_mode, encoding='utf-8') as f:
         
-        for i, data in enumerate(tqdm(dataset)): # for i in tqdm(range(len(dataset))): 
+        for i, data in enumerate(tqdm(dataset)): 
             data['pid'] = i 
             generated_answers = {}
             generated_logits = {}
@@ -117,36 +99,30 @@ def main(args):
             if 'blind' in args.condition: 
                 data['image'] = "/home/david/Desktop/yuna/HPA/dataset/blank_224.png"
             
-            if 'spubench' in dataset: 
-                data = annot[i]  
-                prompt = "Question: {}\n{}\n".format(
-                            data['question'], 
-                            "\n".join(data['choices'])
-                        )
-                data['question'] = f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D).\nAnswer:"
-                 
-            data['question'] = format_prompt(data['question'], args.dataset, args.condition)  
-            record_id = data.get('id', 'unknown') 
+            record_id = data.get(current_item_id, 'unknown key') 
+            all_fields_successful = True 
 
-            for k, val in data.items():
+            for k in data.keys():
                 if k in ['id', 'image', 'answers'] or 'id' in k:
                     continue
-                prompt = format_prompt(val) 
+                prompt = format_prompt(data, k, args.dataset, args.condition)  
 
                 try:
                     output_text, logprobs_data = get_output(args, data, prompt)
-                    generated_logits[k] = clean_logprobs(logprobs_data)
+                    generated_logits[k] = clean_logprobs(logprobs_data) 
                     generated_answers[k] = output_text 
                     
                 except Exception as e:
-                    print(f"Error processing {record_id} at {k}: {e}")
-                    all_fields_successful = False # Mark as failed
-                    break # Stop processing other fields for this specific record 
+                    breakpoint() 
+                    print(f"Error processing {record_id} at {k}: {e}") 
+                    all_fields_successful = False   # Mark as failed
+                    break                           # Stop processing other fields for this specific record 
             
             if all_fields_successful:
-                data['generated_answers'] = generated_answers
-                data['generated_logits'] = generated_logits
-                f.write(json.dumps(data, ensure_ascii=False) + '\n')
+                print(generated_answers, generated_logits)
+                data['generated_answers'] = generated_answers 
+                data['generated_logits'] = generated_logits 
+                f.write(json.dumps(data, ensure_ascii=False) + '\n') 
                 f.flush()
             else:
                 print(f"Skipping saving record {record_id} due to previous error.")  
@@ -165,6 +141,7 @@ if __name__ == "__main__":
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
     parser.add_argument('--savedir', type=str, default="/home/david/Desktop/yuna/HPA/evaluation/logits", help='Save directory of inference') 
     parser.add_argument("--condition", type=str, default='')
+    parser.add_argument("--prompt", type=str, default='')
     
     args = parser.parse_args() 
     main(args) 
