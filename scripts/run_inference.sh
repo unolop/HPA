@@ -13,8 +13,8 @@ BASE_MODEL=(
     # "OpenGVLab/InternVL3_5-4B"
     # "OpenGVLab/InternVL3_5-8B"
 
-    "llava-hf/llava-v1.6-vicuna-13b-hf"
-    "llava-hf/llava-v1.6-vicuna-7b-hf"
+    # "llava-hf/llava-v1.6-vicuna-13b-hf"
+    # "llava-hf/llava-v1.6-vicuna-7b-hf"
     # "llava-hf/llava-1.5-7b-hf"
     # "llava-hf/llava-v1.6-mistral-7b-hf"
     "Qwen/Qwen3-VL-32B-Instruct"

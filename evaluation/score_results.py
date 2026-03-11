@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """
-score_results.py - Score existing inference JSONL outputs
-
 Works with your existing output format:
 {"index": 2, "question": "...", "answer": "D", "output": "A: Hanging Posters", ...}
 
@@ -93,7 +91,7 @@ def score_file(
 
         if dataset_type == 'multi-choice':
             if 'answer' not in item.keys(): 
-                qid = item.get('pid', '') 
+                qid = item.get('pid', '') ,
                 annot = annotations[qid]
                 item = {**annot, **item} 
                 
