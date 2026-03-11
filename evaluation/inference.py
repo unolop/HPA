@@ -110,14 +110,30 @@ def main(args):
                 try:
                     output_text, logprobs_data = get_output(args, data, prompt)
                     generated_logits[k] = clean_logprobs(logprobs_data) 
-                    generated_answers[k] = output_text 
-                    
+                    generated_answers[k] = output_text  
+
+                except MemoryError as e:
+                    print(f"OOM error processing {record_id} at {k}: {e}")
+                    all_fields_successful = False
+                    break  # skip this record
+
+                except RuntimeError as e:
+                    if "out of memory" in str(e).lower():
+                        print(f"OOM error processing {record_id} at {k}: {e}")
+                        all_fields_successful = False
+                        break
+                    else:
+                        breakpoint()
+                        print(f"Error processing {record_id} at {k}: {e}")
+                        all_fields_successful = False
+                        break
+
                 except Exception as e:
-                    breakpoint() 
-                    print(f"Error processing {record_id} at {k}: {e}") 
-                    all_fields_successful = False   # Mark as failed
-                    break                           # Stop processing other fields for this specific record 
-            
+                    breakpoint()
+                    print(f"Error processing {record_id} at {k}: {e}")
+                    all_fields_successful = False
+                    break 
+                
             if all_fields_successful:
                 print(generated_answers, generated_logits)
                 data['generated_answers'] = generated_answers 
