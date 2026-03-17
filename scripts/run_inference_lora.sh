@@ -3,7 +3,7 @@
 
 GPU=0
 DATASET_PATHS=( "spubench" )  #   "mmstar"  "vqa_1k" "vqa_5k"   
-CONDITION_LIST=("_control" "_control_inst_blind") #  "_inst_blind" "_sys_inst_blind"  "_blind"  
+CONDITION_LIST=("_control_blind") #  "_inst_blind" "_sys_inst_blind"  "_blind"  "_control" "_control_inst_blind"
 BASE_MODEL=(
     "Qwen/Qwen3-VL-4B-Instruct"
     )

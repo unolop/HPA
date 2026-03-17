@@ -21,31 +21,39 @@ def set_seed(seed=42):
     # 필요하다면 환경 변수까지 고정 (일부 특수 연산 대비)
     os.environ['PYTHONHASHSEED'] = str(seed)
 
-def format_prompt(data, qkey= 'question', dataset='vqa_1k', condition=''): 
-    prompt = data[qkey] 
+def format_prompt(data, qkey='question', dataset='vqa_1k', condition=''):
+    prompt = data[qkey]
 
-    if "vqa_1k" in dataset: 
-        return prompt 
+    if not isinstance(prompt, str):
+        raise TypeError(f"{qkey} is not a string: {type(prompt)}")
 
-    elif 'spubench' in dataset: 
-        prompt = "Question: {}\n{}\n".format(
-                    data['question'], 
-                    "\n".join(data['choices'])
-                )
-        data['question'] = f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D)."
-            
+    if "vqa_1k" in dataset:
+        return prompt
+
+    if 'spubench' in dataset:
+        prompt = "Question: {}\n{}\nProvide only the letter corresponding to the correct choice (A, B, C, or D).".format(
+            data['question'],
+            "\n".join(data['choices'])
+        )
     elif 'mmstar' in dataset:
-        prompt += f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D)."
-        
-    else:  # spubench elif 'okvqa' textvqa in args.dataset: 
-        prompt = f"Question: {prompt} Answer the question using a single word or phrase." 
+        prompt = f"{prompt}\nProvide only the letter corresponding to the correct choice (A, B, C, or D)."
+    else:
+        prompt = f"Question: {prompt} Answer the question using a single word or phrase."
 
-    if 'inst' in condition:  ### ADD BLIND INSTRUCTION      
-        prompt += blind_inst 
-    
-    prompt += "\nAnswer:"
-
-    return prompt  
+    if 'inst' in condition:
+        prompt += blind_inst
+ 
+    # already formatted
+    if prompt.strip().startswith("Question:") and "\nAnswer:" in prompt:
+        print(f"formatting again  \
+                qkey : {qkey} \
+                dataset : {dataset} \
+                condition : {condition} \
+                data : {data}") 
+        return prompt
+    else: 
+        prompt += "\nAnswer:"
+    return prompt
 
 def get_dataset(data_name:str ): 
     print("Loading dataset...", data_name)

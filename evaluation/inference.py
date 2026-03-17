@@ -101,12 +101,16 @@ def main(args):
             
             record_id = data.get(current_item_id, 'unknown key') 
             all_fields_successful = True 
-
-            for k in data.keys():
-                if k in ['id', 'image', 'answers'] or 'id' in k:
+            
+            for k, v in data.items():
+                if k in ['id', 'image', 'answers', 'generated_answers', 'generated_logits']:
                     continue
-                prompt = format_prompt(data, k, args.dataset, args.condition)  
+                if 'id' in k:
+                    continue
+                if not isinstance(v, str):
+                    continue
 
+                prompt = format_prompt(data, k, args.dataset, args.condition) 
                 try:
                     output_text, logprobs_data = get_output(args, data, prompt)
                     generated_logits[k] = clean_logprobs(logprobs_data) 
