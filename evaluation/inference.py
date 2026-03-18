@@ -1,10 +1,12 @@
-import os 
+import os
 import re
 from tqdm import tqdm
 import json
-import sys 
-sys.path.append('/home/david/Desktop/yuna/HPA') 
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
 from utils import clean_logprobs, skip_processed_idx, get_dataset, set_seed, format_prompt
+from dataset.paths import BLANK_IMAGE, LOGITS_DIR
 
 def main(args):
     set_seed()
@@ -62,7 +64,7 @@ def main(args):
                                     temperature=0)
     
     save_name = args.model.split('/')[-1]
-    savedir = args.savedir 
+    savedir = args.savedir or LOGITS_DIR
     if args.lora_path is not None : 
         finetuned = args.lora_path.split('/')[-4] 
         finetuned += args.lora_path.split('/')[-3] 
@@ -96,8 +98,8 @@ def main(args):
                     print('skip ', current_item_id)
                     continue 
             
-            if 'blind' in args.condition: 
-                data['image'] = "/home/david/Desktop/yuna/HPA/dataset/blank_224.png"
+            if 'blind' in args.condition:
+                data['image'] = BLANK_IMAGE
             
             record_id = data.get(current_item_id, 'unknown key') 
             all_fields_successful = True 
@@ -127,16 +129,14 @@ def main(args):
                         all_fields_successful = False
                         break
                     else:
-                        breakpoint()
                         print(f"Error processing {record_id} at {k}: {e}")
                         all_fields_successful = False
                         break
 
                 except Exception as e:
-                    breakpoint()
                     print(f"Error processing {record_id} at {k}: {e}")
                     all_fields_successful = False
-                    break 
+                    break
                 
             if all_fields_successful:
                 print(generated_answers, generated_logits)
@@ -159,7 +159,7 @@ if __name__ == "__main__":
     parser.add_argument("--lora_path", type=str, default=None, help="LoRA Path") 
     parser.add_argument("--dataset", type=str, default="mmstar", help="Dataset name") 
     parser.add_argument('--checkpoint', type=str, default=None, help='Pretrained checkpoint') 
-    parser.add_argument('--savedir', type=str, default="/home/david/Desktop/yuna/HPA/evaluation/logits", help='Save directory of inference') 
+    parser.add_argument('--savedir', type=str, default=None, help='Save directory of inference')
     parser.add_argument("--condition", type=str, default='')
     parser.add_argument("--prompt", type=str, default='')
     

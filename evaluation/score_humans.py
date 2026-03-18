@@ -18,19 +18,8 @@ from typing import Dict, List, Tuple
 from tqdm import tqdm
 from analysis.utils.score import *   
 sys.path.append(str(Path(__file__).parent.parent)) 
-from preprocessing.preprocess import preprocess_pipeline 
-from analysis.utils.vqa import get_vqa_mapper, vqa_accuracy 
-
-CONF_MAP = {
-    'yes': 1.0,
-    'maybe': 0.5,
-    'no': 0.01,
-    '1': 0.05,
-    '2': 0.25,
-    '3': 0.5,
-    '4': 0.75,
-    '5': 1.0
-}
+from preprocessing.preprocess import preprocess_pipeline, CONF_MAP
+from analysis.utils.vqa import get_vqa_mapper, vqa_accuracy
 
 def load_human_results(jsonl_path: str) -> pd.DataFrame: 
     data = []

@@ -5,7 +5,13 @@ import pandas as pd
 import math
 from typing import List , Union, Optional
 
-VQA_ANNOTATIONS_PATH = "/home/david/Desktop/yuna/data/v2_mscoco_val2014_annotations.json"
+import sys
+from pathlib import Path
+if str(Path(__file__).parent.parent.parent) not in sys.path:
+    sys.path.append(str(Path(__file__).parent.parent.parent))
+from dataset.paths import VQA_ANNOT as VQA_ANNOTATIONS_PATH
+
+_vqa_mapper = None
 
 NUMBER_WORDS = {
     "zero": 0,

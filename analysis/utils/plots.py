@@ -34,6 +34,13 @@ def get_family(model_name):
     if 'qwen' in name: return 'Qwen'
     return 'Other'
 
+COLORS = {
+    "mmstar": "#4C72B0",
+    "vqa_1k": "#DD8452",
+    "spubench": "#55A868",
+    "okvqa": "#C44E52",
+    "textvqa": "#8172B3",
+}
 regime_colors = {
     "Pretrained": "#7A7A7A",      # neutral gray
     "SFT-VQA": "#4C72B0",         # muted blue

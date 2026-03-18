@@ -20,6 +20,17 @@ if str(Path(__file__).parent.parent) not in sys.path:
     sys.path.append(str(Path(__file__).parent.parent))
 from dataset.vqav2 import VQADataset
 
+CONF_MAP = {
+    'yes': 1.0,
+    'maybe': 0.5,
+    'no': 0.01,
+    '1': 0.05,
+    '2': 0.25,
+    '3': 0.5,
+    '4': 0.75,
+    '5': 1.0,
+}
+
 def create_train_val_split(
     jsonl_path: str,
     train_ratio: float = 0.9,
@@ -72,126 +83,6 @@ def create_train_val_split(
     print(f"✓ Val: {val_path} ({len(val_examples)} examples, {len(val_qids)} questions)")
     
     return str(train_path), str(val_path)
-
-
-def read_questions(dataset='s1', answer_type='text'): 
-    questions_path = f"/home/work/yuna/HPA/experiments/questions/{dataset}.csv" 
-    questions = []
-    if answer_type == 'text': 
-        vqa_val = VQADataset()
-        vqa_val = vqa_val.get_by_qid() 
-
-    if questions_path.endswith('.csv'):
-        with open(questions_path, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                qid = str(row.get('qid', row.get('question_id', '')))
-                atype = row.get('answer_type', '') 
-                if atype != answer_type: 
-                    continue 
-
-                if answer_type == 'choice': 
-                    answer = row.get('answer', row.get('multiple_choice_answer', ''))
-                    # annot = annotations[qid] 
-                    # annot['answer'] = answer 
-                    ### TODO Load the images for mmstar and mmspu and save into PIL image below 
-                    # questions.append(annot) 
-
-                else: # vqa questions 
-                    questions.append(vqa_val[qid]) 
-    else:
-        with open(questions_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        items = data if isinstance(data, list) else data.get('questions', [])
-        for item in items:
-            qid = str(item.get('qid', item.get('question_id', '')))
-            questions.append({
-                'qid': qid,
-                'question': item.get('question', item.get('question_en', '')),
-                'answer': item.get('answer', ''),
-                'image_id': item.get('image_id', ''),
-                'category': item.get('category', ''),
-            })
-
-    return questions 
-
-# =============================================================================
-# Translation Cache Manager
-# =============================================================================
-
-def clean_korean_from_options(options_str: str) -> str:
-    """
-    Remove Korean text from MC options string.
-    
-    Input: "A: In her hand 그녀의 손에, B: On her shoulder 그녀의 어깨에, ..."
-    Output: "A: In her hand, B: On her shoulder, ..."
-    
-    Also handles list format: ["In her hand 그녀의 손에", "On her shoulder 그녀의 어깨에"]
-    """
-    import re
-    import ast
-    
-    # Korean character pattern
-    korean_pattern = r'[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7A3]+'
-    
-    # Try parsing as list first
-    if options_str.startswith('['):
-        try:
-            options_list = ast.literal_eval(options_str)
-            cleaned = []
-            for opt in options_list:
-                # Remove Korean and extra whitespace
-                cleaned_opt = re.sub(korean_pattern, '', str(opt)).strip()
-                # Clean up multiple spaces
-                cleaned_opt = ' '.join(cleaned_opt.split())
-                cleaned.append(cleaned_opt)
-            return str(cleaned)
-        except:
-            pass
-    
-    # Handle string format "A: text 한글, B: text 한글"
-    cleaned = re.sub(korean_pattern, '', options_str)
-    # Clean up multiple spaces and commas
-    cleaned = re.sub(r'\s+', ' ', cleaned)
-    cleaned = re.sub(r'\s*,\s*', ', ', cleaned)
-    cleaned = cleaned.strip()
-    
-    return cleaned
-
-
-def parse_options_to_list(options_str: str) -> List[str]:
-    """
-    Parse options string to list of option texts (without A:, B:, etc.)
-    
-    Input: "A: Red, B: Blue, C: Green, D: Yellow"
-    Output: ["Red", "Blue", "Green", "Yellow"]
-    
-    Also handles: ["Red", "Blue", "Green", "Yellow"]
-    """
-    import ast
-    import re
-    
-    if not options_str:
-        return []
-    
-    # Try parsing as list
-    if options_str.startswith('['):
-        try:
-            return ast.literal_eval(options_str)
-        except:
-            pass
-    
-    # Parse "A: text, B: text" format
-    options = []
-    # Split by pattern like "A:", "B:", etc.
-    parts = re.split(r'[A-D]:\s*', options_str)
-    for part in parts:
-        part = part.strip().rstrip(',').strip()
-        if part:
-            options.append(part)
-    
-    return options
 
 
 class TranslationCache:

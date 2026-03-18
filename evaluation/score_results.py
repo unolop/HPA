@@ -18,20 +18,21 @@ from collections import defaultdict
 from typing import Dict
 from glob import glob
 
-import sys  
-sys.path.append('/home/david/Desktop/yuna/HPA') 
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+from dataset.paths import SPUBENCH_ANNOT, LOGITS_DIR, SCORED_DIR
 from analysis.utils.score import compute_similarity, get_encoder, extract_mc_choice
-from analysis.utils.vqa import get_vqa_mapper, vqa_accuracy, PostProcessor 
+from analysis.utils.vqa import get_vqa_mapper, vqa_accuracy
+from analysis.utils.preprocess import PostProcessor
 from analysis.utils.preprocess import get_conditions, DATASET_TYPE  
 
 _vqa_mapper = None
 
-def get_spubench(): 
-    # from inference import load_dataset 
-    # spubench = load_dataset("spubench") 
-    with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f: 
-        annot = json.load(f) 
-    return annot 
+def get_spubench():
+    with open(SPUBENCH_ANNOT, 'r', encoding='utf-8') as f:
+        annot = json.load(f)
+    return annot
 
 def score_file(
     encoder, 
@@ -91,7 +92,7 @@ def score_file(
 
         if dataset_type == 'multi-choice':
             if 'answer' not in item.keys(): 
-                qid = item.get('pid', '') ,
+                qid = item.get('pid', '')
                 annot = annotations[qid]
                 item = {**annot, **item} 
                 
@@ -178,15 +179,13 @@ def score_directory(
     skip_existing: bool = True,
     with_similarity: bool = True,
 ) -> pd.DataFrame:
-    # /home/work/yuna/HPA/evaluation/scored/finetuned/Qwen3-VL-8B-Instruct/Qwen3-VL-8B-Instruct_A2_vqa_10_blind_instfold_0 
-    output_dir = f"/home/work/yuna/HPA/evaluation/scored/{input_dir}" 
-    input_dir=f"/home/work/yuna/HPA/evaluation/results/{input_dir}" 
+    output_dir = f"{SCORED_DIR}/{input_dir}"
+    input_dir = f"{LOGITS_DIR}/{input_dir}"
 
     files = sorted(glob(f"{input_dir}/*.jsonl") + glob(f"{input_dir}/*/*/*.jsonl")) + glob(f"{input_dir}/*/*.jsonl")
     
     if not files:
         print(f"❌ No files matching in {input_dir}")
-        breakpoint()
         return pd.DataFrame()
 
     print(f"Found {len(files)} files to score")

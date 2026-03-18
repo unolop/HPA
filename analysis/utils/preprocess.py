@@ -99,44 +99,6 @@ def get_conditions(path, datasets=DATASETS, conditions=CONDITIONS, modelnames=MO
 
     return model_full, dataset, condition
 
-def extract_mc_choice(output: str) -> str:
-    """
-    Extract the predicted answer (A, B, C, D, etc.) from model output.
-    Uses multiple heuristics to find the answer.
-    """
-    if not output:
-        return ""
-    
-    output = output.strip()
-    
-    # Pattern 1: Look for explicit answer statements
-    patterns = [
-        r"(?:the\s+)?(?:correct\s+)?answer\s+is[:\s]*([A-D])",
-        r"(?:the\s+)?(?:correct\s+)?answer[:\s]*([A-D])",
-        r"(?:option\s+)?([A-D])\s+is\s+(?:the\s+)?correct",
-        r"(?:I\s+)?(?:would\s+)?choose\s+(?:option\s+)?([A-D])",
-        r"(?:I\s+)?(?:would\s+)?select\s+(?:option\s+)?([A-D])",
-        r"^([A-D])(?:[:\.\)]|\s|$)",  # Answer at the start
-        r"\n([A-D])(?:[:\.\)]|\s|$)",  # Answer after newline
-        r"(?:Therefore|Thus|So|Hence)[,\s]+(?:the\s+)?(?:answer\s+is\s+)?(?:option\s+)?([A-D])",
-    ]
-    
-    for pattern in patterns:
-        match = re.search(pattern, output, re.IGNORECASE)
-        if match:
-            return match.group(1).upper()
-    
-    # Pattern 2: Look for the last standalone letter A-D
-    matches = re.findall(r'\b([A-D])\b', output)
-    if matches:
-        return matches[-1].upper()
-    
-    # Pattern 3: Check if output is just a single letter
-    if len(output) == 1 and output.upper() in 'ABCD':
-        return output.upper()
-    
-    return ""
-
 def translate_question(client, question):
     prompt = f"""
             You are a precise translation and data-formatting assistant.

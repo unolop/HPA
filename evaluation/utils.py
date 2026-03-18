@@ -1,9 +1,10 @@
-import os 
-import json 
-import torch 
-import random 
-import numpy as np 
+import os
+import json
+import torch
+import random
+import numpy as np
 from datasets import load_dataset
+from dataset.paths import SPUBENCH_ANNOT, VQA_IMAGE_DIR, VQA_1K_CONTROL, VQA_5K_QIDS
  
 
 blind_inst = '\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.'
@@ -63,7 +64,7 @@ def get_dataset(data_name:str ):
     
     elif data_name == "spubench":
         remote_dataset = load_dataset("mmbench/MM-SpuBench", split="train", trust_remote_code=True)
-        with open('/home/work/yuna/HPA/dataset/annotation.json', 'r', encoding='utf-8') as f:
+        with open(SPUBENCH_ANNOT, 'r', encoding='utf-8') as f:
             local_annotations = json.load(f)
         remote_map = {item.get("id", idx): item for idx, item in enumerate(remote_dataset)}
         if isinstance(local_annotations, dict):
@@ -102,11 +103,11 @@ def get_dataset(data_name:str ):
         from dataset.vqav2 import VQADataset_json
         prompt = blind_inst if "inst" in data_name else ''
         
-        if 'control' in data_name: 
+        if 'control' in data_name:
             dataset = VQADataset_json(
                 prompt=prompt,
-                image_dir_path="/home/david/Desktop/yuna/data/val2014",
-                json_path="/home/david/Desktop/yuna/HPA/dataset/vqa/vqa1k_control.jsonl",
+                image_dir_path=VQA_IMAGE_DIR,
+                json_path=VQA_1K_CONTROL,
             )
         else :
             dataset = VQADataset_json(prompt=prompt) 
@@ -115,7 +116,7 @@ def get_dataset(data_name:str ):
         from dataset.vqav2 import VQADataset
         from torch.utils.data import Subset 
 
-        with open('/home/work/yuna/HPA/dataset/s1_qids.json', 'r') as file:
+        with open(VQA_5K_QIDS, 'r') as file:
             qids = json.load(file)
 
         dataset = VQADataset(prompt=prompt, filter_qids=qids) 

@@ -4,8 +4,7 @@ import pandas as pd
 from glob import glob 
 from .preprocess import MODELNAMES  
 
-root_dir = '/home/yuna/workspace/HPA/evaluation/scored'
-root_dir = '/home/david/Desktop/yuna/HPA/evaluation/scored'
+from dataset.paths import SCORED_DIR as root_dir
 
 MODEL_DISPLAY_MAP = {
     # ---------- Humans ----------

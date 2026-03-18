@@ -11,16 +11,6 @@ from aggregate import AnswerAggregator
 from utils import mix_original
 
 
-CONF_MAP = {'yes': 1.0, 
-            'maybe': 0.5, 
-            'no': 0.01, 
-            '1': 0.05,
-            '2': 0.25,
-            '3': 0.5,
-            '4': 0.75,
-            '5': 1.0
-            }
-
 def read_pilot_data(path): 
     '''
     read and normalize pilot data 

@@ -28,25 +28,8 @@ from tqdm import tqdm
 
 # Add parent directory for imports
 sys.path.append(str(Path(__file__).parent.parent))
-from preprocessing.preprocess import normalize_answer, preprocess_pipeline
-
-
-# =============================================================================
-# Configuration
-# =============================================================================
-
-VQA_ANNOTATIONS_PATH = "/home/work/yuna/VLMEval/data/v2_mscoco_val2014_annotations.json"
-
-CONF_MAP = {
-    'yes': 1.0,
-    'maybe': 0.5,
-    'no': 0.01,
-    '1': 0.05,
-    '2': 0.25,
-    '3': 0.5,
-    '4': 0.75,
-    '5': 1.0
-}
+from preprocessing.preprocess import normalize_answer, preprocess_pipeline, CONF_MAP
+from dataset.paths import VQA_ANNOT as VQA_ANNOTATIONS_PATH
 
 
 # =============================================================================
