@@ -37,10 +37,17 @@ SYSTEM_CTL = (
     "(dog->animal, car->vehicle, drink->beverage, shirt->clothing, apple->fruit, "
     "knife->utensil, sofa->furniture, bus->vehicle, cat->animal). "
     "If no clear hypernym exists, use 'object'.\n"
-    "4) subject_ablated: Replace the subject/object noun phrase with 'the object', 'the thing', or 'it' "
-    "while preserving grammatical structure. Do not introduce new entities not in the original question."
-    "(dog->animal, car->vehicle, drink->beverage, shirt->clothing, apple->fruit, etc.).\n"
-    "- subject_ablated: replace subject/object NP with 'the object' or 'it'; preserve syntax; do not add entities."
+    "4) pronominalized: Replace ALL content noun phrases with minimal pronouns. "
+    "Grammar-aware rules:\n"
+    "   - Attribute ('What color is the dog?') → 'What color is it?'\n"
+    "   - Count ('How many cats are there?') → 'How many are there?'; "
+    "('How many cats?') → 'How many?'\n"
+    "   - Location ('Where is the phone?') → 'Where is it?'\n"
+    "   - Action ('What is the man doing?') → 'What is it doing?'\n"
+    "   - Yes/no ('Is the dog affectionate?') → 'Is it affectionate?'\n"
+    "   - Multi-NP ('between the girl and the giraffe') → 'between them'\n"
+    "   Keep ONLY question words, copula, prepositions, predicate/attribute, and pronouns. "
+    "Remove all entity and object names. Use 'it'/'they'/'them' — never 'the object'."
 )
 
 # ── Schemas ────────────────────────────────────────────────────────────────────
@@ -90,9 +97,9 @@ CTL_SCHEMA = {
                     "deictic_removed":   {"type": "string"},
                     "object_removed":    {"type": "string"},
                     "weaker_object":     {"type": "string"},
-                    "subject_ablated":   {"type": "string"}
+                    "pronominalized":     {"type": "string"}
                 },
-                "required": ["deictic_removed","object_removed","weaker_object","subject_ablated"]
+                "required": ["deictic_removed","object_removed","weaker_object","pronominalized"]
             }
         }
     },

@@ -21,7 +21,7 @@ If yes → they are exploiting **linguistic priors / shortcuts** rather than vis
 
 #### 2. Control Type Degradation Curve
 - Plot accuracy/confidence across the 5 variants per model:
-  `question → deictic_removed → object_removed → weaker_object → subject_ablated`
+  `question → deictic_removed → object_removed → weaker_object → pronominalized`
 - Shows *how much linguistic weakening is needed before model breaks*
 - Quantifies shortcut reliance on a single axis
 - One line per model → clean multi-model comparison figure
@@ -209,7 +209,7 @@ VQA v2 is indeed biased toward yes/no and simple attribute questions. The entity
 | A | High confidence + wrong (conf>0.75, acc<0.2) | Overconfident hallucination |
 | B | Answer changes across control variants | Genuine linguistic sensitivity |
 | C | All models give same wrong answer | Shared corpus prior |
-| D | Large accuracy drop: question → subject_ablated | Shortcut-dependent questions |
+| D | Large accuracy drop: question → pronominalized | Shortcut-dependent questions |
 
 ### Sampling Tiers (updated)
 | Tier | Criterion | What it captures |
@@ -217,8 +217,8 @@ VQA v2 is indeed biased toward yes/no and simple attribute questions. The entity
 | A | High confidence + wrong (conf>0.75, acc<0.2) | Overconfident hallucination |
 | B | Answer changes across control variants | Linguistic sensitivity |
 | C | ≥80% of models wrong on baseline | Shared corpus prior (hard questions) |
-| D | Large accuracy drop: question → subject_ablated | Shortcut-dependent questions |
-| E | **Large confidence drop: question → subject_ablated** | Model becomes uncertain when linguistic cues weakened |
+| D | Large accuracy drop: question → pronominalized | Shortcut-dependent questions |
+| E | **Large confidence drop: question → pronominalized** | Model becomes uncertain when linguistic cues weakened |
 
 Tier E is the new addition — captures questions where models lose confidence but may still be correct (or newly wrong). Especially interesting for the calibration analysis.
 
@@ -294,7 +294,8 @@ Tier E is the new addition — captures questions where models lose confidence b
 - Expand related work: NLI shortcut literature, psycholinguistics (System 1/2), LMs as corpus frequency models
 
 #### 2. Control Question Variants (main new contribution)
-- 5 linguistic ablations per question: `question → deictic_removed → object_removed → weaker_object → subject_ablated`
+- 5 linguistic ablations per question: `question → deictic_removed → object_removed → weaker_object → pronominalized`
+  - **Note:** `subject_ablated` replaced with `pronominalized` (grammar-aware pronoun substitution). Re-run GPT extraction and inference with the new prompt in `api/prompts.py`.
 - Degradation curve: accuracy/confidence drop across variants per model
 - Answer consistency score across variants
 - Quantifies shortcut reliance on a continuous axis — not in ACL paper at all
@@ -350,6 +351,7 @@ Tier E is the new addition — captures questions where models lose confidence b
 - [ ] Wait for `llava-v1.6-mistral-7b-hf adaptive_kl-0.5` training to finish (tmux pane 3, ~2d remaining)
 
 ### Short Term — Analysis
+- [ ] Run abstention analysis (see `notes/A1_abstention.md`) — classify blind outputs into abstained/hallucinated_correct/hallucinated_wrong/degenerate; cross-tab with tier and op
 - [ ] Implement degradation curve plot (control_type × accuracy/confidence per model)
 - [ ] Compute ECE and plot reliability diagrams per model × condition
 - [ ] Align human confidence (Likert) with model logprob confidence for comparison
