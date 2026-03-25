@@ -105,14 +105,14 @@ class VQADataset_json(Dataset):
     def __len__(self):
         return len(self.questions) 
 
-    def __getitem__(self, idx): 
-        annot = self.questions[idx] 
-        if 'control' in self.json_path:  
-            for k in annot.keys():  
+    def __getitem__(self, idx):
+        annot = dict(self.questions[idx])
+        if 'control' in self.json_path:
+            for k in self.questions[idx]:
                 if k in ['id', 'image', 'answers'] or 'id' in k:
-                    continue 
-                else: 
-                    annot[k] = f"Question: {annot[k]} Answer the question using a single word or phrase. {self.prompt}\nAnswer:"  
+                    continue
+                if isinstance(self.questions[idx][k], str):
+                    annot[k] = f"Question: {self.questions[idx][k]} Answer the question using a single word or phrase. {self.prompt}\nAnswer:"
  
         image_id = annot.get('image_id')
         if isinstance(image_id, int):
