@@ -1,7 +1,9 @@
-import json 
+import json
+import shutil
 from api.prompts import *
+from api.gpt_utils import call_api, make_batches
 from dataset.vqav2 import VQADataset_json, VQADataset
-from dataset.paths import VQA_IMAGE_DIR, VQA_QUESTIONS, VQA_ANNOT, VQA_1K 
+from dataset.paths import VQA_IMAGE_DIR, VQA_QUESTIONS, VQA_ANNOT, VQA_1K
 
 BATCH_SIZE = 50 
 
@@ -23,8 +25,6 @@ def get_vqa_questions(dataset='VQA_1K'):
     return questions 
 
 def process(questions, mode='CTL', output_path: str = "vqa_extracted.jsonl", batch_size: int = BATCH_SIZE):
-    
-    from gpt_utils import call_api, make_batches 
     output = []
     batches = make_batches(questions, hard_max_items=batch_size) 
 
@@ -55,17 +55,64 @@ def process(questions, mode='CTL', output_path: str = "vqa_extracted.jsonl", bat
             
     return output  
 
-def main(args): 
+def merge_ctl_field(jsonl_path: str, field: str, system: str, schema: dict,
+                    batch_size: int = BATCH_SIZE):
+    """Add a single new control field to an existing JSONL without re-running the others.
 
-    questions = get_vqa_questions() 
-    mode = args.mode  
-    output = process(questions, mode, output_path=f"./dataset/vqa1k_{mode}.jsonl" )   # control semantics 
-    
-    return output 
+    Records that already have `field` are skipped (safe to resume).
+    The original file is backed up as <jsonl_path>.bak before writing.
+    """
+    with open(jsonl_path, encoding="utf-8") as f:
+        records = [json.loads(line) for line in f]
+
+    pending = [r for r in records if field not in r]
+    print(f"{len(pending)} / {len(records)} records need '{field}'")
+    if not pending:
+        print("Nothing to do.")
+        return
+
+    index = {r["question_id"]: r for r in records}
+
+    batches = list(make_batches(pending, hard_max_items=batch_size))
+    done = 0
+    for batch in batches:
+        questions_text = [r["question"] for r in batch]
+        results = call_api(system, schema, f"vqa_ctl_{field}", questions_text)
+        for record, result in zip(batch, results):
+            index[record["question_id"]][field] = result[field]
+        done += len(batch)
+        print(f"  merged {done}/{len(pending)}")
+
+    shutil.copy(jsonl_path, jsonl_path + ".bak")
+    with open(jsonl_path, "w", encoding="utf-8") as f:
+        for r in records:
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    print(f"Written to {jsonl_path}  (backup: {jsonl_path}.bak)")
+
+
+def main(args):
+    mode = args.mode
+
+    if mode == "MERGE_PRONOMINALIZED":
+        merge_ctl_field(
+            jsonl_path="./dataset/vqa/vqa1k_control.jsonl",
+            field="pronominalized",
+            system=SYSTEM_CTL_PRONOMINALIZED,
+            schema=CTL_PRONOMINALIZED_SCHEMA,
+        )
+        return
+
+    questions = get_vqa_questions()
+    output = process(questions, mode, output_path=f"./dataset/vqa1k_{mode}.jsonl")
+    return output
+
 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", type=str, required=True, choices=["SEM", "CTL"], help="Extraction mode: SEM or CTL")
+    parser.add_argument("--mode", type=str, required=True,
+                        choices=["SEM", "CTL", "MERGE_PRONOMINALIZED"],
+                        help="SEM: extract semantics; CTL: extract all 4 control types; "
+                             "MERGE_PRONOMINALIZED: add pronominalized to existing control JSONL")
     args = parser.parse_args()
     main(args)

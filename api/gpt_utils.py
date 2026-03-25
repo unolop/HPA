@@ -22,7 +22,7 @@ def call_api(system: str, schema: dict[str, Any], name: str, questions: list[str
                 ],
                 text={"format": {"type": "json_schema", "name": name, "schema": schema, "strict": True}},
                 temperature=0,
-                seed=42
+                # seed=42
             )
             data = json.loads(resp.output_text)
             results = data.get("results", [])

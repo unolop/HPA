@@ -8,6 +8,59 @@ If yes → they are exploiting **linguistic priors / shortcuts** rather than vis
 
 ---
 
+## Empirical Findings (from preliminary analysis)
+
+Key results from running on actual blind/inst_blind logits — verified numbers, not hypotheses.
+
+### Abstention
+
+Models almost never explicitly refuse under blind condition (0–0.3% hard abstention rate).
+The baked-in "Answer the question using a single word" fully suppresses refusals. The
+meaningful signal is **soft abstention** (11–19%): outputs like "nothing", "none",
+"nowhere", "unanswerable".
+
+Soft abstention collapse rate when given inst instruction:
+- Qwen3-VL-8B: **71.9%** of soft-abstains convert to specific answers under inst
+- LLaVA Mistral: 51.9%
+- LLaVA Vicuna-7b: 28.3%
+- LLaVA 1.5: **17.1%** (barely registers the instruction)
+
+Interpretation: collapse rate ≈ how much a model's hallucination is **instruction-gated**.
+LLaVA 1.5 hallucinates unconditionally; Qwen3 gates hallucination behind permission.
+This is a spectrum worth showing across all 4 models in one figure.
+
+### Blind Output Distribution Biases
+
+Under blind condition (Qwen3-VL-8B, 1K questions):
+- **No bias:** 70% of yes/no answers are "no" (epistemic default = absence)
+- **Zero bias:** 75% of numeric answers are "0" (counting default = none)
+- **Black bias:** "black" dominates color questions at 16% (may reflect training distribution)
+
+Under inst, specific priors activate: "red", "standing", "grass", "apple", "cat" appear
+in top outputs — these are the corpus priors being unlocked.
+
+The yes→"yes" shift under inst is notable (30% "yes" in blind → 55% in inst). Models
+default to negation under uncertainty but default to affirmation when asked to imagine a
+plausible scene.
+
+### Confidence
+
+Models are extremely confident even under blind: **80–90% of outputs have LP > -0.5**.
+This is overconfidence — hallucinated answers produced with near-certainty.
+
+Inst raises confidence further (+0.08 LP uniformly), consistent with prior activation
+producing more committed responses. This undermines any argument that models are "uncertain"
+about their blind answers — they're not.
+
+### Blind vs. Inst Answer Changes
+
+33.6% of answers change between blind and inst conditions (Qwen3-VL-8B). This is a large
+behavioral shift driven by the single instruction sentence. Same-answer rate varies by
+control type: 66% (question) → 75% (subject_ablated). More abstract questions are more
+stable across conditions — makes sense, the entity name creates less of an anchor.
+
+---
+
 ## Analysis Ideas
 
 ### High Priority
@@ -25,12 +78,23 @@ If yes → they are exploiting **linguistic priors / shortcuts** rather than vis
 - Shows *how much linguistic weakening is needed before model breaks*
 - Quantifies shortcut reliance on a single axis
 - One line per model → clean multi-model comparison figure
+- **NOTE (empirical):** Preliminary analysis shows accuracy stays flat or increases from
+  baseline → control variants for LLaVA models. This is likely a scoring regime artifact
+  (10-annotator soft score for baseline vs single-GT for control variants) making it look
+  like control questions are "easier". Fix: use VQAv2 10-annotator GT for ALL control types
+  before plotting. See `notes/data_issues.md §4`.
 
 #### 3. Human vs. Model Comparison
 - Align human confidence ratings (1–5 scale from `dataset/humans/`) with model logprob confidence
 - Humans answering blind → lower confidence + lower accuracy (expected)
 - If models don't show this → strong hallucination/overconfidence signal
 - Could be a key table in the paper
+- **COMPUTED — see `notes/metrics_agreement.md` for full results**
+- Replace Spearman ρ with **Pearson r on per-question difficulty curves** — reviewer-defensible, not lossy
+- Replace AC1 / Spearman heatmap with **ICC(2,1) pairwise** + **Krippendorff α** per group
+- Key numbers: α\_humans=0.554, ICC(2,k)=0.963, Pearson r (blind) 0.50–0.62, r (inst\_blind) 0.51–0.72
+- **New finding:** inst\_blind aligns MORE with human difficulty than blind (Δr up to +0.10 for InternVL)
+  → instruction activates the same world-knowledge prior humans use when imagining a scene
 
 #### 4. Answer Consistency Across Control Variants
 - For the same `question_id`, do models give the same answer across all 5 variants?
@@ -144,7 +208,7 @@ Arguably **no** for AAAI, given:
 - Adding LLM decoder-only from existing VLMs gives you a new axis (VLM vs its own LLM backbone)
 - The AAAI story is about the *phenomenon* across families, not model breadth
 
-If reviewers push on coverage, add Qwen2.5-VL-7B (minimal extra work, already in ms-swift).
+If reviewers push on coverage, add Qwen2.5-VL-7B (minimal extra work, same Qwen family, likely lower risk than InternVL on Titan RTX).
 
 ### LLM Decoder-Only Plan
 Extract the language backbone from existing VLMs for text-only inference:
@@ -155,9 +219,20 @@ Extract the language backbone from existing VLMs for text-only inference:
 | LLaVA 1.6 Vicuna | Vicuna 7B | `lmsys/vicuna-7b-v1.5` |
 | Qwen3-VL 8B | Qwen3 8B | `Qwen/Qwen3-8B` |
 - Already have Qwen3-8B in project (`evaluation/logits/pretrained/`)
+- Implementation note: run these through the same inference pipeline, but pass `None` / no image to the model path instead of the blank image. If the current code does not support this cleanly, add a decoder-only code path rather than reusing the blank-image branch.
+- Keep the prompt template as close as possible to the VLM prompt, only removing image tokens / image preprocessing.
 - Lets you ask: does the VLM perform *better or worse* than its own LLM backbone on blind VQA?
 - If VLM > LLM backbone blind → vision encoder somehow leaks text bias
 - If VLM ≈ LLM backbone blind → behavior is purely from LLM component
+
+### Online Availability Check
+- Hugging Face pages exist for:
+  - `Qwen/Qwen3-8B`
+  - `lmsys/vicuna-7b-v1.5`
+  - `mistralai/Mistral-7B-Instruct-v0.2`
+  - `Qwen/Qwen2.5-VL-7B-Instruct`
+  - `microsoft/Phi-3.5-vision-instruct`
+- ms-swift currently advertises support for Qwen3, Mistral, Qwen3-VL, and Llava at the repo level, so the Qwen/Vicuna/Mistral plan is lower-risk than introducing a less-certain family just for replacement.
 
 ---
 
@@ -295,7 +370,8 @@ Tier E is the new addition — captures questions where models lose confidence b
 
 #### 2. Control Question Variants (main new contribution)
 - 5 linguistic ablations per question: `question → deictic_removed → object_removed → weaker_object → pronominalized`
-  - **Note:** `subject_ablated` replaced with `pronominalized` (grammar-aware pronoun substitution). Re-run GPT extraction and inference with the new prompt in `api/prompts.py`.
+  - **Note:** `subject_ablated` replaced with `pronominalized` (grammar-aware pronoun substitution). Re-run with `python -m api.extract_vqa --mode MERGE_PRONOMINALIZED` — merges only the new field into existing `vqa1k_control.jsonl`.
+- **Future: `negated` control type** — negate yes/no and existence questions ("Is there a cat?" → "Is there no cat?"). Applies to ~25–30% of VQA. Orthogonal to the lexical degradation axis — best as a separate logical consistency analysis rather than a 6th step in the degradation curve. If models give the same answer to a question and its negation → pure pattern matching, not logical reasoning.
 - Degradation curve: accuracy/confidence drop across variants per model
 - Answer consistency score across variants
 - Quantifies shortcut reliance on a continuous axis — not in ACL paper at all
@@ -348,11 +424,21 @@ Tier E is the new addition — captures questions where models lose confidence b
 ### Immediate
 - [x] Fill in `meta_review.md` with reviewer feedback ✓
 - [ ] Run confidence/VQA accuracy analysis in `confidence.ipynb` (cells added, needs execution)
+  - **Known empirical result (Qwen3-VL-8B):** Blind mean LP = -0.258, Inst mean LP = -0.177
+  - Inst raises confidence uniformly +0.08 across all control types — "permission raises certainty"
+  - 80–90% of blind outputs have LP > -0.5 (extremely high confidence despite blank image)
+  - Hard abstentions have LP = -0.37 vs -0.26 for answered outputs — small but correct direction
 - [ ] Wait for `llava-v1.6-mistral-7b-hf adaptive_kl-0.5` training to finish (tmux pane 3, ~2d remaining)
 
 ### Short Term — Analysis
-- [ ] Run abstention analysis (see `notes/A1_abstention.md`) — classify blind outputs into abstained/hallucinated_correct/hallucinated_wrong/degenerate; cross-tab with tier and op
+- [ ] Run abstention analysis (see `notes/A1_abstention.md`) — use revised 4-class taxonomy:
+  hard_abstained / soft_abstained / hallucinated_correct / hallucinated_wrong; cross-tab with tier and op
+  - Hard abstention rate is near-zero (0–0.3%) due to baked-in "Answer using a single word" instruction
+  - Soft abstention (nothing/none/nowhere) is the real signal: 11–19% depending on model
+  - Fix regex: use `\bblank\b` not `blank` to avoid "blanket" false positives
 - [ ] Implement degradation curve plot (control_type × accuracy/confidence per model)
+  - Must use unified scoring: VQAv2 10-annotator soft accuracy for ALL control types (see data_issues.md §4)
+  - Current scoring regime mismatch makes curve look flat/inverted — fix before plotting
 - [ ] Compute ECE and plot reliability diagrams per model × condition
 - [ ] Align human confidence (Likert) with model logprob confidence for comparison
 - [ ] Compute answer consistency score across 5 control variants per question

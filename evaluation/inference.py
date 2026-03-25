@@ -49,7 +49,11 @@ def main(args):
     model = args.model
     template_type = None  # None: use the default template_type of the corresponding model
     default_system = None  # None: use the default system prompt of the corresponding model
-    model, tokenizer = get_model_tokenizer(model, use_hf=True) #, max_pixels=448) 
+    # When overriding attn_impl, also pass use_flash_attn=False for models like InternVL
+    # whose __init__ hardcodes flash attn regardless of config (e.g. InternVLChatModel)
+    extra_model_kwargs = {'use_flash_attn': False} if args.attn_impl and args.attn_impl != 'flash_attn' else {}
+    model, tokenizer = get_model_tokenizer(model, use_hf=True, attn_impl=args.attn_impl,
+                                           model_kwargs=extra_model_kwargs) #, max_pixels=448)
     if args.lora_path is not None:
         lora_checkpoint = safe_snapshot_download(args.lora_path)  # Change to your checkpoint_dir
         model = Swift.from_pretrained(model, lora_checkpoint)
@@ -73,37 +77,78 @@ def main(args):
     else: 
         savedir += '/pretrained'     
 
-    output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}.jsonl" 
-    dataset = get_dataset(f"{args.dataset}{args.condition}") 
-    processed_ids = set() 
-    try: 
+    output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}.jsonl"
+    dataset = get_dataset(f"{args.dataset}{args.condition}")
+
+    # Which control-type keys to run (None = all string fields, as before)
+    control_types = [k.strip() for k in args.control_types.split(',')] if args.control_types else None
+
+    # --fill_missing: load existing records, only re-run keys absent from generated_answers
+    existing_records = {}  # qid -> record (used in fill_missing mode)
+    if args.fill_missing and os.path.exists(output_jsonl_path):
+        with open(output_jsonl_path, encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    try:
+                        rec = json.loads(line)
+                        qid = rec.get('question_id', rec.get('qid', rec.get('idx')))
+                        if qid is not None:
+                            existing_records[qid] = rec
+                    except json.JSONDecodeError:
+                        continue
+        print(f"fill_missing mode: loaded {len(existing_records)} existing records from {output_jsonl_path}")
+
+    processed_ids = set()
+    try:
         processed_ids, current_item_id = skip_processed_idx(
             existing_keys=dataset[0].keys(), output_jsonl_path=output_jsonl_path
-            )
-    except Exception as e: 
+        )
+    except Exception as e:
         print('cannot process the key', e)
-    write_mode = 'a' if args.resume else 'w'  
+
+    # fill_missing rewrites the whole file; otherwise append or overwrite
+    write_mode = 'w' if args.fill_missing else ('a' if args.resume else 'w')
 
     os.makedirs(os.path.dirname(output_jsonl_path), exist_ok=True)
 
     with open(output_jsonl_path, write_mode, encoding='utf-8') as f:
-        
-        for i, data in enumerate(tqdm(dataset)): 
-            data['pid'] = i 
-            generated_answers = {}
-            generated_logits = {}
 
-            if processed_ids is not None: 
-                if data[current_item_id] in processed_ids:
-                    print('skip ', current_item_id)
-                    continue 
-            
+        for i, data in enumerate(tqdm(dataset)):
+            data['pid'] = i
+            qid = data.get('question_id', data.get('qid', data.get('idx', i)))
+
+            if args.fill_missing:
+                # Determine which keys are still missing for this record
+                existing = existing_records.get(qid, {})
+                already_done = set((existing.get('generated_answers') or {}).keys())
+                keys_needed = control_types if control_types else None
+                if keys_needed is not None:
+                    keys_needed = [k for k in keys_needed if k not in already_done]
+                    if not keys_needed:
+                        # All requested keys already present — write existing record unchanged
+                        f.write(json.dumps(existing, ensure_ascii=False) + '\n')
+                        f.flush()
+                        continue
+                # Merge: start from existing record so we preserve all previous outputs
+                data = {**data, **(existing or {})}
+                generated_answers = dict(existing.get('generated_answers') or {})
+                generated_logits = dict(existing.get('generated_logits') or {})
+            else:
+                if processed_ids is not None:
+                    if data[current_item_id] in processed_ids:
+                        print('skip ', current_item_id)
+                        continue
+                generated_answers = {}
+                generated_logits = {}
+                keys_needed = control_types  # None means all
+
             if 'blind' in args.condition:
                 data['image'] = BLANK_IMAGE
-            
-            record_id = data.get(current_item_id, 'unknown key') 
-            all_fields_successful = True 
-            
+
+            record_id = data.get(current_item_id, 'unknown key')
+            all_fields_successful = True
+
             for k, v in data.items():
                 if k in ['id', 'image', 'answers', 'generated_answers', 'generated_logits']:
                     continue
@@ -111,17 +156,20 @@ def main(args):
                     continue
                 if not isinstance(v, str):
                     continue
+                # Skip keys not in the requested control_types filter
+                if keys_needed is not None and k not in keys_needed:
+                    continue
 
-                prompt = format_prompt(data, k, args.dataset, args.condition) 
+                prompt = format_prompt(data, k, args.dataset, args.condition)
                 try:
                     output_text, logprobs_data = get_output(args, data, prompt)
-                    generated_logits[k] = clean_logprobs(logprobs_data) 
-                    generated_answers[k] = output_text  
+                    generated_logits[k] = clean_logprobs(logprobs_data)
+                    generated_answers[k] = output_text
 
                 except MemoryError as e:
                     print(f"OOM error processing {record_id} at {k}: {e}")
                     all_fields_successful = False
-                    break  # skip this record
+                    break
 
                 except RuntimeError as e:
                     if "out of memory" in str(e).lower():
@@ -137,12 +185,12 @@ def main(args):
                     print(f"Error processing {record_id} at {k}: {e}")
                     all_fields_successful = False
                     break
-                
+
             if all_fields_successful:
                 print(generated_answers, generated_logits)
-                data['generated_answers'] = generated_answers 
-                data['generated_logits'] = generated_logits 
-                f.write(json.dumps(data, ensure_ascii=False) + '\n') 
+                data['generated_answers'] = generated_answers
+                data['generated_logits'] = generated_logits
+                f.write(json.dumps(data, ensure_ascii=False) + '\n')
                 f.flush()
             else:
                 print(f"Skipping saving record {record_id} due to previous error.")  
@@ -162,6 +210,14 @@ if __name__ == "__main__":
     parser.add_argument('--savedir', type=str, default=None, help='Save directory of inference')
     parser.add_argument("--condition", type=str, default='')
     parser.add_argument("--prompt", type=str, default='')
+    parser.add_argument("--control_types", type=str, default=None,
+                        help="Comma-separated control key(s) to run, e.g. 'pronominalized' "
+                             "(default: all string fields)")
+    parser.add_argument("--attn_impl", type=str, default=None,
+                        help="Attention implementation override, e.g. 'eager', 'sdpa', 'flash_attn'")
+    parser.add_argument("--fill_missing", action="store_true",
+                        help="Load existing output and only run keys absent from generated_answers; "
+                             "rewrites the file with merged results")
     
     args = parser.parse_args() 
     main(args) 

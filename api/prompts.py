@@ -50,6 +50,23 @@ SYSTEM_CTL = (
     "Remove all entity and object names. Use 'it'/'they'/'them' — never 'the object'."
 )
 
+SYSTEM_CTL_PRONOMINALIZED = (
+    "Generate the pronominalized variant for each VQA question. "
+    "Return ONLY a JSON object {\"results\":[...]}; preserve input order.\n"
+    "Rule:\n"
+    "pronominalized: Replace ALL content noun phrases with minimal pronouns. "
+    "Grammar-aware rules:\n"
+    "   - Attribute ('What color is the dog?') → 'What color is it?'\n"
+    "   - Count ('How many cats are there?') → 'How many are there?'; "
+    "('How many cats?') → 'How many?'\n"
+    "   - Location ('Where is the phone?') → 'Where is it?'\n"
+    "   - Action ('What is the man doing?') → 'What is it doing?'\n"
+    "   - Yes/no ('Is the dog affectionate?') → 'Is it affectionate?'\n"
+    "   - Multi-NP ('between the girl and the giraffe') → 'between them'\n"
+    "   Keep ONLY question words, copula, prepositions, predicate/attribute, and pronouns. "
+    "Remove all entity and object names. Use 'it'/'they'/'them' — never 'the object'."
+)
+
 # ── Schemas ────────────────────────────────────────────────────────────────────
 
 SEM_SCHEMA = {
@@ -78,6 +95,25 @@ SEM_SCHEMA = {
                     "txt":   {"type": "boolean"}, 
                 },
                 "required": ["w","op","p","sub","obj","ent","attr","ans","space","sp","rel","dx","neg","know","txt","q"]
+            }
+        }
+    },
+    "required": ["results"],
+    "additionalProperties": False
+}
+
+CTL_PRONOMINALIZED_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "results": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "pronominalized": {"type": "string"}
+                },
+                "required": ["pronominalized"]
             }
         }
     },
