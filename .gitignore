@@ -48,3 +48,8 @@ data/translation_cache.json
 # OS
 .DS_Store
 Thumbs.db 
+# generated eval outputs
+evaluation/logits/
+
+# generated eval outputs
+evaluation/logits/

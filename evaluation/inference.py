@@ -5,6 +5,20 @@ import json
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
+
+# Bypass torch CVE-2025-32434 check so .bin weight files (e.g. vicuna-13b)
+# can be loaded. Safe for trusted HuggingFace checkpoints on a local machine.
+def _noop(): pass
+try:
+    import transformers.utils.import_utils as _tu
+    _tu.check_torch_load_is_safe = _noop
+except Exception:
+    pass
+try:
+    import transformers.modeling_utils as _mu
+    _mu.check_torch_load_is_safe = _noop
+except Exception:
+    pass
 from utils import clean_logprobs, skip_processed_idx, get_dataset, set_seed, format_prompt
 from dataset.paths import BLANK_IMAGE, LOGITS_DIR
 
@@ -47,20 +61,27 @@ def main(args):
         return output_text, response.logprobs  
     
     model = args.model
-    template_type = None  # None: use the default template_type of the corresponding model
+    template_type = args.template_type  # None: use the default for the model; 'qwen3_nothinking' to disable thinking
     default_system = None  # None: use the default system prompt of the corresponding model
     # When overriding attn_impl, also pass use_flash_attn=False for models like InternVL
     # whose __init__ hardcodes flash attn regardless of config (e.g. InternVLChatModel)
     extra_model_kwargs = {'use_flash_attn': False} if args.attn_impl and args.attn_impl != 'flash_attn' else {}
     model, tokenizer = get_model_tokenizer(model, use_hf=True, attn_impl=args.attn_impl,
-                                           model_kwargs=extra_model_kwargs) #, max_pixels=448)
+                                           model_kwargs=extra_model_kwargs,
+                                           model_type=args.swift_model_type) #, max_pixels=448)
     if args.lora_path is not None:
         lora_checkpoint = safe_snapshot_download(args.lora_path)  # Change to your checkpoint_dir
         model = Swift.from_pretrained(model, lora_checkpoint)
         
     model.eval()
-    template_type = template_type or model.model_meta.template
-    template = get_template(template_type, tokenizer, default_system=default_system)
+    enable_thinking = None
+    if args.template_type == 'qwen3_nothinking':
+        template_type = 'qwen3'  # use the thinking-capable template
+        enable_thinking = False  # but suppress thinking via empty <think></think> prefix
+    else:
+        template_type = template_type or model.model_meta.template
+    template = get_template(template_type, tokenizer, default_system=default_system,
+                            enable_thinking=enable_thinking)
     engine = PtEngine.from_model_template(model, template, max_batch_size=1)
     request_config = RequestConfig( max_tokens=args.max_token_length,                         
                                     logprobs=True,
@@ -107,6 +128,17 @@ def main(args):
     except Exception as e:
         print('cannot process the key', e)
 
+    # Safety guard: --control_types without --fill_missing overwrites the existing file,
+    # destroying any CTs already present. Warn loudly so this is never done by accident.
+    if control_types and not args.fill_missing and not args.resume and os.path.exists(output_jsonl_path):
+        existing_size = sum(1 for _ in open(output_jsonl_path, encoding='utf-8') if _.strip())
+        if existing_size > 0:
+            print(f"\n⚠️  WARNING: --control_types is set but --fill_missing is not.")
+            print(f"   Output file already has {existing_size} records: {output_jsonl_path}")
+            print(f"   Running without --fill_missing will OVERWRITE and lose existing CTs.")
+            print(f"   Add --fill_missing to merge, or --resume to append. Aborting.\n")
+            sys.exit(1)
+
     # fill_missing rewrites the whole file; otherwise append or overwrite
     write_mode = 'w' if args.fill_missing else ('a' if args.resume else 'w')
 
@@ -130,8 +162,10 @@ def main(args):
                         f.write(json.dumps(existing, ensure_ascii=False) + '\n')
                         f.flush()
                         continue
-                # Merge: start from existing record so we preserve all previous outputs
-                data = {**data, **(existing or {})}
+                # Keep fresh data (properly formatted CT fields from VQADataset_json),
+                # only carry over prior inference results from existing record.
+                # Do NOT merge existing CT text fields — they may be bare text from
+                # older runs and would overwrite the correctly-wrapped fresh data.
                 generated_answers = dict(existing.get('generated_answers') or {})
                 generated_logits = dict(existing.get('generated_logits') or {})
             else:
@@ -213,8 +247,14 @@ if __name__ == "__main__":
     parser.add_argument("--control_types", type=str, default=None,
                         help="Comma-separated control key(s) to run, e.g. 'pronominalized' "
                              "(default: all string fields)")
+    parser.add_argument("--template_type", type=str, default=None,
+                        help="Override swift template type, e.g. 'qwen3_nothinking' to disable "
+                             "chain-of-thought for Qwen3 backbone models")
     parser.add_argument("--attn_impl", type=str, default=None,
                         help="Attention implementation override, e.g. 'eager', 'sdpa', 'flash_attn'")
+    parser.add_argument("--swift_model_type", type=str, default=None,
+                        help="Swift model_type override for models swift can't auto-detect, "
+                             "e.g. 'llama' for vicuna, 'mistral' for Mistral-7B")
     parser.add_argument("--fill_missing", action="store_true",
                         help="Load existing output and only run keys absent from generated_answers; "
                              "rewrites the file with merged results")

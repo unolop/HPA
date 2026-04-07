@@ -1,0 +1,1752 @@
+[
+  {
+    "QID": 572477006,
+    "question": "What is this action called?",
+    "question_kr": "이 동작을 무엇이라고 하나요?"
+  },
+  {
+    "QID": 374111001,
+    "question": "Are the chips fresh?",
+    "question_kr": "칩이 신선합니까?"
+  },
+  {
+    "QID": 430160024,
+    "question": "How many sliced bananas are in the photo?",
+    "question_kr": "사진에는 얇게 썬 바나나가 몇 개 있나요?"
+  },
+  {
+    "QID": 128034004,
+    "question": "Do these look like school buses?",
+    "question_kr": "이게 스쿨버스처럼 보이나요?"
+  },
+  {
+    "QID": 282847003,
+    "question": "IS this outside?",
+    "question_kr": "여기가 바깥인가요?"
+  },
+  {
+    "QID": 287305007,
+    "question": "What bank is in the background?",
+    "question_kr": "뒤에 무슨 은행이 있나요?"
+  },
+  {
+    "QID": 126592007,
+    "question": "What road is nearby?",
+    "question_kr": "근처에 어떤 도로가 있나요?"
+  },
+  {
+    "QID": 504811002,
+    "question": "What type of plane is this?",
+    "question_kr": "이것은 어떤 종류의 비행기인가요?"
+  },
+  {
+    "QID": 574057007,
+    "question": "What is outside the window?",
+    "question_kr": "창밖에는 무엇이 있나요?"
+  },
+  {
+    "QID": 374677000,
+    "question": "Is this a flower native to North America?",
+    "question_kr": "이것은 북미가 원산지인 꽃인가요?"
+  },
+  {
+    "QID": 486194003,
+    "question": "Is this girl eating a cookie?",
+    "question_kr": "이 소녀는 쿠키를 먹고 있나요?"
+  },
+  {
+    "QID": 94823002,
+    "question": "Where is the dog?",
+    "question_kr": "개는 어디에 있나요?"
+  },
+  {
+    "QID": 322955002,
+    "question": "Is it daylight?",
+    "question_kr": "일광인가요?"
+  },
+  {
+    "QID": 97230007,
+    "question": "Is there a baby elephant in this picture?",
+    "question_kr": "이 사진에 아기 코끼리가 있나요?"
+  },
+  {
+    "QID": 339245004,
+    "question": "Are they outside?",
+    "question_kr": "밖에 있나요?"
+  },
+  {
+    "QID": 237263001,
+    "question": "What is the table made of?",
+    "question_kr": "테이블은 무엇으로 만들어졌나요?"
+  },
+  {
+    "QID": 494014002,
+    "question": "Is this a Chinese McDonalds?",
+    "question_kr": "중국 맥도날드인가요?"
+  },
+  {
+    "QID": 96638002,
+    "question": "Are there people in the background?",
+    "question_kr": "배경에 사람이 있나요?"
+  },
+  {
+    "QID": 164330007,
+    "question": "Do these people need refills?",
+    "question_kr": "이 사람들에게는 리필이 필요합니까?"
+  },
+  {
+    "QID": 76866001,
+    "question": "How many stripes does the zebra have?",
+    "question_kr": "얼룩말의 줄무늬는 몇 개입니까?"
+  },
+  {
+    "QID": 254732011,
+    "question": "How many planes are in the air?",
+    "question_kr": "얼마나 많은 비행기가 공중에 있습니까?"
+  },
+  {
+    "QID": 136140000,
+    "question": "Who is wearing glasses?",
+    "question_kr": "안경을 쓴 사람은 누구입니까?"
+  },
+  {
+    "QID": 367452003,
+    "question": "What time is it?",
+    "question_kr": "지금은 몇시입니까?"
+  },
+  {
+    "QID": 23201004,
+    "question": "What country are they in?",
+    "question_kr": "그들은 어느 나라에 있나요?"
+  },
+  {
+    "QID": 500100006,
+    "question": "How can you tell the people are outside?",
+    "question_kr": "사람들이 밖에 있다는 것을 어떻게 알 수 있나요?"
+  },
+  {
+    "QID": 55772003,
+    "question": "What is on the plate?",
+    "question_kr": "접시 위에는 무엇이 있나요?"
+  },
+  {
+    "QID": 279499001,
+    "question": "What number is on the bus?",
+    "question_kr": "버스에 어떤 번호가 있나요?"
+  },
+  {
+    "QID": 282046012,
+    "question": "Is the sand wet?",
+    "question_kr": "모래가 젖어 있나요?"
+  },
+  {
+    "QID": 534252001,
+    "question": "What is the dog looking at?",
+    "question_kr": "개는 무엇을 보고 있나요?"
+  },
+  {
+    "QID": 415880001,
+    "question": "Is that a new car?",
+    "question_kr": "그거 새 차야?"
+  },
+  {
+    "QID": 345711000,
+    "question": "Which direction is E 42 St?",
+    "question_kr": "E 42 St는 어느 방향인가요?"
+  },
+  {
+    "QID": 229150001,
+    "question": "Is it daytime?",
+    "question_kr": "낮인가요?"
+  },
+  {
+    "QID": 167602000,
+    "question": "Is that toy dirty?",
+    "question_kr": "그 장난감이 더러운가요?"
+  },
+  {
+    "QID": 343481000,
+    "question": "Are these sheep in a box?",
+    "question_kr": "이 양들은 상자 안에 있나요?"
+  },
+  {
+    "QID": 51576002,
+    "question": "Could that be a waterhole?",
+    "question_kr": "물웅덩이가 아닐까?"
+  },
+  {
+    "QID": 163280011,
+    "question": "What are they researching?",
+    "question_kr": "그들은 무엇을 연구하고 있나요?"
+  },
+  {
+    "QID": 252986000,
+    "question": "Where is the bench?",
+    "question_kr": "벤치는 어디에 있나요?"
+  },
+  {
+    "QID": 72096002,
+    "question": "What part of the tablecloth flowers do the napkins match?",
+    "question_kr": "냅킨은 식탁보 꽃의 어떤 부분과 일치합니까?"
+  },
+  {
+    "QID": 304044004,
+    "question": "Where is the school bus going?",
+    "question_kr": "스쿨버스는 어디로 가나요?"
+  },
+  {
+    "QID": 142919007,
+    "question": "What is the green vegetable on the pizza?",
+    "question_kr": "피자에 있는 녹색 야채는 무엇입니까?"
+  },
+  {
+    "QID": 460927006,
+    "question": "Could this animal be someone's pet?",
+    "question_kr": "이 동물이 누군가의 애완동물이 될 수 있을까요?"
+  },
+  {
+    "QID": 378169005,
+    "question": "What accessory does the man wear?",
+    "question_kr": "남자는 어떤 액세서리를 착용합니까?"
+  },
+  {
+    "QID": 218183000,
+    "question": "What type of bread does this appear to be?",
+    "question_kr": "이건 무슨 빵인 것 같나요?"
+  },
+  {
+    "QID": 537701022,
+    "question": "Does this man's tie match the background?",
+    "question_kr": "이 남자의 넥타이가 배경과 어울리나요?"
+  },
+  {
+    "QID": 174043000,
+    "question": "What does the sign say that has the picture of a bike on it?",
+    "question_kr": "자전거 그림이 있는 표지판에는 무엇이라고 적혀 있나요?"
+  },
+  {
+    "QID": 146358002,
+    "question": "What event has taken place?",
+    "question_kr": "어떤 사건이 일어났나요?"
+  },
+  {
+    "QID": 427135026,
+    "question": "What is in the man's hand?",
+    "question_kr": "남자의 손에 무엇이 있습니까?"
+  },
+  {
+    "QID": 323375001,
+    "question": "Is this a scene in Africa?",
+    "question_kr": "아프리카의 한 장면인가요?"
+  },
+  {
+    "QID": 88455004,
+    "question": "What does the person in the image appear like?",
+    "question_kr": "이미지 속 인물은 어떤 모습인가요?"
+  },
+  {
+    "QID": 575018002,
+    "question": "What type of food is on the counter?",
+    "question_kr": "카운터에는 어떤 종류의 음식이 있나요?"
+  },
+  {
+    "QID": 234779002,
+    "question": "Is this bread toasted or fresh?",
+    "question_kr": "이 빵은 구운 빵인가요, 아니면 신선한 빵인가요?"
+  },
+  {
+    "QID": 7888000,
+    "question": "What is the time on the clock?",
+    "question_kr": "시계는 몇 시입니까?"
+  },
+  {
+    "QID": 191425018,
+    "question": "How many of the birds are flying?",
+    "question_kr": "얼마나 많은 새들이 날고 있나요?"
+  },
+  {
+    "QID": 455219002,
+    "question": "How many animals are there?",
+    "question_kr": "동물은 몇 마리나 있나요?"
+  },
+  {
+    "QID": 289630003,
+    "question": "What does the graffiti say?",
+    "question_kr": "낙서는 무엇을 말하나요?"
+  },
+  {
+    "QID": 333504002,
+    "question": "Is this a lighthouse?",
+    "question_kr": "이것은 등대입니까?"
+  },
+  {
+    "QID": 6783001,
+    "question": "Why is the guy in the sky?",
+    "question_kr": "그 사람은 왜 하늘에 있는 걸까요?"
+  },
+  {
+    "QID": 296521005,
+    "question": "What color is the front of the train?",
+    "question_kr": "기차 앞부분은 무슨 색인가요?"
+  },
+  {
+    "QID": 87052017,
+    "question": "What is the woman wearing on top?",
+    "question_kr": "여자는 위에 무엇을 입고 있나요?"
+  },
+  {
+    "QID": 69959003,
+    "question": "What color is the dog?",
+    "question_kr": "개는 무슨 색인가요?"
+  },
+  {
+    "QID": 489728002,
+    "question": "Is hellsing the same character as Van Helsing?",
+    "question_kr": "헬싱은 반 헬싱과 같은 캐릭터인가요?"
+  },
+  {
+    "QID": 343213005,
+    "question": "What direction does the arrow on the sign point toward?",
+    "question_kr": "표지판의 화살표가 가리키는 방향은 무엇입니까?"
+  },
+  {
+    "QID": 318998002,
+    "question": "Is he standing in another boat?",
+    "question_kr": "그는 다른 배에 서 있습니까?"
+  },
+  {
+    "QID": 493206001,
+    "question": "What vegetable is present in this food?",
+    "question_kr": "이 음식에는 어떤 야채가 들어있나요?"
+  },
+  {
+    "QID": 486576004,
+    "question": "Is that a man or woman looking at the screen?",
+    "question_kr": "화면을 보고 있는 사람은 남자인가요, 여자인가요?"
+  },
+  {
+    "QID": 404437001,
+    "question": "Could the bear be tame?",
+    "question_kr": "곰이 길들여질 수 있을까요?"
+  },
+  {
+    "QID": 235126002,
+    "question": "What is the weather like?",
+    "question_kr": "날씨는 어떤가요?"
+  },
+  {
+    "QID": 102461000,
+    "question": "Could this be for \"crowd control\"?",
+    "question_kr": "이것이 \"군중 통제\"를 위한 것일 수 있습니까?"
+  },
+  {
+    "QID": 310902001,
+    "question": "What colors are the train?",
+    "question_kr": "기차는 무슨 색깔인가요?"
+  },
+  {
+    "QID": 56684001,
+    "question": "Does this dessert look healthy?",
+    "question_kr": "이 디저트가 건강해 보이나요?"
+  },
+  {
+    "QID": 506471002,
+    "question": "Are these bikes Harleys?",
+    "question_kr": "이 자전거는 Harleys인가요?"
+  },
+  {
+    "QID": 490280012,
+    "question": "Who is in the photo?",
+    "question_kr": "사진 속 인물은 누구인가요?"
+  },
+  {
+    "QID": 126766004,
+    "question": "Are the animals eating exactly the same food they would in the wild?",
+    "question_kr": "동물들은 야생에서 먹는 것과 똑같은 음식을 먹나요?"
+  },
+  {
+    "QID": 161163004,
+    "question": "How many towels?",
+    "question_kr": "수건은 몇 장입니까?"
+  },
+  {
+    "QID": 201426002,
+    "question": "How many kids are here?",
+    "question_kr": "여기 아이들이 몇 명이나 있나요?"
+  },
+  {
+    "QID": 321217002,
+    "question": "Do you see the sea?",
+    "question_kr": "바다가 보이나요?"
+  },
+  {
+    "QID": 150410000,
+    "question": "What material is the plane's propeller?",
+    "question_kr": "비행기의 프로펠러는 어떤 재료인가요?"
+  },
+  {
+    "QID": 62549003,
+    "question": "Is the bird being fed by a human?",
+    "question_kr": "새가 사람에게 먹이를 받고 있는 걸까요?"
+  },
+  {
+    "QID": 425447005,
+    "question": "How many taillights does the truck have?",
+    "question_kr": "트럭에 미등이 몇 개 있나요?"
+  },
+  {
+    "QID": 147309005,
+    "question": "Is this a fancy desert?",
+    "question_kr": "여기가 멋진 사막인가요?"
+  },
+  {
+    "QID": 26398004,
+    "question": "What kind of food is this?",
+    "question_kr": "이건 무슨 음식인가요?"
+  },
+  {
+    "QID": 55810002,
+    "question": "How many earrings does the man have?",
+    "question_kr": "남자는 귀걸이를 몇 개 가지고 있나요?"
+  },
+  {
+    "QID": 278601001,
+    "question": "Is the company that made this truck still in business?",
+    "question_kr": "이 트럭을 만든 회사가 아직도 사업을 하고 있나요?"
+  },
+  {
+    "QID": 418297001,
+    "question": "Is a real bird on the tower?",
+    "question_kr": "탑 위에 진짜 새가 있나요?"
+  },
+  {
+    "QID": 133933006,
+    "question": "Is this someone's house?",
+    "question_kr": "여기가 누군가의 집인가요?"
+  },
+  {
+    "QID": 47837003,
+    "question": "How many people are wearing glasses?",
+    "question_kr": "안경을 쓰고 있는 사람은 몇 명입니까?"
+  },
+  {
+    "QID": 512339000,
+    "question": "Where are the bananas?",
+    "question_kr": "바나나는 어디에 있나요?"
+  },
+  {
+    "QID": 170017000,
+    "question": "What is the block number listed on the sign?",
+    "question_kr": "표지판에 표시된 블록 번호는 무엇입니까?"
+  },
+  {
+    "QID": 437221004,
+    "question": "What is written on the picture?",
+    "question_kr": "그림에는 무엇이 적혀 있나요?"
+  },
+  {
+    "QID": 180013000,
+    "question": "How many red trucks are there?",
+    "question_kr": "빨간 트럭이 몇 대 있나요?"
+  },
+  {
+    "QID": 157789005,
+    "question": "Are there mushrooms in this dish?",
+    "question_kr": "이 요리에 버섯이 들어있나요?"
+  },
+  {
+    "QID": 162113001,
+    "question": "What is the color of the stove?",
+    "question_kr": "난로의 색깔은 무엇입니까?"
+  },
+  {
+    "QID": 214224018,
+    "question": "What is the brand name?",
+    "question_kr": "브랜드 이름은 무엇입니까?"
+  },
+  {
+    "QID": 314356019,
+    "question": "What is he flying?",
+    "question_kr": "그는 무엇을 날고 있습니까?"
+  },
+  {
+    "QID": 268215000,
+    "question": "What vegetable is lining the dish?",
+    "question_kr": "접시에 어떤 야채가 들어있나요?"
+  },
+  {
+    "QID": 209856000,
+    "question": "Where is the salad?",
+    "question_kr": "샐러드는 어디에 있나요?"
+  },
+  {
+    "QID": 224595001,
+    "question": "Is the plane flying?",
+    "question_kr": "비행기가 날고 있나요?"
+  },
+  {
+    "QID": 158279002,
+    "question": "What is the web address listed?",
+    "question_kr": "나열된 웹 주소는 무엇입니까?"
+  },
+  {
+    "QID": 381246001,
+    "question": "Are there peppers on the pizza?",
+    "question_kr": "피자에 고추가 있어요?"
+  },
+  {
+    "QID": 26501010,
+    "question": "Will the bus go uptown?",
+    "question_kr": "버스가 업타운으로 갈까요?"
+  },
+  {
+    "QID": 394002002,
+    "question": "What's the brand of bike second from the left?",
+    "question_kr": "왼쪽에서 두 번째 자전거 브랜드는 무엇입니까?"
+  },
+  {
+    "QID": 125201004,
+    "question": "What is the time?",
+    "question_kr": "시간은 언제입니까?"
+  },
+  {
+    "QID": 197609002,
+    "question": "What food is being made?",
+    "question_kr": "어떤 음식이 만들어지나요?"
+  },
+  {
+    "QID": 346633003,
+    "question": "Is this food raw?",
+    "question_kr": "이 음식은 날 음식인가요?"
+  },
+  {
+    "QID": 33994009,
+    "question": "What are the flowers in?",
+    "question_kr": "꽃은 무엇입니까?"
+  },
+  {
+    "QID": 194595005,
+    "question": "Is this a single-use product?",
+    "question_kr": "일회용 제품인가요?"
+  },
+  {
+    "QID": 97964002,
+    "question": "Is there anyone on the pic?",
+    "question_kr": "사진에 누군가 있나요?"
+  },
+  {
+    "QID": 333290003,
+    "question": "Is the giraffe taller than the light post?",
+    "question_kr": "기린이 가로등보다 키가 더 크나요?"
+  },
+  {
+    "QID": 424258002,
+    "question": "What are the plants inside of?",
+    "question_kr": "안에 식물은 무엇입니까?"
+  },
+  {
+    "QID": 357578013,
+    "question": "Is this car clean?",
+    "question_kr": "이 차는 깨끗한가요?"
+  },
+  {
+    "QID": 226938002,
+    "question": "Is the bear in this picture alive?",
+    "question_kr": "이 사진 속 곰은 살아있나요?"
+  },
+  {
+    "QID": 411184005,
+    "question": "What is this boating area called?",
+    "question_kr": "이 보트 타는 곳을 뭐라고 부르나요?"
+  },
+  {
+    "QID": 73738001,
+    "question": "How was this picture taken?",
+    "question_kr": "이 사진은 어떻게 찍힌 걸까요?"
+  },
+  {
+    "QID": 534426002,
+    "question": "What does the white sign say?",
+    "question_kr": "흰색 표지판은 무엇을 말하나요?"
+  },
+  {
+    "QID": 504827000,
+    "question": "What color is the soap in the dispenser?",
+    "question_kr": "디스펜서에 들어있는 비누는 무슨 색인가요?"
+  },
+  {
+    "QID": 365099008,
+    "question": "What outdoor activity are they doing?",
+    "question_kr": "그들은 어떤 야외 활동을 하고 있나요?"
+  },
+  {
+    "QID": 450343004,
+    "question": "Is this a vegan dish?",
+    "question_kr": "이게 비건 요리인가요?"
+  },
+  {
+    "QID": 392915002,
+    "question": "Is the room sunny?",
+    "question_kr": "방이 햇볕이 잘 드나요?"
+  },
+  {
+    "QID": 271934000,
+    "question": "What religion is this building associated with?",
+    "question_kr": "이 건물은 어떤 종교와 관련이 있나요?"
+  },
+  {
+    "QID": 572178006,
+    "question": "Is this photo in color?",
+    "question_kr": "이 사진은 컬러인가요?"
+  },
+  {
+    "QID": 437494015,
+    "question": "How many people are in the water?",
+    "question_kr": "물 속에는 몇 명이 있나요?"
+  },
+  {
+    "QID": 231831002,
+    "question": "Are there any pairs of eyeglasses visible on this desk?",
+    "question_kr": "이 책상에 안경이 보이나요?"
+  },
+  {
+    "QID": 344005003,
+    "question": "What country does is this in?",
+    "question_kr": "이것은 어느 나라의 것입니까?"
+  },
+  {
+    "QID": 534817006,
+    "question": "What animal is depicted on the t-shirt?",
+    "question_kr": "티셔츠에는 어떤 동물이 그려져 있나요?"
+  },
+  {
+    "QID": 361321003,
+    "question": "Can you use a credit card here?",
+    "question_kr": "여기서 신용카드를 사용할 수 있나요?"
+  },
+  {
+    "QID": 290532012,
+    "question": "How many keyboards?",
+    "question_kr": "키보드는 몇 개인가요?"
+  },
+  {
+    "QID": 482777004,
+    "question": "How many planes are in the air?",
+    "question_kr": "얼마나 많은 비행기가 공중에 있습니까?"
+  },
+  {
+    "QID": 13546003,
+    "question": "How many benches are in the background?",
+    "question_kr": "배경에는 몇 개의 벤치가 있습니까?"
+  },
+  {
+    "QID": 318426002,
+    "question": "What are the numbers on the train?",
+    "question_kr": "기차의 번호는 무엇입니까?"
+  },
+  {
+    "QID": 250571008,
+    "question": "Is there a boat in the water?",
+    "question_kr": "물 속에 보트가 있나요?"
+  },
+  {
+    "QID": 284548002,
+    "question": "What three numbers are present on the train?",
+    "question_kr": "기차에는 어떤 세 개의 숫자가 있나요?"
+  },
+  {
+    "QID": 561412009,
+    "question": "Is the sky cloudy?",
+    "question_kr": "하늘이 흐려요?"
+  },
+  {
+    "QID": 297812004,
+    "question": "Is this an image of a beachfront with water-sport rentals or is it a countryside with livestock?",
+    "question_kr": "이것은 수상 스포츠 대여가 가능한 해변의 이미지입니까, 아니면 가축이 있는 시골의 이미지입니까?"
+  },
+  {
+    "QID": 229391001,
+    "question": "What might a milkman have in common with the man with the backpack?",
+    "question_kr": "우유 배달원과 배낭을 멘 남자의 공통점은 무엇일까요?"
+  },
+  {
+    "QID": 349841001,
+    "question": "Is the bus going to the right or to the left in the photo?",
+    "question_kr": "사진에서 버스는 오른쪽으로 가나요, 왼쪽으로 가요?"
+  },
+  {
+    "QID": 116255001,
+    "question": "How high in the air is the plane?",
+    "question_kr": "비행기는 얼마나 높이 떠 있나요?"
+  },
+  {
+    "QID": 207458011,
+    "question": "Is it night?",
+    "question_kr": "밤인가요?"
+  },
+  {
+    "QID": 223574001,
+    "question": "Where is this?",
+    "question_kr": "여긴 어디야?"
+  },
+  {
+    "QID": 119802000,
+    "question": "Do any cars have their lights on?",
+    "question_kr": "자동차에 라이트가 켜져 있나요?"
+  },
+  {
+    "QID": 333480000,
+    "question": "Is this healthy food?",
+    "question_kr": "이게 건강에 좋은 음식인가요?"
+  },
+  {
+    "QID": 532693000,
+    "question": "Is the dog being affectionate?",
+    "question_kr": "개는 다정한 편인가요?"
+  },
+  {
+    "QID": 209782006,
+    "question": "Do the two people probably know each other?",
+    "question_kr": "두 사람은 아마 서로 아는 사이일까요?"
+  },
+  {
+    "QID": 379376003,
+    "question": "What country is this in?",
+    "question_kr": "이것은 어느 나라에 있습니까?"
+  },
+  {
+    "QID": 536195002,
+    "question": "What are the sheep eating?",
+    "question_kr": "양들은 무엇을 먹고 있나요?"
+  },
+  {
+    "QID": 226761002,
+    "question": "What game system are the boys playing on?",
+    "question_kr": "소년들은 어떤 게임 시스템을 사용하고 있나요?"
+  },
+  {
+    "QID": 405811000,
+    "question": "Does this look like the animals natural habitat?",
+    "question_kr": "이것이 동물의 자연 서식지처럼 보입니까?"
+  },
+  {
+    "QID": 540859002,
+    "question": "Can you see this animal at the zoo?",
+    "question_kr": "동물원에서 이 동물을 볼 수 있나요?"
+  },
+  {
+    "QID": 118417001,
+    "question": "What is the very top of the stack of food?",
+    "question_kr": "음식 더미의 맨 꼭대기는 무엇입니까?"
+  },
+  {
+    "QID": 336341002,
+    "question": "Is he wearing blush?",
+    "question_kr": "그 사람이 홍당무를 하고 있나요?"
+  },
+  {
+    "QID": 309843001,
+    "question": "What is wrapped around the surfboards?",
+    "question_kr": "서핑보드를 감싸고 있는 것은 무엇입니까?"
+  },
+  {
+    "QID": 364592000,
+    "question": "Where is the wristband?",
+    "question_kr": "손목밴드는 어디에 있나요?"
+  },
+  {
+    "QID": 358090001,
+    "question": "What color coat is this person wearing?",
+    "question_kr": "이 사람은 무슨 색 코트를 입고 있나요?"
+  },
+  {
+    "QID": 219492002,
+    "question": "Are cats really afraid to get into water?",
+    "question_kr": "고양이는 정말 물에 들어가는 것을 두려워할까?"
+  },
+  {
+    "QID": 73927000,
+    "question": "What number is the batter?",
+    "question_kr": "타자는 몇 번째 숫자입니까?"
+  },
+  {
+    "QID": 169996009,
+    "question": "What is the name of the store closest to the van?",
+    "question_kr": "밴에서 가장 가까운 가게 이름은 무엇입니까?"
+  },
+  {
+    "QID": 66543002,
+    "question": "Is this a busy area?",
+    "question_kr": "여기가 붐비는 지역인가요?"
+  },
+  {
+    "QID": 16164000,
+    "question": "Is the dog on the right bored?",
+    "question_kr": "오른쪽 개는 심심한가?"
+  },
+  {
+    "QID": 493623001,
+    "question": "Are the shoes heels or flats?",
+    "question_kr": "신발은 힐인가요, 플랫인가요?"
+  },
+  {
+    "QID": 2006001,
+    "question": "What colors are on the bus?",
+    "question_kr": "버스에는 어떤 색깔이 있나요?"
+  },
+  {
+    "QID": 522446001,
+    "question": "How many people are sitting at the bar?",
+    "question_kr": "바에는 몇 명이 앉아 있나요?"
+  },
+  {
+    "QID": 347390005,
+    "question": "Which room is this?",
+    "question_kr": "이것은 어느 방입니까?"
+  },
+  {
+    "QID": 566414016,
+    "question": "Is this truck pretty?",
+    "question_kr": "이 트럭 예쁘죠?"
+  },
+  {
+    "QID": 6712002,
+    "question": "What color is the house?",
+    "question_kr": "집은 무슨 색인가요?"
+  },
+  {
+    "QID": 442286000,
+    "question": "Would you be interested in keeping a boat of your own here?",
+    "question_kr": "여기서 당신만의 보트를 소유하고 싶으신가요?"
+  },
+  {
+    "QID": 220446000,
+    "question": "Is the space in ill repair?",
+    "question_kr": "공간이 제대로 수리되지 않았나요?"
+  },
+  {
+    "QID": 447549001,
+    "question": "Are all the trees green?",
+    "question_kr": "나무는 모두 녹색인가요?"
+  },
+  {
+    "QID": 425933004,
+    "question": "What are pedestrians asked not to do on the white sign?",
+    "question_kr": "보행자가 흰색 표지판에서 하지 말아야 할 것은 무엇입니까?"
+  },
+  {
+    "QID": 31024002,
+    "question": "Are there any Roman numerals?",
+    "question_kr": "로마숫자가 있나요?"
+  },
+  {
+    "QID": 289943009,
+    "question": "Are the letters all capitals?",
+    "question_kr": "글자는 모두 대문자인가요?"
+  },
+  {
+    "QID": 241340000,
+    "question": "Why is this dog fighting over a Frisbee?",
+    "question_kr": "이 개는 왜 프리스비를 놓고 싸우는 걸까요?"
+  },
+  {
+    "QID": 235597003,
+    "question": "What color is the mouse?",
+    "question_kr": "마우스는 무슨 색인가요?"
+  },
+  {
+    "QID": 286010000,
+    "question": "What is happening with the fire hydrant?",
+    "question_kr": "소화전에는 무슨 일이 일어나고 있는 걸까요?"
+  },
+  {
+    "QID": 227656000,
+    "question": "Is this a train?",
+    "question_kr": "이것은 기차인가요?"
+  },
+  {
+    "QID": 367622001,
+    "question": "Is the water calm?",
+    "question_kr": "물은 잔잔한가?"
+  },
+  {
+    "QID": 360132000,
+    "question": "Is the giraffe's neck all the way up?",
+    "question_kr": "기린 목이 끝까지 올라가있나요?"
+  },
+  {
+    "QID": 357578014,
+    "question": "Why are the trucks parked here?",
+    "question_kr": "트럭이 왜 여기에 주차되어 있나요?"
+  },
+  {
+    "QID": 483643000,
+    "question": "Where is it printed: \"In Case of Fire\"?",
+    "question_kr": "\"화재 발생 시\"라는 문구가 어디에 인쇄되어 있나요?"
+  },
+  {
+    "QID": 337275004,
+    "question": "Where is the kitten?",
+    "question_kr": "새끼 고양이는 어디에 있나요?"
+  },
+  {
+    "QID": 311950001,
+    "question": "What condiments are on the hot dog?",
+    "question_kr": "핫도그에 무슨 양념이 들어있어요?"
+  },
+  {
+    "QID": 363767000,
+    "question": "What animal is this cake meant to represent?",
+    "question_kr": "이 케이크는 어떤 동물을 상징하는 것일까요?"
+  },
+  {
+    "QID": 316596001,
+    "question": "What is the cake sitting on?",
+    "question_kr": "케이크는 무엇 위에 앉아 있나요?"
+  },
+  {
+    "QID": 303718006,
+    "question": "How many bagels are here?",
+    "question_kr": "여기 베이글이 몇 개 있어요?"
+  },
+  {
+    "QID": 117237001,
+    "question": "What is hanging?",
+    "question_kr": "교수형이란 무엇입니까?"
+  },
+  {
+    "QID": 178084001,
+    "question": "Is this a living room?",
+    "question_kr": "여기가 거실인가요?"
+  },
+  {
+    "QID": 182334006,
+    "question": "What kind of drink is in the glasses?",
+    "question_kr": "잔 안에는 어떤 음료가 들어있나요?"
+  },
+  {
+    "QID": 282062004,
+    "question": "What body part has most recently contacted the ball?",
+    "question_kr": "가장 최근에 공과 접촉한 신체 부위는 어디입니까?"
+  },
+  {
+    "QID": 16631021,
+    "question": "What does the sign say?",
+    "question_kr": "표지판은 무엇을 말합니까?"
+  },
+  {
+    "QID": 397303000,
+    "question": "Where are the chairs?",
+    "question_kr": "의자는 어디에 있나요?"
+  },
+  {
+    "QID": 383209003,
+    "question": "Is the cat going to fall off the TV?",
+    "question_kr": "고양이가 TV에서 떨어질까요?"
+  },
+  {
+    "QID": 562622004,
+    "question": "What does it say on the large billboard?",
+    "question_kr": "대형 광고판에는 뭐라고 적혀 있나요?"
+  },
+  {
+    "QID": 533805004,
+    "question": "Does this plane need a tune-up?",
+    "question_kr": "이 비행기는 튜닝이 필요합니까?"
+  },
+  {
+    "QID": 7214001,
+    "question": "What's outside the window?",
+    "question_kr": "창문 밖에는 무엇이 있나요?"
+  },
+  {
+    "QID": 343496001,
+    "question": "Are there any animals in this photo?",
+    "question_kr": "이 사진에 동물이 있나요?"
+  },
+  {
+    "QID": 580621000,
+    "question": "What type of establishment are these people likely seated?",
+    "question_kr": "이 사람들이 앉아 있을 가능성이 높은 시설은 어떤 유형입니까?"
+  },
+  {
+    "QID": 422157006,
+    "question": "Is the bus going to turn left or right?",
+    "question_kr": "버스가 왼쪽으로 갈까요, 오른쪽으로 갈까요?"
+  },
+  {
+    "QID": 119373006,
+    "question": "Is there a lighthouse?",
+    "question_kr": "등대가 있나요?"
+  },
+  {
+    "QID": 361571001,
+    "question": "What is on the dogs head?",
+    "question_kr": "개 머리에 뭐가 있지?"
+  },
+  {
+    "QID": 90519000,
+    "question": "Who is being pushed in the wheelchair?",
+    "question_kr": "휠체어에 누가 밀리고 있나요?"
+  },
+  {
+    "QID": 315621001,
+    "question": "Is this a popular location?",
+    "question_kr": "이곳이 인기 있는 곳인가요?"
+  },
+  {
+    "QID": 71021001,
+    "question": "Is the girl's hair long?",
+    "question_kr": "여자 머리가 긴가요?"
+  },
+  {
+    "QID": 504561001,
+    "question": "How many women?",
+    "question_kr": "여자는 몇 명입니까?"
+  },
+  {
+    "QID": 333998018,
+    "question": "What kind of room is this?",
+    "question_kr": "이 방은 어떤 방인가요?"
+  },
+  {
+    "QID": 450762003,
+    "question": "How many bears are there?",
+    "question_kr": "곰이 몇 마리 있나요?"
+  },
+  {
+    "QID": 114941009,
+    "question": "What color is the train?",
+    "question_kr": "기차는 무슨 색인가요?"
+  },
+  {
+    "QID": 443450003,
+    "question": "Is the plane far away?",
+    "question_kr": "비행기가 먼가요?"
+  },
+  {
+    "QID": 9830000,
+    "question": "What type of computer is the cat using?",
+    "question_kr": "고양이는 어떤 종류의 컴퓨터를 사용하고 있나요?"
+  },
+  {
+    "QID": 579859001,
+    "question": "How many apple trees are in the picture?",
+    "question_kr": "그림에는 사과나무가 몇 그루 있나요?"
+  },
+  {
+    "QID": 353889001,
+    "question": "What letter is yellow and white?",
+    "question_kr": "노란색과 흰색은 어떤 글자인가요?"
+  },
+  {
+    "QID": 528062000,
+    "question": "Are they in the kitchen?",
+    "question_kr": "부엌에 있나요?"
+  },
+  {
+    "QID": 466838000,
+    "question": "Is this a normal size slice of pizza?",
+    "question_kr": "이게 보통 크기의 피자 조각인가요?"
+  },
+  {
+    "QID": 63617002,
+    "question": "Is this kid hitting a ball?",
+    "question_kr": "이 아이가 공을 치고 있나요?"
+  },
+  {
+    "QID": 246963005,
+    "question": "What does the street sign say?",
+    "question_kr": "거리 표지판은 무엇을 말하나요?"
+  },
+  {
+    "QID": 121442004,
+    "question": "How many kids have glasses?",
+    "question_kr": "안경을 쓴 아이들은 몇 명인가요?"
+  },
+  {
+    "QID": 245026002,
+    "question": "Could it be the Mad Hatter's birthday?",
+    "question_kr": "매드 해터의 생일이 아닐까요?"
+  },
+  {
+    "QID": 80306002,
+    "question": "Why is she shiny?",
+    "question_kr": "그녀는 왜 빛나나요?"
+  },
+  {
+    "QID": 430774001,
+    "question": "What time is shown on the clock?",
+    "question_kr": "시계에는 몇 시가 표시되나요?"
+  },
+  {
+    "QID": 417164002,
+    "question": "What does the red and white sign say?",
+    "question_kr": "빨간색과 흰색 표지판은 무엇을 말하나요?"
+  },
+  {
+    "QID": 223374001,
+    "question": "Have the plastic toys been melted in the microwave?",
+    "question_kr": "플라스틱 장난감이 전자레인지에 녹았나요?"
+  },
+  {
+    "QID": 196681009,
+    "question": "Are there clouds in the sky?",
+    "question_kr": "하늘에 구름이 있나요?"
+  },
+  {
+    "QID": 67551002,
+    "question": "How many colors are on the blanket on the elephant back?",
+    "question_kr": "코끼리 등에 있는 담요에는 몇 가지 색깔이 있나요?"
+  },
+  {
+    "QID": 225312007,
+    "question": "Is there a flip phone in this scene?",
+    "question_kr": "이 장면에 폴더폰이 있나요?"
+  },
+  {
+    "QID": 404479011,
+    "question": "What is the weather like?",
+    "question_kr": "날씨는 어떤가요?"
+  },
+  {
+    "QID": 484723007,
+    "question": "What is the license plate on the Wallingford bus?",
+    "question_kr": "Wallingford 버스의 번호판은 무엇입니까?"
+  },
+  {
+    "QID": 119038004,
+    "question": "Where are the cows?",
+    "question_kr": "소들은 어디에 있나요?"
+  },
+  {
+    "QID": 37734000,
+    "question": "What is on the man's jacket say on the back of it?",
+    "question_kr": "남자 재킷 뒷면에는 뭐라고 적혀 있나요?"
+  },
+  {
+    "QID": 156620000,
+    "question": "What is the man helping the woman out on?",
+    "question_kr": "남자가 여자를 돕는 것은 무엇입니까?"
+  },
+  {
+    "QID": 142722003,
+    "question": "Do the cows appear to be concerned?",
+    "question_kr": "소들이 걱정하는 것 같나요?"
+  },
+  {
+    "QID": 144162001,
+    "question": "Is this a restaurant?",
+    "question_kr": "이곳은 레스토랑인가요?"
+  },
+  {
+    "QID": 360610003,
+    "question": "What game are the two people playing?",
+    "question_kr": "두 사람은 무슨 게임을 하고 있나요?"
+  },
+  {
+    "QID": 559270003,
+    "question": "Will this vehicle leave the area soon?",
+    "question_kr": "이 차량이 곧 그 지역을 떠날까요?"
+  },
+  {
+    "QID": 224391007,
+    "question": "Are these elephants in the jungle?",
+    "question_kr": "이 코끼리들은 정글에 있는 걸까요?"
+  },
+  {
+    "QID": 111054002,
+    "question": "Is the grass green?",
+    "question_kr": "잔디는 녹색인가요?"
+  },
+  {
+    "QID": 528225028,
+    "question": "Is this cow in a field?",
+    "question_kr": "이 소는 들판에 있습니까?"
+  },
+  {
+    "QID": 214471008,
+    "question": "What is piled on top of the sandwich?",
+    "question_kr": "샌드위치 위에 무엇이 쌓여있나요?"
+  },
+  {
+    "QID": 565485002,
+    "question": "Is the train inside a building?",
+    "question_kr": "기차가 건물 안에 있나요?"
+  },
+  {
+    "QID": 578498007,
+    "question": "How many shoes are under the table?",
+    "question_kr": "테이블 밑에는 신발이 몇 개 있나요?"
+  },
+  {
+    "QID": 62661000,
+    "question": "Is the hydrant being blocked?",
+    "question_kr": "소화전이 막혔나요?"
+  },
+  {
+    "QID": 243849005,
+    "question": "Does this sandwich contain cheese?",
+    "question_kr": "이 샌드위치에 치즈가 들어있나요?"
+  },
+  {
+    "QID": 90646004,
+    "question": "What type of shoe is that?",
+    "question_kr": "그 신발은 어떤 종류인가요?"
+  },
+  {
+    "QID": 471562000,
+    "question": "Is this an airport?",
+    "question_kr": "이곳은 공항인가요?"
+  },
+  {
+    "QID": 219920009,
+    "question": "How many years are represented on the clock?",
+    "question_kr": "시계에는 몇 년이 표시되나요?"
+  },
+  {
+    "QID": 524577027,
+    "question": "What type of numbers are on the clock?",
+    "question_kr": "시계에는 어떤 종류의 숫자가 있나요?"
+  },
+  {
+    "QID": 321062007,
+    "question": "Is this real or fake fruit?",
+    "question_kr": "이것은 진짜 과일인가요, 가짜 과일인가요?"
+  },
+  {
+    "QID": 235252017,
+    "question": "Is this a picnic area?",
+    "question_kr": "여기가 피크닉 장소인가요?"
+  },
+  {
+    "QID": 568426010,
+    "question": "Would this dessert be sweet?",
+    "question_kr": "이 디저트는 달콤할까요?"
+  },
+  {
+    "QID": 572028008,
+    "question": "What kind of animals are these?",
+    "question_kr": "이들은 어떤 종류의 동물인가요?"
+  },
+  {
+    "QID": 147653003,
+    "question": "How many cars are shown?",
+    "question_kr": "몇 대의 자동차가 표시됩니까?"
+  },
+  {
+    "QID": 480416017,
+    "question": "Is it raining?",
+    "question_kr": "비가 오나요?"
+  },
+  {
+    "QID": 107511001,
+    "question": "Are they in the zoo?",
+    "question_kr": "동물원에 있나요?"
+  },
+  {
+    "QID": 480379002,
+    "question": "Is the boat in the water?",
+    "question_kr": "보트가 물 속에 있나요?"
+  },
+  {
+    "QID": 448243005,
+    "question": "Is this a modern car?",
+    "question_kr": "이것은 현대 자동차입니까?"
+  },
+  {
+    "QID": 570528001,
+    "question": "Is the pet in its bed?",
+    "question_kr": "애완동물이 침대에 있나요?"
+  },
+  {
+    "QID": 205594005,
+    "question": "What sport is this?",
+    "question_kr": "이게 무슨 스포츠야?"
+  },
+  {
+    "QID": 148272001,
+    "question": "Is this a domesticated animal?",
+    "question_kr": "이것은 길들여진 동물인가요?"
+  },
+  {
+    "QID": 147300007,
+    "question": "What is this post for?",
+    "question_kr": "이 게시물의 목적은 무엇입니까?"
+  },
+  {
+    "QID": 60090001,
+    "question": "What color is the train?",
+    "question_kr": "기차는 무슨 색인가요?"
+  },
+  {
+    "QID": 442746004,
+    "question": "Do people come here to sit?",
+    "question_kr": "사람들이 여기 앉으러 오나요?"
+  },
+  {
+    "QID": 276057001,
+    "question": "Is the woman in an office?",
+    "question_kr": "여자는 사무실에 있나요?"
+  },
+  {
+    "QID": 469857006,
+    "question": "What on the bed?",
+    "question_kr": "침대에서 뭐해?"
+  },
+  {
+    "QID": 293218002,
+    "question": "Where does the airplane hail from?",
+    "question_kr": "비행기는 어디에서 출발하나요?"
+  },
+  {
+    "QID": 157192000,
+    "question": "What is this food called?",
+    "question_kr": "이 음식은 뭐라고 부르나요?"
+  },
+  {
+    "QID": 458702007,
+    "question": "Could there be a vending machine?",
+    "question_kr": "자동판매기가 있을까요?"
+  },
+  {
+    "QID": 26501008,
+    "question": "Is this a Chinese town?",
+    "question_kr": "여기가 중국 마을인가요?"
+  },
+  {
+    "QID": 116667019,
+    "question": "What number of stories is this bus?",
+    "question_kr": "이 버스는 몇 층인가요?"
+  },
+  {
+    "QID": 519471003,
+    "question": "What is the name on the banner?",
+    "question_kr": "배너에 적힌 이름은 무엇인가요?"
+  },
+  {
+    "QID": 435208011,
+    "question": "Does this room have warm lighting?",
+    "question_kr": "이 방에는 따뜻한 조명이 있습니까?"
+  },
+  {
+    "QID": 494473003,
+    "question": "What are the cross streets?",
+    "question_kr": "교차로는 무엇입니까?"
+  },
+  {
+    "QID": 56400000,
+    "question": "What jewelry might be hidden under his jacket sleeve?",
+    "question_kr": "그의 재킷 소매 아래에는 어떤 보석이 숨겨져 있을까요?"
+  },
+  {
+    "QID": 336245005,
+    "question": "Is this a professional model?",
+    "question_kr": "이분 전문모델인가요?"
+  },
+  {
+    "QID": 52161010,
+    "question": "What type of shoes is this person wearing?",
+    "question_kr": "이 사람은 어떤 종류의 신발을 신고 있나요?"
+  },
+  {
+    "QID": 367468003,
+    "question": "Is the cat picking out shoes to wear?",
+    "question_kr": "고양이가 신을 신발을 고르고 있나요?"
+  },
+  {
+    "QID": 543740000,
+    "question": "What color is the counter?",
+    "question_kr": "카운터는 무슨색인가요?"
+  },
+  {
+    "QID": 325568007,
+    "question": "Are you behind a net?",
+    "question_kr": "당신은 그물 뒤에 있습니까?"
+  },
+  {
+    "QID": 420181001,
+    "question": "What is the name of the umbrellas?",
+    "question_kr": "우산 이름이 뭔가요?"
+  },
+  {
+    "QID": 550432000,
+    "question": "Could a cactus grow in this climate?",
+    "question_kr": "이런 기후에서 선인장이 자랄 수 있을까요?"
+  },
+  {
+    "QID": 280242009,
+    "question": "What is the reflection?",
+    "question_kr": "반사는 무엇입니까?"
+  },
+  {
+    "QID": 47648003,
+    "question": "What is next to the fruit?",
+    "question_kr": "과일 옆에는 무엇이 있나요?"
+  },
+  {
+    "QID": 578093003,
+    "question": "Is this a boathouse?",
+    "question_kr": "여기가 보트하우스인가요?"
+  },
+  {
+    "QID": 456394003,
+    "question": "What color is the motorcycle?",
+    "question_kr": "오토바이는 무슨 색인가요?"
+  },
+  {
+    "QID": 256906006,
+    "question": "Where is there destination?",
+    "question_kr": "목적지는 어디인가?"
+  },
+  {
+    "QID": 527038002,
+    "question": "What website is shown?",
+    "question_kr": "어떤 웹사이트가 표시되나요?"
+  },
+  {
+    "QID": 434867004,
+    "question": "Is this a normal color for a train?",
+    "question_kr": "이것은 기차의 일반적인 색상입니까?"
+  },
+  {
+    "QID": 53838004,
+    "question": "What is on the plane?",
+    "question_kr": "비행기 안에는 무엇이 있나요?"
+  },
+  {
+    "QID": 175535001,
+    "question": "Is there lettuce on the plate?",
+    "question_kr": "접시에 양상추가 있나요?"
+  },
+  {
+    "QID": 574332000,
+    "question": "What word is written in white?",
+    "question_kr": "흰색으로 쓰여진 단어는 무엇입니까?"
+  },
+  {
+    "QID": 369370002,
+    "question": "Is there cheese on the sandwich?",
+    "question_kr": "샌드위치에 치즈가 들어있어요?"
+  },
+  {
+    "QID": 569274000,
+    "question": "What flavor of jelly are the boys eating?",
+    "question_kr": "소년들이 먹고 있는 젤리는 어떤 맛인가요?"
+  },
+  {
+    "QID": 406647000,
+    "question": "What store is this parking lot for?",
+    "question_kr": "이 주차장은 무슨 매장인가요?"
+  },
+  {
+    "QID": 162858001,
+    "question": "Which way is the green car going to go?",
+    "question_kr": "친환경차는 어느 방향으로 갈까요?"
+  },
+  {
+    "QID": 566026000,
+    "question": "What time is it?",
+    "question_kr": "지금은 몇시입니까?"
+  },
+  {
+    "QID": 254237002,
+    "question": "What is in the vase?",
+    "question_kr": "꽃병 안에는 무엇이 들어있나요?"
+  },
+  {
+    "QID": 35105002,
+    "question": "How many cars are there?",
+    "question_kr": "자동차가 몇 대 있나요?"
+  },
+  {
+    "QID": 248703006,
+    "question": "How far do the girls have to run?",
+    "question_kr": "소녀들은 얼마나 멀리 달려야 합니까?"
+  },
+  {
+    "QID": 231768001,
+    "question": "What does the sign read?",
+    "question_kr": "표지판에는 무엇이 적혀 있나요?"
+  },
+  {
+    "QID": 315905008,
+    "question": "What is the zebra standing in?",
+    "question_kr": "얼룩말은 어디에 서 있나요?"
+  },
+  {
+    "QID": 552849003,
+    "question": "Where is a man wearing a white robe?",
+    "question_kr": "흰 옷을 입은 사람이 어디 있느냐?"
+  },
+  {
+    "QID": 132317000,
+    "question": "What is sitting on the laptop?",
+    "question_kr": "노트북 위에 무엇이 앉아 있나요?"
+  },
+  {
+    "QID": 152211003,
+    "question": "How many people are in the picture?",
+    "question_kr": "사진에는 몇 명이 있나요?"
+  },
+  {
+    "QID": 491242000,
+    "question": "What is the man wearing?",
+    "question_kr": "남자는 무엇을 입고 있나요?"
+  },
+  {
+    "QID": 289870005,
+    "question": "Is this a freight train?",
+    "question_kr": "이거 화물열차인가요?"
+  },
+  {
+    "QID": 212759007,
+    "question": "Is there a check mark here?",
+    "question_kr": "여기에 체크표시가 있나요?"
+  },
+  {
+    "QID": 488942005,
+    "question": "Is this a sightseeing attraction?",
+    "question_kr": "이곳은 관광명소인가요?"
+  },
+  {
+    "QID": 8351002,
+    "question": "Are the dogs the same breed?",
+    "question_kr": "개들은 같은 품종인가요?"
+  },
+  {
+    "QID": 157771002,
+    "question": "Is this man famous?",
+    "question_kr": "이 사람 유명해요?"
+  },
+  {
+    "QID": 400719008,
+    "question": "Would this be the USA?",
+    "question_kr": "여기는 미국이겠지?"
+  },
+  {
+    "QID": 289941000,
+    "question": "What number is on the shirt?",
+    "question_kr": "셔츠에 무슨 숫자가 있나요?"
+  },
+  {
+    "QID": 286450002,
+    "question": "What is the date of this photo?",
+    "question_kr": "이 사진의 날짜는 언제입니까?"
+  },
+  {
+    "QID": 263014012,
+    "question": "How many zebras?",
+    "question_kr": "얼룩말은 몇 마리입니까?"
+  },
+  {
+    "QID": 417987002,
+    "question": "Is this a farm?",
+    "question_kr": "이곳은 농장인가요?"
+  },
+  {
+    "QID": 443334000,
+    "question": "Is it sunny in this photo?",
+    "question_kr": "이 사진은 날씨가 맑나요?"
+  },
+  {
+    "QID": 113113004,
+    "question": "What is the green vegetable on the left?",
+    "question_kr": "왼쪽에 있는 녹색 채소는 무엇인가요?"
+  },
+  {
+    "QID": 297269002,
+    "question": "What color is the label on the side of the bottom appliance?",
+    "question_kr": "하단 기기 측면의 라벨은 어떤 색상인가요?"
+  },
+  {
+    "QID": 5754032,
+    "question": "How many doughnuts are shown?",
+    "question_kr": "도넛은 몇 개나 보여요?"
+  },
+  {
+    "QID": 215581002,
+    "question": "Does this picture show carrots in a basket?",
+    "question_kr": "이 그림은 바구니에 당근이 들어 있는 모습을 보여줍니까?"
+  },
+  {
+    "QID": 291990001,
+    "question": "What street is this?",
+    "question_kr": "이것은 무슨 거리입니까?"
+  },
+  {
+    "QID": 292446004,
+    "question": "Can a child play here?",
+    "question_kr": "여기서 아이가 놀 수 있나요?"
+  },
+  {
+    "QID": 25005002,
+    "question": "What is the man standing on?",
+    "question_kr": "남자는 무엇 위에 서 있나요?"
+  },
+  {
+    "QID": 217593003,
+    "question": "What baseball team is this?",
+    "question_kr": "여기는 어느 야구팀인가요?"
+  },
+  {
+    "QID": 510078000,
+    "question": "Is this in a parking lot?",
+    "question_kr": "주차장에 있나요?"
+  },
+  {
+    "QID": 575755005,
+    "question": "What is in this sandwich?",
+    "question_kr": "이 샌드위치에는 무엇이 들어있나요?"
+  },
+  {
+    "QID": 116068011,
+    "question": "Is the water calm?",
+    "question_kr": "물은 잔잔한가?"
+  },
+  {
+    "QID": 191949020,
+    "question": "What game are they playing?",
+    "question_kr": "그들은 어떤 게임을 하고 있나요?"
+  },
+  {
+    "QID": 296745000,
+    "question": "Which person is touching the elephant?",
+    "question_kr": "코끼리를 만지고 있는 사람은 누구일까요?"
+  },
+  {
+    "QID": 408201006,
+    "question": "What are they playing?",
+    "question_kr": "그들은 무엇을 하고 있나요?"
+  },
+  {
+    "QID": 239992006,
+    "question": "What is the plane on the left?",
+    "question_kr": "왼쪽에 있는 비행기는 무엇인가요?"
+  },
+  {
+    "QID": 444302001,
+    "question": "What is the number on the pole?",
+    "question_kr": "기둥에 있는 숫자는 무엇입니까?"
+  },
+  {
+    "QID": 166586001,
+    "question": "What does the series of photographs demonstrate?",
+    "question_kr": "일련의 사진은 무엇을 보여줍니까?"
+  },
+  {
+    "QID": 157581003,
+    "question": "How many bottles of while is there?",
+    "question_kr": "얼마나 많은 병이 있습니까?"
+  },
+  {
+    "QID": 565405002,
+    "question": "Is the sunlight coming into the room?",
+    "question_kr": "햇빛이 방으로 들어오나요?"
+  },
+  {
+    "QID": 245162006,
+    "question": "Is this a busy street?",
+    "question_kr": "여기가 번화한 거리인가요?"
+  },
+  {
+    "QID": 125208015,
+    "question": "How many sets of eyes are in this picture?",
+    "question_kr": "이 사진에는 몇 개의 눈이 있나요?"
+  },
+  {
+    "QID": 214503002,
+    "question": "Is this a farmers market?",
+    "question_kr": "농산물 직거래 장터입니까?"
+  },
+  {
+    "QID": 226154000,
+    "question": "What language is the writing at the top of the bus in?",
+    "question_kr": "버스 상단에 어떤 언어로 쓰여 있나요?"
+  },
+  {
+    "QID": 11241003,
+    "question": "Is this enough food for more than two people?",
+    "question_kr": "이 정도면 2인 이상 먹을 수 있는 양인가요?"
+  },
+  {
+    "QID": 532812006,
+    "question": "What sport is being played in this scene?",
+    "question_kr": "이 장면에서는 어떤 스포츠가 진행되고 있나요?"
+  },
+  {
+    "QID": 381037044,
+    "question": "What kind of pets does this family have?",
+    "question_kr": "이 가족은 어떤 종류의 애완동물을 키우고 있나요?"
+  },
+  {
+    "QID": 13127002,
+    "question": "Where is the smoke coming from?",
+    "question_kr": "연기는 어디서 나오나요?"
+  },
+  {
+    "QID": 156397004,
+    "question": "How many animals are in the picture?",
+    "question_kr": "그림 속에는 몇 마리의 동물이 있나요?"
+  },
+  {
+    "QID": 523871003,
+    "question": "Are these people real?",
+    "question_kr": "이 사람들이 진짜인가요?"
+  },
+  {
+    "QID": 335047002,
+    "question": "Is there a hot dog in there?",
+    "question_kr": "거기 핫도그 있어요?"
+  },
+  {
+    "QID": 55545003,
+    "question": "What color is the train?",
+    "question_kr": "기차는 무슨 색인가요?"
+  },
+  {
+    "QID": 479762007,
+    "question": "What colors are these zebra stripes?",
+    "question_kr": "이 얼룩말 줄무늬는 무슨 색인가요?"
+  },
+  {
+    "QID": 124601004,
+    "question": "How many oranges are there?",
+    "question_kr": "오렌지는 몇 개 있나요?"
+  },
+  {
+    "QID": 34071000,
+    "question": "What goes in the machine?",
+    "question_kr": "기계에는 무엇이 들어가나요?"
+  },
+  {
+    "QID": 509826033,
+    "question": "Is there snow?",
+    "question_kr": "눈이 있나요?"
+  },
+  {
+    "QID": 346577000,
+    "question": "What color is his shirt?",
+    "question_kr": "그의 셔츠는 무슨 색인가요?"
+  },
+  {
+    "QID": 511669014,
+    "question": "What kind of animal is this?",
+    "question_kr": "이것은 어떤 종류의 동물입니까?"
+  },
+  {
+    "QID": 13769009,
+    "question": "What is this bathroom missing?",
+    "question_kr": "이 화장실에는 무엇이 없나요?"
+  },
+  {
+    "QID": 515885003,
+    "question": "Is it a beer?",
+    "question_kr": "맥주인가요?"
+  },
+  {
+    "QID": 425153000,
+    "question": "What is the giraffe eating?",
+    "question_kr": "기린은 무엇을 먹고 있나요?"
+  }
+]
