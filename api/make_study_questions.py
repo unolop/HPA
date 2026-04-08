@@ -1,11 +1,13 @@
 """
-Generate experiment JSON files for human study V2 (new questions only).
+Generate experiment JSON files for the human study (inst_blind condition).
 
 For each of the 3 control types (question, weaker_object, pronominalized),
 produces one JSON file in experiment/ with fields:
   { "question_id": int, "question": str, "question_kr": str }
 
 Korean translation is done via GPT-4.1-mini in batches.
+Note: question.json contains only new questions not already in human_vqa.csv;
+weaker_object and pronominalized contain all 100 sampled questions.
 """
 import json, os, re, sys
 from pathlib import Path
@@ -23,7 +25,7 @@ SAMPLE_CSV  = ROOT / "analysis/csv/human_study_sample.csv"
 HVQA_CSV    = ROOT / "analysis/csv/human_vqa.csv"
 
 CONTROL_TYPES = ["question", "weaker_object", "pronominalized"]
-EXPERIMENT_NAME = "human_study_v2"
+EXPERIMENT_NAME = "human_study"
 BATCH_SIZE = 40
 
 # ── Translation schema ────────────────────────────────────────────────────────
