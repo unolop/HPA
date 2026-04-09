@@ -8,6 +8,7 @@ from dataset.paths import SPUBENCH_ANNOT, VQA_IMAGE_DIR, VQA_1K_CONTROL, VQA_5K_
  
 
 blind_inst = '\nNote: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.'
+blind_push = '\nNote: Answer based on your language knowledge and common sense. Give your best answer.'
 
 def set_seed(seed=42):
     random.seed(seed)
@@ -41,7 +42,9 @@ def format_prompt(data, qkey='question', dataset='vqa_1k', condition=''):
     else:
         prompt = f"Question: {prompt} Answer the question using a single word or phrase."
 
-    if 'inst' in condition:
+    if 'push' in condition:
+        prompt += blind_push
+    elif 'inst' in condition:
         prompt += blind_inst
  
     # already formatted
@@ -101,7 +104,7 @@ def get_dataset(data_name:str ):
 
     elif "vqa_1k" in data_name :
         from dataset.vqav2 import VQADataset_json
-        prompt = blind_inst if "inst" in data_name else ''
+        prompt = blind_push if "push" in data_name else (blind_inst if "inst" in data_name else '')
         
         if 'control' in data_name:
             dataset = VQADataset_json(
