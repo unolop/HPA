@@ -80,7 +80,7 @@ worker_gpu0() {
         "mistralai/Mistral-7B-Instruct-v0.2" \
         "Qwen/Qwen3-0.6B" \
         "Qwen/Qwen3-1.7B"; do
-        for COND in _control _control_blind _control_inst_blind; do
+        for COND in _control_blind _control_inst_blind; do
             run_backbone 0 "$MODEL" "$COND"
         done
     done
@@ -93,7 +93,7 @@ worker_gpu1() {
     for MODEL in \
         "Qwen/Qwen3-4B" \
         "Qwen/Qwen3-8B"; do
-        for COND in _control _control_blind _control_inst_blind; do
+        for COND in _control_blind _control_inst_blind; do
             run_backbone 1 "$MODEL" "$COND"
         done
     done
@@ -106,7 +106,7 @@ worker_serial() {
     for MODEL in \
         "lmsys/vicuna-13b-v1.5" \
         "Qwen/Qwen3-32B"; do
-        for COND in _control _control_blind _control_inst_blind; do
+        for COND in _control_blind _control_inst_blind; do
             SHORT=$(echo "$MODEL" | sed 's|.*/||')
             LOGFILE="$LOG_DIR/${SHORT}${COND}.log"
             log "▶ [GPU0,1] $SHORT | $COND"
