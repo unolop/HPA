@@ -1,83 +1,8 @@
 [
   {
-    "question_id": 255950000,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
-  },
-  {
-    "question_id": 485509003,
-    "question": "What is its color?",
-    "question_kr": "What is its color?"
-  },
-  {
-    "question_id": 71361001,
-    "question": "What part is the person touching?",
-    "question_kr": "What part is the person touching?"
-  },
-  {
-    "question_id": 292032005,
-    "question": "Is there any with this meal?",
-    "question_kr": "이 식사에 포함된 것이 있나요?"
-  },
-  {
-    "question_id": 26176000,
-    "question": "How many rows are there?",
-    "question_kr": "How many rows are there?"
-  },
-  {
-    "question_id": 553547000,
-    "question": "Are they ready to attack?",
-    "question_kr": "Are they ready to attack?"
-  },
-  {
-    "question_id": 344100003,
-    "question": "How many are on it?",
-    "question_kr": "거기에 몇 개나 있나요?"
-  },
-  {
-    "question_id": 238090000,
-    "question": "Which way is it hanging?",
-    "question_kr": "Which way is it hanging?"
-  },
-  {
-    "question_id": 182334006,
-    "question": "What kind of drink is in them?",
-    "question_kr": "What kind of drink is in them?"
-  },
-  {
-    "question_id": 578498007,
-    "question": "How many are under it?",
-    "question_kr": "그 아래에는 몇 개가 있습니까?"
-  },
-  {
-    "question_id": 192817002,
-    "question": "How many do you see?",
-    "question_kr": "몇 개나 보이나요?"
-  },
-  {
-    "question_id": 199876000,
-    "question": "Are they friends?",
-    "question_kr": "그들은 친구입니까?"
-  },
-  {
-    "question_id": 345711000,
-    "question": "Which direction is it?",
-    "question_kr": "Which direction is it?"
-  },
-  {
-    "question_id": 215213002,
-    "question": "How many are wearing it?",
-    "question_kr": "몇 명이 입고 있나요?"
-  },
-  {
-    "question_id": 262048001,
-    "question": "Where are they at?",
-    "question_kr": "Where are they at?"
-  },
-  {
-    "question_id": 413948006,
-    "question": "How many is he holding?",
-    "question_kr": "그 사람은 몇 개를 들고 있나요?"
+    "question_id": 406647000,
+    "question": "What store is it for?",
+    "question_kr": "What store is it for?"
   },
   {
     "question_id": 214491004,
@@ -85,29 +10,44 @@
     "question_kr": "How close is he to it?"
   },
   {
-    "question_id": 162858001,
-    "question": "Which way is it going to go?",
-    "question_kr": "Which way is it going to go?"
+    "question_id": 209856000,
+    "question": "Where is it?",
+    "question_kr": "Where is it?"
   },
   {
-    "question_id": 558736000,
-    "question": "How many are there?",
-    "question_kr": "몇 개나 있나요?"
+    "question_id": 345711000,
+    "question": "Which direction is it?",
+    "question_kr": "Which direction is it?"
   },
   {
-    "question_id": 303718006,
-    "question": "How many are here?",
-    "question_kr": "여기에는 몇 명이 있나요?"
+    "question_id": 71361001,
+    "question": "What part is the person touching?",
+    "question_kr": "What part is the person touching?"
   },
   {
-    "question_id": 379402022,
-    "question": "What did this put in its hair to make it stay like that?",
-    "question_kr": "What did this put in its hair to make it stay like that?"
+    "question_id": 413948006,
+    "question": "How many is he holding?",
+    "question_kr": "그 사람은 몇 개를 들고 있나요?"
   },
   {
-    "question_id": 512223001,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
+    "question_id": 195862018,
+    "question": "Who wears it?",
+    "question_kr": "Who wears it?"
+  },
+  {
+    "question_id": 371155002,
+    "question": "What color are they by it?",
+    "question_kr": "What color are they by it?"
+  },
+  {
+    "question_id": 133928008,
+    "question": "How many are in this image?",
+    "question_kr": "이 이미지에는 몇 개가 있나요?"
+  },
+  {
+    "question_id": 386092001,
+    "question": "What kind of is this?",
+    "question_kr": "What kind of is this?"
   },
   {
     "question_id": 463588002,
@@ -115,24 +55,19 @@
     "question_kr": "Do they love each other?"
   },
   {
-    "question_id": 507154001,
-    "question": "Are there mugs on the table?",
-    "question_kr": "테이블 위에 머그컵이 있나요?"
+    "question_id": 205513003,
+    "question": "What is it made of?",
+    "question_kr": "What is it made of?"
   },
   {
-    "question_id": 33994009,
-    "question": "What are they in?",
-    "question_kr": "What are they in?"
+    "question_id": 399462000,
+    "question": "What is it doing?",
+    "question_kr": "What is it doing?"
   },
   {
-    "question_id": 364145005,
-    "question": "Does it look like a busy location?",
-    "question_kr": "사람이 많은 곳 같나요?"
-  },
-  {
-    "question_id": 495252000,
-    "question": "Is that one American?",
-    "question_kr": "저 사람 미국인인가요?"
+    "question_id": 140661000,
+    "question": "What is the color of it?",
+    "question_kr": "What is the color of it?"
   },
   {
     "question_id": 537206001,
@@ -140,17 +75,187 @@
     "question_kr": "Why is he wearing protective gear?"
   },
   {
+    "question_id": 335521000,
+    "question": "Would it hurt you to walk up them?",
+    "question_kr": "Would it hurt you to walk up them?"
+  },
+  {
+    "question_id": 213359003,
+    "question": "What does the gesture mean?",
+    "question_kr": "What does the gesture mean?"
+  },
+  {
+    "question_id": 531815000,
+    "question": "Is it or it?",
+    "question_kr": "Is it or it?"
+  },
+  {
+    "question_id": 90646004,
+    "question": "What type of it is that?",
+    "question_kr": "What type of it is that?"
+  },
+  {
+    "question_id": 303718006,
+    "question": "How many are here?",
+    "question_kr": "여기에는 몇 명이 있나요?"
+  },
+  {
+    "question_id": 479149005,
+    "question": "What is the name of it?",
+    "question_kr": "What is the name of it?"
+  },
+  {
+    "question_id": 306421000,
+    "question": "What color is it?",
+    "question_kr": "무슨 색이에요?"
+  },
+  {
+    "question_id": 379402022,
+    "question": "What did this put in its hair to make it stay like that?",
+    "question_kr": "What did this put in its hair to make it stay like that?"
+  },
+  {
+    "question_id": 484938015,
+    "question": "What color shirt is the person with the extended arm wearing?",
+    "question_kr": "What color shirt is the person with the extended arm wearing?"
+  },
+  {
+    "question_id": 282062004,
+    "question": "What body part has most recently contacted it?",
+    "question_kr": "What body part has most recently contacted it?"
+  },
+  {
+    "question_id": 579859001,
+    "question": "How many are in the picture?",
+    "question_kr": "사진에는 ​​몇 개가 있나요?"
+  },
+  {
+    "question_id": 437494015,
+    "question": "How many are in it?",
+    "question_kr": "그 안에는 몇 개나 들어있나요?"
+  },
+  {
+    "question_id": 116439000,
+    "question": "What does this sell?",
+    "question_kr": "What does this sell?"
+  },
+  {
     "question_id": 498462001,
     "question": "How many black lines are on it?",
     "question_kr": "검은색 선이 몇 개 있나요?"
   },
   {
-    "question_id": 356002003,
-    "question": "What color is it in the distance?",
-    "question_kr": "What color is it in the distance?"
+    "question_id": 288202001,
+    "question": "What type is this?",
+    "question_kr": "What type is this?"
   },
   {
-    "question_id": 164453003,
+    "question_id": 182334006,
+    "question": "What kind of drink is in them?",
+    "question_kr": "What kind of drink is in them?"
+  },
+  {
+    "question_id": 80747000,
+    "question": "What kind is she wearing?",
+    "question_kr": "What kind is she wearing?"
+  },
+  {
+    "question_id": 215255000,
+    "question": "What color is it?",
+    "question_kr": "무슨 색이에요?"
+  },
+  {
+    "question_id": 546577001,
+    "question": "What is on it?",
+    "question_kr": "What is on it?"
+  },
+  {
+    "question_id": 544655003,
+    "question": "What color is his tie?",
+    "question_kr": "What color is his tie?"
+  },
+  {
+    "question_id": 187196001,
+    "question": "What does it say?",
+    "question_kr": "What does it say?"
+  },
+  {
+    "question_id": 156555004,
+    "question": "What green vegetable is on it?",
+    "question_kr": "What green vegetable is on it?"
+  },
+  {
+    "question_id": 146253002,
+    "question": "Which one is not wearing sunglasses?",
+    "question_kr": "Which one is not wearing sunglasses?"
+  },
+  {
+    "question_id": 228135002,
+    "question": "What would they do if it got too bright for their eyes?",
+    "question_kr": "What would they do if it got too bright for their eyes?"
+  },
+  {
+    "question_id": 344100003,
+    "question": "How many are on it?",
+    "question_kr": "거기에 몇 개나 있나요?"
+  },
+  {
+    "question_id": 512223001,
+    "question": "What color is it?",
+    "question_kr": "무슨 색이에요?"
+  },
+  {
+    "question_id": 577451000,
+    "question": "What is the yellow food?",
+    "question_kr": "What is the yellow food?"
+  },
+  {
+    "question_id": 347087006,
+    "question": "What color of it is in them?",
+    "question_kr": "What color of it is in them?"
+  },
+  {
+    "question_id": 9830000,
+    "question": "What type is it using?",
+    "question_kr": "What type is it using?"
+  },
+  {
+    "question_id": 452224002,
+    "question": "What color is it?",
+    "question_kr": "무슨 색이에요?"
+  },
+  {
+    "question_id": 103490012,
+    "question": "Which hand is holding it?",
+    "question_kr": "Which hand is holding it?"
+  },
+  {
+    "question_id": 262048001,
+    "question": "Where are they at?",
+    "question_kr": "Where are they at?"
+  },
+  {
+    "question_id": 485509003,
+    "question": "What is its color?",
+    "question_kr": "What is its color?"
+  },
+  {
+    "question_id": 543740000,
+    "question": "What color is it?",
+    "question_kr": "무슨 색이에요?"
+  },
+  {
+    "question_id": 215213002,
+    "question": "How many are wearing it?",
+    "question_kr": "몇 명이 입고 있나요?"
+  },
+  {
+    "question_id": 567562000,
+    "question": "How many empty ones are there?",
+    "question_kr": "빈 것이 몇 개 있나요?"
+  },
+  {
+    "question_id": 8292007,
     "question": "How many are on it?",
     "question_kr": "거기에 몇 개나 있나요?"
   },
@@ -160,89 +265,9 @@
     "question_kr": "What race is he?"
   },
   {
-    "question_id": 399462000,
-    "question": "What is it doing?",
-    "question_kr": "What is it doing?"
-  },
-  {
-    "question_id": 26501008,
-    "question": "Is it a town?",
-    "question_kr": "마을인가요?"
-  },
-  {
-    "question_id": 140713012,
-    "question": "What is it eating?",
-    "question_kr": "What is it eating?"
-  },
-  {
-    "question_id": 187196001,
-    "question": "What does it say?",
-    "question_kr": "What does it say?"
-  },
-  {
-    "question_id": 96618004,
-    "question": "What is the color of its collar?",
-    "question_kr": "What is the color of its collar?"
-  },
-  {
-    "question_id": 56400000,
-    "question": "What jewelry might be hidden under his sleeve?",
-    "question_kr": "What jewelry might be hidden under his sleeve?"
-  },
-  {
-    "question_id": 147653003,
-    "question": "How many are shown?",
-    "question_kr": "몇 개나 표시되나요?"
-  },
-  {
-    "question_id": 8292007,
-    "question": "How many are on it?",
-    "question_kr": "거기에 몇 개나 있나요?"
-  },
-  {
-    "question_id": 124707000,
-    "question": "What color are they?",
-    "question_kr": "색깔은 무엇입니까?"
-  },
-  {
-    "question_id": 225751007,
-    "question": "Is there any in the mixture?",
-    "question_kr": "혼합물에 뭔가가 있나요?"
-  },
-  {
-    "question_id": 450970001,
-    "question": "How many?",
-    "question_kr": "얼마나?"
-  },
-  {
-    "question_id": 361571001,
-    "question": "What is on its head?",
-    "question_kr": "What is on its head?"
-  },
-  {
-    "question_id": 75857000,
-    "question": "Are there any in this?",
-    "question_kr": "여기에도 있나요?"
-  },
-  {
-    "question_id": 437494015,
-    "question": "How many are in it?",
-    "question_kr": "그 안에는 몇 개나 들어있나요?"
-  },
-  {
-    "question_id": 404479011,
-    "question": "What is it like?",
-    "question_kr": "What is it like?"
-  },
-  {
-    "question_id": 502163002,
-    "question": "How many are in the picture?",
-    "question_kr": "사진에는 ​​몇 개가 있나요?"
-  },
-  {
-    "question_id": 228135002,
-    "question": "What would they do if it got too bright for their eyes?",
-    "question_kr": "What would they do if it got too bright for their eyes?"
+    "question_id": 72582004,
+    "question": "What is everyone doing?",
+    "question_kr": "What is everyone doing?"
   },
   {
     "question_id": 73521003,
@@ -250,144 +275,24 @@
     "question_kr": "What location is it at?"
   },
   {
-    "question_id": 567562000,
-    "question": "How many empty ones are there?",
-    "question_kr": "빈 것이 몇 개 있나요?"
+    "question_id": 315905008,
+    "question": "What is it standing in?",
+    "question_kr": "What is it standing in?"
   },
   {
-    "question_id": 426700003,
-    "question": "How many is the person holding up?",
-    "question_kr": "그 사람은 몇 개를 들고 있나요?"
+    "question_id": 124707000,
+    "question": "What color are they?",
+    "question_kr": "색깔은 무엇입니까?"
   },
   {
-    "question_id": 78288002,
-    "question": "Does it have a special name?",
-    "question_kr": "특별한 이름이 있나요?"
+    "question_id": 361571001,
+    "question": "What is on its head?",
+    "question_kr": "What is on its head?"
   },
   {
-    "question_id": 31024002,
-    "question": "Are there any?",
-    "question_kr": "거기에 있나요?"
-  },
-  {
-    "question_id": 157789005,
-    "question": "Are there any in it?",
-    "question_kr": "거기에 뭔가가 있나요?"
-  },
-  {
-    "question_id": 189936002,
-    "question": "What is it doing?",
-    "question_kr": "What is it doing?"
-  },
-  {
-    "question_id": 209180001,
-    "question": "Is there one on third?",
-    "question_kr": "세 번째에 하나 있나요?"
-  },
-  {
-    "question_id": 412914001,
-    "question": "What is covering it in the background?",
-    "question_kr": "What is covering it in the background?"
-  },
-  {
-    "question_id": 119373006,
-    "question": "Is there one?",
-    "question_kr": "하나 있나요?"
-  },
-  {
-    "question_id": 515347005,
-    "question": "What is it looking at?",
-    "question_kr": "What is it looking at?"
-  },
-  {
-    "question_id": 452224002,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
-  },
-  {
-    "question_id": 156555004,
-    "question": "What green vegetable is on it?",
-    "question_kr": "What green vegetable is on it?"
-  },
-  {
-    "question_id": 195862018,
-    "question": "Who wears it?",
-    "question_kr": "Who wears it?"
-  },
-  {
-    "question_id": 43816008,
-    "question": "Will he catch it?",
-    "question_kr": "그 사람이 잡을까요?"
-  },
-  {
-    "question_id": 530317001,
-    "question": "What kind are they in it?",
-    "question_kr": "What kind are they in it?"
-  },
-  {
-    "question_id": 121839003,
-    "question": "What are they wearing on their heads?",
-    "question_kr": "What are they wearing on their heads?"
-  },
-  {
-    "question_id": 133928008,
-    "question": "How many are in this image?",
-    "question_kr": "이 이미지에는 몇 개가 있나요?"
-  },
-  {
-    "question_id": 80747000,
-    "question": "What kind is she wearing?",
-    "question_kr": "What kind is she wearing?"
-  },
-  {
-    "question_id": 140661000,
-    "question": "What is the color of it?",
-    "question_kr": "What is the color of it?"
-  },
-  {
-    "question_id": 463802001,
-    "question": "What is in his right hand?",
-    "question_kr": "What is in his right hand?"
-  },
-  {
-    "question_id": 146253002,
-    "question": "Which one is not wearing sunglasses?",
-    "question_kr": "Which one is not wearing sunglasses?"
-  },
-  {
-    "question_id": 13546003,
-    "question": "How many are in the background?",
-    "question_kr": "How many are in the background?"
-  },
-  {
-    "question_id": 347087006,
-    "question": "What color of it is in them?",
-    "question_kr": "What color of it is in them?"
-  },
-  {
-    "question_id": 271934000,
-    "question": "What religion is it associated with?",
-    "question_kr": "What religion is it associated with?"
-  },
-  {
-    "question_id": 320715006,
-    "question": "What is its position called?",
-    "question_kr": "What is its position called?"
-  },
-  {
-    "question_id": 205513003,
-    "question": "What is it made of?",
-    "question_kr": "What is it made of?"
-  },
-  {
-    "question_id": 524799000,
-    "question": "How old is he?",
-    "question_kr": "How old is he?"
-  },
-  {
-    "question_id": 90646004,
-    "question": "What type of it is that?",
-    "question_kr": "What type of it is that?"
+    "question_id": 96618004,
+    "question": "What is the color of its collar?",
+    "question_kr": "What is the color of its collar?"
   },
   {
     "question_id": 6783001,
@@ -395,14 +300,29 @@
     "question_kr": "Why is he in it?"
   },
   {
-    "question_id": 546577001,
-    "question": "What is on it?",
-    "question_kr": "What is on it?"
+    "question_id": 238090000,
+    "question": "Which way is it hanging?",
+    "question_kr": "Which way is it hanging?"
   },
   {
-    "question_id": 72582004,
-    "question": "What is everyone doing?",
-    "question_kr": "What is everyone doing?"
+    "question_id": 119038004,
+    "question": "Where are they?",
+    "question_kr": "Where are they?"
+  },
+  {
+    "question_id": 356002003,
+    "question": "What color is it in the distance?",
+    "question_kr": "What color is it in the distance?"
+  },
+  {
+    "question_id": 412914001,
+    "question": "What is covering it in the background?",
+    "question_kr": "What is covering it in the background?"
+  },
+  {
+    "question_id": 33994009,
+    "question": "What are they in?",
+    "question_kr": "What are they in?"
   },
   {
     "question_id": 357383002,
@@ -410,59 +330,49 @@
     "question_kr": "What is on his face?"
   },
   {
-    "question_id": 335521000,
-    "question": "Would it hurt you to walk up them?",
-    "question_kr": "Would it hurt you to walk up them?"
+    "question_id": 162858001,
+    "question": "Which way is it going to go?",
+    "question_kr": "Which way is it going to go?"
   },
   {
-    "question_id": 386092001,
-    "question": "What kind of is this?",
-    "question_kr": "What kind of is this?"
+    "question_id": 411184005,
+    "question": "What is it called?",
+    "question_kr": "What is it called?"
   },
   {
-    "question_id": 579859001,
-    "question": "How many are in the picture?",
-    "question_kr": "사진에는 ​​몇 개가 있나요?"
+    "question_id": 189936002,
+    "question": "What is it doing?",
+    "question_kr": "What is it doing?"
   },
   {
-    "question_id": 577451000,
-    "question": "What is the yellow food?",
-    "question_kr": "What is the yellow food?"
+    "question_id": 512760001,
+    "question": "Where are they?",
+    "question_kr": "Where are they?"
   },
   {
-    "question_id": 502630003,
-    "question": "Is it one of the \"big 5\" game animals?",
-    "question_kr": "Is it one of the \"big 5\" game animals?"
+    "question_id": 515347005,
+    "question": "What is it looking at?",
+    "question_kr": "What is it looking at?"
   },
   {
-    "question_id": 32001021,
-    "question": "Is there one?",
-    "question_kr": "하나 있나요?"
+    "question_id": 121839003,
+    "question": "What are they wearing on their heads?",
+    "question_kr": "What are they wearing on their heads?"
   },
   {
-    "question_id": 196815001,
-    "question": "Is it a canteen?",
-    "question_kr": "Is it a canteen?"
+    "question_id": 255950000,
+    "question": "What color is it?",
+    "question_kr": "무슨 색이에요?"
   },
   {
-    "question_id": 213359003,
-    "question": "What does the gesture mean?",
-    "question_kr": "What does the gesture mean?"
+    "question_id": 404479011,
+    "question": "What is it like?",
+    "question_kr": "What is it like?"
   },
   {
-    "question_id": 479149005,
-    "question": "What is the name of it?",
-    "question_kr": "What is the name of it?"
-  },
-  {
-    "question_id": 484938015,
-    "question": "What color shirt is the person with the extended arm wearing?",
-    "question_kr": "What color shirt is the person with the extended arm wearing?"
-  },
-  {
-    "question_id": 408535003,
-    "question": "What is his ethnicity?",
-    "question_kr": "What is his ethnicity?"
+    "question_id": 106757001,
+    "question": "What is she doing?",
+    "question_kr": "What is she doing?"
   },
   {
     "question_id": 370444004,
@@ -470,9 +380,9 @@
     "question_kr": "Where is it?"
   },
   {
-    "question_id": 354072008,
-    "question": "Is there one in here?",
-    "question_kr": "여기에 하나 있나요?"
+    "question_id": 408535003,
+    "question": "What is his ethnicity?",
+    "question_kr": "What is his ethnicity?"
   },
   {
     "question_id": 463884003,
@@ -480,14 +390,9 @@
     "question_kr": "What is he being pulled by?"
   },
   {
-    "question_id": 121242000,
-    "question": "Which are bigger, the ones in front or back?",
-    "question_kr": "Which are bigger, the ones in front or back?"
-  },
-  {
-    "question_id": 417987002,
-    "question": "Is this a farm?",
-    "question_kr": "Is this a farm?"
+    "question_id": 482158000,
+    "question": "What color is the nearest one?",
+    "question_kr": "What color is the nearest one?"
   },
   {
     "question_id": 102872002,
@@ -495,8 +400,103 @@
     "question_kr": "What does it represent?"
   },
   {
-    "question_id": 103490012,
-    "question": "Which hand is holding it?",
-    "question_kr": "Which hand is holding it?"
+    "question_id": 140713012,
+    "question": "What is it eating?",
+    "question_kr": "What is it eating?"
+  },
+  {
+    "question_id": 116667019,
+    "question": "What number of stories is this?",
+    "question_kr": "What number of stories is this?"
+  },
+  {
+    "question_id": 56400000,
+    "question": "What jewelry might be hidden under his sleeve?",
+    "question_kr": "What jewelry might be hidden under his sleeve?"
+  },
+  {
+    "question_id": 426700003,
+    "question": "How many is the person holding up?",
+    "question_kr": "그 사람은 몇 개를 들고 있나요?"
+  },
+  {
+    "question_id": 450970001,
+    "question": "How many?",
+    "question_kr": "얼마나?"
+  },
+  {
+    "question_id": 121242000,
+    "question": "Which are bigger, the ones in front or back?",
+    "question_kr": "Which are bigger, the ones in front or back?"
+  },
+  {
+    "question_id": 578498007,
+    "question": "How many are under it?",
+    "question_kr": "그 아래에는 몇 개가 있습니까?"
+  },
+  {
+    "question_id": 164453003,
+    "question": "How many are on it?",
+    "question_kr": "거기에 몇 개나 있나요?"
+  },
+  {
+    "question_id": 530317001,
+    "question": "What kind are they in it?",
+    "question_kr": "What kind are they in it?"
+  },
+  {
+    "question_id": 142472000,
+    "question": "What color is the front on the left?",
+    "question_kr": "What color is the front on the left?"
+  },
+  {
+    "question_id": 463802001,
+    "question": "What is in his right hand?",
+    "question_kr": "What is in his right hand?"
+  },
+  {
+    "question_id": 6712002,
+    "question": "What color is it?",
+    "question_kr": "무슨 색이에요?"
+  },
+  {
+    "question_id": 79878008,
+    "question": "What is the color of it?",
+    "question_kr": "What is the color of it?"
+  },
+  {
+    "question_id": 226761002,
+    "question": "What game system are they playing on?",
+    "question_kr": "What game system are they playing on?"
+  },
+  {
+    "question_id": 271934000,
+    "question": "What religion is it associated with?",
+    "question_kr": "What religion is it associated with?"
+  },
+  {
+    "question_id": 352127003,
+    "question": "What color are they?",
+    "question_kr": "색깔은 무엇입니까?"
+  },
+  {
+    "question_id": 35671005,
+    "question": "What color is its head and tail hair?",
+    "question_kr": "What color is its head and tail hair?"
+  },
+  {
+    "question_id": 502163002,
+    "question": "How many are in the picture?",
+    "question_kr": "사진에는 ​​몇 개가 있나요?"
+  },
+  {
+    "question_id": 320715006,
+    "question": "What is its position called?",
+    "question_kr": "What is its position called?"
+  },
+  {
+    "question_id": 524799000,
+    "question": "How old is he?",
+    "question_kr": "How old is he?"
   }
 ]
