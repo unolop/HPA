@@ -102,7 +102,7 @@ worker_gpu1() {
 
 # ── Serial: large backbones needing both GPUs ─────────────────────────────────
 worker_serial() {
-    log "=== Serial: vicuna-13b, Qwen3-32B (GPU 0,1) ==="
+    log "=== Serial: vicuna-13b-v1.5, Qwen3-32B (GPU 0,1) ==="
     for MODEL in \
         "lmsys/vicuna-13b-v1.5" \
         "Qwen/Qwen3-32B"; do

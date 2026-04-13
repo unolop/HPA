@@ -1,0 +1,502 @@
+[
+  {
+    "question_id": 255950000,
+    "question": "What color is the plastic bag?",
+    "question_kr": "What color is the plastic bag?"
+  },
+  {
+    "question_id": 485509003,
+    "question": "What is the color of the sky?",
+    "question_kr": "What is the color of the sky?"
+  },
+  {
+    "question_id": 71361001,
+    "question": "What part of the elephant is the person touching?",
+    "question_kr": "What part of the elephant is the person touching?"
+  },
+  {
+    "question_id": 292032005,
+    "question": "Is there any chocolate with this meal?",
+    "question_kr": "이 식사에 초콜릿이 포함되어 있나요?"
+  },
+  {
+    "question_id": 26176000,
+    "question": "How many rows of tracks are there?",
+    "question_kr": "How many rows of tracks are there?"
+  },
+  {
+    "question_id": 553547000,
+    "question": "Are the cats ready to attack?",
+    "question_kr": "Are the cats ready to attack?"
+  },
+  {
+    "question_id": 344100003,
+    "question": "How many bottles of water are on the table?",
+    "question_kr": "테이블 위에 물병이 몇 개 있나요?"
+  },
+  {
+    "question_id": 238090000,
+    "question": "Which way is the toilet paper hanging?",
+    "question_kr": "Which way is the toilet paper hanging?"
+  },
+  {
+    "question_id": 182334006,
+    "question": "What kind of drink is in the glasses?",
+    "question_kr": "What kind of drink is in the glasses?"
+  },
+  {
+    "question_id": 578498007,
+    "question": "How many shoes are under the table?",
+    "question_kr": "테이블 밑에는 신발이 몇 개 있나요?"
+  },
+  {
+    "question_id": 192817002,
+    "question": "How many clouds do you see?",
+    "question_kr": "How many clouds do you see?"
+  },
+  {
+    "question_id": 199876000,
+    "question": "Are these women friends?",
+    "question_kr": "이 여자들은 친구인가요?"
+  },
+  {
+    "question_id": 345711000,
+    "question": "Which direction is E 42 St?",
+    "question_kr": "Which direction is E 42 St?"
+  },
+  {
+    "question_id": 215213002,
+    "question": "How many people are wearing peach?",
+    "question_kr": "복숭아를 입은 사람은 몇 명입니까?"
+  },
+  {
+    "question_id": 262048001,
+    "question": "Where are these people at?",
+    "question_kr": "Where are these people at?"
+  },
+  {
+    "question_id": 413948006,
+    "question": "How many ski poles is this person holding?",
+    "question_kr": "이 사람이 들고 있는 스키 폴은 몇 개입니까?"
+  },
+  {
+    "question_id": 214491004,
+    "question": "How close is the boy to the net?",
+    "question_kr": "How close is the boy to the net?"
+  },
+  {
+    "question_id": 162858001,
+    "question": "Which way is the green car going to go?",
+    "question_kr": "Which way is the green car going to go?"
+  },
+  {
+    "question_id": 558736000,
+    "question": "How many giraffes are there?",
+    "question_kr": "기린은 몇 마리 있나요?"
+  },
+  {
+    "question_id": 303718006,
+    "question": "How many bagels are here?",
+    "question_kr": "여기 베이글이 몇 개 있어요?"
+  },
+  {
+    "question_id": 379402022,
+    "question": "What did this man put in his hair to make it stay like that?",
+    "question_kr": "What did this man put in his hair to make it stay like that?"
+  },
+  {
+    "question_id": 512223001,
+    "question": "What color is the kitchen?",
+    "question_kr": "What color is the kitchen?"
+  },
+  {
+    "question_id": 463588002,
+    "question": "Do the horses love each other?",
+    "question_kr": "Do the horses love each other?"
+  },
+  {
+    "question_id": 507154001,
+    "question": "Are there coffee mugs on the table?",
+    "question_kr": "테이블 위에 커피잔이 있나요?"
+  },
+  {
+    "question_id": 33994009,
+    "question": "What are the flowers in?",
+    "question_kr": "What are the flowers in?"
+  },
+  {
+    "question_id": 364145005,
+    "question": "Does this look like a busy location?",
+    "question_kr": "여기가 사람이 많은 곳인 것 같나요?"
+  },
+  {
+    "question_id": 495252000,
+    "question": "Is that an American license plate?",
+    "question_kr": "미국 번호판인가요?"
+  },
+  {
+    "question_id": 537206001,
+    "question": "Why is the man wearing protective gear?",
+    "question_kr": "Why is the man wearing protective gear?"
+  },
+  {
+    "question_id": 498462001,
+    "question": "How many black lines are on the girl's shirt?",
+    "question_kr": "소녀의 셔츠에는 몇 개의 검은 선이 있습니까?"
+  },
+  {
+    "question_id": 356002003,
+    "question": "What color sand is in the distance?",
+    "question_kr": "What color sand is in the distance?"
+  },
+  {
+    "question_id": 164453003,
+    "question": "How many hearts are on the desk?",
+    "question_kr": "책상 위에 하트는 몇 개 있나요?"
+  },
+  {
+    "question_id": 130240006,
+    "question": "What race is the boy?",
+    "question_kr": "What race is the boy?"
+  },
+  {
+    "question_id": 399462000,
+    "question": "What action is this girl doing?",
+    "question_kr": "What action is this girl doing?"
+  },
+  {
+    "question_id": 26501008,
+    "question": "Is this a Chinese town?",
+    "question_kr": "여기가 중국 마을인가요?"
+  },
+  {
+    "question_id": 140713012,
+    "question": "What is the elephant eating?",
+    "question_kr": "What is the elephant eating?"
+  },
+  {
+    "question_id": 187196001,
+    "question": "What does the shirt say?",
+    "question_kr": "What does the shirt say?"
+  },
+  {
+    "question_id": 96618004,
+    "question": "What is the color of the dog's collar?",
+    "question_kr": "What is the color of the dog's collar?"
+  },
+  {
+    "question_id": 56400000,
+    "question": "What jewelry might be hidden under his jacket sleeve?",
+    "question_kr": "What jewelry might be hidden under his jacket sleeve?"
+  },
+  {
+    "question_id": 147653003,
+    "question": "How many cars are shown?",
+    "question_kr": "몇 대의 자동차가 표시됩니까?"
+  },
+  {
+    "question_id": 8292007,
+    "question": "How many black tiles are on the floor?",
+    "question_kr": "바닥에 검은 타일이 몇 개 있나요?"
+  },
+  {
+    "question_id": 124707000,
+    "question": "What color are the appliances?",
+    "question_kr": "What color are the appliances?"
+  },
+  {
+    "question_id": 225751007,
+    "question": "Is there broccoli in the mixture?",
+    "question_kr": "혼합물에 브로콜리가 있나요?"
+  },
+  {
+    "question_id": 450970001,
+    "question": "How many red suitcases?",
+    "question_kr": "빨간 여행가방은 몇 개입니까?"
+  },
+  {
+    "question_id": 361571001,
+    "question": "What is on the dogs head?",
+    "question_kr": "What is on the dogs head?"
+  },
+  {
+    "question_id": 75857000,
+    "question": "Are there any people in this church?",
+    "question_kr": "이 교회에 사람이 있나요?"
+  },
+  {
+    "question_id": 437494015,
+    "question": "How many people are in the water?",
+    "question_kr": "물 속에는 몇 명이 있나요?"
+  },
+  {
+    "question_id": 404479011,
+    "question": "What is the weather like?",
+    "question_kr": "What is the weather like?"
+  },
+  {
+    "question_id": 502163002,
+    "question": "How many women are in the picture?",
+    "question_kr": "사진 속 여자는 몇 명인가요?"
+  },
+  {
+    "question_id": 228135002,
+    "question": "What would these two do if the sun got too bright for their eyes?",
+    "question_kr": "What would these two do if the sun got too bright for their eyes?"
+  },
+  {
+    "question_id": 73521003,
+    "question": "What location is the luggage at?",
+    "question_kr": "What location is the luggage at?"
+  },
+  {
+    "question_id": 567562000,
+    "question": "How many empty chairs are there?",
+    "question_kr": "빈 의자가 몇 개 있나요?"
+  },
+  {
+    "question_id": 426700003,
+    "question": "How many fingers is the person holding up?",
+    "question_kr": "그 사람이 들고 있는 손가락은 몇 개입니까?"
+  },
+  {
+    "question_id": 78288002,
+    "question": "Does this motorcycle have a special name?",
+    "question_kr": "이 오토바이에는 특별한 이름이 있나요?"
+  },
+  {
+    "question_id": 31024002,
+    "question": "Are there any Roman numerals?",
+    "question_kr": "로마숫자가 있나요?"
+  },
+  {
+    "question_id": 157789005,
+    "question": "Are there mushrooms in this dish?",
+    "question_kr": "이 요리에 버섯이 들어있나요?"
+  },
+  {
+    "question_id": 189936002,
+    "question": "What is the woman in gray doing?",
+    "question_kr": "What is the woman in gray doing?"
+  },
+  {
+    "question_id": 209180001,
+    "question": "Is there a runner on third?",
+    "question_kr": "세 번째 주자가 있습니까?"
+  },
+  {
+    "question_id": 412914001,
+    "question": "What is covering the mountain in the picture's background?",
+    "question_kr": "What is covering the mountain in the picture's background?"
+  },
+  {
+    "question_id": 119373006,
+    "question": "Is there a lighthouse?",
+    "question_kr": "등대가 있나요?"
+  },
+  {
+    "question_id": 515347005,
+    "question": "What is the man looking at?",
+    "question_kr": "What is the man looking at?"
+  },
+  {
+    "question_id": 452224002,
+    "question": "What color is the branch?",
+    "question_kr": "What color is the branch?"
+  },
+  {
+    "question_id": 156555004,
+    "question": "What green vegetable is on the pizza?",
+    "question_kr": "What green vegetable is on the pizza?"
+  },
+  {
+    "question_id": 195862018,
+    "question": "Who wears a cowboy hat?",
+    "question_kr": "Who wears a cowboy hat?"
+  },
+  {
+    "question_id": 43816008,
+    "question": "Will the catcher catch the ball?",
+    "question_kr": "포수가 공을 잡을까?"
+  },
+  {
+    "question_id": 530317001,
+    "question": "What kind of trees are in the picture?",
+    "question_kr": "What kind of trees are in the picture?"
+  },
+  {
+    "question_id": 121839003,
+    "question": "What are the ladies wearing on their head's?",
+    "question_kr": "What are the ladies wearing on their head's?"
+  },
+  {
+    "question_id": 133928008,
+    "question": "How many cranes are in this image?",
+    "question_kr": "이 이미지에는 크레인이 몇 개 있습니까?"
+  },
+  {
+    "question_id": 80747000,
+    "question": "What kind of shoes is she wearing?",
+    "question_kr": "What kind of shoes is she wearing?"
+  },
+  {
+    "question_id": 140661000,
+    "question": "What is the color of the wall?",
+    "question_kr": "What is the color of the wall?"
+  },
+  {
+    "question_id": 463802001,
+    "question": "What is in the man's right hand?",
+    "question_kr": "What is in the man's right hand?"
+  },
+  {
+    "question_id": 146253002,
+    "question": "Which person is not wearing sunglasses?",
+    "question_kr": "Which person is not wearing sunglasses?"
+  },
+  {
+    "question_id": 13546003,
+    "question": "How many benches are in the background?",
+    "question_kr": "How many benches are in the background?"
+  },
+  {
+    "question_id": 347087006,
+    "question": "What color of wine is in the glasses?",
+    "question_kr": "What color of wine is in the glasses?"
+  },
+  {
+    "question_id": 271934000,
+    "question": "What religion is this building associated with?",
+    "question_kr": "What religion is this building associated with?"
+  },
+  {
+    "question_id": 320715006,
+    "question": "What is this player's position called?",
+    "question_kr": "What is this player's position called?"
+  },
+  {
+    "question_id": 205513003,
+    "question": "What is the bowl made of?",
+    "question_kr": "What is the bowl made of?"
+  },
+  {
+    "question_id": 524799000,
+    "question": "How old is the child?",
+    "question_kr": "How old is the child?"
+  },
+  {
+    "question_id": 90646004,
+    "question": "What type of shoe is that?",
+    "question_kr": "What type of shoe is that?"
+  },
+  {
+    "question_id": 6783001,
+    "question": "Why is the guy in the sky?",
+    "question_kr": "Why is the guy in the sky?"
+  },
+  {
+    "question_id": 546577001,
+    "question": "What is on the man's ear?",
+    "question_kr": "What is on the man's ear?"
+  },
+  {
+    "question_id": 72582004,
+    "question": "What is everyone at the table doing?",
+    "question_kr": "What is everyone at the table doing?"
+  },
+  {
+    "question_id": 357383002,
+    "question": "What is on the man's face?",
+    "question_kr": "What is on the man's face?"
+  },
+  {
+    "question_id": 335521000,
+    "question": "Would it hurt your thighs to walk up the hilly streets?",
+    "question_kr": "Would it hurt your thighs to walk up the hilly streets?"
+  },
+  {
+    "question_id": 386092001,
+    "question": "What kind of juice is this?",
+    "question_kr": "What kind of juice is this?"
+  },
+  {
+    "question_id": 579859001,
+    "question": "How many apple trees are in the picture?",
+    "question_kr": "그림에는 사과나무가 몇 그루 있나요?"
+  },
+  {
+    "question_id": 577451000,
+    "question": "What is the yellow food?",
+    "question_kr": "What is the yellow food?"
+  },
+  {
+    "question_id": 502630003,
+    "question": "Is the animal in the foreground one of the \"big 5\" game animals?",
+    "question_kr": "Is the animal in the foreground one of the \"big 5\" game animals?"
+  },
+  {
+    "question_id": 32001021,
+    "question": "Is there a couch?",
+    "question_kr": "소파가 있나요?"
+  },
+  {
+    "question_id": 196815001,
+    "question": "Is this a canteen?",
+    "question_kr": "Is this a canteen?"
+  },
+  {
+    "question_id": 213359003,
+    "question": "What does the man's gesture mean?",
+    "question_kr": "What does the man's gesture mean?"
+  },
+  {
+    "question_id": 479149005,
+    "question": "What is the name of the aerial move?",
+    "question_kr": "What is the name of the aerial move?"
+  },
+  {
+    "question_id": 484938015,
+    "question": "What color shirt is the person with the extended arm wearing?",
+    "question_kr": "What color shirt is the person with the extended arm wearing?"
+  },
+  {
+    "question_id": 408535003,
+    "question": "What is the young man's ethnicity?",
+    "question_kr": "What is the young man's ethnicity?"
+  },
+  {
+    "question_id": 370444004,
+    "question": "Where is the basket?",
+    "question_kr": "Where is the basket?"
+  },
+  {
+    "question_id": 354072008,
+    "question": "Is there a toilet in this room?",
+    "question_kr": "이 방에 화장실이 있나요?"
+  },
+  {
+    "question_id": 463884003,
+    "question": "What is this man being pulled by?",
+    "question_kr": "What is this man being pulled by?"
+  },
+  {
+    "question_id": 121242000,
+    "question": "Which wheels are bigger the ones in the front or back?",
+    "question_kr": "Which wheels are bigger the ones in the front or back?"
+  },
+  {
+    "question_id": 417987002,
+    "question": "Is this a farm?",
+    "question_kr": "Is this a farm?"
+  },
+  {
+    "question_id": 102872002,
+    "question": "What does the cake represent?",
+    "question_kr": "What does the cake represent?"
+  },
+  {
+    "question_id": 103490012,
+    "question": "Which hand is holding the thing?",
+    "question_kr": "Which hand is holding the thing?"
+  }
+]
