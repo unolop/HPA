@@ -1,502 +1,1002 @@
 [
   {
+    "id": 101,
     "question_id": 406647000,
-    "question": "What store is this parking lot for?",
-    "question_kr": "What store is this parking lot for?"
+    "variant": "B",
+    "question_en": "What store is this parking lot for?",
+    "question_kr": "What store is this parking lot for?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
   },
   {
+    "id": 102,
     "question_id": 214491004,
-    "question": "How close is the boy to the net?",
-    "question_kr": "How close is the boy to the net?"
+    "variant": "B",
+    "question_en": "How close is the boy to the net?",
+    "question_kr": "How close is the boy to the net?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 1
   },
   {
+    "id": 103,
     "question_id": 209856000,
-    "question": "Where is the dish?",
-    "question_kr": "Where is the dish?"
+    "variant": "B",
+    "question_en": "Where is the dish?",
+    "question_kr": "Where is the dish?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 2
   },
   {
+    "id": 104,
     "question_id": 345711000,
-    "question": "Which direction is street?",
-    "question_kr": "Which direction is street?"
+    "variant": "B",
+    "question_en": "Which direction is street?",
+    "question_kr": "Which direction is street?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 3
   },
   {
+    "id": 105,
     "question_id": 71361001,
-    "question": "What part of the animal is the person touching?",
-    "question_kr": "What part of the animal is the person touching?"
+    "variant": "B",
+    "question_en": "What part of the animal is the person touching?",
+    "question_kr": "What part of the animal is the person touching?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 4
   },
   {
+    "id": 106,
     "question_id": 413948006,
-    "question": "How many ski poles is the person holding?",
-    "question_kr": "그 사람이 들고 있는 스키 폴은 몇 개입니까?"
+    "variant": "B",
+    "question_en": "How many ski poles is the person holding?",
+    "question_kr": "그 사람이 들고 있는 스키 폴은 몇 개입니까?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 5
   },
   {
+    "id": 107,
     "question_id": 195862018,
-    "question": "Who wears a cowboy hat?",
-    "question_kr": "Who wears a cowboy hat?"
+    "variant": "B",
+    "question_en": "Who wears a cowboy hat?",
+    "question_kr": "Who wears a cowboy hat?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 6
   },
   {
+    "id": 108,
     "question_id": 371155002,
-    "question": "What color are the plants by the object?",
-    "question_kr": "What color are the plants by the object?"
+    "variant": "B",
+    "question_en": "What color are the plants by the object?",
+    "question_kr": "What color are the plants by the object?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 7
   },
   {
+    "id": 109,
     "question_id": 133928008,
-    "question": "How many machines are in the image?",
-    "question_kr": "이미지에는 몇 대의 머신이 있나요?"
+    "variant": "B",
+    "question_en": "How many machines are in the image?",
+    "question_kr": "이미지에는 몇 대의 머신이 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 8
   },
   {
+    "id": 110,
     "question_id": 386092001,
-    "question": "What kind of juice is this?",
-    "question_kr": "What kind of juice is this?"
+    "variant": "B",
+    "question_en": "What kind of juice is this?",
+    "question_kr": "What kind of juice is this?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 9
   },
   {
+    "id": 111,
     "question_id": 463588002,
-    "question": "Do the animals love each other?",
-    "question_kr": "Do the animals love each other?"
+    "variant": "B",
+    "question_en": "Do the animals love each other?",
+    "question_kr": "Do the animals love each other?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 10
   },
   {
+    "id": 112,
     "question_id": 205513003,
-    "question": "What is the object made of?",
-    "question_kr": "What is the object made of?"
+    "variant": "B",
+    "question_en": "What is the object made of?",
+    "question_kr": "What is the object made of?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 11
   },
   {
+    "id": 113,
     "question_id": 399462000,
-    "question": "What action is the person doing?",
-    "question_kr": "What action is the person doing?"
+    "variant": "B",
+    "question_en": "What action is the person doing?",
+    "question_kr": "What action is the person doing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 12
   },
   {
+    "id": 114,
     "question_id": 140661000,
-    "question": "What is the color of the surface?",
-    "question_kr": "What is the color of the surface?"
+    "variant": "B",
+    "question_en": "What is the color of the surface?",
+    "question_kr": "What is the color of the surface?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 13
   },
   {
+    "id": 115,
     "question_id": 537206001,
-    "question": "Why is the person wearing protective gear?",
-    "question_kr": "Why is the person wearing protective gear?"
+    "variant": "B",
+    "question_en": "Why is the person wearing protective gear?",
+    "question_kr": "Why is the person wearing protective gear?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 14
   },
   {
+    "id": 116,
     "question_id": 335521000,
-    "question": "Would it hurt your thighs to walk up the hilly streets?",
-    "question_kr": "Would it hurt your thighs to walk up the hilly streets?"
+    "variant": "B",
+    "question_en": "Would it hurt your thighs to walk up the hilly streets?",
+    "question_kr": "Would it hurt your thighs to walk up the hilly streets?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 15
   },
   {
+    "id": 117,
     "question_id": 213359003,
-    "question": "What does the person's gesture mean?",
-    "question_kr": "What does the person's gesture mean?"
+    "variant": "B",
+    "question_en": "What does the person's gesture mean?",
+    "question_kr": "What does the person's gesture mean?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 16
   },
   {
+    "id": 118,
     "question_id": 531815000,
-    "question": "Is it outside or inside?",
-    "question_kr": "Is it outside or inside?"
+    "variant": "B",
+    "question_en": "Is it outside or inside?",
+    "question_kr": "Is it outside or inside?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 17
   },
   {
+    "id": 119,
     "question_id": 90646004,
-    "question": "What type of footwear is that?",
-    "question_kr": "What type of footwear is that?"
+    "variant": "B",
+    "question_en": "What type of footwear is that?",
+    "question_kr": "What type of footwear is that?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 18
   },
   {
+    "id": 120,
     "question_id": 303718006,
-    "question": "How many food are here?",
-    "question_kr": "여기에 음식이 몇 개 있나요?"
+    "variant": "B",
+    "question_en": "How many food are here?",
+    "question_kr": "여기에 음식이 몇 개 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 19
   },
   {
+    "id": 121,
     "question_id": 479149005,
-    "question": "What is the name of the aerial move?",
-    "question_kr": "What is the name of the aerial move?"
+    "variant": "B",
+    "question_en": "What is the name of the aerial move?",
+    "question_kr": "What is the name of the aerial move?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 20
   },
   {
+    "id": 122,
     "question_id": 306421000,
-    "question": "What color is the sky?",
-    "question_kr": "What color is the sky?"
+    "variant": "B",
+    "question_en": "What color is the sky?",
+    "question_kr": "What color is the sky?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 21
   },
   {
+    "id": 123,
     "question_id": 379402022,
-    "question": "What did this person put in his hair to make it stay like that?",
-    "question_kr": "What did this person put in his hair to make it stay like that?"
+    "variant": "B",
+    "question_en": "What did this person put in his hair to make it stay like that?",
+    "question_kr": "What did this person put in his hair to make it stay like that?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 22
   },
   {
+    "id": 124,
     "question_id": 484938015,
-    "question": "What color clothing is the person with the extended arm wearing?",
-    "question_kr": "What color clothing is the person with the extended arm wearing?"
+    "variant": "B",
+    "question_en": "What color clothing is the person with the extended arm wearing?",
+    "question_kr": "What color clothing is the person with the extended arm wearing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 23
   },
   {
+    "id": 125,
     "question_id": 282062004,
-    "question": "What body part has most recently contacted the object?",
-    "question_kr": "What body part has most recently contacted the object?"
+    "variant": "B",
+    "question_en": "What body part has most recently contacted the object?",
+    "question_kr": "What body part has most recently contacted the object?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 24
   },
   {
+    "id": 126,
     "question_id": 579859001,
-    "question": "How many fruit trees are in the picture?",
-    "question_kr": "그림에는 몇 그루의 과일나무가 있나요?"
+    "variant": "B",
+    "question_en": "How many fruit trees are in the picture?",
+    "question_kr": "그림에는 몇 그루의 과일나무가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 25
   },
   {
+    "id": 127,
     "question_id": 437494015,
-    "question": "How many people are in the water?",
-    "question_kr": "물 속에는 몇 명이 있나요?"
+    "variant": "B",
+    "question_en": "How many people are in the water?",
+    "question_kr": "물 속에는 몇 명이 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 26
   },
   {
+    "id": 128,
     "question_id": 116439000,
-    "question": "What does this person sell?",
-    "question_kr": "What does this person sell?"
+    "variant": "B",
+    "question_en": "What does this person sell?",
+    "question_kr": "What does this person sell?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 27
   },
   {
+    "id": 129,
     "question_id": 498462001,
-    "question": "How many black lines are on the girl's clothing?",
-    "question_kr": "소녀의 옷에는 몇 개의 검은 선이 있습니까?"
+    "variant": "B",
+    "question_en": "How many black lines are on the girl's clothing?",
+    "question_kr": "소녀의 옷에는 몇 개의 검은 선이 있습니까?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 28
   },
   {
+    "id": 130,
     "question_id": 288202001,
-    "question": "What type of animal is this?",
-    "question_kr": "What type of animal is this?"
+    "variant": "B",
+    "question_en": "What type of animal is this?",
+    "question_kr": "What type of animal is this?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 29
   },
   {
+    "id": 131,
     "question_id": 182334006,
-    "question": "What kind of beverage is in the objects?",
-    "question_kr": "What kind of beverage is in the objects?"
+    "variant": "B",
+    "question_en": "What kind of beverage is in the objects?",
+    "question_kr": "What kind of beverage is in the objects?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 30
   },
   {
+    "id": 132,
     "question_id": 80747000,
-    "question": "What kind of footwear is she wearing?",
-    "question_kr": "What kind of footwear is she wearing?"
+    "variant": "B",
+    "question_en": "What kind of footwear is she wearing?",
+    "question_kr": "What kind of footwear is she wearing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 31
   },
   {
+    "id": 133,
     "question_id": 215255000,
-    "question": "What color is the structure?",
-    "question_kr": "What color is the structure?"
+    "variant": "B",
+    "question_en": "What color is the structure?",
+    "question_kr": "What color is the structure?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 32
   },
   {
+    "id": 134,
     "question_id": 546577001,
-    "question": "What is on the man's body part?",
-    "question_kr": "What is on the man's body part?"
+    "variant": "B",
+    "question_en": "What is on the man's body part?",
+    "question_kr": "What is on the man's body part?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 33
   },
   {
+    "id": 135,
     "question_id": 544655003,
-    "question": "What color is the man's clothing?",
-    "question_kr": "What color is the man's clothing?"
+    "variant": "B",
+    "question_en": "What color is the man's clothing?",
+    "question_kr": "What color is the man's clothing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 34
   },
   {
+    "id": 136,
     "question_id": 187196001,
-    "question": "What does the clothing say?",
-    "question_kr": "What does the clothing say?"
+    "variant": "B",
+    "question_en": "What does the clothing say?",
+    "question_kr": "What does the clothing say?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 35
   },
   {
+    "id": 137,
     "question_id": 156555004,
-    "question": "What green vegetable is on the pizza?",
-    "question_kr": "What green vegetable is on the pizza?"
+    "variant": "B",
+    "question_en": "What green vegetable is on the pizza?",
+    "question_kr": "What green vegetable is on the pizza?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 36
   },
   {
+    "id": 138,
     "question_id": 146253002,
-    "question": "Which person is not wearing sunglasses?",
-    "question_kr": "Which person is not wearing sunglasses?"
+    "variant": "B",
+    "question_en": "Which person is not wearing sunglasses?",
+    "question_kr": "Which person is not wearing sunglasses?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 37
   },
   {
+    "id": 139,
     "question_id": 228135002,
-    "question": "What would the two do if the sun got too bright for their eyes?",
-    "question_kr": "What would the two do if the sun got too bright for their eyes?"
+    "variant": "B",
+    "question_en": "What would the two do if the sun got too bright for their eyes?",
+    "question_kr": "What would the two do if the sun got too bright for their eyes?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 38
   },
   {
+    "id": 140,
     "question_id": 344100003,
-    "question": "How many bottles of beverage are on the table?",
-    "question_kr": "테이블 위에 음료수 병이 몇 개 있습니까?"
+    "variant": "B",
+    "question_en": "How many bottles of beverage are on the table?",
+    "question_kr": "테이블 위에 음료수 병이 몇 개 있습니까?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 39
   },
   {
+    "id": 141,
     "question_id": 512223001,
-    "question": "What color is the room?",
-    "question_kr": "What color is the room?"
+    "variant": "B",
+    "question_en": "What color is the room?",
+    "question_kr": "What color is the room?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 40
   },
   {
+    "id": 142,
     "question_id": 577451000,
-    "question": "What is the yellow food?",
-    "question_kr": "What is the yellow food?"
+    "variant": "B",
+    "question_en": "What is the yellow food?",
+    "question_kr": "What is the yellow food?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 41
   },
   {
+    "id": 143,
     "question_id": 347087006,
-    "question": "What color of beverage is in the glasses?",
-    "question_kr": "What color of beverage is in the glasses?"
+    "variant": "B",
+    "question_en": "What color of beverage is in the glasses?",
+    "question_kr": "What color of beverage is in the glasses?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 42
   },
   {
+    "id": 144,
     "question_id": 9830000,
-    "question": "What type of device is the cat using?",
-    "question_kr": "What type of device is the cat using?"
+    "variant": "B",
+    "question_en": "What type of device is the cat using?",
+    "question_kr": "What type of device is the cat using?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 43
   },
   {
+    "id": 145,
     "question_id": 452224002,
-    "question": "What color is the plant part?",
-    "question_kr": "What color is the plant part?"
+    "variant": "B",
+    "question_en": "What color is the plant part?",
+    "question_kr": "What color is the plant part?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 44
   },
   {
+    "id": 146,
     "question_id": 103490012,
-    "question": "Which hand is holding the object?",
-    "question_kr": "Which hand is holding the object?"
+    "variant": "B",
+    "question_en": "Which hand is holding the object?",
+    "question_kr": "Which hand is holding the object?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 45
   },
   {
+    "id": 147,
     "question_id": 262048001,
-    "question": "Where are the individuals?",
-    "question_kr": "Where are the individuals?"
+    "variant": "B",
+    "question_en": "Where are the individuals?",
+    "question_kr": "Where are the individuals?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 46
   },
   {
+    "id": 148,
     "question_id": 485509003,
-    "question": "What is the color of the atmosphere?",
-    "question_kr": "What is the color of the atmosphere?"
+    "variant": "B",
+    "question_en": "What is the color of the atmosphere?",
+    "question_kr": "What is the color of the atmosphere?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 47
   },
   {
+    "id": 149,
     "question_id": 543740000,
-    "question": "What color is the furniture?",
-    "question_kr": "What color is the furniture?"
+    "variant": "B",
+    "question_en": "What color is the furniture?",
+    "question_kr": "What color is the furniture?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 48
   },
   {
+    "id": 150,
     "question_id": 215213002,
-    "question": "How many people are wearing clothing?",
-    "question_kr": "옷을 입고 있는 사람은 몇 명입니까?"
+    "variant": "B",
+    "question_en": "How many people are wearing clothing?",
+    "question_kr": "옷을 입고 있는 사람은 몇 명입니까?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 49
   },
   {
+    "id": 151,
     "question_id": 567562000,
-    "question": "How many empty furniture are there?",
-    "question_kr": "빈 가구가 몇 개 있나요?"
+    "variant": "B",
+    "question_en": "How many empty furniture are there?",
+    "question_kr": "빈 가구가 몇 개 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 50
   },
   {
+    "id": 152,
     "question_id": 8292007,
-    "question": "How many black tiles are on the floor?",
-    "question_kr": "바닥에 검은 타일이 몇 개 있나요?"
+    "variant": "B",
+    "question_en": "How many black tiles are on the floor?",
+    "question_kr": "바닥에 검은 타일이 몇 개 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 51
   },
   {
+    "id": 153,
     "question_id": 130240006,
-    "question": "What ethnicity is the boy?",
-    "question_kr": "What ethnicity is the boy?"
+    "variant": "B",
+    "question_en": "What ethnicity is the boy?",
+    "question_kr": "What ethnicity is the boy?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 52
   },
   {
+    "id": 154,
     "question_id": 72582004,
-    "question": "What is everyone at the table doing?",
-    "question_kr": "What is everyone at the table doing?"
+    "variant": "B",
+    "question_en": "What is everyone at the table doing?",
+    "question_kr": "What is everyone at the table doing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 53
   },
   {
+    "id": 155,
     "question_id": 73521003,
-    "question": "What location is the object at?",
-    "question_kr": "What location is the object at?"
+    "variant": "B",
+    "question_en": "What location is the object at?",
+    "question_kr": "What location is the object at?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 54
   },
   {
+    "id": 156,
     "question_id": 315905008,
-    "question": "What is the animal standing in?",
-    "question_kr": "What is the animal standing in?"
+    "variant": "B",
+    "question_en": "What is the animal standing in?",
+    "question_kr": "What is the animal standing in?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 55
   },
   {
+    "id": 157,
     "question_id": 124707000,
-    "question": "What color are the devices?",
-    "question_kr": "What color are the devices?"
+    "variant": "B",
+    "question_en": "What color are the devices?",
+    "question_kr": "What color are the devices?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 56
   },
   {
+    "id": 158,
     "question_id": 361571001,
-    "question": "What is on the animal's head?",
-    "question_kr": "What is on the animal's head?"
+    "variant": "B",
+    "question_en": "What is on the animal's head?",
+    "question_kr": "What is on the animal's head?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 57
   },
   {
+    "id": 159,
     "question_id": 96618004,
-    "question": "What is the color of the animal's collar?",
-    "question_kr": "What is the color of the animal's collar?"
+    "variant": "B",
+    "question_en": "What is the color of the animal's collar?",
+    "question_kr": "What is the color of the animal's collar?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 58
   },
   {
+    "id": 160,
     "question_id": 6783001,
-    "question": "Why is the person in the sky?",
-    "question_kr": "Why is the person in the sky?"
+    "variant": "B",
+    "question_en": "Why is the person in the sky?",
+    "question_kr": "Why is the person in the sky?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 59
   },
   {
+    "id": 161,
     "question_id": 238090000,
-    "question": "Which way is the object hanging?",
-    "question_kr": "Which way is the object hanging?"
+    "variant": "B",
+    "question_en": "Which way is the object hanging?",
+    "question_kr": "Which way is the object hanging?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 60
   },
   {
+    "id": 162,
     "question_id": 119038004,
-    "question": "Where are the animals?",
-    "question_kr": "Where are the animals?"
+    "variant": "B",
+    "question_en": "Where are the animals?",
+    "question_kr": "Where are the animals?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 61
   },
   {
+    "id": 163,
     "question_id": 356002003,
-    "question": "What color sand is in the distance?",
-    "question_kr": "What color sand is in the distance?"
+    "variant": "B",
+    "question_en": "What color sand is in the distance?",
+    "question_kr": "What color sand is in the distance?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 62
   },
   {
+    "id": 164,
     "question_id": 412914001,
-    "question": "What is covering the mountain in the picture's background?",
-    "question_kr": "What is covering the mountain in the picture's background?"
+    "variant": "B",
+    "question_en": "What is covering the mountain in the picture's background?",
+    "question_kr": "What is covering the mountain in the picture's background?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 63
   },
   {
+    "id": 165,
     "question_id": 33994009,
-    "question": "What are the plants in?",
-    "question_kr": "What are the plants in?"
+    "variant": "B",
+    "question_en": "What are the plants in?",
+    "question_kr": "What are the plants in?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 64
   },
   {
+    "id": 166,
     "question_id": 357383002,
-    "question": "What is on the person's face?",
-    "question_kr": "What is on the person's face?"
+    "variant": "B",
+    "question_en": "What is on the person's face?",
+    "question_kr": "What is on the person's face?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 65
   },
   {
+    "id": 167,
     "question_id": 162858001,
-    "question": "Which way is the green vehicle going to go?",
-    "question_kr": "Which way is the green vehicle going to go?"
+    "variant": "B",
+    "question_en": "Which way is the green vehicle going to go?",
+    "question_kr": "Which way is the green vehicle going to go?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 66
   },
   {
+    "id": 168,
     "question_id": 411184005,
-    "question": "What is this boating area called?",
-    "question_kr": "What is this boating area called?"
+    "variant": "B",
+    "question_en": "What is this boating area called?",
+    "question_kr": "What is this boating area called?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 67
   },
   {
+    "id": 169,
     "question_id": 189936002,
-    "question": "What is the person in gray doing?",
-    "question_kr": "What is the person in gray doing?"
+    "variant": "B",
+    "question_en": "What is the person in gray doing?",
+    "question_kr": "What is the person in gray doing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 68
   },
   {
+    "id": 170,
     "question_id": 512760001,
-    "question": "Where are the fixtures?",
-    "question_kr": "Where are the fixtures?"
+    "variant": "B",
+    "question_en": "Where are the fixtures?",
+    "question_kr": "Where are the fixtures?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 69
   },
   {
+    "id": 171,
     "question_id": 515347005,
-    "question": "What is the man looking at?",
-    "question_kr": "What is the man looking at?"
+    "variant": "B",
+    "question_en": "What is the man looking at?",
+    "question_kr": "What is the man looking at?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 70
   },
   {
+    "id": 172,
     "question_id": 121839003,
-    "question": "What are the women wearing on their head's?",
-    "question_kr": "What are the women wearing on their head's?"
+    "variant": "B",
+    "question_en": "What are the women wearing on their head's?",
+    "question_kr": "What are the women wearing on their head's?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 71
   },
   {
+    "id": 173,
     "question_id": 255950000,
-    "question": "What color is the container?",
-    "question_kr": "What color is the container?"
+    "variant": "B",
+    "question_en": "What color is the container?",
+    "question_kr": "What color is the container?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 72
   },
   {
+    "id": 174,
     "question_id": 404479011,
-    "question": "What is the weather like?",
-    "question_kr": "What is the weather like?"
+    "variant": "B",
+    "question_en": "What is the weather like?",
+    "question_kr": "What is the weather like?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 73
   },
   {
+    "id": 175,
     "question_id": 106757001,
-    "question": "What is the person doing?",
-    "question_kr": "What is the person doing?"
+    "variant": "B",
+    "question_en": "What is the person doing?",
+    "question_kr": "What is the person doing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 74
   },
   {
+    "id": 176,
     "question_id": 370444004,
-    "question": "Where is the object?",
-    "question_kr": "Where is the object?"
+    "variant": "B",
+    "question_en": "Where is the object?",
+    "question_kr": "Where is the object?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 75
   },
   {
+    "id": 177,
     "question_id": 408535003,
-    "question": "What is the young person's ethnicity?",
-    "question_kr": "What is the young person's ethnicity?"
+    "variant": "B",
+    "question_en": "What is the young person's ethnicity?",
+    "question_kr": "What is the young person's ethnicity?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 76
   },
   {
+    "id": 178,
     "question_id": 463884003,
-    "question": "What is the man being pulled by?",
-    "question_kr": "What is the man being pulled by?"
+    "variant": "B",
+    "question_en": "What is the man being pulled by?",
+    "question_kr": "What is the man being pulled by?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 77
   },
   {
+    "id": 179,
     "question_id": 482158000,
-    "question": "What color is the nearest decoration?",
-    "question_kr": "What color is the nearest decoration?"
+    "variant": "B",
+    "question_en": "What color is the nearest decoration?",
+    "question_kr": "What color is the nearest decoration?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 78
   },
   {
+    "id": 180,
     "question_id": 102872002,
-    "question": "What does the cake represent?",
-    "question_kr": "What does the cake represent?"
+    "variant": "B",
+    "question_en": "What does the cake represent?",
+    "question_kr": "What does the cake represent?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 79
   },
   {
+    "id": 181,
     "question_id": 140713012,
-    "question": "What is the animal eating?",
-    "question_kr": "What is the animal eating?"
+    "variant": "B",
+    "question_en": "What is the animal eating?",
+    "question_kr": "What is the animal eating?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 80
   },
   {
+    "id": 182,
     "question_id": 116667019,
-    "question": "What number of stories is this vehicle?",
-    "question_kr": "What number of stories is this vehicle?"
+    "variant": "B",
+    "question_en": "What number of stories is this vehicle?",
+    "question_kr": "What number of stories is this vehicle?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 81
   },
   {
+    "id": 183,
     "question_id": 56400000,
-    "question": "What jewelry might be hidden under his jacket sleeve?",
-    "question_kr": "What jewelry might be hidden under his jacket sleeve?"
+    "variant": "B",
+    "question_en": "What jewelry might be hidden under his jacket sleeve?",
+    "question_kr": "What jewelry might be hidden under his jacket sleeve?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 82
   },
   {
+    "id": 184,
     "question_id": 426700003,
-    "question": "How many fingers is the person holding up?",
-    "question_kr": "그 사람이 들고 있는 손가락은 몇 개입니까?"
+    "variant": "B",
+    "question_en": "How many fingers is the person holding up?",
+    "question_kr": "그 사람이 들고 있는 손가락은 몇 개입니까?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 83
   },
   {
+    "id": 185,
     "question_id": 450970001,
-    "question": "How many red luggage items?",
-    "question_kr": "빨간색 수하물은 몇 개인가요?"
+    "variant": "B",
+    "question_en": "How many red luggage items?",
+    "question_kr": "빨간색 수하물은 몇 개인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 84
   },
   {
+    "id": 186,
     "question_id": 121242000,
-    "question": "Which wheels are bigger the ones in the front or back?",
-    "question_kr": "Which wheels are bigger the ones in the front or back?"
+    "variant": "B",
+    "question_en": "Which wheels are bigger the ones in the front or back?",
+    "question_kr": "Which wheels are bigger the ones in the front or back?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 85
   },
   {
+    "id": 187,
     "question_id": 578498007,
-    "question": "How many footwear items are under the table?",
-    "question_kr": "테이블 아래에 신발류가 몇 개나 있나요?"
+    "variant": "B",
+    "question_en": "How many footwear items are under the table?",
+    "question_kr": "테이블 아래에 신발류가 몇 개나 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 86
   },
   {
+    "id": 188,
     "question_id": 164453003,
-    "question": "How many hearts are on the furniture?",
-    "question_kr": "가구에 하트가 몇 개 있나요?"
+    "variant": "B",
+    "question_en": "How many hearts are on the furniture?",
+    "question_kr": "가구에 하트가 몇 개 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 87
   },
   {
+    "id": 189,
     "question_id": 530317001,
-    "question": "What kind of plants are in the picture?",
-    "question_kr": "What kind of plants are in the picture?"
+    "variant": "B",
+    "question_en": "What kind of plants are in the picture?",
+    "question_kr": "What kind of plants are in the picture?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 88
   },
   {
+    "id": 190,
     "question_id": 142472000,
-    "question": "What color is the front of the building?",
-    "question_kr": "What color is the front of the building?"
+    "variant": "B",
+    "question_en": "What color is the front of the building?",
+    "question_kr": "What color is the front of the building?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 89
   },
   {
+    "id": 191,
     "question_id": 463802001,
-    "question": "What is in the man's right hand?",
-    "question_kr": "What is in the man's right hand?"
+    "variant": "B",
+    "question_en": "What is in the man's right hand?",
+    "question_kr": "What is in the man's right hand?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 90
   },
   {
+    "id": 192,
     "question_id": 6712002,
-    "question": "What color is the building?",
-    "question_kr": "What color is the building?"
+    "variant": "B",
+    "question_en": "What color is the building?",
+    "question_kr": "What color is the building?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 91
   },
   {
+    "id": 193,
     "question_id": 79878008,
-    "question": "What is the color of the fixture?",
-    "question_kr": "What is the color of the fixture?"
+    "variant": "B",
+    "question_en": "What is the color of the fixture?",
+    "question_kr": "What is the color of the fixture?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 92
   },
   {
+    "id": 194,
     "question_id": 226761002,
-    "question": "What game system are the boys playing on?",
-    "question_kr": "What game system are the boys playing on?"
+    "variant": "B",
+    "question_en": "What game system are the boys playing on?",
+    "question_kr": "What game system are the boys playing on?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 93
   },
   {
+    "id": 195,
     "question_id": 271934000,
-    "question": "What religion is the structure associated with?",
-    "question_kr": "What religion is the structure associated with?"
+    "variant": "B",
+    "question_en": "What religion is the structure associated with?",
+    "question_kr": "What religion is the structure associated with?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 94
   },
   {
+    "id": 196,
     "question_id": 352127003,
-    "question": "What color is the light?",
-    "question_kr": "What color is the light?"
+    "variant": "B",
+    "question_en": "What color is the light?",
+    "question_kr": "What color is the light?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 95
   },
   {
+    "id": 197,
     "question_id": 35671005,
-    "question": "What color is this animal's head and tail hair?",
-    "question_kr": "What color is this animal's head and tail hair?"
+    "variant": "B",
+    "question_en": "What color is this animal's head and tail hair?",
+    "question_kr": "What color is this animal's head and tail hair?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 96
   },
   {
+    "id": 198,
     "question_id": 502163002,
-    "question": "How many women are in the picture?",
-    "question_kr": "사진 속 여자는 몇 명인가요?"
+    "variant": "B",
+    "question_en": "How many women are in the picture?",
+    "question_kr": "사진 속 여자는 몇 명인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 97
   },
   {
+    "id": 199,
     "question_id": 320715006,
-    "question": "What is the person's position called?",
-    "question_kr": "What is the person's position called?"
+    "variant": "B",
+    "question_en": "What is the person's position called?",
+    "question_kr": "What is the person's position called?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 98
   },
   {
+    "id": 200,
     "question_id": 524799000,
-    "question": "How old is the person?",
-    "question_kr": "How old is the person?"
+    "variant": "B",
+    "question_en": "How old is the person?",
+    "question_kr": "How old is the person?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 99
   }
 ]

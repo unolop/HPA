@@ -1,502 +1,1002 @@
 [
   {
+    "id": 201,
     "question_id": 406647000,
-    "question": "What store is it for?",
-    "question_kr": "What store is it for?"
+    "variant": "A",
+    "question_en": "What store is it for?",
+    "question_kr": "What store is it for?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
   },
   {
+    "id": 202,
     "question_id": 214491004,
-    "question": "How close is he to it?",
-    "question_kr": "How close is he to it?"
+    "variant": "A",
+    "question_en": "How close is he to it?",
+    "question_kr": "How close is he to it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 1
   },
   {
+    "id": 203,
     "question_id": 209856000,
-    "question": "Where is it?",
-    "question_kr": "Where is it?"
+    "variant": "A",
+    "question_en": "Where is it?",
+    "question_kr": "Where is it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 2
   },
   {
+    "id": 204,
     "question_id": 345711000,
-    "question": "Which direction is it?",
-    "question_kr": "Which direction is it?"
+    "variant": "A",
+    "question_en": "Which direction is it?",
+    "question_kr": "Which direction is it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 3
   },
   {
+    "id": 205,
     "question_id": 71361001,
-    "question": "What part is the person touching?",
-    "question_kr": "What part is the person touching?"
+    "variant": "A",
+    "question_en": "What part is the person touching?",
+    "question_kr": "What part is the person touching?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 4
   },
   {
+    "id": 206,
     "question_id": 413948006,
-    "question": "How many is he holding?",
-    "question_kr": "그 사람은 몇 개를 들고 있나요?"
+    "variant": "A",
+    "question_en": "How many is he holding?",
+    "question_kr": "그 사람은 몇 개를 들고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 5
   },
   {
+    "id": 207,
     "question_id": 195862018,
-    "question": "Who wears it?",
-    "question_kr": "Who wears it?"
+    "variant": "A",
+    "question_en": "Who wears it?",
+    "question_kr": "Who wears it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 6
   },
   {
+    "id": 208,
     "question_id": 371155002,
-    "question": "What color are they by it?",
-    "question_kr": "What color are they by it?"
+    "variant": "A",
+    "question_en": "What color are they by it?",
+    "question_kr": "What color are they by it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 7
   },
   {
+    "id": 209,
     "question_id": 133928008,
-    "question": "How many are in this image?",
-    "question_kr": "이 이미지에는 몇 개가 있나요?"
+    "variant": "A",
+    "question_en": "How many are in this image?",
+    "question_kr": "이 이미지에는 몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 8
   },
   {
+    "id": 210,
     "question_id": 386092001,
-    "question": "What kind of is this?",
-    "question_kr": "What kind of is this?"
+    "variant": "A",
+    "question_en": "What kind of is this?",
+    "question_kr": "What kind of is this?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 9
   },
   {
+    "id": 211,
     "question_id": 463588002,
-    "question": "Do they love each other?",
-    "question_kr": "Do they love each other?"
+    "variant": "A",
+    "question_en": "Do they love each other?",
+    "question_kr": "Do they love each other?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 10
   },
   {
+    "id": 212,
     "question_id": 205513003,
-    "question": "What is it made of?",
-    "question_kr": "What is it made of?"
+    "variant": "A",
+    "question_en": "What is it made of?",
+    "question_kr": "What is it made of?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 11
   },
   {
+    "id": 213,
     "question_id": 399462000,
-    "question": "What is it doing?",
-    "question_kr": "What is it doing?"
+    "variant": "A",
+    "question_en": "What is it doing?",
+    "question_kr": "What is it doing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 12
   },
   {
+    "id": 214,
     "question_id": 140661000,
-    "question": "What is the color of it?",
-    "question_kr": "What is the color of it?"
+    "variant": "A",
+    "question_en": "What is the color of it?",
+    "question_kr": "What is the color of it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 13
   },
   {
+    "id": 215,
     "question_id": 537206001,
-    "question": "Why is he wearing protective gear?",
-    "question_kr": "Why is he wearing protective gear?"
+    "variant": "A",
+    "question_en": "Why is he wearing protective gear?",
+    "question_kr": "Why is he wearing protective gear?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 14
   },
   {
+    "id": 216,
     "question_id": 335521000,
-    "question": "Would it hurt you to walk up them?",
-    "question_kr": "Would it hurt you to walk up them?"
+    "variant": "A",
+    "question_en": "Would it hurt you to walk up them?",
+    "question_kr": "Would it hurt you to walk up them?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 15
   },
   {
+    "id": 217,
     "question_id": 213359003,
-    "question": "What does the gesture mean?",
-    "question_kr": "What does the gesture mean?"
+    "variant": "A",
+    "question_en": "What does the gesture mean?",
+    "question_kr": "What does the gesture mean?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 16
   },
   {
+    "id": 218,
     "question_id": 531815000,
-    "question": "Is it or it?",
-    "question_kr": "Is it or it?"
+    "variant": "A",
+    "question_en": "Is it or it?",
+    "question_kr": "Is it or it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 17
   },
   {
+    "id": 219,
     "question_id": 90646004,
-    "question": "What type of it is that?",
-    "question_kr": "What type of it is that?"
+    "variant": "A",
+    "question_en": "What type of it is that?",
+    "question_kr": "What type of it is that?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 18
   },
   {
+    "id": 220,
     "question_id": 303718006,
-    "question": "How many are here?",
-    "question_kr": "여기에는 몇 명이 있나요?"
+    "variant": "A",
+    "question_en": "How many are here?",
+    "question_kr": "여기에는 몇 명이 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 19
   },
   {
+    "id": 221,
     "question_id": 479149005,
-    "question": "What is the name of it?",
-    "question_kr": "What is the name of it?"
+    "variant": "A",
+    "question_en": "What is the name of it?",
+    "question_kr": "What is the name of it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 20
   },
   {
+    "id": 222,
     "question_id": 306421000,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
+    "variant": "A",
+    "question_en": "What color is it?",
+    "question_kr": "무슨 색이에요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 21
   },
   {
+    "id": 223,
     "question_id": 379402022,
-    "question": "What did this put in its hair to make it stay like that?",
-    "question_kr": "What did this put in its hair to make it stay like that?"
+    "variant": "A",
+    "question_en": "What did this put in its hair to make it stay like that?",
+    "question_kr": "What did this put in its hair to make it stay like that?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 22
   },
   {
+    "id": 224,
     "question_id": 484938015,
-    "question": "What color shirt is the person with the extended arm wearing?",
-    "question_kr": "What color shirt is the person with the extended arm wearing?"
+    "variant": "A",
+    "question_en": "What color shirt is the person with the extended arm wearing?",
+    "question_kr": "What color shirt is the person with the extended arm wearing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 23
   },
   {
+    "id": 225,
     "question_id": 282062004,
-    "question": "What body part has most recently contacted it?",
-    "question_kr": "What body part has most recently contacted it?"
+    "variant": "A",
+    "question_en": "What body part has most recently contacted it?",
+    "question_kr": "What body part has most recently contacted it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 24
   },
   {
+    "id": 226,
     "question_id": 579859001,
-    "question": "How many are in the picture?",
-    "question_kr": "사진에는 ​​몇 개가 있나요?"
+    "variant": "A",
+    "question_en": "How many are in the picture?",
+    "question_kr": "사진에는 ​​몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 25
   },
   {
+    "id": 227,
     "question_id": 437494015,
-    "question": "How many are in it?",
-    "question_kr": "그 안에는 몇 개나 들어있나요?"
+    "variant": "A",
+    "question_en": "How many are in it?",
+    "question_kr": "그 안에는 몇 개나 들어있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 26
   },
   {
+    "id": 228,
     "question_id": 116439000,
-    "question": "What does this sell?",
-    "question_kr": "What does this sell?"
+    "variant": "A",
+    "question_en": "What does this sell?",
+    "question_kr": "What does this sell?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 27
   },
   {
+    "id": 229,
     "question_id": 498462001,
-    "question": "How many black lines are on it?",
-    "question_kr": "검은색 선이 몇 개 있나요?"
+    "variant": "A",
+    "question_en": "How many black lines are on it?",
+    "question_kr": "검은색 선이 몇 개 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 28
   },
   {
+    "id": 230,
     "question_id": 288202001,
-    "question": "What type is this?",
-    "question_kr": "What type is this?"
+    "variant": "A",
+    "question_en": "What type is this?",
+    "question_kr": "What type is this?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 29
   },
   {
+    "id": 231,
     "question_id": 182334006,
-    "question": "What kind of drink is in them?",
-    "question_kr": "What kind of drink is in them?"
+    "variant": "A",
+    "question_en": "What kind of drink is in them?",
+    "question_kr": "What kind of drink is in them?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 30
   },
   {
+    "id": 232,
     "question_id": 80747000,
-    "question": "What kind is she wearing?",
-    "question_kr": "What kind is she wearing?"
+    "variant": "A",
+    "question_en": "What kind is she wearing?",
+    "question_kr": "What kind is she wearing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 31
   },
   {
+    "id": 233,
     "question_id": 215255000,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
+    "variant": "A",
+    "question_en": "What color is it?",
+    "question_kr": "무슨 색이에요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 32
   },
   {
+    "id": 234,
     "question_id": 546577001,
-    "question": "What is on it?",
-    "question_kr": "What is on it?"
+    "variant": "A",
+    "question_en": "What is on it?",
+    "question_kr": "What is on it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 33
   },
   {
+    "id": 235,
     "question_id": 544655003,
-    "question": "What color is his tie?",
-    "question_kr": "What color is his tie?"
+    "variant": "A",
+    "question_en": "What color is his tie?",
+    "question_kr": "What color is his tie?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 34
   },
   {
+    "id": 236,
     "question_id": 187196001,
-    "question": "What does it say?",
-    "question_kr": "What does it say?"
+    "variant": "A",
+    "question_en": "What does it say?",
+    "question_kr": "What does it say?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 35
   },
   {
+    "id": 237,
     "question_id": 156555004,
-    "question": "What green vegetable is on it?",
-    "question_kr": "What green vegetable is on it?"
+    "variant": "A",
+    "question_en": "What green vegetable is on it?",
+    "question_kr": "What green vegetable is on it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 36
   },
   {
+    "id": 238,
     "question_id": 146253002,
-    "question": "Which one is not wearing sunglasses?",
-    "question_kr": "Which one is not wearing sunglasses?"
+    "variant": "A",
+    "question_en": "Which one is not wearing sunglasses?",
+    "question_kr": "Which one is not wearing sunglasses?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 37
   },
   {
+    "id": 239,
     "question_id": 228135002,
-    "question": "What would they do if it got too bright for their eyes?",
-    "question_kr": "What would they do if it got too bright for their eyes?"
+    "variant": "A",
+    "question_en": "What would they do if it got too bright for their eyes?",
+    "question_kr": "What would they do if it got too bright for their eyes?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 38
   },
   {
+    "id": 240,
     "question_id": 344100003,
-    "question": "How many are on it?",
-    "question_kr": "거기에 몇 개나 있나요?"
+    "variant": "A",
+    "question_en": "How many are on it?",
+    "question_kr": "거기에 몇 개나 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 39
   },
   {
+    "id": 241,
     "question_id": 512223001,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
+    "variant": "A",
+    "question_en": "What color is it?",
+    "question_kr": "무슨 색이에요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 40
   },
   {
+    "id": 242,
     "question_id": 577451000,
-    "question": "What is the yellow food?",
-    "question_kr": "What is the yellow food?"
+    "variant": "A",
+    "question_en": "What is the yellow food?",
+    "question_kr": "What is the yellow food?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 41
   },
   {
+    "id": 243,
     "question_id": 347087006,
-    "question": "What color of it is in them?",
-    "question_kr": "What color of it is in them?"
+    "variant": "A",
+    "question_en": "What color of it is in them?",
+    "question_kr": "What color of it is in them?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 42
   },
   {
+    "id": 244,
     "question_id": 9830000,
-    "question": "What type is it using?",
-    "question_kr": "What type is it using?"
+    "variant": "A",
+    "question_en": "What type is it using?",
+    "question_kr": "What type is it using?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 43
   },
   {
+    "id": 245,
     "question_id": 452224002,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
+    "variant": "A",
+    "question_en": "What color is it?",
+    "question_kr": "무슨 색이에요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 44
   },
   {
+    "id": 246,
     "question_id": 103490012,
-    "question": "Which hand is holding it?",
-    "question_kr": "Which hand is holding it?"
+    "variant": "A",
+    "question_en": "Which hand is holding it?",
+    "question_kr": "Which hand is holding it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 45
   },
   {
+    "id": 247,
     "question_id": 262048001,
-    "question": "Where are they at?",
-    "question_kr": "Where are they at?"
+    "variant": "A",
+    "question_en": "Where are they at?",
+    "question_kr": "Where are they at?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 46
   },
   {
+    "id": 248,
     "question_id": 485509003,
-    "question": "What is its color?",
-    "question_kr": "What is its color?"
+    "variant": "A",
+    "question_en": "What is its color?",
+    "question_kr": "What is its color?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 47
   },
   {
+    "id": 249,
     "question_id": 543740000,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
+    "variant": "A",
+    "question_en": "What color is it?",
+    "question_kr": "무슨 색이에요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 48
   },
   {
+    "id": 250,
     "question_id": 215213002,
-    "question": "How many are wearing it?",
-    "question_kr": "몇 명이 입고 있나요?"
+    "variant": "A",
+    "question_en": "How many are wearing it?",
+    "question_kr": "몇 명이 입고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 49
   },
   {
+    "id": 251,
     "question_id": 567562000,
-    "question": "How many empty ones are there?",
-    "question_kr": "빈 것이 몇 개 있나요?"
+    "variant": "A",
+    "question_en": "How many empty ones are there?",
+    "question_kr": "빈 것이 몇 개 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 50
   },
   {
+    "id": 252,
     "question_id": 8292007,
-    "question": "How many are on it?",
-    "question_kr": "거기에 몇 개나 있나요?"
+    "variant": "A",
+    "question_en": "How many are on it?",
+    "question_kr": "거기에 몇 개나 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 51
   },
   {
+    "id": 253,
     "question_id": 130240006,
-    "question": "What race is he?",
-    "question_kr": "What race is he?"
+    "variant": "A",
+    "question_en": "What race is he?",
+    "question_kr": "What race is he?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 52
   },
   {
+    "id": 254,
     "question_id": 72582004,
-    "question": "What is everyone doing?",
-    "question_kr": "What is everyone doing?"
+    "variant": "A",
+    "question_en": "What is everyone doing?",
+    "question_kr": "What is everyone doing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 53
   },
   {
+    "id": 255,
     "question_id": 73521003,
-    "question": "What location is it at?",
-    "question_kr": "What location is it at?"
+    "variant": "A",
+    "question_en": "What location is it at?",
+    "question_kr": "What location is it at?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 54
   },
   {
+    "id": 256,
     "question_id": 315905008,
-    "question": "What is it standing in?",
-    "question_kr": "What is it standing in?"
+    "variant": "A",
+    "question_en": "What is it standing in?",
+    "question_kr": "What is it standing in?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 55
   },
   {
+    "id": 257,
     "question_id": 124707000,
-    "question": "What color are they?",
-    "question_kr": "색깔은 무엇입니까?"
+    "variant": "A",
+    "question_en": "What color are they?",
+    "question_kr": "색깔은 무엇입니까?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 56
   },
   {
+    "id": 258,
     "question_id": 361571001,
-    "question": "What is on its head?",
-    "question_kr": "What is on its head?"
+    "variant": "A",
+    "question_en": "What is on its head?",
+    "question_kr": "What is on its head?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 57
   },
   {
+    "id": 259,
     "question_id": 96618004,
-    "question": "What is the color of its collar?",
-    "question_kr": "What is the color of its collar?"
+    "variant": "A",
+    "question_en": "What is the color of its collar?",
+    "question_kr": "What is the color of its collar?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 58
   },
   {
+    "id": 260,
     "question_id": 6783001,
-    "question": "Why is he in it?",
-    "question_kr": "Why is he in it?"
+    "variant": "A",
+    "question_en": "Why is he in it?",
+    "question_kr": "Why is he in it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 59
   },
   {
+    "id": 261,
     "question_id": 238090000,
-    "question": "Which way is it hanging?",
-    "question_kr": "Which way is it hanging?"
+    "variant": "A",
+    "question_en": "Which way is it hanging?",
+    "question_kr": "Which way is it hanging?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 60
   },
   {
+    "id": 262,
     "question_id": 119038004,
-    "question": "Where are they?",
-    "question_kr": "Where are they?"
+    "variant": "A",
+    "question_en": "Where are they?",
+    "question_kr": "Where are they?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 61
   },
   {
+    "id": 263,
     "question_id": 356002003,
-    "question": "What color is it in the distance?",
-    "question_kr": "What color is it in the distance?"
+    "variant": "A",
+    "question_en": "What color is it in the distance?",
+    "question_kr": "What color is it in the distance?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 62
   },
   {
+    "id": 264,
     "question_id": 412914001,
-    "question": "What is covering it in the background?",
-    "question_kr": "What is covering it in the background?"
+    "variant": "A",
+    "question_en": "What is covering it in the background?",
+    "question_kr": "What is covering it in the background?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 63
   },
   {
+    "id": 265,
     "question_id": 33994009,
-    "question": "What are they in?",
-    "question_kr": "What are they in?"
+    "variant": "A",
+    "question_en": "What are they in?",
+    "question_kr": "What are they in?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 64
   },
   {
+    "id": 266,
     "question_id": 357383002,
-    "question": "What is on his face?",
-    "question_kr": "What is on his face?"
+    "variant": "A",
+    "question_en": "What is on his face?",
+    "question_kr": "What is on his face?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 65
   },
   {
+    "id": 267,
     "question_id": 162858001,
-    "question": "Which way is it going to go?",
-    "question_kr": "Which way is it going to go?"
+    "variant": "A",
+    "question_en": "Which way is it going to go?",
+    "question_kr": "Which way is it going to go?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 66
   },
   {
+    "id": 268,
     "question_id": 411184005,
-    "question": "What is it called?",
-    "question_kr": "What is it called?"
+    "variant": "A",
+    "question_en": "What is it called?",
+    "question_kr": "What is it called?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 67
   },
   {
+    "id": 269,
     "question_id": 189936002,
-    "question": "What is it doing?",
-    "question_kr": "What is it doing?"
+    "variant": "A",
+    "question_en": "What is it doing?",
+    "question_kr": "What is it doing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 68
   },
   {
+    "id": 270,
     "question_id": 512760001,
-    "question": "Where are they?",
-    "question_kr": "Where are they?"
+    "variant": "A",
+    "question_en": "Where are they?",
+    "question_kr": "Where are they?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 69
   },
   {
+    "id": 271,
     "question_id": 515347005,
-    "question": "What is it looking at?",
-    "question_kr": "What is it looking at?"
+    "variant": "A",
+    "question_en": "What is it looking at?",
+    "question_kr": "What is it looking at?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 70
   },
   {
+    "id": 272,
     "question_id": 121839003,
-    "question": "What are they wearing on their heads?",
-    "question_kr": "What are they wearing on their heads?"
+    "variant": "A",
+    "question_en": "What are they wearing on their heads?",
+    "question_kr": "What are they wearing on their heads?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 71
   },
   {
+    "id": 273,
     "question_id": 255950000,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
+    "variant": "A",
+    "question_en": "What color is it?",
+    "question_kr": "무슨 색이에요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 72
   },
   {
+    "id": 274,
     "question_id": 404479011,
-    "question": "What is it like?",
-    "question_kr": "What is it like?"
+    "variant": "A",
+    "question_en": "What is it like?",
+    "question_kr": "What is it like?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 73
   },
   {
+    "id": 275,
     "question_id": 106757001,
-    "question": "What is she doing?",
-    "question_kr": "What is she doing?"
+    "variant": "A",
+    "question_en": "What is she doing?",
+    "question_kr": "What is she doing?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 74
   },
   {
+    "id": 276,
     "question_id": 370444004,
-    "question": "Where is it?",
-    "question_kr": "Where is it?"
+    "variant": "A",
+    "question_en": "Where is it?",
+    "question_kr": "Where is it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 75
   },
   {
+    "id": 277,
     "question_id": 408535003,
-    "question": "What is his ethnicity?",
-    "question_kr": "What is his ethnicity?"
+    "variant": "A",
+    "question_en": "What is his ethnicity?",
+    "question_kr": "What is his ethnicity?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 76
   },
   {
+    "id": 278,
     "question_id": 463884003,
-    "question": "What is he being pulled by?",
-    "question_kr": "What is he being pulled by?"
+    "variant": "A",
+    "question_en": "What is he being pulled by?",
+    "question_kr": "What is he being pulled by?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 77
   },
   {
+    "id": 279,
     "question_id": 482158000,
-    "question": "What color is the nearest one?",
-    "question_kr": "What color is the nearest one?"
+    "variant": "A",
+    "question_en": "What color is the nearest one?",
+    "question_kr": "What color is the nearest one?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 78
   },
   {
+    "id": 280,
     "question_id": 102872002,
-    "question": "What does it represent?",
-    "question_kr": "What does it represent?"
+    "variant": "A",
+    "question_en": "What does it represent?",
+    "question_kr": "What does it represent?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 79
   },
   {
+    "id": 281,
     "question_id": 140713012,
-    "question": "What is it eating?",
-    "question_kr": "What is it eating?"
+    "variant": "A",
+    "question_en": "What is it eating?",
+    "question_kr": "What is it eating?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 80
   },
   {
+    "id": 282,
     "question_id": 116667019,
-    "question": "What number of stories is this?",
-    "question_kr": "What number of stories is this?"
+    "variant": "A",
+    "question_en": "What number of stories is this?",
+    "question_kr": "What number of stories is this?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 81
   },
   {
+    "id": 283,
     "question_id": 56400000,
-    "question": "What jewelry might be hidden under his sleeve?",
-    "question_kr": "What jewelry might be hidden under his sleeve?"
+    "variant": "A",
+    "question_en": "What jewelry might be hidden under his sleeve?",
+    "question_kr": "What jewelry might be hidden under his sleeve?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 82
   },
   {
+    "id": 284,
     "question_id": 426700003,
-    "question": "How many is the person holding up?",
-    "question_kr": "그 사람은 몇 개를 들고 있나요?"
+    "variant": "A",
+    "question_en": "How many is the person holding up?",
+    "question_kr": "그 사람은 몇 개를 들고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 83
   },
   {
+    "id": 285,
     "question_id": 450970001,
-    "question": "How many?",
-    "question_kr": "얼마나?"
+    "variant": "A",
+    "question_en": "How many?",
+    "question_kr": "얼마나?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 84
   },
   {
+    "id": 286,
     "question_id": 121242000,
-    "question": "Which are bigger, the ones in front or back?",
-    "question_kr": "Which are bigger, the ones in front or back?"
+    "variant": "A",
+    "question_en": "Which are bigger, the ones in front or back?",
+    "question_kr": "Which are bigger, the ones in front or back?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 85
   },
   {
+    "id": 287,
     "question_id": 578498007,
-    "question": "How many are under it?",
-    "question_kr": "그 아래에는 몇 개가 있습니까?"
+    "variant": "A",
+    "question_en": "How many are under it?",
+    "question_kr": "그 아래에는 몇 개가 있습니까?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 86
   },
   {
+    "id": 288,
     "question_id": 164453003,
-    "question": "How many are on it?",
-    "question_kr": "거기에 몇 개나 있나요?"
+    "variant": "A",
+    "question_en": "How many are on it?",
+    "question_kr": "거기에 몇 개나 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 87
   },
   {
+    "id": 289,
     "question_id": 530317001,
-    "question": "What kind are they in it?",
-    "question_kr": "What kind are they in it?"
+    "variant": "A",
+    "question_en": "What kind are they in it?",
+    "question_kr": "What kind are they in it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 88
   },
   {
+    "id": 290,
     "question_id": 142472000,
-    "question": "What color is the front on the left?",
-    "question_kr": "What color is the front on the left?"
+    "variant": "A",
+    "question_en": "What color is the front on the left?",
+    "question_kr": "What color is the front on the left?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 89
   },
   {
+    "id": 291,
     "question_id": 463802001,
-    "question": "What is in his right hand?",
-    "question_kr": "What is in his right hand?"
+    "variant": "A",
+    "question_en": "What is in his right hand?",
+    "question_kr": "What is in his right hand?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 90
   },
   {
+    "id": 292,
     "question_id": 6712002,
-    "question": "What color is it?",
-    "question_kr": "무슨 색이에요?"
+    "variant": "A",
+    "question_en": "What color is it?",
+    "question_kr": "무슨 색이에요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 91
   },
   {
+    "id": 293,
     "question_id": 79878008,
-    "question": "What is the color of it?",
-    "question_kr": "What is the color of it?"
+    "variant": "A",
+    "question_en": "What is the color of it?",
+    "question_kr": "What is the color of it?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 92
   },
   {
+    "id": 294,
     "question_id": 226761002,
-    "question": "What game system are they playing on?",
-    "question_kr": "What game system are they playing on?"
+    "variant": "A",
+    "question_en": "What game system are they playing on?",
+    "question_kr": "What game system are they playing on?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 93
   },
   {
+    "id": 295,
     "question_id": 271934000,
-    "question": "What religion is it associated with?",
-    "question_kr": "What religion is it associated with?"
+    "variant": "A",
+    "question_en": "What religion is it associated with?",
+    "question_kr": "What religion is it associated with?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 94
   },
   {
+    "id": 296,
     "question_id": 352127003,
-    "question": "What color are they?",
-    "question_kr": "색깔은 무엇입니까?"
+    "variant": "A",
+    "question_en": "What color are they?",
+    "question_kr": "색깔은 무엇입니까?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 95
   },
   {
+    "id": 297,
     "question_id": 35671005,
-    "question": "What color is its head and tail hair?",
-    "question_kr": "What color is its head and tail hair?"
+    "variant": "A",
+    "question_en": "What color is its head and tail hair?",
+    "question_kr": "What color is its head and tail hair?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 96
   },
   {
+    "id": 298,
     "question_id": 502163002,
-    "question": "How many are in the picture?",
-    "question_kr": "사진에는 ​​몇 개가 있나요?"
+    "variant": "A",
+    "question_en": "How many are in the picture?",
+    "question_kr": "사진에는 ​​몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 97
   },
   {
+    "id": 299,
     "question_id": 320715006,
-    "question": "What is its position called?",
-    "question_kr": "What is its position called?"
+    "variant": "A",
+    "question_en": "What is its position called?",
+    "question_kr": "What is its position called?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 98
   },
   {
+    "id": 300,
     "question_id": 524799000,
-    "question": "How old is he?",
-    "question_kr": "How old is he?"
+    "variant": "A",
+    "question_en": "How old is he?",
+    "question_kr": "How old is he?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 99
   }
 ]
