@@ -4,7 +4,7 @@
     "question_id": 406647000,
     "variant": "C",
     "question_en": "What store is this parking lot for?",
-    "question_kr": "What store is this parking lot for?",
+    "question_kr": "이 주차장은 어느 매장 앞에 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 0
@@ -14,7 +14,7 @@
     "question_id": 214491004,
     "variant": "C",
     "question_en": "How close is the boy to the net?",
-    "question_kr": "How close is the boy to the net?",
+    "question_kr": "소년은 그물과 얼마나 가까이 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 1
@@ -24,7 +24,7 @@
     "question_id": 209856000,
     "variant": "C",
     "question_en": "Where is the salad?",
-    "question_kr": "Where is the salad?",
+    "question_kr": "샐러드는 어디에 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 2
@@ -34,7 +34,7 @@
     "question_id": 345711000,
     "variant": "C",
     "question_en": "Which direction is E 42 St?",
-    "question_kr": "Which direction is E 42 St?",
+    "question_kr": "E 42번가는 어느 방향에 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 3
@@ -44,7 +44,7 @@
     "question_id": 71361001,
     "variant": "C",
     "question_en": "What part of the elephant is the person touching?",
-    "question_kr": "What part of the elephant is the person touching?",
+    "question_kr": "그 사람은 코끼리의 어느 부분을 만지고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 4
@@ -54,7 +54,7 @@
     "question_id": 413948006,
     "variant": "C",
     "question_en": "How many ski poles is this person holding?",
-    "question_kr": "이 사람이 들고 있는 스키 폴은 몇 개입니까?",
+    "question_kr": "이 사람은 스키 폴을 몇 개 들고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 5
@@ -64,7 +64,7 @@
     "question_id": 195862018,
     "variant": "C",
     "question_en": "Who wears a cowboy hat?",
-    "question_kr": "Who wears a cowboy hat?",
+    "question_kr": "누가 카우보이 모자를 쓰고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 6
@@ -74,7 +74,7 @@
     "question_id": 371155002,
     "variant": "C",
     "question_en": "What color are the flowers by the bench?",
-    "question_kr": "What color are the flowers by the bench?",
+    "question_kr": "벤치 옆 꽃들은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 7
@@ -84,7 +84,7 @@
     "question_id": 133928008,
     "variant": "C",
     "question_en": "How many cranes are in this image?",
-    "question_kr": "이 이미지에는 크레인이 몇 개 있습니까?",
+    "question_kr": "이 이미지에는 크레인이 몇 개 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 8
@@ -94,7 +94,7 @@
     "question_id": 386092001,
     "variant": "C",
     "question_en": "What kind of juice is this?",
-    "question_kr": "What kind of juice is this?",
+    "question_kr": "이것은 어떤 종류의 주스인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 9
@@ -104,7 +104,7 @@
     "question_id": 463588002,
     "variant": "C",
     "question_en": "Do the horses love each other?",
-    "question_kr": "Do the horses love each other?",
+    "question_kr": "그 말들은 서로를 좋아하나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 10
@@ -114,7 +114,7 @@
     "question_id": 205513003,
     "variant": "C",
     "question_en": "What is the bowl made of?",
-    "question_kr": "What is the bowl made of?",
+    "question_kr": "그릇은 무엇으로 만들어졌나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 11
@@ -123,8 +123,8 @@
     "id": 13,
     "question_id": 399462000,
     "variant": "C",
-    "question_en": "What action is this girl doing?",
-    "question_kr": "What action is this girl doing?",
+    "question_en": "What is this girl doing?",
+    "question_kr": "이 소녀는 무엇을 하고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 12
@@ -133,8 +133,8 @@
     "id": 14,
     "question_id": 140661000,
     "variant": "C",
-    "question_en": "What is the color of the wall?",
-    "question_kr": "What is the color of the wall?",
+    "question_en": "What color is the wall?",
+    "question_kr": "벽은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 13
@@ -144,7 +144,7 @@
     "question_id": 537206001,
     "variant": "C",
     "question_en": "Why is the man wearing protective gear?",
-    "question_kr": "Why is the man wearing protective gear?",
+    "question_kr": "그 남자는 왜 보호 장비를 착용하고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 14
@@ -154,7 +154,7 @@
     "question_id": 335521000,
     "variant": "C",
     "question_en": "Would it hurt your thighs to walk up the hilly streets?",
-    "question_kr": "Would it hurt your thighs to walk up the hilly streets?",
+    "question_kr": "언덕길을 걸어 올라가면 허벅지가 아플 것 같나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 15
@@ -164,7 +164,7 @@
     "question_id": 213359003,
     "variant": "C",
     "question_en": "What does the man's gesture mean?",
-    "question_kr": "What does the man's gesture mean?",
+    "question_kr": "그 남자의 제스처는 무슨 뜻인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 16
@@ -173,8 +173,8 @@
     "id": 18,
     "question_id": 531815000,
     "variant": "C",
-    "question_en": "Is the outside or inside?",
-    "question_kr": "Is the outside or inside?",
+    "question_en": "Is it outside or inside?",
+    "question_kr": "바깥인가요, 아니면 안쪽인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 17
@@ -184,7 +184,7 @@
     "question_id": 90646004,
     "variant": "C",
     "question_en": "What type of shoe is that?",
-    "question_kr": "What type of shoe is that?",
+    "question_kr": "저것은 어떤 종류의 신발인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 18
@@ -194,7 +194,7 @@
     "question_id": 303718006,
     "variant": "C",
     "question_en": "How many bagels are here?",
-    "question_kr": "여기 베이글이 몇 개 있어요?",
+    "question_kr": "여기에 베이글이 몇 개 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 19
@@ -204,7 +204,7 @@
     "question_id": 479149005,
     "variant": "C",
     "question_en": "What is the name of the aerial move?",
-    "question_kr": "What is the name of the aerial move?",
+    "question_kr": "그 공중 동작의 이름은 무엇인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 20
@@ -214,7 +214,7 @@
     "question_id": 306421000,
     "variant": "C",
     "question_en": "What color is the sky?",
-    "question_kr": "What color is the sky?",
+    "question_kr": "하늘은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 21
@@ -224,7 +224,7 @@
     "question_id": 379402022,
     "variant": "C",
     "question_en": "What did this man put in his hair to make it stay like that?",
-    "question_kr": "What did this man put in his hair to make it stay like that?",
+    "question_kr": "이 남자는 머리를 그렇게 고정시키기 위해 무엇을 발랐나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 22
@@ -234,7 +234,7 @@
     "question_id": 484938015,
     "variant": "C",
     "question_en": "What color shirt is the person with the extended arm wearing?",
-    "question_kr": "What color shirt is the person with the extended arm wearing?",
+    "question_kr": "팔을 뻗고 있는 사람은 무슨 색 셔츠를 입고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 23
@@ -244,7 +244,7 @@
     "question_id": 282062004,
     "variant": "C",
     "question_en": "What body part has most recently contacted the ball?",
-    "question_kr": "What body part has most recently contacted the ball?",
+    "question_kr": "가장 최근에 공에 닿은 신체 부위는 어디인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 24
@@ -254,7 +254,7 @@
     "question_id": 579859001,
     "variant": "C",
     "question_en": "How many apple trees are in the picture?",
-    "question_kr": "그림에는 사과나무가 몇 그루 있나요?",
+    "question_kr": "그림 속에 사과나무가 몇 그루 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 25
@@ -264,7 +264,7 @@
     "question_id": 437494015,
     "variant": "C",
     "question_en": "How many people are in the water?",
-    "question_kr": "물 속에는 몇 명이 있나요?",
+    "question_kr": "물속에는 몇 명이 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 26
@@ -274,7 +274,7 @@
     "question_id": 116439000,
     "variant": "C",
     "question_en": "What does this woman sell?",
-    "question_kr": "What does this woman sell?",
+    "question_kr": "이 여자는 무엇을 파나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 27
@@ -284,7 +284,7 @@
     "question_id": 498462001,
     "variant": "C",
     "question_en": "How many black lines are on the girl's shirt?",
-    "question_kr": "소녀의 셔츠에는 몇 개의 검은 선이 있습니까?",
+    "question_kr": "소녀의 셔츠에는 검은 줄무늬가 몇 개 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 28
@@ -294,7 +294,7 @@
     "question_id": 288202001,
     "variant": "C",
     "question_en": "What type of bear is this?",
-    "question_kr": "What type of bear is this?",
+    "question_kr": "이것은 어떤 종류의 곰인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 29
@@ -304,7 +304,7 @@
     "question_id": 182334006,
     "variant": "C",
     "question_en": "What kind of drink is in the glasses?",
-    "question_kr": "What kind of drink is in the glasses?",
+    "question_kr": "잔 안에 어떤 음료가 들어 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 30
@@ -314,7 +314,7 @@
     "question_id": 80747000,
     "variant": "C",
     "question_en": "What kind of shoes is she wearing?",
-    "question_kr": "What kind of shoes is she wearing?",
+    "question_kr": "그녀는 어떤 종류의 신발을 신고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 31
@@ -324,7 +324,7 @@
     "question_id": 215255000,
     "variant": "C",
     "question_en": "What color is the wall?",
-    "question_kr": "What color is the wall?",
+    "question_kr": "벽은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 32
@@ -334,7 +334,7 @@
     "question_id": 546577001,
     "variant": "C",
     "question_en": "What is on the man's ear?",
-    "question_kr": "What is on the man's ear?",
+    "question_kr": "남자의 귀에 무엇이 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 33
@@ -344,7 +344,7 @@
     "question_id": 544655003,
     "variant": "C",
     "question_en": "What color is the man's tie?",
-    "question_kr": "What color is the man's tie?",
+    "question_kr": "남자의 넥타이는 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 34
@@ -354,7 +354,7 @@
     "question_id": 187196001,
     "variant": "C",
     "question_en": "What does the shirt say?",
-    "question_kr": "What does the shirt say?",
+    "question_kr": "셔츠에는 무엇이 적혀 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 35
@@ -364,7 +364,7 @@
     "question_id": 156555004,
     "variant": "C",
     "question_en": "What green vegetable is on the pizza?",
-    "question_kr": "What green vegetable is on the pizza?",
+    "question_kr": "피자 위에 어떤 초록색 채소가 올려져 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 36
@@ -374,7 +374,7 @@
     "question_id": 146253002,
     "variant": "C",
     "question_en": "Which person is not wearing sunglasses?",
-    "question_kr": "Which person is not wearing sunglasses?",
+    "question_kr": "선글라스를 쓰지 않은 사람은 누구인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 37
@@ -384,7 +384,7 @@
     "question_id": 228135002,
     "variant": "C",
     "question_en": "What would these two do if the sun got too bright for their eyes?",
-    "question_kr": "What would these two do if the sun got too bright for their eyes?",
+    "question_kr": "햇빛이 너무 강해 눈이 불편하다면 이 두 사람은 어떻게 할 것 같나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 38
@@ -404,7 +404,7 @@
     "question_id": 512223001,
     "variant": "C",
     "question_en": "What color is the kitchen?",
-    "question_kr": "What color is the kitchen?",
+    "question_kr": "주방은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 40
@@ -414,7 +414,7 @@
     "question_id": 577451000,
     "variant": "C",
     "question_en": "What is the yellow food?",
-    "question_kr": "What is the yellow food?",
+    "question_kr": "노란색 음식은 무엇인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 41
@@ -424,7 +424,7 @@
     "question_id": 347087006,
     "variant": "C",
     "question_en": "What color of wine is in the glasses?",
-    "question_kr": "What color of wine is in the glasses?",
+    "question_kr": "잔 안에 어떤 색의 와인이 들어 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 42
@@ -434,7 +434,7 @@
     "question_id": 9830000,
     "variant": "C",
     "question_en": "What type of computer is the cat using?",
-    "question_kr": "What type of computer is the cat using?",
+    "question_kr": "고양이는 어떤 종류의 컴퓨터를 사용하고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 43
@@ -444,7 +444,7 @@
     "question_id": 452224002,
     "variant": "C",
     "question_en": "What color is the branch?",
-    "question_kr": "What color is the branch?",
+    "question_kr": "나뭇가지는 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 44
@@ -454,7 +454,7 @@
     "question_id": 103490012,
     "variant": "C",
     "question_en": "Which hand is holding the thing?",
-    "question_kr": "Which hand is holding the thing?",
+    "question_kr": "어느 손이 그것을 들고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 45
@@ -463,8 +463,8 @@
     "id": 47,
     "question_id": 262048001,
     "variant": "C",
-    "question_en": "Where are these people at?",
-    "question_kr": "Where are these people at?",
+    "question_en": "Where are these people?",
+    "question_kr": "이 사람들은 어디에 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 46
@@ -474,7 +474,7 @@
     "question_id": 485509003,
     "variant": "C",
     "question_en": "What is the color of the sky?",
-    "question_kr": "What is the color of the sky?",
+    "question_kr": "하늘은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 47
@@ -484,7 +484,7 @@
     "question_id": 543740000,
     "variant": "C",
     "question_en": "What color is the counter?",
-    "question_kr": "What color is the counter?",
+    "question_kr": "카운터는 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 48
@@ -494,7 +494,7 @@
     "question_id": 215213002,
     "variant": "C",
     "question_en": "How many people are wearing peach?",
-    "question_kr": "복숭아를 입은 사람은 몇 명입니까?",
+    "question_kr": "복숭아색 옷을 입은 사람은 몇 명인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 49
@@ -524,7 +524,7 @@
     "question_id": 130240006,
     "variant": "C",
     "question_en": "What race is the boy?",
-    "question_kr": "What race is the boy?",
+    "question_kr": "그 소년은 어느 민족인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 52
@@ -534,7 +534,7 @@
     "question_id": 72582004,
     "variant": "C",
     "question_en": "What is everyone at the table doing?",
-    "question_kr": "What is everyone at the table doing?",
+    "question_kr": "테이블에 있는 모든 사람들은 무엇을 하고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 53
@@ -544,7 +544,7 @@
     "question_id": 73521003,
     "variant": "C",
     "question_en": "What location is the luggage at?",
-    "question_kr": "What location is the luggage at?",
+    "question_kr": "짐은 어디에 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 54
@@ -554,7 +554,7 @@
     "question_id": 315905008,
     "variant": "C",
     "question_en": "What is the zebra standing in?",
-    "question_kr": "What is the zebra standing in?",
+    "question_kr": "얼룩말은 무엇 속에 서 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 55
@@ -564,7 +564,7 @@
     "question_id": 124707000,
     "variant": "C",
     "question_en": "What color are the appliances?",
-    "question_kr": "What color are the appliances?",
+    "question_kr": "가전제품들은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 56
@@ -573,8 +573,8 @@
     "id": 58,
     "question_id": 361571001,
     "variant": "C",
-    "question_en": "What is on the dogs head?",
-    "question_kr": "What is on the dogs head?",
+    "question_en": "What is on the dog's head?",
+    "question_kr": "개의 머리 위에 무엇이 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 57
@@ -584,7 +584,7 @@
     "question_id": 96618004,
     "variant": "C",
     "question_en": "What is the color of the dog's collar?",
-    "question_kr": "What is the color of the dog's collar?",
+    "question_kr": "개의 목줄은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 58
@@ -594,7 +594,7 @@
     "question_id": 6783001,
     "variant": "C",
     "question_en": "Why is the guy in the sky?",
-    "question_kr": "Why is the guy in the sky?",
+    "question_kr": "그 남자는 왜 하늘에 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 59
@@ -604,7 +604,7 @@
     "question_id": 238090000,
     "variant": "C",
     "question_en": "Which way is the toilet paper hanging?",
-    "question_kr": "Which way is the toilet paper hanging?",
+    "question_kr": "화장지는 어느 방향으로 걸려 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 60
@@ -614,7 +614,7 @@
     "question_id": 119038004,
     "variant": "C",
     "question_en": "Where are the cows?",
-    "question_kr": "Where are the cows?",
+    "question_kr": "소들은 어디에 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 61
@@ -624,7 +624,7 @@
     "question_id": 356002003,
     "variant": "C",
     "question_en": "What color sand is in the distance?",
-    "question_kr": "What color sand is in the distance?",
+    "question_kr": "저 멀리 보이는 모래는 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 62
@@ -634,7 +634,7 @@
     "question_id": 412914001,
     "variant": "C",
     "question_en": "What is covering the mountain in the picture's background?",
-    "question_kr": "What is covering the mountain in the picture's background?",
+    "question_kr": "사진 배경의 산을 덮고 있는 것은 무엇인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 63
@@ -644,7 +644,7 @@
     "question_id": 33994009,
     "variant": "C",
     "question_en": "What are the flowers in?",
-    "question_kr": "What are the flowers in?",
+    "question_kr": "꽃들은 무엇 안에 담겨 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 64
@@ -654,7 +654,7 @@
     "question_id": 357383002,
     "variant": "C",
     "question_en": "What is on the man's face?",
-    "question_kr": "What is on the man's face?",
+    "question_kr": "남자의 얼굴에 무엇이 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 65
@@ -664,7 +664,7 @@
     "question_id": 162858001,
     "variant": "C",
     "question_en": "Which way is the green car going to go?",
-    "question_kr": "Which way is the green car going to go?",
+    "question_kr": "초록색 차는 어느 방향으로 갈 것 같나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 66
@@ -674,7 +674,7 @@
     "question_id": 411184005,
     "variant": "C",
     "question_en": "What is this boating area called?",
-    "question_kr": "What is this boating area called?",
+    "question_kr": "이 보트 구역은 무엇이라고 불리나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 67
@@ -684,7 +684,7 @@
     "question_id": 189936002,
     "variant": "C",
     "question_en": "What is the woman in gray doing?",
-    "question_kr": "What is the woman in gray doing?",
+    "question_kr": "회색 옷을 입은 여자는 무엇을 하고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 68
@@ -694,7 +694,7 @@
     "question_id": 512760001,
     "variant": "C",
     "question_en": "Where are the toilets?",
-    "question_kr": "Where are the toilets?",
+    "question_kr": "화장실은 어디에 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 69
@@ -704,7 +704,7 @@
     "question_id": 515347005,
     "variant": "C",
     "question_en": "What is the man looking at?",
-    "question_kr": "What is the man looking at?",
+    "question_kr": "남자는 무엇을 보고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 70
@@ -713,8 +713,8 @@
     "id": 72,
     "question_id": 121839003,
     "variant": "C",
-    "question_en": "What are the ladies wearing on their head's?",
-    "question_kr": "What are the ladies wearing on their head's?",
+    "question_en": "What are the ladies wearing on their heads?",
+    "question_kr": "여자들은 머리에 무엇을 쓰고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 71
@@ -724,7 +724,7 @@
     "question_id": 255950000,
     "variant": "C",
     "question_en": "What color is the plastic bag?",
-    "question_kr": "What color is the plastic bag?",
+    "question_kr": "비닐봉지는 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 72
@@ -734,7 +734,7 @@
     "question_id": 404479011,
     "variant": "C",
     "question_en": "What is the weather like?",
-    "question_kr": "What is the weather like?",
+    "question_kr": "날씨는 어떤가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 73
@@ -744,7 +744,7 @@
     "question_id": 106757001,
     "variant": "C",
     "question_en": "What is the woman doing?",
-    "question_kr": "What is the woman doing?",
+    "question_kr": "여자는 무엇을 하고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 74
@@ -754,7 +754,7 @@
     "question_id": 370444004,
     "variant": "C",
     "question_en": "Where is the basket?",
-    "question_kr": "Where is the basket?",
+    "question_kr": "바구니는 어디에 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 75
@@ -764,7 +764,7 @@
     "question_id": 408535003,
     "variant": "C",
     "question_en": "What is the young man's ethnicity?",
-    "question_kr": "What is the young man's ethnicity?",
+    "question_kr": "그 젊은 남자는 어느 민족인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 76
@@ -774,7 +774,7 @@
     "question_id": 463884003,
     "variant": "C",
     "question_en": "What is this man being pulled by?",
-    "question_kr": "What is this man being pulled by?",
+    "question_kr": "이 남자는 무엇에 의해 끌려가고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 77
@@ -784,7 +784,7 @@
     "question_id": 482158000,
     "variant": "C",
     "question_en": "What color is the nearest streamer?",
-    "question_kr": "What color is the nearest streamer?",
+    "question_kr": "가장 가까운 리본은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 78
@@ -794,7 +794,7 @@
     "question_id": 102872002,
     "variant": "C",
     "question_en": "What does the cake represent?",
-    "question_kr": "What does the cake represent?",
+    "question_kr": "케이크는 무엇을 나타내나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 79
@@ -804,7 +804,7 @@
     "question_id": 140713012,
     "variant": "C",
     "question_en": "What is the elephant eating?",
-    "question_kr": "What is the elephant eating?",
+    "question_kr": "코끼리는 무엇을 먹고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 80
@@ -813,8 +813,8 @@
     "id": 82,
     "question_id": 116667019,
     "variant": "C",
-    "question_en": "What number of stories is this bus?",
-    "question_kr": "What number of stories is this bus?",
+    "question_en": "How many stories does this bus have?",
+    "question_kr": "이 버스는 몇 층인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 81
@@ -824,7 +824,7 @@
     "question_id": 56400000,
     "variant": "C",
     "question_en": "What jewelry might be hidden under his jacket sleeve?",
-    "question_kr": "What jewelry might be hidden under his jacket sleeve?",
+    "question_kr": "그의 재킷 소매 아래에 어떤 장신구가 숨겨져 있을까요?",
     "answer_type": "text",
     "options": null,
     "display_order": 82
@@ -834,7 +834,7 @@
     "question_id": 426700003,
     "variant": "C",
     "question_en": "How many fingers is the person holding up?",
-    "question_kr": "그 사람이 들고 있는 손가락은 몇 개입니까?",
+    "question_kr": "그 사람은 손가락을 몇 개 들고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 83
@@ -844,7 +844,7 @@
     "question_id": 450970001,
     "variant": "C",
     "question_en": "How many red suitcases?",
-    "question_kr": "빨간 여행가방은 몇 개입니까?",
+    "question_kr": "빨간색 여행 가방이 몇 개 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 84
@@ -853,8 +853,8 @@
     "id": 86,
     "question_id": 121242000,
     "variant": "C",
-    "question_en": "Which wheels are bigger the ones in the front or back?",
-    "question_kr": "Which wheels are bigger the ones in the front or back?",
+    "question_en": "Which wheels are bigger, the ones in the front or the back?",
+    "question_kr": "앞바퀴와 뒷바퀴 중 어느 쪽이 더 큰가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 85
@@ -864,7 +864,7 @@
     "question_id": 578498007,
     "variant": "C",
     "question_en": "How many shoes are under the table?",
-    "question_kr": "테이블 밑에는 신발이 몇 개 있나요?",
+    "question_kr": "테이블 아래에 신발이 몇 켤레 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 86
@@ -874,7 +874,7 @@
     "question_id": 164453003,
     "variant": "C",
     "question_en": "How many hearts are on the desk?",
-    "question_kr": "책상 위에 하트는 몇 개 있나요?",
+    "question_kr": "책상 위에 하트 모양이 몇 개 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 87
@@ -884,7 +884,7 @@
     "question_id": 530317001,
     "variant": "C",
     "question_en": "What kind of trees are in the picture?",
-    "question_kr": "What kind of trees are in the picture?",
+    "question_kr": "그림 속 나무는 어떤 종류인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 88
@@ -894,7 +894,7 @@
     "question_id": 142472000,
     "variant": "C",
     "question_en": "What color is the front of the store on the left?",
-    "question_kr": "What color is the front of the store on the left?",
+    "question_kr": "왼쪽 매장의 앞면은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 89
@@ -904,7 +904,7 @@
     "question_id": 463802001,
     "variant": "C",
     "question_en": "What is in the man's right hand?",
-    "question_kr": "What is in the man's right hand?",
+    "question_kr": "남자의 오른손에 무엇이 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 90
@@ -914,7 +914,7 @@
     "question_id": 6712002,
     "variant": "C",
     "question_en": "What color is the house?",
-    "question_kr": "What color is the house?",
+    "question_kr": "집은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 91
@@ -924,7 +924,7 @@
     "question_id": 79878008,
     "variant": "C",
     "question_en": "What is the color of the toilet?",
-    "question_kr": "What is the color of the toilet?",
+    "question_kr": "변기는 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 92
@@ -934,7 +934,7 @@
     "question_id": 226761002,
     "variant": "C",
     "question_en": "What game system are the boys playing on?",
-    "question_kr": "What game system are the boys playing on?",
+    "question_kr": "소년들은 어떤 게임 시스템으로 게임을 하고 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 93
@@ -944,7 +944,7 @@
     "question_id": 271934000,
     "variant": "C",
     "question_en": "What religion is this building associated with?",
-    "question_kr": "What religion is this building associated with?",
+    "question_kr": "이 건물은 어떤 종교와 관련이 있나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 94
@@ -953,8 +953,8 @@
     "id": 96,
     "question_id": 352127003,
     "variant": "C",
-    "question_en": "What color is the street lights?",
-    "question_kr": "What color is the street lights?",
+    "question_en": "What color are the street lights?",
+    "question_kr": "가로등은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 95
@@ -964,7 +964,7 @@
     "question_id": 35671005,
     "variant": "C",
     "question_en": "What color is this horse's head and tail hair?",
-    "question_kr": "What color is this horse's head and tail hair?",
+    "question_kr": "이 말의 머리와 꼬리 털은 무슨 색인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 96
@@ -974,7 +974,7 @@
     "question_id": 502163002,
     "variant": "C",
     "question_en": "How many women are in the picture?",
-    "question_kr": "사진 속 여자는 몇 명인가요?",
+    "question_kr": "사진 속에 여자는 몇 명인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 97
@@ -984,7 +984,7 @@
     "question_id": 320715006,
     "variant": "C",
     "question_en": "What is this player's position called?",
-    "question_kr": "What is this player's position called?",
+    "question_kr": "이 선수의 포지션은 무엇인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 98
@@ -994,7 +994,7 @@
     "question_id": 524799000,
     "variant": "C",
     "question_en": "How old is the child?",
-    "question_kr": "How old is the child?",
+    "question_kr": "그 아이는 몇 살인가요?",
     "answer_type": "text",
     "options": null,
     "display_order": 99
