@@ -1,11 +1,11 @@
 [
   {
-    "id": 115,
-    "question_id": 71361001,
+    "id": 121,
+    "question_id": 32001021,
     "variant": "B",
-    "question_en": "What part of the animal is the person touching?",
-    "question_kr": "그 사람은 동물의 어느 부분을 만지고 있나요?",
-    "answer_type": "text",
+    "question_en": "Is there furniture?",
+    "question_kr": "가구가 있나요?",
+    "answer_type": "yesno",
     "options": null,
     "display_order": 0
   },
@@ -45,16 +45,6 @@
     "variant": "B",
     "question_en": "Is the woman's clothing sleeveless?",
     "question_kr": "이 여성의 옷은 민소매인가요?",
-    "answer_type": "yesno",
-    "options": null,
-    "display_order": 0
-  },
-  {
-    "id": 121,
-    "question_id": 32001021,
-    "variant": "B",
-    "question_en": "Is there furniture?",
-    "question_kr": "가구가 있나요?",
     "answer_type": "yesno",
     "options": null,
     "display_order": 0
@@ -235,16 +225,6 @@
     "variant": "B",
     "question_en": "Is the girl eating a food?",
     "question_kr": "여자아이가 음식을 먹고 있나요?",
-    "answer_type": "yesno",
-    "options": null,
-    "display_order": 0
-  },
-  {
-    "id": 196,
-    "question_id": 63617002,
-    "variant": "B",
-    "question_en": "Is the kid hitting a toy?",
-    "question_kr": "아이가 장난감을 치고 있나요?",
     "answer_type": "yesno",
     "options": null,
     "display_order": 0
@@ -664,7 +644,7 @@
     "question_id": 293218002,
     "variant": "B",
     "question_en": "Where does the vehicle hail from?",
-    "question_kr": "차량은 어디 출신인가요?",
+    "question_kr": "이 이동 수단은 어디 나라에서 왔나요?",
     "answer_type": "text",
     "options": null,
     "display_order": 0
@@ -1158,5 +1138,25 @@
     "answer_type": "text",
     "options": null,
     "display_order": 116
+  },
+  {
+    "id": 256,
+    "question_id": 369370002,
+    "variant": "B",
+    "question_en": "Is there cheese on the food?",
+    "question_kr": "음식에 치즈가 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 116
+  },
+  {
+    "id": 257,
+    "question_id": 357578013,
+    "variant": "B",
+    "question_en": "Is the vehicle clean?",
+    "question_kr": "이 차량은 깨끗한가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 118
   }
 ]

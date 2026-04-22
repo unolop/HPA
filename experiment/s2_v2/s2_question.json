@@ -1,11 +1,11 @@
 [
   {
-    "id": 15,
-    "question_id": 71361001,
+    "id": 21,
+    "question_id": 32001021,
     "variant": "C",
-    "question_en": "What part of the elephant is the person touching?",
-    "question_kr": "그 사람은 코끼리의 어느 부분을 만지고 있나요?",
-    "answer_type": "text",
+    "question_en": "Is there a couch?",
+    "question_kr": "소파가 있나요?",
+    "answer_type": "yesno",
     "options": null,
     "display_order": 0
   },
@@ -45,16 +45,6 @@
     "variant": "C",
     "question_en": "Is the woman's top sleeveless?",
     "question_kr": "이 여성의 상의는 민소매인가요?",
-    "answer_type": "yesno",
-    "options": null,
-    "display_order": 0
-  },
-  {
-    "id": 21,
-    "question_id": 32001021,
-    "variant": "C",
-    "question_en": "Is there a couch?",
-    "question_kr": "소파가 있나요?",
     "answer_type": "yesno",
     "options": null,
     "display_order": 0
@@ -235,16 +225,6 @@
     "variant": "C",
     "question_en": "Is this girl eating a cookie?",
     "question_kr": "이 여자아이가 쿠키를 먹고 있나요?",
-    "answer_type": "yesno",
-    "options": null,
-    "display_order": 0
-  },
-  {
-    "id": 96,
-    "question_id": 63617002,
-    "variant": "C",
-    "question_en": "Is this kid hitting a ball?",
-    "question_kr": "이 아이가 공을 치고 있나요?",
     "answer_type": "yesno",
     "options": null,
     "display_order": 0
@@ -1158,5 +1138,25 @@
     "answer_type": "text",
     "options": null,
     "display_order": 116
+  },
+  {
+    "id": 156,
+    "question_id": 369370002,
+    "variant": "C",
+    "question_en": "Is there cheese on the sandwich?",
+    "question_kr": "샌드위치에 치즈가 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 116
+  },
+  {
+    "id": 157,
+    "question_id": 357578013,
+    "variant": "C",
+    "question_en": "Is this car clean?",
+    "question_kr": "이 차는 깨끗한가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 118
   }
 ]

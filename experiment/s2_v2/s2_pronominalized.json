@@ -1,11 +1,11 @@
 [
   {
-    "id": 215,
-    "question_id": 71361001,
+    "id": 287,
+    "question_id": 119373006,
     "variant": "A",
-    "question_en": "What part is the person touching?",
-    "question_kr": "그 사람은 어느 부분을 만지고 있나요?",
-    "answer_type": "text",
+    "question_en": "Is there one?",
+    "question_kr": "하나가 있나요?",
+    "answer_type": "yesno",
     "options": null,
     "display_order": 0
   },
@@ -52,16 +52,6 @@
   {
     "id": 221,
     "question_id": 32001021,
-    "variant": "A",
-    "question_en": "Is there one?",
-    "question_kr": "하나가 있나요?",
-    "answer_type": "yesno",
-    "options": null,
-    "display_order": 0
-  },
-  {
-    "id": 287,
-    "question_id": 119373006,
     "variant": "A",
     "question_en": "Is there one?",
     "question_kr": "하나가 있나요?",
@@ -235,16 +225,6 @@
     "variant": "A",
     "question_en": "Is she eating it?",
     "question_kr": "그녀가 그것을 먹고 있나요?",
-    "answer_type": "yesno",
-    "options": null,
-    "display_order": 0
-  },
-  {
-    "id": 296,
-    "question_id": 63617002,
-    "variant": "A",
-    "question_en": "Is he/she hitting it?",
-    "question_kr": "그/그녀가 물체를 때리고 있나요?",
     "answer_type": "yesno",
     "options": null,
     "display_order": 0
@@ -1158,5 +1138,25 @@
     "answer_type": "text",
     "options": null,
     "display_order": 116
+  },
+  {
+    "id": 356,
+    "question_id": 369370002,
+    "variant": "A",
+    "question_en": "Is there cheese on it?",
+    "question_kr": "그것에 치즈가 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 116
+  },
+  {
+    "id": 357,
+    "question_id": 357578013,
+    "variant": "A",
+    "question_en": "Is it clean?",
+    "question_kr": "그것은 깨끗한가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 118
   }
 ]
