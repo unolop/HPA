@@ -1,0 +1,1342 @@
+[
+  {
+    "id": 1,
+    "question_id": 524799000,
+    "variant": "A",
+    "question_en": "How old is he?",
+    "question_kr": "그는 몇 살인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 2,
+    "question_id": 394002002,
+    "variant": "A",
+    "question_en": "What's its brand?",
+    "question_kr": "그것의 브랜드는 무엇인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 3,
+    "question_id": 1342072,
+    "variant": "A",
+    "question_en": "What kind of information does it look like it contains?",
+    "question_kr": "그것에는 어떤 종류의 정보가 담겨 있는 것 같나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 4,
+    "question_id": 568315000,
+    "variant": "A",
+    "question_en": "Are they sleeping?",
+    "question_kr": "그것들이 자고 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 5,
+    "question_id": 2521002,
+    "variant": "A",
+    "question_en": "Which way is it pointing?",
+    "question_kr": "그것은 어느 방향을 가리키고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 6,
+    "question_id": 133928008,
+    "variant": "A",
+    "question_en": "How many are in this image?",
+    "question_kr": "이 이미지에는 몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 7,
+    "question_id": 267690002,
+    "variant": "A",
+    "question_en": "What year was it taken?",
+    "question_kr": "그것은 몇 년도에 찍혔나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 8,
+    "question_id": 530317001,
+    "variant": "A",
+    "question_en": "What kind are they in it?",
+    "question_kr": "그것들은 어떤 종류인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 9,
+    "question_id": 269358001,
+    "variant": "A",
+    "question_en": "Is it sleeveless?",
+    "question_kr": "그것은 민소매인가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 10,
+    "question_id": 402330000,
+    "variant": "A",
+    "question_en": "What is missing on it?",
+    "question_kr": "거기에서 무엇이 빠져 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 11,
+    "question_id": 271934000,
+    "variant": "A",
+    "question_en": "What religion is it associated with?",
+    "question_kr": "그것은 어떤 종교와 관련이 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 12,
+    "question_id": 9830000,
+    "variant": "A",
+    "question_en": "What type is it using?",
+    "question_kr": "그것은 어떤 종류를 사용하고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 13,
+    "question_id": 537206001,
+    "variant": "A",
+    "question_en": "Why is he wearing protective gear?",
+    "question_kr": "그는 왜 보호 장비를 착용하고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 14,
+    "question_id": 13546003,
+    "variant": "A",
+    "question_en": "How many are in the background?",
+    "question_kr": "배경에 몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 15,
+    "question_id": 408535003,
+    "variant": "A",
+    "question_en": "What is his ethnicity?",
+    "question_kr": "그의 민족적 배경은 무엇인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 16,
+    "question_id": 282062004,
+    "variant": "A",
+    "question_en": "What body part has most recently contacted it?",
+    "question_kr": "가장 최근에 그것에 닿은 신체 부위는 어디인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 17,
+    "question_id": 413948006,
+    "variant": "A",
+    "question_en": "How many is he holding?",
+    "question_kr": "그는 몇 개를 들고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 18,
+    "question_id": 546577001,
+    "variant": "A",
+    "question_en": "What is on it?",
+    "question_kr": "그것 위에 무엇이 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 19,
+    "question_id": 288202001,
+    "variant": "A",
+    "question_en": "What type is this?",
+    "question_kr": "이것은 어떤 종류인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 20,
+    "question_id": 289941000,
+    "variant": "A",
+    "question_en": "What number is on it?",
+    "question_kr": "거기에 어떤 숫자가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 21,
+    "question_id": 507143002,
+    "variant": "A",
+    "question_en": "What is orange on it?",
+    "question_kr": "그것에서 주황색인 것은 무엇인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 22,
+    "question_id": 553547000,
+    "variant": "A",
+    "question_en": "Are they ready to attack?",
+    "question_kr": "그것들이 공격할 준비가 되어 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 23,
+    "question_id": 424270008,
+    "variant": "A",
+    "question_en": "Is she looking at it?",
+    "question_kr": "그녀가 그것을 보고 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 24,
+    "question_id": 293218002,
+    "variant": "A",
+    "question_en": "Where does it hail from?",
+    "question_kr": "그것은 어디 출신인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 25,
+    "question_id": 162858001,
+    "variant": "A",
+    "question_en": "Which way is it going to go?",
+    "question_kr": "그것은 어느 방향으로 갈 것 같나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 26,
+    "question_id": 32001021,
+    "variant": "A",
+    "question_en": "Is there one?",
+    "question_kr": "하나가 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 27,
+    "question_id": 164453003,
+    "variant": "A",
+    "question_en": "How many are on it?",
+    "question_kr": "그것 위에는 몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 28,
+    "question_id": 33994009,
+    "variant": "A",
+    "question_en": "What are they in?",
+    "question_kr": "그것들은 무엇 안에 담겨 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 29,
+    "question_id": 35671005,
+    "variant": "A",
+    "question_en": "What color is its head and tail hair?",
+    "question_kr": "그것의 머리털과 꼬리털은 무슨 색인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 30,
+    "question_id": 298452008,
+    "variant": "A",
+    "question_en": "Is it open?",
+    "question_kr": "그것이 열려 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 31,
+    "question_id": 169996009,
+    "variant": "A",
+    "question_en": "What is the name of the one closest to it?",
+    "question_kr": "그것에서 가장 가까운 것의 이름은 무엇인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 32,
+    "question_id": 303718006,
+    "variant": "A",
+    "question_en": "How many are here?",
+    "question_kr": "여기에는 몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 33,
+    "question_id": 567562000,
+    "variant": "A",
+    "question_en": "How many empty ones are there?",
+    "question_kr": "빈 것은 몇 개 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 34,
+    "question_id": 225751007,
+    "variant": "A",
+    "question_en": "Is there any in the mixture?",
+    "question_kr": "혼합물에 무언가가 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 35,
+    "question_id": 180202000,
+    "variant": "A",
+    "question_en": "What vegetable is in it?",
+    "question_kr": "그것에 무슨 채소가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 36,
+    "question_id": 311950001,
+    "variant": "A",
+    "question_en": "What condiments are on it?",
+    "question_kr": "그것에 어떤 소스가 올려져 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 37,
+    "question_id": 182334006,
+    "variant": "A",
+    "question_en": "What kind of drink is in them?",
+    "question_kr": "그것들 안에 어떤 음료가 들어 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 38,
+    "question_id": 446574001,
+    "variant": "A",
+    "question_en": "Is the water in it turned on?",
+    "question_kr": "그 안에서 물이 나오고 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 39,
+    "question_id": 315905008,
+    "variant": "A",
+    "question_en": "What is it standing in?",
+    "question_kr": "그것은 무엇 속에 서 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 40,
+    "question_id": 578498007,
+    "variant": "A",
+    "question_en": "How many are under it?",
+    "question_kr": "그것 아래에는 몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 41,
+    "question_id": 55810002,
+    "variant": "A",
+    "question_en": "How many does he have?",
+    "question_kr": "그는 귀걸이를 몇 개 하고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 42,
+    "question_id": 187196001,
+    "variant": "A",
+    "question_en": "What does it say?",
+    "question_kr": "그것에는 무엇이 적혀 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 43,
+    "question_id": 318426002,
+    "variant": "A",
+    "question_en": "What are the numbers on it?",
+    "question_kr": "그것에 적힌 숫자는 무엇인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 44,
+    "question_id": 56562002,
+    "variant": "A",
+    "question_en": "What does it eat?",
+    "question_kr": "그것은 무엇을 먹나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 45,
+    "question_id": 53289016,
+    "variant": "A",
+    "question_en": "What breed is on the left?",
+    "question_kr": "왼쪽에 있는 것은 어떤 품종인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 46,
+    "question_id": 450970001,
+    "variant": "A",
+    "question_en": "How many?",
+    "question_kr": "몇 개인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 47,
+    "question_id": 140713012,
+    "variant": "A",
+    "question_en": "What is it eating?",
+    "question_kr": "그것은 무엇을 먹고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 48,
+    "question_id": 320715006,
+    "variant": "A",
+    "question_en": "What is its position called?",
+    "question_kr": "그것의 포지션은 무엇이라고 불리나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 49,
+    "question_id": 322031002,
+    "variant": "A",
+    "question_en": "How many touching it?",
+    "question_kr": "그것을 만지는 사람은 몇 명인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 50,
+    "question_id": 457271001,
+    "variant": "A",
+    "question_en": "Does it like it?",
+    "question_kr": "그것이 그것을 좋아하나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 51,
+    "question_id": 459437005,
+    "variant": "A",
+    "question_en": "Can one use their fur to make clothing?",
+    "question_kr": "그것들의 털로 옷을 만들 수 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 52,
+    "question_id": 67551002,
+    "variant": "A",
+    "question_en": "How many colors are on it?",
+    "question_kr": "그것에는 몇 가지 색이 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 53,
+    "question_id": 329850005,
+    "variant": "A",
+    "question_en": "Is there a bag of it?",
+    "question_kr": "그것의 봉지가 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 54,
+    "question_id": 199876000,
+    "variant": "A",
+    "question_en": "Are they friends?",
+    "question_kr": "그들은 친구인가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 55,
+    "question_id": 463588002,
+    "variant": "A",
+    "question_en": "Do they love each other?",
+    "question_kr": "그들은 서로를 좋아하나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 56,
+    "question_id": 463884003,
+    "variant": "A",
+    "question_en": "What is he being pulled by?",
+    "question_kr": "그는 무엇에 의해 끌려가고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 57,
+    "question_id": 335047002,
+    "variant": "A",
+    "question_en": "Is there one in there?",
+    "question_kr": "거기에 하나 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 58,
+    "question_id": 335325011,
+    "variant": "A",
+    "question_en": "How many of them are female?",
+    "question_kr": "그 중 여성은 몇 명인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 59,
+    "question_id": 73521003,
+    "variant": "A",
+    "question_en": "What location is it at?",
+    "question_kr": "그것은 어디에 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 60,
+    "question_id": 205513003,
+    "variant": "A",
+    "question_en": "What is it made of?",
+    "question_kr": "그것은 무엇으로 만들어졌나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 61,
+    "question_id": 205625000,
+    "variant": "A",
+    "question_en": "What does it say?",
+    "question_kr": "그것에는 무슨 글자가 써있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 62,
+    "question_id": 74711004,
+    "variant": "A",
+    "question_en": "How many are there?",
+    "question_kr": "몇 마리가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 63,
+    "question_id": 76866001,
+    "variant": "A",
+    "question_en": "How many stripes does it have?",
+    "question_kr": "그것에는 줄무늬가 몇 개 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 64,
+    "question_id": 209856000,
+    "variant": "A",
+    "question_en": "Where is it?",
+    "question_kr": "그것은 어디에 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 65,
+    "question_id": 473110009,
+    "variant": "A",
+    "question_en": "How many are there?",
+    "question_kr": "몇 개나 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 66,
+    "question_id": 559483008,
+    "variant": "A",
+    "question_en": "What is he holding?",
+    "question_kr": "그는 무엇을 들고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 67,
+    "question_id": 211837003,
+    "variant": "A",
+    "question_en": "How many are in the picture?",
+    "question_kr": "사진에 ​​몇 마리가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 68,
+    "question_id": 212558002,
+    "variant": "A",
+    "question_en": "Is she wearing boots?",
+    "question_kr": "그녀가 부츠를 신고 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 69,
+    "question_id": 213359003,
+    "variant": "A",
+    "question_en": "What does the gesture mean?",
+    "question_kr": "그 제스처는 무슨 뜻인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 70,
+    "question_id": 476279006,
+    "variant": "A",
+    "question_en": "What transportation is on it?",
+    "question_kr": "그것에 있는 교통수단은 무엇인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 71,
+    "question_id": 345711000,
+    "variant": "A",
+    "question_en": "Which direction is it?",
+    "question_kr": "그것은 어느 방향인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 72,
+    "question_id": 215213002,
+    "variant": "A",
+    "question_en": "How many are wearing it?",
+    "question_kr": "몇 명이 그것을 입고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 73,
+    "question_id": 347087006,
+    "variant": "A",
+    "question_en": "What color of it is in them?",
+    "question_kr": "그것들 안에 있는 것은 무슨 색인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 74,
+    "question_id": 363767000,
+    "variant": "A",
+    "question_en": "What is it meant to represent?",
+    "question_kr": "그것은 무엇을 나타내고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 75,
+    "question_id": 348488002,
+    "variant": "A",
+    "question_en": "What kind is shown on this piece of art?",
+    "question_kr": "이 미술 작품에 어떤 종류가 나타나 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 76,
+    "question_id": 218183000,
+    "variant": "A",
+    "question_en": "What type of it does this appear to be?",
+    "question_kr": "이것은 어떤 종류로 보이나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 77,
+    "question_id": 219492002,
+    "variant": "A",
+    "question_en": "Are they really afraid to get into water?",
+    "question_kr": "그것들은 정말로 물을 무서워하나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 78,
+    "question_id": 90646004,
+    "variant": "A",
+    "question_en": "What type of it is that?",
+    "question_kr": "저것은 어떤 종류인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 79,
+    "question_id": 91236000,
+    "variant": "A",
+    "question_en": "What formation are they in?",
+    "question_kr": "그것들은 어떤 대형을 이루고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 80,
+    "question_id": 353889001,
+    "variant": "A",
+    "question_en": "What letter is it?",
+    "question_kr": "무슨 글자가 써있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 81,
+    "question_id": 486194003,
+    "variant": "A",
+    "question_en": "Is she eating it?",
+    "question_kr": "그녀가 그것을 먹고 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 82,
+    "question_id": 226154000,
+    "variant": "A",
+    "question_en": "What language is it in?",
+    "question_kr": "어떤 언어인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 83,
+    "question_id": 357383002,
+    "variant": "A",
+    "question_en": "What is on his face?",
+    "question_kr": "그의 얼굴에 무엇이 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 84,
+    "question_id": 357578013,
+    "variant": "A",
+    "question_en": "Is it clean?",
+    "question_kr": "그것은 깨끗한가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 85,
+    "question_id": 96618004,
+    "variant": "A",
+    "question_en": "What is the color of its collar?",
+    "question_kr": "그것의 목줄은 무슨 색인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 86,
+    "question_id": 228135002,
+    "variant": "A",
+    "question_en": "What would they do if it got too bright for their eyes?",
+    "question_kr": "너무 밝아서 눈이 불편하다면 그들은 어떻게 할 것 같나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 87,
+    "question_id": 229391001,
+    "variant": "A",
+    "question_en": "What might one have in common with the other?",
+    "question_kr": "한 사람과 다른 사람은 무엇이 공통점인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 88,
+    "question_id": 344100003,
+    "variant": "A",
+    "question_en": "How many are on it?",
+    "question_kr": "그것 위에는 몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 89,
+    "question_id": 230576003,
+    "variant": "A",
+    "question_en": "Does it need esthetic maintenance?",
+    "question_kr": "그것은 미관 정비가 필요한가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 90,
+    "question_id": 103490012,
+    "variant": "A",
+    "question_en": "Which hand is holding it?",
+    "question_kr": "어느 손이 그것을 들고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 91,
+    "question_id": 105052000,
+    "variant": "A",
+    "question_en": "Is he wearing a hat?",
+    "question_kr": "그가 모자를 쓰고 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 92,
+    "question_id": 498462001,
+    "variant": "A",
+    "question_en": "How many black lines are on it?",
+    "question_kr": "그것에는 검은 줄무늬가 몇 개 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 93,
+    "question_id": 238090000,
+    "variant": "A",
+    "question_en": "Which way is it hanging?",
+    "question_kr": "그것은 어느 방향으로 걸려 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 94,
+    "question_id": 369370002,
+    "variant": "A",
+    "question_en": "Is there cheese on it?",
+    "question_kr": "그것에 치즈가 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 95,
+    "question_id": 502630003,
+    "variant": "A",
+    "question_en": "Is it one of the \"big 5\" game animals?",
+    "question_kr": "그것은 '빅 5' 야생동물 중 하나인가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 96,
+    "question_id": 374111001,
+    "variant": "A",
+    "question_en": "Are they fresh?",
+    "question_kr": "그것들이 신선한가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 97,
+    "question_id": 579859001,
+    "variant": "A",
+    "question_en": "How many are in the picture?",
+    "question_kr": "사진 속에 몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 98,
+    "question_id": 506311007,
+    "variant": "A",
+    "question_en": "What type of print is on it?",
+    "question_kr": "그것에 어떤 무늬가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 99,
+    "question_id": 375763002,
+    "variant": "A",
+    "question_en": "Are they all standing in a row?",
+    "question_kr": "그것들이 모두 줄지어 서 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 100,
+    "question_id": 507979000,
+    "variant": "A",
+    "question_en": "What kind of alcohol is in them?",
+    "question_kr": "그것에 어떤 종류의 술이 담겨 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 101,
+    "question_id": 247123003,
+    "variant": "A",
+    "question_en": "Is it on?",
+    "question_kr": "그것이 켜져 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 102,
+    "question_id": 248703006,
+    "variant": "A",
+    "question_en": "How far do they have to run?",
+    "question_kr": "그들은 얼마나 멀리 달려야 하나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 103,
+    "question_id": 119038004,
+    "variant": "A",
+    "question_en": "Where are they?",
+    "question_kr": "그들은 어디에 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 104,
+    "question_id": 119373006,
+    "variant": "A",
+    "question_en": "Is there one?",
+    "question_kr": "하나가 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 105,
+    "question_id": 512760001,
+    "variant": "A",
+    "question_en": "Where are they?",
+    "question_kr": "그것들은 어디에 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 106,
+    "question_id": 575755005,
+    "variant": "A",
+    "question_en": "What is in it?",
+    "question_kr": "그것 안에 무엇이 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 107,
+    "question_id": 121442004,
+    "variant": "A",
+    "question_en": "How many have glasses?",
+    "question_kr": "안경을 쓴 사람은 몇 명입니까?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 108,
+    "question_id": 121839003,
+    "variant": "A",
+    "question_en": "What are they wearing on their heads?",
+    "question_kr": "그들은 머리에 무엇을 쓰고 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 109,
+    "question_id": 124707000,
+    "variant": "A",
+    "question_en": "What color are they?",
+    "question_kr": "그것들은 무슨 색인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 110,
+    "question_id": 518440008,
+    "variant": "A",
+    "question_en": "How many are on it?",
+    "question_kr": "거기에 몇 개가 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 111,
+    "question_id": 130240006,
+    "variant": "A",
+    "question_en": "What race is he?",
+    "question_kr": "그는 어떤 인종인가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 112,
+    "question_id": 392878005,
+    "variant": "A",
+    "question_en": "Where are they sitting?",
+    "question_kr": "그들은 어디에 앉아 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 113,
+    "question_id": 262048001,
+    "variant": "A",
+    "question_en": "Where are they at?",
+    "question_kr": "그들은 어디에 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 114,
+    "question_id": 442286000,
+    "variant": "A",
+    "question_en": "Would you be interested in keeping one of your own here?",
+    "question_kr": "여기에 자신만의 것을 두고 싶으신가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 115,
+    "question_id": 153283009,
+    "variant": "A",
+    "question_en": "Does it rain here a lot?",
+    "question_kr": "이곳에는 비가 많이 오나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 116,
+    "question_id": 26501008,
+    "variant": "A",
+    "question_en": "Is it a town?",
+    "question_kr": "이곳은 마을인가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 117,
+    "question_id": 144162001,
+    "variant": "A",
+    "question_en": "Is this a restaurant?",
+    "question_kr": "이곳은 식당인가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 118,
+    "question_id": 78288002,
+    "variant": "A",
+    "question_en": "Does it have a special name?",
+    "question_kr": "그것에는 특별한 이름이 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 119,
+    "question_id": 349841001,
+    "variant": "A",
+    "question_en": "Is it going to the right or to the left in the photo?",
+    "question_kr": "사진 속 그것은 오른쪽으로 가고 있나요, 왼쪽으로 가고 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 120,
+    "question_id": 566414016,
+    "variant": "A",
+    "question_en": "Is this one pretty?",
+    "question_kr": "이것은 예뻐 보이나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 121,
+    "question_id": 31024002,
+    "variant": "A",
+    "question_en": "Are there any?",
+    "question_kr": "무언가가 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 122,
+    "question_id": 289943009,
+    "variant": "A",
+    "question_en": "Are they all capitals?",
+    "question_kr": "그것들이 모두 대문자인가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 123,
+    "question_id": 194595005,
+    "variant": "A",
+    "question_en": "Is it a single-use product?",
+    "question_kr": "그것은 일회용 제품인가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 124,
+    "question_id": 231831002,
+    "variant": "A",
+    "question_en": "Are there any pairs visible on it?",
+    "question_kr": "그것 위에 안경 한 쌍이 보이나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 126,
+    "question_id": 156555004,
+    "variant": "A",
+    "question_en": "What green vegetable is on it?",
+    "question_kr": "그것 위에 어떤 초록색 채소가 올려져 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 127,
+    "question_id": 404479011,
+    "variant": "A",
+    "question_en": "What is it like?",
+    "question_kr": "그것은 어떤가요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 128,
+    "question_id": 56400000,
+    "variant": "A",
+    "question_en": "What might be hidden under his sleeve?",
+    "question_kr": "그의 소매 아래에 무엇이 숨겨져 있을까요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 131,
+    "question_id": 63617002,
+    "variant": "A",
+    "question_en": "Is it hitting it?",
+    "question_kr": "그것을 치고 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 132,
+    "question_id": 436162001,
+    "variant": "A",
+    "question_en": "Does it have a flat one?",
+    "question_kr": "그것에는 바람 빠진 것이 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 133,
+    "question_id": 102872002,
+    "variant": "A",
+    "question_en": "What does it represent?",
+    "question_kr": "그것은 무엇을 나타내나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 134,
+    "question_id": 516902002,
+    "variant": "A",
+    "question_en": "Does it match?",
+    "question_kr": "그것은 서로 어울리나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 136,
+    "question_id": 82021002,
+    "variant": "A",
+    "question_en": "Is it awake?",
+    "question_kr": "그것은 깨어 있나요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 138,
+    "question_id": 533805004,
+    "variant": "A",
+    "question_en": "Does it need a tune-up?",
+    "question_kr": "그것은 정비가 필요한가요?",
+    "answer_type": "yesno",
+    "options": null,
+    "display_order": 0
+  },
+  {
+    "id": 139,
+    "question_id": 16631021,
+    "variant": "A",
+    "question_en": "What does it say?",
+    "question_kr": "그것에는 무엇이 적혀 있나요?",
+    "answer_type": "text",
+    "options": null,
+    "display_order": 0
+  }
+]

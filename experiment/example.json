@@ -1,0 +1,1162 @@
+[
+    {
+        "id": 3392,
+        "question_id": 32001021,
+        "variant": "B",
+        "question_en": "Is there furniture?",
+        "question_kr": "가구가 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 0
+    },
+    {
+        "id": 3393,
+        "question_id": 347087006,
+        "variant": "B",
+        "question_en": "What color of beverage is in the glasses?",
+        "question_kr": "잔 안에 어떤 색의 음료가 들어 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 1
+    },
+    {
+        "id": 3394,
+        "question_id": 90646004,
+        "variant": "B",
+        "question_en": "What type of footwear is that?",
+        "question_kr": "저것은 어떤 종류의 신발류인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 2
+    },
+    {
+        "id": 3395,
+        "question_id": 457271001,
+        "variant": "B",
+        "question_en": "Does the baby like the animal?",
+        "question_kr": "아기가 동물을 좋아하나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 3
+    },
+    {
+        "id": 3396,
+        "question_id": 269358001,
+        "variant": "B",
+        "question_en": "Is the woman's clothing sleeveless?",
+        "question_kr": "이 여성의 옷은 민소매인가요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 4
+    },
+    {
+        "id": 3397,
+        "question_id": 119373006,
+        "variant": "B",
+        "question_en": "Is there a building?",
+        "question_kr": "건물이 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 5
+    },
+    {
+        "id": 3398,
+        "question_id": 282062004,
+        "variant": "B",
+        "question_en": "What body part has most recently contacted the object?",
+        "question_kr": "가장 최근에 그 물체에 닿은 신체 부위는 어디인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 6
+    },
+    {
+        "id": 3399,
+        "question_id": 298452008,
+        "variant": "B",
+        "question_en": "Is the fixture open?",
+        "question_kr": "비품이 열려 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 7
+    },
+    {
+        "id": 3400,
+        "question_id": 247123003,
+        "variant": "B",
+        "question_en": "Is the device on?",
+        "question_kr": "기기가 켜져 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 8
+    },
+    {
+        "id": 3401,
+        "question_id": 362229001,
+        "variant": "B",
+        "question_en": "Are the plants real?",
+        "question_kr": "식물이 진짜인가요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 9
+    },
+    {
+        "id": 3402,
+        "question_id": 450970001,
+        "variant": "B",
+        "question_en": "How many red luggage items?",
+        "question_kr": "빨간색 짐이 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 10
+    },
+    {
+        "id": 3403,
+        "question_id": 335047002,
+        "variant": "B",
+        "question_en": "Is there a food in there?",
+        "question_kr": "거기에 음식이 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 11
+    },
+    {
+        "id": 3404,
+        "question_id": 133928008,
+        "variant": "B",
+        "question_en": "How many machines are in the image?",
+        "question_kr": "이미지에는 기계가 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 12
+    },
+    {
+        "id": 3405,
+        "question_id": 225751007,
+        "variant": "B",
+        "question_en": "Is there vegetable in the mixture?",
+        "question_kr": "혼합물에 채소가 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 13
+    },
+    {
+        "id": 3406,
+        "question_id": 578498007,
+        "variant": "B",
+        "question_en": "How many footwear items are under the table?",
+        "question_kr": "테이블 아래에 신발류가 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 14
+    },
+    {
+        "id": 3407,
+        "question_id": 463588002,
+        "variant": "B",
+        "question_en": "Do the animals love each other?",
+        "question_kr": "그 동물들은 서로를 좋아하나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 15
+    },
+    {
+        "id": 3408,
+        "question_id": 568315000,
+        "variant": "B",
+        "question_en": "Are the animals sleeping?",
+        "question_kr": "동물들이 자고 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 16
+    },
+    {
+        "id": 3409,
+        "question_id": 329850005,
+        "variant": "B",
+        "question_en": "Is there a bag of snack?",
+        "question_kr": "과자 봉지가 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 17
+    },
+    {
+        "id": 3410,
+        "question_id": 553547000,
+        "variant": "B",
+        "question_en": "Are the animals ready to attack?",
+        "question_kr": "동물들이 공격할 준비가 되어 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 18
+    },
+    {
+        "id": 3411,
+        "question_id": 446574001,
+        "variant": "B",
+        "question_en": "Is the water in the container turned on?",
+        "question_kr": "그 용기 안의 물이 틀어져 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 19
+    },
+    {
+        "id": 3412,
+        "question_id": 199876000,
+        "variant": "B",
+        "question_en": "Are these people friends?",
+        "question_kr": "이 사람들은 친구인가요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 20
+    },
+    {
+        "id": 3413,
+        "question_id": 459437005,
+        "variant": "B",
+        "question_en": "Can one use the fur of the animals to make clothing?",
+        "question_kr": "그 동물들의 털로 옷을 만들 수 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 21
+    },
+    {
+        "id": 3414,
+        "question_id": 486194003,
+        "variant": "B",
+        "question_en": "Is the girl eating a food?",
+        "question_kr": "여자아이가 음식을 먹고 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 22
+    },
+    {
+        "id": 3415,
+        "question_id": 212558002,
+        "variant": "B",
+        "question_en": "Is the girl wearing footwear boots?",
+        "question_kr": "여자아이가 부츠를 신고 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 23
+    },
+    {
+        "id": 3416,
+        "question_id": 164453003,
+        "variant": "B",
+        "question_en": "How many hearts are on the furniture?",
+        "question_kr": "그 가구 위에 하트 모양이 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 24
+    },
+    {
+        "id": 3417,
+        "question_id": 105052000,
+        "variant": "B",
+        "question_en": "Is the man wearing clothing?",
+        "question_kr": "남자가 옷을 입고 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 25
+    },
+    {
+        "id": 3418,
+        "question_id": 215213002,
+        "variant": "B",
+        "question_en": "How many people are wearing clothing?",
+        "question_kr": "옷을 입고 있는 사람은 몇 명인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 26
+    },
+    {
+        "id": 3419,
+        "question_id": 579859001,
+        "variant": "B",
+        "question_en": "How many fruit trees are in the picture?",
+        "question_kr": "사진 속에 과일나무가 몇 그루 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 27
+    },
+    {
+        "id": 3420,
+        "question_id": 219492002,
+        "variant": "B",
+        "question_en": "Are animals really afraid to get into water?",
+        "question_kr": "동물들은 정말로 물을 무서워하나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 28
+    },
+    {
+        "id": 3421,
+        "question_id": 567562000,
+        "variant": "B",
+        "question_en": "How many empty furniture are there?",
+        "question_kr": "빈 자리가 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 29
+    },
+    {
+        "id": 3422,
+        "question_id": 344100003,
+        "variant": "B",
+        "question_en": "How many bottles of beverage are on the table?",
+        "question_kr": "테이블 위에 음료수 병이 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 30
+    },
+    {
+        "id": 3423,
+        "question_id": 303718006,
+        "variant": "B",
+        "question_en": "How many food are here?",
+        "question_kr": "여기에 음식이 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 31
+    },
+    {
+        "id": 3424,
+        "question_id": 498462001,
+        "variant": "B",
+        "question_en": "How many black lines are on the girl's clothing?",
+        "question_kr": "소녀의 옷에는 검은 줄무늬가 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 32
+    },
+    {
+        "id": 3425,
+        "question_id": 374111001,
+        "variant": "B",
+        "question_en": "Are the snacks fresh?",
+        "question_kr": "간식이 신선한가요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 33
+    },
+    {
+        "id": 3426,
+        "question_id": 502630003,
+        "variant": "B",
+        "question_en": "Is the animal one of the \"big 5\" game animals?",
+        "question_kr": "이 동물은 '빅 5' 야생동물 중 하나인가요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 34
+    },
+    {
+        "id": 3427,
+        "question_id": 375763002,
+        "variant": "B",
+        "question_en": "Are the animals all standing in a row?",
+        "question_kr": "동물들이 모두 줄지어 서 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 35
+    },
+    {
+        "id": 3428,
+        "question_id": 73521003,
+        "variant": "B",
+        "question_en": "What location is the object at?",
+        "question_kr": "그 물체는 어디에 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 36
+    },
+    {
+        "id": 3429,
+        "question_id": 56562002,
+        "variant": "B",
+        "question_en": "What does the animal eat?",
+        "question_kr": "동물은 무엇을 먹나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 37
+    },
+    {
+        "id": 3430,
+        "question_id": 33994009,
+        "variant": "B",
+        "question_en": "What are the plants in?",
+        "question_kr": "식물들은 무엇 안에 담겨 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 38
+    },
+    {
+        "id": 3431,
+        "question_id": 103490012,
+        "variant": "B",
+        "question_en": "Which hand is holding the object?",
+        "question_kr": "어느 손이 그 물체를 들고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 39
+    },
+    {
+        "id": 3432,
+        "question_id": 271934000,
+        "variant": "B",
+        "question_en": "What religion is the structure associated with?",
+        "question_kr": "그 구조물은 어떤 종교와 관련이 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 40
+    },
+    {
+        "id": 3433,
+        "question_id": 130240006,
+        "variant": "B",
+        "question_en": "What ethnicity is the boy?",
+        "question_kr": "그 소년의 민족적 배경은 무엇인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 41
+    },
+    {
+        "id": 3434,
+        "question_id": 124707000,
+        "variant": "B",
+        "question_en": "What color are the devices?",
+        "question_kr": "그 장치들은 무슨 색인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 42
+    },
+    {
+        "id": 3435,
+        "question_id": 187196001,
+        "variant": "B",
+        "question_en": "What does the clothing say?",
+        "question_kr": "그 옷에는 무엇이 적혀 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 43
+    },
+    {
+        "id": 3436,
+        "question_id": 345711000,
+        "variant": "B",
+        "question_en": "Which direction is street?",
+        "question_kr": "그 거리는 어느 방향인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 44
+    },
+    {
+        "id": 3437,
+        "question_id": 9830000,
+        "variant": "B",
+        "question_en": "What type of device is the cat using?",
+        "question_kr": "고양이는 어떤 종류의 장치를 사용하고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 45
+    },
+    {
+        "id": 3438,
+        "question_id": 96618004,
+        "variant": "B",
+        "question_en": "What is the color of the animal's collar?",
+        "question_kr": "그 동물의 목줄은 무슨 색인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 46
+    },
+    {
+        "id": 3439,
+        "question_id": 530317001,
+        "variant": "B",
+        "question_en": "What kind of plants are in the picture?",
+        "question_kr": "사진 속 식물은 어떤 종류인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 47
+    },
+    {
+        "id": 3440,
+        "question_id": 162858001,
+        "variant": "B",
+        "question_en": "Which way is the green vehicle going to go?",
+        "question_kr": "초록색 차량은 어느 방향으로 갈 것 같나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 48
+    },
+    {
+        "id": 3441,
+        "question_id": 408535003,
+        "variant": "B",
+        "question_en": "What is the young person's ethnicity?",
+        "question_kr": "그 젊은 사람의 민족적 배경은 무엇인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 49
+    },
+    {
+        "id": 3442,
+        "question_id": 238090000,
+        "variant": "B",
+        "question_en": "Which way is the object hanging?",
+        "question_kr": "그 물체는 어느 방향으로 걸려 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 50
+    },
+    {
+        "id": 3443,
+        "question_id": 182334006,
+        "variant": "B",
+        "question_en": "What kind of beverage is in the objects?",
+        "question_kr": "그 물체들 안에 어떤 음료가 들어 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 51
+    },
+    {
+        "id": 3444,
+        "question_id": 228135002,
+        "variant": "B",
+        "question_en": "What would the two do if the sun got too bright for their eyes?",
+        "question_kr": "햇빛이 너무 강해 눈이 불편하다면 두 사람은 어떻게 할 것 같나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 52
+    },
+    {
+        "id": 3445,
+        "question_id": 463884003,
+        "variant": "B",
+        "question_en": "What is the man being pulled by?",
+        "question_kr": "그 남자는 무엇에 의해 끌려가고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 53
+    },
+    {
+        "id": 3446,
+        "question_id": 546577001,
+        "variant": "B",
+        "question_en": "What is on the man's body part?",
+        "question_kr": "남자의 신체 부위에 무엇이 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 54
+    },
+    {
+        "id": 3447,
+        "question_id": 121839003,
+        "variant": "B",
+        "question_en": "What are the women wearing on their head's?",
+        "question_kr": "여성들은 머리에 무엇을 쓰고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 55
+    },
+    {
+        "id": 3448,
+        "question_id": 53289016,
+        "variant": "B",
+        "question_en": "What breed of animal is present?",
+        "question_kr": "어떤 품종의 동물이 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 56
+    },
+    {
+        "id": 3449,
+        "question_id": 512760001,
+        "variant": "B",
+        "question_en": "Where are the fixtures?",
+        "question_kr": "그 설비들은 어디에 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 57
+    },
+    {
+        "id": 3450,
+        "question_id": 119038004,
+        "variant": "B",
+        "question_en": "Where are the animals?",
+        "question_kr": "동물들은 어디에 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 58
+    },
+    {
+        "id": 3451,
+        "question_id": 537206001,
+        "variant": "B",
+        "question_en": "Why is the person wearing protective gear?",
+        "question_kr": "그 사람은 왜 보호 장비를 착용하고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 59
+    },
+    {
+        "id": 3452,
+        "question_id": 402330000,
+        "variant": "B",
+        "question_en": "What is missing on the fixture?",
+        "question_kr": "이 설비에서 무엇이 빠져 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 60
+    },
+    {
+        "id": 3453,
+        "question_id": 13546003,
+        "variant": "B",
+        "question_en": "How many pieces of furniture are in the background?",
+        "question_kr": "배경에 가구가 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 61
+    },
+    {
+        "id": 3454,
+        "question_id": 311950001,
+        "variant": "B",
+        "question_en": "What condiments are on the food?",
+        "question_kr": "음식에 어떤 소스가 올려져 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 62
+    },
+    {
+        "id": 3455,
+        "question_id": 35671005,
+        "variant": "B",
+        "question_en": "What color is this animal's head and tail hair?",
+        "question_kr": "이 동물의 머리털과 꼬리털은 무슨 색인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 63
+    },
+    {
+        "id": 3456,
+        "question_id": 293218002,
+        "variant": "B",
+        "question_en": "Where does the vehicle hail from?",
+        "question_kr": "이 이동 수단은 어디 나라에서 왔나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 64
+    },
+    {
+        "id": 3457,
+        "question_id": 315905008,
+        "variant": "B",
+        "question_en": "What is the animal standing in?",
+        "question_kr": "그 동물은 무엇 속에 서 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 65
+    },
+    {
+        "id": 3458,
+        "question_id": 218183000,
+        "variant": "B",
+        "question_en": "What type of food does this appear to be?",
+        "question_kr": "이것은 어떤 종류의 음식처럼 보이나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 66
+    },
+    {
+        "id": 3459,
+        "question_id": 413948006,
+        "variant": "B",
+        "question_en": "How many ski poles is the person holding?",
+        "question_kr": "그 사람은 스키 폴을 몇 개 들고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 67
+    },
+    {
+        "id": 3460,
+        "question_id": 524799000,
+        "variant": "B",
+        "question_en": "How old is the person?",
+        "question_kr": "그 사람은 몇 살인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 68
+    },
+    {
+        "id": 3461,
+        "question_id": 2521002,
+        "variant": "B",
+        "question_en": "Which way is the indicator pointing?",
+        "question_kr": "그 표시는 어느 방향을 가리키고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 69
+    },
+    {
+        "id": 3462,
+        "question_id": 248703006,
+        "variant": "B",
+        "question_en": "How far do the children have to run?",
+        "question_kr": "아이들은 얼마나 멀리 달려야 하나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 70
+    },
+    {
+        "id": 3463,
+        "question_id": 213359003,
+        "variant": "B",
+        "question_en": "What does the person's gesture mean?",
+        "question_kr": "그 사람의 제스처는 무슨 뜻인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 71
+    },
+    {
+        "id": 3464,
+        "question_id": 473110009,
+        "variant": "B",
+        "question_en": "How many railway track are there?",
+        "question_kr": "철도가 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 72
+    },
+    {
+        "id": 3465,
+        "question_id": 140713012,
+        "variant": "B",
+        "question_en": "What is the animal eating?",
+        "question_kr": "그 동물은 무엇을 먹고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 73
+    },
+    {
+        "id": 3466,
+        "question_id": 507979000,
+        "variant": "B",
+        "question_en": "What kind of alcohol is in the containers?",
+        "question_kr": "용기에 어떤 종류의 술이 담겨 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 74
+    },
+    {
+        "id": 3467,
+        "question_id": 76866001,
+        "variant": "B",
+        "question_en": "How many stripes does the animal have?",
+        "question_kr": "동물에는 줄무늬가 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 75
+    },
+    {
+        "id": 3468,
+        "question_id": 357383002,
+        "variant": "B",
+        "question_en": "What is on the person's face?",
+        "question_kr": "그 사람의 얼굴에 무엇이 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 76
+    },
+    {
+        "id": 3469,
+        "question_id": 209856000,
+        "variant": "B",
+        "question_en": "Where is the dish?",
+        "question_kr": "그 음식은 어디에 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 77
+    },
+    {
+        "id": 3470,
+        "question_id": 518440008,
+        "variant": "B",
+        "question_en": "How many sausages are on the bun?",
+        "question_kr": "이 빵에 소시지가 몇 개 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 78
+    },
+    {
+        "id": 3471,
+        "question_id": 1342072,
+        "variant": "B",
+        "question_en": "What kind of information does the yellow and white publication look like it contains?",
+        "question_kr": "노란색과 흰색 출판물에는 어떤 종류의 정보가 담겨 있는 것 같나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 79
+    },
+    {
+        "id": 3472,
+        "question_id": 180202000,
+        "variant": "B",
+        "question_en": "What vegetable is in the container?",
+        "question_kr": "용기에 무슨 채소가 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 80
+    },
+    {
+        "id": 3473,
+        "question_id": 229391001,
+        "variant": "B",
+        "question_en": "What might a milkman have in common with the man with the bag?",
+        "question_kr": "우유 배달부와 가방을 멘 남자는 무엇이 공통점인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 81
+    },
+    {
+        "id": 3474,
+        "question_id": 262048001,
+        "variant": "B",
+        "question_en": "Where are the individuals?",
+        "question_kr": "그 사람들은 어디에 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 82
+    },
+    {
+        "id": 3475,
+        "question_id": 288202001,
+        "variant": "B",
+        "question_en": "What type of animal is this?",
+        "question_kr": "이것은 어떤 종류의 동물인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 83
+    },
+    {
+        "id": 3476,
+        "question_id": 91236000,
+        "variant": "B",
+        "question_en": "What formation are the vehicles in?",
+        "question_kr": "차량들은 어떤 대형을 이루고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 84
+    },
+    {
+        "id": 3477,
+        "question_id": 392878005,
+        "variant": "B",
+        "question_en": "Where are the individuals sitting?",
+        "question_kr": "그 사람들은 어디에 앉아 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 85
+    },
+    {
+        "id": 3478,
+        "question_id": 226154000,
+        "variant": "B",
+        "question_en": "What language is the writing at the top of the vehicle in?",
+        "question_kr": "차량 상단에 있는 글씨는 어떤 언어인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 86
+    },
+    {
+        "id": 3479,
+        "question_id": 318426002,
+        "variant": "B",
+        "question_en": "What are the numbers on the vehicle?",
+        "question_kr": "차량에 적힌 숫자는 무엇인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 87
+    },
+    {
+        "id": 3480,
+        "question_id": 289941000,
+        "variant": "B",
+        "question_en": "What number is on the clothing?",
+        "question_kr": "옷에 어떤 숫자가 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 88
+    },
+    {
+        "id": 3481,
+        "question_id": 169996009,
+        "variant": "B",
+        "question_en": "What is the name of the store closest to the vehicle?",
+        "question_kr": "차량에서 가장 가까운 가게의 이름은 무엇인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 89
+    },
+    {
+        "id": 3482,
+        "question_id": 67551002,
+        "variant": "B",
+        "question_en": "How many colors are on the blanket on the animal back?",
+        "question_kr": "동물 등의 담요에는 몇 가지 색이 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 90
+    },
+    {
+        "id": 3483,
+        "question_id": 320715006,
+        "variant": "B",
+        "question_en": "What is the person's position called?",
+        "question_kr": "그 사람의 포지션은 무엇이라고 불리나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 91
+    },
+    {
+        "id": 3484,
+        "question_id": 322031002,
+        "variant": "B",
+        "question_en": "How many people touching the animal trunk?",
+        "question_kr": "동물 코를 만지는 사람은 몇 명인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 92
+    },
+    {
+        "id": 3485,
+        "question_id": 353889001,
+        "variant": "B",
+        "question_en": "What character is yellow and white?",
+        "question_kr": "노란색과 흰색인 문자는 무엇인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 93
+    },
+    {
+        "id": 3486,
+        "question_id": 394002002,
+        "variant": "B",
+        "question_en": "What's the brand of vehicle second from the left?",
+        "question_kr": "왼쪽에서 두 번째 차량의 브랜드는 무엇인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 94
+    },
+    {
+        "id": 3487,
+        "question_id": 83277003,
+        "variant": "B",
+        "question_en": "What is the person doing?",
+        "question_kr": "사람은 무엇을 하고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 95
+    },
+    {
+        "id": 3488,
+        "question_id": 74711004,
+        "variant": "B",
+        "question_en": "How many animals?",
+        "question_kr": "동물이 몇 마리 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 96
+    },
+    {
+        "id": 3489,
+        "question_id": 267690002,
+        "variant": "B",
+        "question_en": "What year was the picture taken?",
+        "question_kr": "그 사진은 몇 년도에 찍혔나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 97
+    },
+    {
+        "id": 3490,
+        "question_id": 424270008,
+        "variant": "B",
+        "question_en": "Is the girl looking at the object?",
+        "question_kr": "여자아이가 물건을 보고 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 98
+    },
+    {
+        "id": 3491,
+        "question_id": 230576003,
+        "variant": "B",
+        "question_en": "Does the building need esthetic maintenance?",
+        "question_kr": "건물은 미관 정비가 필요한가요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 99
+    },
+    {
+        "id": 3492,
+        "question_id": 507143002,
+        "variant": "B",
+        "question_en": "What is orange on the vehicle?",
+        "question_kr": "차량에서 주황색인 것은 무엇인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 100
+    },
+    {
+        "id": 3493,
+        "question_id": 476279006,
+        "variant": "B",
+        "question_en": "What vehicle is on the subway door?",
+        "question_kr": "지하철 문에 있는 차량은 무엇인가요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 101
+    },
+    {
+        "id": 3494,
+        "question_id": 205625000,
+        "variant": "B",
+        "question_en": "What does the distance say?",
+        "question_kr": "거리 표지판에는 무슨 글자가 써있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 102
+    },
+    {
+        "id": 3495,
+        "question_id": 205513003,
+        "variant": "B",
+        "question_en": "What is the object made of?",
+        "question_kr": "물건은 무엇으로 만들어졌나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 103
+    },
+    {
+        "id": 3496,
+        "question_id": 121442004,
+        "variant": "B",
+        "question_en": "How many children have glasses?",
+        "question_kr": "안경을 쓴 어린이는 몇 명입니까?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 104
+    },
+    {
+        "id": 3497,
+        "question_id": 211837003,
+        "variant": "B",
+        "question_en": "How many animals are in the picture?",
+        "question_kr": "사진에 동물이 몇 마리 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 105
+    },
+    {
+        "id": 3498,
+        "question_id": 348488002,
+        "variant": "B",
+        "question_en": "What kind of animal is shown on the piece of art?",
+        "question_kr": "미술 작품에 어떤 종류의 동물이 그려져 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 106
+    },
+    {
+        "id": 3499,
+        "question_id": 363767000,
+        "variant": "B",
+        "question_en": "What animal is the object meant to represent?",
+        "question_kr": "그 물건은 어떤 동물을 나타내고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 107
+    },
+    {
+        "id": 3500,
+        "question_id": 575755005,
+        "variant": "B",
+        "question_en": "What is in the food?",
+        "question_kr": "음식 안에 무엇이 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 108
+    },
+    {
+        "id": 3501,
+        "question_id": 254732011,
+        "variant": "B",
+        "question_en": "How many vehicles are in the air?",
+        "question_kr": "공중에 차량이 몇 대 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 109
+    },
+    {
+        "id": 3502,
+        "question_id": 559483008,
+        "variant": "B",
+        "question_en": "What is the person holding?",
+        "question_kr": "그 사람은 무엇을 들고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 110
+    },
+    {
+        "id": 3503,
+        "question_id": 335325011,
+        "variant": "B",
+        "question_en": "How many of the people are female?",
+        "question_kr": "여성은 몇 명이나 되나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 111
+    },
+    {
+        "id": 3504,
+        "question_id": 506311007,
+        "variant": "B",
+        "question_en": "What type of print is on the surface?",
+        "question_kr": "표면에 어떤 무늬가 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 112
+    },
+    {
+        "id": 3505,
+        "question_id": 55810002,
+        "variant": "B",
+        "question_en": "How many earrings does the person have?",
+        "question_kr": "그 사람은 귀걸이를 몇 개 하고 있나요?",
+        "answer_type": "text",
+        "options": null,
+        "display_order": 113
+    },
+    {
+        "id": 3506,
+        "question_id": 369370002,
+        "variant": "B",
+        "question_en": "Is there cheese on the food?",
+        "question_kr": "음식에 치즈가 있나요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 114
+    },
+    {
+        "id": 3507,
+        "question_id": 357578013,
+        "variant": "B",
+        "question_en": "Is the vehicle clean?",
+        "question_kr": "이 차량은 깨끗한가요?",
+        "answer_type": "yesno",
+        "options": null,
+        "display_order": 115
+    }
+]

@@ -17,7 +17,7 @@ log() { echo "[$(timestamp)] $*" | tee -a "$LOG"; }
 log "=== fill_32b.sh started ==="
 
 MODEL="Qwen/Qwen3-VL-32B-Instruct"
-SAVEDIR="evaluation/logits/pretrained"
+SAVEDIR="evaluation/logits"
 COMMON="--model $MODEL --model_type vlm --dataset vqa_1k \
         --savedir $SAVEDIR --template_type qwen3_nothinking --fill_missing"
 

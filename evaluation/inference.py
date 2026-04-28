@@ -99,7 +99,7 @@ def main(args):
         savedir += '/pretrained'     
 
     output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}.jsonl"
-    dataset = get_dataset(f"{args.dataset}{args.condition}")
+    dataset = get_dataset(f"{args.dataset}{args.condition}", json_path=getattr(args, 'json_path', None))
 
     # Which control-type keys to run (None = all string fields, as before)
     control_types = [k.strip() for k in args.control_types.split(',')] if args.control_types else None
@@ -258,6 +258,9 @@ if __name__ == "__main__":
     parser.add_argument("--fill_missing", action="store_true",
                         help="Load existing output and only run keys absent from generated_answers; "
                              "rewrites the file with merged results")
-    
-    args = parser.parse_args() 
+    parser.add_argument("--json_path", type=str, default=None,
+                        help="Override the default JSONL path for vqa_1k_control datasets "
+                             "(e.g. dataset/vqa/vqa1k_v4_patch.jsonl)")
+
+    args = parser.parse_args()
     main(args) 

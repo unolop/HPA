@@ -24,6 +24,37 @@ def _build_regex(numbers: dict, counter_words: list) -> re.Pattern:
     )
 
 
+# Politeness/sentence endings to strip before map lookup or API translation.
+# Ordered longest-first so greedy matching works correctly.
+_ENDINGS = [
+    '입니다', '이에요', '습니다', '합니다', '이라고', '이라면',
+    '예요', '어요', '아요', '이야', '이다', '한다',
+    '이요', '네요', '군요', '죠', '요',
+]
+_PUNCT_RE = re.compile(r'[\s.,!?~。~\u3002]+$')
+
+
+def clean_korean_answer(text: str) -> str:
+    """Strip trailing punctuation and common Korean politeness endings.
+
+    Returns the canonical bare form used for deduplication before API calls
+    and as a fallback lookup key in the map.
+
+    Examples:
+        '동물이요'  → '동물'
+        '집이요'    → '집'
+        '없어요'    → '없어'  (bare stem — still meaningful)
+        '고양이입니다' → '고양이'
+        '선글라스를 쓴다.' → '선글라스를 쓴다'
+    """
+    t = _PUNCT_RE.sub('', text.strip())
+    for ending in _ENDINGS:
+        if t.endswith(ending) and len(t) > len(ending):
+            t = _PUNCT_RE.sub('', t[:-len(ending)].strip())
+            break   # strip at most one ending
+    return t
+
+
 def normalize_korean_answer(text: str, _cache: dict = {}) -> str:
     """
     Normalize a Korean VQA answer to English for scoring against English GT.
@@ -52,9 +83,12 @@ def normalize_korean_answer(text: str, _cache: dict = {}) -> str:
     t = text.strip()
     t_lower = t.lower()
 
-    # 1. Direct map lookup (includes manual translations)
-    if t in _cache['map'] and _cache['map'][t] is not None:
+    # 1. Direct map lookup — try raw form first, then cleaned canonical form
+    if t in _cache['map'] and _cache['map'][t] not in (None, ''):
         return _cache['map'][t]
+    canonical = clean_korean_answer(t)
+    if canonical != t and canonical in _cache['map'] and _cache['map'][canonical] not in (None, ''):
+        return _cache['map'][canonical]
 
     # 2. Yes/no keywords
     for kr, en in sorted(_cache['yesno'].items(), key=lambda x: -len(x[0])):
