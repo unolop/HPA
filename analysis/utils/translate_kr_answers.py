@@ -88,7 +88,8 @@ def translate_unmapped_korean_answers(
     if canonical_to_question and show_samples:
         print("\nSample canonical forms:")
         for canonical, question in list(canonical_to_question.items())[:show_samples]:
-            print(f"  {canonical!r:25}  (q: {question[:50]!r})")
+            q_preview = question[:50] if question else ''
+            print(f"  {canonical!r:25}  (q: {q_preview!r})")
 
     translated_count = 0
     if canonical_to_question:

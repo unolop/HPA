@@ -38,30 +38,40 @@ NUMBER_REGEX = re.compile(
     """,
     re.VERBOSE
 )
+_PUNCT_STRIP_RE = re.compile(r"[^\w\s]")   # remove non-alphanumeric, non-space
+_MULTI_SPACE_RE = re.compile(r"\s+")
+
+
+def _normalize_answer(text: str) -> str:
+    """Lowercase, strip punctuation, collapse whitespace — matches VQA v2 eval."""
+    t = str(text).lower().strip()
+    t = _PUNCT_STRIP_RE.sub(" ", t)
+    t = _MULTI_SPACE_RE.sub(" ", t).strip()
+    return t
+
+
 def vqa_accuracy(pred, gt_answers):
     # pred가 리스트인 경우 처리
     if isinstance(pred, list):
         pred = pred[0] if pred else ""
-    
+
     if pred is None:
         return 0.0
-    
-    pred = str(pred).strip().lower()
-    
+
+    pred = _normalize_answer(pred)
+
     matches = 0
     for ans in gt_answers:
-        # gt_answers가 딕셔너리 리스트인 경우: [{'answer': 'yes'}, {'answer': 'no'}, ...]
         if isinstance(ans, dict):
             gt = ans.get('answer', '')
         else:
-            # 문자열 리스트인 경우: ['yes', 'no', ...]
             gt = ans
-        
-        if str(gt).strip().lower() == pred: 
+
+        if _normalize_answer(gt) == pred:
             matches += 1
-    
+
     acc = min(1.0, matches / 3.0)
-    return acc 
+    return acc
 
 class VQAAnswerMapper:
     """Maps question_id to list of ground truth answers from VQA annotations."""
