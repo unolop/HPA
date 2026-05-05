@@ -111,7 +111,9 @@ def backfill_question_text(
         print(f'\n{action} question_en/question_kr on {stats["answers_filled"]} rows '
               f'across {stats["files_updated"]}/{stats["files_checked"]} participant files')
 _CT_TO_VARIANT = {'question': 'C', 'weaker_object': 'B', 'pronominalized': 'A'}
-VARIANT_ORDER = ['C', 'B', 'A']
+
+# Re-exported from constants for backwards compatibility
+from analysis.utils.constants import VARIANT_ORDER  # noqa: E402
 
 
 def clean_answer(ans: str) -> str:

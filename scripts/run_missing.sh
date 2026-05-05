@@ -58,17 +58,26 @@ run_infer() {
 # ═════════════════════════════════════════════════════════════════════════════
 log "=== [1/5] Pretrained VLM: vqa_1k orig (InternVL + Qwen3-VL-2B) ==="
 
-run_infer "0" "OpenGVLab/InternVL3_5-1B" "vlm" "" "$SAVEDIR/pretrained" \
-    "InternVL3_5-1B" --attn_impl eager
+run_if_missing() {
+    local OUT="$1"; shift
+    if [ -f "$OUT" ] && [ "$(wc -l < "$OUT")" -ge 1000 ]; then
+        log "  SKIP (complete): $OUT"
+    else
+        run_infer "$@"
+    fi
+}
 
-run_infer "0" "OpenGVLab/InternVL3_5-2B" "vlm" "" "$SAVEDIR/pretrained" \
-    "InternVL3_5-2B" --attn_impl eager
+run_if_missing "$SAVEDIR/pretrained/InternVL3_5-1B/vqa_1k.jsonl" \
+    "0" "OpenGVLab/InternVL3_5-1B" "vlm" "" "$SAVEDIR" "InternVL3_5-1B" --attn_impl eager
 
-run_infer "0" "OpenGVLab/InternVL3_5-8B" "vlm" "" "$SAVEDIR/pretrained" \
-    "InternVL3_5-8B" --attn_impl eager --fill_missing
+run_if_missing "$SAVEDIR/pretrained/InternVL3_5-2B/vqa_1k.jsonl" \
+    "0" "OpenGVLab/InternVL3_5-2B" "vlm" "" "$SAVEDIR" "InternVL3_5-2B" --attn_impl eager
 
-run_infer "0" "Qwen/Qwen3-VL-2B-Instruct" "vlm" "" "$SAVEDIR/pretrained" \
-    "Qwen3-VL-2B" --template_type qwen3_nothinking --fill_missing
+run_if_missing "$SAVEDIR/pretrained/InternVL3_5-8B/vqa_1k.jsonl" \
+    "0" "OpenGVLab/InternVL3_5-8B" "vlm" "" "$SAVEDIR" "InternVL3_5-8B" --attn_impl eager
+
+run_if_missing "$SAVEDIR/pretrained/Qwen3-VL-2B-Instruct/vqa_1k.jsonl" \
+    "0" "Qwen/Qwen3-VL-2B-Instruct" "vlm" "" "$SAVEDIR" "Qwen3-VL-2B" --template_type qwen3_nothinking
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 2. Pretrained VLM — Qwen3-VL-32B fill (all 4 conditions, both GPUs)
@@ -76,7 +85,7 @@ run_infer "0" "Qwen/Qwen3-VL-2B-Instruct" "vlm" "" "$SAVEDIR/pretrained" \
 log "=== [2/5] Pretrained VLM: Qwen3-VL-32B fill (both GPUs) ==="
 
 COMMON_32B="--model Qwen/Qwen3-VL-32B-Instruct --model_type vlm
-            --dataset $DATASET --savedir $SAVEDIR/pretrained
+            --dataset $DATASET --savedir $SAVEDIR
             --template_type qwen3_nothinking --fill_missing"
 
 log "▶ [GPU 0,1] Qwen3-VL-32B | _control (466/1000)"
@@ -141,7 +150,7 @@ CUDA_VISIBLE_DEVICES=0,1 python evaluation/inference.py \
 # ═════════════════════════════════════════════════════════════════════════════
 log "=== [5/5] Backbone: vicuna-13b-v1.5 _control ==="
 
-CUDA_VISIBLE_DEVICES=0 python evaluation/inference.py \
+CUDA_VISIBLE_DEVICES=0,1 python evaluation/inference.py \
     --model "lmsys/vicuna-13b-v1.5" --model_type lm \
     --dataset "$DATASET" --condition _control \
     --savedir "$SAVEDIR/backbone" \
