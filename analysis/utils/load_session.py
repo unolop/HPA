@@ -25,9 +25,8 @@ _REPO = Path(__file__).parent.parent.parent
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from analysis.utils.load_human import flatten_to_df
 from analysis.utils.normalize_korean import normalize_korean_answer
-from analysis.utils.vqa import VQAAnswerMapper, vqa_accuracy
+from analysis.utils.vqa import preprocess_answer, VQAAnswerMapper, vqa_accuracy
 
 _KR_CHAR = re.compile(r'[가-힣]')
 
@@ -116,9 +115,64 @@ _CT_TO_VARIANT = {'question': 'C', 'weaker_object': 'B', 'pronominalized': 'A'}
 from analysis.utils.constants import VARIANT_ORDER  # noqa: E402
 
 
+def load_jsonl(path) -> list:
+    """Load a .jsonl file into a list of dicts. Returns [] if file doesn't exist."""
+    path = Path(path)
+    if not path.exists():
+        return []
+    return [json.loads(line) for line in path.open() if line.strip()]
+
+
 def clean_answer(ans: str) -> str:
-    """Strip <think>…</think> CoT prefix (Qwen3 models)."""
-    return re.sub(r'<think>.*?</think>\s*', '', ans, flags=re.DOTALL).strip()
+    """Backwards-compatible model answer cleaner used by older notebooks."""
+    return preprocess_answer(ans, strip_think=True)
+
+
+def load_participants(base: Path, min_answers: int = 348) -> list:
+    """Load participant JSON files and keep entries with at least min_answers."""
+    all_entries = []
+    for fpath in sorted((base / 'experiment/s2_humans').glob('*.json')):
+        raw = json.load(open(fpath))
+        entries = raw if isinstance(raw, list) else [raw]
+        all_entries.extend(entries)
+
+    seen = {}
+    for participant in all_entries:
+        code = participant['code']
+        if code not in seen or len(participant.get('answers', [])) > len(seen[code].get('answers', [])):
+            seen[code] = participant
+
+    return [p for p in seen.values() if len(p.get('answers', [])) >= min_answers]
+
+
+def flatten_to_df(participants: list, mapper, s2_df: pd.DataFrame, normalize_fn=None) -> pd.DataFrame:
+    """Flatten participant answers into a scored DataFrame using shared VQA preprocessing."""
+    rows = []
+    for participant in participants:
+        for answer in participant['answers']:
+            raw_ans = str(answer.get('answer_text', '')).strip()
+            answer_en = normalize_fn(raw_ans) if normalize_fn else raw_ans
+            answer_en = preprocess_answer(answer_en)
+            gt = mapper.get_answers(answer['question_id'])
+            acc = vqa_accuracy(answer_en, gt) if gt else np.nan
+            rows.append({
+                'participant': participant['code'],
+                'tag': participant.get('tag', ''),
+                'session': answer.get('session_number'),
+                'question_id': answer['question_id'],
+                'variant': answer.get('variant', 'C'),
+                'answer_kr': raw_ans,
+                'answer_en': answer_en,
+                'gt': gt,
+                'confidence': answer.get('confidence', np.nan),
+                'time_ms': answer.get('time_spent_ms', np.nan),
+                'time_s': answer.get('time_spent_ms', 0) / 1000,
+                'seq': answer.get('sequence_number', np.nan),
+                'accuracy': acc,
+            })
+
+    df = pd.DataFrame(rows)
+    return df.merge(s2_df, on='question_id', how='left')
 
 
 # ── Human data ────────────────────────────────────────────────────────────────
@@ -176,7 +230,12 @@ def load_human_data(
     # ── 3. Flatten to DataFrame ───────────────────────────────────────────────
     s2_path = s2_csv or (base / 'experiment/s2_v4/s4.csv')
     s2 = pd.read_csv(s2_path)[['question_id', 'ent', 'op', 'op_grp', 'signal_score', 'acc_original']]
-    df = flatten_to_df(participants, mapper, s2, normalize_fn=normalize_korean_answer)
+    df = flatten_to_df(
+        participants,
+        mapper,
+        s2,
+        normalize_fn=normalize_korean_answer,
+    )
 
     # ── 4. Intersect to common question_ids ───────────────────────────────────
     qid_sets = [{a['question_id'] for a in p['answers']} for p in participants]

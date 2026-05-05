@@ -6,6 +6,7 @@ Usage
 from utils.constants import (
     MODEL_ORDER, COND_LABEL, COND_COLOR,
     VARIANT_ORDER, VARIANT_LABELS, VARIANT_COLORS,
+    GROUP_COLORS,
     CLASS_ORDER, CLASS_COLOR,
 )
 """
@@ -61,6 +62,13 @@ VARIANT_COLORS = {
     'C': '#2196F3',
     'B': '#FF9800',
     'A': '#E91E63',
+}
+
+# ── Model group colors (VLM / LM-decoder / Backbone LLM) ────────────────────
+GROUP_COLORS = {
+    'VLM':          '#E91E63',
+    'LM-decoder':   '#2196F3',
+    'Backbone LLM': '#FF9800',
 }
 
 # ── Abstention class taxonomy ─────────────────────────────────────────────────
