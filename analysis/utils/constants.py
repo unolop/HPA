@@ -8,6 +8,7 @@ from utils.constants import (
     VARIANT_ORDER, VARIANT_LABELS, VARIANT_COLORS,
     GROUP_COLORS,
     CLASS_ORDER, CLASS_COLOR,
+    CONTROL_TYPES, CT_LABELS, CT_TO_VARIANT,
 )
 """
 
@@ -48,6 +49,11 @@ COND_COLOR = {
     'inst_blind': '#1565c0',
     'control':    '#2e7d32',
 }
+
+CONDITIONS = [
+    ('_control_blind', 'blind', COND_COLOR['blind']),
+    ('_control_inst_blind', 'inst_blind', COND_COLOR['inst_blind']),
+]
 
 # ── Variant labels and colors (A / B / C) ────────────────────────────────────
 VARIANT_ORDER = ['C', 'B', 'A']
@@ -95,3 +101,58 @@ CLASS_LABEL = {
     'hallucinated_wrong':   'Hallucinated (wrong)',
     'degenerate':           'Degenerate',
 }
+
+# ── Control-type constants for full VQA question ladders ─────────────────────
+CONTROL_TYPES = ['question', 'deictic_removed', 'object_removed', 'weaker_object', 'pronominalized']
+
+CT_LABELS = ['original', 'deictic\nremoved', 'object\nremoved', 'weaker\nobject', 'pronominalized']
+
+CT_TO_VARIANT = {
+    'question': 'C',
+    'weaker_object': 'B',
+    'pronominalized': 'A',
+}
+
+# ── Generic abstention lexicon for blind / inst_blind analysis ───────────────
+ABSTAIN_TOKENS = [
+    'none', 'nothing', 'unknown', 'unanswerable', 'no image',
+    'cannot', "can't", 'unable', 'n/a', 'not visible', 'not shown',
+]
+
+# ── Tier-level plotting constants ────────────────────────────────────────────
+TIER_ORDER = ['VLM', 'LM decoder', 'Backbone']
+
+TIER_COLORS = {
+    'VLM': '#2c3e50',
+    'LM decoder': '#e67e22',
+    'Backbone': '#27ae60',
+}
+
+TIER_STYLE = {
+    'VLM': {'color': '#2c3e50', 'marker': 'o', 'ls': '-', 'lw': 2.2},
+    'LM decoder': {'color': '#e67e22', 'marker': 's', 'ls': '--', 'lw': 1.8},
+    'Backbone': {'color': '#27ae60', 'marker': '^', 'ls': ':', 'lw': 1.8},
+}
+
+# ── Model registries used in prior tier / decoder comparisons ────────────────
+VLM_MODELS = [
+    'Qwen3-VL-2B-Instruct', 'Qwen3-VL-4B-Instruct', 'Qwen3-VL-8B-Instruct',
+    'InternVL3_5-1B', 'InternVL3_5-2B', 'InternVL3_5-8B',
+    'llava-1.5-7b-hf', 'llava-v1.6-mistral-7b-hf', 'llava-v1.6-vicuna-7b-hf',
+]
+
+LM_MODELS = VLM_MODELS
+
+BB_MODELS = [
+    'Qwen3-0.6B', 'Qwen3-1.7B', 'Qwen3-4B', 'Qwen3-8B',
+    'vicuna-7b-v1.5', 'vicuna-13b-v1.5',
+    'Mistral-7B-Instruct-v0.2',
+]
+
+# (vlm_model, lm_model, backbone_model, display_label)
+TRIPLES = [
+    ('llava-v1.6-mistral-7b-hf', 'llava-v1.6-mistral-7b-hf', 'Mistral-7B-Instruct-v0.2', 'Mistral-7B'),
+    ('llava-v1.6-vicuna-7b-hf', 'llava-v1.6-vicuna-7b-hf', 'vicuna-7b-v1.5', 'Vicuna-7B'),
+    ('Qwen3-VL-4B-Instruct', 'Qwen3-VL-4B-Instruct', 'Qwen3-4B', 'Qwen3-4B'),
+    ('Qwen3-VL-8B-Instruct', 'Qwen3-VL-8B-Instruct', 'Qwen3-8B', 'Qwen3-8B'),
+]

@@ -26,6 +26,7 @@ if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
 from analysis.utils.normalize_korean import normalize_korean_answer
+from analysis.utils.model_registry import MODEL_TYPE, default_all_models
 from analysis.utils.vqa import preprocess_answer, VQAAnswerMapper, vqa_accuracy
 
 _KR_CHAR = re.compile(r'[가-힣]')
@@ -109,10 +110,8 @@ def backfill_question_text(
         action = 'Would backfill' if dry_run else 'Backfilled'
         print(f'\n{action} question_en/question_kr on {stats["answers_filled"]} rows '
               f'across {stats["files_updated"]}/{stats["files_checked"]} participant files')
-_CT_TO_VARIANT = {'question': 'C', 'weaker_object': 'B', 'pronominalized': 'A'}
-
 # Re-exported from constants for backwards compatibility
-from analysis.utils.constants import VARIANT_ORDER  # noqa: E402
+from analysis.utils.constants import CT_TO_VARIANT, VARIANT_ORDER  # noqa: E402
 
 
 def load_jsonl(path) -> list:
@@ -295,31 +294,8 @@ def check_translation_coverage(df: pd.DataFrame, map_path: Path, verbose: bool =
 # ── Model data ────────────────────────────────────────────────────────────────
 
 def _default_all_models(base: Path) -> dict:
-    """Return the canonical ALL_MODELS registry."""
-    return {
-        # VLM
-        'Qwen3-VL-8B':       (base / 'evaluation/logits/pretrained', 'Qwen3-VL-8B-Instruct'),
-        'LLaVA-1.5-7B':      (base / 'evaluation/logits/pretrained', 'llava-1.5-7b-hf'),
-        'LLaVA-Mistral':     (base / 'evaluation/logits/pretrained', 'llava-v1.6-mistral-7b-hf'),
-        'LLaVA-Vicuna':      (base / 'evaluation/logits/pretrained', 'llava-v1.6-vicuna-7b-hf'),
-        'InternVL-1B':       (base / 'evaluation/logits/pretrained', 'InternVL3_5-1B'),
-        'InternVL-2B':       (base / 'evaluation/logits/pretrained', 'InternVL3_5-2B'),
-        'InternVL-8B':       (base / 'evaluation/logits/pretrained', 'InternVL3_5-8B'),
-        # LM-decoder
-        'LLaVA-1.5 (LM)':   (base / 'evaluation/logits/lm_decoder/pretrained', 'llava-1.5-7b-hf'),
-        'LLaVA-Mistral (LM)':(base / 'evaluation/logits/lm_decoder/pretrained', 'llava-v1.6-mistral-7b-hf'),
-        'LLaVA-Vicuna (LM)': (base / 'evaluation/logits/lm_decoder/pretrained', 'llava-v1.6-vicuna-7b-hf'),
-        # Backbone LLM
-        'Qwen3-8B':          (base / 'evaluation/logits/backbone/pretrained', 'Qwen3-8B'),
-    }
-
-
-MODEL_TYPE = {
-    'Qwen3-VL-8B': 'VLM', 'LLaVA-1.5-7B': 'VLM', 'LLaVA-Mistral': 'VLM', 'LLaVA-Vicuna': 'VLM',
-    'InternVL-1B': 'VLM', 'InternVL-2B': 'VLM', 'InternVL-8B': 'VLM',
-    'LLaVA-1.5 (LM)': 'LM-decoder', 'LLaVA-Mistral (LM)': 'LM-decoder', 'LLaVA-Vicuna (LM)': 'LM-decoder',
-    'Qwen3-8B': 'Backbone LLM',
-}
+    """Backward-compatible wrapper for the canonical ALL_MODELS registry."""
+    return default_all_models(base)
 
 
 def load_model_results(
@@ -369,7 +345,7 @@ def load_model_results(
                 continue
             gt = mapper.get_answers(qid)
             ga = ex.get('generated_answers', {})
-            for ct, var in _CT_TO_VARIANT.items():
+            for ct, var in CT_TO_VARIANT.items():
                 ans = clean_answer(ga.get(ct, ''))
                 if ans and gt:
                     acc_raw[label][qid][var].append(vqa_accuracy(ans, gt))
