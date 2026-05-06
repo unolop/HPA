@@ -111,14 +111,15 @@ def process_digit_article(in_text):
     return ' '.join(out_text)
 
 
-def preprocess_answer(text, strip_think=False):
+def preprocess_answer(text, strip_think=True):
     out_text = str(text or '').replace('\n', ' ').replace('\t', ' ').strip()
     # Always drop hidden chain-of-thought wrappers before any other normalization.
-    # `strip_think` remains for backwards compatibility at call sites.
+    # `strip_think` remains only for backwards compatibility at call sites.
     out_text = strip_think_answer(out_text)
     out_text = process_punctuation(out_text)
     out_text = process_digit_article(out_text)
     return out_text.strip()
+    
 def vqa_accuracy(pred, gt_answers):
     # pred가 리스트인 경우 처리
     if isinstance(pred, list):
@@ -175,26 +176,17 @@ class VQAEval:
         print("computing accuracy")
         step = 0
         for quesId in quesIds:
-            for ansDic in gts[quesId]['answers']:
-                ansDic['answer'] = ansDic['answer'].replace('\n', ' ')
-                ansDic['answer'] = ansDic['answer'].replace('\t', ' ')
-                ansDic['answer'] = ansDic['answer'].strip()
-            resAns = res[quesId]['answer']
-            resAns = resAns.replace('\n', ' ')
-            resAns = resAns.replace('\t', ' ')
-            resAns = resAns.strip()
             gtAcc = []
-            gtAnswers = [ans['answer'] for ans in gts[quesId]['answers']]
+            resAns = preprocess_answer(res[quesId]['answer'])
+            norm_answers = []
+            for ansDic in gts[quesId]['answers']:
+                norm_answers.append({
+                    **ansDic,
+                    'answer': preprocess_answer(ansDic['answer']),
+                })
 
-            if len(set(gtAnswers)) > 1:
-                for ansDic in gts[quesId]['answers']:
-                    ansDic['answer'] = self.processPunctuation(ansDic['answer'])
-                    ansDic['answer'] = self.processDigitArticle(ansDic['answer'])
-                resAns = self.processPunctuation(resAns)
-                resAns = self.processDigitArticle(resAns)
-
-            for gtAnsDatum in gts[quesId]['answers']:
-                otherGTAns = [item for item in gts[quesId]['answers'] if item != gtAnsDatum]
+            for gtAnsDatum in norm_answers:
+                otherGTAns = [item for item in norm_answers if item != gtAnsDatum]
                 matchingAns = [item for item in otherGTAns if item['answer'] == resAns]
                 acc = min(1, float(len(matchingAns)) / 3)
                 gtAcc.append(acc)

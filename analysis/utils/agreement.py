@@ -14,22 +14,23 @@ agree_df = compute_question_agreement(df, common_qids, methods=['exact', 'jaccar
 """
 from __future__ import annotations
 
-import re
 from itertools import combinations
 from typing import List, Optional
 
 import numpy as np
 import pandas as pd
-
-_PUNCT = re.compile(r'[^\w\s]')
-_SPACE = re.compile(r'\s+')
+from analysis.utils.vqa import preprocess_answer
 
 
 def _normalize(text: str) -> str:
-    t = str(text).lower().strip()
-    t = _PUNCT.sub(' ', t)
-    t = _SPACE.sub(' ', t).strip()
-    return t
+    return preprocess_answer(text)
+
+
+def clip_cosine_score(score: float, clip_min: Optional[float] = None) -> float:
+    """Optionally clamp cosine similarity to a lower bound."""
+    if clip_min is None:
+        return float(score)
+    return float(max(score, clip_min))
 
 
 # ── Per-pair metrics ──────────────────────────────────────────────────────────
@@ -68,9 +69,9 @@ def jaccard_agreement(answers: List[str]) -> float:
     return float(np.mean([_pair_jaccard(a, b) for a, b in pairs]))
 
 
-def sbert_agreement(answers: List[str], model=None) -> float:
+def sbert_agreement(answers: List[str], model=None, clip_min: Optional[float] = None) -> float:
     """Mean pairwise cosine similarity from SBERT embeddings."""
-    answers = [a for a in answers if a and str(a).strip()]
+    answers = [_normalize(a) for a in answers if a and str(a).strip()]
     if len(answers) < 2:
         return np.nan
     if model is None:
@@ -80,7 +81,7 @@ def sbert_agreement(answers: List[str], model=None) -> float:
     embs = embs / embs.norm(dim=1, keepdim=True)
     sim_matrix = (embs @ embs.T).cpu().numpy()
     n = len(answers)
-    upper = [sim_matrix[i, j] for i in range(n) for j in range(i + 1, n)]
+    upper = [clip_cosine_score(sim_matrix[i, j], clip_min=clip_min) for i in range(n) for j in range(i + 1, n)]
     return float(np.mean(upper))
 
 
@@ -93,6 +94,7 @@ def compute_question_agreement(
     answer_col: str = 'answer_en',
     variant: str = 'C',
     sbert_model_name: str = 'all-MiniLM-L6-v2',
+    sbert_clip_min: Optional[float] = None,
     verbose: bool = True,
 ) -> pd.DataFrame:
     """Compute inter-participant agreement for each question.
@@ -105,6 +107,7 @@ def compute_question_agreement(
     answer_col    : column containing the answer text
     variant       : which variant to analyse (default 'C')
     sbert_model_name : HuggingFace model id for sentence-transformers
+    sbert_clip_min: optional lower bound for SBERT cosine before averaging
     verbose       : print progress
 
     Returns
@@ -123,11 +126,11 @@ def compute_question_agreement(
     rows = []
     qid_list = sorted(sub['question_id'].unique())
     for qid in qid_list:
-        answers = sub[sub['question_id'] == qid][answer_col].dropna().tolist()
+        answers = [_normalize(a) for a in sub[sub['question_id'] == qid][answer_col].dropna().tolist()]
         row = {'question_id': qid}
         if 'exact'   in methods: row['exact']   = exact_match_agreement(answers)
         if 'jaccard' in methods: row['jaccard'] = jaccard_agreement(answers)
-        if 'sbert'   in methods: row['sbert']   = sbert_agreement(answers, sbert_model)
+        if 'sbert'   in methods: row['sbert']   = sbert_agreement(answers, sbert_model, clip_min=sbert_clip_min)
         rows.append(row)
 
     result = pd.DataFrame(rows).set_index('question_id')
