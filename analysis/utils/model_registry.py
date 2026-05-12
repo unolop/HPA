@@ -78,7 +78,7 @@ def default_all_models(base: Path) -> dict:
     """
     base = Path(base)
     lm = base / 'evaluation/logits/lm_decoder/pretrained'
-    pt = base / 'evaluation/logits/pretrained'
+    pt = base / 'evaluation/logits/vlm/pretrained'
     return {
         # ── VLM ──────────────────────────────────────────────────────────────
         'Qwen3-VL-8B':        (pt, 'Qwen3-VL-8B-Instruct'),

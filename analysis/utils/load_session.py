@@ -127,23 +127,6 @@ def clean_answer(ans: str) -> str:
     return preprocess_answer(ans, strip_think=True)
 
 
-def load_participants(base: Path, min_answers: int = 348) -> list:
-    """Load participant JSON files and keep entries with at least min_answers."""
-    all_entries = []
-    for fpath in sorted((base / 'experiment/s2_humans').glob('*.json')):
-        raw = json.load(open(fpath))
-        entries = raw if isinstance(raw, list) else [raw]
-        all_entries.extend(entries)
-
-    seen = {}
-    for participant in all_entries:
-        code = participant['code']
-        if code not in seen or len(participant.get('answers', [])) > len(seen[code].get('answers', [])):
-            seen[code] = participant
-
-    return [p for p in seen.values() if len(p.get('answers', [])) >= min_answers]
-
-
 def flatten_to_df(participants: list, mapper, s2_df: pd.DataFrame, normalize_fn=None) -> pd.DataFrame:
     """Flatten participant answers into a scored DataFrame using shared VQA preprocessing."""
     rows = []

@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 LM_DIR   = ROOT / "evaluation/logits/lm_decoder/pretrained"
-VLM_DIR  = ROOT / "evaluation/logits/pretrained"
+VLM_DIR  = ROOT / "evaluation/logits/vlm/pretrained"
 
 def load_jsonl(path):
     if not path.exists():

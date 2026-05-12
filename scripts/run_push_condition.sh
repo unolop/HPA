@@ -29,7 +29,7 @@ run_vlm() {
     log "▶ VLM [GPU$GPU] $SHORT"
     CUDA_VISIBLE_DEVICES=$GPU python evaluation/inference.py \
         --model "$MODEL" --model_type vlm --condition "$COND" \
-        --dataset "vqa_1k" --savedir "evaluation/logits/pretrained" --resume $EXTRA \
+        --dataset "vqa_1k" --savedir "evaluation/logits/vlm/pretrained" --resume $EXTRA \
         > "$LOG_DIR/vlm_${SHORT}.log" 2>&1 \
         && log "✓ VLM [GPU$GPU] $SHORT" \
         || { log "✗ FAILED VLM [GPU$GPU] $SHORT"; return 1; }
@@ -121,7 +121,7 @@ for MODEL in \
     SHORT=$(echo "$MODEL" | sed 's|.*/||')
     CUDA_VISIBLE_DEVICES=0,1 python evaluation/inference.py \
         --model "$MODEL" --model_type vlm --condition "$COND" \
-        --dataset "vqa_1k" --savedir "evaluation/logits/pretrained" --resume \
+        --dataset "vqa_1k" --savedir "evaluation/logits/vlm/pretrained" --resume \
         > "$LOG_DIR/vlm_${SHORT}.log" 2>&1 \
         && log "✓ VLM [GPU0,1] $SHORT" || log "✗ FAILED VLM $SHORT"
     CUDA_VISIBLE_DEVICES=0,1 python evaluation/inference.py \

@@ -20,7 +20,7 @@ sys.path.insert(0, '/home/david/Desktop/yuna/HPA/analysis')
 from utils.vqa import VQAAnswerMapper, vqa_accuracy
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
-RESULTS_DIR = '/home/david/Desktop/yuna/HPA/evaluation/logits/pretrained'
+RESULTS_DIR = '/home/david/Desktop/yuna/HPA/evaluation/logits/vlm/pretrained'
 CONTROL_PATH = '/home/david/Desktop/yuna/HPA/dataset/vqa/vqa1k_control.jsonl'
 IMAGES_DIR  = '/home/david/Desktop/yuna/data/val2014'
 SAMPLE_CSV  = '/home/david/Desktop/yuna/HPA/analysis/csv/sampled_control_questions.csv'

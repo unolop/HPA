@@ -20,7 +20,7 @@ ROOT      = Path(__file__).parent.parent
 OUT_DIR   = ROOT / "experiment"
 OUT_DIR.mkdir(exist_ok=True)
 
-LOGITS_FILE = ROOT / "evaluation/logits/pretrained/Qwen3-VL-8B-Instruct/vqa_1k_control.jsonl"
+LOGITS_FILE = ROOT / "evaluation/logits/vlm/pretrained/Qwen3-VL-8B-Instruct/vqa_1k_control.jsonl"
 SAMPLE_CSV  = ROOT / "analysis/csv/human_study_sample.csv"
 HVQA_CSV    = ROOT / "analysis/csv/human_vqa.csv"
 
