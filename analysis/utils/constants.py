@@ -1,7 +1,7 @@
 """
 Shared plotting and analysis constants for all S2 notebooks.
 
-Model groups: VLM | VLM backbone decoder | standalone LLM
+Model groups: VLM | VLM backbone decoder | standalone LLM | standalone LLM (think)
 
 Usage
 -----
@@ -72,11 +72,12 @@ VARIANT_COLORS = {
     'A': '#E91E63',
 }
 
-# ── Model group colors (VLM / VLM backbone decoder / standalone LLM) ────────
+# ── Model group colors ───────────────────────────────────────────────────────
 GROUP_COLORS = {
-    'VLM':                   '#E91E63',
-    'VLM backbone decoder':  '#2196F3',
-    'standalone LLM':        '#FF9800',
+    'VLM':                    '#E91E63',
+    'VLM backbone decoder':   '#2196F3',
+    'standalone LLM':         '#FF9800',
+    'standalone LLM (think)': '#4CAF50',
 }
 
 # ── Abstention class taxonomy ─────────────────────────────────────────────────
@@ -122,18 +123,20 @@ ABSTAIN_TOKENS = [
 ]
 
 # ── Tier-level plotting constants ────────────────────────────────────────────
-TIER_ORDER = ['VLM', 'VLM backbone decoder', 'standalone LLM']
+TIER_ORDER = ['VLM', 'VLM backbone decoder', 'standalone LLM', 'standalone LLM (think)']
 
 TIER_COLORS = {
-    'VLM':                  '#2c3e50',
-    'VLM backbone decoder': '#e67e22',
-    'standalone LLM':       '#27ae60',
+    'VLM':                    '#2c3e50',
+    'VLM backbone decoder':   '#e67e22',
+    'standalone LLM':         '#27ae60',
+    'standalone LLM (think)': '#1565c0',
 }
 
 TIER_STYLE = {
-    'VLM':                  {'color': '#2c3e50', 'marker': 'o', 'ls': '-',  'lw': 2.2},
-    'VLM backbone decoder': {'color': '#e67e22', 'marker': 's', 'ls': '--', 'lw': 1.8},
-    'standalone LLM':       {'color': '#27ae60', 'marker': '^', 'ls': ':',  'lw': 1.8},
+    'VLM':                    {'color': '#2c3e50', 'marker': 'o', 'ls': '-',  'lw': 2.2},
+    'VLM backbone decoder':   {'color': '#e67e22', 'marker': 's', 'ls': '--', 'lw': 1.8},
+    'standalone LLM':         {'color': '#27ae60', 'marker': '^', 'ls': ':',  'lw': 1.8},
+    'standalone LLM (think)': {'color': '#1565c0', 'marker': 'D', 'ls': '-.',  'lw': 1.8},
 }
 
 # ── Model registries used in prior tier / decoder comparisons ────────────────

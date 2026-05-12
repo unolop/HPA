@@ -339,7 +339,13 @@ def load_model_results(
                 print(f'  MISSING: {label} — {path}')
             continue
         for line in open(path):
-            ex  = json.loads(line)
+            if not line.strip():
+                continue
+            try:
+                ex = json.loads(line)
+            except json.JSONDecodeError:
+                print(f'  MALFORMED JSON skipped in {path}')
+                continue
             qid = int(ex['question_id'])
             if qid not in q_ids:
                 continue

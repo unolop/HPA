@@ -1,16 +1,21 @@
 """
 Inter-participant free-text agreement metrics for VQA answers.
 
-Three methods, all return a scalar in [0, 1] per question:
-  - exact_match_agreement : fraction of pairs with identical normalized text
-  - jaccard_agreement     : mean token Jaccard over all pairs
-  - sbert_agreement       : mean cosine similarity from sentence embeddings
+Lexical tier — all pure Python, no external models:
+  - exact_match_agreement  : fraction of pairs with identical normalized text
+  - jaccard_agreement      : mean token Jaccard over all pairs
+  - rouge1_f1_agreement    : mean ROUGE-1 F1 (multiset unigram overlap)
+  - chrf_agreement         : mean chrF (character n-gram F1, beta=2)
+
+Semantic tier — requires sentence-transformers:
+  - sbert_agreement        : mean pairwise cosine similarity from SBERT embeddings
 
 Usage
 -----
 from utils.agreement import compute_question_agreement
 
-agree_df = compute_question_agreement(df, common_qids, methods=['exact', 'jaccard', 'sbert'])
+agree_df = compute_question_agreement(df, common_qids,
+    methods=['exact', 'jaccard', 'rouge1', 'chrf', 'sbert'])
 """
 from __future__ import annotations
 
@@ -176,7 +181,7 @@ def compute_question_agreement(
     ----------
     df            : human responses DataFrame (one row per participant × question × variant)
     qids          : question_ids to compute agreement for
-    methods       : subset of {'exact', 'jaccard', 'sbert'}
+    methods       : subset of {'exact', 'jaccard', 'rouge1', 'chrf', 'sbert'}
     answer_col    : column containing the answer text
     variant       : which variant to analyse (default 'C')
     sbert_model_name : HuggingFace model id for sentence-transformers

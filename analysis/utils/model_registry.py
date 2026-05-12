@@ -17,7 +17,7 @@ MODEL_TYPE = {
     'LLaVA-1.5 (LM)':    'VLM backbone decoder',
     'LLaVA-Mistral (LM)': 'VLM backbone decoder',
     'LLaVA-Vicuna (LM)':  'VLM backbone decoder',
-    # standalone LLM — nothink (default)
+    # standalone LLM — nothink (default, no chain-of-thought)
     'Qwen3-0.6B':          'standalone LLM',
     'Qwen3-1.7B':          'standalone LLM',
     'Qwen3-4B':            'standalone LLM',
@@ -29,12 +29,12 @@ MODEL_TYPE = {
     'Qwen2.5-7B':          'standalone LLM',
     'Phi-3.5-mini':        'standalone LLM',
     # note: inference.py saves using HF model id leaf: Qwen2.5-7B-Instruct / Phi-3.5-mini-instruct
-    # standalone LLM — think variants
-    'Qwen3-0.6B (think)':  'standalone LLM',
-    'Qwen3-1.7B (think)':  'standalone LLM',
-    'Qwen3-4B (think)':    'standalone LLM',
-    'Qwen3-8B (think)':    'standalone LLM',
-    'Qwen3-32B (think)':   'standalone LLM',
+    # standalone LLM — think variants (chain-of-thought enabled)
+    'Qwen3-0.6B (think)':  'standalone LLM (think)',
+    'Qwen3-1.7B (think)':  'standalone LLM (think)',
+    'Qwen3-4B (think)':    'standalone LLM (think)',
+    'Qwen3-8B (think)':    'standalone LLM (think)',
+    'Qwen3-32B (think)':   'standalone LLM (think)',
 }
 
 
@@ -92,9 +92,39 @@ def default_all_models(base: Path) -> dict:
         'LLaVA-1.5 (LM)':    (lm, 'llava-1.5-7b-hf'),
         'LLaVA-Mistral (LM)':(lm, 'llava-v1.6-mistral-7b-hf'),
         'LLaVA-Vicuna (LM)': (lm, 'llava-v1.6-vicuna-7b-hf'),
-        # ── standalone LLM ───────────────────────────────────────────────────
+        # ── standalone LLM (nothink) ─────────────────────────────────────────
         **backbone_nothink_models(base),
+        # ── standalone LLM (think / chain-of-thought) ────────────────────────
+        **backbone_think_models(base),
     }
+
+
+def model_groups(base: Path) -> dict:
+    """Return the canonical model-group registry for plotting/analysis.
+
+    Groups all models from default_all_models() by MODEL_TYPE, each entry
+    exposing the shared results directory and the label→model_dir mapping.
+
+    Returns
+    -------
+    dict[group_name → {'dir': Path, 'models': {display_label: model_dir_name}}]
+
+    Groups (in insertion order):
+      'VLM'                    — full vision-language models
+      'VLM backbone decoder'   — VLM LM head with vision bypassed
+      'standalone LLM'         — text-only LLMs, nothink mode
+      'standalone LLM (think)' — text-only LLMs, chain-of-thought enabled
+    """
+    base = Path(base)
+    groups: dict = {}
+    for label, (results_dir, mdir) in default_all_models(base).items():
+        gname = MODEL_TYPE.get(label)
+        if gname is None:
+            continue
+        if gname not in groups:
+            groups[gname] = {'dir': results_dir, 'models': {}}
+        groups[gname]['models'][label] = mdir
+    return groups
 
 
 def flatten_all_models(base: Path) -> dict:
