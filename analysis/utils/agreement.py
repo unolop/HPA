@@ -25,11 +25,84 @@ from __future__ import annotations
 
 from collections import Counter
 from itertools import combinations
-from typing import List, Optional
+from pathlib import Path
+from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
 from analysis.utils.vqa import preprocess_answer
+
+
+# ── Embedding cache ───────────────────────────────────────────────────────────
+
+def load_embedding_cache(cache_path: Path) -> Dict[str, np.ndarray]:
+    """Load answer→vector dict from a .npz cache file.
+
+    Returns an empty dict if the file does not exist.
+    """
+    cache_path = Path(cache_path)
+    if not cache_path.exists():
+        return {}
+    data = np.load(cache_path, allow_pickle=False)
+    strings = data['strings'].tolist()   # list of str
+    vectors = data['vectors']             # float32 (N, dim)
+    return {s: vectors[i] for i, s in enumerate(strings)}
+
+
+def save_embedding_cache(ans2emb: Dict[str, np.ndarray], cache_path: Path) -> None:
+    """Save answer→vector dict to a .npz cache file."""
+    cache_path = Path(cache_path)
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    strings = np.array(list(ans2emb.keys()),   dtype=object)
+    vectors = np.array(list(ans2emb.values()), dtype=np.float32)
+    np.savez(cache_path, strings=strings, vectors=vectors)
+
+
+def encode_with_cache(
+    answers: List[str],
+    model,
+    cache_path: Path,
+    batch_size: int = 256,
+    normalize: bool = True,
+    verbose: bool = True,
+) -> Dict[str, np.ndarray]:
+    """Encode answers using a SentenceTransformer, skipping strings already in cache.
+
+    Loads existing cache, encodes only new answers, merges, saves, and returns
+    the complete {answer: vector} dict.
+
+    Parameters
+    ----------
+    answers    : list of answer strings to ensure are in the cache
+    model      : loaded SentenceTransformer instance
+    cache_path : path to .npz cache file (created/updated in place)
+    batch_size : encoding batch size
+    normalize  : L2-normalize vectors before storing
+    verbose    : print progress summary
+    """
+    cache_path = Path(cache_path)
+    ans2emb = load_embedding_cache(cache_path)
+
+    new_answers = [a for a in answers if a not in ans2emb]
+    if new_answers:
+        if verbose:
+            print(f'Encoding {len(new_answers)} new answers '
+                  f'({len(ans2emb)} already cached) …')
+        embs = model.encode(new_answers, batch_size=batch_size,
+                            show_progress_bar=verbose, convert_to_numpy=True)
+        if normalize:
+            norms = np.linalg.norm(embs, axis=1, keepdims=True)
+            norms[norms == 0] = 1.0
+            embs = embs / norms
+        for i, a in enumerate(new_answers):
+            ans2emb[a] = embs[i].astype(np.float32)
+        save_embedding_cache(ans2emb, cache_path)
+        if verbose:
+            print(f'Cache updated: {len(ans2emb)} total → {cache_path}')
+    elif verbose:
+        print(f'All {len(answers)} answers found in cache ({cache_path.name})')
+
+    return ans2emb
 
 
 def _normalize(text: str) -> str:
