@@ -7,15 +7,19 @@ Lexical tier — all pure Python, no external models:
   - rouge1_f1_agreement    : mean ROUGE-1 F1 (multiset unigram overlap)
   - chrf_agreement         : mean chrF (character n-gram F1, beta=2)
 
-Semantic tier — requires sentence-transformers:
+Semantic tier — requires external models:
   - sbert_agreement        : mean pairwise cosine similarity from SBERT embeddings
+  - bertscore_f1_agreement : mean pairwise BERTScore F1 (token-level, roberta-large)
+
+Batch helper for notebooks:
+  - bertscore_batch         : compute BERTScore F1 for a list of (cand, ref) string pairs
 
 Usage
 -----
 from utils.agreement import compute_question_agreement
 
 agree_df = compute_question_agreement(df, common_qids,
-    methods=['exact', 'jaccard', 'rouge1', 'chrf', 'sbert'])
+    methods=['exact', 'jaccard', 'rouge1', 'chrf', 'sbert', 'bertscore'])
 """
 from __future__ import annotations
 
@@ -163,6 +167,64 @@ def sbert_agreement(answers: List[str], model=None, clip_min: Optional[float] = 
     return float(np.mean(upper))
 
 
+def bertscore_batch(
+    cands: List[str],
+    refs: List[str],
+    model_type: str = 'roberta-large',
+    device: Optional[str] = None,
+    batch_size: int = 64,
+    verbose: bool = False,
+) -> np.ndarray:
+    """Compute BERTScore F1 for a list of (cand, ref) string pairs.
+
+    Returns a 1-D numpy array of F1 scores, one per pair.
+    Uses token-level contextual embeddings — more robust than mean-pooling
+    for short (1–5 word) answers typical in VQA.
+
+    Parameters
+    ----------
+    cands, refs  : parallel lists of candidate / reference strings
+    model_type   : HuggingFace model id (default: roberta-large)
+    device       : 'cuda', 'cpu', or None (auto-detect)
+    batch_size   : number of pairs per forward pass
+    verbose      : show bert_score progress bar
+    """
+    from bert_score import score as _bs_score
+    if len(cands) != len(refs):
+        raise ValueError(f'cands and refs must have equal length ({len(cands)} vs {len(refs)})')
+    if not cands:
+        return np.array([], dtype=float)
+    _, _, F1 = _bs_score(
+        cands, refs,
+        model_type=model_type,
+        device=device,
+        batch_size=batch_size,
+        verbose=verbose,
+        lang='en',
+    )
+    return F1.numpy()
+
+
+def bertscore_f1_agreement(
+    answers: List[str],
+    model_type: str = 'roberta-large',
+    device: Optional[str] = None,
+) -> float:
+    """Mean pairwise BERTScore F1 over all participant pairs.
+
+    Token-level contextual similarity — does not degrade for short answers
+    the way mean-pooling SBERT does.
+    """
+    answers = [_normalize(a) for a in answers if a and str(a).strip()]
+    if len(answers) < 2:
+        return np.nan
+    pairs = list(combinations(answers, 2))
+    cands = [p[0] for p in pairs]
+    refs  = [p[1] for p in pairs]
+    f1 = bertscore_batch(cands, refs, model_type=model_type, device=device)
+    return float(f1.mean())
+
+
 # ── Main coordinator ──────────────────────────────────────────────────────────
 
 def compute_question_agreement(
@@ -181,7 +243,7 @@ def compute_question_agreement(
     ----------
     df            : human responses DataFrame (one row per participant × question × variant)
     qids          : question_ids to compute agreement for
-    methods       : subset of {'exact', 'jaccard', 'rouge1', 'chrf', 'sbert'}
+    methods       : subset of {'exact', 'jaccard', 'rouge1', 'chrf', 'sbert', 'bertscore'}
     answer_col    : column containing the answer text
     variant       : which variant to analyse (default 'C')
     sbert_model_name : HuggingFace model id for sentence-transformers
@@ -206,11 +268,12 @@ def compute_question_agreement(
     for qid in qid_list:
         answers = [_normalize(a) for a in sub[sub['question_id'] == qid][answer_col].dropna().tolist()]
         row = {'question_id': qid}
-        if 'exact'   in methods: row['exact']   = exact_match_agreement(answers)
-        if 'jaccard' in methods: row['jaccard'] = jaccard_agreement(answers)
-        if 'rouge1'  in methods: row['rouge1']  = rouge1_f1_agreement(answers)
-        if 'chrf'    in methods: row['chrf']    = chrf_agreement(answers)
-        if 'sbert'   in methods: row['sbert']   = sbert_agreement(answers, sbert_model, clip_min=sbert_clip_min)
+        if 'exact'      in methods: row['exact']      = exact_match_agreement(answers)
+        if 'jaccard'    in methods: row['jaccard']    = jaccard_agreement(answers)
+        if 'rouge1'     in methods: row['rouge1']     = rouge1_f1_agreement(answers)
+        if 'chrf'       in methods: row['chrf']       = chrf_agreement(answers)
+        if 'sbert'      in methods: row['sbert']      = sbert_agreement(answers, sbert_model, clip_min=sbert_clip_min)
+        if 'bertscore'  in methods: row['bertscore']  = bertscore_f1_agreement(answers)
         rows.append(row)
 
     result = pd.DataFrame(rows).set_index('question_id')
