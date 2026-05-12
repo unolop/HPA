@@ -14,6 +14,7 @@ agree_df = compute_question_agreement(df, common_qids, methods=['exact', 'jaccar
 """
 from __future__ import annotations
 
+from collections import Counter
 from itertools import combinations
 from typing import List, Optional
 
@@ -49,6 +50,60 @@ def _pair_jaccard(a: str, b: str) -> float:
     return len(wa & wb) / len(wa | wb)
 
 
+def _pair_rouge1(a: str, b: str) -> float:
+    """ROUGE-1 F1: unigram precision/recall F-score between two strings."""
+    wa = Counter(a.split())
+    wb = Counter(b.split())
+    total_a = sum(wa.values())
+    total_b = sum(wb.values())
+    if total_a == 0 and total_b == 0:
+        return 1.0
+    if total_a == 0 or total_b == 0:
+        return 0.0
+    matches = sum((wa & wb).values())
+    prec = matches / total_a
+    rec  = matches / total_b
+    if prec + rec == 0:
+        return 0.0
+    return 2 * prec * rec / (prec + rec)
+
+
+def _char_ngrams(text: str, n: int) -> Counter:
+    return Counter(text[i:i + n] for i in range(max(0, len(text) - n + 1)))
+
+
+def _pair_chrf(a: str, b: str, max_n: int = 6, beta: float = 2.0) -> float:
+    """chrF: mean character n-gram F-score over n=1..max_n.
+
+    beta=2 weights recall more than precision (sacrebleu default).
+    Inputs should already be normalized/lowercased.
+    """
+    if not a and not b:
+        return 1.0
+    if not a or not b:
+        return 0.0
+    prec_sum = rec_sum = n_counted = 0
+    for n in range(1, max_n + 1):
+        ng_a    = _char_ngrams(a, n)
+        ng_b    = _char_ngrams(b, n)
+        total_a = sum(ng_a.values())
+        total_b = sum(ng_b.values())
+        if total_a == 0 and total_b == 0:
+            continue
+        matches  = sum((ng_a & ng_b).values())
+        prec_sum += matches / total_a if total_a else 0.0
+        rec_sum  += matches / total_b if total_b else 0.0
+        n_counted += 1
+    if n_counted == 0:
+        return 0.0
+    avg_prec = prec_sum / n_counted
+    avg_rec  = rec_sum  / n_counted
+    denom = beta ** 2 * avg_prec + avg_rec
+    if denom == 0:
+        return 0.0
+    return (1 + beta ** 2) * avg_prec * avg_rec / denom
+
+
 # ── Aggregate over a list of answers ─────────────────────────────────────────
 
 def exact_match_agreement(answers: List[str]) -> float:
@@ -67,6 +122,24 @@ def jaccard_agreement(answers: List[str]) -> float:
         return np.nan
     pairs = list(combinations(answers, 2))
     return float(np.mean([_pair_jaccard(a, b) for a, b in pairs]))
+
+
+def rouge1_f1_agreement(answers: List[str]) -> float:
+    """Mean ROUGE-1 F1 over all participant pairs."""
+    answers = [_normalize(a) for a in answers if a and str(a).strip()]
+    if len(answers) < 2:
+        return np.nan
+    pairs = list(combinations(answers, 2))
+    return float(np.mean([_pair_rouge1(a, b) for a, b in pairs]))
+
+
+def chrf_agreement(answers: List[str], max_n: int = 6, beta: float = 2.0) -> float:
+    """Mean chrF (character n-gram F-score) over all participant pairs."""
+    answers = [_normalize(a) for a in answers if a and str(a).strip()]
+    if len(answers) < 2:
+        return np.nan
+    pairs = list(combinations(answers, 2))
+    return float(np.mean([_pair_chrf(a, b, max_n=max_n, beta=beta) for a, b in pairs]))
 
 
 def sbert_agreement(answers: List[str], model=None, clip_min: Optional[float] = None) -> float:
@@ -93,7 +166,7 @@ def compute_question_agreement(
     methods: List[str] = ('exact', 'jaccard', 'sbert'),
     answer_col: str = 'answer_en',
     variant: str = 'C',
-    sbert_model_name: str = 'all-MiniLM-L6-v2',
+    sbert_model_name: str = 'all-mpnet-base-v2',
     sbert_clip_min: Optional[float] = None,
     verbose: bool = True,
 ) -> pd.DataFrame:
@@ -130,6 +203,8 @@ def compute_question_agreement(
         row = {'question_id': qid}
         if 'exact'   in methods: row['exact']   = exact_match_agreement(answers)
         if 'jaccard' in methods: row['jaccard'] = jaccard_agreement(answers)
+        if 'rouge1'  in methods: row['rouge1']  = rouge1_f1_agreement(answers)
+        if 'chrf'    in methods: row['chrf']    = chrf_agreement(answers)
         if 'sbert'   in methods: row['sbert']   = sbert_agreement(answers, sbert_model, clip_min=sbert_clip_min)
         rows.append(row)
 

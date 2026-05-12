@@ -1,6 +1,8 @@
 """
 Shared plotting and analysis constants for all S2 notebooks.
 
+Model groups: VLM | VLM backbone decoder | standalone LLM
+
 Usage
 -----
 from utils.constants import (
@@ -70,11 +72,11 @@ VARIANT_COLORS = {
     'A': '#E91E63',
 }
 
-# ── Model group colors (VLM / LM-decoder / Backbone LLM) ────────────────────
+# ── Model group colors (VLM / VLM backbone decoder / standalone LLM) ────────
 GROUP_COLORS = {
-    'VLM':          '#E91E63',
-    'LM-decoder':   '#2196F3',
-    'Backbone LLM': '#FF9800',
+    'VLM':                   '#E91E63',
+    'VLM backbone decoder':  '#2196F3',
+    'standalone LLM':        '#FF9800',
 }
 
 # ── Abstention class taxonomy ─────────────────────────────────────────────────
@@ -120,18 +122,18 @@ ABSTAIN_TOKENS = [
 ]
 
 # ── Tier-level plotting constants ────────────────────────────────────────────
-TIER_ORDER = ['VLM', 'LM decoder', 'Backbone']
+TIER_ORDER = ['VLM', 'VLM backbone decoder', 'standalone LLM']
 
 TIER_COLORS = {
-    'VLM': '#2c3e50',
-    'LM decoder': '#e67e22',
-    'Backbone': '#27ae60',
+    'VLM':                  '#2c3e50',
+    'VLM backbone decoder': '#e67e22',
+    'standalone LLM':       '#27ae60',
 }
 
 TIER_STYLE = {
-    'VLM': {'color': '#2c3e50', 'marker': 'o', 'ls': '-', 'lw': 2.2},
-    'LM decoder': {'color': '#e67e22', 'marker': 's', 'ls': '--', 'lw': 1.8},
-    'Backbone': {'color': '#27ae60', 'marker': '^', 'ls': ':', 'lw': 1.8},
+    'VLM':                  {'color': '#2c3e50', 'marker': 'o', 'ls': '-',  'lw': 2.2},
+    'VLM backbone decoder': {'color': '#e67e22', 'marker': 's', 'ls': '--', 'lw': 1.8},
+    'standalone LLM':       {'color': '#27ae60', 'marker': '^', 'ls': ':',  'lw': 1.8},
 }
 
 # ── Model registries used in prior tier / decoder comparisons ────────────────
@@ -144,9 +146,9 @@ VLM_MODELS = [
 LM_MODELS = VLM_MODELS
 
 BB_MODELS = [
-    'Qwen3-0.6B', 'Qwen3-1.7B', 'Qwen3-4B', 'Qwen3-8B',
-    'vicuna-7b-v1.5', 'vicuna-13b-v1.5',
-    'Mistral-7B-Instruct-v0.2',
+    'Qwen3-0.6B', 'Qwen3-1.7B', 'Qwen3-4B', 'Qwen3-8B', 'Qwen3-32B',
+    'Mistral-7B',
+    'Vicuna-7B', 'Vicuna-13B',
 ]
 
 # (vlm_model, lm_model, backbone_model, display_label)

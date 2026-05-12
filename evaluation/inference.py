@@ -3,6 +3,7 @@ import re
 from tqdm import tqdm
 import json
 import sys
+import torch
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
@@ -66,8 +67,16 @@ def main(args):
     # When overriding attn_impl, also pass use_flash_attn=False for models like InternVL
     # whose __init__ hardcodes flash attn regardless of config (e.g. InternVLChatModel)
     extra_model_kwargs = {'use_flash_attn': False} if args.attn_impl and args.attn_impl != 'flash_attn' else {}
+    quant_config = None
+    if args.quantization_bit == 8:
+        from transformers import BitsAndBytesConfig
+        quant_config = BitsAndBytesConfig(load_in_8bit=True)
+    elif args.quantization_bit == 4:
+        from transformers import BitsAndBytesConfig
+        quant_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16)
     model, tokenizer = get_model_tokenizer(model, use_hf=True, attn_impl=args.attn_impl,
                                            model_kwargs=extra_model_kwargs,
+                                           quantization_config=quant_config,
                                            model_type=args.swift_model_type) #, max_pixels=448)
     if args.lora_path is not None:
         lora_checkpoint = safe_snapshot_download(args.lora_path)  # Change to your checkpoint_dir
@@ -255,6 +264,8 @@ if __name__ == "__main__":
     parser.add_argument("--swift_model_type", type=str, default=None,
                         help="Swift model_type override for models swift can't auto-detect, "
                              "e.g. 'llama' for vicuna, 'mistral' for Mistral-7B")
+    parser.add_argument("--quantization_bit", type=int, default=None,
+                        help="BitsAndBytes quantization: 4 or 8 (int4/int8). Use 8 for 32B on 2×24GB GPUs.")
     parser.add_argument("--fill_missing", action="store_true",
                         help="Load existing output and only run keys absent from generated_answers; "
                              "rewrites the file with merged results")
