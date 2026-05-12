@@ -20,8 +20,7 @@ from .normalize_korean import clean_korean_answer, normalize_korean_answer
 
 _KR_RE = re.compile(r"[가-힣]")
 _DEFAULT_MAP_PATH = Path(__file__).resolve().parent / "kr_answer_map.json"
-_REPO_ROOT = Path(__file__).resolve().parents[2]
-_PREPROCESSING_DIR = _REPO_ROOT / "preprocessing"
+_PREPROCESSING_DIR = Path(__file__).resolve().parent / "preprocessing"
 
 if str(_PREPROCESSING_DIR) not in sys.path:
     sys.path.insert(0, str(_PREPROCESSING_DIR))

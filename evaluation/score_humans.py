@@ -17,8 +17,11 @@ from collections import defaultdict
 from typing import Dict, List, Tuple
 from tqdm import tqdm
 from analysis.utils.score import *   
-sys.path.append(str(Path(__file__).parent.parent)) 
-from preprocessing.preprocess import preprocess_pipeline, CONF_MAP
+sys.path.append(str(Path(__file__).parent.parent))
+_PREP_DIR = Path(__file__).parent.parent / 'analysis/utils/preprocessing'
+if str(_PREP_DIR) not in sys.path:
+    sys.path.insert(0, str(_PREP_DIR))
+from preprocess import preprocess_pipeline, CONF_MAP
 from analysis.utils.vqa import get_vqa_mapper, vqa_accuracy
 
 def load_human_results(jsonl_path: str) -> pd.DataFrame: 
