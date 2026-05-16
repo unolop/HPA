@@ -1,164 +1,179 @@
-# Alignment: Reducing Linguistic Prior Exploitation in VLMs
+# Alignment: Training-Free Interventions for Prior Exploitation
 
-Using the human study dataset (h(q) difficulty curve, blind/inst_blind logprobs, variant triples A/B/C)
-to reduce hallucination and shortcut behavior in vision-language models.
+Focus: reduce linguistic prior reliance at **inference time**, using behavioral
+signals already characterized in the diagnostic study. Human data (h(q)) used
+for evaluation only — never as a training or tuning target.
+
+---
+
+## Core Principle
+
+**No model updates. Correct using inference-time signals.**
+
+The overconfidence finding (80–90% of blind tokens at logprob > −0.5) and the
+instruction-gated spectrum (Qwen3-VL: 67% collapse, LLaVA-1.5: 17%) provide
+two complementary handles:
+1. The model already emits uncertainty signals (soft abstentions, logprob) — we
+   can act on them without touching weights.
+2. The model's prior gate responds to prompt framing — redirecting the gate costs
+   one sentence.
 
 ---
 
 ## Dataset Assets
 
-| Asset | Description |
-|-------|-------------|
-| `h(q)` | Human difficulty per question — mean accuracy across 36 participants |
-| Blind logprobs | Model output distribution with no image (pure linguistic prior) |
-| Inst_blind logprobs | Model output with explicit "no image" instruction |
-| Variant triples | A (pronominalized), B (weaker_object), C (original) per question |
-| Answer-flip rate | % of answers that change blind → inst (instruction sensitivity) |
-| Soft abstention | "none/nowhere/unanswerable" outputs under blind condition |
+| Asset | Source | Role |
+|-------|--------|------|
+| Blind logprobs | Model (no image) | Confidence thresholding signal |
+| Inst_blind logprobs | Model (explicit no-image instruction) | Gate-activation signal |
+| Soft abstention rate | Derived from model outputs | Baseline uncertainty estimate |
+| Answer-flip rate blind→inst | Derived from model outputs | Gate-sensitivity measure |
+| h(q) human difficulty | 36 participants × 113 questions | **Evaluation only** |
+| VQA v2 annotations (10/q) | Original dataset | Calibration upper bound |
 
 ---
 
-## Approach 1: Language Prior Correction (Test-Time)
+## Approach 1: Confidence-Based Selective Abstention (Post-Hoc, No Training)
 
-**Core idea:** Divide vision model logprobs by blind model logprobs to cancel the linguistic prior.
+**Core idea:** Withhold model answers when blind logprob confidence falls below
+a per-question-type threshold. High-confidence blind outputs cluster on bias
+patterns (``no'', ``0'', ``black'') — a threshold selectively suppresses these
+without touching general VQA performance.
+
+**Implementation:**
+```
+abstain(q) = True  if mean_logprob(blind, q) < τ_type(q)
+```
+where `τ_type` is tuned per answer type (yes/no, count, color) on VQA accuracy
+— not on h(q).
+
+**What to measure:**
+- % answers withheld per model (coverage vs. precision tradeoff)
+- VQA accuracy on remaining accepted answers (does selectivity improve precision?)
+- Pearson r(selected_acc, h(q)) vs. baseline (does filtering improve alignment with human difficulty as a byproduct?)
+- ECE on accepted answers vs. all answers
+
+**Data needed:** Existing blind logprob JSONL files. No new inference.
+
+**Models to run:** Qwen3-VL-8B (primary; has logprob data), LLaVA family.
+
+**Expected result:** Abstaining on low-confidence answers raises accuracy on
+accepted answers and reduces model-specific bias outputs (``0'', ``no''). The
+accepted-answer difficulty curve should align better with h(q) as biased
+low-information answers are removed.
+
+---
+
+## Approach 2: Conditional Abstention Prompting (Zero-Shot, No Training)
+
+**Core idea:** Replace the "imagine the scene" instruction with a skeptical
+instruction: *"Only answer if you are confident you can do so from the question
+text alone; otherwise say 'I need the image'."* This inverts the permission
+signal and tests whether models have self-knowledge of prior reliance.
+
+**Why this is interesting:**
+- The standard inst condition shows 67% of soft-abstentions collapse for Qwen3-VL-8B.
+  The same gate should work in reverse: asking for explicit uncertainty expression.
+- LLaVA-1.5 (17% collapse) has a weak or absent gate — the conditional prompt
+  will likely have little effect, confirming unconditional prior exploitation.
+- The contrast between models makes architectural claims testable without training.
+
+**Conditions to run:**
+| Condition | Prompt |
+|-----------|--------|
+| `blind` | No instruction (baseline) |
+| `inst_blind` | "Answer as if you can see the image" (existing) |
+| `skeptical_blind` | "Only answer if confident from question text alone; else say 'I need the image'" |
+
+**What to measure:**
+- % explicit abstentions ("I need the image") per model — does the gate engage?
+- Distribution shift on yes/no and count answers (does the prior bias reduce?)
+- Accuracy on non-abstained answers (does selectivity improve precision?)
+- SBERT similarity to human answers (does the conditional prompt improve alignment?)
+
+**Data needed:** One new inference run per model with the skeptical prompt.
+
+---
+
+## Approach 3: Language Prior Correction (Contrastive Decoding, No Training)
+
+**Core idea:** Divide VLM (with image) logprobs by blind logprobs to cancel the
+linguistic prior contribution to the answer.
 
 ```
 p_corrected(a | image, q)  ∝  p_vlm(a | image, q) / p_blind(a | q)^λ
 ```
 
-- `λ = 0` → original VLM output (no correction)
+- `λ = 0` → original VLM output
 - `λ = 1` → full prior removal
-- `λ` can be tuned on the human-difficulty curve
+- Tune λ on VQA accuracy (not on h(q))
 
-**Why it works:** The blind model IS the language prior. Dividing it out forces the model to rely on visual evidence.
-
-**What to measure:**
-- VQA accuracy on 1k control set before/after correction
-- Alignment with h(q): does Pearson r(model_acc, h(q)) improve?
-- ECE / reliability diagram: does calibration improve?
-
-**Data needed:** Existing blind logprobs + VLM (image-conditioned) logprobs — no new inference required for already-run models.
-
-**References:** Ramakrishnan et al. (2018), Chen et al. (2020 — CSS), Liang et al. (2020 — LMHM)
-
----
-
-## Approach 2: Human-Calibrated DPO
-
-**Core idea:** Build preference pairs from the human difficulty signal and fine-tune with DPO.
-
-**Pair construction:**
-- **Rejected:** model's confident blind answer on questions where `h(q) < 0.3` (humans also fail → pure prior exploitation)
-- **Chosen:** abstention / hedged response OR the correct ground-truth answer
-
-**High-value training examples:**
-- Questions with high answer-flip rate (blind→inst): model is instruction-sensitive, meaning prior exploitation is gated
-- Soft abstention examples (none/nowhere/unanswerable) as natural "chosen" responses for hard questions
-
-**Training target:** Model should express uncertainty on low-h(q) questions without an image, and answer confidently when visual evidence is available.
-
-**Variants:**
-- `DPO-hard`: only questions with `h(q) < 0.3`
-- `DPO-all`: full difficulty spectrum, weight pairs by `(1 - h(q))`
-- `DPO-abstain`: chosen = explicit uncertainty expression ("I cannot answer without seeing the image")
-
----
-
-## Approach 3: Variant Consistency Fine-tuning
-
-**Core idea:** A model exploiting corpus-frequency shortcuts gives inconsistent answers across A/B/C rephrasings of the same question. Visual grounding should be rephrasing-invariant.
-
-**Loss:** Consistency penalty across variants
-
-```
-L_consistency = KL(p(a | q_A) || p(a | q_B)) + KL(p(a | q_A) || p(a | q_C))
-```
-
-Applied in blind condition — if blind answers are inconsistent across variants, the model is exploiting surface-level corpus patterns, not semantic content.
-
-**Fine-tuning:**
-- SFT or auxiliary loss added to standard VQA training
-- No additional human labels needed — variant triples are already in the dataset
+**Why this matters:** Directly operationalizes the McCoy mechanism — subtracting
+the corpus-frequency signal from the visual-grounding signal. Prior correction
+should most improve accuracy on questions where model-specific biases diverge
+from ground truth (count, yes/no type).
 
 **What to measure:**
-- Variance of blind answers across A/B/C variants before/after
-- Whether consistency training reduces blind accuracy (desirable: model should be less sure without image)
-- Whether VQA accuracy with image is preserved
+- VQA accuracy on 1k control set as λ varies (primary)
+- Yes/no distribution shift (does ``no'' bias reduce with λ > 0?)
+- Count distribution shift (does ``0'' bias reduce?)
+- Pearson r(corrected_acc, h(q)) — does alignment with human difficulty emerge?
 
----
-
-## Approach 4: Difficulty-Aware Confidence Calibration
-
-**Core idea:** Post-hoc calibration using h(q) as the target confidence. No model weight changes.
-
-**Method:**
-1. Train a question difficulty predictor: `f(question) → h_predicted(q)` using {question text, entity type, operation type} as features, trained on the 113+ labeled questions
-2. At test time, predict `h_predicted(q)` for any new question
-3. Apply isotonic regression or temperature scaling: map raw logprob → calibrated confidence anchored to `h_predicted(q)`
-
-**Simpler version:** Just fit a per-question-type temperature T using your existing data
-- e.g., yes/no questions: T_yesno; color questions: T_color; count questions: T_count
-
-**What to measure:**
-- ECE before/after calibration
-- Reliability diagram: does calibrated confidence track h(q)?
-- Brier score on blind predictions
-
----
-
-## Approach 5: Abstention Fine-tuning
-
-**Core idea:** The "Answer using a single word or phrase" instruction suppresses all explicit refusals (hard abstention: 0–0.3%). Fine-tune to recover appropriate uncertainty expression.
-
-**Steps:**
-1. Remove the "single word" constraint from the prompt template
-2. For questions with `h(q) < 0.2` AND `blind_accuracy < 0.2`: generate target responses expressing uncertainty ("I cannot determine this without seeing the image")
-3. For questions with `h(q) > 0.7`: keep standard confident answers
-4. SFT on this mixed dataset
-
-**Risk:** May over-suppress answers on genuinely answerable questions. Need careful held-out evaluation.
+**Data needed:** Existing blind logprobs + VLM image-conditioned logprobs from
+`vqa_1k_control`. No new inference needed for already-run models.
 
 ---
 
 ## Experiment Plan
 
-### Phase 1 — Analysis (no training, immediate)
-- [ ] Implement language prior correction (λ-sweep on existing logprobs)
-- [ ] Compute ECE / reliability diagrams for all models
-- [ ] Measure Pearson r(corrected_acc, h(q)) vs r(original_acc, h(q))
-- [ ] Quantify variant inconsistency rate per model under blind condition
+### Phase 1 — Confidence Thresholding (Immediate, No New Inference)
+- [ ] Extract per-question mean logprob from blind JSONL files for all models
+- [ ] Fit per-answer-type thresholds on VQA accuracy (τ_yes/no, τ_count, τ_other)
+- [ ] Measure coverage / precision tradeoff curve
+- [ ] Validate: Pearson r(accepted_acc, h(q)) before/after
 
-### Phase 2 — Calibration (post-hoc, no fine-tuning)
-- [ ] Fit isotonic regression on {blind_logprob → h(q)} mapping
-- [ ] Train question difficulty predictor (generalize h(q) to unseen questions)
-- [ ] Evaluate calibration on held-out question split
+### Phase 2 — Conditional Abstention Prompt (One New Inference Run)
+- [ ] Write skeptical prompt variant; add to inference pipeline
+- [ ] Run Qwen3-VL-8B and LLaVA-1.5 (contrasting endpoints of the gate spectrum)
+- [ ] Compare abstention rates, answer distributions, SBERT human alignment
+- [ ] Report: does the gate work in both directions?
 
-### Phase 3 — Fine-tuning
-- [ ] Construct DPO preference pairs from human study data
-- [ ] Fine-tune Qwen3-VL-8B with DPO-hard (h(q) < 0.3 filter)
-- [ ] Fine-tune with variant consistency auxiliary loss
-- [ ] Evaluate: blind accuracy (should decrease), image-conditioned accuracy (should be preserved), h(q) alignment (should improve)
+### Phase 3 — Contrastive Decoding (Requires Sighted Logprobs)
+- [ ] Verify sighted (with-image) logprob files exist for target models
+- [ ] Implement λ-sweep; tune on VQA accuracy
+- [ ] Report accuracy + distribution bias reduction across λ values
+- [ ] Validate: h(q) alignment as byproduct
 
-### Phase 4 — Evaluation
-- [ ] Human study on fine-tuned model: does h(q) alignment improve?
-- [ ] Compare behavioral shift: blind → inst flip rate before/after fine-tuning
-- [ ] Measure soft abstention rate change
-- [ ] Report ECE, Pearson r, Krippendorff α with humans before/after
+### Phase 4 — Human Alignment Validation
+- [ ] For each intervention: compute SBERT similarity to human answers (per model)
+- [ ] Compare Pearson r(corrected_acc, h(q)) before/after each approach
+- [ ] Report behavioral shift: blind answer distribution, soft abstention rate
+- [ ] Check: do prior-correction gains concentrate on model-specific bias types
+  (count, yes/no) rather than shared-prior types (exist, action)?
 
 ---
 
 ## Key Hypotheses
 
-1. **Prior correction improves h(q) alignment** — removing the language prior should make the model's difficulty curve look more like the human difficulty curve
-2. **Consistency training reduces blind overconfidence** — without changing image-conditioned performance
-3. **DPO on hard questions teaches appropriate uncertainty** — without degrading general VQA performance
-4. **Calibrated models transfer better** — a model calibrated to h(q) on 113 questions should generalize to the full 1k question set
+1. **Confidence thresholding reduces model-specific bias outputs** — abstaining on
+   low-LP answers removes the ``0'' and ``no'' defaults disproportionately, since
+   these are the overconfident-but-wrong cases
+2. **Conditional prompt engages the same gate as inst** — Qwen3-VL models that
+   collapse under inst should also respond to the skeptical instruction; LLaVA
+   models with weak gates will not
+3. **Prior correction improves h(q) alignment as a byproduct** — removing the
+   corpus-frequency signal should make the difficulty curve more human-like
+   without using h(q) in any optimization
 
 ---
 
 ## Notes
 
-- All fine-tuning should use **Qwen3-VL-8B** as the base (strongest alignment signal in existing data)
-- Evaluation baseline: existing blind/inst_blind logprob files — no need to re-run inference for Phase 1
-- Human study for Phase 4 can reuse the existing experimental pipeline (by_participant JSON format)
-- Keep VQA accuracy with image as the primary guardrail — alignment should not come at the cost of visual capability
+- Primary model: **Qwen3-VL-8B** (strongest instruction sensitivity, most
+  interesting for Approaches 2 and 3)
+- Contrast model: **LLaVA-1.5** (unconditional exploiter, tests limits of Approach 2)
+- h(q) is a **held-out test set** — do not tune any threshold or hyperparameter on it
+- VQA v2 annotations (10 annotators, with image) are the calibration upper bound
+  for Approach 1: overconfidence gap = blind_LP − human_agreement_with_image
+- All approaches are additive: confidence thresholding + conditional prompt could
+  be combined; contrastive decoding is independent

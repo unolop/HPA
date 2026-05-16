@@ -1,0 +1,136 @@
+\begin{thebibliography}{19}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Agrawal et~al.(2018)Agrawal, Batra, Parikh, and
+  Kembhavi}]{agrawal2018dont}
+Agrawal, A.; Batra, D.; Parikh, D.; and Kembhavi, A. 2018.
+\newblock Don't just assume; look and answer: Overcoming priors for visual
+  question answering.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}.
+
+\bibitem[{Antol et~al.(2015)Antol, Agrawal, Lu, Mitchell, Batra, Zitnick, and
+  Parikh}]{antol2015vqa}
+Antol, S.; Agrawal, A.; Lu, J.; Mitchell, M.; Batra, D.; Zitnick, C.~L.; and
+  Parikh, D. 2015.
+\newblock {VQA}: Visual question answering.
+\newblock In \emph{Proceedings of the IEEE International Conference on Computer
+  Vision}, 2425--2433.
+
+\bibitem[{Bai et~al.(2025)Bai, Cai, Chen, Chen, Deng, Ding, Gao, Ge, Ge, Guo
+  et~al.}]{bai2025qwen3vl}
+Bai, S.; Cai, Y.; Chen, R.; Chen, Z.; Deng, L.; Ding, W.; Gao, C.; Ge, C.; Ge,
+  W.; Guo, Z.; et~al. 2025.
+\newblock Qwen3-{VL} Technical Report.
+\newblock \emph{arXiv preprint}.
+
+\bibitem[{Chen et~al.(2024)Chen, Li, Dong, Zhang, Zang, Chen, Duan, Wang, Qiao,
+  Lin et~al.}]{chen2024are}
+Chen, L.; Li, J.; Dong, X.; Zhang, P.; Zang, Y.; Chen, Z.; Duan, H.; Wang, J.;
+  Qiao, Y.; Lin, D.; et~al. 2024.
+\newblock Are we on the right way for evaluating large vision-language models?
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:
+  27056--27087.
+
+\bibitem[{Goyal et~al.(2016)Goyal, Khot, Summers-Stay, Batra, and
+  Parikh}]{goyal2016making}
+Goyal, Y.; Khot, T.; Summers-Stay, D.; Batra, D.; and Parikh, D. 2016.
+\newblock Making the {V} in {VQA} matter: Elevating the role of image
+  understanding in visual question answering.
+\newblock \emph{International Journal of Computer Vision}.
+
+\bibitem[{Gururangan et~al.(2018)Gururangan, Swayamdipta, Levy, Schwartz,
+  Bowman, and Smith}]{gururangan2018annotation}
+Gururangan, S.; Swayamdipta, S.; Levy, O.; Schwartz, R.; Bowman, S.; and Smith,
+  N.~A. 2018.
+\newblock Annotation artifacts in natural language inference data.
+\newblock In \emph{Proceedings of NAACL-HLT 2018}, 107--112.
+
+\bibitem[{Han et~al.(2024)Han, Lian, Pan, Pi, Zhang, Diao, Lin, and
+  Zhang}]{han2024instinctive}
+Han, T.; Lian, Q.; Pan, R.; Pi, R.; Zhang, J.; Diao, S.; Lin, Y.; and Zhang, T.
+  2024.
+\newblock The instinctive bias: Spurious images lead to illusion in {MLLMs}.
+\newblock \emph{arXiv preprint arXiv:2402.03757}.
+
+\bibitem[{Ji et~al.(2023)Ji, Lee, Frieske, Yu, Su, Xu, Ishii, Bang, Madotto,
+  and Fung}]{ji2023survey}
+Ji, Z.; Lee, N.; Frieske, R.; Yu, T.; Su, D.; Xu, Y.; Ishii, E.; Bang, Y.~J.;
+  Madotto, A.; and Fung, P. 2023.
+\newblock Survey of hallucination in natural language generation.
+\newblock \emph{ACM Computing Surveys}, 55(12): 1--38.
+
+\bibitem[{Lee et~al.(2024)Lee, Kim, Yoon, Kim, Lee, Koh, and
+  Jung}]{lee2024vlind}
+Lee, K.~i.; Kim, M.; Yoon, S.; Kim, M.; Lee, D.; Koh, H.; and Jung, K. 2024.
+\newblock {VLind-Bench}: Measuring language priors in large vision-language
+  models.
+\newblock \emph{arXiv preprint}.
+
+\bibitem[{Liu et~al.(2024)Liu, Li, Li, Li, Zhang, Shen, and
+  Lee}]{liu2024llavanext}
+Liu, H.; Li, C.; Li, Y.; Li, B.; Zhang, Y.; Shen, S.; and Lee, Y.~J. 2024.
+\newblock {LLaVA-NeXT}: Improved reasoning, {OCR}, and world knowledge.
+\newblock \emph{arXiv preprint}.
+
+\bibitem[{Liu et~al.(2023)Liu, Li, Wu, and Lee}]{liu2023visual}
+Liu, H.; Li, C.; Wu, Q.; and Lee, Y.~J. 2023.
+\newblock Visual instruction tuning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36:
+  34892--34916.
+
+\bibitem[{McCoy, Frank, and Linzen(2024)}]{mccoy2024embers}
+McCoy, R.~T.; Frank, R.; and Linzen, T. 2024.
+\newblock Embers of autoregression show how large language models are shaped by
+  the problem they are trained to solve.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 121(41):
+  e2322420121.
+
+\bibitem[{{OpenAI}(2025)}]{openai2025gpt4o}
+{OpenAI}. 2025.
+\newblock {GPT-4o} System Card.
+\newblock Technical report, OpenAI.
+\newblock \url{https://openai.com/index/gpt-4o-system-card}.
+
+\bibitem[{Poliak et~al.(2018)Poliak, Naradowsky, Haldar, Rudinger, and
+  Van~Durme}]{poliak2018hypothesis}
+Poliak, A.; Naradowsky, J.; Haldar, A.; Rudinger, R.; and Van~Durme, B. 2018.
+\newblock Hypothesis only baselines in natural language inference.
+\newblock In \emph{Proceedings of the Seventh Joint Conference on Lexical and
+  Computational Semantics}, 180--191.
+
+\bibitem[{Rohrbach et~al.(2018)Rohrbach, Hendricks, Burns, Darrell, and
+  Saenko}]{rohrbach2018object}
+Rohrbach, A.; Hendricks, L.~A.; Burns, K.; Darrell, T.; and Saenko, K. 2018.
+\newblock Object hallucination in image captioning.
+\newblock In \emph{Conference on Empirical Methods in Natural Language
+  Processing}.
+
+\bibitem[{Tversky and Kahneman(1974)}]{tversky1974judgment}
+Tversky, A.; and Kahneman, D. 1974.
+\newblock Judgment under uncertainty: Heuristics and biases.
+\newblock \emph{Science}, 185(4157): 1124--1131.
+
+\bibitem[{Wang et~al.(2020)Wang, Wei, Dong, Bao, Yang, and
+  Zhou}]{wang2020minilm}
+Wang, W.; Wei, F.; Dong, L.; Bao, H.; Yang, N.; and Zhou, M. 2020.
+\newblock {MiniLM}: Deep self-attention distillation for task-agnostic
+  compression of pre-trained transformers.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33:
+  5776--5788.
+
+\bibitem[{Xiao and Wang(2021)}]{xiao2021hallucination}
+Xiao, Y.; and Wang, W.~Y. 2021.
+\newblock On hallucination and predictive uncertainty in conditional language
+  generation.
+\newblock In \emph{Conference of the European Chapter of the Association for
+  Computational Linguistics}.
+
+\bibitem[{Yang et~al.(2025)Yang, Li, Yang, Zhang, Hui, Zheng, Yu, Gao, Huang,
+  Lv et~al.}]{yang2025qwen3}
+Yang, A.; Li, A.; Yang, B.; Zhang, B.; Hui, B.; Zheng, B.; Yu, B.; Gao, C.;
+  Huang, C.; Lv, C.; et~al. 2025.
+\newblock Qwen3 Technical Report.
+\newblock \emph{arXiv preprint}.
+
+\end{thebibliography}

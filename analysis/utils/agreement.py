@@ -43,7 +43,7 @@ def load_embedding_cache(cache_path: Path) -> Dict[str, np.ndarray]:
     cache_path = Path(cache_path)
     if not cache_path.exists():
         return {}
-    data = np.load(cache_path, allow_pickle=False)
+    data = np.load(cache_path, allow_pickle=True)
     strings = data['strings'].tolist()   # list of str
     vectors = data['vectors']             # float32 (N, dim)
     return {s: vectors[i] for i, s in enumerate(strings)}

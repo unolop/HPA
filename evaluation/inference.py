@@ -21,7 +21,13 @@ try:
 except Exception:
     pass
 from utils import clean_logprobs, skip_processed_idx, get_dataset, set_seed, format_prompt
-from dataset.paths import BLANK_IMAGE, LOGITS_DIR
+from dataset.paths import BLANK_IMAGE, GRAY_IMAGE, NOISE_IMAGE, LOGITS_DIR
+
+_IMAGE_OVERRIDE_MAP = {
+    'blank': BLANK_IMAGE,
+    'gray':  GRAY_IMAGE,
+    'noise': NOISE_IMAGE,
+}
 
 def main(args):
     set_seed()
@@ -107,7 +113,8 @@ def main(args):
     else: 
         savedir += '/pretrained'     
 
-    output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}.jsonl"
+    img_suffix = f'_{args.image_override}' if args.image_override != 'blank' else ''
+    output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}{img_suffix}.jsonl"
     dataset = get_dataset(f"{args.dataset}{args.condition}", json_path=getattr(args, 'json_path', None))
 
     # Which control-type keys to run (None = all string fields, as before)
@@ -187,7 +194,7 @@ def main(args):
                 keys_needed = control_types  # None means all
 
             if 'blind' in args.condition:
-                data['image'] = BLANK_IMAGE
+                data['image'] = _IMAGE_OVERRIDE_MAP.get(args.image_override, BLANK_IMAGE)
 
             record_id = data.get(current_item_id, 'unknown key')
             all_fields_successful = True
@@ -272,6 +279,10 @@ if __name__ == "__main__":
     parser.add_argument("--json_path", type=str, default=None,
                         help="Override the default JSONL path for vqa_1k_control datasets "
                              "(e.g. dataset/vqa/vqa1k_v4_patch.jsonl)")
+    parser.add_argument("--image_override", type=str, default='blank',
+                        choices=['blank', 'gray', 'noise'],
+                        help="Image to use for blind conditions: blank (all-black), "
+                             "gray (128-gray), noise (random pixels, seed=42)")
 
     args = parser.parse_args()
     main(args) 

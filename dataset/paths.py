@@ -4,6 +4,8 @@ ROOT_DIR = os.environ.get("HPA_ROOT", "/home/david/Desktop/yuna")
 HPA_DIR = f"{ROOT_DIR}/HPA"
 
 BLANK_IMAGE = f"{HPA_DIR}/dataset/blank_224.png"
+GRAY_IMAGE  = f"{HPA_DIR}/dataset/gray_224.png"
+NOISE_IMAGE = f"{HPA_DIR}/dataset/noise_224.png"
 SPUBENCH_ANNOT = f"{HPA_DIR}/dataset/annotation.json"
 VQA_5K_QIDS = f"{HPA_DIR}/dataset/s1_qids.json"
 
