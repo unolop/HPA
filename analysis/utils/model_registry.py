@@ -6,7 +6,10 @@ from pathlib import Path
 
 MODEL_TYPE = {
     # VLM (full vision-language model)
+    'Qwen3-VL-2B':        'VLM',
+    'Qwen3-VL-4B':        'VLM',
     'Qwen3-VL-8B':        'VLM',
+    'Qwen3-VL-32B':       'VLM',
     'LLaVA-1.5-7B':       'VLM',
     'LLaVA-Mistral':      'VLM',
     'LLaVA-Vicuna':       'VLM',
@@ -14,6 +17,7 @@ MODEL_TYPE = {
     'InternVL-2B':        'VLM',
     'InternVL-8B':        'VLM',
     # VLM backbone decoder (VLM language head, vision bypassed)
+    'Qwen3-VL-32B (LM)':  'VLM backbone decoder',
     'LLaVA-1.5 (LM)':    'VLM backbone decoder',
     'LLaVA-Mistral (LM)': 'VLM backbone decoder',
     'LLaVA-Vicuna (LM)':  'VLM backbone decoder',
@@ -81,7 +85,10 @@ def default_all_models(base: Path) -> dict:
     pt = base / 'evaluation/logits/vlm/pretrained'
     return {
         # ── VLM ──────────────────────────────────────────────────────────────
+        'Qwen3-VL-2B':        (pt, 'Qwen3-VL-2B-Instruct'),
+        'Qwen3-VL-4B':        (pt, 'Qwen3-VL-4B-Instruct'),
         'Qwen3-VL-8B':        (pt, 'Qwen3-VL-8B-Instruct'),
+        'Qwen3-VL-32B':       (pt, 'Qwen3-VL-32B-Instruct'),
         'LLaVA-1.5-7B':       (pt, 'llava-1.5-7b-hf'),
         'LLaVA-Mistral':      (pt, 'llava-v1.6-mistral-7b-hf'),
         'LLaVA-Vicuna':       (pt, 'llava-v1.6-vicuna-7b-hf'),
@@ -89,6 +96,7 @@ def default_all_models(base: Path) -> dict:
         'InternVL-2B':        (pt, 'InternVL3_5-2B'),
         'InternVL-8B':        (pt, 'InternVL3_5-8B'),
         # ── VLM backbone decoder ─────────────────────────────────────────────
+        'Qwen3-VL-32B (LM)': (lm, 'Qwen3-VL-32B-Instruct'),
         'LLaVA-1.5 (LM)':    (lm, 'llava-1.5-7b-hf'),
         'LLaVA-Mistral (LM)':(lm, 'llava-v1.6-mistral-7b-hf'),
         'LLaVA-Vicuna (LM)': (lm, 'llava-v1.6-vicuna-7b-hf'),

@@ -21,12 +21,13 @@ try:
 except Exception:
     pass
 from utils import clean_logprobs, skip_processed_idx, get_dataset, set_seed, format_prompt
-from dataset.paths import BLANK_IMAGE, GRAY_IMAGE, NOISE_IMAGE, LOGITS_DIR
+from dataset.paths import BLANK_IMAGE, GRAY_IMAGE, NOISE_IMAGE, WHITE_IMAGE, LOGITS_DIR
 
 _IMAGE_OVERRIDE_MAP = {
     'blank': BLANK_IMAGE,
     'gray':  GRAY_IMAGE,
     'noise': NOISE_IMAGE,
+    'white': WHITE_IMAGE,
 }
 
 def main(args):
@@ -280,9 +281,9 @@ if __name__ == "__main__":
                         help="Override the default JSONL path for vqa_1k_control datasets "
                              "(e.g. dataset/vqa/vqa1k_v4_patch.jsonl)")
     parser.add_argument("--image_override", type=str, default='blank',
-                        choices=['blank', 'gray', 'noise'],
+                        choices=['blank', 'gray', 'noise', 'white'],
                         help="Image to use for blind conditions: blank (all-black), "
-                             "gray (128-gray), noise (random pixels, seed=42)")
+                             "gray (128-gray), noise (random pixels, seed=42), white (all-white)")
 
     args = parser.parse_args()
     main(args) 
