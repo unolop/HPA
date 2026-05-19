@@ -2,140 +2,175 @@
 
 **Title:** When Models Answer Without Seeing: Human-Calibrated Diagnosis of Linguistic Prior Exploitation in Vision-Language Models  
 **Track:** AAAI Human-AI Alignment (fallback: main track)  
-**Date:** 2026-05-14
+**Date:** 2026-05-18
 
 ---
 
 ## Paper Framing & Core Thesis
 
-The paper's central claim is not just that VLMs answer without images — it is that **some of their language priors are human-like while others are model-specific failure modes**. This distinction is the main contribution of §6 (Human Alignment).
+The paper's main claim is now:
 
-Analogy: Poliak et al. (2018) showed NLI models exploit hypothesis-only cues. McCoy et al. (2024) traced this to corpus frequency. We extend both: we measure *which* priors are shared with humans and *which* question-answer types drive that sharing.
+**Blind prior exploitation is pervasive, but the model group that most closely matches human blind priors is the VLM backbone decoder, not the full VLM.**
+
+The supporting contrast is equally important:
+- full VLMs and standalone LLMs do not fail in the same way
+- some priors are shared with humans
+- others are model-specific failure modes
+
+The paper should stay focused on diagnosis and alignment, not intervention.
 
 ---
 
-## §6 Focus: Human–Model Prior Alignment
+## Intended Results Order
 
-### Key Finding: Three Regimes of Prior Sharing
+### F1. Prior exploitation is pervasive
+- Models answer a substantial fraction of VQA questions correctly without any image.
+- This establishes that blind VQA is meaningfully exploitable through language-only priors.
 
-**1. Shared prior (genuine human-like linguistic behaviour)**
-- Question types: yes/no (exist), action questions
-- Entity types: animal, place, food
-- Jaccard overlap (top-3 answers): ~0.93 for yes/no, ~0.55 for action
-- Per-question r (human acc vs model acc): 0.90 for animal, 0.91 for place
-- Interpretation: models and humans converge on the same answer from the same linguistic pattern. For these questions, model blind behaviour is essentially an imitation of human uncertainty.
+### F2. VLM backbone decoders are the human-like group
+- This is the main finding.
+- Backbone decoders achieve the highest human-model semantic agreement.
+- They are closer to human blind priors than full VLMs or standalone LLMs.
 
-**2. Partial alignment (shared structure, different magnitude)**
-- Question types: attribute, world knowledge
-- Entity types: person, food, other
-- r ~0.6–0.8, Jaccard ~0.34–0.42
-- Interpretation: models capture the easy/hard structure of human difficulty but diverge on ambiguous cases.
+### F3. Full VLMs and standalone LLMs show different failure regimes
+- Full VLMs show stronger null-hypothesis blind defaults such as no-bias and zero-bias.
+- Standalone LLMs are more heterogeneous and often further from human answer semantics.
 
-**3. Model-specific prior (not human-like, model failure mode)**
-- Question types: count (numerical), text/OCR, temporal
-- Entity types: object, product
-- Jaccard ~0.05–0.13, count r = −0.387
-- Model behaviour: collapses to "0" for count (70% of VLM count answers), "no" for yes/no (62% blind)
-- Human behaviour: counts are distributed (2 > 1 > 3 > 4 > 0), yes/no lean toward "yes" (67%)
-- **Count r is NEGATIVE**: when humans do well on count questions, models tend to do worse and vice versa — a meaningful anti-alignment.
+### F4. Blind success is structured, not random
+- Models overproduce defaults such as:
+  - `no` for yes/no
+  - `0` for count
+  - `black` for color
+- These patterns show that blind accuracy comes from structured shortcuts, not general robust reasoning.
 
-### Supporting Statistics
+### F5. Question / entity analyses explain where alignment holds and breaks
+- Stronger overlap:
+  - yes/no and action questions
+  - animal and place entities
+- Divergence:
+  - count questions
+  - object / product / OCR-heavy settings
 
-| Metric | Value |
-|---|---|
-| SBERT HM pairwise similarity | 0.511 |
-| SBERT HH pairwise similarity | 0.512 |
-| ICC(2,36) human difficulty | 0.963 |
-| Pearson r (human vs VLM inst_blind per question) | 0.605 |
-| Pearson r (human vs standalone LLM) | 0.622 |
-| Backbone decoder ≈ human–human SBERT | ~matched |
+### F6. Blind models are overconfident
+- Blind answers are often produced with high mean token log-probability even when wrong.
+- Instruction raises commitment more than it improves grounding.
 
-### Backbone Decoder Insight (important for §6)
-When the vision encoder is removed (backbone LM only):
-- LLaVA-1.5 VLM yes-rate: 0% → LM yes-rate: 57%
-- LLaVA-Mistral VLM: 0% → LM: 29%
-- LLaVA-Vicuna VLM: 0% → LM: 71%
+---
 
-The vision encoder shifts the yes/no prior toward "no". The backbone LM is closer to human yes-distribution. This is evidence that the "no" bias is a VLM-specific failure mode, not a linguistic prior.
+## Current Paper Structure
+
+The draft should read in this order:
+
+1. Blind exploitation exists.
+2. The main architectural result is that backbone decoders are closest to humans.
+3. Full VLMs and standalone LLMs diverge in different ways.
+4. Bias patterns and entity/question-type analyses explain why.
+5. Instruction and confidence analyses characterize how the priors are expressed.
+
+This means:
+- `Human-Model Alignment` is the scientific center of the paper.
+- `Distribution biases`, `instruction gating`, and `confidence` are supporting mechanism sections.
+- `Control degradation` is useful diagnostic evidence, but should not overshadow the main alignment result.
 
 ---
 
 ## Figures in `latex/AnonymousSubmission/LaTeX/figures/`
 
-### Ready to use
+### Main figures
 
-| File | Description | Paper section |
+| File | Role | Paper use |
 |---|---|---|
-| `fig_hm_alignment.png` | Left: Jaccard overlap by question type. Right: Pearson r by entity type. Two-panel. | §6 Human Alignment |
-| `fig_hm_quadrant.png` | Per-question scatter: human acc (x) vs VLM acc (y), colour = Jaccard overlap. Four quadrants: shared failure / shared knowledge / human-only / model-only. r=0.605 | §6 Human Alignment |
-| `fig_dist_answer_bias.png` | Left: yes/no distribution (model vs human vs GT). Right: count distribution (model vs human). VLM blind. | §4 Answer Distribution Biases |
-| `abstention_rates.png` | Output classification (hard-abstained / soft-abstained / hallucinated correct / wrong) by model, blind vs inst_blind | §5 Characterizing Prior Reliance |
-| `abstention_collapse.png` | Soft abstention collapse rate per model (blind → inst_blind) | §5 Instruction-Gated Hallucination |
-| `abstention_bias.png` | Top-15 output frequencies with class colour, blind vs blind+inst | §4 / §5 |
-| `lm_decoder_top_answers.png` | Top answer distributions pooled across 9 models, LM decoder vs VLM, blind vs inst_blind | §5 / §6 |
+| `fig_overview.png` | Main early overview | Blind success + human relation + control degradation |
+| `fig_scatter_agreement.png` | Main alignment figure | Shows backbone decoders are closest to humans |
+| `fig_dist_answer_bias.png` | Bias evidence | Shows blind defaults are structured |
+| `fig_hm_alignment.png` | Entity-type support | Explains where alignment holds and breaks |
+| `fig_instruction_effect.png` | Behavioral mechanism | Shows instruction-gated vs unconditional prior expression |
 
-### Still needed (paper has placeholder boxes)
+### Secondary / appendix-leaning figures
 
-| Label | Description | Source |
-|---|---|---|
-| `fig_degradation` | Accuracy + confidence across control variants C→B→A, one line per model | Requires unified scoring; see notes/data_issues.md |
-| `fig_collapse` | Bar chart: soft abstention collapse rate per model | Use `abstention_collapse.png` or regenerate |
-| `fig_mg` | Multimodal Gain by correctness quadrant (VQA + MMStar) | analysis/session2/12_align_quadrant.ipynb |
-
----
-
-## VLM Family Behavioral Summary
-
-### LLaVA (1.5, Mistral, Vicuna) — unconditional prior exploiters
-- Yes-rate 0%, zero-rate 95–100%: hardest biases in the dataset
-- Low change rate (14–24%): instruction-resistant
-- LLaVA-1.5 collapse: negative (instruction increases hedging, not decreases)
-- **Model-specific failure mode**, not human-like
-
-### Qwen3-VL-8B — instruction-gated
-- Same blind biases (0% yes, 91% zero) but 67% soft abstention collapse and 32% answer change
-- The instruction "unlocks" latent uncertainty awareness
-- Most human-like in terms of responsiveness
-
-### InternVL (1B, 2B, 8B) — inconsistent across scale
-- Yes-rate erratic: 1B=71%, 2B=14%, 8B=71% — no monotonic trend
-- High change rates (29–43%), zero soft abstention
-- No systematic prior exploitation pattern
-
-### Standalone LLM (Qwen3 family)
-- Scale-dominated: <2B ≈ random (8–9% acc), 8B–32B ≈ 27–37%
-- Mistral-7B and Vicuna-13B: degenerate (0%) — chat fine-tuned without image context
-- Phi-3.5-mini: always "yes" (100%), 0% zero-rate — opposite extreme to LLaVA
-- Think mode: minimal benefit, hurts small models (higher instability)
+| File | Role |
+|---|---|
+| `fig_hm_quadrant.png` | Useful support for per-question divergence, but not the main figure |
+| `sbert_heatmap_groups.png` | Structural confirmation of model-group separation |
+| `abstention_rates.png` | More detailed abstention breakdown |
+| `abstention_collapse.png` | Model-wise collapse detail |
+| `lm_decoder_top_answers.png` | Supporting qualitative comparison |
 
 ---
 
-## What Kinds of Questions Show Shared Language Priors?
+## Figure Priority
 
-### Shared (model ≈ human):
-- **"Is there a ___?"** type yes/no questions (exist): both converge on same answer ~93% of the time
-- **Action questions** ("Is she eating it?", "Is it on?"): ~55% overlap
-- **Animal/place/food entities**: difficulty curves almost perfectly correlated (r > 0.77)
-- **World knowledge** ("Are cats really afraid of water?"): both get it right for the same reasons
+If space or attention is limited, the ranking should be:
 
-### Diverged (model ≠ human):
-- **Count questions**: model says "0", humans give distributed counts. r = −0.37 (anti-aligned)
-- **Text/OCR and temporal questions**: near-zero overlap, models have no useful prior
-- **Object/product entities**: low r (0.13 / −0.48), model difficulty doesn't match human difficulty
+1. `fig_overview.png`
+2. `fig_scatter_agreement.png`
+3. `fig_dist_answer_bias.png`
+4. `fig_hm_alignment.png`
+5. `fig_instruction_effect.png`
+
+If one figure is demoted first, it should usually be:
+- `fig_hm_quadrant.png`
 
 ---
 
-## Human Study (Session 2)
+## Human Alignment Focus
+
+### Main architectural claim
+- `VLM backbone decoder` is the closest group to human blind priors.
+- This should be stated more strongly than any one question-type breakdown.
+
+### Supporting entity / question findings
+- Strong alignment:
+  - yes/no existence
+  - action
+  - animal
+  - place
+- Moderate alignment:
+  - food
+  - person
+  - other
+- Divergence:
+  - count
+  - object
+  - product
+  - OCR / text-heavy
+
+### Caution
+- Do not overstate this as “the same prior” in a fully literal sense.
+- Safer wording:
+  - “substantial overlap with human blind priors”
+  - “closest match to human blind reasoning”
+  - “human-like prior structure”
+
+---
+
+## Human Study
+
 - N = 36 participants (15M / 21F, age 18–34)
-- 113 questions (VQA 1K subset), variant C (original), inst_blind condition
-- ICC(2,36) = 0.963 — highly reliable difficulty curve
-- Human data is **inst_blind only** — limitation to note in paper
+- 113 questions from the VQA 1K subset
+- Human comparison exports are based on the matched condition used in the session 2 alignment analyses
+- ICC(2,36) = 0.963
+
+Important limitation:
+- human comparisons are not interchangeable across every blind prompt setting
+- condition matching should be stated carefully in the paper
 
 ---
 
-## TODO for Next Session
-- [ ] Generate `fig_mg` (multimodal gain quadrant) from `12_align_quadrant.ipynb`
-- [ ] Rewrite §6.3 to use the three-regime framework above
-- [ ] Add `fig_hm_alignment.png` and `fig_hm_quadrant.png` into paper.tex
-- [ ] Update paper text with count r = −0.387 and backbone decoder yes-rate reversal finding
-- [ ] Verify image ablation results (gray/noise runs for Qwen3-VL-8B) when tmux completes
+## What To Keep Out of the Main AAAI Story
+
+- intervention proposals as a major paper contribution
+- overly detailed per-notebook derivations
+- fragile claims from partially stabilized analyses
+- too many parallel stories in the abstract
+
+The paper is already strong on results. The main task is focus, not expansion.
+
+---
+
+## Next Useful Cleanups
+
+- tighten the abstract further around the decoder result
+- keep the intro findings list in the `F1 -> F6` order above
+- make sure `Which Models Are Most Human-Like?` remains the conceptual center of §6
+- keep entity-type analysis as support, not the top-level story

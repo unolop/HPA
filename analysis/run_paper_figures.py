@@ -13,9 +13,9 @@ Re-running is safe: all outputs are overwritten.
 """
 
 import sys
+import subprocess
 from pathlib import Path
 import json
-import re
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -24,11 +24,14 @@ from collections import Counter
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / 'analysis'))
+
+from utils.constants import GROUP_COLORS, GROUP_ORDER, TIER_STYLE
 
 FIG_DIR    = ROOT / "latex/AnonymousSubmission/LaTeX/figures"
-APPEND_DIR = ROOT / "latex/AnonymousSubmission/LaTeX/appendix/agreement"
+AGREE_DIR  = ROOT / "latex/AnonymousSubmission/LaTeX/figures/agreement_C"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
-APPEND_DIR.mkdir(parents=True, exist_ok=True)
+AGREE_DIR.mkdir(parents=True, exist_ok=True)
 
 EXPORTS = ROOT / "analysis/session2/exports"
 
@@ -41,14 +44,6 @@ plt.rcParams.update({
     'axes.spines.right': False,
     'axes.grid':         False,
 })
-
-GROUP_COLORS = {
-    'VLM backbone decoder':  '#E67E22',   # orange
-    'VLM':                   '#E53935',   # red
-    'standalone LLM (think)':'#8E24AA',   # purple
-    'standalone LLM':        '#2E7D32',   # green
-}
-GROUP_ORDER = ['VLM backbone decoder', 'VLM', 'standalone LLM (think)', 'standalone LLM']
 
 # Short display labels used across figures
 LABEL_MAP = {
@@ -209,32 +204,28 @@ ax.set_title('Human–Model Answer Agreement\n(variant C, inst_blind condition)'
 
 handles, labels = ax.get_legend_handles_labels()
 ax.legend(handles, labels, fontsize=8, frameon=True,
-          loc='upper left', bbox_to_anchor=(0.01, 0.99))
+          loc='upper center', bbox_to_anchor=(0.5, -0.12), ncol=3)
 
 plt.tight_layout()
 save(fig, 'fig_scatter_agreement.png')
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# FIG_MAIN  fig:overview  —  2-panel overview figure
-# Left:  per-question human vs model accuracy scatter (VLM blind, coloured by Jaccard)
-# Right: control-variant degradation curves (C→B→A) for all model groups + humans
+# FIG_MAIN  fig:overview_scatter  —  per-question human vs model accuracy scatter
+# FIG_MAIN  fig:overview_degradation  —  control-variant degradation curves
+# (formerly a single 2-panel figure; now saved separately)
 # ─────────────────────────────────────────────────────────────────────────────
-print('\n── Fig_main: fig_overview (2-panel) ──')
+print('\n── Fig_main: fig_overview_scatter + fig_overview_degradation ──')
 
-# ── Left panel data: per-question human acc vs VLM acc (variant C, blind) ───
+# ── Shared data ───────────────────────────────────────────────────────────────
 vlm_c = df_mb[(df_mb['model_group'] == 'VLM') & (df_mb['variant'] == 'C')]
 h_c   = df_h[(df_h['variant'] == 'C')]
 
-# Human difficulty: mean accuracy per question across all participants
 h_acc_q = h_c.groupby('question_id')['accuracy'].mean().reset_index()
 h_acc_q.columns = ['question_id', 'h_acc']
-
-# VLM mean accuracy per question
 m_acc_q = vlm_c.groupby('question_id')['accuracy'].mean().reset_index()
 m_acc_q.columns = ['question_id', 'm_acc']
 
-# Jaccard top-3 overlap per question
 jacc_rows = []
 for qid in h_acc_q['question_id'].unique():
     h_ans = h_c[h_c['question_id'] == qid]['resp_norm'].tolist()
@@ -243,29 +234,34 @@ for qid in h_acc_q['question_id'].unique():
     ht_ = set(list(hc_.keys())[:3]); mt_ = set(list(mc_.keys())[:3])
     jacc_ = len(ht_ & mt_) / len(ht_ | mt_) if (ht_ | mt_) else 0
     jacc_rows.append({'question_id': qid, 'jacc': jacc_})
-jacc_q = pd.DataFrame(jacc_rows)
-
+jacc_q  = pd.DataFrame(jacc_rows)
 quad_df = h_acc_q.merge(m_acc_q, on='question_id').merge(jacc_q, on='question_id')
 
-# ── Right panel data: degradation curves (C→B→A), blind condition ───────────
 VARIANT_LABEL = {'C': 'Original\n(C)', 'B': 'Weaker\n(B)', 'A': 'Pronoun.\n(A)'}
-
-# Model groups
-deg_model = (df_mb.groupby(['variant', 'model_group'])['accuracy']
-             .mean().reset_index())
-# Humans
-deg_human = (df_h.groupby(['variant'])['accuracy']
-             .mean().reset_index())
+deg_model  = df_mb.groupby(['variant', 'model_group'])['accuracy'].mean().reset_index()
+deg_human  = df_h.groupby(['variant'])['accuracy'].mean().reset_index()
 deg_human['model_group'] = 'Human'
-
 VARIANT_ORDER = ['C', 'B', 'A']
 X_DEG = [0, 1, 2]
 
-# ── Build figure ─────────────────────────────────────────────────────────────
-fig, axes = plt.subplots(1, 2, figsize=(13, 5.5))
+DEG_COLORS = {**GROUP_COLORS, 'Human': '#1565C0'}
+DEG_STYLES = {
+    'VLM backbone decoder':   ('o', '-'),
+    'VLM':                    ('s', '-'),
+    'standalone LLM (think)': ('D', '--'),
+    'standalone LLM':         ('^', '--'),
+    'Human':                  ('*', '-'),
+}
+DEG_LABEL = {
+    'VLM backbone decoder':   'Backbone decoder',
+    'VLM':                    'VLM',
+    'standalone LLM (think)': 'Standalone LLM (think)',
+    'standalone LLM':         'Standalone LLM',
+    'Human':                  'Human',
+}
 
-# Left: scatter
-ax = axes[0]
+# ── fig_overview_scatter: human vs model accuracy scatter ────────────────────
+fig, ax = plt.subplots(figsize=(6.5, 5.5))
 sc = ax.scatter(quad_df['h_acc'], quad_df['m_acc'],
                 c=quad_df['jacc'], cmap='RdYlGn', vmin=0, vmax=1,
                 s=50, alpha=0.80, edgecolors='white', lw=0.4)
@@ -281,37 +277,15 @@ ax.text(0.60, 0.04, 'Both\ncorrect',    transform=ax.transAxes, **kw2)
 r_val = quad_df['h_acc'].corr(quad_df['m_acc'])
 ax.text(0.98, 0.02, f'r = {r_val:.3f}', transform=ax.transAxes,
         ha='right', fontsize=9, color='#333333')
-ax.set_xlabel('Human accuracy (inst_blind, variant C)', fontsize=10)
+ax.set_xlabel('Human accuracy (inst\_blind, variant C)', fontsize=10)
 ax.set_ylabel('VLM accuracy (blind, variant C)', fontsize=10)
 ax.set_title('Per-question Human vs.\ Model Accuracy\n(colour = answer overlap)', fontsize=10)
 ax.set_xlim(-0.05, 1.05); ax.set_ylim(-0.05, 1.05)
+plt.tight_layout()
+save(fig, 'fig_overview_scatter.png')
 
-# Right: degradation curves
-ax = axes[1]
-DEG_COLORS = {
-    'VLM backbone decoder':  '#E67E22',
-    'VLM':                   '#E53935',
-    'standalone LLM (think)':'#8E24AA',
-    'standalone LLM':        '#2E7D32',
-    'Human':                 '#1565C0',
-}
-DEG_STYLES = {
-    'VLM backbone decoder':  ('o', '-'),
-    'VLM':                   ('s', '-'),
-    'standalone LLM (think)':('D', '--'),
-    'standalone LLM':        ('^', '--'),
-    'Human':                 ('*', '-'),
-}
-DEG_SIZE = {'Human': 130, 'VLM': 70, 'VLM backbone decoder': 70,
-            'standalone LLM': 70, 'standalone LLM (think)': 70}
-DEG_LABEL = {
-    'VLM backbone decoder':  'Backbone decoder',
-    'VLM':                   'VLM',
-    'standalone LLM (think)':'Standalone LLM (think)',
-    'standalone LLM':        'Standalone LLM',
-    'Human':                 'Human',
-}
-
+# ── fig_overview_degradation: control-variant degradation curves ──────────────
+fig, ax = plt.subplots(figsize=(6.5, 5.5))
 for grp in ['Human', 'VLM backbone decoder', 'VLM', 'standalone LLM', 'standalone LLM (think)']:
     if grp == 'Human':
         ys = [deg_human[deg_human['variant'] == v]['accuracy'].values[0]
@@ -325,231 +299,35 @@ for grp in ['Human', 'VLM backbone decoder', 'VLM', 'standalone LLM', 'standalon
     ax.plot(X_DEG, ys, color=DEG_COLORS[grp], lw=2, ls=ls,
             marker=marker, markersize=8 if grp != 'Human' else 11,
             label=DEG_LABEL[grp], zorder=3)
-    # annotate end-point
     ax.text(X_DEG[-1] + 0.06, ys[-1], f'{ys[-1]:.2f}',
             va='center', fontsize=8, color=DEG_COLORS[grp])
-
 ax.set_xticks(X_DEG)
 ax.set_xticklabels([VARIANT_LABEL[v] for v in VARIANT_ORDER], fontsize=9)
 ax.set_ylabel('Mean accuracy (blind condition)', fontsize=10)
 ax.set_title('Control-Variant Degradation\n(Original → Pronominalized)', fontsize=10)
-ax.legend(fontsize=8.5, loc='lower left', frameon=True)
+ax.legend(fontsize=8.5, loc='upper center', bbox_to_anchor=(0.5, -0.14),
+          ncol=3, frameon=True)
 ax.set_xlim(-0.3, 2.5)
 ax.set_ylim(0, 0.58)
-ax.axhspan(0, 0.262, alpha=0.04, color='#1565C0')  # human ceiling band
-ax.text(2.2, 0.268, 'Human\nceiling', fontsize=7, color='#1565C0', ha='center', alpha=0.7)
-
+ax.axhspan(0, 0.262, alpha=0.04, color='#1565C0')
 plt.tight_layout()
-save(fig, 'fig_overview.png')
+save(fig, 'fig_overview_degradation.png')
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# FIG 2  fig:instruction_effect
-# Dual panel: soft abstention collapse + response change rate (blind → inst_blind)
+# FIG 2  fig:instruction_effect + fig:response_change
+# Delegates to export_instruction_effect.py → figures/instruction_effect/
 # ─────────────────────────────────────────────────────────────────────────────
-print('\n── Fig 2: fig_instruction_effect ──')
-
-SOFT_RE = re.compile(
-    r'\b(none|nothing|nowhere|no one|unanswerable|cannot|can\'t|unknown|'
-    r'n/a|unclear|not visible|not shown|not present|not enough)\b', re.I
+print('\n── Fig 2: fig_instruction_effect + fig_response_change (delegated) ──')
+result = subprocess.run(
+    ['conda', 'run', '-n', 'zero', 'python',
+     str(ROOT / 'analysis/export_instruction_effect.py')],
+    capture_output=True, text=True
 )
+print(result.stdout[-500:] if result.stdout else '')
+if result.returncode != 0:
+    print('WARNING: instruction effect script failed:', result.stderr[-300:])
 
-# Exclude models with too few rows in either condition
-MIN_N = 50
-
-rows_inst = []
-for model in df_mb['model'].unique():
-    b = df_mb[(df_mb['model'] == model) & (df_mb['variant'] == 'C')]
-    i = df_mi[(df_mi['model'] == model) & (df_mi['variant'] == 'C')]
-    if len(b) < MIN_N or len(i) < MIN_N:
-        continue
-    grp = b['model_group'].iloc[0]
-    soft_b = b['resp_norm'].apply(lambda x: bool(SOFT_RE.search(x))).mean()
-    soft_i = i['resp_norm'].apply(lambda x: bool(SOFT_RE.search(x))).mean()
-    # Response change rate
-    merged = b[['question_id', 'resp_norm']].rename(columns={'resp_norm': 'rb'}).merge(
-        i[['question_id', 'resp_norm']].rename(columns={'resp_norm': 'ri'}),
-        on='question_id')
-    change = (merged['rb'] != merged['ri']).mean()
-    rows_inst.append(dict(model=model, group=grp,
-                          soft_b=soft_b, soft_i=soft_i,
-                          change=change))
-
-df_inst = pd.DataFrame(rows_inst)
-df_inst['label'] = df_inst['model'].map(LABEL_MAP).fillna(df_inst['model'])
-
-# Sort within each group by change rate for cleaner layout
-df_inst = df_inst.sort_values(['group', 'change'], ascending=[True, True])
-
-fig, axes = plt.subplots(1, 2, figsize=(13, 6))
-
-# ── Left panel: soft abstention collapse (slope per model, grouped) ──
-ax = axes[0]
-# Build y-positions grouped by model group
-y_positions = {}
-y = 0
-group_spans = {}
-for grp in GROUP_ORDER:
-    sub_ = df_inst[df_inst['group'] == grp].reset_index(drop=True)
-    if sub_.empty:
-        continue
-    start = y
-    for _, row in sub_.iterrows():
-        y_positions[row['model']] = y
-        y += 1
-    group_spans[grp] = (start, y - 1)
-    y += 0.6  # gap between groups
-
-for grp in GROUP_ORDER:
-    sub_ = df_inst[df_inst['group'] == grp]
-    if sub_.empty:
-        continue
-    c = GROUP_COLORS[grp]
-    for _, row in sub_.iterrows():
-        yp = y_positions[row['model']]
-        ax.plot([row['soft_b'], row['soft_i']], [yp, yp],
-                color=c, lw=1.5, alpha=0.7, zorder=2)
-        ax.scatter([row['soft_b']], [yp], color=c, s=55, zorder=3,
-                   marker='o', edgecolors='white', linewidths=0.6)
-        ax.scatter([row['soft_i']], [yp], color=c, s=55, zorder=3,
-                   marker='s', edgecolors='white', linewidths=0.6)
-        # label on right
-        ax.text(max(row['soft_b'], row['soft_i']) + 0.008, yp,
-                row['label'], va='center', fontsize=7, color='#333333')
-
-# Group labels
-for grp, (s, e) in group_spans.items():
-    mid = (s + e) / 2
-    ax.text(-0.01, mid, grp, va='center', ha='right', fontsize=7.5,
-            color=GROUP_COLORS[grp], fontweight='bold', transform=ax.get_yaxis_transform())
-
-# legend for circle vs square
-h1, = ax.plot([], [], 'o', color='gray', ms=6, label='blind', markeredgecolor='white')
-h2, = ax.plot([], [], 's', color='gray', ms=6, label='inst_blind', markeredgecolor='white')
-ax.legend(handles=[h1, h2], fontsize=8, loc='lower right', frameon=True)
-
-ax.set_yticks([])
-ax.set_xlabel('Soft abstention rate', fontsize=10)
-ax.set_title('Soft abstention: blind → inst_blind', fontsize=11)
-ax.set_xlim(-0.05, 0.65)
-ax.axvline(0, color='gray', lw=0.5, ls='--', alpha=0.4)
-
-# ── Right panel: response change rate (horizontal bars, per model) ──
-ax = axes[1]
-df_inst_s = df_inst.sort_values(['group', 'change'], ascending=[True, False])
-y_pos2 = {}
-y2 = 0
-grp_spans2 = {}
-for grp in GROUP_ORDER:
-    sub_ = df_inst_s[df_inst_s['group'] == grp].reset_index(drop=True)
-    if sub_.empty:
-        continue
-    start = y2
-    for _, row in sub_.iterrows():
-        y_pos2[row['model']] = y2
-        y2 += 1
-    grp_spans2[grp] = (start, y2 - 1)
-    y2 += 0.6
-
-for grp in GROUP_ORDER:
-    sub_ = df_inst_s[df_inst_s['group'] == grp]
-    if sub_.empty:
-        continue
-    c = GROUP_COLORS[grp]
-    for _, row in sub_.iterrows():
-        yp = y_pos2[row['model']]
-        ax.barh(yp, row['change'], color=c, alpha=0.8,
-                height=0.65, edgecolor='none')
-        ax.text(row['change'] + 0.01, yp,
-                f"{row['change']:.0%}", va='center', fontsize=7.5, color='#333333')
-        ax.text(-0.01, yp, row['label'], va='center', ha='right',
-                fontsize=7, color='#333333')
-
-for grp, (s, e) in grp_spans2.items():
-    mid = (s + e) / 2
-    ax.text(1.02, mid, grp, va='center', ha='left', fontsize=7.5,
-            color=GROUP_COLORS[grp], fontweight='bold', transform=ax.get_yaxis_transform())
-
-ax.set_yticks([])
-ax.set_xlabel('Fraction of responses changed', fontsize=10)
-ax.set_title('Response change rate: blind → inst_blind', fontsize=11)
-ax.set_xlim(-0.15, 1.18)
-ax.axvline(0, color='gray', lw=0.5, ls='-', alpha=0.3)
-
-plt.tight_layout()
-save(fig, 'fig_instruction_effect.png')
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# §4  fig:dist  —  Answer distribution biases (yes/no + count)
-# ─────────────────────────────────────────────────────────────────────────────
-print('\n── fig_dist_answer_bias ──')
-
-vlm_b = df_mb[(df_mb['model_group'] == 'VLM') & (df_mb['variant'] == 'C')]
-
-# Yes/No
-yn_m   = vlm_b[vlm_b['answer_type'] == 'yes/no']
-yn_h   = df_h[(df_h['answer_type'] == 'yes/no') & (df_h['variant'] == 'C')]
-yn_m_c = yn_m[yn_m['resp_norm'].isin(['yes', 'no'])]
-yn_h_c = yn_h[yn_h['resp_norm'].isin(['yes', 'no'])]
-yn_gt  = sub[sub['answer_type'] == 'yes/no']['mc_answer'].str.lower().value_counts()
-
-m_yes  = (yn_m_c['resp_norm'] == 'yes').mean()
-h_yes  = (yn_h_c['resp_norm'] == 'yes').mean()
-gt_yes = yn_gt.get('yes', 0) / yn_gt.sum()
-
-# Count
-ct_m = vlm_b[vlm_b['answer_type'] == 'number'].copy()
-ct_h = df_h[(df_h['answer_type'] == 'number') & (df_h['variant'] == 'C')].copy()
-ct_m['n'] = ct_m['resp_norm'].apply(to_int)
-ct_h['n'] = ct_h['resp_norm'].apply(to_int)
-ct_m = ct_m.dropna(subset=['n']); ct_m['n'] = ct_m['n'].astype(int)
-ct_h = ct_h.dropna(subset=['n']); ct_h['n'] = ct_h['n'].astype(int)
-
-bins = [0, 1, 2, 3, 4, 5]
-def count_dist(s):
-    t = len(s)
-    return [(s == b).sum() / t * 100 for b in bins] + [(s > 5).sum() / t * 100]
-
-m_dist = count_dist(ct_m['n'])
-h_dist = count_dist(ct_h['n'])
-xlabels = ['0', '1', '2', '3', '4', '5', '>5']
-
-fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-fig.suptitle('Answer Distribution Biases: Yes/No and Count Questions\n'
-             '(VLM blind, variant C)', fontsize=13)
-w = 0.35
-
-ax = axes[0]
-x = np.arange(3)
-groups_yn = ['Model\n(blind, VLM)', 'Human\n(inst_blind)', 'Ground truth']
-yes_vals = [m_yes * 100, h_yes * 100, gt_yes * 100]
-no_vals  = [(1 - m_yes) * 100, (1 - h_yes) * 100, (1 - gt_yes) * 100]
-ax.bar(x - w/2, yes_vals, w, color='#43A047', label='Yes', alpha=0.85)
-ax.bar(x + w/2, no_vals,  w, color='#E53935', label='No',  alpha=0.85)
-for i, (y_, n_) in enumerate(zip(yes_vals, no_vals)):
-    ax.text(i - w/2, y_ + 1, f'{y_:.0f}%', ha='center', va='bottom', fontsize=10)
-    ax.text(i + w/2, n_ + 1, f'{n_:.0f}%', ha='center', va='bottom', fontsize=10)
-ax.set_xticks(x); ax.set_xticklabels(groups_yn, fontsize=10)
-ax.set_ylabel('% of answers', fontsize=10); ax.set_ylim(0, 100)
-ax.set_title('Yes/No Questions', fontsize=11)
-ax.legend(fontsize=10)
-
-ax = axes[1]
-x2 = np.arange(len(xlabels))
-ax.bar(x2 - w/2, m_dist, w, color='#E53935', label='Model (blind, VLM)', alpha=0.85)
-ax.bar(x2 + w/2, h_dist, w, color='#1E88E5', label='Human (inst_blind)',  alpha=0.85)
-for i, (mv, hv) in enumerate(zip(m_dist, h_dist)):
-    if mv > 2: ax.text(i - w/2, mv + 0.5, f'{mv:.0f}%', ha='center', va='bottom', fontsize=8)
-    if hv > 2: ax.text(i + w/2, hv + 0.5, f'{hv:.0f}%', ha='center', va='bottom', fontsize=8)
-ax.set_xticks(x2); ax.set_xticklabels(xlabels, fontsize=10)
-ax.set_xlabel('Answer value', fontsize=10)
-ax.set_ylabel('% of count answers', fontsize=10)
-ax.set_title('Count / Numerical Questions', fontsize=11)
-ax.legend(fontsize=9)
-
-plt.tight_layout()
-save(fig, 'fig_dist_answer_bias.png')
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -669,13 +447,92 @@ save(fig, 'fig_hm_quadrant.png')
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# §6  fig:scale_alignment  —  SBERT alignment to humans vs model size
+# Shows Qwen3 nothink / think / VLM families; x-axis log-scale by #params
+# ─────────────────────────────────────────────────────────────────────────────
+print('\n── fig_scale_alignment ──')
+
+# Model size (B params) for Qwen3 families
+SIZE_B = {
+    # standalone nothink
+    'Qwen3-0.6B':        0.6,
+    'Qwen3-1.7B':        1.7,
+    'Qwen3-4B':          4.0,
+    'Qwen3-8B':          8.0,
+    'Qwen3-32B':        32.0,
+    # standalone think
+    'Qwen3-0.6B (think)': 0.6,
+    'Qwen3-1.7B (think)': 1.7,
+    'Qwen3-4B (think)':   4.0,
+    'Qwen3-8B (think)':   8.0,
+    'Qwen3-32B (think)':  32.0,
+    # VLM
+    'Qwen3-VL-2B':  2.0,
+    'Qwen3-VL-4B':  4.0,
+    'Qwen3-VL-8B':  8.0,
+    'Qwen3-VL-32B': 32.0,
+}
+
+SCALE_FAMILIES = {
+    'standalone LLM':        ('Standalone LLM (nothink)', '#2E7D32', 'o', '-'),
+    'standalone LLM (think)':('Standalone LLM (think)',   '#8E24AA', 's', '--'),
+    'VLM':                   ('VLM (Qwen3-VL)',           '#E53935', '^', ':'),
+}
+
+hm_c = pair_df[(pair_df['variant'] == 'C') & (pair_df['pair_type'] == 'HM')]
+per_model_s = (hm_c.groupby(['subject_2', 'subject_group_2'])
+                    .agg(sbert=('sbert_score', 'mean'))
+                    .reset_index()
+                    .rename(columns={'subject_2': 'model', 'subject_group_2': 'group'}))
+
+# Keep only Qwen3 family members with a known size
+per_model_s = per_model_s[per_model_s['model'].isin(SIZE_B)].copy()
+per_model_s['size_b'] = per_model_s['model'].map(SIZE_B)
+
+fig, ax = plt.subplots(figsize=(7.5, 5.5))
+
+for grp_key, (label, color, marker, ls) in SCALE_FAMILIES.items():
+    sub_ = (per_model_s[per_model_s['group'] == grp_key]
+            .sort_values('size_b'))
+    if sub_.empty:
+        continue
+    ax.plot(sub_['size_b'], sub_['sbert'], color=color, lw=2, ls=ls,
+            marker=marker, markersize=8, label=label, zorder=3,
+            markeredgecolor='white', markeredgewidth=0.8)
+    # annotate each point with size label
+    for _, row in sub_.iterrows():
+        ax.annotate(f"{row['size_b']:.0f}B" if row['size_b'] >= 1 else '0.6B',
+                    xy=(row['size_b'], row['sbert']),
+                    xytext=(0, 8), textcoords='offset points',
+                    fontsize=7.5, ha='center', color=color)
+
+# Human-human ceiling
+ax.axhline(hh_sbert, color='#1565C0', lw=1.2, ls='--', alpha=0.55,
+           label=f'Human–Human ceiling ({hh_sbert:.3f})')
+ax.text(0.55 * 32, hh_sbert + 0.002, 'HH ceiling', fontsize=8,
+        color='#1565C0', alpha=0.7)
+
+ax.set_xscale('log')
+ax.set_xticks([0.6, 1, 2, 4, 8, 16, 32])
+ax.get_xaxis().set_major_formatter(plt.ScalarFormatter())
+ax.set_xlabel('Model size (billion parameters, log scale)', fontsize=11)
+ax.set_ylabel('Mean SBERT cosine similarity to humans', fontsize=11)
+ax.set_title('Human Alignment vs. Scale\n(Qwen3 family, variant C, inst_blind)', fontsize=11)
+ax.legend(fontsize=9, loc='lower right', frameon=True)
+ax.set_xlim(0.4, 50)
+
+plt.tight_layout()
+save(fig, 'fig_scale_alignment.png')
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # §6  fig:interrater  —  SBERT group-mean heatmap  (delegates to separate script)
 # ─────────────────────────────────────────────────────────────────────────────
 print('\n── fig:interrater: sbert_heatmap_groups ──')
 import subprocess
 result = subprocess.run(
     ['conda', 'run', '-n', 'zero', 'python',
-     str(ROOT / 'analysis/session2/export_agreement_heatmaps.py')],
+     str(ROOT / 'analysis/export_agreement_heatmaps.py')],
     capture_output=True, text=True
 )
 print(result.stdout[-500:] if result.stdout else '')
@@ -697,11 +554,14 @@ print('\nDone.')
 print()
 print('Main figures:')
 print('  Fig 1  figures/fig_scatter_agreement.png   (§6 / intro)')
-print('  Fig 2  figures/fig_instruction_effect.png  (§5)')
-print('  Fig 3  figures/sbert_heatmap_groups.png    (§6, via heatmap script)')
+print('  Fig 2a figures/instruction_effect/fig_soft_abstention.png  (§5 — soft abstention collapse)')
+print('  Fig 2b figures/instruction_effect/fig_hard_abstention.png  (§5 — hard abstention collapse)')
+print('  Fig 2c figures/instruction_effect/fig_response_change.png  (§5 — response change rate)')
+print('  Fig 3  figures/fig_scale_alignment.png     (§6 — new: SBERT vs model size)')
+print('  Fig 4  figures/sbert_heatmap_groups.png    (§6, via heatmap script)')
 print()
 print('Supporting figures:')
-print('  §4  fig_dist_answer_bias.png')
+print('  §5  fig_overview.png')
 print('  §6  fig_hm_alignment.png')
 print('  §6  fig_hm_quadrant.png')
 print('  §5  abstention_rates.png / abstention_collapse.png  (from notebook)')

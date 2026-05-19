@@ -15,15 +15,20 @@ the output manually to `figures/` with the filename indicated below.
 
 | Figure file | Label | Section | Source script/notebook | Description |
 |---|---|---|---|---|
-| `fig_overview.png` | `fig:overview` | §5 opener | `run_paper_figures.py` | **2-panel overview.** Left: per-question human vs VLM accuracy scatter (colour = Jaccard overlap). Right: control-variant degradation curves (Original→Weaker→Pronominalized) for all model groups + humans. |
-| `fig_scatter_agreement.png` | `fig:scatter` | §6 opener | `run_paper_figures.py` | Per-model SBERT similarity to humans (x) vs exact-match to humans (y). HH ceiling shown as blue star. Groups coloured by type (backbone=orange, VLM=red, standalone=green, think=purple). |
-| `fig_instruction_effect.png` | `fig:gated` | §5.2 | `run_paper_figures.py` | **2-panel instruction effect.** Left: soft abstention rate slope (blind→inst_blind, circle→square). Right: response change rate per model (% of responses that change condition). |
-| `fig_hm_alignment.png` | `fig:hm_alignment` | §6.2 | `run_paper_figures.py` | **2-panel entity alignment.** Left: question count distribution by entity type (n=113). Right: Pearson r between human and VLM accuracy per entity type. |
+| `fig_overview_scatter.png` | `fig:overview_scatter` | §4 | `run_paper_figures.py` | Per-question human vs VLM accuracy scatter (colour = Jaccard overlap). |
+| `fig_overview_degradation.png` | `fig:degradation` | §5.1 | `run_paper_figures.py` | Control-variant degradation curves (Original→Weaker→Pronominalized) for all model groups + humans. |
+| `fig_scatter_agreement.png` | `fig:scatter_agreement` | §6 opener | `run_paper_figures.py` | Per-model SBERT similarity to humans (x) vs exact-match to humans (y). HH ceiling shown as blue star. |
+| `instruction_effect/fig_soft_abstention.png` | `fig:gated` | §5.2 | `export_instruction_effect.py` | Soft abstention rate slope (blind→inst_blind, circle→square). |
+| `instruction_effect/fig_hard_abstention.png` | — | §5.2 | `export_instruction_effect.py` | Hard abstention rate slope (blind→inst_blind). Rates near zero for most models. |
+| `instruction_effect/fig_response_change.png` | `fig:response_change` | §5.2 | `export_instruction_effect.py` | Response change rate per model (% of responses that change condition). |
+| `fig_scale_alignment.png` | `fig:scale` | §6.2 | `run_paper_figures.py` | SBERT alignment to humans vs Qwen3 model scale. 3 lines: nothink / think / VLM. Log-scale x-axis. |
+| `fig_hm_alignment.png` | `fig:hm_alignment` | §6.2 | `run_paper_figures.py` | Entity type distribution (left) + Pearson r human vs VLM accuracy per entity type (right). |
 | `fig_hm_quadrant.png` | `fig:hm_quadrant` | §6.2 | `run_paper_figures.py` | Per-question scatter: human acc (x) vs VLM acc (y), colour = Jaccard answer overlap. |
-| `fig13_yn_blind.png` | `fig:nb13_yn` (left) | §6.1 main / App | `13_answer_dist.ipynb` | Yes/No distribution — Blind condition. All model groups + humans + GT. Save from notebook. |
-| `fig13_yn_inst.png` | `fig:nb13_yn` (right) | §6.1 main / App | `13_answer_dist.ipynb` | Yes/No distribution — Inst-Blind condition. Save from notebook. |
-| `fig13_num_blind.png` | `fig:nb13_num` (left) | §6.1 / App | `13_answer_dist.ipynb` | Number distribution — Blind condition. Save from notebook. |
-| `fig13_num_inst.png` | `fig:nb13_num` (right) | §6.1 / App | `13_answer_dist.ipynb` | Number distribution — Inst-Blind condition. Save from notebook. |
+| `agreement_variant/sbert_lineplot.png` | `fig:agreement_variant` | §5.1 | `export_agreement_variants.py` | SBERT human-model agreement across control variants, by model group. Main text. |
+| `answer_dist/blind_yn.png` | `fig:nb13_yn` (left) | §6.1 main / App | `export_answer_dist.py` | Yes/No distribution — Blind condition. All model groups + humans + GT. |
+| `answer_dist/inst_blind_yn.png` | `fig:nb13_yn` (right) | §6.1 main / App | `export_answer_dist.py` | Yes/No distribution — Inst-Blind condition. |
+| `answer_dist/blind_number.png` | `fig:nb13_num` (left) | §6.1 / App | `export_answer_dist.py` | Number distribution — Blind condition. |
+| `answer_dist/inst_blind_number.png` | `fig:nb13_num` (right) | §6.1 / App | `export_answer_dist.py` | Number distribution — Inst-Blind condition. |
 
 ---
 
@@ -31,12 +36,16 @@ the output manually to `figures/` with the filename indicated below.
 
 | Figure file | Label | Appendix | Source | Description |
 |---|---|---|---|---|
-| `figures/sbert_heatmap_groups.png` | `fig:interrater` | §6.3 + App | `export_agreement_heatmaps.py` | Group-mean SBERT cosine heatmap (5×5: human, VLM, backbone, standalone, think). |
-| `appendix/agreement/sbert_heatmap_full.png` | — | App | `export_agreement_heatmaps.py` | Per-rater SBERT heatmap (all individuals). |
-| `appendix/agreement/chrf_heatmap_groups.png` | — | App | `export_agreement_heatmaps.py` | chrF group heatmap. |
-| `appendix/agreement/simcse_heatmap_groups.png` | — | App | `export_agreement_heatmaps.py` | SimCSE group heatmap. |
-| `appendix/agreement/bertscore_heatmap_groups.png` | — | App | `export_agreement_heatmaps.py` | BERTScore group heatmap. |
-| `appendix/agreement/sampling_tsne.png` | `fig:tsne` | App (tsne) | `02_setup_embeddings.ipynb` | t-SNE of 1k VQA question embeddings, 3 panels: entity group / operator group / question word. Motivates entity-type analysis. |
+| `agreement_C/sbert_heatmap_groups.png` | `fig:interrater` | §6.3 + App H | `export_agreement_heatmaps.py` | Group-mean SBERT cosine heatmap (5×5: human, VLM, backbone, standalone, think). |
+| `agreement_C/sbert_heatmap_full.png` | — | App H | `export_agreement_heatmaps.py` | Per-rater SBERT heatmap (all individuals). |
+| `agreement_C/{metric}_heatmap_groups.png` | — | App H | `export_agreement_heatmaps.py` | Group heatmap for each metric (chrf, simcse, bertscore, rouge1, jaccard, exact). |
+| `agreement_C/{metric}_heatmap_full.png` | — | App H | `export_agreement_heatmaps.py` | Full per-rater heatmap for each metric. |
+| `agreement_C/sampling_tsne.png` | `fig:tsne` | App F | `02_setup_embeddings.ipynb` | t-SNE of 1k VQA question embeddings, 3 panels: entity group / operator group / question word. |
+| `agreement_variant/{metric}_lineplot.png` | — | App G | `export_agreement_variants.py` | All 7 metrics: agreement by control variant (lineplot). |
+| `agreement_variant/{metric}_heatmap.png` | — | App G | `export_agreement_variants.py` | All 7 metrics: group×variant heatmap. |
+| `accuracy_variant/degradation_blind.png` | — | App | `export_accuracy_variants.py` | C→B→A accuracy degradation, blind condition (all groups + humans). |
+| `accuracy_variant/degradation_inst_blind.png` | — | App | `export_accuracy_variants.py` | C→B→A accuracy degradation, inst_blind condition (all groups + humans). |
+| `accuracy_variant/degradation_control.png` | — | App | `export_accuracy_variants.py` | C→B→A accuracy degradation, control/real-image condition (VLM only). |
 
 ---
 
@@ -44,10 +53,6 @@ the output manually to `figures/` with the filename indicated below.
 
 | Notebook | What to save | Filename to use |
 |---|---|---|
-| `13_answer_dist.ipynb` | Yes/No stacked bars, Blind | `figures/fig13_yn_blind.png` |
-| `13_answer_dist.ipynb` | Yes/No stacked bars, Inst-Blind | `figures/fig13_yn_inst.png` |
-| `13_answer_dist.ipynb` | Number stacked bars, Blind | `figures/fig13_num_blind.png` |
-| `13_answer_dist.ipynb` | Number stacked bars, Inst-Blind | `figures/fig13_num_inst.png` |
 | `08_char_abstention.ipynb` | Abstention rates bar chart | `figures/abstention_rates.png` |
 | `08_char_abstention.ipynb` | Abstention collapse bar chart | `figures/abstention_collapse.png` |
 
@@ -57,6 +62,5 @@ the output manually to `figures/` with the filename indicated below.
 
 | Figure file | Reason |
 |---|---|
-| `fig_dist_answer_bias.png` | Replaced by notebook 13 figures (all model groups) |
 | `lm_decoder_top_answers.png` | Supporting figure, not cited in current draft |
 | `abstention_bias.png` | Supporting figure, not cited in current draft |

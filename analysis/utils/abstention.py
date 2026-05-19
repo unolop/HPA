@@ -15,7 +15,7 @@ from __future__ import annotations
 import re
 from typing import List, Optional
 
-from utils.vqa import vqa_accuracy
+from .vqa import vqa_accuracy
 
 # Hard abstention: explicit refusal to answer without seeing an image
 _HARD_RE = re.compile(
