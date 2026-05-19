@@ -34,6 +34,7 @@ sys.path.insert(0, str(ROOT / 'analysis'))
 
 from utils.constants import GROUP_COLORS, VARIANT_ORDER
 from utils.load_session import load_human_data
+from build_pair_cache import build_pair_cache
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CLI argument
@@ -76,7 +77,7 @@ human       = pd.read_csv(EXPORTS / 'responses_human.csv')
 model_blind = pd.read_csv(EXPORTS / 'responses_model_blind.csv')
 model_inst  = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
 model_ctrl  = pd.read_csv(EXPORTS / 'responses_model_control.csv')
-pair_df     = pd.read_parquet(EXPORTS / 'pair_cache.parquet')
+pair_df     = build_pair_cache(ROOT, EXPORTS, verbose=True)
 
 # Filter everything to the human-study subset
 human       = human[human['question_id'].isin(common_qids)].copy()
@@ -296,6 +297,64 @@ for tick in ax.get_xticklabels():
 plt.tight_layout()
 save(fig, 'fig_entity_instruction_delta')
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Fig 6 — Combined paper figure: entity dist (left) + Pearson r VLM (right)
+# ─────────────────────────────────────────────────────────────────────────────
+print('\n── fig_hm_alignment (2-panel: entity dist + Pearson r VLM) ──')
+
+ENT_COLORS = {
+    'object':  '#e74c3c', 'person': '#3498db', 'animal': '#f39c12',
+    'food':    '#27ae60', 'other':  '#9b59b6', 'place':  '#1abc9c',
+    'product': '#e67e22', 'text':   '#95a5a6', 'vehicle':'#2c3e50',
+}
+
+# VLM-only Pearson r per entity type (inst_blind, variant C)
+# Reuse merged_inst (inst_q joined with human_q, already computed above)
+vlm_inst_c = merged_inst[(merged_inst['model_group'] == 'VLM') &
+                          (merged_inst['variant'] == 'C')]
+ent_r_vlm = (vlm_inst_c.groupby('ent')
+             .apply(lambda g: pearson_safe(g['human_acc'], g['model_acc'])
+                    if g['question_id'].nunique() >= 5 else np.nan,
+                    include_groups=False)
+             .dropna()
+             .sort_values(ascending=False))
+ent_n = ent_counts.set_index('ent')['n_questions']
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# Left panel: entity distribution
+ax = axes[0]
+ec = ent_counts.sort_values('n_questions', ascending=True)
+bar_colors = [ENT_COLORS.get(e, '#aaaaaa') for e in ec['ent']]
+ax.barh(ec['ent'].str.capitalize(), ec['n_questions'],
+        color=bar_colors, edgecolor='white', height=0.65)
+for i, (e, n) in enumerate(zip(ec['ent'], ec['n_questions'])):
+    ax.text(n + 0.3, i, str(n), va='center', fontsize=9.5, color='#333333')
+ax.set_xlabel(f'Number of questions (out of {len(common_qids)})', fontsize=10)
+ax.set_title('Question Distribution by Entity Type\n(human study, variant C)', fontsize=11)
+ax.set_xlim(0, ec['n_questions'].max() * 1.3)
+ax.set_ylabel('Entity type', fontsize=10)
+
+# Right panel: Pearson r by entity type (VLM, inst_blind)
+ax = axes[1]
+ents = ent_r_vlm.index.tolist()
+vals = ent_r_vlm.values
+ax.barh([e.capitalize() for e in ents], vals,
+        color=[ENT_COLORS.get(e, '#aaaaaa') for e in ents],
+        edgecolor='white', height=0.65, alpha=0.85)
+for v, e in zip(vals, ents):
+    offset = 0.03 if v >= 0 else -0.03
+    ax.text(v + offset, ents.index(e), f'r = {v:.2f}',
+            va='center', ha='left' if v >= 0 else 'right', fontsize=9.5)
+ax.set_xlim(-1.0, 1.4)
+ax.set_xlabel('Pearson r (human vs. VLM accuracy, per question)', fontsize=10)
+ax.set_title('Human–Model Difficulty Correlation\nby Entity Type (VLM, inst_blind)', fontsize=11)
+ax.axvline(0, color='gray', lw=0.8, ls='--', alpha=0.5)
+ax.set_ylabel('')
+
+plt.tight_layout()
+save(fig, 'fig_hm_alignment')
 
 print(f'\nDone. Outputs in: {OUT_DIR}')
 print(f'Suffix used: {SUFFIX}  (common_qids={len(common_qids)}, '

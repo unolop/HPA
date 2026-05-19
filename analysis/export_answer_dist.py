@@ -25,9 +25,12 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 
 from utils.vqa import VQAAnswerMapper, extract_number, bin_number
+from config import MODELS_7B
 
-OUT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/answer_dist_barplot'
+OUT_DIR    = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/answer_dist'
+OUT_DIR_7B = OUT_DIR / '7b'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+OUT_DIR_7B.mkdir(parents=True, exist_ok=True)
 
 EXPORTS = ROOT / 'analysis/session2/exports'
 
@@ -54,11 +57,14 @@ plt.rcParams.update({
 })
 
 
-def save(fig, name):
-    path = OUT_DIR / name
+def save(fig, name, out=None):
+    if out is None:
+        out = OUT_DIR
+    path = out / name
     fig.savefig(path, dpi=150, bbox_inches='tight')
     plt.close(fig)
-    print(f'  [answer_dist_barplot] {name}')
+    tag = 'answer_dist_barplot/7b' if out == OUT_DIR_7B else 'answer_dist_barplot'
+    print(f'  [{tag}] {name}')
 
 
 # ── Load data ─────────────────────────────────────────────────────────────────
@@ -251,15 +257,26 @@ COND_LABELS = {
     'inst_blind': 'Inst-Blind',
 }
 
+# Full set (all models)
 for condition in CONDITIONS:
     label = COND_LABELS[condition]
-
     print(f'\n── {label} ──')
-
     fig = plot_yn(make_yn_stack(all_df, condition))
     save(fig, f'{condition}_vC_yn_q{N_YN}_h{N_HUMANS}.png')
-
     fig = plot_num(make_num_stack(all_df, condition))
     save(fig, f'{condition}_vC_number_q{N_NUM}_h{N_HUMANS}.png')
+
+# 7–8 B matched-size subset
+print('\n── 7B subset ──')
+model_df_7b = model_df[model_df['model'].isin(MODELS_7B)]
+all_df_7b = pd.concat([gt_df, human_df, model_df_7b], ignore_index=True)
+
+for condition in CONDITIONS:
+    label = COND_LABELS[condition]
+    print(f'\n── {label} (7B) ──')
+    fig = plot_yn(make_yn_stack(all_df_7b, condition))
+    save(fig, f'{condition}_vC_yn_q{N_YN}_h{N_HUMANS}.png', OUT_DIR_7B)
+    fig = plot_num(make_num_stack(all_df_7b, condition))
+    save(fig, f'{condition}_vC_number_q{N_NUM}_h{N_HUMANS}.png', OUT_DIR_7B)
 
 print('\nDone. All figures saved to:', OUT_DIR)

@@ -4,7 +4,7 @@ Export per-model agreement-by-control-variant lineplots.
 For each metric, one figure with a line per model (colour = model family,
 marker = group shape), plus Human–Human ceiling and Model–Model baseline.
 
-Output: figures/agreement_lineplot/inst_blind_vABC_{metric}_models[_yesno].png
+Output: figures/agreement_variants_by_models/inst_blind_vABC_{metric}_models[_yesno].png
 
 Run from repo root:
   conda run -n zero python analysis/export_agreement_variants_by_models.py
@@ -27,6 +27,7 @@ from utils.constants import (
     GROUP_COLORS, GROUP_ORDER, GROUP_MARKER,
     MODEL_FAMILY, MODEL_FAMILY_COLORS,
 )
+from build_pair_cache import build_pair_cache
 from config import MODEL_LABEL_SHORT as LABEL_MAP, extend_pair_cache_with_yesno
 
 parser = argparse.ArgumentParser()
@@ -34,11 +35,11 @@ parser.add_argument('--include_yesno', action='store_true',
                     help='Extend pair cache with yes/no question pairs.')
 args = parser.parse_args()
 
-OUT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/agreement_lineplot'
+OUT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/agreement_variants_by_models'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 EXPORTS = ROOT / 'analysis/session2/exports'
-pair_df = pd.read_parquet(EXPORTS / 'pair_cache.parquet')
+pair_df = build_pair_cache(ROOT, EXPORTS, verbose=True)
 if args.include_yesno:
     print('Extending pair_cache with yes/no question pairs…')
     pair_df = extend_pair_cache_with_yesno(pair_df, EXPORTS)
@@ -75,7 +76,7 @@ def save(fig, name):
     path = OUT_DIR / name
     fig.savefig(path, dpi=150, bbox_inches='tight')
     plt.close(fig)
-    print(f'  [agreement_lineplot] {name}')
+    print(f'  [agreement_variants_by_models] {name}')
 
 
 # ── Pre-split pair_df ─────────────────────────────────────────────────────────

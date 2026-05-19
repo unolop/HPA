@@ -15,10 +15,11 @@ MIN_ANSWERS_DEFAULT = 348
 # ── All models present in the main analysis (inst_blind / blind exports) ──────
 MODELS_ALL = [
     # VLM
-    'Qwen3-VL-8B',
+    'Qwen3-VL-2B', 'Qwen3-VL-4B', 'Qwen3-VL-8B', 'Qwen3-VL-32B',
     'InternVL-1B', 'InternVL-2B', 'InternVL-8B',
     'LLaVA-1.5-7B', 'LLaVA-Mistral', 'LLaVA-Vicuna',
     # VLM backbone decoder
+    'Qwen3-VL-32B (LM)',
     'LLaVA-1.5 (LM)', 'LLaVA-Mistral (LM)', 'LLaVA-Vicuna (LM)',
     # Standalone LLM (no-think)
     'Qwen3-0.6B', 'Qwen3-1.7B', 'Qwen3-4B', 'Qwen3-8B', 'Qwen3-32B',
@@ -42,7 +43,10 @@ MODELS_7B = [
 # Must match the 'model_group' / 'subject_group_2' column in exports CSVs.
 MODEL_GROUP = {
     # VLM
+    'Qwen3-VL-2B':          'VLM',
+    'Qwen3-VL-4B':          'VLM',
     'Qwen3-VL-8B':          'VLM',
+    'Qwen3-VL-32B':         'VLM',
     'InternVL-1B':          'VLM',
     'InternVL-2B':          'VLM',
     'InternVL-8B':          'VLM',
@@ -50,6 +54,7 @@ MODEL_GROUP = {
     'LLaVA-Mistral':        'VLM',
     'LLaVA-Vicuna':         'VLM',
     # VLM backbone decoder
+    'Qwen3-VL-32B (LM)':    'VLM backbone decoder',
     'LLaVA-1.5 (LM)':       'VLM backbone decoder',
     'LLaVA-Mistral (LM)':   'VLM backbone decoder',
     'LLaVA-Vicuna (LM)':    'VLM backbone decoder',

@@ -1,7 +1,7 @@
 """
 Export pairwise inter-rater agreement heatmaps for every metric.
 
-For each metric, generates two files in figures/agreement_heatmap/:
+For each metric, generates two files in figures/agreement_heatmaps/:
   vC_{metric}_all.png    — all raters (36 humans + all model groups)
   vC_{metric}_groups.png — compact version: human block + model group means
 
@@ -23,8 +23,10 @@ from matplotlib.colors import Normalize
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parents[1]
-CACHE = ROOT / "analysis/session2/exports/pair_cache.parquet"
-OUTPUT_DIR = ROOT / "latex/AnonymousSubmission/LaTeX/figures/agreement_heatmap"
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / 'analysis'))
+EXPORTS = ROOT / 'analysis/session2/exports'
+OUTPUT_DIR = ROOT / "latex/AnonymousSubmission/LaTeX/figures/agreement_heatmaps"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -173,8 +175,9 @@ def build_group_means_matrix(mat, subjects_df):
 
 
 # ── Load data ─────────────────────────────────────────────────────────────────
-print(f"Loading pair cache from {CACHE} …")
-df = pd.read_parquet(CACHE)
+from build_pair_cache import build_pair_cache
+print('Building / updating pair_cache…')
+df = build_pair_cache(ROOT, EXPORTS, verbose=True)
 df_v = df[df["variant"] == VARIANT].copy()
 print(f"  {len(df_v):,} pairs (variant={VARIANT})")
 

@@ -24,7 +24,7 @@ the output manually to `figures/` with the filename indicated below.
 | `fig_scale_alignment.png` | `fig:scale` | §6.2 | `run_paper_figures.py` | SBERT alignment to humans vs Qwen3 model scale. 3 lines: nothink / think / VLM. Log-scale x-axis. |
 | `fig_hm_alignment.png` | `fig:hm_alignment` | §6.2 | `run_paper_figures.py` | Entity type distribution (left) + Pearson r human vs VLM accuracy per entity type (right). |
 | `fig_hm_quadrant.png` | `fig:hm_quadrant` | §6.2 | `run_paper_figures.py` | Per-question scatter: human acc (x) vs VLM acc (y), colour = Jaccard answer overlap. |
-| `agreement_variant/sbert_lineplot.png` | `fig:agreement_variant` | §5.1 | `export_agreement_variants.py` | SBERT human-model agreement across control variants, by model group. Main text. |
+| `agreement_variants/sbert_lineplot.png` | `fig:agreement_variant` | §5.1 | `export_agreement_variants.py` | SBERT human-model agreement across control variants, by model group. Main text. |
 | `answer_dist/blind_yn.png` | `fig:nb13_yn` (left) | §6.1 main / App | `export_answer_dist.py` | Yes/No distribution — Blind condition. All model groups + humans + GT. |
 | `answer_dist/inst_blind_yn.png` | `fig:nb13_yn` (right) | §6.1 main / App | `export_answer_dist.py` | Yes/No distribution — Inst-Blind condition. |
 | `answer_dist/blind_number.png` | `fig:nb13_num` (left) | §6.1 / App | `export_answer_dist.py` | Number distribution — Blind condition. |
@@ -36,16 +36,16 @@ the output manually to `figures/` with the filename indicated below.
 
 | Figure file | Label | Appendix | Source | Description |
 |---|---|---|---|---|
-| `agreement_C/sbert_heatmap_groups.png` | `fig:interrater` | §6.3 + App H | `export_agreement_heatmaps.py` | Group-mean SBERT cosine heatmap (5×5: human, VLM, backbone, standalone, think). |
-| `agreement_C/sbert_heatmap_full.png` | — | App H | `export_agreement_heatmaps.py` | Per-rater SBERT heatmap (all individuals). |
-| `agreement_C/{metric}_heatmap_groups.png` | — | App H | `export_agreement_heatmaps.py` | Group heatmap for each metric (chrf, simcse, bertscore, rouge1, jaccard, exact). |
-| `agreement_C/{metric}_heatmap_full.png` | — | App H | `export_agreement_heatmaps.py` | Full per-rater heatmap for each metric. |
-| `agreement_C/sampling_tsne.png` | `fig:tsne` | App F | `02_setup_embeddings.ipynb` | t-SNE of 1k VQA question embeddings, 3 panels: entity group / operator group / question word. |
-| `agreement_variant/{metric}_lineplot.png` | — | App G | `export_agreement_variants.py` | All 7 metrics: agreement by control variant (lineplot). |
-| `agreement_variant/{metric}_heatmap.png` | — | App G | `export_agreement_variants.py` | All 7 metrics: group×variant heatmap. |
-| `accuracy_variant/degradation_blind.png` | — | App | `export_accuracy_variants.py` | C→B→A accuracy degradation, blind condition (all groups + humans). |
-| `accuracy_variant/degradation_inst_blind.png` | — | App | `export_accuracy_variants.py` | C→B→A accuracy degradation, inst_blind condition (all groups + humans). |
-| `accuracy_variant/degradation_control.png` | — | App | `export_accuracy_variants.py` | C→B→A accuracy degradation, control/real-image condition (VLM only). |
+| `agreement_heatmaps/sbert_heatmap_groups.png` | `fig:interrater` | §6.3 + App H | `export_agreement_heatmaps.py` | Group-mean SBERT cosine heatmap (5×5: human, VLM, backbone, standalone, think). |
+| `agreement_heatmaps/sbert_heatmap_full.png` | — | App H | `export_agreement_heatmaps.py` | Per-rater SBERT heatmap (all individuals). |
+| `agreement_heatmaps/{metric}_heatmap_groups.png` | — | App H | `export_agreement_heatmaps.py` | Group heatmap for each metric (chrf, simcse, bertscore, rouge1, jaccard, exact). |
+| `agreement_heatmaps/{metric}_heatmap_full.png` | — | App H | `export_agreement_heatmaps.py` | Full per-rater heatmap for each metric. |
+| `agreement_heatmaps/sampling_tsne.png` | `fig:tsne` | App F | `02_setup_embeddings.ipynb` | t-SNE of 1k VQA question embeddings, 3 panels: entity group / operator group / question word. |
+| `agreement_variants/{metric}_lineplot.png` | — | App G | `export_agreement_variants.py` | All 7 metrics: agreement by control variant (lineplot). |
+| `agreement_variants/{metric}_heatmap.png` | — | App G | `export_agreement_variants.py` | All 7 metrics: group×variant heatmap. |
+| `accuracy_variants/degradation_blind.png` | — | App | `export_accuracy_variants.py` | C→B→A accuracy degradation, blind condition (all groups + humans). |
+| `accuracy_variants/degradation_inst_blind.png` | — | App | `export_accuracy_variants.py` | C→B→A accuracy degradation, inst_blind condition (all groups + humans). |
+| `accuracy_variants/degradation_control.png` | — | App | `export_accuracy_variants.py` | C→B→A accuracy degradation, control/real-image condition (VLM only). |
 
 ---
 

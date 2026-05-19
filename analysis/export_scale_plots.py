@@ -76,7 +76,7 @@ METRIC = args.metric
 AGG    = args.agg
 
 EXPORTS   = ROOT / 'analysis/session2/exports'
-OUT_DIR   = ROOT / f'latex/AnonymousSubmission/LaTeX/figures/{METRIC}_scale'
+OUT_DIR   = ROOT / f'latex/AnonymousSubmission/LaTeX/figures/scale_plots'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 AGG_SHORT = AGG.replace('by_', '')   # by_models→models, by_family→family, by_groups→groups
 
@@ -119,7 +119,10 @@ print(f'  common_qids: {len(common_qids)}  |  participants: {n_humans}')
 # ─────────────────────────────────────────────────────────────────────────────
 print(f'\nLoading {METRIC} data…')
 
-pair_cache = pd.read_parquet(EXPORTS / 'pair_cache.parquet')
+# Auto-compute HM pairs for any models with complete inst_blind data
+# that are not yet in the cache, then load the (possibly updated) cache.
+from build_pair_cache import build_pair_cache
+pair_cache = build_pair_cache(ROOT, EXPORTS, verbose=True)
 if args.include_yesno:
     print('  Extending pair_cache with yes/no question pairs…')
     pair_cache = extend_pair_cache_with_yesno(pair_cache, EXPORTS)

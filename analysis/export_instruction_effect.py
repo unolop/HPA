@@ -1,10 +1,11 @@
 """
 Export instruction-effect figures to figures/instruction_effect/.
 
-Generates three figures per dataset (full 1000-question and 113-question human subset):
+Generates four figures per dataset (full 1000-question and 113-question human subset):
   fig_soft_abstention_v{VARIANT}_q{N}.png
   fig_hard_abstention_v{VARIANT}_q{N}.png
   fig_response_change_v{VARIANT}_q{N}.png
+  fig_merged_abstention_v{VARIANT}_q{N}.png   ← soft + hard offset dumbbells
 
 VARIANT is always 'C' (original question). N indicates question count.
 
@@ -17,6 +18,7 @@ import sys
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -41,6 +43,7 @@ plt.rcParams.update({
 })
 
 LABEL_MAP = {
+    'Qwen3-VL-32B (LM)':  'Qwen3-VL-32B\n(backbone)',
     'LLaVA-Mistral (LM)': 'LLaVA-M\n(backbone)',
     'LLaVA-Vicuna (LM)':  'LLaVA-V\n(backbone)',
     'LLaVA-1.5 (LM)':     'LLaVA-1.5\n(backbone)',
@@ -285,6 +288,91 @@ def _draw_response_change(ax, df_inst):
     ax.axvline(0, color='gray', lw=0.5, ls='-', alpha=0.3)
 
 
+def _draw_merged_abstention(ax, df_inst):
+    """Offset-dumbbell merged plot: soft (solid, filled) and hard (dashed, open)
+    on one shared x-axis. Soft row at y, hard row at y + HARD_OFFSET.
+    Arrows (ax.annotate) show blind → inst_blind direction.
+    Style after Gavrikov et al. (2024) Fig. 2.
+    """
+    HARD_OFFSET = 0.40
+
+    df_s, y_pos, spans = _build_y_positions(df_inst, sort_col='soft_b')
+
+    # x limit: cover all four columns, capped at 0.55
+    max_val = max(df_s[['soft_b', 'soft_i', 'hard_b', 'hard_i']].max().max(), 0.01)
+    xlim    = min(max_val * 1.40, 0.55)
+
+    # Subtle dotted vertical reference lines (Fig. 2 style)
+    for xv in [0.1, 0.2, 0.3, 0.4, 0.5]:
+        if xv < xlim:
+            ax.axvline(xv, color='#CCCCCC', lw=0.7, ls=':', zorder=0)
+
+    for grp in GROUP_ORDER:
+        sub_ = df_s[df_s['group'] == grp]
+        if sub_.empty:
+            continue
+        c = GROUP_COLORS[grp]
+        for _, row in sub_.iterrows():
+            yp = y_pos[row['model']]
+            yh = yp + HARD_OFFSET
+
+            # ── Soft: solid arrow, filled markers ───────────────────────────
+            ax.annotate("",
+                xy=(row['soft_i'], yp), xytext=(row['soft_b'], yp),
+                arrowprops=dict(arrowstyle='-|>', color=c, lw=1.5,
+                               mutation_scale=8, alpha=0.75),
+                annotation_clip=False, zorder=2)
+            ax.scatter([row['soft_b']], [yp], color=c, s=50, zorder=3,
+                       marker='o', edgecolors='white', linewidths=0.5)
+            ax.scatter([row['soft_i']], [yp], color=c, s=50, zorder=3,
+                       marker='s', edgecolors='white', linewidths=0.5)
+
+            # ── Hard: dashed arrow, open markers ────────────────────────────
+            ax.annotate("",
+                xy=(row['hard_i'], yh), xytext=(row['hard_b'], yh),
+                arrowprops=dict(arrowstyle='-|>', color=c, lw=1.2,
+                               linestyle='dashed', mutation_scale=7, alpha=0.55),
+                annotation_clip=False, zorder=2)
+            ax.scatter([row['hard_b']], [yh], color=c, s=38, zorder=3,
+                       marker='o', facecolors='none', edgecolors=c, linewidths=1.0)
+            ax.scatter([row['hard_i']], [yh], color=c, s=38, zorder=3,
+                       marker='s', facecolors='none', edgecolors=c, linewidths=1.0)
+
+            # Model label anchored to y-axis, centred between the two rows
+            ax.text(-0.01, yp + HARD_OFFSET / 2, row['label'],
+                    va='center', ha='right', fontsize=7, color='#333333',
+                    transform=ax.get_yaxis_transform())
+
+    # Group labels on right
+    for grp, (s, e) in spans.items():
+        mid = (s + e) / 2 + HARD_OFFSET / 2
+        ax.text(1.02, mid, grp, va='center', ha='left', fontsize=7.5,
+                color=GROUP_COLORS[grp], fontweight='bold',
+                transform=ax.get_yaxis_transform())
+
+    # Legend below — all 4 entries in one horizontal row
+    handles = [
+        mlines.Line2D([], [], color='#888888', marker='o', ls='-', ms=6,
+                      markeredgecolor='white', label='soft / blind'),
+        mlines.Line2D([], [], color='#888888', marker='s', ls='-', ms=6,
+                      markeredgecolor='white', label='soft / inst_blind'),
+        mlines.Line2D([], [], color='#888888', marker='o', ls='--', ms=6,
+                      markerfacecolor='none', markeredgecolor='#888888',
+                      label='hard / blind'),
+        mlines.Line2D([], [], color='#888888', marker='s', ls='--', ms=6,
+                      markerfacecolor='none', markeredgecolor='#888888',
+                      label='hard / inst_blind'),
+    ]
+    ax.legend(handles=handles, fontsize=8, frameon=True, ncol=4,
+              loc='upper center', bbox_to_anchor=(0.5, -0.08))
+
+    ax.set_yticks([])
+    ax.set_xlabel('Abstention rate', fontsize=10)
+    ax.set_title('Soft & hard abstention: blind → inst_blind', fontsize=11)
+    ax.set_xlim(-xlim * 0.05, xlim)
+    ax.axvline(0, color='gray', lw=0.5, ls='-', alpha=0.3)
+
+
 # ─── Generate figures for each dataset ───────────────────────────────────────
 for suffix, df_mb, df_mi in DATASETS:
     print(f'\n══ {suffix} ══')
@@ -317,5 +405,11 @@ for suffix, df_mb, df_mi in DATASETS:
     _draw_response_change(ax, df_inst)
     plt.tight_layout()
     save(fig, f'response_change_{suffix}.png')
+
+    print('  ── merged_abstention ──')
+    fig, ax = plt.subplots(figsize=(7, 6))
+    _draw_merged_abstention(ax, df_inst)
+    plt.tight_layout()
+    save(fig, f'merged_abstention_{suffix}.png')
 
 print('\nDone. Outputs in:', OUT_DIR)

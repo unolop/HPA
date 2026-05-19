@@ -2,8 +2,8 @@
 Export agreement-by-control-variant figures for the paper.
 
 For each agreement metric, produces two figures:
-  figures/agreement_lineplot/  — mean HM/HH/MM agreement per group across variants C→B→A
-  figures/agreement_heatmap/   — group×variant heatmap (HM pairs only)
+  figures/agreement_variants/  — mean HM/HH/MM agreement per group across variants C→B→A
+  figures/agreement_variants/  — group×variant heatmap (HM pairs only)
 
 Metrics: sbert, simcse, bertscore, chrf, rouge1, jaccard, exact
 
@@ -28,20 +28,25 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 
 from utils.constants import GROUP_COLORS, GROUP_ORDER
-from config import extend_pair_cache_with_yesno
+from utils.pair_cache_updater import ensure_pair_cache
+from config import extend_pair_cache_with_yesno, MODELS_7B
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--include_yesno', action='store_true',
                     help='Extend pair cache with yes/no question pairs.')
 args = parser.parse_args()
 
-LINEPLOT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/agreement_lineplot'
-HEATMAP_DIR  = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/agreement_heatmap'
+LINEPLOT_DIR    = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/agreement_variants'
+HEATMAP_DIR     = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/agreement_variants'
+LINEPLOT_DIR_7B = LINEPLOT_DIR / '7b'
+HEATMAP_DIR_7B  = HEATMAP_DIR  / '7b'
 LINEPLOT_DIR.mkdir(parents=True, exist_ok=True)
 HEATMAP_DIR.mkdir(parents=True, exist_ok=True)
+LINEPLOT_DIR_7B.mkdir(parents=True, exist_ok=True)
+HEATMAP_DIR_7B.mkdir(parents=True, exist_ok=True)
 
 EXPORTS = ROOT / 'analysis/session2/exports'
-pair_df = pd.read_parquet(EXPORTS / 'pair_cache.parquet')
+pair_df = ensure_pair_cache(ROOT, EXPORTS, verbose=True)
 if args.include_yesno:
     print('Extending pair_cache with yes/no question pairs…')
     pair_df = extend_pair_cache_with_yesno(pair_df, EXPORTS)
@@ -90,9 +95,11 @@ def save(fig, name, out_dir):
 # ─────────────────────────────────────────────────────────────────────────────
 # Pre-compute: mean score per (variant × group × pair_type)
 # ─────────────────────────────────────────────────────────────────────────────
-hm = pair_df[pair_df['pair_type'] == 'HM'].copy()
-hh = pair_df[pair_df['pair_type'] == 'HH'].copy()
-mm = pair_df[pair_df['pair_type'] == 'MM'].copy()
+hm    = pair_df[pair_df['pair_type'] == 'HM'].copy()
+hh    = pair_df[pair_df['pair_type'] == 'HH'].copy()
+mm    = pair_df[pair_df['pair_type'] == 'MM'].copy()
+hm_7b = hm[hm['subject_2'].isin(MODELS_7B)]
+mm_7b = mm[mm['subject_2'].isin(MODELS_7B)]
 
 for label, (metric_name, col) in METRICS.items():
     print(f'\n── {metric_name} ({label}) ──')
@@ -101,13 +108,20 @@ for label, (metric_name, col) in METRICS.items():
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
 
     hh_means = hh.groupby('variant')[col].mean()
+    hh_sems  = hh.groupby('variant')[col].sem()
     mm_means = mm.groupby('variant')[col].mean()
+    mm_sems  = mm.groupby('variant')[col].sem()
 
     for grp in GROUP_ORDER:
         g_hm = hm[hm['subject_group_2'] == grp]
         if g_hm.empty:
             continue
-        ys = [g_hm[g_hm['variant'] == v][col].mean() for v in VARIANTS]
+        ys   = [g_hm[g_hm['variant'] == v][col].mean() for v in VARIANTS]
+        cis  = [1.96 * g_hm[g_hm['variant'] == v][col].sem() for v in VARIANTS]
+        ax.fill_between(range(3),
+                        [y - c for y, c in zip(ys, cis)],
+                        [y + c for y, c in zip(ys, cis)],
+                        color=GROUP_COLORS[grp], alpha=0.12)
         ax.plot(range(3), ys,
                 color=GROUP_COLORS[grp], lw=2, marker='o', markersize=7,
                 label=GROUP_SHORT[grp].replace('\n', ' '),
@@ -116,7 +130,12 @@ for label, (metric_name, col) in METRICS.items():
                 va='center', fontsize=7.5, color=GROUP_COLORS[grp])
 
     # HH ceiling
-    hh_ys = [hh_means.get(v, np.nan) for v in VARIANTS]
+    hh_ys  = [hh_means.get(v, np.nan) for v in VARIANTS]
+    hh_cis = [1.96 * hh_sems.get(v, 0) for v in VARIANTS]
+    ax.fill_between(range(3),
+                    [y - c for y, c in zip(hh_ys, hh_cis)],
+                    [y + c for y, c in zip(hh_ys, hh_cis)],
+                    color=HH_COLOR, alpha=0.10)
     ax.plot(range(3), hh_ys, color=HH_COLOR, lw=1.8, ls='--',
             marker='*', markersize=10, label='Human–Human',
             markeredgecolor='white', markeredgewidth=0.6)
@@ -124,7 +143,12 @@ for label, (metric_name, col) in METRICS.items():
             va='center', fontsize=7.5, color=HH_COLOR)
 
     # MM baseline
-    mm_ys = [mm_means.get(v, np.nan) for v in VARIANTS]
+    mm_ys  = [mm_means.get(v, np.nan) for v in VARIANTS]
+    mm_cis = [1.96 * mm_sems.get(v, 0) for v in VARIANTS]
+    ax.fill_between(range(3),
+                    [y - c for y, c in zip(mm_ys, mm_cis)],
+                    [y + c for y, c in zip(mm_ys, mm_cis)],
+                    color=MM_COLOR, alpha=0.10)
     ax.plot(range(3), mm_ys, color=MM_COLOR, lw=1.6, ls=':',
             marker='D', markersize=6, label='Model–Model',
             markeredgecolor='white', markeredgewidth=0.6)
@@ -166,5 +190,87 @@ for label, (metric_name, col) in METRICS.items():
     ax.tick_params(axis='y', rotation=0)
     plt.tight_layout()
     save(fig, f'inst_blind_vABC_{label}_groups{SUFFIX}.png', HEATMAP_DIR)
+
+    # ── 7B matched-size subset: same plots filtered to 7–8 B models ───────────
+    fig, ax = plt.subplots(figsize=(6.5, 4.5))
+
+    for grp in GROUP_ORDER:
+        g_hm7 = hm_7b[hm_7b['subject_group_2'] == grp]
+        if g_hm7.empty:
+            continue
+        ys  = [g_hm7[g_hm7['variant'] == v][col].mean() for v in VARIANTS]
+        cis = [1.96 * g_hm7[g_hm7['variant'] == v][col].sem() for v in VARIANTS]
+        ax.fill_between(range(3),
+                        [y - c for y, c in zip(ys, cis)],
+                        [y + c for y, c in zip(ys, cis)],
+                        color=GROUP_COLORS[grp], alpha=0.12)
+        ax.plot(range(3), ys,
+                color=GROUP_COLORS[grp], lw=2, marker='o', markersize=7,
+                label=GROUP_SHORT[grp].replace('\n', ' '),
+                markeredgecolor='white', markeredgewidth=0.8)
+        ax.text(2.08, ys[-1], f'{ys[-1]:.3f}',
+                va='center', fontsize=7.5, color=GROUP_COLORS[grp])
+
+    hh_ys  = [hh_means.get(v, np.nan) for v in VARIANTS]
+    hh_cis = [1.96 * hh_sems.get(v, 0) for v in VARIANTS]
+    ax.fill_between(range(3),
+                    [y - c for y, c in zip(hh_ys, hh_cis)],
+                    [y + c for y, c in zip(hh_ys, hh_cis)],
+                    color=HH_COLOR, alpha=0.10)
+    ax.plot(range(3), hh_ys, color=HH_COLOR, lw=1.8, ls='--',
+            marker='*', markersize=10, label='Human–Human',
+            markeredgecolor='white', markeredgewidth=0.6)
+    ax.text(2.08, hh_ys[-1], f'{hh_ys[-1]:.3f}',
+            va='center', fontsize=7.5, color=HH_COLOR)
+
+    mm_means_7b = mm_7b.groupby('variant')[col].mean()
+    mm_sems_7b  = mm_7b.groupby('variant')[col].sem()
+    mm_ys_7b  = [mm_means_7b.get(v, np.nan) for v in VARIANTS]
+    mm_cis_7b = [1.96 * mm_sems_7b.get(v, 0) for v in VARIANTS]
+    ax.fill_between(range(3),
+                    [y - c for y, c in zip(mm_ys_7b, mm_cis_7b)],
+                    [y + c for y, c in zip(mm_ys_7b, mm_cis_7b)],
+                    color=MM_COLOR, alpha=0.10)
+    ax.plot(range(3), mm_ys_7b, color=MM_COLOR, lw=1.6, ls=':',
+            marker='D', markersize=6, label='Model–Model',
+            markeredgecolor='white', markeredgewidth=0.6)
+    ax.text(2.08, mm_ys_7b[-1], f'{mm_ys_7b[-1]:.3f}',
+            va='center', fontsize=7.5, color=MM_COLOR)
+
+    ax.set_xticks(range(3))
+    ax.set_xticklabels([VAR_LABELS[v] for v in VARIANTS], fontsize=9)
+    ax.set_ylabel(f'Mean {metric_name}', fontsize=10)
+    ax.legend(fontsize=8, loc='upper center', bbox_to_anchor=(0.5, -0.14),
+              ncol=5, frameon=True)
+    ax.set_xlim(-0.3, 2.7)
+    plt.tight_layout()
+    save(fig, f'inst_blind_vABC_{label}_groups{SUFFIX}.png', LINEPLOT_DIR_7B)
+
+    # 7B heatmap
+    data7 = {}
+    for grp in GROUP_ORDER:
+        g_hm7 = hm_7b[hm_7b['subject_group_2'] == grp]
+        if g_hm7.empty:
+            continue
+        data7[GROUP_SHORT[grp].replace('\n', ' ')] = {
+            VAR_LABELS[v]: g_hm7[g_hm7['variant'] == v][col].mean()
+            for v in VARIANTS
+        }
+    data7['Human–Human'] = {VAR_LABELS[v]: hh_means.get(v, np.nan) for v in VARIANTS}
+    data7['Model–Model'] = {VAR_LABELS[v]: mm_means.get(v, np.nan) for v in VARIANTS}
+
+    heat7 = pd.DataFrame(data7).T[list(VAR_LABELS.values())]
+    vmin7, vmax7 = heat7.min().min(), heat7.max().max()
+
+    fig, ax = plt.subplots(figsize=(5.5, 4.5))
+    sns.heatmap(heat7, ax=ax, annot=True, fmt='.3f', cmap='YlOrRd',
+                vmin=vmin7, vmax=vmax7, linewidths=0.5, linecolor='white',
+                annot_kws={'size': 9}, cbar_kws={'shrink': 0.8})
+    ax.set_xlabel('Control variant', fontsize=10)
+    ax.set_ylabel('')
+    ax.tick_params(axis='x', rotation=0)
+    ax.tick_params(axis='y', rotation=0)
+    plt.tight_layout()
+    save(fig, f'inst_blind_vABC_{label}_groups{SUFFIX}.png', HEATMAP_DIR_7B)
 
 print(f'\nDone. Lineplots → {LINEPLOT_DIR}\n      Heatmaps  → {HEATMAP_DIR}')
