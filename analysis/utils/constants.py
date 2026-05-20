@@ -132,10 +132,10 @@ TIER_ORDER = ['VLM', 'VLM backbone decoder', 'standalone LLM', 'standalone LLM (
 TIER_COLORS = GROUP_COLORS  # alias — use GROUP_COLORS everywhere
 
 TIER_STYLE = {
-    'VLM':                    {'color': '#E53935', 'marker': 's', 'ls': '-',   'lw': 2.2},
-    'VLM backbone decoder':   {'color': '#E67E22', 'marker': 'o', 'ls': '--',  'lw': 1.8},
-    'standalone LLM':         {'color': '#2E7D32', 'marker': '^', 'ls': ':',   'lw': 1.8},
-    'standalone LLM (think)': {'color': '#8E24AA', 'marker': 'D', 'ls': '-.',  'lw': 1.8},
+    'VLM':                    {'color': '#E53935', 'marker': 'o', 'ls': '-',  'lw': 2.2, 'hollow': False},
+    'VLM backbone decoder':   {'color': '#E67E22', 'marker': 'o', 'ls': ':',  'lw': 1.8, 'hollow': True},
+    'standalone LLM':         {'color': '#2E7D32', 'marker': 's', 'ls': '-',  'lw': 1.8, 'hollow': False},
+    'standalone LLM (think)': {'color': '#8E24AA', 'marker': 's', 'ls': ':',  'lw': 1.8, 'hollow': True},
 }
 
 # ── Model registries used in prior tier / decoder comparisons ────────────────
@@ -236,12 +236,28 @@ MODEL_SIZE_B = {
     'Qwen2.5-7B':           7.0,
 }
 
-# ── Group marker shapes (used in per-model scatter / dumbbell plots) ──────────
+# ── Group marker shapes, hollow flags, and line styles ───────────────────────
+# VLM / SA-LLM → circle / square (filled)
+# Backbone / Think → same shape but hollow + dotted line
 GROUP_MARKER = {
-    'VLM':                    's',   # square
-    'VLM backbone decoder':   'o',   # circle
-    'standalone LLM':         '^',   # triangle up
-    'standalone LLM (think)': 'D',   # diamond
+    'VLM':                    'o',   # circle filled
+    'VLM backbone decoder':   'o',   # circle hollow
+    'standalone LLM':         's',   # square filled
+    'standalone LLM (think)': 's',   # square hollow
+}
+
+GROUP_HOLLOW = {
+    'VLM':                    False,
+    'VLM backbone decoder':   True,
+    'standalone LLM':         False,
+    'standalone LLM (think)': True,
+}
+
+GROUP_LINESTYLE = {
+    'VLM':                    '-',
+    'VLM backbone decoder':   ':',
+    'standalone LLM':         '-',
+    'standalone LLM (think)': ':',
 }
 
 # (vlm_model, lm_model, backbone_model, display_label)

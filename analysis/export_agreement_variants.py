@@ -116,9 +116,7 @@ def apply_axis_style(ax, grid_axis='y'):
 # ─────────────────────────────────────────────────────────────────────────────
 hm    = pair_df[pair_df['pair_type'] == 'HM'].copy()
 hh    = pair_df[pair_df['pair_type'] == 'HH'].copy()
-mm    = pair_df[pair_df['pair_type'] == 'MM'].copy()
 hm_7b = hm[hm['subject_2'].isin(MODELS_7B)]
-mm_7b = mm[mm['subject_2'].isin(MODELS_7B)]
 
 for label, (metric_name, col) in METRICS.items():
     print(f'\n── {metric_name} ({label}) ──')
@@ -129,8 +127,6 @@ for label, (metric_name, col) in METRICS.items():
 
     hh_means = hh.groupby('variant')[col].mean()
     hh_sems  = hh.groupby('variant')[col].sem()
-    mm_means = mm.groupby('variant')[col].mean()
-    mm_sems  = mm.groupby('variant')[col].sem()
 
     for grp in GROUP_ORDER:
         g_hm = hm[hm['subject_group_2'] == grp]
@@ -162,19 +158,6 @@ for label, (metric_name, col) in METRICS.items():
     ax.text(2.08, hh_ys[-1], f'{hh_ys[-1]:.3f}',
             va='center', fontsize=7.5, color=HH_COLOR)
 
-    # MM baseline
-    mm_ys  = [mm_means.get(v, np.nan) for v in VARIANTS]
-    mm_cis = [1.96 * mm_sems.get(v, 0) for v in VARIANTS]
-    ax.fill_between(range(3),
-                    [y - c for y, c in zip(mm_ys, mm_cis)],
-                    [y + c for y, c in zip(mm_ys, mm_cis)],
-                    color=MM_COLOR, alpha=0.10)
-    ax.plot(range(3), mm_ys, color=MM_COLOR, lw=1.6, ls=':',
-            marker='D', markersize=6, label='Model–Model',
-            markeredgecolor='white', markeredgewidth=0.6)
-    ax.text(2.08, mm_ys[-1], f'{mm_ys[-1]:.3f}',
-            va='center', fontsize=7.5, color=MM_COLOR)
-
     ax.set_xticks(range(3))
     ax.set_xticklabels([VAR_LABELS[v] for v in VARIANTS], fontsize=9)
     ax.set_ylabel(f'Mean {metric_name}', fontsize=10)
@@ -195,7 +178,6 @@ for label, (metric_name, col) in METRICS.items():
             for v in VARIANTS
         }
     data['Human–Human'] = {VAR_LABELS[v]: hh_means.get(v, np.nan) for v in VARIANTS}
-    data['Model–Model'] = {VAR_LABELS[v]: mm_means.get(v, np.nan) for v in VARIANTS}
 
     heat_df = pd.DataFrame(data).T[list(VAR_LABELS.values())]
 
@@ -248,20 +230,6 @@ for label, (metric_name, col) in METRICS.items():
     ax.text(2.08, hh_ys[-1], f'{hh_ys[-1]:.3f}',
             va='center', fontsize=7.5, color=HH_COLOR)
 
-    mm_means_7b = mm_7b.groupby('variant')[col].mean()
-    mm_sems_7b  = mm_7b.groupby('variant')[col].sem()
-    mm_ys_7b  = [mm_means_7b.get(v, np.nan) for v in VARIANTS]
-    mm_cis_7b = [1.96 * mm_sems_7b.get(v, 0) for v in VARIANTS]
-    ax.fill_between(range(3),
-                    [y - c for y, c in zip(mm_ys_7b, mm_cis_7b)],
-                    [y + c for y, c in zip(mm_ys_7b, mm_cis_7b)],
-                    color=MM_COLOR, alpha=0.10)
-    ax.plot(range(3), mm_ys_7b, color=MM_COLOR, lw=1.6, ls=':',
-            marker='D', markersize=6, label='Model–Model',
-            markeredgecolor='white', markeredgewidth=0.6)
-    ax.text(2.08, mm_ys_7b[-1], f'{mm_ys_7b[-1]:.3f}',
-            va='center', fontsize=7.5, color=MM_COLOR)
-
     ax.set_xticks(range(3))
     ax.set_xticklabels([VAR_LABELS[v] for v in VARIANTS], fontsize=9)
     ax.set_ylabel(f'Mean {metric_name}', fontsize=10)
@@ -284,7 +252,6 @@ for label, (metric_name, col) in METRICS.items():
             for v in VARIANTS
         }
     data7['Human–Human'] = {VAR_LABELS[v]: hh_means.get(v, np.nan) for v in VARIANTS}
-    data7['Model–Model'] = {VAR_LABELS[v]: mm_means.get(v, np.nan) for v in VARIANTS}
 
     heat7 = pd.DataFrame(data7).T[list(VAR_LABELS.values())]
     vmin7, vmax7 = heat7.min().min(), heat7.max().max()

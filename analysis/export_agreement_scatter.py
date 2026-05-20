@@ -30,15 +30,15 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 
 from utils.constants import GROUP_COLORS, GROUP_ORDER
-from build_pair_cache import build_pair_cache
-from config import MODEL_LABEL_SHORT as LABEL_MAP, extend_pair_cache_with_yesno
+from export_helpers import get_exports_dir, load_pair_cache
+from config import MODEL_LABEL_SHORT as LABEL_MAP
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--include_yesno', action='store_true',
                     help='Extend pair cache with yes/no question pairs.')
 args = parser.parse_args()
 
-EXPORTS = ROOT / 'analysis/session2/exports'
+EXPORTS = get_exports_dir(ROOT)
 OUT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/agreement_scatter'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -47,15 +47,24 @@ plt.rcParams.update({
     'axes.spines.top':   False,
     'axes.spines.right': False,
     'axes.grid':         False,
+    'axes.labelsize':    11,
+    'axes.titlesize':    13,
+    'xtick.labelsize':   10,
+    'ytick.labelsize':   10,
 })
 
 VARIANTS      = ['C', 'B', 'A']
 VARIANT_LABEL = {'C': 'Original (C)', 'B': 'Weaker (B)', 'A': 'Pronominalized (A)'}
 
 
+def hh_participant_count(df: pd.DataFrame) -> int:
+    hh = df[df['pair_type'] == 'HH']
+    return len(set(hh['subject_1']).union(set(hh['subject_2'])))
+
+
 def save(fig, name):
     path = OUT_DIR / name
-    fig.savefig(path, dpi=150, bbox_inches='tight')
+    fig.savefig(path, dpi=220, bbox_inches='tight')
     plt.close(fig)
     print(f'  [agreement_scatter] {name}')
 
@@ -91,13 +100,10 @@ LABEL_OFFSETS = {
 
 # ── Load / update pair_cache ──────────────────────────────────────────────────
 print('Building / updating pair_cache…')
-pair_df = build_pair_cache(ROOT, EXPORTS, verbose=True)
-if args.include_yesno:
-    print('Extending pair_cache with yes/no question pairs…')
-    pair_df = extend_pair_cache_with_yesno(pair_df, EXPORTS)
+pair_df = load_pair_cache(ROOT, include_yesno=args.include_yesno, verbose=True)
 
 n_questions = pair_df[pair_df['pair_type'] == 'HH']['question_id'].nunique()
-n_humans    = pair_df[pair_df['pair_type'] == 'HH']['subject_1'].nunique()
+n_humans    = hh_participant_count(pair_df)
 YESNO_TAG   = '_yesno' if args.include_yesno else ''
 SUFFIX      = f'_q{n_questions}_h{n_humans}{YESNO_TAG}'
 

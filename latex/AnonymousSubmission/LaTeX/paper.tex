@@ -18,7 +18,7 @@
 \usepackage{multirow}
 
 % Search for figures: figures/ subfolder first, then analysis/figures
-\graphicspath{{./}{figures/}{figures/instruction_effect/}{figures/agreement_variants/}{figures/agreement_heatmaps/}{figures/agreement_scatter/}{figures/accuracy_quadrant/}{figures/confidence_dist/}{figures/scale_plots/}{figures/entity_analysis/}{../../../analysis/figures/}{../../../analysis/figures/agreements/}}
+\graphicspath{{./}{figures/}{figures/main/}{figures/answer_dist/}{figures/agreement_variants/}{figures/agreement_heatmaps/}{figures/agreement_scatter/}{figures/agreement_scale/}{figures/accuracy_scatter/}{figures/supplementary/}{../../../analysis/figures/}{../../../analysis/figures/agreements/}}
 
 % TODO markers for placeholder content
 \newcommand{\TODO}[1]{\textbf{[TODO: #1]}}
@@ -420,9 +420,9 @@ the structure of a reasonable uncertainty response.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.49\textwidth]{answer_dist/inst_blind_vC_yn_q26_h40}%
+\includegraphics[width=0.49\textwidth]{main/fig2_answer_dist_yesno}%
 \hfill%
-\includegraphics[width=0.49\textwidth]{answer_dist/inst_blind_vC_number_q26_h40}
+\includegraphics[width=0.49\textwidth]{main/fig2_answer_dist_number}
 \caption{Answer distribution biases under the instructed blind condition on the
 human-study question subset ($q=26$ yes/no, $q=26$ number; $h=40$
 participants). \textbf{Left (yes/no):} VLMs still overproduce a default answer
@@ -440,47 +440,42 @@ are structured but not simply human-like.}
 The analyses in this section move from \emph{how much} blind performance models
 obtain to \emph{how} they produce it: whether their priors survive lexical
 degradation, whether a small instruction changes their willingness to commit,
-and whether those commitments are calibrated. Figure~\ref{fig:degradation}
-shows the architecture-level accuracy pattern across control variants, and
-Figure~\ref{fig:agreement_variant} shows the matching semantic-alignment trend.
+and whether those commitments are calibrated. Figure~\ref{fig:scale_align}
+shows the human-alignment pattern by model group and scale, and
+Figure~\ref{fig:agreement_variant} shows how that alignment weakens under
+control-variant degradation.
 
-\subsection{Control Question Degradation}
+\subsection{Scale and Control Question Degradation}
 \label{sec:degradation}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{accuracy_variants/inst_blind_vABC_groups_7b}
-\caption{Control-variant degradation curves across Original~(C)
-$\rightarrow$ Weaker~(B) $\rightarrow$ Pronominalized~(A) for the matched-size
-7B--8B architecture comparison on the human-study subset ($q=113$, $h=40$)
-under the instructed blind condition. Model groups lose accuracy more sharply
-than humans as entity anchors are removed, confirming that blind success relies
-heavily on entity-specific priors.}
-\label{fig:degradation}
+\includegraphics[width=\columnwidth]{main/fig1_scale_alignment}
+\caption{Human--model SBERT agreement versus model scale by model group on the
+inst\_blind variant-C human-comparison subset. Alignment does not improve
+monotonically with parameter count; backbone decoders sit closest to the human
+reference across scales, indicating that architecture matters more than raw
+size.}
+\label{fig:scale_align}
 \end{figure}
 
-Figure~\ref{fig:degradation} reveals the core finding: as entity-specific
-lexical content is progressively removed---from the original question (C) to a
-hypernym-weakened variant (B) to a fully pronominalized form (A)---model
-accuracy drops substantially for all groups (VLM: $0.455 \to 0.364$,
-backbone decoder: $0.506 \to 0.332$), while human accuracy decreases by only
-$0.035$ ($0.262 \to 0.227$). The asymmetric degradation confirms that model
-accuracy under blind conditions is driven by entity-specific corpus-frequency
-priors: removing the entity name (``dog'') for a pronoun (``it'') collapses the
-prior signal, whereas humans can reason about the abstract question structure
-regardless. The backbone decoder shows the steepest absolute drop
-($\Delta = 0.174$), suggesting its blind advantage is particularly reliant on
-entity-specific n-gram co-occurrence rather than general syntactic patterns.
-Fine-grained per-entity-type degradation curves are in the Appendix.
+Figure~\ref{fig:scale_align} previews the main architectural result from a
+scale perspective: backbone decoders remain closer to humans than full VLMs or
+standalone LLMs across parameter ranges, and simple scaling does not erase that
+gap. The control-variant perturbations then show that even the stronger
+human-aligned groups rely on lexical anchors. As entity-specific content is
+progressively removed---from the original question (C) to a hypernym-weakened
+variant (B) to a fully pronominalized form (A)---human-model semantic
+alignment drops for every group, confirming that blind success is carried by
+entity-specific prior signals rather than abstract reasoning alone.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_sbert_lineplot_q88_h40}
+\includegraphics[width=\columnwidth]{main/fig3_agreement_sbert_variants}
 \caption{Human--model SBERT agreement across control variants
   (Original~C $\rightarrow$ Weaker~B $\rightarrow$ Pronominalized~A) on the
   free-text human-comparison subset ($q=88$, $h=39$).
-  All model groups lose alignment as entity anchors are removed, mirroring
-  the accuracy degradation in Figure~\ref{fig:degradation}. The human--human
+  All model groups lose alignment as entity anchors are removed. The human--human
   ceiling (dashed) drops only slightly, confirming that the degradation is
   model-specific. Full results for all metrics (chrF, ROUGE-1, BERTScore,
   SimCSE, Jaccard, exact match) are in the supplementary heatmaps.}
@@ -507,7 +502,7 @@ of blind outputs are hedging responses, varying by model family.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{instruction_effect/merged_abstention_vC_q113}
+\includegraphics[width=\columnwidth]{main/fig4_instruction_effect}
 \caption{Response behavior under Blind and Blind+Inst for variant~C on the
 human-study subset. The instruction primarily reduces abstention and converts
 hedged outputs into committed answers rather than improving grounding. This
@@ -562,7 +557,7 @@ token level.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{confidence_dist/output_class_shift_q113_h40}
+\includegraphics[width=\columnwidth]{main/fig5_confidence_output_class}
 \caption{Distribution of mean token probability by output class under Blind and
 Blind+Inst on the human-study subset ($q=113$, $h=40$), shown as violin
 distributions by model group. Wrong committed answers remain in a high-
@@ -683,7 +678,7 @@ questions by entity type (left) and the resulting correlations (right).
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=\textwidth]{entity_analysis/fig_hm_alignment_m348}
+\includegraphics[width=\textwidth]{main/fig6_entity_alignment}
 \caption{\textbf{Left:} distribution of 113 study questions by entity type.
   Object and person dominate; place, product, text, and vehicle have small
   samples ($n \leq 5$).
@@ -969,7 +964,7 @@ Figure~\ref{fig:degradation}.}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_scatter/inst_blind_vC_sbert_exact_models_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_scatter/inst_blind_vC_sbert_exact_models_q113_h40_yesno}
 \caption{Per-model human--model agreement on the free-text subset
 ($q=88$, $h=39$). X-axis: mean SBERT similarity to human answers. Y-axis:
 mean exact-match agreement. This figure makes the same group separation as the
@@ -1023,84 +1018,84 @@ removal reduces human--model alignment independent of the metric used.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_simcse_lineplot_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_simcse_lineplot_q113_h40_yesno}
 \caption{Human--model SimCSE cosine agreement across control variants (by model group).}
 \label{fig:av_simcse}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_simcse_heatmap_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_simcse_heatmap_q113_h40_yesno}
 \caption{SimCSE agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_simcse_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_bertscore_lineplot_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_bertscore_lineplot_q113_h40_yesno}
 \caption{Human--model BERTScore F1 across control variants.}
 \label{fig:av_bertscore}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_bertscore_heatmap_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_bertscore_heatmap_q113_h40_yesno}
 \caption{BERTScore F1 agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_bertscore_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_chrf_lineplot_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_chrf_lineplot_q113_h40_yesno}
 \caption{Human--model chrF across control variants.}
 \label{fig:av_chrf}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_chrf_heatmap_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_chrf_heatmap_q113_h40_yesno}
 \caption{chrF agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_chrf_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_rouge1_lineplot_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_rouge1_lineplot_q113_h40_yesno}
 \caption{Human--model ROUGE-1 across control variants.}
 \label{fig:av_rouge1}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_rouge1_heatmap_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_rouge1_heatmap_q113_h40_yesno}
 \caption{ROUGE-1 agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_rouge1_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_jaccard_lineplot_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_jaccard_lineplot_q113_h40_yesno}
 \caption{Human--model token Jaccard across control variants.}
 \label{fig:av_jaccard}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_jaccard_heatmap_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_jaccard_heatmap_q113_h40_yesno}
 \caption{Token Jaccard agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_jaccard_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_exact_lineplot_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_exact_lineplot_q113_h40_yesno}
 \caption{Human--model exact-match rate across control variants.}
 \label{fig:av_exact}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_exact_heatmap_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_exact_heatmap_q113_h40_yesno}
 \caption{Exact-match heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_exact_heat}
 \end{figure}
@@ -1116,7 +1111,7 @@ three control variants.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_sbert_heatmap_q88_h40}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_sbert_heatmap_q113_h40_yesno}
 \caption{SBERT cosine agreement heatmap (group $\times$ variant, HM pairs).
 Colour scale shared with Figure~\ref{fig:agreement_variant}.}
 \label{fig:av_sbert_heat}

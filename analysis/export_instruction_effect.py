@@ -28,8 +28,7 @@ from utils.constants import GROUP_COLORS, GROUP_ORDER
 from utils.abstention import classify
 from utils.load_session import clean_answer
 from utils.model_registry import MODEL_TYPE, default_all_models
-
-EXPORTS = ROOT / "analysis/session2/exports"
+from export_helpers import read_response_exports
 OUT_DIR = ROOT / "latex/AnonymousSubmission/LaTeX/figures/instruction_effect"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -130,11 +129,9 @@ print(f'  inst_blind: {len(df_full_i)} rows, '
       f'{df_full_i["model"].nunique()} models')
 
 print('\nLoading 113-question human-study subset from exports…')
-df_sub_b = pd.read_csv(EXPORTS / 'responses_model_blind.csv')
-df_sub_i = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
-# Keep only variant C (same as full dataset — already variant-C only, but explicit)
-df_sub_b = df_sub_b[df_sub_b['variant'] == VARIANT].copy()
-df_sub_i = df_sub_i[df_sub_i['variant'] == VARIANT].copy()
+exports = read_response_exports(ROOT, variant=VARIANT)
+df_sub_b = exports['model_blind']
+df_sub_i = exports['model_inst_blind']
 N_SUB = df_sub_b['question_id'].nunique()
 print(f'  blind: {len(df_sub_b)} rows, {N_SUB} questions, '
       f'{df_sub_b["model"].nunique()} models')
@@ -289,7 +286,7 @@ def _draw_response_change(ax, df_inst):
 
 
 def _draw_merged_abstention(ax, df_inst):
-    """Offset-dumbbell merged plot: soft (solid, filled) and hard (dashed, open)
+    """Offset-dumbbell merged plot: soft (dotted, hollow) and hard (solid, filled)
     on one shared x-axis. Soft row at y, hard row at y + HARD_OFFSET.
     Arrows (ax.annotate) show blind → inst_blind direction.
     Style after Gavrikov et al. (2024) Fig. 2.
@@ -316,27 +313,27 @@ def _draw_merged_abstention(ax, df_inst):
             yp = y_pos[row['model']]
             yh = yp + HARD_OFFSET
 
-            # ── Soft: solid arrow, filled markers ───────────────────────────
+            # ── Soft: dotted arrow, open/hollow markers ─────────────────────
             ax.annotate("",
                 xy=(row['soft_i'], yp), xytext=(row['soft_b'], yp),
+                arrowprops=dict(arrowstyle='-|>', color=c, lw=1.2,
+                               linestyle='dotted', mutation_scale=7, alpha=0.55),
+                annotation_clip=False, zorder=2)
+            ax.scatter([row['soft_b']], [yp], color=c, s=50, zorder=3,
+                       marker='o', facecolors='none', edgecolors=c, linewidths=1.0)
+            ax.scatter([row['soft_i']], [yp], color=c, s=50, zorder=3,
+                       marker='s', facecolors='none', edgecolors=c, linewidths=1.0)
+
+            # ── Hard: solid arrow, filled markers ───────────────────────────
+            ax.annotate("",
+                xy=(row['hard_i'], yh), xytext=(row['hard_b'], yh),
                 arrowprops=dict(arrowstyle='-|>', color=c, lw=1.5,
                                mutation_scale=8, alpha=0.75),
                 annotation_clip=False, zorder=2)
-            ax.scatter([row['soft_b']], [yp], color=c, s=50, zorder=3,
-                       marker='o', edgecolors='white', linewidths=0.5)
-            ax.scatter([row['soft_i']], [yp], color=c, s=50, zorder=3,
-                       marker='s', edgecolors='white', linewidths=0.5)
-
-            # ── Hard: dashed arrow, open markers ────────────────────────────
-            ax.annotate("",
-                xy=(row['hard_i'], yh), xytext=(row['hard_b'], yh),
-                arrowprops=dict(arrowstyle='-|>', color=c, lw=1.2,
-                               linestyle='dashed', mutation_scale=7, alpha=0.55),
-                annotation_clip=False, zorder=2)
             ax.scatter([row['hard_b']], [yh], color=c, s=38, zorder=3,
-                       marker='o', facecolors='none', edgecolors=c, linewidths=1.0)
+                       marker='o', edgecolors='white', linewidths=0.5)
             ax.scatter([row['hard_i']], [yh], color=c, s=38, zorder=3,
-                       marker='s', facecolors='none', edgecolors=c, linewidths=1.0)
+                       marker='s', edgecolors='white', linewidths=0.5)
 
             # Model label anchored to y-axis, centred between the two rows
             ax.text(-0.01, yp + HARD_OFFSET / 2, row['label'],
@@ -352,16 +349,16 @@ def _draw_merged_abstention(ax, df_inst):
 
     # Legend below — all 4 entries in one horizontal row
     handles = [
+        mlines.Line2D([], [], color='#888888', marker='o', ls=':',  ms=6,
+                      markerfacecolor='none', markeredgecolor='#888888',
+                      label='soft / blind'),
+        mlines.Line2D([], [], color='#888888', marker='s', ls=':',  ms=6,
+                      markerfacecolor='none', markeredgecolor='#888888',
+                      label='soft / inst_blind'),
         mlines.Line2D([], [], color='#888888', marker='o', ls='-', ms=6,
-                      markeredgecolor='white', label='soft / blind'),
+                      markeredgecolor='white', label='hard / blind'),
         mlines.Line2D([], [], color='#888888', marker='s', ls='-', ms=6,
-                      markeredgecolor='white', label='soft / inst_blind'),
-        mlines.Line2D([], [], color='#888888', marker='o', ls='--', ms=6,
-                      markerfacecolor='none', markeredgecolor='#888888',
-                      label='hard / blind'),
-        mlines.Line2D([], [], color='#888888', marker='s', ls='--', ms=6,
-                      markerfacecolor='none', markeredgecolor='#888888',
-                      label='hard / inst_blind'),
+                      markeredgecolor='white', label='hard / inst_blind'),
     ]
     ax.legend(handles=handles, fontsize=8, frameon=True, ncol=4,
               loc='upper center', bbox_to_anchor=(0.5, -0.08))

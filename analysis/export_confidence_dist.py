@@ -37,12 +37,13 @@ sys.path.insert(0, str(ROOT / 'analysis'))
 
 from utils.constants import MODEL_FAMILY, MODEL_FAMILY_COLORS, GROUP_COLORS, GROUP_ORDER
 from utils.abstention import classify
+from export_helpers import get_exports_dir, read_response_exports
 from config import MODEL_LABEL_SHORT
 
 OUT_DIR   = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/confidence_dist'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-EXPORTS   = ROOT / 'analysis/session2/exports'
+EXPORTS   = get_exports_dir(ROOT)
 
 HUMAN_COLOR = '#1565C0'
 
@@ -221,11 +222,12 @@ print(f'\nLoaded {len(df):,} rows | {df["model"].nunique()} models | {df["questi
 
 # ── Load human data (inst_blind, all variants) ────────────────────────────────
 print('\nLoading human data…')
-human_df = pd.read_csv(EXPORTS / 'responses_human.csv')
+exports = read_response_exports(ROOT)
+human_df = exports['human']
 model_meta = pd.concat([
-    pd.read_csv(EXPORTS / 'responses_model_blind.csv')[['question_id', 'model', 'model_group', 'gt']],
-    pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')[['question_id', 'model', 'model_group', 'gt']],
-    pd.read_csv(EXPORTS / 'responses_model_control.csv')[['question_id', 'model', 'model_group', 'gt']],
+    exports['model_blind'][['question_id', 'model', 'model_group', 'gt']],
+    exports['model_inst_blind'][['question_id', 'model', 'model_group', 'gt']],
+    exports['model_control'][['question_id', 'model', 'model_group', 'gt']],
 ], ignore_index=True).drop_duplicates()
 
 model_group_map = model_meta.drop_duplicates('model').set_index('model')['model_group'].to_dict()
@@ -259,7 +261,7 @@ def model_label(m):
     return MODEL_LABEL_SHORT.get(m, m)
 
 
-# ── Figure 0: confidence by output class and model group (blind vs inst_blind) ─
+# ── Figure 0: confidence distributions by output class and model group ───────
 CLASS_ORDER = [
     'hallucinated_correct',
     'hallucinated_wrong',
@@ -283,40 +285,55 @@ plot_df = df[df['condition'].isin(['blind', 'inst_blind'])].copy()
 plot_df = plot_df[plot_df['output_class'].isin(CLASS_ORDER) & plot_df['model_group'].isin(GROUP_ORDER)]
 
 if not plot_df.empty:
-    agg_cls = (plot_df.groupby(['condition', 'output_class', 'model_group'])['confidence']
-                      .mean()
-                      .reset_index())
-    fig, axes = plt.subplots(1, 2, figsize=(11.8, 4.8), sharey=True)
-    width = 0.18
+    fig, axes = plt.subplots(1, 2, figsize=(12.4, 4.9), sharey=True)
+    width = 0.16
     x = np.arange(len(CLASS_ORDER))
 
     for ax, condition in zip(axes, ['blind', 'inst_blind']):
-        sub = agg_cls[agg_cls['condition'] == condition]
+        sub = plot_df[plot_df['condition'] == condition]
         for i, grp in enumerate(GROUP_ORDER):
-            gsub = sub[sub['model_group'] == grp].set_index('output_class')
-            ys = [gsub['confidence'].get(cls, np.nan) if 'confidence' in gsub else np.nan for cls in CLASS_ORDER]
-            xpos = x + (i - 1.5) * width
-            ax.bar(
-                xpos,
-                ys,
-                width=width,
-                color=GROUP_COLORS[grp],
-                alpha=0.9,
-                label=GROUP_SHORT[grp],
-                edgecolor='white',
-                linewidth=0.6,
+            data = []
+            positions = []
+            for j, cls in enumerate(CLASS_ORDER):
+                vals = sub[(sub['model_group'] == grp) & (sub['output_class'] == cls)]['confidence'].dropna().values
+                if len(vals) == 0:
+                    continue
+                data.append(vals)
+                positions.append(j + (i - 1.5) * width)
+            if not data:
+                continue
+
+            vp = ax.violinplot(
+                data,
+                positions=positions,
+                widths=width * 0.95,
+                showmeans=False,
+                showmedians=True,
+                showextrema=False,
             )
+            for body in vp['bodies']:
+                body.set_facecolor(GROUP_COLORS[grp])
+                body.set_edgecolor('white')
+                body.set_linewidth(0.6)
+                body.set_alpha(0.35)
+            vp['cmedians'].set_color(GROUP_COLORS[grp])
+            vp['cmedians'].set_linewidth(1.5)
+
         apply_axis_style(ax, grid_axis='y')
         ax.set_xticks(x)
         ax.set_xticklabels([CLASS_LABELS[c] for c in CLASS_ORDER], fontsize=9)
         ax.set_ylim(0, 1.02)
         ax.set_title(COND_LABELS[condition], fontsize=12, fontweight='bold')
         ax.set_xlabel('Output class', fontsize=10)
+
     axes[0].set_ylabel('Mean token probability', fontsize=10)
-    handles, labels = axes[1].get_legend_handles_labels()
-    fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.01),
+    handles = [
+        mlines.Line2D([], [], color=GROUP_COLORS[g], lw=6, alpha=0.6, label=GROUP_SHORT[g])
+        for g in GROUP_ORDER
+    ]
+    fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.5, -0.01),
                ncol=4, frameon=True, fontsize=8)
-    fig.suptitle('Confidence by Output Class and Model Group', fontsize=13, y=1.03)
+    fig.suptitle('Confidence Distributions by Output Class and Model Group', fontsize=13, y=1.03)
     fig.tight_layout()
     save(fig, f'output_class_shift{HUMAN_SUFFIX}.png')
 

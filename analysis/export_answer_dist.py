@@ -28,10 +28,8 @@ from utils.vqa import VQAAnswerMapper, extract_number, bin_number
 from export_helpers import read_response_exports
 from config import MODELS_7B
 
-OUT_DIR    = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/answer_dist'
-OUT_DIR_7B = OUT_DIR / '7b'
+OUT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/answer_dist'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-OUT_DIR_7B.mkdir(parents=True, exist_ok=True)
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 SOURCE_ORDER = [
@@ -61,14 +59,11 @@ plt.rcParams.update({
 })
 
 
-def save(fig, name, out=None):
-    if out is None:
-        out = OUT_DIR
-    path = out / name
+def save(fig, name):
+    path = OUT_DIR / name
     fig.savefig(path, dpi=220, bbox_inches='tight')
     plt.close(fig)
-    tag = 'answer_dist_barplot/7b' if out == OUT_DIR_7B else 'answer_dist_barplot'
-    print(f'  [{tag}] {name}')
+    print(f'  [answer_dist_barplot] {name}')
 
 
 # ── Load data ─────────────────────────────────────────────────────────────────
@@ -282,8 +277,8 @@ for condition in CONDITIONS:
     label = COND_LABELS[condition]
     print(f'\n── {label} (7B) ──')
     fig = plot_yn(make_yn_stack(all_df_7b, condition))
-    save(fig, f'{condition}_vC_yn_q{N_YN}_h{N_HUMANS}.png', OUT_DIR_7B)
+    save(fig, f'{condition}_vC_yn_q{N_YN}_h{N_HUMANS}_7b.png')
     fig = plot_num(make_num_stack(all_df_7b, condition))
-    save(fig, f'{condition}_vC_number_q{N_NUM}_h{N_HUMANS}.png', OUT_DIR_7B)
+    save(fig, f'{condition}_vC_number_q{N_NUM}_h{N_HUMANS}_7b.png')
 
 print('\nDone. All figures saved to:', OUT_DIR)

@@ -33,8 +33,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 
 from utils.constants import GROUP_COLORS, VARIANT_ORDER
-from utils.load_session import load_human_data
-from build_pair_cache import build_pair_cache
+from export_helpers import load_human_subset, load_pair_cache, read_response_exports
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CLI argument
@@ -46,7 +45,6 @@ args = parser.parse_args()
 MIN_ANSWERS = args.min_answers
 SUFFIX = f'_m{MIN_ANSWERS}'
 
-EXPORTS = ROOT / 'analysis/session2/exports'
 OUT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/entity_analysis'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -65,7 +63,7 @@ GROUP_PALETTE = {g: GROUP_COLORS[g] for g in GROUPS_SHOW}
 # 1. Get common_qids via load_human_data (respects min_answers)
 # ─────────────────────────────────────────────────────────────────────────────
 print(f'\nLoading human data (min_answers={MIN_ANSWERS})…')
-_, common_qids, _, _ = load_human_data(ROOT, min_answers=MIN_ANSWERS,
+_, common_qids, _, _ = load_human_subset(ROOT, min_answers=MIN_ANSWERS,
                                         translate=False, verbose=True)
 print(f'Common question IDs: {len(common_qids)}')
 
@@ -73,18 +71,12 @@ print(f'Common question IDs: {len(common_qids)}')
 # 2. Load pre-processed exports and filter to common_qids
 # ─────────────────────────────────────────────────────────────────────────────
 print('\nLoading exports…')
-human       = pd.read_csv(EXPORTS / 'responses_human.csv')
-model_blind = pd.read_csv(EXPORTS / 'responses_model_blind.csv')
-model_inst  = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
-model_ctrl  = pd.read_csv(EXPORTS / 'responses_model_control.csv')
-pair_df     = build_pair_cache(ROOT, EXPORTS, verbose=True)
-
-# Filter everything to the human-study subset
-human       = human[human['question_id'].isin(common_qids)].copy()
-model_blind = model_blind[model_blind['question_id'].isin(common_qids)].copy()
-model_inst  = model_inst[model_inst['question_id'].isin(common_qids)].copy()
-model_ctrl  = model_ctrl[model_ctrl['question_id'].isin(common_qids)].copy()
-pair_df     = pair_df[pair_df['question_id'].isin(common_qids)].copy()
+exports = read_response_exports(ROOT, subset_qids=common_qids)
+human       = exports['human']
+model_blind = exports['model_blind']
+model_inst  = exports['model_inst_blind']
+model_ctrl  = exports['model_control']
+pair_df     = load_pair_cache(ROOT, subset_qids=common_qids, verbose=True)
 
 print(f'  human rows: {len(human)} | model_blind: {len(model_blind)} '
       f'| model_inst: {len(model_inst)} | pairs: {len(pair_df)}')

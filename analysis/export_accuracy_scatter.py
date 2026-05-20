@@ -41,7 +41,7 @@ from utils.constants import (
     GROUP_COLORS, GROUP_ORDER, GROUP_MARKER,
     MODEL_FAMILY, MODEL_FAMILY_COLORS,
 )
-from utils.load_session import load_human_data
+from export_helpers import load_human_subset, read_export
 from config import MODELS_ALL, MODEL_GROUP, MIN_ANSWERS_DEFAULT
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -67,7 +67,6 @@ EXCLUDE_UNITS: list[str] = [
     'Mistral',  # constant zero — verbose abstentions → all incorrect
 ]
 
-EXPORTS   = ROOT / 'analysis/session2/exports'
 OUT_DIR   = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/accuracy_scatter'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 AGG_SHORT = {'model_groups': 'groups', 'model_family': 'family'}[AGG]
@@ -86,7 +85,7 @@ VAR_LABELS = {'C': 'Original (C)', 'B': 'Weaker (B)', 'A': 'Pronoun. (A)'}
 # Load human-study subset
 # ─────────────────────────────────────────────────────────────────────────────
 print(f'\nLoading human data (min_answers={args.min_answers})…')
-participants, common_qids, human_df_full, _ = load_human_data(
+participants, common_qids, human_df_full, _ = load_human_subset(
     ROOT, min_answers=args.min_answers, translate=False, verbose=True)
 n_humans = len(participants)
 print(f'  common_qids: {len(common_qids)}  |  participants: {n_humans}')
@@ -95,9 +94,8 @@ print(f'  common_qids: {len(common_qids)}  |  participants: {n_humans}')
 # Load model responses (inst_blind) filtered to human-study subset
 # ─────────────────────────────────────────────────────────────────────────────
 print('\nLoading model responses (inst_blind)…')
-df_mi = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
-df_mi = df_mi[df_mi['question_id'].isin(common_qids) &
-              df_mi['model'].isin(MODELS_ALL)].copy()
+df_mi = read_export(ROOT, 'responses_model_inst_blind.csv', subset_qids=common_qids)
+df_mi = df_mi[df_mi['model'].isin(MODELS_ALL)].copy()
 
 # Attach model_family if not already present
 df_mi['model_family'] = df_mi['model'].map(MODEL_FAMILY)

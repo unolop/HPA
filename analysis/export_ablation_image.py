@@ -28,11 +28,14 @@ import sys
 import json
 from pathlib import Path
 from collections import defaultdict
+from itertools import combinations
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
+from scipy.stats import sem as scipy_sem
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -321,5 +324,262 @@ for model in models_plot:
 
 summary = pd.DataFrame(rows)
 print(summary.to_string(index=False))
+
+# ── Agreement across image conditions ─────────────────────────────────────────
+# For each variant (C→B→A), compute pairwise agreement between image conditions.
+# Metrics: exact match, token Jaccard, chrF.
+# ─────────────────────────────────────────────────────────────────────────────
+
+VARIANT_KEYS = ['question', 'weaker_object', 'pronominalized']
+VARIANT_LABELS_AGR = {
+    'question':       'Original (C)',
+    'weaker_object':  'Weaker (B)',
+    'pronominalized': 'Pronoun. (A)',
+}
+
+
+def load_all_variants(path: Path, mapper: VQAAnswerMapper) -> pd.DataFrame:
+    rows = []
+    with open(path) as fh:
+        for line in fh:
+            ex  = json.loads(line.strip())
+            qid = int(ex['question_id'])
+            for vkey in VARIANT_KEYS:
+                raw = ex.get('generated_answers', {}).get(vkey, '')
+                ans = preprocess_answer(str(raw), strip_think=True)
+                rows.append({'qid': qid, 'variant': vkey, 'answer': ans})
+    return pd.DataFrame(rows)
+
+
+def _jaccard(a: str, b: str) -> float:
+    t1, t2 = set(a.split()), set(b.split())
+    u = t1 | t2
+    return len(t1 & t2) / len(u) if u else 1.0
+
+
+def _chrf(a: str, b: str) -> float:
+    try:
+        from sacrebleu.metrics import CHRF
+        return CHRF(beta=2).sentence_score(a, [b]).score / 100.0
+    except Exception:
+        return float('nan')
+
+
+def compute_agreement(df1: pd.DataFrame, df2: pd.DataFrame) -> pd.DataFrame:
+    merged = df1.merge(df2, on=['qid', 'variant'], suffixes=('_1', '_2'))
+    merged['exact']   = (merged['answer_1'] == merged['answer_2']).astype(float)
+    merged['jaccard'] = [_jaccard(a, b) for a, b in
+                         zip(merged['answer_1'], merged['answer_2'])]
+    merged['chrf']    = [_chrf(a, b) for a, b in
+                         zip(merged['answer_1'], merged['answer_2'])]
+    return merged[['qid', 'variant', 'exact', 'jaccard', 'chrf']]
+
+
+print('\n── Agreement across image conditions ──')
+
+AGMT_METRICS = [
+    ('exact',   'Exact match'),
+    ('jaccard', 'Token Jaccard'),
+    ('chrf',    'chrF'),
+]
+
+all_var_data: dict[str, dict[str, pd.DataFrame]] = {}
+for model, cfg in MODELS.items():
+    all_var_data[model] = {}
+    for cond, path in cfg['conditions'].items():
+        all_var_data[model][cond] = load_all_variants(path, mapper)
+        print(f'  {model}/{cond}: {len(all_var_data[model][cond])} rows')
+
+PAIR_COLORS = {
+    ('blank', 'gray'):  '#78909C',
+    ('blank', 'noise'): '#E53935',
+    ('blank', 'white'): '#FB8C00',
+    ('gray',  'noise'): '#AB47BC',
+    ('gray',  'white'): '#43A047',
+    ('noise', 'white'): '#1E88E5',
+}
+
+for model in MODELS:
+    conds_avail = list(MODELS[model]['conditions'].keys())
+    pairs = [(c1, c2) for c1, c2 in combinations(conds_avail, 2)]
+    if not pairs:
+        continue
+
+    pair_agmt: dict[tuple, pd.DataFrame] = {}
+    for c1, c2 in pairs:
+        pair_agmt[(c1, c2)] = compute_agreement(
+            all_var_data[model][c1], all_var_data[model][c2])
+
+    for metric_key, metric_name in AGMT_METRICS:
+        fig, ax = plt.subplots(figsize=(5.5, 4.0))
+        for c1, c2 in pairs:
+            agmt  = pair_agmt[(c1, c2)]
+            ys    = [agmt[agmt['variant'] == v][metric_key].mean()
+                     for v in VARIANT_KEYS]
+            cis   = [1.96 * float(scipy_sem(
+                         agmt[agmt['variant'] == v][metric_key].dropna()))
+                     for v in VARIANT_KEYS]
+            color = PAIR_COLORS.get((c1, c2), '#888888')
+            label = f'{COND_LABEL[c1]} vs {COND_LABEL[c2]}'
+            ax.fill_between(range(3),
+                            [y - c for y, c in zip(ys, cis)],
+                            [y + c for y, c in zip(ys, cis)],
+                            color=color, alpha=0.12)
+            ax.plot(range(3), ys, color=color, lw=1.8, marker='o',
+                    markersize=6, markeredgecolor='white', markeredgewidth=0.5,
+                    label=label)
+            ax.text(2.08, ys[-1], f'{ys[-1]:.3f}',
+                    va='center', fontsize=7.5, color=color)
+        ax.set_xticks(range(3))
+        ax.set_xticklabels([VARIANT_LABELS_AGR[v] for v in VARIANT_KEYS], fontsize=9)
+        ax.set_ylabel(f'Mean {metric_name}', fontsize=10)
+        ax.set_title(f'{model} — {metric_name}\nAgreement between image conditions',
+                     fontsize=10)
+        ax.set_xlim(-0.3, 2.9)
+        ax.legend(fontsize=8, loc='upper center',
+                  bbox_to_anchor=(0.5, -0.16), ncol=2, frameon=True)
+        ax.grid(axis='y', color='#E0E0E0', lw=0.7)
+        plt.tight_layout()
+        slug = model.lower().replace('-', '').replace(' ', '_')
+        save(fig, f'agreement_{slug}_{metric_key}_variants.png')
+
+# ── Human–Model agreement vs image condition ──────────────────────────────────
+# For each image condition and variant (C/B/A), compute mean agreement between
+# the model's answer and each human's answer (HM pairs).
+# Metrics: exact, jaccard, chrf, SBERT cosine, BERTScore F1.
+# ─────────────────────────────────────────────────────────────────────────────
+print('\n── Human–Model agreement vs image condition ──')
+
+from utils.agreement import (
+    _pair_exact, _pair_jaccard, _pair_chrf,
+    encode_with_cache,
+)
+
+EXPORTS_DIR = ROOT / 'analysis/session2/exports'
+SBERT_CACHE = EXPORTS_DIR / 'embeddings_all-mpnet-base-v2.npz'
+
+HUMAN_VAR_TO_KEY = {'C': 'question', 'B': 'weaker_object', 'A': 'pronominalized'}
+HUMAN_VARIANTS   = ['C', 'B', 'A']
+VAR_X_LABELS     = {'C': 'Original (C)', 'B': 'Weaker (B)', 'A': 'Pronoun. (A)'}
+
+print('Loading human responses…')
+human_df = pd.read_csv(EXPORTS_DIR / 'responses_human.csv')
+ablation_qids = set(all_var_data['Qwen3-VL-8B']['blank']['qid'].unique())
+human_df = human_df[human_df['question_id'].isin(ablation_qids)].copy()
+n_questions_hm = human_df['question_id'].nunique()
+n_humans_hm    = human_df['participant'].nunique()
+print(f'  {n_questions_hm} questions × {n_humans_hm} participants')
+
+HM_SUFFIX = f'_q{n_questions_hm}_h{n_humans_hm}'
+
+print('Loading SBERT model (all-mpnet-base-v2) on CPU…')
+from sentence_transformers import SentenceTransformer
+sbert_model = SentenceTransformer('all-mpnet-base-v2', device='cpu')
+
+all_answers_for_emb: set[str] = set()
+for row in human_df['response'].dropna():
+    all_answers_for_emb.add(preprocess_answer(str(row)))
+for model_name in all_var_data:
+    for cond_df in all_var_data[model_name].values():
+        for ans in cond_df['answer']:
+            all_answers_for_emb.add(ans)
+
+print(f'Encoding {len(all_answers_for_emb)} unique answers…')
+ans2emb = encode_with_cache(
+    list(all_answers_for_emb), sbert_model, SBERT_CACHE, verbose=True)
+
+
+def cosine(a: str, b: str) -> float:
+    v1, v2 = ans2emb.get(a), ans2emb.get(b)
+    if v1 is None or v2 is None:
+        return float('nan')
+    return float(np.dot(v1, v2))
+
+
+def hm_agreement_for_condition(model_name: str, cond: str) -> pd.DataFrame:
+    cond_var_df = all_var_data[model_name][cond]
+    rows = []
+    for hvar in HUMAN_VARIANTS:
+        jkey = HUMAN_VAR_TO_KEY[hvar]
+        model_answers = (cond_var_df[cond_var_df['variant'] == jkey]
+                         .set_index('qid')['answer'])
+        human_sub = human_df[human_df['variant'] == hvar]
+        for qid, m_ans in model_answers.items():
+            h_answers = human_sub[human_sub['question_id'] == qid]['response'].dropna()
+            h_answers = [preprocess_answer(str(a)) for a in h_answers]
+            if not h_answers:
+                continue
+            for h_ans in h_answers:
+                rows.append({
+                    'variant':   hvar,
+                    'qid':       qid,
+                    'model_ans': m_ans,
+                    'human_ans': h_ans,
+                    'exact':     _pair_exact(m_ans, h_ans),
+                    'jaccard':   _pair_jaccard(m_ans, h_ans),
+                    'chrf':      _pair_chrf(m_ans, h_ans),
+                    'sbert':     cosine(m_ans, h_ans),
+                })
+    return pd.DataFrame(rows)
+
+
+HM_AGMT_METRICS = [
+    ('exact',   'Exact match'),
+    ('jaccard', 'Token Jaccard'),
+    ('chrf',    'chrF'),
+    ('sbert',   'SBERT cosine'),
+]
+
+COND_LINE_STYLE = {
+    'blank': '-',
+    'gray':  '--',
+    'noise': ':',
+    'white': '-.',
+}
+
+for model_name in MODELS:
+    conds_avail = list(MODELS[model_name]['conditions'].keys())
+    print(f'\n  {model_name}…')
+
+    hm_by_cond: dict[str, pd.DataFrame] = {}
+    for cond in conds_avail:
+        print(f'    {cond}…', end=' ', flush=True)
+        df_pairs = hm_agreement_for_condition(model_name, cond)
+        hm_by_cond[cond] = df_pairs
+        print(f'n_pairs={len(df_pairs)}')
+
+    for metric_key, metric_name in HM_AGMT_METRICS:
+        fig, ax = plt.subplots(figsize=(5.5, 4.0))
+        for cond in conds_avail:
+            df_pairs = hm_by_cond[cond]
+            ys  = [df_pairs[df_pairs['variant'] == v][metric_key].mean()
+                   for v in HUMAN_VARIANTS]
+            cis = [1.96 * float(scipy_sem(
+                       df_pairs[df_pairs['variant'] == v][metric_key].dropna()))
+                   for v in HUMAN_VARIANTS]
+            color = COND_COLORS[cond]
+            ls    = COND_LINE_STYLE.get(cond, '-')
+            ax.fill_between(range(3),
+                            [y - c for y, c in zip(ys, cis)],
+                            [y + c for y, c in zip(ys, cis)],
+                            color=color, alpha=0.12)
+            ax.plot(range(3), ys, color=color, lw=1.8, ls=ls,
+                    marker='o', markersize=6,
+                    markeredgecolor='white', markeredgewidth=0.5,
+                    label=COND_LABEL[cond])
+            ax.text(2.08, ys[-1], f'{ys[-1]:.3f}',
+                    va='center', fontsize=7.5, color=color)
+        ax.set_xticks(range(3))
+        ax.set_xticklabels([VAR_X_LABELS[v] for v in HUMAN_VARIANTS], fontsize=9)
+        ax.set_ylabel(f'Mean {metric_name} (HM)', fontsize=10)
+        ax.set_title(f'{model_name} — {metric_name}\nHuman–Model agreement by image condition',
+                     fontsize=10)
+        ax.set_xlim(-0.3, 2.9)
+        ax.legend(fontsize=9, frameon=True, loc='upper right')
+        ax.grid(axis='y', color='#E0E0E0', lw=0.7)
+        plt.tight_layout()
+        slug = model_name.lower().replace('-', '').replace(' ', '_')
+        fname = f'hm_agreement_{slug}_{metric_key}_variants{HM_SUFFIX}.png'
+        save(fig, fname)
 
 print(f'\nDone. Figures saved to: {OUT_DIR}')
