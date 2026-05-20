@@ -25,14 +25,13 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 
 from utils.vqa import VQAAnswerMapper, extract_number, bin_number
+from export_helpers import read_response_exports
 from config import MODELS_7B
 
 OUT_DIR    = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/answer_dist'
 OUT_DIR_7B = OUT_DIR / '7b'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 OUT_DIR_7B.mkdir(parents=True, exist_ok=True)
-
-EXPORTS = ROOT / 'analysis/session2/exports'
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 SOURCE_ORDER = [
@@ -54,6 +53,11 @@ plt.rcParams.update({
     'axes.spines.top':  False,
     'axes.spines.right':False,
     'axes.grid':        False,
+    'axes.labelsize':   11,
+    'axes.titlesize':   13,
+    'xtick.labelsize':  10,
+    'ytick.labelsize':  10,
+    'legend.fontsize':  10,
 })
 
 
@@ -61,7 +65,7 @@ def save(fig, name, out=None):
     if out is None:
         out = OUT_DIR
     path = out / name
-    fig.savefig(path, dpi=150, bbox_inches='tight')
+    fig.savefig(path, dpi=220, bbox_inches='tight')
     plt.close(fig)
     tag = 'answer_dist_barplot/7b' if out == OUT_DIR_7B else 'answer_dist_barplot'
     print(f'  [{tag}] {name}')
@@ -82,12 +86,19 @@ qid2gt = {
 }
 
 print('Loading model outputs...')
-blind_df = pd.read_csv(EXPORTS / 'responses_model_blind.csv')
-inst_df  = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
+exports = read_response_exports(ROOT)
+blind_df = exports['model_blind']
+inst_df  = exports['model_inst_blind']
+
+print('Loading human answers...')
+human_src = exports['human']
+human_sub = human_src[human_src['variant'] == 'C'].copy()
+human_qid_set = set(human_sub['question_id'].astype(int).unique())
 
 model_rows = []
 for cond, df_ in [('blind', blind_df), ('inst_blind', inst_df)]:
     sub = df_[df_['variant'] == 'C'].copy()
+    sub = sub[sub['question_id'].astype(int).isin(human_qid_set)].copy()
     sub['source']      = sub['model_group'].map(MODEL_GROUP_RENAME)
     sub['condition']   = cond
     sub['qid']         = sub['question_id'].astype(int)
@@ -96,10 +107,6 @@ for cond, df_ in [('blind', blind_df), ('inst_blind', inst_df)]:
     model_rows.append(sub[['qid', 'answer_type', 'source', 'model', 'condition', 'output']])
 
 model_df = pd.concat(model_rows, ignore_index=True)
-
-print('Loading human answers...')
-human_src = pd.read_csv(EXPORTS / 'responses_human.csv')
-human_sub = human_src[human_src['variant'] == 'C'].copy()
 human_qids = human_sub['question_id'].astype(int)
 human_df = pd.DataFrame({
     'qid':         human_qids,
@@ -124,7 +131,7 @@ gt_rows = [
 gt_df = pd.DataFrame(gt_rows)
 
 all_df = pd.concat([gt_df, human_df, model_df], ignore_index=True)
-print(f'Total rows: {len(all_df)}')
+print(f'Total rows (matched to human-study qids): {len(all_df)}')
 
 N_HUMANS   = human_src['participant'].nunique()
 human_c    = human_src[human_src['variant'] == 'C'].drop_duplicates('question_id')

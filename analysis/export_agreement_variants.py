@@ -7,7 +7,9 @@ For each agreement metric, produces two figures:
 
 Metrics: sbert, simcse, bertscore, chrf, rouge1, jaccard, exact
 
-Filenames: inst_blind_vABC_{metric}_groups[_yesno].png
+Filenames:
+  inst_blind_vABC_{metric}_lineplot_q{N}_h{H}[_yesno].png
+  inst_blind_vABC_{metric}_heatmap_q{N}_h{H}[_yesno].png
 
 Run from repo root:
   conda run -n zero python analysis/export_agreement_variants.py
@@ -27,9 +29,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 
-from utils.constants import GROUP_COLORS, GROUP_ORDER
-from utils.pair_cache_updater import ensure_pair_cache
-from config import extend_pair_cache_with_yesno, MODELS_7B
+from utils.constants import GROUP_COLORS, GROUP_ORDER, GROUP_MARKER, GROUP_HOLLOW, GROUP_LINESTYLE
+from export_helpers import get_exports_dir, load_pair_cache
+from config import MODELS_7B
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--include_yesno', action='store_true',
@@ -45,13 +47,16 @@ HEATMAP_DIR.mkdir(parents=True, exist_ok=True)
 LINEPLOT_DIR_7B.mkdir(parents=True, exist_ok=True)
 HEATMAP_DIR_7B.mkdir(parents=True, exist_ok=True)
 
-EXPORTS = ROOT / 'analysis/session2/exports'
-pair_df = ensure_pair_cache(ROOT, EXPORTS, verbose=True)
-if args.include_yesno:
-    print('Extending pair_cache with yes/no question pairs…')
-    pair_df = extend_pair_cache_with_yesno(pair_df, EXPORTS)
+EXPORTS = get_exports_dir(ROOT)
+pair_df = load_pair_cache(ROOT, include_yesno=args.include_yesno, verbose=True)
 
-SUFFIX = '_yesno' if args.include_yesno else ''
+def hh_participant_count(df: pd.DataFrame) -> int:
+    hh = df[df['pair_type'] == 'HH']
+    return len(set(hh['subject_1']).union(set(hh['subject_2'])))
+
+n_questions = pair_df[pair_df['pair_type'] == 'HH']['question_id'].nunique()
+n_humans = hh_participant_count(pair_df)
+SUFFIX = f'_q{n_questions}_h{n_humans}' + ('_yesno' if args.include_yesno else '')
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 VARIANTS    = ['C', 'B', 'A']
@@ -79,6 +84,11 @@ plt.rcParams.update({
     'axes.spines.top':  False,
     'axes.spines.right':False,
     'axes.grid':        False,
+    'axes.labelsize':   11,
+    'axes.titlesize':   13,
+    'xtick.labelsize':  10,
+    'ytick.labelsize':  10,
+    'legend.fontsize':  9,
 })
 
 HH_COLOR = '#1565C0'
@@ -86,10 +96,19 @@ MM_COLOR = '#757575'   # neutral gray for model–model baseline
 
 def save(fig, name, out_dir):
     path = out_dir / name
-    fig.savefig(path, dpi=150, bbox_inches='tight')
+    fig.savefig(path, dpi=220, bbox_inches='tight')
     plt.close(fig)
     folder = out_dir.name
     print(f'  [{folder}] {name}')
+
+
+def apply_axis_style(ax, grid_axis='y'):
+    ax.spines['left'].set_linewidth(0.8)
+    ax.spines['bottom'].set_linewidth(0.8)
+    ax.tick_params(length=3.5, width=0.8, color='#555555')
+    if grid_axis:
+        ax.grid(axis=grid_axis, color='#D9D9D9', linewidth=0.8, alpha=0.7)
+    ax.set_axisbelow(True)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -106,6 +125,7 @@ for label, (metric_name, col) in METRICS.items():
 
     # ── 1. Line plot: HM per group + HH ceiling + MM baseline ────────────────
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
+    apply_axis_style(ax, grid_axis='y')
 
     hh_means = hh.groupby('variant')[col].mean()
     hh_sems  = hh.groupby('variant')[col].sem()
@@ -158,11 +178,13 @@ for label, (metric_name, col) in METRICS.items():
     ax.set_xticks(range(3))
     ax.set_xticklabels([VAR_LABELS[v] for v in VARIANTS], fontsize=9)
     ax.set_ylabel(f'Mean {metric_name}', fontsize=10)
+    ax.set_title(f'{metric_name} Across Control Variants\n(inst_blind, q={n_questions}, h={n_humans})',
+                 fontsize=12)
     ax.legend(fontsize=8, loc='upper center', bbox_to_anchor=(0.5, -0.14),
               ncol=5, frameon=True)
     ax.set_xlim(-0.3, 2.7)
-    plt.tight_layout()
-    save(fig, f'inst_blind_vABC_{label}_groups{SUFFIX}.png', LINEPLOT_DIR)
+    fig.tight_layout()
+    save(fig, f'inst_blind_vABC_{label}_lineplot{SUFFIX}.png', LINEPLOT_DIR)
 
     # ── 2. Heatmap: group × variant (HM pairs, mean score) + HH + MM rows ────
     data = {}
@@ -184,15 +206,18 @@ for label, (metric_name, col) in METRICS.items():
     sns.heatmap(heat_df, ax=ax, annot=True, fmt='.3f', cmap='YlOrRd',
                 vmin=vmin, vmax=vmax, linewidths=0.5, linecolor='white',
                 annot_kws={'size': 9}, cbar_kws={'shrink': 0.8})
+    ax.set_title(f'{metric_name} Heatmap\n(inst_blind, q={n_questions}, h={n_humans})',
+                 fontsize=12)
     ax.set_xlabel('Control variant', fontsize=10)
     ax.set_ylabel('')
     ax.tick_params(axis='x', rotation=0)
     ax.tick_params(axis='y', rotation=0)
-    plt.tight_layout()
-    save(fig, f'inst_blind_vABC_{label}_groups{SUFFIX}.png', HEATMAP_DIR)
+    fig.tight_layout()
+    save(fig, f'inst_blind_vABC_{label}_heatmap{SUFFIX}.png', HEATMAP_DIR)
 
     # ── 7B matched-size subset: same plots filtered to 7–8 B models ───────────
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
+    apply_axis_style(ax, grid_axis='y')
 
     for grp in GROUP_ORDER:
         g_hm7 = hm_7b[hm_7b['subject_group_2'] == grp]
@@ -240,11 +265,13 @@ for label, (metric_name, col) in METRICS.items():
     ax.set_xticks(range(3))
     ax.set_xticklabels([VAR_LABELS[v] for v in VARIANTS], fontsize=9)
     ax.set_ylabel(f'Mean {metric_name}', fontsize=10)
+    ax.set_title(f'{metric_name} Across Control Variants — 7/8B Subset\n'
+                 f'(inst_blind, q={n_questions}, h={n_humans})', fontsize=12)
     ax.legend(fontsize=8, loc='upper center', bbox_to_anchor=(0.5, -0.14),
               ncol=5, frameon=True)
     ax.set_xlim(-0.3, 2.7)
-    plt.tight_layout()
-    save(fig, f'inst_blind_vABC_{label}_groups{SUFFIX}.png', LINEPLOT_DIR_7B)
+    fig.tight_layout()
+    save(fig, f'inst_blind_vABC_{label}_lineplot{SUFFIX}.png', LINEPLOT_DIR_7B)
 
     # 7B heatmap
     data7 = {}
@@ -266,11 +293,13 @@ for label, (metric_name, col) in METRICS.items():
     sns.heatmap(heat7, ax=ax, annot=True, fmt='.3f', cmap='YlOrRd',
                 vmin=vmin7, vmax=vmax7, linewidths=0.5, linecolor='white',
                 annot_kws={'size': 9}, cbar_kws={'shrink': 0.8})
+    ax.set_title(f'{metric_name} Heatmap — 7/8B Subset\n'
+                 f'(inst_blind, q={n_questions}, h={n_humans})', fontsize=12)
     ax.set_xlabel('Control variant', fontsize=10)
     ax.set_ylabel('')
     ax.tick_params(axis='x', rotation=0)
     ax.tick_params(axis='y', rotation=0)
-    plt.tight_layout()
-    save(fig, f'inst_blind_vABC_{label}_groups{SUFFIX}.png', HEATMAP_DIR_7B)
+    fig.tight_layout()
+    save(fig, f'inst_blind_vABC_{label}_heatmap{SUFFIX}.png', HEATMAP_DIR_7B)
 
 print(f'\nDone. Lineplots → {LINEPLOT_DIR}\n      Heatmaps  → {HEATMAP_DIR}')

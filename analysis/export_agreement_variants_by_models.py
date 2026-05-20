@@ -27,8 +27,8 @@ from utils.constants import (
     GROUP_COLORS, GROUP_ORDER, GROUP_MARKER,
     MODEL_FAMILY, MODEL_FAMILY_COLORS,
 )
-from build_pair_cache import build_pair_cache
-from config import MODEL_LABEL_SHORT as LABEL_MAP, extend_pair_cache_with_yesno
+from export_helpers import get_exports_dir, load_pair_cache
+from config import MODEL_LABEL_SHORT as LABEL_MAP
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--include_yesno', action='store_true',
@@ -38,11 +38,8 @@ args = parser.parse_args()
 OUT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/agreement_variants_by_models'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-EXPORTS = ROOT / 'analysis/session2/exports'
-pair_df = build_pair_cache(ROOT, EXPORTS, verbose=True)
-if args.include_yesno:
-    print('Extending pair_cache with yes/no question pairs…')
-    pair_df = extend_pair_cache_with_yesno(pair_df, EXPORTS)
+EXPORTS = get_exports_dir(ROOT)
+pair_df = load_pair_cache(ROOT, include_yesno=args.include_yesno, verbose=True)
 
 SUFFIX = '_yesno' if args.include_yesno else ''
 

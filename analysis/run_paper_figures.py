@@ -58,12 +58,6 @@ run('export_agreement_heatmaps.py',
 run('export_accuracy_variants.py',
     label='Accuracy degradation across variants C→B→A')
 
-run('export_accuracy_scatter.py', '--agg', 'model_groups',
-    label='Per-question accuracy scatter (aggregated by group)')
-
-run('export_accuracy_scatter.py', '--agg', 'model_family',
-    label='Per-question accuracy scatter (aggregated by family)')
-
 run('export_accuracy_quadrant.py',
     label='Per-question quadrant scatter (Jaccard coloured, blind + inst_blind)')
 
@@ -72,6 +66,7 @@ for metric in ('agreement', 'accuracy'):
     for agg in ('by_models', 'by_family', 'by_groups'):
         run('export_scale_plots.py', '--metric', metric, '--agg', agg,
             label=f'Scale plots: {metric} × {agg}')
+        # outputs → figures/{metric}_scale/
 
 # ── Instruction effect ────────────────────────────────────────────────────────
 run('export_instruction_effect.py',

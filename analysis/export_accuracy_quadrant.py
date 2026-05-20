@@ -31,10 +31,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 
-from utils.load_session import load_human_data
+from export_helpers import load_human_subset, read_response_exports
 from config import MIN_ANSWERS_DEFAULT
-
-EXPORTS = ROOT / 'analysis/session2/exports'
 OUT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/accuracy_quadrant'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -74,19 +72,15 @@ def apply_axis_style(ax):
 # Load data
 # ─────────────────────────────────────────────────────────────────────────────
 print('Loading human data…')
-participants, common_qids, human_df_full, _ = load_human_data(
+participants, common_qids, human_df_full, _ = load_human_subset(
     ROOT, min_answers=MIN_ANSWERS_DEFAULT, translate=False, verbose=True)
 n_humans = len(participants)
 
 print('\nLoading model responses…')
-df_mb = pd.read_csv(EXPORTS / 'responses_model_blind.csv')
-df_mi = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
-df_h  = pd.read_csv(EXPORTS / 'responses_human.csv')
-
-# Filter to human-study subset, variant C
-df_mb = df_mb[(df_mb['question_id'].isin(common_qids)) & (df_mb['variant'] == 'C')].copy()
-df_mi = df_mi[(df_mi['question_id'].isin(common_qids)) & (df_mi['variant'] == 'C')].copy()
-df_h  = df_h[(df_h['question_id'].isin(common_qids))  & (df_h['variant'] == 'C')].copy()
+exports = read_response_exports(ROOT, subset_qids=common_qids, variant='C')
+df_mb = exports['model_blind']
+df_mi = exports['model_inst_blind']
+df_h  = exports['human']
 
 n_questions = len(common_qids)
 SUFFIX = f'_q{n_questions}_h{n_humans}'

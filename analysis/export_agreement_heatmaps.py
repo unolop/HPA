@@ -25,7 +25,9 @@ from matplotlib.colors import Normalize
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
-EXPORTS = ROOT / 'analysis/session2/exports'
+from export_helpers import get_exports_dir, load_pair_cache
+
+EXPORTS = get_exports_dir(ROOT)
 OUTPUT_DIR = ROOT / "latex/AnonymousSubmission/LaTeX/figures/agreement_heatmaps"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -175,9 +177,8 @@ def build_group_means_matrix(mat, subjects_df):
 
 
 # ── Load data ─────────────────────────────────────────────────────────────────
-from build_pair_cache import build_pair_cache
 print('Building / updating pair_cache…')
-df = build_pair_cache(ROOT, EXPORTS, verbose=True)
+df = load_pair_cache(ROOT, verbose=True)
 df_v = df[df["variant"] == VARIANT].copy()
 print(f"  {len(df_v):,} pairs (variant={VARIANT})")
 

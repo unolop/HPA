@@ -18,7 +18,7 @@
 \usepackage{multirow}
 
 % Search for figures: figures/ subfolder first, then analysis/figures
-\graphicspath{{./}{figures/}{figures/instruction_effect/}{figures/agreement_variant/}{figures/agreement_C/}{../../../analysis/figures/}{../../../analysis/figures/agreements/}}
+\graphicspath{{./}{figures/}{figures/instruction_effect/}{figures/agreement_variants/}{figures/agreement_heatmaps/}{figures/agreement_scatter/}{figures/accuracy_quadrant/}{figures/confidence_dist/}{figures/scale_plots/}{figures/entity_analysis/}{../../../analysis/figures/}{../../../analysis/figures/agreements/}}
 
 % TODO markers for placeholder content
 \newcommand{\TODO}[1]{\textbf{[TODO: #1]}}
@@ -59,7 +59,8 @@ To characterize how these priors depend on lexical cues, we introduce
 remove entity anchors while preserving question type. A single instruction
 further reveals a spectrum from \emph{instruction-gated} prior use to
 unconditional hallucination. Blind outputs are also highly overconfident:
-80--90\% of tokens have high mean log-probability, a calibration failure
+their token-confidence distributions remain high even for wrong committed
+answers, a calibration failure
 invisible to accuracy-only evaluations. Using a human blind-answer dataset
 (N=36, 113 questions, IRB-approved), we show that the model group closest to
 human blind priors is not the full VLM but the VLM backbone decoder: removing
@@ -106,7 +107,8 @@ Third, how similar are blind model behaviors to human blind reasoning at the
 levels of correctness, answer distribution, and semantic agreement?
 
 To answer these questions, we combine blind evaluation on 1,000 VQA questions,
-a control-variant perturbation suite, logprob-based confidence analysis, and a
+a control-variant perturbation suite, token-confidence analysis from output
+logprobs, and a
 human blind-answer dataset (N=36 participants, 113 questions). The goal is not
 to claim that blind answering is inherently illegitimate; the goal is to
 identify \emph{which} priors are shared with humans and \emph{which} are
@@ -140,8 +142,8 @@ cannot make.
     grounded-reference questions are anti-aligned. This identifies which
     priors are genuinely human-like and which are model-specific artifacts.
 
-    \item Blind outputs are severely overconfident: 80--90\% of outputs have
-    high mean token log-probability, and the instruction further raises
+    \item Blind outputs are severely overconfident: wrong committed answers
+    remain in a high-confidence regime, and the instruction further raises
     confidence while reducing abstention, indicating more committed
     hallucination rather than more grounded reasoning.
 \end{enumerate}
@@ -360,10 +362,12 @@ also report \textbf{Krippendorff's $\alpha$} (nominal scale) for within-group
 and cross-group inter-rater reliability.
 
 \textbf{Confidence.}
-Finally, we measure \textbf{logprobability confidence} as the mean token-level
-log-probability of the generated answer (top-5 token logprobs, temperature 0).
-This is used to characterize whether blind answers are cautious, abstaining, or
-confidently hallucinated.
+Finally, we measure a \textbf{token-confidence proxy} from generation
+logprobs (top-5 token logprobs, temperature 0). For each answer, we convert
+each generated token logprob to probability and average across generated
+tokens. This produces a mean token probability in $[0,1]$, which we use to
+characterize whether blind answers are cautious, abstaining, or confidently
+hallucinated.
 
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Linguistic Prior Exploitation: Distribution Biases and Prior Structure}
@@ -384,16 +388,6 @@ question--answer patterns. The instruction has little effect on accuracy even
 when it substantially changes answer content (see Appendix~\ref{app:inst}),
 confirming that prior-driven answering is not corrected by awareness of the
 missing image.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{fig_overview_scatter}
-\caption{Per-question human accuracy (inst\_blind, variant~C) versus VLM
-accuracy (blind, variant~C), coloured by answer-overlap Jaccard.
-Questions near the diagonal reflect shared priors; questions above it
-are model-only blind successes. Overall $r = 0.605$.}
-\label{fig:overview_scatter}
-\end{figure}
 
 \subsection{Answer Distribution Biases}
 
@@ -424,6 +418,21 @@ These null-hypothesis biases illustrate that models are not randomly sampling
 from their prior---they produce a specific failure mode that partially mimics
 the structure of a reasonable uncertainty response.
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.49\textwidth]{answer_dist/inst_blind_vC_yn_q26_h40}%
+\hfill%
+\includegraphics[width=0.49\textwidth]{answer_dist/inst_blind_vC_number_q26_h40}
+\caption{Answer distribution biases under the instructed blind condition on the
+human-study question subset ($q=26$ yes/no, $q=26$ number; $h=40$
+participants). \textbf{Left (yes/no):} VLMs still overproduce a default answer
+pattern relative to humans. \textbf{Right (count/number):} model groups remain
+collapsed toward small default counts, especially ``0,'' while humans
+distribute across small integers. These divergences confirm that blind answers
+are structured but not simply human-like.}
+\label{fig:dist}
+\end{figure*}
+
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Characterizing Prior Reliance}
 \label{sec:characterize}
@@ -431,22 +440,22 @@ the structure of a reasonable uncertainty response.
 The analyses in this section move from \emph{how much} blind performance models
 obtain to \emph{how} they produce it: whether their priors survive lexical
 degradation, whether a small instruction changes their willingness to commit,
-and whether those commitments are calibrated.
-Figure~\ref{fig:overview_scatter} shows the per-question structure of
-human--VLM alignment; Figure~\ref{fig:degradation} shows how model accuracy
-degrades across control variants while human accuracy remains nearly flat.
+and whether those commitments are calibrated. Figure~\ref{fig:degradation}
+shows the architecture-level accuracy pattern across control variants, and
+Figure~\ref{fig:agreement_variant} shows the matching semantic-alignment trend.
 
 \subsection{Control Question Degradation}
 \label{sec:degradation}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{fig_overview_degradation}
+\includegraphics[width=\columnwidth]{accuracy_variants/inst_blind_vABC_groups_7b}
 \caption{Control-variant degradation curves across Original~(C)
-$\rightarrow$ Weaker~(B) $\rightarrow$ Pronominalized~(A) (blind condition).
-Model accuracy drops substantially while human accuracy decreases by only
-$0.035$, confirming that model performance under blind conditions is driven
-by entity-specific corpus-frequency priors.}
+$\rightarrow$ Weaker~(B) $\rightarrow$ Pronominalized~(A) for the matched-size
+7B--8B architecture comparison on the human-study subset ($q=113$, $h=40$)
+under the instructed blind condition. Model groups lose accuracy more sharply
+than humans as entity anchors are removed, confirming that blind success relies
+heavily on entity-specific priors.}
 \label{fig:degradation}
 \end{figure}
 
@@ -466,9 +475,10 @@ Fine-grained per-entity-type degradation curves are in the Appendix.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/sbert_lineplot}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_sbert_lineplot_q88_h40}
 \caption{Human--model SBERT agreement across control variants
-  (Original~C $\rightarrow$ Weaker~B $\rightarrow$ Pronominalized~A).
+  (Original~C $\rightarrow$ Weaker~B $\rightarrow$ Pronominalized~A) on the
+  free-text human-comparison subset ($q=88$, $h=39$).
   All model groups lose alignment as entity anchors are removed, mirroring
   the accuracy degradation in Figure~\ref{fig:degradation}. The human--human
   ceiling (dashed) drops only slightly, confirming that the degradation is
@@ -497,25 +507,13 @@ of blind outputs are hedging responses, varying by model family.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{fig_soft_abstention}
-\caption{Soft abstention rate (hedging outputs: ``nothing'', ``none'',
-  ``nowhere'') before (circle) and after (square) the Blind+Inst instruction,
-  across all models (variant~C). Collapse is sharpest for thinking-mode LLMs
-  and instruction-tuned VLMs; backbone decoders remain near zero throughout.
-  Mistral-7B maintains high soft abstention (41\%$\to$30\%) regardless.
-  Response change rates per model are shown in Figure~\ref{fig:response_change}.}
+\includegraphics[width=\columnwidth]{instruction_effect/merged_abstention_vC_q113}
+\caption{Response behavior under Blind and Blind+Inst for variant~C on the
+human-study subset. The instruction primarily reduces abstention and converts
+hedged outputs into committed answers rather than improving grounding. This
+shift is strongest for VLMs and standalone LLMs, while backbone decoders are
+comparatively stable.}
 \label{fig:gated}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{fig_response_change}
-\caption{Fraction of responses that change between Blind and Blind+Inst
-  conditions (variant~C). Standalone LLMs are most instruction-sensitive
-  (34--96\%); backbone decoders are most stable (18--20\%), indicating
-  their outputs are driven by the question's linguistic prior rather than
-  instruction framing.}
-\label{fig:response_change}
 \end{figure}
 
 Figure~\ref{fig:gated} shows the \emph{soft abstention collapse rate}: the
@@ -556,22 +554,29 @@ epistemic null.
 \subsection{Confidence Calibration}
 \label{sec:confidence}
 
-Logprobability analysis reveals that blind hallucinations are produced with
-extreme confidence. For Qwen3-VL-8B under blind conditions, 80.8\% of output
-tokens have mean logprob $>-0.5$ ($\approx$60\% probability per token), and
-the mean logprob across all blind outputs is $-0.258$.
-Under Blind+Inst, mean logprob rises to $-0.177$ and the fraction with
-logprob $>-0.5$ increases to 89.5\%. The instruction does not merely change
-\emph{which} answer is produced---it also makes the model more \emph{certain}
-about whatever it produces.
+Confidence analysis reveals that blind hallucinations are produced with high
+token-level confidence rather than cautious uncertainty. The instruction does
+not merely change \emph{which} answer is produced; it shifts mass away from
+abstentions and toward committed outputs that remain highly confident at the
+token level.
 
-The few soft-abstained outputs (``nothing'', ``none'') have lower mean logprob
-($-0.37$ vs.\ $-0.26$ for answered outputs), confirming that hedging outputs
-reflect genuine uncertainty. However, the effect size is small, and the
-baseline level of confidence even for soft-abstentions is high. The primary
-calibration failure is not that models are uncertain when they should be
-confident, but that they are \emph{highly confident about wrong hallucinated
-answers} they should be uncertain about.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{confidence_dist/output_class_shift_q113_h40}
+\caption{Distribution of mean token probability by output class under Blind and
+Blind+Inst on the human-study subset ($q=113$, $h=40$), shown as violin
+distributions by model group. Wrong committed answers remain in a high-
+confidence regime, while abstentions occupy a lower-confidence regime. The
+instruction shifts outputs from abstention toward confident commitment rather
+than toward calibrated uncertainty.}
+\label{fig:confidence_shift}
+\end{figure}
+
+Soft-abstained outputs occupy a lower-confidence regime than committed answers,
+confirming that hedging responses reflect genuine uncertainty. However, the
+gap is modest, and the baseline level of confidence even for wrong committed
+answers remains high. The primary failure is therefore not underconfidence but
+confident hallucination.
 
 Quantifying this overconfidence with Expected Calibration Error and testing the
 corpus-frequency correlation \citep{mccoy2024embers} directly are reserved for
@@ -581,38 +586,18 @@ future work.
 \section{Human-Model Alignment}
 \label{sec:alignment}
 
-Figure~\ref{fig:scatter} sharpens the model-group result already foreshadowed
-in Figure~\ref{fig:overview}: when models answer VQA questions without images,
-the group closest to human blind responses is the VLM backbone decoder, not the
-full VLM. VLM backbone decoders (the language backbone extracted without the
-vision encoder) reach the highest human-model SBERT similarity ($0.501$),
-within $0.067$ of the human-human ceiling ($0.568$). Full VLMs are lower
-($0.480$), while standalone LLMs span a much wider range---Mistral-7B and
-Vicuna-13B diverge sharply (SBERT $< 0.25$, exact match $\approx 0$), whereas
-instruction-tuned models such as Qwen2.5-7B and Qwen3 series approach the VLM
-cluster.
+The central result of this section is architectural: when models answer VQA
+questions without images, the group closest to human blind responses is the
+VLM backbone decoder, not the full VLM. VLM backbone decoders (the language
+backbone extracted without the vision encoder) reach the highest human-model
+SBERT similarity ($0.501$), within $0.067$ of the human-human ceiling
+($0.568$). Full VLMs are lower ($0.480$), while standalone LLMs span a much
+wider range.
 
-The key point of this section is architectural rather than purely descriptive:
-the model component that best recovers human blind priors is the language
-backbone exposed in the decoder-only setting, not the full vision-language
-stack. The question-type analysis that follows explains where this alignment is
-strongest, but the primary result is the model-group separation itself.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{fig_scatter_agreement}
-\caption{Per-model human--model answer agreement (inst\_blind, variant~C).
-  X-axis: mean SBERT cosine similarity to human answers.
-  Y-axis: mean exact-match agreement with humans.
-  The blue star marks the human--human ceiling.
-  Backbone decoders (orange) cluster closest to humans; full VLMs (red) sit
-  slightly lower and show stronger blind-bias artifacts elsewhere in the paper;
-  standalone LLMs (green) vary widely, with chat-tuned models (Qwen3, Qwen2.5)
-  near the VLM cluster and base-style models (Mistral, Vicuna) far below. The
-  figure isolates the paper's central model-group result: the decoder-only
-  language backbone is the closest match to human blind priors.}
-\label{fig:scatter}
-\end{figure}
+The key point is therefore architectural rather than purely descriptive: the
+model component that best recovers human blind priors is the language backbone
+exposed in the decoder-only setting, not the full vision-language stack. The
+entity-type analysis that follows explains where this alignment is strongest.
 
 \subsection{Humans as a Reference for Prior Structure}
 \label{sec:human_ref}
@@ -630,19 +615,6 @@ of VLM answers are ``0'' while humans produce a distributed count distribution
 (modal answer: 2, followed by 1 and 3). This reversal is not a calibration gap
 in the same direction; it indicates that the model prior is qualitatively
 different from the human prior for these question types.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.49\textwidth]{answer_dist/blind_yn}%
-\hfill%
-\includegraphics[width=0.49\textwidth]{answer_dist/blind_number}
-\caption{Answer distribution biases under blind conditions across all model groups, humans, and ground truth. \textbf{Left (yes/no):} VLMs default to
-  ``no'' while humans lean ``yes,'' in the opposite direction. \textbf{Right
-  (count/number):} VLMs collapse to ``0'' while humans distribute across small
-  integers. These biases diverge from both human and ground-truth patterns,
-  confirming they are model-specific artifacts rather than shared blind priors.}
-\label{fig:dist}
-\end{figure*}
 
 \subsection{Which Models Are Most Human-Like?}
 \label{sec:model_similarity}
@@ -679,44 +651,30 @@ models to activate the same distributional priors that drive human performance o
 these questions.
 
 \paragraph{Effect of scale on human alignment.}
-Figure~\ref{fig:scale} shows that human--model SBERT alignment does not
-monotonically improve with model size within any family. For the Qwen3
-standalone LLM family (0.6B--32B), alignment remains flat across scales in
-nothink mode, while thinking-mode variants are consistently higher. The
-Qwen3-VL family shows similarly flat scaling. This suggests that alignment
-with human blind priors is determined primarily by instruction-tuning regime
-and architecture (vision vs.\ text-only) rather than raw parameter count.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{fig_scale_alignment}
-\caption{Mean SBERT cosine similarity to humans vs.\ model size (log scale)
-  for the Qwen3 standalone LLM (nothink and think) and Qwen3-VL families.
-  Human--human ceiling shown as dashed line. Alignment does not improve
-  monotonically with scale; thinking-mode models are consistently higher
-  than nothink counterparts at the same size.}
-\label{fig:scale}
-\end{figure}
+Within-family scale trends are comparatively weak: human--model SBERT
+alignment does not improve monotonically with parameter count, indicating that
+alignment with human blind priors is determined more by architecture and
+instruction-tuning regime than by raw scale. Detailed scale plots are provided
+in the Appendix.
 
 \paragraph{Inter-rater structure.}
-The inter-rater agreement matrix (Figure~\ref{fig:interrater}) shows that human
-participants cluster separately from all model groups, confirming a qualitative
-difference in reasoning strategy rather than a mere accuracy gap. Backbone
-decoders sit closest to the human cluster, standalone LLMs furthest.
-Krippendorff's $\alpha$ decreases when any model is added to the human rater
-pool (from $0.554$ to $0.535$--$0.543$), but the decrease is smallest for
-backbone decoders, reinforcing that the language backbone is the primary driver
-of human-like prior structure in VLMs.
+Supplementary inter-rater heatmaps show that human participants cluster
+separately from all model groups, confirming a qualitative difference in
+reasoning strategy rather than a mere accuracy gap. Backbone decoders sit
+closest to the human cluster, standalone LLMs furthest. Krippendorff's
+$\alpha$ decreases when any model is added to the human rater pool (from
+$0.554$ to $0.535$--$0.543$), but the decrease is smallest for backbone
+decoders, reinforcing that the language backbone is the primary driver of
+human-like prior structure in VLMs.
 
 \subsection{Shared vs.\ Divergent Priors by Entity Type}
 \label{sec:prior_types}
 
 Not all questions trigger the same degree of human-model prior alignment.
 The entity taxonomy introduced in Section~\ref{sec:control} provides the
-analytical structure: as shown by the t-SNE embedding visualization
-(Appendix~\ref{app:tsne}), entity groups form coherent semantic clusters
-in the question embedding space, making entity type a principled grouping
-dimension for alignment analysis.
+analytical structure: entity groups form coherent semantic categories in the
+question set, making entity type a principled grouping dimension for alignment
+analysis.
 
 We measure \textbf{difficulty correlation}---Pearson $r$ between per-question
 human accuracy $h(q)$ and VLM accuracy---within each of the 9 entity types
@@ -725,7 +683,7 @@ questions by entity type (left) and the resulting correlations (right).
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=\textwidth]{fig_hm_alignment}
+\includegraphics[width=\textwidth]{entity_analysis/fig_hm_alignment_m348}
 \caption{\textbf{Left:} distribution of 113 study questions by entity type.
   Object and person dominate; place, product, text, and vehicle have small
   samples ($n \leq 5$).
@@ -761,25 +719,10 @@ Product questions are anti-aligned ($r = -0.48$): when humans succeed
 on product queries, models tend to fail, likely because product-specific
 prior knowledge is sparser in model training data than in human experience.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{fig_hm_quadrant}
-\caption{Per-question human accuracy (x-axis) vs.\ VLM accuracy (y-axis,
-inst\_blind, variant C). Colour encodes answer distribution overlap (Jaccard
-top-3). Green points (top-left and bottom-left quadrants) are questions where
-both parties fail similarly---shared language priors operating without visual
-grounding. The overall correlation is $r = 0.605$.}
-\label{fig:hm_quadrant}
-\end{figure}
-
-Figure~\ref{fig:hm_quadrant} shows the per-question scatter. The majority of
-questions lie above the diagonal (models answer more questions correctly than
-humans under blind conditions), and the green dots---high Jaccard
-overlap---cluster near the origin (both wrong) and near (1,1) (both correct),
-confirming that prior sharing is strongest when both parties are equally
-uncertain or equally knowledgeable. The anti-aligned count questions
-(dark red dots) are visible as a cloud where human accuracy is spread but
-model accuracy is near zero (zero-bias) or near one.
+The per-question scatter and quadrant-style diagnostics are provided in the
+Appendix. They show that shared priors are strongest when both parties are
+either similarly uncertain or similarly knowledgeable, while count and product
+questions drive many of the strongest divergences.
 
 \subsection{Human-Model Divergence in Answer Patterns}
 
@@ -812,25 +755,10 @@ This pattern is consistent with the soft-abstention-collapse result in
 Section~\ref{sec:gated}, but it should be treated as provisional until the
 human comparison conditions are fully matched across settings.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{agreement_C/sbert_heatmap_groups}
-\caption{Group-mean SBERT cosine similarity between all rater pairs
-(variant C). Diagonal = within-group similarity; off-diagonal = cross-group.
-VLM backbone decoders (language backbone only, no vision encoder) are the
-closest to the human block ($0.501$), while standalone LLMs are furthest
-($0.398$). Full per-rater heatmaps for all metrics are in Appendix.}
-\label{fig:interrater}
-\end{figure}
-
-The group-mean SBERT heatmap (Figure~\ref{fig:interrater}) quantifies the
-structural separation: human-human similarity ($0.568$) exceeds all
-cross-group scores, confirming that humans form a distinct cluster.
-VLM backbone decoders reach the highest human alignment ($0.501$), followed
-by thinking-mode LLMs ($0.426$) and full VLMs ($0.480$). Standalone LLMs
-score lowest ($0.398$). The pattern is consistent across all seven metrics
-(exact match, Jaccard, ROUGE-1, chrF, SBERT, SimCSE, BERTScore); full
-per-rater heatmaps for each metric are provided in the Appendix.
+Appendix heatmaps quantify the same structural separation from a different
+angle: human-human similarity exceeds all cross-group scores, humans form a
+distinct cluster, and backbone decoders sit closest to that cluster. The
+pattern is consistent across lexical and semantic metrics.
 
 Semantic similarity analysis reinforces this finding: model answers have
 higher embedding similarity to ground truth (mean 65.8 vs.\ human 64.2)
@@ -881,8 +809,8 @@ in Vision-Language Models. Analogous to hypothesis-only baselines in NLI, blind
 VQA reveals that VLMs produce characteristic answer distribution biases shaped
 by training-corpus frequencies---and that these biases are only partially shared
 with human blind reasoners. We introduce control question variants to probe how
-lexical cues drive prior activation, and use logprob analysis to expose the
-severe overconfidence that accompanies blind hallucination. The
+lexical cues drive prior activation, and use token-confidence analysis to
+expose the severe overconfidence that accompanies blind hallucination. The
 instruction-gated spectrum reveals a behavioral axis across model families that
 is invisible to accuracy-only evaluation.
 
@@ -1022,34 +950,40 @@ Qwen3-VL-8B & 89.4 & 44.3 & 3.1 \\
 \end{table}
 
 % ─────────────────────────────────────────────────────────────────────────────
-\section{Question Embedding Space (t-SNE)}
-\label{app:tsne}
+\section{Supplementary Per-Question and Scale Diagnostics}
+\label{app:diagnostics}
 
-Figure~\ref{fig:tsne} shows the t-SNE projection of all 1{,}000 VQA questions
-using sentence embeddings (all-MiniLM-L6-v2), with the 113 sampled study
-questions highlighted as large dots. The three panels colour points by entity
-group, operator group, and question word respectively.
-
-Entity groups (left panel) form coherent spatial clusters---animals, persons,
-and places each occupy distinct regions of the embedding space. Operator groups
-(center panel) are more interleaved, with attribute and count questions
-distributed throughout. This structural difference motivates our choice to
-analyse human--model alignment by entity type rather than operation type:
-entity boundaries are semantically well-defined and correspond to distinct
-prior structures, whereas operation types are cross-cutting and do not form
-natural semantic partitions.
+The main text emphasizes group-level results. This appendix collects the
+per-question and scale-sensitive views that support the same claims but are too
+dense for the main paper.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/sampling_tsne}
-\caption{t-SNE of 1{,}000 VQA question embeddings. Large dots = 113 sampled
-  study questions. \textbf{Left:} entity group---clear spatial clustering by
-  entity type motivates entity-based alignment analysis.
-  \textbf{Centre:} operator group---attr, count, and other\_op are
-  interleaved, not separable.
-  \textbf{Right:} question word---what, where, who, how\_many overlap
-  substantially. Entity type is the most structurally informative grouping.}
-\label{fig:tsne}
+\includegraphics[width=\columnwidth]{accuracy_scatter/inst_blind_vC_groups_q113_h40}
+\caption{Per-question human accuracy versus model accuracy on the instructed
+blind human-study subset ($q=113$, $h=40$), faceted by model group. This raw
+scatter underlies the aggregated control-variant trends in
+Figure~\ref{fig:degradation}.}
+\label{fig:app_acc_scatter}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{agreement_scatter/inst_blind_vC_sbert_exact_models_q88_h40}
+\caption{Per-model human--model agreement on the free-text subset
+($q=88$, $h=39$). X-axis: mean SBERT similarity to human answers. Y-axis:
+mean exact-match agreement. This figure makes the same group separation as the
+main text visible at model granularity.}
+\label{fig:app_agreement_scatter}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{agreement_scale/inst_blind_groups_sbert_vC_q113_h40_yesno}
+\caption{Human--model SBERT agreement versus model scale by model group on the
+inst\_blind variant-C human-comparison subset. Scale effects are weaker than
+the architectural differences emphasized in the main text.}
+\label{fig:app_scale}
 \end{figure}
 
 % ─────────────────────────────────────────────────────────────────────────────
@@ -1064,10 +998,13 @@ contrast shown here.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{answer_dist/blind_yn}
-\includegraphics[width=\columnwidth]{answer_dist/blind_number}
-\caption{Answer-distribution biases under blind conditions across all model groups. Top: yes/no answers — VLMs overproduce ``no'' relative to humans.
-Bottom: count answers — VLMs collapse to ``0'' while humans distribute across small integers.}
+\includegraphics[width=\columnwidth]{answer_dist/inst_blind_vC_yn_q26_h40}
+\includegraphics[width=\columnwidth]{answer_dist/inst_blind_vC_number_q26_h40}
+\caption{Answer-distribution biases under the instructed blind condition across
+all model groups. Top: yes/no answers. Bottom: count answers. The descriptive
+patterns remain structured, but matched-size and model-group comparisons are
+best interpreted as robustness checks rather than as the main architectural
+evidence.}
 \label{fig:dist_appendix}
 \end{figure}
 
@@ -1086,84 +1023,84 @@ removal reduces human--model alignment independent of the metric used.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/simcse_lineplot}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_simcse_lineplot_q88_h40}
 \caption{Human--model SimCSE cosine agreement across control variants (by model group).}
 \label{fig:av_simcse}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/simcse_heatmap}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_simcse_heatmap_q88_h40}
 \caption{SimCSE agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_simcse_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/bertscore_lineplot}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_bertscore_lineplot_q88_h40}
 \caption{Human--model BERTScore F1 across control variants.}
 \label{fig:av_bertscore}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/bertscore_heatmap}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_bertscore_heatmap_q88_h40}
 \caption{BERTScore F1 agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_bertscore_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/chrf_lineplot}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_chrf_lineplot_q88_h40}
 \caption{Human--model chrF across control variants.}
 \label{fig:av_chrf}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/chrf_heatmap}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_chrf_heatmap_q88_h40}
 \caption{chrF agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_chrf_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/rouge1_lineplot}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_rouge1_lineplot_q88_h40}
 \caption{Human--model ROUGE-1 across control variants.}
 \label{fig:av_rouge1}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/rouge1_heatmap}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_rouge1_heatmap_q88_h40}
 \caption{ROUGE-1 agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_rouge1_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/jaccard_lineplot}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_jaccard_lineplot_q88_h40}
 \caption{Human--model token Jaccard across control variants.}
 \label{fig:av_jaccard}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/jaccard_heatmap}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_jaccard_heatmap_q88_h40}
 \caption{Token Jaccard agreement heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_jaccard_heat}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/exact_lineplot}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_exact_lineplot_q88_h40}
 \caption{Human--model exact-match rate across control variants.}
 \label{fig:av_exact}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/exact_heatmap}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_exact_heatmap_q88_h40}
 \caption{Exact-match heatmap (group $\times$ variant, HM pairs).}
 \label{fig:av_exact_heat}
 \end{figure}
@@ -1179,7 +1116,7 @@ three control variants.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_variant/sbert_heatmap}
+\includegraphics[width=\columnwidth]{agreement_variants/inst_blind_vABC_sbert_heatmap_q88_h40}
 \caption{SBERT cosine agreement heatmap (group $\times$ variant, HM pairs).
 Colour scale shared with Figure~\ref{fig:agreement_variant}.}
 \label{fig:av_sbert_heat}
@@ -1189,10 +1126,9 @@ Colour scale shared with Figure~\ref{fig:agreement_variant}.}
 \section{Inter-rater Agreement Heatmaps — All Metrics}
 \label{app:interrater_all}
 
-Figure~\ref{fig:interrater} in the main text shows the SBERT group-mean
-inter-rater agreement matrix.
-Figures~\ref{fig:cm_simcse}--\ref{fig:cm_exact} replicate this analysis for
-all remaining metrics using variant\,C, inst\_blind condition.
+Figures~\ref{fig:cm_sbert_groups}--\ref{fig:cm_exact_full} summarize the
+inter-rater agreement structure for variant\,C under the inst\_blind
+condition.
 In each figure, the top panel shows group-mean agreement and the bottom panel
 shows the full per-rater matrix (36 humans + all model groups).
 The block structure is consistent across metrics: humans cluster tightly
@@ -1201,84 +1137,98 @@ standalone LLMs (especially thinking-mode variants) occupy a distinct region.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/simcse_heatmap_groups}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_sbert_groups}
+\caption{SBERT cosine inter-rater agreement --- group-mean matrix (variant C).}
+\label{fig:cm_sbert_groups}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_sbert_all}
+\caption{SBERT cosine inter-rater agreement --- full per-rater matrix (variant C).}
+\label{fig:cm_sbert_full}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_simcse_groups}
 \caption{SimCSE cosine inter-rater agreement --- group-mean matrix (variant C).}
 \label{fig:cm_simcse}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/simcse_heatmap_full}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_simcse_all}
 \caption{SimCSE cosine inter-rater agreement --- full per-rater matrix (variant C).}
 \label{fig:cm_simcse_full}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/bertscore_heatmap_groups}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_bertscore_groups}
 \caption{BERTScore F1 inter-rater agreement --- group-mean matrix (variant C).}
 \label{fig:cm_bertscore}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/bertscore_heatmap_full}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_bertscore_all}
 \caption{BERTScore F1 inter-rater agreement --- full per-rater matrix (variant C).}
 \label{fig:cm_bertscore_full}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/chrf_heatmap_groups}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_chrf_groups}
 \caption{chrF inter-rater agreement --- group-mean matrix (variant C).}
 \label{fig:cm_chrf}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/chrf_heatmap_full}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_chrf_all}
 \caption{chrF inter-rater agreement --- full per-rater matrix (variant C).}
 \label{fig:cm_chrf_full}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/rouge1_heatmap_groups}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_rouge1_groups}
 \caption{ROUGE-1 F1 inter-rater agreement --- group-mean matrix (variant C).}
 \label{fig:cm_rouge1}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/rouge1_heatmap_full}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_rouge1_all}
 \caption{ROUGE-1 F1 inter-rater agreement --- full per-rater matrix (variant C).}
 \label{fig:cm_rouge1_full}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/jaccard_heatmap_groups}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_jaccard_groups}
 \caption{Token Jaccard inter-rater agreement --- group-mean matrix (variant C).}
 \label{fig:cm_jaccard}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/jaccard_heatmap_full}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_jaccard_all}
 \caption{Token Jaccard inter-rater agreement --- full per-rater matrix (variant C).}
 \label{fig:cm_jaccard_full}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/exact_heatmap_groups}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_exact_groups}
 \caption{Exact-match inter-rater agreement --- group-mean matrix (variant C).}
 \label{fig:cm_exact}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{agreement_C/exact_heatmap_full}
+\includegraphics[width=\columnwidth]{agreement_heatmaps/vC_exact_all}
 \caption{Exact-match inter-rater agreement --- full per-rater matrix (variant C).}
 \label{fig:cm_exact_full}
 \end{figure}

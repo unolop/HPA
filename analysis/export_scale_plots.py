@@ -57,8 +57,8 @@ from utils.constants import (
     GROUP_COLORS, GROUP_ORDER, GROUP_MARKER,
     MODEL_FAMILY, MODEL_FAMILY_COLORS, MODEL_SIZE_B,
 )
-from utils.load_session import load_human_data
-from config import MODELS_ALL, MODEL_GROUP, MIN_ANSWERS_DEFAULT, extend_pair_cache_with_yesno
+from export_helpers import get_exports_dir, load_human_subset, load_pair_cache, read_export
+from config import MODELS_ALL, MODEL_GROUP, MIN_ANSWERS_DEFAULT
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CLI
@@ -68,25 +68,27 @@ parser.add_argument('--metric', choices=['agreement', 'accuracy'], default='agre
 parser.add_argument('--agg',    choices=['by_models', 'by_family', 'by_groups'],
                     default='by_models')
 parser.add_argument('--min_answers', type=int, default=MIN_ANSWERS_DEFAULT)
-parser.add_argument('--include_yesno', action='store_true',
-                    help='Extend pair cache with yes/no question pairs.')
 args = parser.parse_args()
 
 METRIC = args.metric
 AGG    = args.agg
 
-EXPORTS   = ROOT / 'analysis/session2/exports'
-OUT_DIR   = ROOT / f'latex/AnonymousSubmission/LaTeX/figures/scale_plots'
+EXPORTS   = get_exports_dir(ROOT)
+OUT_DIR   = ROOT / f'latex/AnonymousSubmission/LaTeX/figures/{METRIC}_scale'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 AGG_SHORT = AGG.replace('by_', '')   # by_models→models, by_family→family, by_groups→groups
 
-HH_COLOR = '#1565C0'
+HH_COLOR = '#222222'
 
+plt.style.use('seaborn-v0_8-whitegrid')
 plt.rcParams.update({
     'font.family':       'DejaVu Sans',
     'axes.spines.top':   False,
     'axes.spines.right': False,
-    'axes.grid':         False,
+    'axes.labelsize':    11,
+    'axes.titlesize':    13,
+    'xtick.labelsize':   10,
+    'ytick.labelsize':   10,
 })
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -109,7 +111,7 @@ VAR_LABELS = {'C': 'Original (C)', 'B': 'Weaker (B)', 'A': 'Pronoun. (A)'}
 # Load human-study question subset
 # ─────────────────────────────────────────────────────────────────────────────
 print(f'\nLoading human data (min_answers={args.min_answers})…')
-participants, common_qids, human_df_full, _ = load_human_data(
+participants, common_qids, human_df_full, _ = load_human_subset(
     ROOT, min_answers=args.min_answers, translate=False, verbose=True)
 n_humans  = len(participants)
 print(f'  common_qids: {len(common_qids)}  |  participants: {n_humans}')
@@ -121,17 +123,13 @@ print(f'\nLoading {METRIC} data…')
 
 # Auto-compute HM pairs for any models with complete inst_blind data
 # that are not yet in the cache, then load the (possibly updated) cache.
-from build_pair_cache import build_pair_cache
-pair_cache = build_pair_cache(ROOT, EXPORTS, verbose=True)
-if args.include_yesno:
-    print('  Extending pair_cache with yes/no question pairs…')
-    pair_cache = extend_pair_cache_with_yesno(pair_cache, EXPORTS)
+pair_cache = load_pair_cache(ROOT, include_yesno=True, verbose=True)
 pair_cache = pair_cache[pair_cache['question_id'].isin(common_qids)]
 
 if METRIC == 'agreement':
     raw = pair_cache[pair_cache['pair_type'] == 'HM'].copy()
 else:
-    raw = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
+    raw = read_export(ROOT, 'responses_model_inst_blind.csv')
     raw = raw[raw['question_id'].isin(common_qids)]
 
 # ── Validate question count is consistent across variants ─────────────────────
@@ -145,7 +143,14 @@ for src, label in [(raw, 'model'), (pair_cache, 'pair_cache')]:
 n_questions = raw[raw['variant'] == 'C']['question_id'].nunique()
 print(f'  rows after filtering: {len(raw)}  |  questions per variant: {n_questions}')
 
-SUFFIX = f'_q{n_questions}_h{n_humans}' + ('_yesno' if args.include_yesno else '')
+if METRIC == 'agreement':
+    hh_sub = pair_cache[(pair_cache['pair_type'] == 'HH') &
+                        (pair_cache['question_id'].isin(common_qids))]
+    n_humans_suffix = len(set(hh_sub['subject_1']).union(set(hh_sub['subject_2'])))
+else:
+    n_humans_suffix = n_humans
+
+SUFFIX = f'_q{n_questions}_h{n_humans_suffix}_yesno'
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Models with known parameter counts
@@ -224,16 +229,17 @@ def human_baseline(col: str, variant: str) -> tuple[float, float]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Shared axis helpers
 # ─────────────────────────────────────────────────────────────────────────────
-X_TICKS     = [0.5, 1, 2, 4, 7, 13, 32]
-X_TICK_LABS = ['0.5', '1', '2', '4', '7', '13', '32']
-
-
 def _configure_xaxis(ax):
+    sizes = sorted(set(MODEL_SIZE_B.values()))
     ax.set_xscale('log')
-    ax.set_xticks(X_TICKS)
-    ax.set_xticklabels(X_TICK_LABS, fontsize=8)
+    ax.set_xticks(sizes)
+    ax.set_xticklabels(
+        [str(int(s)) if s == int(s) else str(s) for s in sizes],
+        fontsize=8,
+    )
     ax.set_xlabel('Parameters (B)', fontsize=10)
-    ax.set_xlim(0.4, 40)
+    margin = 0.15  # log-space padding
+    ax.set_xlim(sizes[0] * (10 ** -margin), sizes[-1] * (10 ** margin))
 
 
 def _draw_hh(ax, hh_mean: float, hh_ci: float):
@@ -247,46 +253,114 @@ def _draw_hh(ax, hh_mean: float, hh_ci: float):
                    color=HH_COLOR, alpha=0.08, zorder=0)
 
 
+def _ensure_hh_visible(ax, hh_mean: float):
+    """Call after all data is plotted to guarantee the HH line stays in view."""
+    if np.isnan(hh_mean):
+        return
+    ylo, yhi = ax.get_ylim()
+    pad = (yhi - ylo) * 0.08
+    if hh_mean > yhi - pad:
+        ax.set_ylim(ylo, hh_mean + pad)
+    elif hh_mean < ylo + pad:
+        ax.set_ylim(hh_mean - pad, yhi)
+
+
 def _save(fig, name: str):
     path = OUT_DIR / name
-    fig.savefig(path, dpi=150, bbox_inches='tight')
+    fig.savefig(path, dpi=220, bbox_inches='tight')
     plt.close(fig)
     print(f'  [scale_{METRIC}_{AGG}] {name}')
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ── by_models ─────────────────────────────────────────────────────────────────
-# Scatter + error bars; colour = family, marker = group
+# Lines connect same-family models (sorted by size); colour = family.
+# Marker shape encodes base group; hollow = think / backbone derivative.
+#   VLM              → filled 'o'     VLM backbone decoder → hollow 'o' + dotted
+#   standalone LLM   → filled 's'     standalone LLM (think) → hollow 's' + dotted
 # ─────────────────────────────────────────────────────────────────────────────
+
+# Base marker per logical role (think/backbone share the filled group's marker)
+_BASE_MARKER = {
+    'VLM':                    'o',
+    'VLM backbone decoder':   'o',   # same shape as VLM, hollow
+    'standalone LLM':         's',
+    'standalone LLM (think)': 's',   # same shape as LLM, hollow
+}
+_HOLLOW = {'VLM backbone decoder', 'standalone LLM (think)'}
+
 
 def _plot_by_models(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci: float):
     _draw_hh(ax, hh_mean, hh_ci)
 
+    # Draw connecting lines per (family × base group), sorted by size
+    _PAIR = [('VLM', 'VLM backbone decoder'),
+             ('standalone LLM', 'standalone LLM (think)')]
+    for fam, fdf in stats.groupby('family'):
+        color = MODEL_FAMILY_COLORS.get(fam, '#888888')
+        # Solid line through base (filled) models
+        for base_grp, _ in _PAIR:
+            sub = fdf[fdf['group'] == base_grp].sort_values('size')
+            if len(sub) > 1:
+                ax.plot(sub['size'].values, sub['mean'].values,
+                        color=color, lw=1.2, ls='-', alpha=0.4, zorder=2)
+        # Dotted line through derivative (hollow) models
+        for _, deriv_grp in _PAIR:
+            sub = fdf[fdf['group'] == deriv_grp].sort_values('size')
+            if len(sub) > 1:
+                ax.plot(sub['size'].values, sub['mean'].values,
+                        color=color, lw=1.2, ls=':', alpha=0.4, zorder=2)
+        # Vertical dotted connector between base↔derivative at same size
+        for base_grp, deriv_grp in _PAIR:
+            base_rows  = fdf[fdf['group'] == base_grp]
+            deriv_rows = fdf[fdf['group'] == deriv_grp]
+            for size in base_rows['size'].values:
+                b = base_rows[base_rows['size'] == size]
+                d = deriv_rows[deriv_rows['size'] == size]
+                if b.empty or d.empty:
+                    continue
+                ax.plot([size, size],
+                        [b['mean'].values[0], d['mean'].values[0]],
+                        color=color, lw=1.0, ls=':', alpha=0.55, zorder=2)
+
+    # Draw individual markers + error bars on top
     for _, row in stats.iterrows():
-        color = MODEL_FAMILY_COLORS.get(row['family'], '#888888')
-        mkr   = GROUP_MARKER.get(row['group'], 'o')
+        color  = MODEL_FAMILY_COLORS.get(row['family'], '#888888')
+        mkr    = _BASE_MARKER.get(row['group'], 'o')
+        hollow = row['group'] in _HOLLOW
+        mfc    = 'none' if hollow else color
+        mec    = color
         ax.errorbar(row['size'], row['mean'], yerr=row['ci'],
-                    fmt=mkr, color=color, ms=7, capsize=3, capthick=0.8,
+                    fmt=mkr, color=color, ms=8, capsize=3, capthick=0.8,
                     elinewidth=0.8, alpha=0.88, zorder=3,
-                    markeredgecolor='white', markeredgewidth=0.5)
+                    markerfacecolor=mfc, markeredgecolor=mec, markeredgewidth=1.2)
 
     ax.set_ylabel(ylabel, fontsize=10)
     _configure_xaxis(ax)
+    _ensure_hh_visible(ax, hh_mean)
 
     present_fams = sorted(stats['family'].unique())
     fam_handles = [
         mlines.Line2D([], [], color=MODEL_FAMILY_COLORS.get(f, '#888'),
-                      marker='o', ms=6, ls='none', label=f)
+                      marker='o', ms=6, ls='-', lw=1.5, label=f)
         for f in present_fams
     ]
     present_grps = stats['group'].unique()
-    grp_handles = [
-        mlines.Line2D([], [], color='gray', marker=GROUP_MARKER.get(g, 'o'),
-                      ms=7, ls='none',
-                      label=g.replace('standalone LLM', 'SA-LLM')
-                             .replace('VLM backbone decoder', 'Backbone'))
-        for g in GROUP_ORDER if g in present_grps
-    ]
+    grp_handles = []
+    for g in GROUP_ORDER:
+        if g not in present_grps:
+            continue
+        mkr    = _BASE_MARKER.get(g, 'o')
+        hollow = g in _HOLLOW
+        label  = (g.replace('standalone LLM (think)', 'SA-LLM (think)')
+                   .replace('standalone LLM', 'SA-LLM')
+                   .replace('VLM backbone decoder', 'Backbone'))
+        grp_handles.append(mlines.Line2D(
+            [], [], color='gray', marker=mkr, ms=7, ls='none',
+            markerfacecolor='none' if hollow else 'gray',
+            markeredgecolor='gray', markeredgewidth=1.2,
+            label=label,
+        ))
     hh_handle = mlines.Line2D([], [], color=HH_COLOR, ls='--', lw=1.6,
                                label='Human baseline')
     ax.legend(handles=fam_handles + grp_handles + [hh_handle],
@@ -297,7 +371,7 @@ def _plot_by_models(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
 # ─────────────────────────────────────────────────────────────────────────────
 # ── by_family ─────────────────────────────────────────────────────────────────
 # Line per (family × group); colour = family, marker = group shape,
-# solid = no-think / dashed = think.  Error bars at each point.
+# solid/filled = base (VLM/LLM), dotted/hollow = derivative (backbone/think).
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _plot_by_family(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci: float):
@@ -318,15 +392,18 @@ def _plot_by_family(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
         ys  = [r['mean']  for r in rows_s]
         cis = [r['ci']    for r in rows_s]
 
-        color = MODEL_FAMILY_COLORS.get(fam, '#888888')
-        mkr   = GROUP_MARKER.get(grp, 'o')
-        think = grp == 'standalone LLM (think)'
-        ls    = '--' if think else '-'
-        lw    = 1.4 if think else 1.8
+        color  = MODEL_FAMILY_COLORS.get(fam, '#888888')
+        mkr    = GROUP_MARKER.get(grp, 'o')
+        hollow = grp in _HOLLOW
+        ls     = ':' if hollow else '-'
+        lw     = 1.4 if hollow else 1.8
+        mfc    = 'none' if hollow else color
+        mec    = color
 
         ax.errorbar(xs, ys, yerr=cis, fmt=mkr, color=color,
                     ls=ls, lw=lw, ms=6, capsize=3, capthick=0.7,
-                    elinewidth=0.7, markeredgecolor='white', markeredgewidth=0.4,
+                    elinewidth=0.7,
+                    markerfacecolor=mfc, markeredgecolor=mec, markeredgewidth=1.2,
                     alpha=0.88, zorder=3)
 
         if fam not in seen_fam:
@@ -338,21 +415,24 @@ def _plot_by_family(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
     # Group marker guide
     present_grps = stats['group'].unique()
     grp_handles = [
-        mlines.Line2D([], [], color='gray', marker=GROUP_MARKER.get(g, 'o'),
-                      ms=7, ls='none',
+        mlines.Line2D([], [], color='gray',
+                      marker=GROUP_MARKER.get(g, 'o'), ms=7, ls='none',
+                      markerfacecolor='none' if g in _HOLLOW else 'gray',
+                      markeredgecolor='gray', markeredgewidth=1.2,
                       label=g.replace('standalone LLM', 'SA-LLM')
                              .replace('VLM backbone decoder', 'Backbone'))
         for g in GROUP_ORDER if g in present_grps
     ]
     style_handles = [
-        mlines.Line2D([], [], color='gray', ls='-',  lw=2, label='no-think'),
-        mlines.Line2D([], [], color='gray', ls='--', lw=2, label='think'),
+        mlines.Line2D([], [], color='gray', ls='-',  lw=2, label='base (filled)'),
+        mlines.Line2D([], [], color='gray', ls=':',  lw=2, label='backbone / think (hollow)'),
     ]
     hh_handle = mlines.Line2D([], [], color=HH_COLOR, ls='--', lw=1.6,
                                label='Human baseline')
 
     ax.set_ylabel(ylabel, fontsize=10)
     _configure_xaxis(ax)
+    _ensure_hh_visible(ax, hh_mean)
     ax.legend(handles=all_handles + grp_handles + style_handles + [hh_handle],
               fontsize=7, loc='upper center',
               bbox_to_anchor=(0.5, -0.18), ncol=5, frameon=True)
@@ -373,15 +453,20 @@ def _plot_by_groups(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
         gdf = stats[stats['group'] == grp]
         if gdf.empty:
             continue
-        color = GROUP_COLORS.get(grp, '#888888')
-        mkr   = GROUP_MARKER.get(grp, 'o')
-        label = grp.replace('standalone LLM', 'SA-LLM') \
-                   .replace('VLM backbone decoder', 'Backbone')
+        color  = GROUP_COLORS.get(grp, '#888888')
+        mkr    = GROUP_MARKER.get(grp, 'o')
+        hollow = grp in _HOLLOW
+        mfc    = 'none' if hollow else color
+        mec    = color if hollow else 'white'
+        mew    = 1.2 if hollow else 0.5
+        label  = grp.replace('standalone LLM', 'SA-LLM') \
+                    .replace('VLM backbone decoder', 'Backbone')
 
         ax.errorbar(gdf['size'].values, gdf['mean'].values, yerr=gdf['ci'].values,
                     fmt=mkr, color=color, ms=7, capsize=3, capthick=0.8,
                     elinewidth=0.8, alpha=0.85, zorder=3,
-                    markeredgecolor='white', markeredgewidth=0.5, label=label)
+                    markerfacecolor=mfc, markeredgecolor=mec,
+                    markeredgewidth=mew, label=label)
 
         # Log-linear trend line if ≥3 distinct sizes
         xs = gdf['size'].values
@@ -390,13 +475,15 @@ def _plot_by_groups(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
             coeffs = np.polyfit(np.log(xs), ys, 1)
             x_rng  = np.logspace(np.log10(xs.min()), np.log10(xs.max()), 50)
             y_fit  = np.polyval(coeffs, np.log(x_rng))
-            ax.plot(x_rng, y_fit, color=color, ls='--', lw=1.2,
+            trend_ls = ':' if hollow else '--'
+            ax.plot(x_rng, y_fit, color=color, ls=trend_ls, lw=1.2,
                     alpha=0.45, zorder=2)
 
     hh_handle = mlines.Line2D([], [], color=HH_COLOR, ls='--', lw=1.6,
                                label='Human baseline')
     ax.set_ylabel(ylabel, fontsize=10)
     _configure_xaxis(ax)
+    _ensure_hh_visible(ax, hh_mean)
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles=handles + [hh_handle],
               labels=labels + ['Human baseline'],
@@ -429,25 +516,18 @@ if METRIC == 'agreement':
         hh_mean, hh_ci = human_baseline(col, variant='C')
 
         fig, ax = plt.subplots(figsize=(8, 5))
-        plot_fn(ax, stats,
-                f'Mean {metric_name} — HM, human-study subset, variant C',
-                hh_mean, hh_ci)
+        plot_fn(ax, stats, f'Mean {metric_name}', hh_mean, hh_ci)
         plt.tight_layout()
-        _save(fig, f'inst_blind_{AGG_SHORT}_{key}{SUFFIX}.png')
+        _save(fig, f'inst_blind_{AGG_SHORT}_{key}_vC{SUFFIX}.png')
 
-else:  # accuracy
-    for var in ACCURACY_VARIANTS:
-        print(f'\n── Accuracy variant {var} ──')
-        stats = model_stats('accuracy', variant=var)
-        if stats.empty:
-            print('  (no data, skipped)')
-            continue
+else:  # accuracy — variant C only
+    var = 'C'
+    print(f'\n── Accuracy variant {var} ──')
+    stats = model_stats('accuracy', variant=var)
+    if not stats.empty:
         hh_mean, hh_ci = human_baseline('accuracy', variant=var)
-
         fig, ax = plt.subplots(figsize=(8, 5))
-        plot_fn(ax, stats,
-                f'Mean accuracy — inst_blind, {VAR_LABELS[var]}',
-                hh_mean, hh_ci)
+        plot_fn(ax, stats, 'Mean accuracy', hh_mean, hh_ci)
         plt.tight_layout()
         _save(fig, f'inst_blind_{AGG_SHORT}_v{var}{SUFFIX}.png')
 
