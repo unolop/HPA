@@ -13,6 +13,7 @@ MODEL_TYPE = {
     'LLaVA-1.5-7B':       'VLM',
     'LLaVA-Mistral':      'VLM',
     'LLaVA-Vicuna':       'VLM',
+    'LLaVA-Vicuna-13B':   'VLM',
     'InternVL-1B':        'VLM',
     'InternVL-2B':        'VLM',
     'InternVL-8B':        'VLM',
@@ -20,7 +21,8 @@ MODEL_TYPE = {
     'Qwen3-VL-32B (LM)':  'VLM backbone decoder',
     'LLaVA-1.5 (LM)':    'VLM backbone decoder',
     'LLaVA-Mistral (LM)': 'VLM backbone decoder',
-    'LLaVA-Vicuna (LM)':  'VLM backbone decoder',
+    'LLaVA-Vicuna (LM)':      'VLM backbone decoder',
+    'LLaVA-Vicuna-13B (LM)':  'VLM backbone decoder',
     # standalone LLM — nothink (default, no chain-of-thought)
     'Qwen3-0.6B':          'standalone LLM',
     'Qwen3-1.7B':          'standalone LLM',
@@ -31,8 +33,9 @@ MODEL_TYPE = {
     'Vicuna-7B':           'standalone LLM',
     'Vicuna-13B':          'standalone LLM',
     'Qwen2.5-7B':          'standalone LLM',
+    'Qwen2.5-7B-Instruct': 'standalone LLM',
     'Phi-3.5-mini':        'standalone LLM',
-    # note: inference.py saves using HF model id leaf: Qwen2.5-7B-Instruct / Phi-3.5-mini-instruct
+    # Qwen2.5-7B = base pretrained; Qwen2.5-7B-Instruct = instruction-tuned — kept separate for base vs instruct comparison
     # standalone LLM — think variants (chain-of-thought enabled)
     'Qwen3-0.6B (think)':  'standalone LLM (think)',
     'Qwen3-1.7B (think)':  'standalone LLM (think)',
@@ -43,22 +46,24 @@ MODEL_TYPE = {
 
 
 def backbone_think_models(base: Path) -> dict:
-    """Qwen3 backbone models run WITH thinking tokens (chain-of-thought enabled)."""
+    """Qwen3 backbone models run WITH thinking tokens (chain-of-thought enabled).
+    Stored under backbone/pretrained/ with _think suffix in the model dir name.
+    """
     base = Path(base)
-    bt = base / 'evaluation/logits/backbone_think/pretrained'
+    bn = base / 'evaluation/logits/backbone/pretrained'
     return {
-        'Qwen3-0.6B (think)':  (bt, 'Qwen3-0.6B'),
-        'Qwen3-1.7B (think)':  (bt, 'Qwen3-1.7B'),
-        'Qwen3-4B (think)':    (bt, 'Qwen3-4B'),
-        'Qwen3-8B (think)':    (bt, 'Qwen3-8B'),
-        'Qwen3-32B (think)':   (bt, 'Qwen3-32B'),
+        'Qwen3-0.6B (think)':  (bn, 'Qwen3-0.6B_think'),
+        'Qwen3-1.7B (think)':  (bn, 'Qwen3-1.7B_think'),
+        'Qwen3-4B (think)':    (bn, 'Qwen3-4B_think'),
+        'Qwen3-8B (think)':    (bn, 'Qwen3-8B_think'),
+        'Qwen3-32B (think)':   (bn, 'Qwen3-32B_think'),
     }
 
 
-def backbone_nothink_models(base: Path) -> dict:
+def backbone_models(base: Path) -> dict:
     """All backbone models run WITHOUT thinking tokens (clean outputs)."""
     base = Path(base)
-    bn = base / 'evaluation/logits/backbone_nothink/pretrained'
+    bn = base / 'evaluation/logits/backbone/pretrained'
     return {
         'Qwen3-0.6B':          (bn, 'Qwen3-0.6B'),
         'Qwen3-1.7B':          (bn, 'Qwen3-1.7B'),
@@ -68,7 +73,8 @@ def backbone_nothink_models(base: Path) -> dict:
         'Mistral-7B':          (bn, 'Mistral-7B-Instruct-v0.2'),
         'Vicuna-7B':           (bn, 'vicuna-7b-v1.5'),
         'Vicuna-13B':          (bn, 'vicuna-13b-v1.5'),
-        'Qwen2.5-7B':          (bn, 'Qwen2.5-7B-Instruct'),
+        'Qwen2.5-7B':          (bn, 'Qwen2.5-7B'),
+        'Qwen2.5-7B-Instruct': (bn, 'Qwen2.5-7B-Instruct'),
         'Phi-3.5-mini':        (bn, 'Phi-3.5-mini-instruct'),
     }
 
@@ -92,6 +98,7 @@ def default_all_models(base: Path) -> dict:
         'LLaVA-1.5-7B':       (pt, 'llava-1.5-7b-hf'),
         'LLaVA-Mistral':      (pt, 'llava-v1.6-mistral-7b-hf'),
         'LLaVA-Vicuna':       (pt, 'llava-v1.6-vicuna-7b-hf'),
+        'LLaVA-Vicuna-13B':   (pt, 'llava-v1.6-vicuna-13b-hf'),
         'InternVL-1B':        (pt, 'InternVL3_5-1B'),
         'InternVL-2B':        (pt, 'InternVL3_5-2B'),
         'InternVL-8B':        (pt, 'InternVL3_5-8B'),
@@ -99,9 +106,10 @@ def default_all_models(base: Path) -> dict:
         'Qwen3-VL-32B (LM)': (lm, 'Qwen3-VL-32B-Instruct'),
         'LLaVA-1.5 (LM)':    (lm, 'llava-1.5-7b-hf'),
         'LLaVA-Mistral (LM)':(lm, 'llava-v1.6-mistral-7b-hf'),
-        'LLaVA-Vicuna (LM)': (lm, 'llava-v1.6-vicuna-7b-hf'),
+        'LLaVA-Vicuna (LM)':     (lm, 'llava-v1.6-vicuna-7b-hf'),
+        'LLaVA-Vicuna-13B (LM)': (lm, 'llava-v1.6-vicuna-13b-hf'),
         # ── standalone LLM (nothink) ─────────────────────────────────────────
-        **backbone_nothink_models(base),
+        **backbone_models(base),
         # ── standalone LLM (think / chain-of-thought) ────────────────────────
         **backbone_think_models(base),
     }

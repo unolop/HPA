@@ -23,6 +23,7 @@
 \newlabel{sec:setup}{{3.1}{2}{}{}{}}
 \citation{antol2015vqa}
 \citation{wang2020minilm}
+\citation{gao2021simcse}
 \newlabel{sec:control}{{3.3}{3}{}{}{}}
 \newlabel{sec:prior}{{4}{4}{}{}{}}
 \newlabel{sec:characterize}{{5}{4}{}{}{}}
@@ -32,19 +33,19 @@
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:dist}{{1}{5}{}{}{}}
 \newlabel{fig:scale_align}{{2}{5}{}{}{}}
-\newlabel{sec:confidence}{{5.3}{5}{}{}{}}
 \newlabel{fig:agreement_variant}{{3}{5}{}{}{}}
+\newlabel{sec:confidence}{{5.3}{5}{}{}{}}
+\newlabel{fig:gated}{{4}{5}{}{}{}}
+\newlabel{fig:confidence_shift}{{5}{5}{}{}{}}
+\newlabel{sec:alignment}{{6}{5}{}{}{}}
 \citation{wang2020minilm}
-\newlabel{fig:gated}{{4}{6}{}{}{}}
-\newlabel{sec:alignment}{{6}{6}{}{}{}}
 \newlabel{sec:human_ref}{{6.1}{6}{}{}{}}
-\newlabel{fig:confidence_shift}{{5}{6}{}{}{}}
 \newlabel{sec:model_similarity}{{6.2}{6}{}{}{}}
-\newlabel{sec:prior_types}{{6.3}{7}{}{}{}}
+\newlabel{sec:prior_types}{{6.3}{6}{}{}{}}
 \citation{mccoy2024embers}
+\newlabel{fig:hm_alignment}{{6}{7}{}{}{}}
 \bibdata{paper}
 \bibcite{agrawal2018dont}{{1}{2018}{{Agrawal et~al.}}{{Agrawal, Batra, Parikh, and Kembhavi}}}
-\newlabel{fig:hm_alignment}{{6}{8}{}{}{}}
 \bibcite{antol2015vqa}{{2}{2015}{{Antol et~al.}}{{Antol, Agrawal, Lu, Mitchell, Batra, Zitnick, and Parikh}}}
 \bibcite{bai2025qwen3vl}{{3}{2025}{{Bai et~al.}}{{Bai, Cai, Chen, Chen, Deng, Ding, Gao, Ge, Ge, Guo et~al.}}}
 \bibcite{chen2024are}{{4}{2024}{{Chen et~al.}}{{Chen, Li, Dong, Zhang, Zang, Chen, Duan, Wang, Qiao, Lin et~al.}}}
@@ -63,48 +64,41 @@
 \bibcite{wang2020minilm}{{17}{2020}{{Wang et~al.}}{{Wang, Wei, Dong, Bao, Yang, and Zhou}}}
 \bibcite{xiao2021hallucination}{{18}{2021}{{Xiao and Wang}}{{}}}
 \bibcite{yang2025qwen3}{{19}{2025}{{Yang et~al.}}{{Yang, Li, Yang, Zhang, Hui, Zheng, Yu, Gao, Huang, Lv et~al.}}}
+\newlabel{app:human}{{A}{8}{}{}{}}
 \citation{openai2025gpt4o}
-\newlabel{app:human}{{A}{9}{}{}{}}
 \newlabel{app:aggregation}{{B}{9}{}{}{}}
 \newlabel{app:ctl}{{C}{9}{}{}{}}
-\newlabel{app:accuracy}{{D}{10}{}{}{}}
-\newlabel{app:inst}{{E}{10}{}{}{}}
-\newlabel{app:diagnostics}{{F}{10}{}{}{}}
-\newlabel{fig:app_acc_scatter}{{7}{10}{}{}{}}
-\newlabel{app:dist13}{{G}{10}{}{}{}}
-\newlabel{fig:app_agreement_scatter}{{8}{10}{}{}{}}
-\newlabel{app:agreement_variant}{{H}{10}{}{}{}}
-\newlabel{app:sbert_variant_heat}{{I}{10}{}{}{}}
-\newlabel{app:interrater_all}{{J}{10}{}{}{}}
-\newlabel{tab:main}{{1}{11}{}{}{}}
-\newlabel{tab:inst_effect}{{2}{11}{}{}{}}
-\newlabel{fig:app_scale}{{9}{11}{}{}{}}
-\newlabel{fig:dist_appendix}{{10}{12}{}{}{}}
-\newlabel{fig:av_simcse}{{11}{12}{}{}{}}
-\newlabel{fig:av_simcse_heat}{{12}{12}{}{}{}}
-\newlabel{fig:av_bertscore}{{13}{12}{}{}{}}
-\newlabel{fig:av_bertscore_heat}{{14}{13}{}{}{}}
-\newlabel{fig:av_chrf}{{15}{13}{}{}{}}
-\newlabel{fig:av_chrf_heat}{{16}{13}{}{}{}}
-\newlabel{fig:av_rouge1}{{17}{13}{}{}{}}
-\newlabel{fig:av_rouge1_heat}{{18}{14}{}{}{}}
-\newlabel{fig:av_jaccard}{{19}{14}{}{}{}}
-\newlabel{fig:av_jaccard_heat}{{20}{14}{}{}{}}
-\newlabel{fig:av_exact}{{21}{14}{}{}{}}
-\newlabel{fig:av_exact_heat}{{22}{15}{}{}{}}
-\newlabel{fig:av_sbert_heat}{{23}{15}{}{}{}}
-\newlabel{fig:cm_sbert_groups}{{24}{15}{}{}{}}
-\newlabel{fig:cm_sbert_full}{{25}{15}{}{}{}}
-\newlabel{fig:cm_simcse}{{26}{16}{}{}{}}
-\newlabel{fig:cm_simcse_full}{{27}{16}{}{}{}}
-\newlabel{fig:cm_bertscore}{{28}{16}{}{}{}}
-\newlabel{fig:cm_bertscore_full}{{29}{16}{}{}{}}
-\newlabel{fig:cm_chrf}{{30}{17}{}{}{}}
-\newlabel{fig:cm_chrf_full}{{31}{17}{}{}{}}
-\newlabel{fig:cm_rouge1}{{32}{17}{}{}{}}
-\newlabel{fig:cm_rouge1_full}{{33}{17}{}{}{}}
-\newlabel{fig:cm_jaccard}{{34}{18}{}{}{}}
-\newlabel{fig:cm_jaccard_full}{{35}{18}{}{}{}}
-\newlabel{fig:cm_exact}{{36}{18}{}{}{}}
-\newlabel{fig:cm_exact_full}{{37}{18}{}{}{}}
-\gdef \@abspage@last{18}
+\newlabel{app:accuracy}{{D}{9}{}{}{}}
+\newlabel{app:inst}{{E}{9}{}{}{}}
+\newlabel{app:diagnostics}{{F}{9}{}{}{}}
+\newlabel{fig:app_acc_scatter}{{7}{9}{}{}{}}
+\newlabel{fig:app_agreement_scatter}{{8}{9}{}{}{}}
+\newlabel{app:sbert_acc_corr}{{G}{9}{}{}{}}
+\newlabel{app:dist13}{{H}{9}{}{}{}}
+\newlabel{app:agreement_variant}{{I}{9}{}{}{}}
+\newlabel{tab:main}{{1}{10}{}{}{}}
+\newlabel{tab:inst_effect}{{2}{10}{}{}{}}
+\newlabel{app:sbert_variant_heat}{{J}{10}{}{}{}}
+\newlabel{app:interrater_all}{{K}{10}{}{}{}}
+\newlabel{fig:app_sbert_cluster}{{9}{10}{}{}{}}
+\newlabel{app:image_ablation}{{L}{10}{}{}{}}
+\newlabel{fig:app_scale}{{10}{11}{}{}{}}
+\newlabel{fig:dist_appendix}{{11}{11}{}{}{}}
+\newlabel{tab:image_ablation_acc}{{3}{11}{}{}{}}
+\newlabel{fig:av_simcse}{{12}{11}{}{}{}}
+\newlabel{fig:av_simcse_heat}{{13}{11}{}{}{}}
+\newlabel{fig:av_chrf}{{14}{11}{}{}{}}
+\newlabel{fig:av_chrf_heat}{{15}{11}{}{}{}}
+\newlabel{fig:av_exact}{{16}{11}{}{}{}}
+\newlabel{fig:av_exact_heat}{{17}{11}{}{}{}}
+\newlabel{fig:av_sbert_heat}{{18}{11}{}{}{}}
+\newlabel{fig:cm_sbert_groups}{{19}{11}{}{}{}}
+\newlabel{fig:cm_sbert_full}{{20}{11}{}{}{}}
+\newlabel{fig:cm_simcse}{{21}{11}{}{}{}}
+\newlabel{fig:cm_simcse_full}{{22}{11}{}{}{}}
+\newlabel{fig:cm_chrf}{{23}{11}{}{}{}}
+\newlabel{fig:cm_chrf_full}{{24}{11}{}{}{}}
+\newlabel{fig:cm_exact}{{25}{11}{}{}{}}
+\newlabel{fig:cm_exact_full}{{26}{11}{}{}{}}
+\newlabel{tab:image_ablation_hm}{{4}{12}{}{}{}}
+\gdef \@abspage@last{12}

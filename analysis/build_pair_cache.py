@@ -72,6 +72,7 @@ def build_pair_cache(
         _pair_exact, _pair_jaccard, _pair_rouge1, _pair_chrf,
         bertscore_batch,
     )
+    from utils.completeness import check_completeness
 
     root    = Path(root)
     exports = Path(exports)
@@ -81,6 +82,15 @@ def build_pair_cache(
     # ── 1. Load human + model responses ──────────────────────────────────────
     h_csv = pd.read_csv(exports / 'responses_human.csv')
     m_csv = pd.read_csv(exports / 'responses_model_inst_blind.csv')
+
+    h_csv, _ = check_completeness(
+        h_csv, group_col='participant', question_col='question_id',
+        answer_col='response', label='Human responses', verbose=verbose,
+    )
+    m_csv, _ = check_completeness(
+        m_csv, group_col='model', question_col='question_id',
+        answer_col='response', label='Model responses', verbose=verbose,
+    )
 
     if verbose:
         print(f'Humans : {h_csv["participant"].nunique()} participants, '
@@ -187,12 +197,38 @@ def build_pair_cache(
                 if key not in cached_keys:
                     n_new += 1
 
-    if n_new == 0:
+    # ── 5b. Detect NaN metric columns in existing cache ───────────────────────
+    # A metric column may be all-NaN if it was added after those rows were built
+    # (e.g. simcse added after Qwen3-VL pairs were first cached). Backfill them
+    # by re-encoding any missing answers and computing the dot products in place.
+    EMB_SCORE_COLS = {
+        'sbert':  ('sbert_score',       'sbert_score_clip'),
+        'simcse': ('simcse_score',       'simcse_score_clip'),
+    }
+    nan_metrics: list[str] = []
+    if cache_df is not None:
+        for em, (col, _) in EMB_SCORE_COLS.items():
+            if col in cache_df.columns and cache_df[col].isna().any():
+                nan_metrics.append(em)
+
+    if n_new == 0 and not nan_metrics:
         if verbose:
             print('No new pairs — pair_cache is up to date.')
         return cache_df if cache_df is not None else pd.DataFrame()
 
-    if verbose:
+    if n_new == 0:
+        # Only NaN backfill needed — handled in step 6b; save and return early
+        # after encoding (step 6) and backfill (step 6b) run below.
+        _only_backfill = True
+    else:
+        _only_backfill = False
+
+    if nan_metrics and verbose:
+        counts = {em: int(cache_df[EMB_SCORE_COLS[em][0]].isna().sum())
+                  for em in nan_metrics}
+        print(f'NaN metric rows to backfill: {counts}')
+
+    if n_new > 0 and verbose:
         print(f'New pairs to score: {n_new:,}')
 
     # ── 6. Encode answers with embedding models ───────────────────────────────
@@ -224,6 +260,39 @@ def build_pair_cache(
                 print(f'  [{metric_name}] all {len(existing)} vectors cached')
 
     primary_emb = next(iter(emb_caches.values())) if emb_caches else {}
+
+    # ── 6b. Backfill NaN metric columns in existing cache ─────────────────────
+    if nan_metrics and cache_df is not None:
+        for em in nan_metrics:
+            col, col_c = EMB_SCORE_COLS[em]
+            nan_idx = cache_df[cache_df[col].isna()].index
+            if verbose:
+                print(f'  [{em}] backfilling {len(nan_idx):,} NaN rows …')
+            ec = emb_caches[em]
+            scores, clips = [], []
+            for i in nan_idx:
+                a1, a2 = cache_df.at[i, 'answer_1'], cache_df.at[i, 'answer_2']
+                v1, v2 = ec.get(a1 or ''), ec.get(a2 or '')
+                if v1 is not None and v2 is not None:
+                    v = float(np.dot(v1, v2))
+                    scores.append(round(v, 4))
+                    clips.append(round(max(v, 0.0), 4))
+                else:
+                    scores.append(float('nan'))
+                    clips.append(float('nan'))
+            cache_df.loc[nan_idx, col]   = scores
+            cache_df.loc[nan_idx, col_c] = clips
+        still_nan = sum(
+            int(cache_df[EMB_SCORE_COLS[em][0]].isna().sum()) for em in nan_metrics)
+        if verbose:
+            print(f'  Backfill complete — remaining NaN: {still_nan}')
+
+    if _only_backfill:
+        cache_df.to_parquet(cache_path, index=False)
+        cache_df.to_csv(exports / 'answer_pairs_sbert_text.csv', index=False)
+        if verbose:
+            print(f'Saved  : {len(cache_df):,} pairs (backfill only) → {cache_path}')
+        return cache_df
 
     # ── 7. Build new pair rows ────────────────────────────────────────────────
     lex_metrics = ['exact', 'jaccard', 'rouge1', 'chrf']

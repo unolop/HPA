@@ -1,5 +1,5 @@
 #!/bin/bash
-# Wait for backbone_think/Qwen3-4B blind to reach 1000, then run all pending 32B jobs.
+# Wait for backbone/Qwen3-4B_think blind to reach 1000, then run all pending 32B jobs.
 #
 # Pending 32B jobs:
 #   vlm/Qwen3-VL-32B        blind        (~888 → 1000)  fill
@@ -21,13 +21,13 @@ mkdir -p logs
 PYTHON="/home/david/miniconda3/envs/zero/bin/python"
 CACHE="/home/david/Desktop/yuna/.cache/hf"
 DATASET="vqa_1k"
-TARGET_4B="evaluation/logits/backbone_think/pretrained/Qwen3-4B/vqa_1k_control_blind.jsonl"
+TARGET_4B="evaluation/logits/backbone/pretrained/Qwen3-4B_think/vqa_1k_control_blind.jsonl"
 
 timestamp() { date '+%Y-%m-%d %H:%M:%S'; }
 log() { echo "[$(timestamp)] $*" | tee -a "$LOG"; }
 
 # ── Wait for Qwen3-4B blind to finish ────────────────────────────────────────
-log "=== Waiting for backbone_think/Qwen3-4B blind to reach 1000 rows ==="
+log "=== Waiting for backbone/Qwen3-4B_think blind to reach 1000 rows ==="
 while true; do
     n=$(wc -l < "$TARGET_4B" 2>/dev/null || echo 0)
     if [ "$n" -ge 1000 ]; then

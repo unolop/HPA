@@ -17,7 +17,7 @@ normalize_korean: Korean text normalisation for human participant answers
 from .model_registry import (
     MODEL_TYPE,
     default_all_models,
-    backbone_nothink_models,
+    backbone_models,
     backbone_think_models,
     model_groups,
     flatten_all_models,
@@ -73,7 +73,7 @@ from .constants import (
 
 __all__ = [
     # model registry
-    'MODEL_TYPE', 'default_all_models', 'backbone_nothink_models',
+    'MODEL_TYPE', 'default_all_models', 'backbone_models',
     'backbone_think_models', 'model_groups', 'flatten_all_models',
     # data loading
     'load_human_data', 'load_model_results',
