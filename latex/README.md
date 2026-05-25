@@ -74,14 +74,14 @@ This means:
 
 ---
 
-## Figures in `latex/AnonymousSubmission/LaTeX/figures/`
+## Figures in repo-level `figures/`
 
 ### Main figures
 
 | File | Role | Paper use |
 |---|---|---|
-| `accuracy_variants/inst_blind_vABC_groups_7b.png` | Main setup figure | Matched-size architecture comparison across control variants |
-| `agreement_variants/inst_blind_vABC_sbert_lineplot_q88_h40.png` | Main alignment figure | Shows human-model semantic alignment across variants |
+| `accuracy_vABC_group/inst_blind_vlm_q113_h40.png` | Main setup figure | Matched-size architecture comparison across control variants |
+| `agreement_vABC/inst_blind_sbert_lineplot_q88_h40.png` | Main alignment figure | Shows human-model semantic alignment across variants |
 | `answer_dist/inst_blind_vC_yn_q26_h40.png` + `answer_dist/inst_blind_vC_number_q26_h40.png` | Bias evidence | Shows blind defaults are structured |
 | `instruction_effect/merged_abstention_vC_q113.png` | Behavioral mechanism | Shows instruction shifts abstention into commitment |
 | `confidence_dist/output_class_shift_q113_h40.png` | Confidence evidence | Shows wrong committed answers remain high-confidence |
@@ -104,8 +104,8 @@ This means:
 
 If space or attention is limited, the ranking should be:
 
-1. `agreement_variants/inst_blind_vABC_sbert_lineplot_q88_h40.png`
-2. `accuracy_variants/inst_blind_vABC_groups_7b.png`
+1. `agreement_vABC/inst_blind_sbert_lineplot_q88_h40.png`
+2. `accuracy_vABC_group/inst_blind_vlm_q113_h40.png`
 3. `answer_dist/inst_blind_vC_yn_q26_h40.png` + `inst_blind_vC_number_q26_h40.png`
 4. `instruction_effect/merged_abstention_vC_q113.png`
 5. `confidence_dist/output_class_shift_q113_h40.png`

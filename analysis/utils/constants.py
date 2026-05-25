@@ -14,6 +14,8 @@ from utils.constants import (
 )
 """
 
+from typing import Iterable, Optional
+
 # ── Pretrained VLM model list (blind / inst_blind analysis) ──────────────────
 MODEL_ORDER = [
     'llava-1.5-7b-hf',
@@ -79,10 +81,45 @@ GROUP_COLORS = {
     'VLM':                    '#E53935',   # red
     'VLM backbone decoder':   '#E67E22',   # orange
     'standalone LLM':         '#2E7D32',   # green
-    'standalone LLM (think)': '#8E24AA',   # purple
+    'standalone LLM (think)': '#1E88E5',   # blue
 }
 
-GROUP_ORDER = ['VLM backbone decoder', 'VLM', 'standalone LLM (think)', 'standalone LLM']
+GROUP_ORDER = ['VLM', 'VLM backbone decoder', 'standalone LLM', 'standalone LLM (think)']
+GROUP_PAIR_ORDER = [
+    ('VLM', 'VLM backbone decoder'),
+    ('standalone LLM', 'standalone LLM (think)'),
+]
+GROUP_PAIR_PLOTS = [
+    ('vlm_backbone', 'VLM + Backbone decoder', ('VLM', 'VLM backbone decoder')),
+    ('llm_think', 'Standalone LLM + Think', ('standalone LLM', 'standalone LLM (think)')),
+]
+
+# Condition-aware plotting scheme for accuracy_vABC exports.
+# - blind / inst_blind: paired plots
+# - control: VLM-only plot (no backbone matching requirement)
+ACCURACY_VABC_PLOT_SPECS = {
+    'vlm_backbone': {
+        'kind': 'paired',
+        'title': 'VLM + Backbone decoder',
+        'groups': ('VLM', 'VLM backbone decoder'),
+    },
+    'llm_think': {
+        'kind': 'paired_qwen_think',
+        'title': 'Standalone LLM + Think',
+        'groups': ('standalone LLM', 'standalone LLM (think)'),
+    },
+    'vlm': {
+        'kind': 'single_group',
+        'title': 'VLM',
+        'groups': ('VLM',),
+    },
+}
+
+ACCURACY_VABC_COND_SCHEME = {
+    'blind': ['vlm_backbone', 'llm_think'],
+    'inst_blind': ['vlm_backbone', 'llm_think'],
+    'control': ['vlm'],
+}
 
 # ── Abstention class taxonomy ─────────────────────────────────────────────────
 CLASS_ORDER = [
@@ -127,7 +164,7 @@ ABSTAIN_TOKENS = [
 ]
 
 # ── Tier-level plotting constants ────────────────────────────────────────────
-TIER_ORDER = ['VLM', 'VLM backbone decoder', 'standalone LLM', 'standalone LLM (think)']
+TIER_ORDER = GROUP_ORDER
 
 TIER_COLORS = GROUP_COLORS  # alias — use GROUP_COLORS everywhere
 
@@ -135,7 +172,7 @@ TIER_STYLE = {
     'VLM':                    {'color': '#E53935', 'marker': 'o', 'ls': '-',  'lw': 2.2, 'hollow': False},
     'VLM backbone decoder':   {'color': '#E67E22', 'marker': 'o', 'ls': ':',  'lw': 1.8, 'hollow': True},
     'standalone LLM':         {'color': '#2E7D32', 'marker': 's', 'ls': '-',  'lw': 1.8, 'hollow': False},
-    'standalone LLM (think)': {'color': '#8E24AA', 'marker': 's', 'ls': ':',  'lw': 1.8, 'hollow': True},
+    'standalone LLM (think)': {'color': '#1E88E5', 'marker': 's', 'ls': ':',  'lw': 1.8, 'hollow': True},
 }
 
 # ── Model registries used in prior tier / decoder comparisons ────────────────
@@ -161,6 +198,10 @@ MODEL_FAMILY = {
     'Qwen3-VL-4B':          'Qwen3-VL',
     'Qwen3-VL-8B':          'Qwen3-VL',
     'Qwen3-VL-32B':         'Qwen3-VL',
+    'Qwen3-VL-2B (LM)':     'Qwen3-VL',
+    'Qwen3-VL-4B (LM)':     'Qwen3-VL',
+    'Qwen3-VL-8B (LM)':     'Qwen3-VL',
+    'Qwen3-VL-32B (LM)':    'Qwen3-VL',
     # Qwen3 standalone (nothink + think share one family)
     'Qwen3-0.6B':           'Qwen3',
     'Qwen3-1.7B':           'Qwen3',
@@ -179,15 +220,22 @@ MODEL_FAMILY = {
     'LLaVA-Mistral (LM)':   'LLaVA-Mistral',
     'LLaVA-Vicuna':         'LLaVA-Vicuna',
     'LLaVA-Vicuna (LM)':    'LLaVA-Vicuna',
+    'LLaVA-Vicuna-13B':     'LLaVA-Vicuna',
+    'LLaVA-Vicuna-13B (LM)':'LLaVA-Vicuna',
     # InternVL
     'InternVL-1B':          'InternVL',
     'InternVL-2B':          'InternVL',
     'InternVL-8B':          'InternVL',
+    'InternVL-1B (LM)':     'InternVL',
+    'InternVL-2B (LM)':     'InternVL',
+    'InternVL-8B (LM)':     'InternVL',
     # Others
     'Mistral-7B':           'Mistral',
+    'Vicuna-7B':           'Vicuna',
     'Vicuna-13B':           'Vicuna',
     'Phi-3.5-mini':         'Phi',
     'Qwen2.5-7B':           'Qwen2.5',
+    'Qwen2.5-7B-Instruct':  'Qwen2.5',
 }
 
 # ── Model family colors ───────────────────────────────────────────────────────
@@ -198,11 +246,49 @@ MODEL_FAMILY_COLORS = {
     'LLaVA-Mistral': '#E53935',   # medium red
     'LLaVA-Vicuna':  '#FF7043',   # red-orange
     'InternVL':  '#F9A825',   # amber yellow
-    'Mistral':   '#2E7D32',   # green
-    'Vicuna':    '#6A1B9A',   # purple
-    'Phi':       '#00838F',   # teal
+    'Mistral':   '#EF5350',   # soft red  — same hue as LLaVA-Mistral (#E53935)
+    'Vicuna':    '#FF8A65',   # soft orange-red — same hue as LLaVA-Vicuna (#FF7043)
+    'Phi':       '#78909C',   # blue-grey — no VLM counterpart, kept neutral
     'Qwen2.5':   '#558B2F',   # olive green
     'Human':     '#1565C0',   # blue (matches GROUP_COLORS human convention)
+}
+
+# ── Question t-SNE styling ───────────────────────────────────────────────────
+TSNE_ENTITY_COLORS = {
+    'object':  '#455A64',
+    'person':  '#E53935',
+    'animal':  '#388E3C',
+    'food':    '#FB8C00',
+    'product': '#8E24AA',
+    'other':   '#039BE5',
+    'vehicle': '#6D4C41',
+    'place':   '#00897B',
+    'text':    '#F06292',
+}
+
+TSNE_OP_COLORS = {
+    'attr':  '#E53935',
+    'count': '#8E24AA',
+    'ident': '#1E88E5',
+    'loc':   '#00897B',
+    'pred':  '#6D4C41',
+    'spat':  '#FB8C00',
+}
+
+TSNE_POOL_POINT_STYLE = {
+    'marker': 'o',
+    'size': 10,
+    'alpha': 0.12,
+    'edgecolor': 'none',
+    'linewidth': 0.0,
+}
+
+TSNE_SUBSET_POINT_STYLE = {
+    'marker': 'o',
+    'size': 58,
+    'alpha': 0.95,
+    'edgecolor': '#111111',
+    'linewidth': 0.55,
 }
 
 # ── Model parameter sizes (billions) ─────────────────────────────────────────
@@ -211,6 +297,10 @@ MODEL_SIZE_B = {
     'Qwen3-VL-4B':          4.0,
     'Qwen3-VL-8B':          8.0,
     'Qwen3-VL-32B':        32.0,
+    'Qwen3-VL-2B (LM)':     2.0,
+    'Qwen3-VL-4B (LM)':     4.0,
+    'Qwen3-VL-8B (LM)':     8.0,
+    'Qwen3-VL-32B (LM)':   32.0,
     'Qwen3-0.6B':           0.6,
     'Qwen3-1.7B':           1.7,
     'Qwen3-4B':             4.0,
@@ -224,17 +314,91 @@ MODEL_SIZE_B = {
     'LLaVA-1.5-7B':         7.0,
     'LLaVA-Mistral':        7.0,
     'LLaVA-Vicuna':         7.0,
+    'LLaVA-Vicuna-13B':    13.0,
     'LLaVA-1.5 (LM)':       7.0,
     'LLaVA-Mistral (LM)':   7.0,
     'LLaVA-Vicuna (LM)':    7.0,
+    'LLaVA-Vicuna-13B (LM)':13.0,
     'InternVL-1B':          1.0,
     'InternVL-2B':          2.0,
     'InternVL-8B':          8.0,
+    'InternVL-1B (LM)':     1.0,
+    'InternVL-2B (LM)':     2.0,
+    'InternVL-8B (LM)':     8.0,
     'Mistral-7B':           7.0,
+    'Vicuna-7B':            7.0,
     'Vicuna-13B':          13.0,
     'Phi-3.5-mini':         3.8,
     'Qwen2.5-7B':           7.0,
+    'Qwen2.5-7B-Instruct':  7.0,
 }
+
+# ── Scale-aware per-model styling (for non-7B per-model lineplots) ──────────
+SCALE_STYLE_ALPHA_RANGE = (0.38, 0.92)
+SCALE_STYLE_MARKERSIZE_RANGE = (5.0, 8.8)
+SCALE_STYLE_LINEWIDTH_RANGE = (1.2, 2.2)
+SCALE_STYLE_FILL_ALPHA_RANGE = (0.03, 0.12)
+SCALE_STYLE_GROUPS = {'standalone LLM', 'standalone LLM (think)'}
+
+
+def _reference_max_scale(reference_models: Optional[Iterable[str]] = None) -> Optional[float]:
+    if reference_models is None:
+        sizes = list(MODEL_SIZE_B.values())
+    else:
+        sizes = [MODEL_SIZE_B[m] for m in reference_models if m in MODEL_SIZE_B]
+    if not sizes:
+        return None
+    return max(sizes)
+
+
+def model_scale_fraction(model: str, reference_models: Optional[Iterable[str]] = None) -> float:
+    """Return model size as a fraction of the max size in the given reference set."""
+    size = MODEL_SIZE_B.get(model)
+    max_scale = _reference_max_scale(reference_models)
+    if size is None or max_scale in (None, 0):
+        return 1.0
+    frac = size / max_scale
+    return max(0.0, min(1.0, frac))
+
+
+def model_scale_alpha(model: str, reference_models: Optional[Iterable[str]] = None) -> float:
+    lo, hi = SCALE_STYLE_ALPHA_RANGE
+    frac = model_scale_fraction(model, reference_models)
+    return lo + frac * (hi - lo)
+
+
+def model_scale_markersize(model: str, reference_models: Optional[Iterable[str]] = None) -> float:
+    lo, hi = SCALE_STYLE_MARKERSIZE_RANGE
+    frac = model_scale_fraction(model, reference_models)
+    return lo + frac * (hi - lo)
+
+
+def model_scale_linewidth(model: str, reference_models: Optional[Iterable[str]] = None) -> float:
+    lo, hi = SCALE_STYLE_LINEWIDTH_RANGE
+    frac = model_scale_fraction(model, reference_models)
+    return lo + frac * (hi - lo)
+
+
+def model_scale_fill_alpha(model: str, reference_models: Optional[Iterable[str]] = None) -> float:
+    lo, hi = SCALE_STYLE_FILL_ALPHA_RANGE
+    frac = model_scale_fraction(model, reference_models)
+    return lo + frac * (hi - lo)
+
+
+def model_scale_style(model: str, reference_models: Optional[Iterable[str]] = None) -> dict:
+    return {
+        'alpha': model_scale_alpha(model, reference_models),
+        'markersize': model_scale_markersize(model, reference_models),
+    }
+
+
+def model_scale_line_style(model: str, reference_models: Optional[Iterable[str]] = None) -> dict:
+    """Scale-aware line plotting style for per-model curves."""
+    return {
+        'line_alpha': model_scale_alpha(model, reference_models),
+        'linewidth': model_scale_linewidth(model, reference_models),
+        'fill_alpha': model_scale_fill_alpha(model, reference_models),
+    }
 
 # ── Group marker shapes, hollow flags, and line styles ───────────────────────
 # VLM / SA-LLM → circle / square (filled)
@@ -259,6 +423,19 @@ GROUP_LINESTYLE = {
     'standalone LLM':         '-',
     'standalone LLM (think)': ':',
 }
+
+
+def paired_base_model_name(model: str, group: Optional[str] = None) -> str:
+    """Normalize paired-model labels across related groups for plot matching."""
+    base = model
+    if base.endswith(' (LM)'):
+        base = base[:-5]
+    if base.endswith(' (think)'):
+        base = base[:-8]
+    # Keep display names aligned across paired VLM/backbone labels.
+    if base == 'LLaVA-1.5-7B':
+        return 'LLaVA-1.5'
+    return base
 
 # (vlm_model, lm_model, backbone_model, display_label)
 TRIPLES = [

@@ -4,7 +4,11 @@ Export model confidence distribution figures for the paper.
 Confidence = mean token probability (mean of exp(logprob) across generated tokens),
 loaded from the canonical logits directories under evaluation/logits/.
 
-Figures saved to figures/confidence_dist_tokprob/  (x-axis = mean token probability):
+Figures saved to separate top-level folders (x-axis = mean token probability):
+  figures/confidence_dist_tokprob_kde/
+  figures/confidence_dist_tokprob_violin/
+  figures/confidence_dist_tokprob_scatter/
+  figures/confidence_dist_tokprob_by_groups_kde/
 
   {condition}_density[_q{N}_h{N}].png  — KDE density of per-answer confidence per model family;
                                           human per-question accuracy KDE overlaid (dashed).
@@ -22,6 +26,7 @@ Run from repo root:
 import glob
 import json
 import sys
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -36,17 +41,31 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 sys.path.insert(0, str(ROOT / 'figures'))
 
-from utils.constants import MODEL_FAMILY, MODEL_FAMILY_COLORS, GROUP_COLORS, GROUP_ORDER
+from utils.constants import (
+    MODEL_FAMILY, MODEL_FAMILY_COLORS, GROUP_COLORS, GROUP_ORDER, GROUP_HOLLOW, GROUP_MARKER,
+    paired_base_model_name,
+    model_scale_line_style,
+)
 from utils.abstention import classify
-from helpers import get_exports_dir, read_response_exports
-from config import MODEL_LABEL_SHORT
+from helpers import clear_output_plots, get_exports_dir, read_response_exports
+from config import MODEL_LABEL_SHORT, MODELS_7B
 
-OUT_DIR   = ROOT / 'figures/confidence_dist_tokprob'
-OUT_DIR.mkdir(parents=True, exist_ok=True)
+parser = argparse.ArgumentParser()
+parser.add_argument('--overwrite', action='store_true',
+                    help='Delete existing plot files in each output folder before exporting.')
+args = parser.parse_args()
+
+OUT_DIR_KDE = ROOT / 'figures/confidence_dist_tokprob_kde'
+OUT_DIR_VIOLIN = ROOT / 'figures/confidence_dist_tokprob_violin'
+OUT_DIR_SCATTER = ROOT / 'figures/confidence_dist_tokprob_scatter'
+OUT_GROUP_DIR_KDE = ROOT / 'figures/confidence_dist_tokprob_by_groups_kde'
+for p in [OUT_DIR_KDE, OUT_DIR_VIOLIN, OUT_DIR_SCATTER, OUT_GROUP_DIR_KDE]:
+    p.mkdir(parents=True, exist_ok=True)
+    clear_output_plots(p, overwrite=args.overwrite)
 
 EXPORTS   = get_exports_dir(ROOT)
 
-HUMAN_COLOR = '#1565C0'
+HUMAN_COLOR = '#000000'
 
 # ── Model name mapping (logit dir name → display name) ───────────────────────
 VLM_DIR_TO_MODEL = {
@@ -55,7 +74,7 @@ VLM_DIR_TO_MODEL = {
     'InternVL3_5-8B':           'InternVL-8B',
     'llava-1.5-7b-hf':          'LLaVA-1.5-7B',
     'llava-v1.6-mistral-7b-hf': 'LLaVA-Mistral',
-    'llava-v1.6-vicuna-13b-hf': 'LLaVA-Vicuna',
+    'llava-v1.6-vicuna-13b-hf': 'LLaVA-Vicuna-13B',
     'llava-v1.6-vicuna-7b-hf':  'LLaVA-Vicuna',
     'Qwen3-VL-2B-Instruct':     'Qwen3-VL-2B',
     'Qwen3-VL-4B-Instruct':     'Qwen3-VL-4B',
@@ -64,10 +83,17 @@ VLM_DIR_TO_MODEL = {
 }
 
 LM_DECODER_DIR_TO_MODEL = {
+    'InternVL3_5-1B':           'InternVL-1B (LM)',
+    'InternVL3_5-2B':           'InternVL-2B (LM)',
+    'InternVL3_5-8B':           'InternVL-8B (LM)',
     'llava-1.5-7b-hf':          'LLaVA-1.5 (LM)',
     'llava-v1.6-mistral-7b-hf': 'LLaVA-Mistral (LM)',
-    'llava-v1.6-vicuna-13b-hf': 'LLaVA-Vicuna (LM)',
+    'llava-v1.6-vicuna-13b-hf': 'LLaVA-Vicuna-13B (LM)',
     'llava-v1.6-vicuna-7b-hf':  'LLaVA-Vicuna (LM)',
+    'Qwen3-VL-2B-Instruct':     'Qwen3-VL-2B (LM)',
+    'Qwen3-VL-4B-Instruct':     'Qwen3-VL-4B (LM)',
+    'Qwen3-VL-8B-Instruct':     'Qwen3-VL-8B (LM)',
+    'Qwen3-VL-32B-Instruct':    'Qwen3-VL-32B (LM)',
 }
 
 BACKBONE_NOTHINK_DIR_TO_MODEL = {
@@ -81,7 +107,7 @@ BACKBONE_NOTHINK_DIR_TO_MODEL = {
     'Qwen3-8B':                 'Qwen3-8B',
     'Qwen3-32B':                'Qwen3-32B',
     'vicuna-13b-v1.5':          'Vicuna-13B',
-    'vicuna-7b-v1.5':           'Vicuna-13B',
+    'vicuna-7b-v1.5':           'Vicuna-7B',
 }
 
 BACKBONE_THINK_DIR_TO_MODEL = {
@@ -127,11 +153,24 @@ plt.rcParams.update({
 })
 
 
-def save(fig, name):
-    path = OUT_DIR / name
+def save(fig, kind, name):
+    if kind == 'kde':
+        path = OUT_DIR_KDE / name
+    elif kind == 'violin':
+        path = OUT_DIR_VIOLIN / name
+    elif kind == 'scatter':
+        path = OUT_DIR_SCATTER / name
+    else:
+        raise ValueError(f'Unknown kind: {kind}')
     fig.savefig(path, dpi=220, bbox_inches='tight')
     plt.close(fig)
-    print(f'  [confidence_dist] {name}')
+    print(f'  [confidence_dist_{kind}] {name}')
+
+def save_group(fig, name):
+    path = OUT_GROUP_DIR_KDE / name
+    fig.savefig(path, dpi=220, bbox_inches='tight')
+    plt.close(fig)
+    print(f'  [confidence_dist_by_groups_kde] {name}')
 
 
 def apply_axis_style(ax, grid_axis='y'):
@@ -271,6 +310,11 @@ def model_color(m):
 def model_label(m):
     return MODEL_LABEL_SHORT.get(m, m)
 
+MODEL_SETS = [
+    ('all', None),
+    ('7b', set(MODELS_7B)),
+]
+
 
 # ── Figure 0: confidence distributions by output class and model group ───────
 CLASS_ORDER = [
@@ -292,61 +336,66 @@ GROUP_SHORT = {
     'standalone LLM':         'LLM',
 }
 
-plot_df = df[df['condition'].isin(['blind', 'inst_blind'])].copy()
-plot_df = plot_df[plot_df['output_class'].isin(CLASS_ORDER) & plot_df['model_group'].isin(GROUP_ORDER)]
+for set_name, allowed_models in MODEL_SETS:
+    set_suffix = '' if set_name == 'all' else f'_{set_name}'
+    plot_df = df[df['condition'].isin(['blind', 'inst_blind'])].copy()
+    if allowed_models is not None:
+        plot_df = plot_df[plot_df['model'].isin(allowed_models)]
+    plot_df = plot_df[plot_df['output_class'].isin(CLASS_ORDER) & plot_df['model_group'].isin(GROUP_ORDER)]
 
-if not plot_df.empty:
-    fig, axes = plt.subplots(1, 2, figsize=(12.4, 4.9), sharey=True)
-    width = 0.16
-    x = np.arange(len(CLASS_ORDER))
+    if not plot_df.empty:
+        fig, axes = plt.subplots(1, 2, figsize=(12.4, 4.9), sharey=True)
+        width = 0.16
+        x = np.arange(len(CLASS_ORDER))
 
-    for ax, condition in zip(axes, ['blind', 'inst_blind']):
-        sub = plot_df[plot_df['condition'] == condition]
-        for i, grp in enumerate(GROUP_ORDER):
-            data = []
-            positions = []
-            for j, cls in enumerate(CLASS_ORDER):
-                vals = sub[(sub['model_group'] == grp) & (sub['output_class'] == cls)]['confidence'].dropna().values
-                if len(vals) == 0:
+        for ax, condition in zip(axes, ['blind', 'inst_blind']):
+            sub = plot_df[plot_df['condition'] == condition]
+            for i, grp in enumerate(GROUP_ORDER):
+                data = []
+                positions = []
+                for j, cls in enumerate(CLASS_ORDER):
+                    vals = sub[(sub['model_group'] == grp) & (sub['output_class'] == cls)]['confidence'].dropna().values
+                    if len(vals) == 0:
+                        continue
+                    data.append(vals)
+                    positions.append(j + (i - 1.5) * width)
+                if not data:
                     continue
-                data.append(vals)
-                positions.append(j + (i - 1.5) * width)
-            if not data:
-                continue
 
-            vp = ax.violinplot(
-                data,
-                positions=positions,
-                widths=width * 0.95,
-                showmeans=False,
-                showmedians=True,
-                showextrema=False,
-            )
-            for body in vp['bodies']:
-                body.set_facecolor(GROUP_COLORS[grp])
-                body.set_edgecolor('white')
-                body.set_linewidth(0.6)
-                body.set_alpha(0.35)
-            vp['cmedians'].set_color(GROUP_COLORS[grp])
-            vp['cmedians'].set_linewidth(1.5)
+                vp = ax.violinplot(
+                    data,
+                    positions=positions,
+                    widths=width * 0.95,
+                    showmeans=False,
+                    showmedians=True,
+                    showextrema=False,
+                )
+                for body in vp['bodies']:
+                    body.set_facecolor(GROUP_COLORS[grp])
+                    body.set_edgecolor('white')
+                    body.set_linewidth(0.6)
+                    body.set_alpha(0.35)
+                vp['cmedians'].set_color(GROUP_COLORS[grp])
+                vp['cmedians'].set_linewidth(1.5)
 
-        apply_axis_style(ax, grid_axis='y')
-        ax.set_xticks(x)
-        ax.set_xticklabels([CLASS_LABELS[c] for c in CLASS_ORDER], fontsize=9)
-        ax.set_ylim(0, 1.02)
-        ax.set_title(COND_LABELS[condition], fontsize=12, fontweight='bold')
-        ax.set_xlabel('Output class', fontsize=10)
+            apply_axis_style(ax, grid_axis='y')
+            ax.set_xticks(x)
+            ax.set_xticklabels([CLASS_LABELS[c] for c in CLASS_ORDER], fontsize=9)
+            ax.set_ylim(0, 1.02)
+            ax.set_title(COND_LABELS[condition], fontsize=12, fontweight='bold')
+            ax.set_xlabel('Output class', fontsize=10)
 
-    axes[0].set_ylabel('Mean token probability', fontsize=10)
-    handles = [
-        mlines.Line2D([], [], color=GROUP_COLORS[g], lw=6, alpha=0.6, label=GROUP_SHORT[g])
-        for g in GROUP_ORDER
-    ]
-    fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.5, -0.01),
-               ncol=4, frameon=True, fontsize=8)
-    fig.suptitle('Confidence Distributions by Output Class and Model Group', fontsize=13, y=1.03)
-    fig.tight_layout()
-    save(fig, f'violin_outputclass{HUMAN_SUFFIX}.png')
+        axes[0].set_ylabel('Mean token probability', fontsize=10)
+        handles = [
+            mlines.Line2D([], [], color=GROUP_COLORS[g], lw=6, alpha=0.6, label=GROUP_SHORT[g])
+            for g in GROUP_ORDER
+        ]
+        fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.5, -0.01),
+                   ncol=4, frameon=True, fontsize=8)
+        title_suffix = '' if set_name == 'all' else ' (7B subset)'
+        fig.suptitle(f'Confidence Distributions by Output Class and Model Group{title_suffix}', fontsize=13, y=1.03)
+        fig.tight_layout()
+        save(fig, 'violin', f'violin_outputclass{HUMAN_SUFFIX}{set_suffix}.png')
 
 
 # ── Figures 1–3: KDE distribution of per-answer confidence per family ─────────
@@ -359,111 +408,191 @@ DIST_PLAN = [
     ('control',    None,       HUMAN_SUFFIX, False),
 ]
 
-for condition, subset_qids, fname_suffix, show_human in DIST_PLAN:
-    sub = df[(df['condition'] == condition) & (df['control_type'] == 'question')]
-    if sub.empty:
-        continue
-    if subset_qids is not None:
-        sub = sub[sub['question_id'].isin(subset_qids)]
+GROUP_PANELS = [
+    ('vlm_backbone', 'VLM + Backbone decoder', ('VLM', 'VLM backbone decoder')),
+    ('llm_think', 'Standalone LLM + Think', ('standalone LLM', 'standalone LLM (think)')),
+]
+GROUP_STYLE = {
+    'VLM':                    {'ls': '-', 'lw': 2.2},
+    'VLM backbone decoder':   {'ls': ':', 'lw': 2.2},
+    'standalone LLM':         {'ls': '-', 'lw': 2.2},
+    'standalone LLM (think)': {'ls': ':', 'lw': 2.2},
+}
 
-    families = [f for f in MODEL_FAMILY_COLORS if f in sub['family'].unique()]
-    fig, ax = plt.subplots(figsize=(7.2, 4.3))
-    x_grid = np.linspace(0, 1, 300)
+# NOTE: family-level non-group KDE exports removed by request.
 
-    for fam in families:
-        vals = sub[sub['family'] == fam]['confidence'].dropna().values
-        if len(vals) < 10:
+# ── Group-split, per-model KDEs in separate folder (by_groups) ───────────────
+for set_name, allowed_models in MODEL_SETS:
+    set_suffix = '' if set_name == 'all' else f'_{set_name}'
+    for condition, subset_qids, fname_suffix, _show_human in DIST_PLAN:
+        sub = df[(df['condition'] == condition) & (df['control_type'] == 'question')].copy()
+        if allowed_models is not None:
+            sub = sub[sub['model'].isin(allowed_models)]
+        if subset_qids is not None:
+            sub = sub[sub['question_id'].isin(subset_qids)]
+        sub = sub[sub['model_group'].isin(GROUP_ORDER)]
+        if sub.empty:
             continue
-        kde   = gaussian_kde(vals, bw_method=0.12)
-        color = MODEL_FAMILY_COLORS[fam]
-        ax.plot(x_grid, kde(x_grid), color=color, lw=2, label=fam)
-        ax.fill_between(x_grid, kde(x_grid), alpha=0.08, color=color)
 
-    # Human confidence KDE — only for inst_blind condition
-    if show_human and len(human_conf_norm) >= 5:
-        kde_h = gaussian_kde(human_conf_norm, bw_method=0.15)
-        ax.plot(x_grid, kde_h(x_grid), color=HUMAN_COLOR, lw=2, ls='--',
-                label=f'Human confidence (q={N_Q}, h={N_H}, normalised 1–5→0–1)')
-        ax.fill_between(x_grid, kde_h(x_grid), alpha=0.07, color=HUMAN_COLOR)
+        x_grid = np.linspace(0, 1, 300)
+        for panel_key, panel_title, groups in GROUP_PANELS:
+            fig, ax = plt.subplots(figsize=(7.0, 4.2))
+            any_drawn = False
+            shown_base_labels = set()
+            panel_models = (
+                sub[sub['model_group'].isin(groups)][['model', 'model_group']]
+                .drop_duplicates()
+                .sort_values(['model_group', 'model'])
+            )
+            panel_model_names = panel_models['model'].tolist()
+            for _, r in panel_models.iterrows():
+                model = r['model']
+                grp = r['model_group']
+                vals = sub[sub['model'] == model]['confidence'].dropna().values
+                if len(vals) < 10:
+                    continue
+                kde = gaussian_kde(vals, bw_method=0.12)
+                st = GROUP_STYLE[grp]
+                st_scale = model_scale_line_style(model, reference_models=panel_model_names)
+                color = model_color(model)
+                y = kde(x_grid)
+                is_derivative = GROUP_HOLLOW.get(grp, False)
+                base_label = model_label(paired_base_model_name(model, grp))
+                legend_label = None
+                if not is_derivative and base_label not in shown_base_labels:
+                    legend_label = base_label
+                    shown_base_labels.add(base_label)
+                ax.plot(
+                    x_grid,
+                    y,
+                    color=color,
+                    ls=st['ls'],
+                    lw=st_scale['linewidth'],
+                    label=legend_label,
+                    alpha=st_scale['line_alpha'],
+                )
+                any_drawn = True
 
-    apply_axis_style(ax, grid_axis='y')
-    ax.set_xlabel('Confidence', fontsize=10)
-    ax.set_ylabel('Density', fontsize=10)
-    ax.set_xlim(0, 1)
-    ax.set_title(f'Confidence Distribution — {COND_LABELS[condition]}',
-                 fontsize=12, fontweight='bold')
-    ax.legend(fontsize=8, loc='upper center', bbox_to_anchor=(0.5, -0.15),
-              ncol=4, frameon=True)
-    fig.tight_layout()
-    save(fig, f'kde_{condition}_density{fname_suffix}.png')
+            if not any_drawn:
+                plt.close(fig)
+                continue
+
+            apply_axis_style(ax, grid_axis='y')
+            ax.set_xlim(0, 1)
+            ax.set_xlabel('Confidence', fontsize=10)
+            ax.set_ylabel('Density', fontsize=10)
+            title_suffix = '' if set_name == 'all' else ' (7B subset)'
+            ax.set_title(f'{panel_title} — {COND_LABELS[condition]}{title_suffix}', fontsize=11, fontweight='bold')
+            model_handles, _ = ax.get_legend_handles_labels()
+            style_suffix = 'decoder' if panel_key == 'vlm_backbone' else 'think'
+            style_handles = [
+                mlines.Line2D([], [], color='#666666', ls='-', lw=1.8, label='base'),
+                mlines.Line2D([], [], color='#666666', ls=':', lw=1.8, label=style_suffix),
+            ]
+            ax.legend(handles=model_handles + style_handles, fontsize=7.5,
+                      loc='upper left', frameon=True, ncol=2)
+            fig.tight_layout()
+            save_group(fig, f'kde_{condition}_density{fname_suffix}{set_suffix}_{panel_key}.png')
 
 
 # ── Figure 7: blind vs inst_blind confidence scatter per model ────────────────
-blind_means   = df[df['condition'] == 'blind'].groupby('model')['confidence'].mean()
-inst_means    = df[df['condition'] == 'inst_blind'].groupby('model')['confidence'].mean()
-shared_models = blind_means.index.intersection(inst_means.index)
-
-fig, ax = plt.subplots(figsize=(5.5, 5))
-plot_rows = []
-for model in shared_models:
-    x_val = blind_means[model]
-    y_val = inst_means[model]
-    color = model_color(model)
-    group = model_group_map.get(model, '')
-    marker = {
-        'VLM': 'o',
-        'VLM backbone decoder': 's',
-        'standalone LLM': '^',
-        'standalone LLM (think)': 'D',
-    }.get(group, 'o')
-    plot_rows.append((model, x_val, y_val, color, marker, group))
-
-plot_rows = sorted(plot_rows, key=lambda row: (row[3], row[2], row[1]))
-for model, x_val, y_val, color, marker, _group in plot_rows:
-    ax.scatter(x_val, y_val, color=color, s=72, zorder=3,
-               marker=marker, edgecolors='white', linewidths=0.8)
-    arrow = FancyArrowPatch(
-        (x_val, x_val), (x_val, y_val),
-        arrowstyle='-|>', mutation_scale=8,
-        linewidth=0.9, color=color, alpha=0.45, zorder=2,
-        shrinkA=6, shrinkB=6,
-    )
-    ax.add_patch(arrow)
-
-lo = min(blind_means.min(), inst_means.min()) - 0.02
-hi = max(blind_means.max(), inst_means.max()) + 0.02
-ax.plot([lo, hi], [lo, hi], color='#999999', lw=1, ls='--', zorder=1)
-
-label_rows = []
-for model, x_val, y_val, color, marker, group in plot_rows:
-    label_rows.append((model_label(model), x_val, y_val, color))
-
-label_ys = spaced_label_positions([row[2] for row in label_rows], min_gap=0.012, lower=lo + 0.02, upper=hi - 0.01)
-label_x = hi + 0.01
-for (label, x_val, y_val, color), y_lab in zip(label_rows, label_ys):
-    ax.plot([x_val, label_x - 0.003], [y_val, y_lab], color=color, lw=0.75, alpha=0.5, zorder=2)
-    ax.text(label_x, y_lab, label, fontsize=8, color=color, va='center', ha='left')
-
-apply_axis_style(ax, grid_axis='both')
-ax.set_xlabel('Blind — mean confidence', fontsize=10)
-ax.set_ylabel('Inst-Blind — mean confidence', fontsize=10)
-ax.set_title('Confidence Shift: Blind → Inst-Blind', fontsize=12, fontweight='bold')
-ax.set_xlim(lo, hi + 0.12)
-ax.set_ylim(lo, hi)
-
-family_handles = [mlines.Line2D([], [], color=MODEL_FAMILY_COLORS.get(f, '#888'),
-                                marker='o', ms=7, ls='', label=f)
-                  for f in sorted({MODEL_FAMILY.get(m, 'Unknown') for m in shared_models})]
-group_handles = [
-    mlines.Line2D([], [], color='#666666', marker='o', ms=7, ls='', label='VLM'),
-    mlines.Line2D([], [], color='#666666', marker='s', ms=7, ls='', label='Backbone'),
-    mlines.Line2D([], [], color='#666666', marker='^', ms=7, ls='', label='Standalone LLM'),
-    mlines.Line2D([], [], color='#666666', marker='D', ms=7, ls='', label='LLM (think)'),
+SCATTER_PANELS = [
+    ('vlm_backbone', 'VLM + Backbone decoder', ('VLM', 'VLM backbone decoder')),
+    ('llm_think', 'Standalone LLM + Think', ('standalone LLM', 'standalone LLM (think)')),
 ]
-leg1 = ax.legend(handles=family_handles, fontsize=8, loc='upper left', frameon=True, title='Family')
-ax.add_artist(leg1)
-ax.legend(handles=group_handles, fontsize=8, loc='lower right', frameon=True, title='Group')
-fig.tight_layout()
-save(fig, 'scatter_blind_instblind.png')
 
-print('\nDone. All figures saved to:', OUT_DIR)
+for set_name, allowed_models in MODEL_SETS:
+    set_suffix = '' if set_name == 'all' else f'_{set_name}'
+    scatter_df = df.copy()
+    if allowed_models is not None:
+        scatter_df = scatter_df[scatter_df['model'].isin(allowed_models)]
+
+    blind_means   = scatter_df[scatter_df['condition'] == 'blind'].groupby('model')['confidence'].mean()
+    inst_means    = scatter_df[scatter_df['condition'] == 'inst_blind'].groupby('model')['confidence'].mean()
+    shared_models = blind_means.index.intersection(inst_means.index)
+    if len(shared_models) == 0:
+        continue
+
+    for panel_key, panel_title, panel_groups in SCATTER_PANELS:
+        panel_rows = []
+        for model in shared_models:
+            group = model_group_map.get(model, '')
+            if group not in panel_groups:
+                continue
+            panel_rows.append({
+                'model': model,
+                'group': group,
+                'x': blind_means[model],
+                'y': inst_means[model],
+                'color': model_color(model),
+                'marker': GROUP_MARKER.get(group, 'o'),
+                'hollow': GROUP_HOLLOW.get(group, False),
+            })
+        if not panel_rows:
+            continue
+
+        fig, ax = plt.subplots(figsize=(5.5, 5))
+        panel_rows = sorted(panel_rows, key=lambda r: (r['color'], r['y'], r['x']))
+        for r in panel_rows:
+            ax.scatter(
+                r['x'], r['y'], s=72, zorder=3, marker=r['marker'],
+                facecolors='none' if r['hollow'] else r['color'],
+                edgecolors=r['color'] if r['hollow'] else 'white',
+                linewidths=1.0 if r['hollow'] else 0.8,
+                alpha=0.92,
+            )
+            arrow = FancyArrowPatch(
+                (r['x'], r['x']), (r['x'], r['y']),
+                arrowstyle='-|>', mutation_scale=8,
+                linewidth=0.9, color=r['color'], alpha=0.45, zorder=2,
+                shrinkA=6, shrinkB=6,
+            )
+            ax.add_patch(arrow)
+
+        xs = np.array([r['x'] for r in panel_rows], dtype=float)
+        ys = np.array([r['y'] for r in panel_rows], dtype=float)
+        lo = min(xs.min(), ys.min()) - 0.02
+        hi = max(xs.max(), ys.max()) + 0.02
+        ax.plot([lo, hi], [lo, hi], color='#999999', lw=1, ls='--', zorder=1)
+
+        label_rows = [(model_label(r['model']), r['x'], r['y'], r['color']) for r in panel_rows]
+        label_ys = spaced_label_positions([row[2] for row in label_rows], min_gap=0.012, lower=lo + 0.02, upper=hi - 0.01)
+        label_x = hi + 0.01
+        for (label, x_val, y_val, color), y_lab in zip(label_rows, label_ys):
+            ax.plot([x_val, label_x - 0.003], [y_val, y_lab], color=color, lw=0.75, alpha=0.5, zorder=2)
+            ax.text(label_x, y_lab, label, fontsize=8, color=color, va='center', ha='left')
+
+        apply_axis_style(ax, grid_axis='both')
+        ax.set_xlabel('Blind — mean confidence', fontsize=10)
+        ax.set_ylabel('Inst-Blind — mean confidence', fontsize=10)
+        title_suffix = '' if set_name == 'all' else ' (7B subset)'
+        ax.set_title(f'Confidence Shift: {panel_title}{title_suffix}', fontsize=12, fontweight='bold')
+        ax.set_xlim(lo, hi + 0.12)
+        ax.set_ylim(lo, hi)
+
+        fams = sorted({MODEL_FAMILY.get(r['model'], 'Unknown') for r in panel_rows})
+        family_handles = [
+            mlines.Line2D([], [], color=MODEL_FAMILY_COLORS.get(f, '#888'),
+                          marker='o', ms=7, ls='', label=f)
+            for f in fams
+        ]
+        style_suffix = 'decoder' if panel_key == 'vlm_backbone' else 'think'
+        style_handles = [
+            mlines.Line2D([], [], color='#666666', marker='o', ms=7, ls='',
+                          markerfacecolor='#666666', markeredgecolor='#666666',
+                          label='base'),
+            mlines.Line2D([], [], color='#666666', marker='o', ms=7, ls='',
+                          markerfacecolor='none', markeredgecolor='#666666',
+                          label=style_suffix),
+        ]
+        leg1 = ax.legend(handles=family_handles, fontsize=8, loc='upper left', frameon=True, title='Family')
+        ax.add_artist(leg1)
+        ax.legend(handles=style_handles, fontsize=8, loc='lower right', frameon=True, title='Style')
+        fig.tight_layout()
+        save(fig, 'scatter', f'scatter_blind_instblind{set_suffix}_{panel_key}.png')
+
+print('\nDone. All figures saved to separate folders:')
+print('  ', OUT_DIR_KDE)
+print('  ', OUT_DIR_VIOLIN)
+print('  ', OUT_DIR_SCATTER)
+print('  ', OUT_GROUP_DIR_KDE)

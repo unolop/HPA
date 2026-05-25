@@ -14,7 +14,8 @@ Detects:
 
 Outputs:
   exports/pair_cache.parquet          — full incremental pair store
-  exports/answer_pairs_sbert_text.csv — CSV mirror for downstream scripts
+  exports/pair_cache.csv              — CSV mirror of the parquet cache
+  exports/answer_pairs_sbert_text.csv — legacy CSV mirror for downstream scripts
 
 Run from repo root:
   conda run -n zero python analysis/build_pair_cache.py
@@ -199,19 +200,24 @@ def build_pair_cache(
 
     # ── 5b. Detect NaN metric columns in existing cache ───────────────────────
     # A metric column may be all-NaN if it was added after those rows were built
-    # (e.g. simcse added after Qwen3-VL pairs were first cached). Backfill them
-    # by re-encoding any missing answers and computing the dot products in place.
+    # (e.g. simcse / bertscore added after some pairs were first cached).
+    # Backfill them in place before plotting.
     EMB_SCORE_COLS = {
         'sbert':  ('sbert_score',       'sbert_score_clip'),
         'simcse': ('simcse_score',       'simcse_score_clip'),
     }
     nan_metrics: list[str] = []
+    needs_bertscore_backfill = False
     if cache_df is not None:
         for em, (col, _) in EMB_SCORE_COLS.items():
             if col in cache_df.columns and cache_df[col].isna().any():
                 nan_metrics.append(em)
+        if ('bertscore_f1' in cache_df.columns
+                and cache_df['bertscore_f1'].isna().any()
+                and not no_bertscore):
+            needs_bertscore_backfill = True
 
-    if n_new == 0 and not nan_metrics:
+    if n_new == 0 and not nan_metrics and not needs_bertscore_backfill:
         if verbose:
             print('No new pairs — pair_cache is up to date.')
         return cache_df if cache_df is not None else pd.DataFrame()
@@ -227,6 +233,9 @@ def build_pair_cache(
         counts = {em: int(cache_df[EMB_SCORE_COLS[em][0]].isna().sum())
                   for em in nan_metrics}
         print(f'NaN metric rows to backfill: {counts}')
+    if needs_bertscore_backfill and verbose:
+        n_b = int(cache_df['bertscore_f1'].isna().sum())
+        print(f'NaN metric rows to backfill: bertscore={n_b}')
 
     if n_new > 0 and verbose:
         print(f'New pairs to score: {n_new:,}')
@@ -250,7 +259,14 @@ def build_pair_cache(
                 print(f'  [{metric_name}] {len(new_to_enc)} new answers — loading {model_id} …')
             import os
             os.environ['HF_HOME'] = hf_dir
-            model = SentenceTransformer(model_id, cache_folder=hf_dir)
+            try:
+                model = SentenceTransformer(
+                    model_id,
+                    cache_folder=hf_dir,
+                    model_kwargs={'use_safetensors': True},
+                )
+            except OSError:
+                model = SentenceTransformer(model_id, cache_folder=hf_dir)
             emb_caches[metric_name] = encode_with_cache(
                 all_answers, model, emb_path, normalize=True, verbose=verbose)
             del model
@@ -287,8 +303,33 @@ def build_pair_cache(
         if verbose:
             print(f'  Backfill complete — remaining NaN: {still_nan}')
 
+    # ── 6c. Backfill NaN BERTScore rows in existing cache ────────────────────
+    if needs_bertscore_backfill and cache_df is not None:
+        nan_idx = cache_df[cache_df['bertscore_f1'].isna()].index.tolist()
+        if nan_idx:
+            import torch
+            device = 'cuda' if torch.cuda.is_available() else 'cpu'
+            if verbose:
+                print(f'  [bertscore] backfilling {len(nan_idx):,} NaN rows on {device} …')
+            cands = [str(cache_df.at[i, 'answer_1'] or '') for i in nan_idx]
+            refs  = [str(cache_df.at[i, 'answer_2'] or '') for i in nan_idx]
+            f1_scores = bertscore_batch(
+                cands, refs,
+                model_type=BERTSCORE_MODEL,
+                device=device,
+                batch_size=128,
+                verbose=verbose,
+            )
+            cache_df.loc[nan_idx, 'bertscore_f1'] = [
+                round(float(f1), 4) for f1 in f1_scores
+            ]
+            if verbose:
+                remain = int(cache_df['bertscore_f1'].isna().sum())
+                print(f'  [bertscore] backfill complete — remaining NaN: {remain}')
+
     if _only_backfill:
         cache_df.to_parquet(cache_path, index=False)
+        cache_df.to_csv(exports / 'pair_cache.csv', index=False)
         cache_df.to_csv(exports / 'answer_pairs_sbert_text.csv', index=False)
         if verbose:
             print(f'Saved  : {len(cache_df):,} pairs (backfill only) → {cache_path}')
@@ -405,6 +446,7 @@ def build_pair_cache(
         pairs_df = new_df.copy()
 
     pairs_df.to_parquet(cache_path, index=False)
+    pairs_df.to_csv(exports / 'pair_cache.csv', index=False)
     pairs_df.to_csv(exports / 'answer_pairs_sbert_text.csv', index=False)
 
     if verbose:

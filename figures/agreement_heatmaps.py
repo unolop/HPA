@@ -13,6 +13,7 @@ Outputs saved to:
 """
 
 import sys
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -26,11 +27,17 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 sys.path.insert(0, str(ROOT / 'figures'))
-from helpers import get_exports_dir, load_pair_cache
+from helpers import clear_output_plots, get_exports_dir, load_pair_cache
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--overwrite', action='store_true',
+                    help='Delete existing plot files in the output folder before exporting.')
+args = parser.parse_args()
 
 EXPORTS = get_exports_dir(ROOT)
 OUTPUT_DIR = ROOT / "figures/agreement_heatmaps"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+clear_output_plots(OUTPUT_DIR, overwrite=args.overwrite)
 
 # ── Config ────────────────────────────────────────────────────────────────────
 VARIANT = "C"          # which control variant to use

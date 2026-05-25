@@ -46,6 +46,7 @@ sys.path.insert(0, str(ROOT / "analysis"))
 
 from config import MODEL_GROUP, MODEL_LABEL_SHORT as LABEL_MAP, MIN_ANSWERS_DEFAULT
 from helpers import (
+    clear_output_plots,
     get_exports_dir,
     load_human_subset,
     load_pair_cache,
@@ -74,12 +75,18 @@ parser.add_argument(
     help="Extend the HM pair cache with yes/no questions and use the q113 human-study subset.",
 )
 parser.add_argument("--min_answers", type=int, default=MIN_ANSWERS_DEFAULT)
+parser.add_argument(
+    "--overwrite",
+    action="store_true",
+    help="Delete existing plot files in the output folder before exporting.",
+)
 args = parser.parse_args()
 
 
 EXPORTS = get_exports_dir(ROOT)
 OUT_DIR = ROOT / "figures/sbert_accuracy_corr"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update(

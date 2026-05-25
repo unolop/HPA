@@ -15,6 +15,7 @@ Run from repo root:
 
 import json
 import sys
+import argparse
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -29,9 +30,16 @@ from utils.constants import GROUP_COLORS, GROUP_ORDER
 from utils.abstention import classify
 from utils.load_session import clean_answer
 from utils.model_registry import MODEL_TYPE, default_all_models
-from helpers import read_response_exports
+from helpers import clear_output_plots, read_response_exports
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--overwrite', action='store_true',
+                    help='Delete existing plot files in the output folder before exporting.')
+args = parser.parse_args()
+
 OUT_DIR = ROOT / "figures/instruction_effect"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
 VARIANT = 'C'
 
@@ -81,12 +89,6 @@ def save(fig, name):
     fig.savefig(path, dpi=150, bbox_inches='tight')
     plt.close(fig)
     print(f'  [instruction_effect] {name}')
-
-
-# ─── Remove old figures ───────────────────────────────────────────────────────
-for old in OUT_DIR.glob('*.png'):
-    old.unlink()
-print(f'Cleared old figures from {OUT_DIR}')
 
 
 # ─── Load full 1000-question data from logit files ───────────────────────────

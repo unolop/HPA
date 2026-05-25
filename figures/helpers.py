@@ -1,7 +1,8 @@
 """
 Shared helpers for export scripts.
 
-Centralises canonical reads from analysis/session2/exports and pair_cache.
+Centralises canonical reads from analysis/session2/exports and pair_cache,
+plus common figure-output utilities.
 """
 
 from __future__ import annotations
@@ -103,3 +104,51 @@ def load_human_subset(
     from utils.load_session import load_human_data
 
     return load_human_data(root, min_answers=min_answers, translate=translate, verbose=verbose)
+
+
+PLOT_FILE_PATTERNS = ("*.png", "*.pdf", "*.svg", "*.jpg", "*.jpeg")
+
+
+def clear_output_plots(
+    out_dir: Path | str,
+    *,
+    overwrite: bool,
+    patterns: tuple[str, ...] = PLOT_FILE_PATTERNS,
+) -> int:
+    """Delete plot files from an output directory when overwrite is requested."""
+    out_path = Path(out_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
+    if not overwrite:
+        return 0
+
+    removed = 0
+    for pattern in patterns:
+        for path in out_path.glob(pattern):
+            if path.is_file():
+                path.unlink()
+                removed += 1
+    print(f"Cleared {removed} existing plot file(s) from {out_path}")
+    return removed
+
+
+# ── Figure save utility ───────────────────────────────────────────────────────
+
+def save_fig(fig, out_folder, name: str, dpi: int = 150) -> Path:
+    """Save a matplotlib figure and print the saved path.
+
+    Parameters
+    ----------
+    fig : matplotlib Figure
+    out_folder : directory (str or Path) to save into
+    name : filename, may include subdirectory (e.g. 'subdir/fig.png')
+    dpi : resolution (default 150)
+
+    Returns
+    -------
+    Path of the saved file
+    """
+    path = Path(out_folder) / name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=dpi, bbox_inches='tight')
+    print(f'Saved: {path}')
+    return path

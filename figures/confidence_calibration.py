@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import json
 import sys
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -39,10 +40,16 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "analysis"))
 
 from utils.constants import GROUP_COLORS, GROUP_ORDER
-from helpers import read_export
+from helpers import clear_output_plots, read_export
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--overwrite', action='store_true',
+                    help='Delete existing plot files in the output folder before exporting.')
+args = parser.parse_args()
 
 OUT_DIR = ROOT / "figures/confidence_calibration"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
 VLM_DIR_TO_MODEL = {
     "InternVL3_5-1B": "InternVL-1B",
@@ -50,7 +57,7 @@ VLM_DIR_TO_MODEL = {
     "InternVL3_5-8B": "InternVL-8B",
     "llava-1.5-7b-hf": "LLaVA-1.5-7B",
     "llava-v1.6-mistral-7b-hf": "LLaVA-Mistral",
-    "llava-v1.6-vicuna-13b-hf": "LLaVA-Vicuna",
+    "llava-v1.6-vicuna-13b-hf": "LLaVA-Vicuna-13B",
     "llava-v1.6-vicuna-7b-hf": "LLaVA-Vicuna",
     "Qwen3-VL-2B-Instruct": "Qwen3-VL-2B",
     "Qwen3-VL-4B-Instruct": "Qwen3-VL-4B",
@@ -59,10 +66,17 @@ VLM_DIR_TO_MODEL = {
 }
 
 LM_DECODER_DIR_TO_MODEL = {
+    "InternVL3_5-1B": "InternVL-1B (LM)",
+    "InternVL3_5-2B": "InternVL-2B (LM)",
+    "InternVL3_5-8B": "InternVL-8B (LM)",
     "llava-1.5-7b-hf": "LLaVA-1.5 (LM)",
     "llava-v1.6-mistral-7b-hf": "LLaVA-Mistral (LM)",
-    "llava-v1.6-vicuna-13b-hf": "LLaVA-Vicuna (LM)",
+    "llava-v1.6-vicuna-13b-hf": "LLaVA-Vicuna-13B (LM)",
     "llava-v1.6-vicuna-7b-hf": "LLaVA-Vicuna (LM)",
+    "Qwen3-VL-2B-Instruct": "Qwen3-VL-2B (LM)",
+    "Qwen3-VL-4B-Instruct": "Qwen3-VL-4B (LM)",
+    "Qwen3-VL-8B-Instruct": "Qwen3-VL-8B (LM)",
+    "Qwen3-VL-32B-Instruct": "Qwen3-VL-32B (LM)",
 }
 
 BACKBONE_NOTHINK_DIR_TO_MODEL = {
@@ -76,7 +90,7 @@ BACKBONE_NOTHINK_DIR_TO_MODEL = {
     "Qwen3-8B": "Qwen3-8B",
     "Qwen3-32B": "Qwen3-32B",
     "vicuna-13b-v1.5": "Vicuna-13B",
-    "vicuna-7b-v1.5": "Vicuna-13B",
+    "vicuna-7b-v1.5": "Vicuna-7B",
 }
 
 BACKBONE_THINK_DIR_TO_MODEL = {

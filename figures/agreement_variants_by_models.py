@@ -4,7 +4,7 @@ Export per-model agreement-by-control-variant lineplots.
 For each metric, one figure with a line per model (colour = model family,
 marker = group shape), plus Human–Human ceiling and Model–Model baseline.
 
-Output: figures/agreement_variants_by_models_vABC/inst_blind_{metric}[_yesno].png
+Output: figures/agreement_vABC_by_models/inst_blind_{metric}[_yesno].png
 
 Run from repo root:
   conda run -n zero python figures/agreement_variants_by_models.py
@@ -25,22 +25,28 @@ sys.path.insert(0, str(ROOT / 'analysis'))
 sys.path.insert(0, str(ROOT / 'figures'))
 
 from utils.constants import (
-    GROUP_COLORS, GROUP_ORDER, GROUP_MARKER,
-    MODEL_FAMILY, MODEL_FAMILY_COLORS,
+    GROUP_COLORS, GROUP_ORDER, GROUP_MARKER, GROUP_HOLLOW, GROUP_LINESTYLE,
+    MODEL_FAMILY, MODEL_FAMILY_COLORS, SCALE_STYLE_GROUPS, model_scale_style,
 )
-from helpers import get_exports_dir, load_pair_cache
+from helpers import clear_output_plots, get_exports_dir, load_pair_cache
 from config import MODEL_LABEL_SHORT as LABEL_MAP
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--include_yesno', action='store_true',
                     help='Extend pair cache with yes/no question pairs.')
+parser.add_argument('--overwrite', action='store_true',
+                    help='Delete existing plot files in the output folder before exporting.')
 args = parser.parse_args()
 
-OUT_DIR = ROOT / 'figures/agreement_variants_by_models_vABC'
+OUT_DIR = ROOT / 'figures/agreement_vABC_by_models'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
 EXPORTS = get_exports_dir(ROOT)
-pair_df = load_pair_cache(ROOT, include_yesno=args.include_yesno, verbose=True)
+if args.include_yesno:
+    pair_df = load_pair_cache(ROOT, include_yesno=True, verbose=True)
+else:
+    pair_df = pd.read_parquet(EXPORTS / 'pair_cache.parquet')
 
 SUFFIX = '_yesno' if args.include_yesno else ''
 
@@ -60,6 +66,18 @@ METRICS = {
 
 HH_COLOR = '#1565C0'
 MM_COLOR = '#757575'
+FAMILY_SHORT = {
+    'Qwen3-VL': 'Qwen3-VL',
+    'Qwen3': 'Qwen3',
+    'LLaVA-1.5': 'LLaVA-1.5',
+    'LLaVA-Mistral': 'LLaVA-M',
+    'LLaVA-Vicuna': 'LLaVA-V',
+    'InternVL': 'InternVL',
+    'Mistral': 'Mistral',
+    'Vicuna': 'Vicuna',
+    'Phi': 'Phi',
+    'Qwen2.5': 'Qwen2.5',
+}
 
 
 plt.rcParams.update({
@@ -86,6 +104,7 @@ models_df = (hm[['subject_2', 'subject_group_2']]
              .drop_duplicates()
              .rename(columns={'subject_2': 'model', 'subject_group_2': 'group'})
              .sort_values(['group', 'model']))
+llm_reference_models = models_df[models_df['group'].isin(SCALE_STYLE_GROUPS)]['model'].tolist()
 
 
 for label, (metric_name, col) in METRICS.items():
@@ -109,11 +128,19 @@ for label, (metric_name, col) in METRICS.items():
         fam   = MODEL_FAMILY.get(model, 'Unknown')
         color = MODEL_FAMILY_COLORS.get(fam, '#888888')
         mkr   = GROUP_MARKER.get(grp, 'o')
+        hollow = GROUP_HOLLOW.get(grp, False)
+        ls = GROUP_LINESTYLE.get(grp, '-')
         lbl   = LABEL_MAP.get(model, model)
+        scale_style = (
+            model_scale_style(model, llm_reference_models)
+            if grp in SCALE_STYLE_GROUPS
+            else {'alpha': 0.82, 'markersize': 6.0}
+        )
 
-        ax.plot(range(3), ys, color=color, lw=1.4, ls='-', alpha=0.82,
-                marker=mkr, markersize=6,
-                markeredgecolor='white', markeredgewidth=0.5,
+        ax.plot(range(3), ys, color=color, lw=1.4, ls=ls, alpha=scale_style['alpha'],
+                marker=mkr, markersize=scale_style['markersize'],
+                markerfacecolor='none' if hollow else color,
+                markeredgecolor=color, markeredgewidth=1.0,
                 zorder=2)
         # Label at the right end
         ax.text(2.08, ys[-1], lbl,
@@ -139,13 +166,16 @@ for label, (metric_name, col) in METRICS.items():
     ) - {''})
     fam_handles = [
         mlines.Line2D([], [], color=MODEL_FAMILY_COLORS.get(f, '#888'),
-                      marker='o', ms=6, ls='-', label=f)
+                      marker='o', ms=6, ls='-', label=FAMILY_SHORT.get(f, f))
         for f in present_fams
     ]
     grp_handles = [
         mlines.Line2D([], [], color='gray',
-                      marker=GROUP_MARKER.get(g, 'o'), ms=7, ls='none',
-                      label=g.replace('standalone LLM', 'SA-LLM')
+                      marker=GROUP_MARKER.get(g, 'o'), ms=7,
+                      ls=GROUP_LINESTYLE.get(g, '-'),
+                      markerfacecolor='none' if GROUP_HOLLOW.get(g, False) else 'gray',
+                      markeredgecolor='gray', markeredgewidth=1.0,
+                      label=g.replace('standalone LLM', 'LLM')
                              .replace('VLM backbone decoder', 'Backbone'))
         for g in GROUP_ORDER
         if g in models_df['group'].values
@@ -155,7 +185,8 @@ for label, (metric_name, col) in METRICS.items():
     ]
     all_handles = fam_handles + grp_handles + baseline_handles
     ax.legend(handles=all_handles, fontsize=7, loc='upper center',
-              bbox_to_anchor=(0.5, -0.12), ncol=5, frameon=True)
+              bbox_to_anchor=(0.5, -0.12), ncol=4, frameon=True,
+              handletextpad=0.5, columnspacing=0.8)
 
     plt.tight_layout()
     save(fig, f'inst_blind_{label}{SUFFIX}.png')

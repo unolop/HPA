@@ -18,13 +18,14 @@ Key findings encoded in analysis:
     (blank > gray > noise), and ~38–51% of answers change.
 
 Figures saved to:
-  latex/AnonymousSubmission/LaTeX/figures/ablation_image/
+  figures/ablation_image/
 
 Run from repo root:
   conda run -n zero python figures/ablation_image.py
 """
 
 import sys
+import argparse
 import json
 from pathlib import Path
 from collections import defaultdict
@@ -43,9 +44,16 @@ sys.path.insert(0, str(ROOT / 'analysis'))
 sys.path.insert(0, str(ROOT / 'figures'))
 
 from utils.vqa import preprocess_answer, VQAAnswerMapper, vqa_accuracy
+from helpers import clear_output_plots
 
-OUT_DIR = ROOT / 'latex/AnonymousSubmission/LaTeX/figures/ablation_image'
+parser = argparse.ArgumentParser()
+parser.add_argument('--overwrite', action='store_true',
+                    help='Delete existing plot files in the output folder before exporting.')
+args = parser.parse_args()
+
+OUT_DIR = ROOT / 'figures/ablation_image'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
 LOGITS = ROOT / 'evaluation/logits'
 
@@ -442,7 +450,7 @@ for model in MODELS:
         ax.grid(axis='y', color='#E0E0E0', lw=0.7)
         plt.tight_layout()
         slug = model.lower().replace('-', '').replace(' ', '_')
-        save(fig, f'agreement_{slug}_{metric_key}_variants.png')
+        save(fig, f'agreement_{slug}_{metric_key}_vABC.png')
 
 # ── Human–Model agreement vs image condition ──────────────────────────────────
 # For each image condition and variant (C/B/A), compute mean agreement between
@@ -580,7 +588,7 @@ for model_name in MODELS:
         ax.grid(axis='y', color='#E0E0E0', lw=0.7)
         plt.tight_layout()
         slug = model_name.lower().replace('-', '').replace(' ', '_')
-        fname = f'hm_agreement_{slug}_{metric_key}_variants{HM_SUFFIX}.png'
+        fname = f'hm_agreement_{slug}_{metric_key}_vABC{HM_SUFFIX}.png'
         save(fig, fname)
 
 print(f'\nDone. Figures saved to: {OUT_DIR}')

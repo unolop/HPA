@@ -2,14 +2,15 @@
 Export agreement-by-control-variant figures for the paper.
 
 For each agreement metric, produces two figures:
-  figures/agreement_variants/  — mean HM/HH/MM agreement per group across variants C→B→A
-  figures/agreement_variants/  — group×variant heatmap (HM pairs only)
+  figures/agreement_vABC_group_lineplot/  — mean HM/HH agreement per group across variants C→B→A
+  figures/agreement_vABC_group_heatmap/   — group×variant heatmap (HM pairs only)
 
 Metrics: sbert, simcse, bertscore, chrf, rouge1, jaccard, exact
 
 Filenames:
-  inst_blind_vABC_{metric}_lineplot_q{N}_h{H}[_yesno].png
-  inst_blind_vABC_{metric}_heatmap_q{N}_h{H}[_yesno].png
+  inst_blind_{metric}_q{N}_h{H}[_yesno].png
+
+Note: Model-Model (MM) within-group coherence figures are in figures/model_coherence.py.
 
 Run from repo root:
   conda run -n zero python figures/agreement_variants.py
@@ -18,6 +19,7 @@ Run from repo root:
 
 import argparse
 import sys
+import shutil
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -31,18 +33,27 @@ sys.path.insert(0, str(ROOT / 'analysis'))
 sys.path.insert(0, str(ROOT / 'figures'))
 
 from utils.constants import GROUP_COLORS, GROUP_ORDER, GROUP_MARKER, GROUP_HOLLOW, GROUP_LINESTYLE
-from helpers import get_exports_dir, load_pair_cache
+from helpers import clear_output_plots, get_exports_dir, load_pair_cache
 from config import MODELS_7B
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--include_yesno', action='store_true',
                     help='Extend pair cache with yes/no question pairs.')
+parser.add_argument('--overwrite', action='store_true',
+                    help='Delete existing plot files in the output folder before exporting.')
 args = parser.parse_args()
 
-LINEPLOT_DIR = ROOT / 'figures/agreement_variants'
-HEATMAP_DIR  = ROOT / 'figures/agreement_variants'
+LINEPLOT_DIR = ROOT / 'figures/agreement_vABC_group_lineplot'
+HEATMAP_DIR  = ROOT / 'figures/agreement_vABC_group_heatmap'
 LINEPLOT_DIR.mkdir(parents=True, exist_ok=True)
 HEATMAP_DIR.mkdir(parents=True, exist_ok=True)
+clear_output_plots(LINEPLOT_DIR, overwrite=args.overwrite)
+if args.overwrite and HEATMAP_DIR.exists():
+    shutil.rmtree(HEATMAP_DIR)
+    HEATMAP_DIR.mkdir(parents=True, exist_ok=True)
+    print(f'Cleared nested heatmap outputs from {HEATMAP_DIR}')
+else:
+    HEATMAP_DIR.mkdir(parents=True, exist_ok=True)
 
 EXPORTS = get_exports_dir(ROOT)
 pair_df = load_pair_cache(ROOT, include_yesno=args.include_yesno, verbose=True)
@@ -54,6 +65,7 @@ def hh_participant_count(df: pd.DataFrame) -> int:
 n_questions = pair_df[pair_df['pair_type'] == 'HH']['question_id'].nunique()
 n_humans = hh_participant_count(pair_df)
 SUFFIX = f'_q{n_questions}_h{n_humans}' + ('_yesno' if args.include_yesno else '')
+QSET_TAG = f'q{n_questions}_h{n_humans}' + ('_yesno' if args.include_yesno else '')
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 VARIANTS    = ['C', 'B', 'A']
@@ -89,7 +101,6 @@ plt.rcParams.update({
 })
 
 HH_COLOR = '#1565C0'
-MM_COLOR = '#757575'   # neutral gray for model–model baseline
 
 def save(fig, name, out_dir):
     path = out_dir / name
@@ -97,6 +108,13 @@ def save(fig, name, out_dir):
     plt.close(fig)
     folder = out_dir.name
     print(f'  [{folder}] {name}')
+
+
+def heatmap_out_dir(metric_key: str, is_7b: bool) -> Path:
+    scale_tag = 'scale_7b' if is_7b else 'scale_all'
+    out_dir = HEATMAP_DIR / QSET_TAG / scale_tag
+    out_dir.mkdir(parents=True, exist_ok=True)
+    return out_dir
 
 
 def apply_axis_style(ax, grid_axis='y'):
@@ -118,7 +136,7 @@ hm_7b = hm[hm['subject_2'].isin(MODELS_7B)]
 for label, (metric_name, col) in METRICS.items():
     print(f'\n── {metric_name} ({label}) ──')
 
-    # ── 1. Line plot: HM per group + HH ceiling + MM baseline ────────────────
+    # ── 1. Line plot: HM per group + HH ceiling ──────────────────────────────
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
     apply_axis_style(ax, grid_axis='y')
 
@@ -135,10 +153,14 @@ for label, (metric_name, col) in METRICS.items():
                         [y - c for y, c in zip(ys, cis)],
                         [y + c for y, c in zip(ys, cis)],
                         color=GROUP_COLORS[grp], alpha=0.12)
+        mkr = GROUP_MARKER.get(grp, 'o')
+        hollow = GROUP_HOLLOW.get(grp, False)
+        ls = GROUP_LINESTYLE.get(grp, '-')
         ax.plot(range(3), ys,
-                color=GROUP_COLORS[grp], lw=2, marker='o', markersize=7,
+                color=GROUP_COLORS[grp], lw=2, ls=ls, marker=mkr, markersize=7,
                 label=GROUP_SHORT[grp].replace('\n', ' '),
-                markeredgecolor='white', markeredgewidth=0.8)
+                markerfacecolor='none' if hollow else GROUP_COLORS[grp],
+                markeredgecolor=GROUP_COLORS[grp], markeredgewidth=1.0)
         ax.text(2.08, ys[-1], f'{ys[-1]:.3f}',
                 va='center', fontsize=7.5, color=GROUP_COLORS[grp])
 
@@ -164,7 +186,7 @@ for label, (metric_name, col) in METRICS.items():
               ncol=5, frameon=True)
     ax.set_xlim(-0.3, 2.7)
     fig.tight_layout()
-    save(fig, f'inst_blind_vABC_{label}_lineplot{SUFFIX}.png', LINEPLOT_DIR)
+    save(fig, f'inst_blind_{label}{SUFFIX}.png', LINEPLOT_DIR)
 
     # ── 2. Heatmap: group × variant (HM pairs, mean score) + HH + MM rows ────
     data = {}
@@ -192,7 +214,7 @@ for label, (metric_name, col) in METRICS.items():
     ax.tick_params(axis='x', rotation=0)
     ax.tick_params(axis='y', rotation=0)
     fig.tight_layout()
-    save(fig, f'inst_blind_vABC_{label}_heatmap{SUFFIX}.png', HEATMAP_DIR)
+    save(fig, f'inst_blind_{label}{SUFFIX}.png', heatmap_out_dir(label, is_7b=False))
 
     # ── 7B matched-size subset: same plots filtered to 7–8 B models ───────────
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
@@ -208,10 +230,14 @@ for label, (metric_name, col) in METRICS.items():
                         [y - c for y, c in zip(ys, cis)],
                         [y + c for y, c in zip(ys, cis)],
                         color=GROUP_COLORS[grp], alpha=0.12)
+        mkr = GROUP_MARKER.get(grp, 'o')
+        hollow = GROUP_HOLLOW.get(grp, False)
+        ls = GROUP_LINESTYLE.get(grp, '-')
         ax.plot(range(3), ys,
-                color=GROUP_COLORS[grp], lw=2, marker='o', markersize=7,
+                color=GROUP_COLORS[grp], lw=2, ls=ls, marker=mkr, markersize=7,
                 label=GROUP_SHORT[grp].replace('\n', ' '),
-                markeredgecolor='white', markeredgewidth=0.8)
+                markerfacecolor='none' if hollow else GROUP_COLORS[grp],
+                markeredgecolor=GROUP_COLORS[grp], markeredgewidth=1.0)
         ax.text(2.08, ys[-1], f'{ys[-1]:.3f}',
                 va='center', fontsize=7.5, color=GROUP_COLORS[grp])
 
@@ -236,7 +262,7 @@ for label, (metric_name, col) in METRICS.items():
               ncol=5, frameon=True)
     ax.set_xlim(-0.3, 2.7)
     fig.tight_layout()
-    save(fig, f'inst_blind_vABC_{label}_lineplot{SUFFIX}_7b.png', LINEPLOT_DIR)
+    save(fig, f'inst_blind_{label}{SUFFIX}_7b.png', LINEPLOT_DIR)
 
     # 7B heatmap
     data7 = {}
@@ -264,6 +290,6 @@ for label, (metric_name, col) in METRICS.items():
     ax.tick_params(axis='x', rotation=0)
     ax.tick_params(axis='y', rotation=0)
     fig.tight_layout()
-    save(fig, f'inst_blind_vABC_{label}_heatmap{SUFFIX}_7b.png', HEATMAP_DIR)
+    save(fig, f'inst_blind_{label}{SUFFIX}_7b.png', heatmap_out_dir(label, is_7b=True))
 
 print(f'\nDone. Lineplots → {LINEPLOT_DIR}\n      Heatmaps  → {HEATMAP_DIR}')

@@ -13,8 +13,8 @@ Run from repo root:
   conda run -n zero python figures/answer_dist.py
 """
 
-import os
 import sys
+import argparse
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -26,11 +26,17 @@ sys.path.insert(0, str(ROOT / 'analysis'))
 sys.path.insert(0, str(ROOT / 'figures'))
 
 from utils.vqa import VQAAnswerMapper, extract_number, bin_number
-from helpers import read_response_exports
+from helpers import clear_output_plots, read_response_exports
 from config import MODELS_7B
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--overwrite', action='store_true',
+                    help='Delete existing plot files in the output folder before exporting.')
+args = parser.parse_args()
 
 OUT_DIR = ROOT / 'figures/answer_dist'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 SOURCE_ORDER = [

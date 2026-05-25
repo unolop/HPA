@@ -17,13 +17,14 @@ MODELS_ALL = [
     # VLM
     'Qwen3-VL-2B', 'Qwen3-VL-4B', 'Qwen3-VL-8B', 'Qwen3-VL-32B',
     'InternVL-1B', 'InternVL-2B', 'InternVL-8B',
-    'LLaVA-1.5-7B', 'LLaVA-Mistral', 'LLaVA-Vicuna',
+    'LLaVA-1.5-7B', 'LLaVA-Mistral', 'LLaVA-Vicuna', 'LLaVA-Vicuna-13B',
     # VLM backbone decoder
-    'Qwen3-VL-32B (LM)',
-    'LLaVA-1.5 (LM)', 'LLaVA-Mistral (LM)', 'LLaVA-Vicuna (LM)',
+    'Qwen3-VL-2B (LM)', 'Qwen3-VL-4B (LM)', 'Qwen3-VL-8B (LM)', 'Qwen3-VL-32B (LM)',
+    'LLaVA-1.5 (LM)', 'LLaVA-Mistral (LM)', 'LLaVA-Vicuna (LM)', 'LLaVA-Vicuna-13B (LM)',
+    'InternVL-1B (LM)', 'InternVL-2B (LM)', 'InternVL-8B (LM)',
     # Standalone LLM (no-think)
     'Qwen3-0.6B', 'Qwen3-1.7B', 'Qwen3-4B', 'Qwen3-8B', 'Qwen3-32B',
-    'Qwen2.5-7B', 'Phi-3.5-mini', 'Mistral-7B', 'Vicuna-13B',
+    'Qwen2.5-7B', 'Qwen2.5-7B-Instruct', 'Phi-3.5-mini', 'Mistral-7B', 'Vicuna-7B', 'Vicuna-13B',
     # Standalone LLM (think)
     'Qwen3-0.6B (think)', 'Qwen3-1.7B (think)', 'Qwen3-4B (think)',
     'Qwen3-8B (think)', 'Qwen3-32B (think)',
@@ -34,9 +35,10 @@ MODELS_7B = [
     'Qwen3-VL-8B',
     'InternVL-8B',
     'LLaVA-1.5-7B', 'LLaVA-Mistral', 'LLaVA-Vicuna',
+    'Qwen3-VL-8B (LM)', 'InternVL-8B (LM)',
     'LLaVA-1.5 (LM)', 'LLaVA-Mistral (LM)', 'LLaVA-Vicuna (LM)',
     'Qwen3-8B', 'Qwen3-8B (think)',
-    'Qwen2.5-7B', 'Mistral-7B',
+    'Qwen2.5-7B', 'Qwen2.5-7B-Instruct', 'Mistral-7B', 'Vicuna-7B',
 ]
 
 # ── Group assignment for every model in MODELS_ALL ────────────────────────────
@@ -53,11 +55,19 @@ MODEL_GROUP = {
     'LLaVA-1.5-7B':         'VLM',
     'LLaVA-Mistral':        'VLM',
     'LLaVA-Vicuna':         'VLM',
+    'LLaVA-Vicuna-13B':     'VLM',
     # VLM backbone decoder
+    'Qwen3-VL-2B (LM)':     'VLM backbone decoder',
+    'Qwen3-VL-4B (LM)':     'VLM backbone decoder',
+    'Qwen3-VL-8B (LM)':     'VLM backbone decoder',
     'Qwen3-VL-32B (LM)':    'VLM backbone decoder',
     'LLaVA-1.5 (LM)':       'VLM backbone decoder',
     'LLaVA-Mistral (LM)':   'VLM backbone decoder',
     'LLaVA-Vicuna (LM)':    'VLM backbone decoder',
+    'LLaVA-Vicuna-13B (LM)':'VLM backbone decoder',
+    'InternVL-1B (LM)':     'VLM backbone decoder',
+    'InternVL-2B (LM)':     'VLM backbone decoder',
+    'InternVL-8B (LM)':     'VLM backbone decoder',
     # Standalone LLM (no-think)
     'Qwen3-0.6B':           'standalone LLM',
     'Qwen3-1.7B':           'standalone LLM',
@@ -65,8 +75,10 @@ MODEL_GROUP = {
     'Qwen3-8B':             'standalone LLM',
     'Qwen3-32B':            'standalone LLM',
     'Qwen2.5-7B':           'standalone LLM',
+    'Qwen2.5-7B-Instruct':  'standalone LLM',
     'Phi-3.5-mini':         'standalone LLM',
     'Mistral-7B':           'standalone LLM',
+    'Vicuna-7B':            'standalone LLM',
     'Vicuna-13B':           'standalone LLM',
     # Standalone LLM (think)
     'Qwen3-0.6B (think)':   'standalone LLM (think)',
@@ -83,11 +95,20 @@ MODEL_LABEL_SHORT = {
     'LLaVA-Vicuna (LM)':    'LLaVA-V (bb)',
     'LLaVA-Mistral':        'LLaVA-M',
     'LLaVA-Vicuna':         'LLaVA-V',
+    'LLaVA-Vicuna-13B':     'LLaVA-V-13B',
     'LLaVA-1.5-7B':         'LLaVA-1.5',
+    'LLaVA-Vicuna-13B (LM)':'LLaVA-V-13B (bb)',
+    'Qwen3-VL-2B (LM)':     'Qwen3-VL-2B (bb)',
+    'Qwen3-VL-4B (LM)':     'Qwen3-VL-4B (bb)',
+    'Qwen3-VL-8B (LM)':     'Qwen3-VL-8B (bb)',
+    'Qwen3-VL-32B (LM)':    'Qwen3-VL-32B (bb)',
     'Qwen3-VL-8B':          'Qwen3-VL-8B',
     'InternVL-1B':          'IVL-1B',
     'InternVL-2B':          'IVL-2B',
     'InternVL-8B':          'IVL-8B',
+    'InternVL-1B (LM)':     'IVL-1B (bb)',
+    'InternVL-2B (LM)':     'IVL-2B (bb)',
+    'InternVL-8B (LM)':     'IVL-8B (bb)',
     'Qwen3-8B':             'Qwen3-8B',
     'Qwen3-8B (think)':     'Qwen3-8B-T',
     'Qwen3-32B':            'Qwen3-32B',
@@ -99,8 +120,10 @@ MODEL_LABEL_SHORT = {
     'Qwen3-0.6B':           'Qwen3-0.6B',
     'Qwen3-0.6B (think)':   'Qwen3-0.6B-T',
     'Qwen2.5-7B':           'Qwen2.5-7B',
+    'Qwen2.5-7B-Instruct':  'Qwen2.5-7B-IT',
     'Phi-3.5-mini':         'Phi-3.5',
     'Mistral-7B':           'Mistral-7B',
+    'Vicuna-7B':            'Vicuna-7B',
     'Vicuna-13B':           'Vicuna-13B',
 }
 

@@ -9,12 +9,18 @@ Run from the repo root:
   conda run -n zero python analysis/run_paper_figures.py
 """
 
+import argparse
 import subprocess
 import sys
 from pathlib import Path
 
 ROOT    = Path(__file__).resolve().parent.parent
 FIGURES = ROOT / 'figures'
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--overwrite', action='store_true',
+                    help='Pass --overwrite to figure exporters before regenerating plots.')
+args = parser.parse_args()
 
 
 def run(script: str, *args: str, label: str = ''):
@@ -36,41 +42,48 @@ run('../analysis/build_pair_cache.py',
 
 # ── Agreement figures ─────────────────────────────────────────────────────────
 run('agreement_variants.py',
+    *(('--overwrite',) if args.overwrite else ()),
     label='Agreement by variant: group-level lineplots + heatmaps')
 
-run('agreement_variants.py', '--include_yesno',
+run('agreement_variants.py', *(('--overwrite',) if args.overwrite else ()), '--include_yesno',
     label='Agreement by variant (+ yes/no questions)')
 
-run('agreement_variants_by_models.py',
+run('agreement_variants_by_models.py', *(('--overwrite',) if args.overwrite else ()),
     label='Agreement by variant: per-model lineplots')
 
-run('agreement_heatmaps.py',
+run('agreement_heatmaps.py', *(('--overwrite',) if args.overwrite else ()),
     label='Pairwise agreement heatmaps (all raters + group-mean)')
 
 # ── Accuracy figures ──────────────────────────────────────────────────────────
-run('accuracy_variants.py',
+run('accuracy_variants.py', *(('--overwrite',) if args.overwrite else ()),
     label='Accuracy degradation across variants C→B→A')
+
 
 # ── Scale figures ─────────────────────────────────────────────────────────────
 for metric in ('agreement', 'accuracy'):
-    for agg in ('by_models', 'by_family', 'by_groups'):
+    for agg in ('by_models', 'by_groups', 'by_group'):
         run('scale_plots.py', '--metric', metric, '--agg', agg,
+            *(('--overwrite',) if args.overwrite else ()),
             label=f'Scale plots: {metric} × {agg}')
 
 # ── Instruction effect ────────────────────────────────────────────────────────
-run('instruction_effect.py',
+run('instruction_effect.py', *(('--overwrite',) if args.overwrite else ()),
     label='Instruction effect: soft/hard abstention + response change rate')
 
 # ── Confidence ────────────────────────────────────────────────────────────────
-run('confidence_dist.py',
+run('confidence_dist.py', *(('--overwrite',) if args.overwrite else ()),
     label='Confidence analysis: condition shift + distributions + control ladders')
 
 # ── Answer distributions ──────────────────────────────────────────────────────
-run('answer_dist.py',
+run('answer_dist.py', *(('--overwrite',) if args.overwrite else ()),
     label='Answer distributions: yes/no and number questions')
 
+# ── Model-model coherence (supplementary) ────────────────────────────────────
+run('model_coherence.py', *(('--overwrite',) if args.overwrite else ()),
+    label='Model-model within-group coherence across variants (supplementary)')
+
 # ── Entity analysis ───────────────────────────────────────────────────────────
-run('entity_analysis.py',
+run('entity_analysis.py', *(('--overwrite',) if args.overwrite else ()),
     label='Entity analysis: distribution, Pearson r, SBERT, degradation, '
           'instruction sensitivity + combined alignment figure')
 
