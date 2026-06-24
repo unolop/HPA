@@ -154,7 +154,7 @@ def classify_yn(s):
 
 def make_yn_stack(df, condition):
     sub = df[df['answer_type'] == 'yes/no'].copy()
-    gt_mask = sub['source'] == 'Ground Truth'
+    gt_mask = sub['condition'] == 'both'
     sub = sub[gt_mask | (sub['condition'] == condition)]
 
     sub['y/n'] = sub['output'].apply(classify_yn)
@@ -170,7 +170,7 @@ def make_yn_stack(df, condition):
 
 def make_num_stack(df, condition):
     sub = df[df['answer_type'] == 'number'].copy()
-    gt_mask = sub['source'] == 'Ground Truth'
+    gt_mask = sub['condition'] == 'both'
     sub = sub[gt_mask | (sub['condition'] == condition)]
 
     sub['number_bin'] = sub['output'].apply(
@@ -260,11 +260,50 @@ def plot_num(stack_df, title=''):
     return fig
 
 
+# ── Build full VQA v2 val GT distribution ────────────────────────────────────
+print('Building full VQA v2 val ground truth distribution...')
+full_gt_rows = [
+    {
+        'qid':         int(qid),
+        'answer_type': ann.get('answer_type', 'other'),
+        'source':      'GT (full val)',
+        'condition':   'both',
+        'output':      str(ann.get('multiple_choice_answer', '')).strip().lower(),
+    }
+    for qid, ann in mapper.annotations.items()
+]
+full_gt_df = pd.DataFrame(full_gt_rows)
+print(f'Full VQA v2 val: {len(full_gt_df)} questions')
+
+# Rename subset GT for clarity
+gt_df_renamed = gt_df.copy()
+gt_df_renamed['source'] = 'GT (subset)'
+
+HUMAN_SOURCE_ORDER = ['GT (full val)', 'GT (subset)', 'Humans']
+
 # ── Generate all figures ──────────────────────────────────────────────────────
 COND_LABELS = {
     'blind':      'Blind',
     'inst_blind': 'Inst-Blind',
 }
+
+# Human-only figures: GT (full val) vs GT (subset) vs Humans
+print('\n── Human-only (no models) ──')
+human_only_df = pd.concat([full_gt_df, gt_df_renamed, human_df], ignore_index=True)
+
+# Override SOURCE_ORDER temporarily for human-only plots
+_orig_source_order = SOURCE_ORDER
+SOURCE_ORDER[:] = HUMAN_SOURCE_ORDER
+
+fig = plot_yn(make_yn_stack(human_only_df, 'inst_blind'),
+              title=f'Yes/No Distribution: Humans vs Ground Truth (q={N_YN})')
+save(fig, f'human_only_yn_q{N_YN}_h{N_HUMANS}.png')
+fig = plot_num(make_num_stack(human_only_df, 'inst_blind'),
+               title=f'Number Distribution: Humans vs Ground Truth (q={N_NUM})')
+save(fig, f'human_only_number_q{N_NUM}_h{N_HUMANS}.png')
+
+# Restore SOURCE_ORDER for model figures
+SOURCE_ORDER[:] = _orig_source_order
 
 # Full set (all models)
 for condition in CONDITIONS:

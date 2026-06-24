@@ -1,30 +1,30 @@
 """
-Export t-SNE plots of the 1k VQA question pool with the 113-question human-study
-subset highlighted.
+Export t-SNE plots of the 1k VQA question pool with the 113-question
+human-study subset highlighted.
 
 Outputs:
-  figures/question_tsne/
-    subset_tsne_entities.png
-    subset_tsne_operations.png
+  figures/question_tsne/subset_tsne_entities.png
+  figures/question_tsne/subset_tsne_operations.png
 
 Behavior:
   - Fit t-SNE once on all 1k question embeddings (all-mpnet-base-v2).
   - Show all 1k points, colored by entity/op group.
-  - Highlight the 113-question study subset with larger, outlined markers.
-  - Annotate example questions nearest each highlighted group's centroid.
+  - Highlight the 113-question study subset with larger markers.
+  - Annotate one central question per cluster (nearest to centroid).
 """
 
 from __future__ import annotations
 
 import sys
 import argparse
+import textwrap
 from pathlib import Path
 
 import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import numpy as np
 import pandas as pd
-from sentence_transformers import SentenceTransformer
 from sklearn.manifold import TSNE
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -37,6 +37,9 @@ from utils.constants import (
     TSNE_OP_COLORS,
     TSNE_POOL_POINT_STYLE,
     TSNE_SUBSET_POINT_STYLE,
+    TSNE_LABEL_STYLE,
+    TSNE_LEGEND_STYLE,
+    TSNE_FIGURE_STYLE,
 )
 from helpers import clear_output_plots
 
@@ -80,6 +83,8 @@ def load_question_embeddings(questions: list[str]) -> np.ndarray:
             return cache["embeddings"]
 
     print("Embedding 1k questions...")
+    from sentence_transformers import SentenceTransformer
+
     model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2", cache_folder=str(HF_CACHE))
     embs = model.encode(
         questions,
@@ -110,46 +115,162 @@ def load_tsne(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def _label_offsets(n: int) -> list[tuple[float, float]]:
-    base = [
-        (0, 16), (18, 6), (18, -10), (0, -18),
-        (-18, -10), (-18, 6), (28, 16), (-28, 16),
-    ]
-    return base[:n]
+def wrap_question_text(question: str) -> str:
+    words = question.split()
+    if not words:
+        return question
+    if len(words) <= TSNE_LABEL_STYLE["long_question_words"]:
+        width = min(
+            TSNE_LABEL_STYLE["max_wrap_width"],
+            max(TSNE_LABEL_STYLE["min_wrap_width"], len(question)),
+        )
+        return "\n".join(textwrap.wrap(question, width=width))
+
+    half_words = max(1, len(words) // 2)
+    lines = [" ".join(words[:half_words]), " ".join(words[half_words:])]
+    wrapped_lines = []
+    for line in lines:
+        width = min(
+            TSNE_LABEL_STYLE["max_wrap_width"],
+            max(TSNE_LABEL_STYLE["min_wrap_width"], len(line)),
+        )
+        wrapped_lines.extend(textwrap.wrap(line, width=width) or [line])
+    return "\n".join(wrapped_lines)
 
 
-def annotate_cluster_examples(ax, sub: pd.DataFrame, color: str, k: int = 2) -> None:
+def estimate_text_box_px(text: str, dpi: float) -> tuple[float, float]:
+    lines = text.split("\n")
+    max_chars = max((len(line) for line in lines), default=1)
+    fontsize = TSNE_LABEL_STYLE["fontsize"]
+    px_per_pt = dpi / 72.0
+    width = max_chars * fontsize * 0.58 * px_per_pt + 24
+    height = len(lines) * fontsize * 1.55 * px_per_pt + 18
+    return width, height
+
+
+def boxes_overlap(box_a, box_b, gap_px: float) -> bool:
+    ax0, ay0, ax1, ay1 = box_a
+    bx0, by0, bx1, by1 = box_b
+    return not (
+        ax1 + gap_px < bx0 or
+        bx1 + gap_px < ax0 or
+        ay1 + gap_px < by0 or
+        by1 + gap_px < ay0
+    )
+
+
+def choose_annotation_offset(
+    ax,
+    anchor_x: float,
+    anchor_y: float,
+    text: str,
+    map_center: tuple[float, float],
+    used_boxes: list[tuple[float, float, float, float]],
+) -> tuple[float, float]:
+    cx, cy = map_center
+    base_angle = np.degrees(np.arctan2(anchor_y - cy, anchor_x - cx))
+    radii = TSNE_LABEL_STYLE["offset_radius_points"]
+    jitters = TSNE_LABEL_STYLE["offset_angle_jitter_deg"]
+    gap_px = TSNE_LABEL_STYLE["min_box_gap_px"]
+    dpi = ax.figure.dpi
+    width_px, height_px = estimate_text_box_px(text, dpi)
+    anchor_disp = ax.transData.transform((anchor_x, anchor_y))
+    px_per_pt = dpi / 72.0
+
+    candidates = []
+    for radius in radii:
+        for jitter in jitters:
+            angle = np.radians(base_angle + jitter)
+            dx = np.cos(angle) * radius
+            dy = np.sin(angle) * radius
+            candidates.append((dx, dy))
+
+    for dx, dy in candidates:
+        center_x = anchor_disp[0] + dx * px_per_pt
+        center_y = anchor_disp[1] + dy * px_per_pt
+        box = (
+            center_x - width_px / 2.0,
+            center_y - height_px / 2.0,
+            center_x + width_px / 2.0,
+            center_y + height_px / 2.0,
+        )
+        if all(not boxes_overlap(box, used_box, gap_px) for used_box in used_boxes):
+            used_boxes.append(box)
+            return dx, dy
+
+    dx, dy = candidates[len(used_boxes) % len(candidates)]
+    center_x = anchor_disp[0] + dx * px_per_pt
+    center_y = anchor_disp[1] + dy * px_per_pt
+    used_boxes.append((
+        center_x - width_px / 2.0,
+        center_y - height_px / 2.0,
+        center_x + width_px / 2.0,
+        center_y + height_px / 2.0,
+    ))
+    return dx, dy
+
+
+def annotate_centroid(
+    ax,
+    sub: pd.DataFrame,
+    color: str,
+    used_boxes: list[tuple[float, float, float, float]],
+    map_center: tuple[float, float],
+) -> None:
+    """Annotate only the single question nearest to the cluster centroid."""
     if sub.empty:
         return
     center = sub[["x", "y"]].mean().to_numpy()
     pts = sub[["x", "y"]].to_numpy()
     dists = np.linalg.norm(pts - center, axis=1)
-    ann = sub.iloc[np.argsort(dists)[: min(k, len(sub))]].copy()
-    offsets = _label_offsets(len(ann))
-    for (_, row), (dx, dy) in zip(ann.iterrows(), offsets):
-        text = row["question"]
-        text = text if len(text) <= 52 else text[:49].rstrip() + "..."
-        ax.annotate(
-            text,
-            (row["x"], row["y"]),
-            xytext=(dx, dy),
-            textcoords="offset points",
-            fontsize=7.0,
+    row = sub.iloc[np.argmin(dists)]
+    text = wrap_question_text(row["question"])
+    dx, dy = choose_annotation_offset(
+        ax,
+        float(row["x"]),
+        float(row["y"]),
+        text,
+        map_center,
+        used_boxes,
+    )
+    ax.annotate(
+        text,
+        (row["x"], row["y"]),
+        xytext=(dx, dy),
+        textcoords="offset points",
+        fontsize=TSNE_LABEL_STYLE["fontsize"],
+        fontweight=TSNE_LABEL_STYLE["fontweight"],
+        color=TSNE_LABEL_STYLE["color"],
+        ha="center",
+        va="center",
+        bbox=dict(
+            boxstyle="round,pad=0.3",
+            fc=mcolors.to_rgba(color, TSNE_LABEL_STYLE["bbox_alpha"]),
+            ec="none",
+        ),
+        arrowprops=dict(
+            arrowstyle="-",
+            lw=TSNE_LABEL_STYLE["arrow_lw"],
             color=color,
-            ha="center",
-            va="center",
-            bbox=dict(boxstyle="round,pad=0.22", fc="white", ec=color, lw=0.8, alpha=0.92),
-            arrowprops=dict(arrowstyle="-", lw=0.7, color=color, alpha=0.8),
-            zorder=6,
-        )
+            alpha=TSNE_LABEL_STYLE["arrow_alpha"],
+        ),
+        zorder=6,
+        clip_on=False,
+    )
 
 
-def plot_subset(df: pd.DataFrame, group_col: str, colors: dict[str, str], title: str, out_name: str) -> None:
+def plot_panel(ax, df: pd.DataFrame, group_col: str, colors: dict[str, str]) -> None:
     pool = df[df[group_col].notna()].copy()
     subset = pool[pool["is_subset"]].copy()
-    order = subset[group_col].value_counts().index.tolist()
-
-    fig, ax = plt.subplots(figsize=(9.8, 7.2))
+    order = sorted(
+        pool[group_col].unique(),
+        key=lambda g: np.arctan2(
+            pool[pool[group_col] == g]["y"].mean() - pool["y"].mean(),
+            pool[pool[group_col] == g]["x"].mean() - pool["x"].mean(),
+        ),
+    )
+    used_boxes: list[tuple[float, float, float, float]] = []
+    map_center = (float(pool["x"].mean()), float(pool["y"].mean()))
 
     for grp in order:
         color = colors.get(grp, "#888888")
@@ -172,52 +293,50 @@ def plot_subset(df: pd.DataFrame, group_col: str, colors: dict[str, str], title:
             s=TSNE_SUBSET_POINT_STYLE["size"],
             alpha=TSNE_SUBSET_POINT_STYLE["alpha"],
             marker=TSNE_SUBSET_POINT_STYLE["marker"],
-            edgecolors=TSNE_SUBSET_POINT_STYLE["edgecolor"],
-            linewidths=TSNE_SUBSET_POINT_STYLE["linewidth"],
+            edgecolors="none",
+            linewidths=0,
             zorder=4,
         )
-        annotate_cluster_examples(ax, sub_grp, color=color, k=2)
+        annotate_centroid(
+            ax,
+            sub_grp,
+            color=color,
+            used_boxes=used_boxes,
+            map_center=map_center,
+        )
 
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title(title, fontsize=12)
-    ax.set_xlabel("t-SNE 1", fontsize=10)
-    ax.set_ylabel("t-SNE 2", fontsize=10)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
 
-    marker_handles = [
-        mlines.Line2D(
-            [], [], color="#666666", marker=TSNE_POOL_POINT_STYLE["marker"],
-            linestyle="None", markersize=4, alpha=0.4, label="1k pool"
-        ),
-        mlines.Line2D(
-            [], [], color="#666666", marker=TSNE_SUBSET_POINT_STYLE["marker"],
-            linestyle="None", markersize=7,
-            markeredgecolor=TSNE_SUBSET_POINT_STYLE["edgecolor"],
-            markeredgewidth=TSNE_SUBSET_POINT_STYLE["linewidth"],
-            label=f"study subset (N={len(subset)})"
-        ),
-    ]
+    # Legend: only group colors (no pool/subset markers)
+    subset_groups = [g for g in order if g in subset[group_col].values]
     group_handles = [
         mlines.Line2D([], [], color=colors.get(grp, "#888888"), marker="o",
-                      linestyle="None", markersize=6, label=grp)
-        for grp in order
+                      linestyle="None", markersize=TSNE_LEGEND_STYLE["markersize"], label=grp)
+        for grp in subset_groups
     ]
     ax.legend(
-        handles=marker_handles + group_handles,
-        fontsize=7.3,
+        handles=group_handles,
+        fontsize=TSNE_LEGEND_STYLE["fontsize"],
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.08),
-        ncol=5,
+        bbox_to_anchor=(0.5, TSNE_LEGEND_STYLE["bbox_y"]),
+        ncol=min(len(group_handles), TSNE_LEGEND_STYLE["ncol_max"]),
         frameon=True,
-        handletextpad=0.4,
-        columnspacing=0.8,
+        handletextpad=TSNE_LEGEND_STYLE["handletextpad"],
+        columnspacing=TSNE_LEGEND_STYLE["columnspacing"],
     )
 
-    fig.tight_layout()
-    out_path = OUT_DIR / out_name
-    fig.savefig(out_path, dpi=180, bbox_inches="tight")
+
+def save_single_panel(df: pd.DataFrame, group_col: str, colors: dict[str, str], filename: str) -> None:
+    fig, ax = plt.subplots(1, 1, figsize=TSNE_FIGURE_STYLE["single_figsize"])
+    plot_panel(ax, df, group_col=group_col, colors=colors)
+    fig.tight_layout(pad=0.6)
+    out_path = OUT_DIR / filename
+    fig.savefig(out_path, dpi=TSNE_FIGURE_STYLE["dpi"], bbox_inches="tight")
     plt.close(fig)
-    print(f"  [question_tsne] {out_name}")
+    print(f"  [question_tsne] {filename}")
 
 
 def main() -> None:
@@ -226,20 +345,8 @@ def main() -> None:
     print(f"Pool: {len(df)} questions | subset: {int(df['is_subset'].sum())}")
     df = load_tsne(df)
 
-    plot_subset(
-        df,
-        group_col="ent",
-        colors=TSNE_ENTITY_COLORS,
-        title="Question Embedding Space — 113-Question Study Subset by Entity",
-        out_name="subset_tsne_entities.png",
-    )
-    plot_subset(
-        df,
-        group_col="op",
-        colors=TSNE_OP_COLORS,
-        title="Question Embedding Space — 113-Question Study Subset by Operation",
-        out_name="subset_tsne_operations.png",
-    )
+    save_single_panel(df, group_col="ent", colors=TSNE_ENTITY_COLORS, filename="subset_tsne_entities.png")
+    save_single_panel(df, group_col="op", colors=TSNE_OP_COLORS, filename="subset_tsne_operations.png")
     print(f"\nDone. Figures saved to: {OUT_DIR}")
 
 

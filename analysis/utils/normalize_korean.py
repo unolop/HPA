@@ -113,9 +113,15 @@ def normalize_korean_answer(text: str, _cache: dict = {}) -> str:
             return en
 
     # 6. Misc common VQA words
+    # Use exact match for short keys (<=2 chars) to avoid false substring matches
+    # (e.g. '위' matching '위험해서', '안' matching '안전')
     for kr, en in sorted(_cache['misc'].items(), key=lambda x: -len(x[0])):
-        if kr in t:
-            return en
+        if len(kr) <= 2:
+            if canonical == kr or t == kr:
+                return en
+        else:
+            if kr in t:
+                return en
 
     # 7. Already ASCII
     if re.match(r'^[a-zA-Z0-9\s\-\/\.\,\(\)]+$', t):

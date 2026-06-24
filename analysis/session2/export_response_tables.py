@@ -16,6 +16,7 @@ Usage:
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -118,11 +119,11 @@ def _build_model_rows(
     return rows, acc_rows
 
 
-def main() -> None:
+def main(*, translate: bool = True) -> None:
     participants, common_qids, df, mapper = load_human_data(
         ROOT,
         min_answers=MIN_ANSWERS_DEFAULT,
-        translate=False,
+        translate=translate,
         verbose=True,
     )
     common_qids = set(int(q) for q in common_qids)
@@ -272,4 +273,13 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description="Rebuild canonical session-2 human/model response exports."
+    )
+    parser.add_argument(
+        "--no_translate",
+        action="store_true",
+        help="Skip the API-backed Korean answer translation step and use only the local map/normalizer.",
+    )
+    args = parser.parse_args()
+    main(translate=not args.no_translate)

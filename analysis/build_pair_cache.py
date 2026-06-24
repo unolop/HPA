@@ -56,6 +56,30 @@ VARIANT_ORDER    = ['C', 'B', 'A']
 CT_TO_VARIANT    = {'question': 'C', 'weaker_object': 'B', 'pronominalized': 'A'}
 
 
+def _resolve_embed_device() -> str:
+    """Prefer cuda:1 for embedding passes when available.
+
+    Priority:
+      1. explicit HPA_EMBED_DEVICE
+      2. cuda:1 if >=2 visible GPUs
+      3. cuda:0 if 1 visible GPU
+      4. cpu
+    """
+    explicit = os.environ.get('HPA_EMBED_DEVICE')
+    if explicit:
+        return explicit
+    try:
+        import torch
+        if torch.cuda.is_available():
+            n = torch.cuda.device_count()
+            if n >= 2:
+                return 'cuda:1'
+            return 'cuda:0'
+    except Exception:
+        pass
+    return 'cpu'
+
+
 def build_pair_cache(
     root: Path,
     exports: Path,
@@ -92,6 +116,7 @@ def build_pair_cache(
     hf_dir  = Path(hf_cache or HF_CACHE_DEFAULT)
     hf_dir.mkdir(parents=True, exist_ok=True)
     hf_dir  = str(hf_dir)
+    embed_device = _resolve_embed_device()
 
     # Condition-dependent paths
     if condition == 'blind':
@@ -280,17 +305,22 @@ def build_pair_cache(
         new_to_enc = [a for a in all_answers if a not in existing]
         if new_to_enc:
             if verbose:
-                print(f'  [{metric_name}] {len(new_to_enc)} new answers — loading {model_id} …')
+                print(
+                    f'  [{metric_name}] {len(new_to_enc)} new answers — '
+                    f'loading {model_id} on {embed_device} …'
+                )
             import os
             os.environ['HF_HOME'] = hf_dir
             try:
                 model = SentenceTransformer(
                     model_id,
                     cache_folder=hf_dir,
+                    device=embed_device,
                     model_kwargs={'use_safetensors': True},
                 )
             except OSError:
-                model = SentenceTransformer(model_id, cache_folder=hf_dir)
+                model = SentenceTransformer(
+                    model_id, cache_folder=hf_dir, device=embed_device)
             emb_caches[metric_name] = encode_with_cache(
                 all_answers, model, emb_path, normalize=True, verbose=verbose)
             del model
@@ -562,6 +592,7 @@ def build_cleaned_pair_cache(
     hf_dir  = Path(hf_cache or HF_CACHE_DEFAULT)
     hf_dir.mkdir(parents=True, exist_ok=True)
     hf_dir  = str(hf_dir)
+    embed_device = _resolve_embed_device()
 
     suffix = '_blind' if condition == 'blind' else ''
     raw_path = exports / f'pair_cache{suffix}.parquet'
@@ -625,16 +656,18 @@ def build_cleaned_pair_cache(
         col_clip = f'{metric_name}_score_clip'
 
         if verbose:
-            print(f'  [{metric_name}] loading {model_id} …')
+            print(f'  [{metric_name}] loading {model_id} on {embed_device} …')
         import os
         os.environ['HF_HOME'] = hf_dir
         try:
             try:
                 model = SentenceTransformer(
                     model_id, cache_folder=hf_dir,
+                    device=embed_device,
                     model_kwargs={'use_safetensors': True})
             except (OSError, ValueError):
-                model = SentenceTransformer(model_id, cache_folder=hf_dir)
+                model = SentenceTransformer(
+                    model_id, cache_folder=hf_dir, device=embed_device)
         except Exception as e:
             if verbose:
                 print(f'  [{metric_name}] FAILED to load: {e}')

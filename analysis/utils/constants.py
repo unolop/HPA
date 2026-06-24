@@ -255,24 +255,30 @@ MODEL_FAMILY_COLORS = {
 
 # ── Question t-SNE styling ───────────────────────────────────────────────────
 TSNE_ENTITY_COLORS = {
-    'object':  '#455A64',
-    'person':  '#E53935',
-    'animal':  '#388E3C',
-    'food':    '#FB8C00',
-    'product': '#8E24AA',
-    'other':   '#039BE5',
-    'vehicle': '#6D4C41',
-    'place':   '#00897B',
-    'text':    '#F06292',
+    'person':  '#4E79A7',
+    'object':  '#F28E2B',
+    'animal':  '#59A14F',
+    'food':    '#E15759',
+    'place':   '#76B7B2',
+    'other':   '#EDC948',
+    'vehicle': '#B07AA1',
+    'product': '#FF9DA7',
+    'text':    '#9C755F',
 }
 
 TSNE_OP_COLORS = {
-    'attr':  '#E53935',
-    'count': '#8E24AA',
-    'ident': '#1E88E5',
-    'loc':   '#00897B',
-    'pred':  '#6D4C41',
-    'spat':  '#FB8C00',
+    'attr':   '#4E79A7',
+    'ident':  '#F28E2B',
+    'count':  '#E15759',
+    'spat':   '#76B7B2',
+    'act':    '#59A14F',
+    'exist':  '#EDC948',
+    'text':   '#B07AA1',
+    'know':   '#FF9DA7',
+    'comp':   '#9C755F',
+    'cause':  '#BAB0AC',
+    'temp':   '#D37295',
+    'other':  '#A0CBE8',
 }
 
 TSNE_POOL_POINT_STYLE = {
@@ -285,10 +291,42 @@ TSNE_POOL_POINT_STYLE = {
 
 TSNE_SUBSET_POINT_STYLE = {
     'marker': 'o',
-    'size': 58,
+    'size': 62,
     'alpha': 0.95,
-    'edgecolor': '#111111',
-    'linewidth': 0.55,
+    'edgecolor': 'none',
+    'linewidth': 0.0,
+}
+
+TSNE_LABEL_STYLE = {
+    'fontsize': 10.0,
+    'fontweight': 'normal',
+    'color': '#2F2F2F',
+    'min_wrap_width': 18,
+    'max_wrap_width': 42,
+    'long_question_words': 8,
+    'bbox_alpha': 0.22,
+    'arrow_lw': 0.7,
+    'arrow_alpha': 0.55,
+    'radial_offset_x': 34,
+    'radial_offset_y': 24,
+    'offset_radius_points': (28, 40, 54, 70, 88),
+    'offset_angle_jitter_deg': (-40, -22, 0, 22, 40, 65, -65),
+    'min_box_gap_px': 10.0,
+}
+
+TSNE_LEGEND_STYLE = {
+    'fontsize': 10.5,
+    'markersize': 7.5,
+    'ncol_max': 12,
+    'handletextpad': 0.45,
+    'columnspacing': 1.1,
+    'bbox_y': -0.045,
+}
+
+TSNE_FIGURE_STYLE = {
+    'single_figsize': (13.5, 6.7),
+    'combined_figsize': (24.5, 6.8),
+    'dpi': 180,
 }
 
 # ── Model parameter sizes (billions) ─────────────────────────────────────────
