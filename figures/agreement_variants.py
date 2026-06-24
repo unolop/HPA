@@ -2,8 +2,8 @@
 Export agreement-by-control-variant figures for the paper.
 
 For each agreement metric, produces two figures:
-  figures/agreement_vABC_group_lineplot/  — mean HM/HH agreement per group across variants C→B→A
-  figures/agreement_vABC_group_heatmap/   — group×variant heatmap (HM pairs only)
+  figures/agreement/vABC_group_lineplot/  — mean HM/HH agreement per group across variants C→B→A
+  figures/agreement/vABC_group_heatmap/   — group×variant heatmap (HM pairs only)
 
 Metrics: sbert, simcse, bertscore, chrf, rouge1, jaccard, exact
 
@@ -43,8 +43,8 @@ parser.add_argument('--overwrite', action='store_true',
                     help='Delete existing plot files in the output folder before exporting.')
 args = parser.parse_args()
 
-LINEPLOT_DIR = ROOT / 'figures/agreement_vABC_group_lineplot'
-HEATMAP_DIR  = ROOT / 'figures/agreement_vABC_group_heatmap'
+LINEPLOT_DIR = ROOT / 'figures/agreement/vABC_group_lineplot'
+HEATMAP_DIR  = ROOT / 'figures/agreement/vABC_group_heatmap'
 LINEPLOT_DIR.mkdir(parents=True, exist_ok=True)
 HEATMAP_DIR.mkdir(parents=True, exist_ok=True)
 clear_output_plots(LINEPLOT_DIR, overwrite=args.overwrite)

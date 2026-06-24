@@ -32,7 +32,7 @@ from figures.helpers import save_fig
 from utils.constants import VARIANT_COLORS, VARIANT_LABELS, VARIANT_ORDER
 
 EXPORTS = ROOT / "analysis/session2/exports"
-OUT_DIR = ROOT / "figures/human_hh_analysis"
+OUT_DIR = ROOT / "figures/human_analysis"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 ENTITY_COLOR_MAP = {

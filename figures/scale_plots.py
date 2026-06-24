@@ -74,7 +74,7 @@ METRIC = args.metric
 AGG    = args.agg
 
 EXPORTS   = get_exports_dir(ROOT)
-OUT_DIR   = ROOT / 'figures/scale_scatter'
+OUT_DIR   = ROOT / 'figures/agreement/scale'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 AGG_SHORT = AGG.replace('by_', '')   # by_models→models, by_family→family, by_groups→groups

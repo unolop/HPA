@@ -1,7 +1,7 @@
 """
 Export pairwise inter-rater agreement heatmaps for every metric.
 
-For each metric, generates two files in figures/agreement_heatmaps/:
+For each metric, generates two files in figures/agreement/heatmaps/:
   vC_{metric}_all.png    — all raters (36 humans + all model groups)
   vC_{metric}_groups.png — compact version: human block + model group means
 
@@ -36,7 +36,7 @@ parser.add_argument('--overwrite', action='store_true',
 args = parser.parse_args()
 
 EXPORTS = get_exports_dir(ROOT)
-OUTPUT_DIR    = ROOT / "figures/agreement_heatmaps"
+OUTPUT_DIR    = ROOT / "figures/agreement/heatmaps"
 OUTPUT_DIR_7B = OUTPUT_DIR / "7b"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_DIR_7B.mkdir(parents=True, exist_ok=True)

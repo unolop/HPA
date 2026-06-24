@@ -4,7 +4,7 @@ Export per-model agreement-by-control-variant lineplots.
 For each metric, one figure with a line per model (colour = model family,
 marker = group shape), plus Human–Human ceiling and Model–Model baseline.
 
-Output: figures/agreement_vABC_by_models/inst_blind_{metric}[_yesno].png
+Output: figures/agreement/vABC_by_models/inst_blind_{metric}[_yesno].png
 
 Run from repo root:
   conda run -n zero python figures/agreement_variants_by_models.py
@@ -38,7 +38,7 @@ parser.add_argument('--overwrite', action='store_true',
                     help='Delete existing plot files in the output folder before exporting.')
 args = parser.parse_args()
 
-OUT_DIR = ROOT / 'figures/agreement_vABC_by_models'
+OUT_DIR = ROOT / 'figures/agreement/vABC_by_models'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 

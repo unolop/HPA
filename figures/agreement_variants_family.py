@@ -11,7 +11,7 @@ Within each panel:
   - Line weight/alpha scales with parameter count
   - HH ceiling (dashed blue) in every panel
 
-Output: figures/agreement_vABC_family/
+Output: figures/agreement/vABC_family/
 
 Run from repo root:
   conda run -n zero python figures/agreement_variants_family.py
@@ -47,7 +47,7 @@ parser.add_argument('--metric', default='sbert',
                              'rouge1', 'jaccard', 'exact'])
 args = parser.parse_args()
 
-OUT_DIR = ROOT / 'figures/agreement_vABC_family'
+OUT_DIR = ROOT / 'figures/agreement/vABC_family'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
