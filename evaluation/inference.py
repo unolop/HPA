@@ -116,7 +116,9 @@ def main(args):
 
     img_suffix = f'_{args.image_override}' if args.image_override != 'blank' else ''
     output_jsonl_path = f"{savedir}/{save_name}/{args.dataset}{args.condition}{img_suffix}.jsonl"
-    dataset = get_dataset(f"{args.dataset}{args.condition}", json_path=getattr(args, 'json_path', None))
+    dataset = get_dataset(f"{args.dataset}{args.condition}",
+                          json_path=getattr(args, 'json_path', None),
+                          image_dir=getattr(args, 'image_dir', None))
 
     # Which control-type keys to run (None = all string fields, as before)
     control_types = [k.strip() for k in args.control_types.split(',')] if args.control_types else None
@@ -284,6 +286,8 @@ if __name__ == "__main__":
                         choices=['blank', 'gray', 'noise', 'white'],
                         help="Image to use for blind conditions: blank (all-black), "
                              "gray (128-gray), noise (random pixels, seed=42), white (all-white)")
+    parser.add_argument("--image_dir", type=str, default=None,
+                        help="Override image directory (e.g. for train2014 images)")
 
     args = parser.parse_args()
     main(args) 

@@ -1,4 +1,4 @@
-\begin{thebibliography}{19}
+\begin{thebibliography}{36}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Agrawal et~al.(2018)Agrawal, Batra, Parikh, and
@@ -32,12 +32,25 @@ Chen, L.; Li, J.; Dong, X.; Zhang, P.; Zang, Y.; Chen, Z.; Duan, H.; Wang, J.;
 \newblock \emph{Advances in Neural Information Processing Systems}, 37:
   27056--27087.
 
+\bibitem[{Gao, Yao, and Chen(2021)}]{gao2021simcse}
+Gao, T.; Yao, X.; and Chen, D. 2021.
+\newblock {SimCSE}: Simple Contrastive Learning of Sentence Embeddings.
+\newblock In \emph{Proceedings of the Conference on Empirical Methods in
+  Natural Language Processing}, 6510--6526.
+
 \bibitem[{Goyal et~al.(2016)Goyal, Khot, Summers-Stay, Batra, and
   Parikh}]{goyal2016making}
 Goyal, Y.; Khot, T.; Summers-Stay, D.; Batra, D.; and Parikh, D. 2016.
 \newblock Making the {V} in {VQA} matter: Elevating the role of image
   understanding in visual question answering.
 \newblock \emph{International Journal of Computer Vision}.
+
+\bibitem[{Guo et~al.(2017)Guo, Pleiss, Sun, and
+  Weinberger}]{guo2017calibration}
+Guo, C.; Pleiss, G.; Sun, Y.; and Weinberger, K.~Q. 2017.
+\newblock On Calibration of Modern Neural Networks.
+\newblock In \emph{International Conference on Machine Learning}, 1321--1330.
+  PMLR.
 
 \bibitem[{Gururangan et~al.(2018)Gururangan, Swayamdipta, Levy, Schwartz,
   Bowman, and Smith}]{gururangan2018annotation}
@@ -53,6 +66,11 @@ Han, T.; Lian, Q.; Pan, R.; Pi, R.; Zhang, J.; Diao, S.; Lin, Y.; and Zhang, T.
 \newblock The instinctive bias: Spurious images lead to illusion in {MLLMs}.
 \newblock \emph{arXiv preprint arXiv:2402.03757}.
 
+\bibitem[{Jabri, Joulin, and van~der Maaten(2016)}]{jabri2016revisiting}
+Jabri, A.; Joulin, A.; and van~der Maaten, L. 2016.
+\newblock Revisiting Visual Question Answering Baselines.
+\newblock In \emph{European Conference on Computer Vision}, 727--739. Springer.
+
 \bibitem[{Ji et~al.(2023)Ji, Lee, Frieske, Yu, Su, Xu, Ishii, Bang, Madotto,
   and Fung}]{ji2023survey}
 Ji, Z.; Lee, N.; Frieske, R.; Yu, T.; Su, D.; Xu, Y.; Ishii, E.; Bang, Y.~J.;
@@ -60,12 +78,60 @@ Ji, Z.; Lee, N.; Frieske, R.; Yu, T.; Su, D.; Xu, Y.; Ishii, E.; Bang, Y.~J.;
 \newblock Survey of hallucination in natural language generation.
 \newblock \emph{ACM Computing Surveys}, 55(12): 1--38.
 
+\bibitem[{Kadavath et~al.(2022)Kadavath, Conerly, Askell, Henighan, Drain,
+  Perez, Schiefer, Hatfield-Dodds, DasSarma, Tran-Johnson
+  et~al.}]{kadavath2022language}
+Kadavath, S.; Conerly, T.; Askell, A.; Henighan, T.; Drain, D.; Perez, E.;
+  Schiefer, N.; Hatfield-Dodds, Z.; DasSarma, N.; Tran-Johnson, E.; et~al.
+  2022.
+\newblock Language Models (Mostly) Know What They Know.
+\newblock \emph{arXiv preprint arXiv:2207.05221}.
+
+\bibitem[{Kahneman(2011)}]{kahneman2011thinking}
+Kahneman, D. 2011.
+\newblock \emph{Thinking, Fast and Slow}.
+\newblock Farrar, Straus and Giroux.
+
+\bibitem[{Kalai et~al.(2025)Kalai, Vempala, Nachum, and
+  Zhang}]{kalai2025hallucinate}
+Kalai, A.; Vempala, S.; Nachum, O.; and Zhang, E. 2025.
+\newblock Why language models hallucinate.
+\newblock \emph{arXiv preprint arXiv:2403.00048}.
+
+\bibitem[{Kim, Lee, and Park(2025)}]{kim2025subtlebench}
+Kim, M.; Lee, S.; and Park, D. 2025.
+\newblock {VLM-SubtleBench}: How Far Are {VLM}s from Human-Level Subtle
+  Comparative Reasoning?
+\newblock \emph{arXiv preprint arXiv:2603.07888}.
+
+\bibitem[{Lan, Frassinelli, and Plank(2025)}]{lan2025mind}
+Lan, J.; Frassinelli, D.; and Plank, B. 2025.
+\newblock Mind the Uncertainty in Human Disagreement: Evaluating Discrepancies
+  Between Model Predictions and Human Responses in VQA.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~39, 4446--4454.
+
+\bibitem[{Lee et~al.(2023)Lee, Kim, Won, Lee, Ghassemi, Thorne, Choi, Kwon, and
+  Choi}]{lee2023visalign}
+Lee, J.; Kim, S.; Won, S.; Lee, J.; Ghassemi, M.; Thorne, J.; Choi, J.; Kwon,
+  O.-K.; and Choi, E. 2023.
+\newblock {VisAlign}: Dataset for measuring the alignment between {AI} and
+  humans in visual perception.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36:
+  77119--77148.
+
 \bibitem[{Lee et~al.(2024)Lee, Kim, Yoon, Kim, Lee, Koh, and
   Jung}]{lee2024vlind}
 Lee, K.~i.; Kim, M.; Yoon, S.; Kim, M.; Lee, D.; Koh, H.; and Jung, K. 2024.
 \newblock {VLind-Bench}: Measuring language priors in large vision-language
   models.
 \newblock \emph{arXiv preprint}.
+
+\bibitem[{Li et~al.(2023)Li, Du, Zhou, Wang, Zhao, and Wen}]{li2023evaluating}
+Li, Y.; Du, Y.; Zhou, K.; Wang, J.; Zhao, W.~X.; and Wen, J.-R. 2023.
+\newblock Evaluating Object Hallucination in Large Vision-Language Models.
+\newblock In \emph{Proceedings of the Conference on Empirical Methods in
+  Natural Language Processing}, 292--305.
 
 \bibitem[{Liu et~al.(2024)Liu, Li, Li, Li, Zhang, Shen, and
   Lee}]{liu2024llavanext}
@@ -79,12 +145,26 @@ Liu, H.; Li, C.; Wu, Q.; and Lee, Y.~J. 2023.
 \newblock \emph{Advances in Neural Information Processing Systems}, 36:
   34892--34916.
 
-\bibitem[{McCoy, Frank, and Linzen(2024)}]{mccoy2024embers}
-McCoy, R.~T.; Frank, R.; and Linzen, T. 2024.
+\bibitem[{Lu, Chai, and Wang(2025)}]{lu2025mitigating}
+Lu, S.; Chai, J.; and Wang, X. 2025.
+\newblock Mitigating Spurious Correlations in Zero-Shot Multimodal Models.
+\newblock In \emph{The Thirteenth International Conference on Learning
+  Representations}.
+
+\bibitem[{McCoy et~al.(2024)McCoy, Yao, Friedman, Hardy, and
+  Griffiths}]{mccoy2024embers}
+McCoy, R.~T.; Yao, S.; Friedman, D.; Hardy, M.~D.; and Griffiths, T.~L. 2024.
 \newblock Embers of autoregression show how large language models are shaped by
   the problem they are trained to solve.
 \newblock \emph{Proceedings of the National Academy of Sciences}, 121(41):
   e2322420121.
+
+\bibitem[{Niu et~al.(2021)Niu, Tang, Zhang, Lu, Hua, and
+  Wen}]{niu2021counterfactual}
+Niu, Y.; Tang, K.; Zhang, H.; Lu, Z.; Hua, X.-S.; and Wen, J.-R. 2021.
+\newblock Counterfactual {VQA}: A Cause-Effect Look at Language Bias.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}, 12700--12710.
 
 \bibitem[{{OpenAI}(2025)}]{openai2025gpt4o}
 {OpenAI}. 2025.
@@ -105,6 +185,12 @@ Rohrbach, A.; Hendricks, L.~A.; Burns, K.; Darrell, T.; and Saenko, K. 2018.
 \newblock Object hallucination in image captioning.
 \newblock In \emph{Conference on Empirical Methods in Natural Language
   Processing}.
+
+\bibitem[{Torralba and Efros(2011)}]{torralba2011unbiased}
+Torralba, A.; and Efros, A.~A. 2011.
+\newblock Unbiased Look at Dataset Bias.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}, 1521--1528.
 
 \bibitem[{Tversky and Kahneman(1974)}]{tversky1974judgment}
 Tversky, A.; and Kahneman, D. 1974.
@@ -132,5 +218,35 @@ Yang, A.; Li, A.; Yang, B.; Zhang, B.; Hui, B.; Zheng, B.; Yu, B.; Gao, C.;
   Huang, C.; Lv, C.; et~al. 2025.
 \newblock Qwen3 Technical Report.
 \newblock \emph{arXiv preprint}.
+
+\bibitem[{Ye et~al.(2024)Ye, Zheng, Ma, Cao, Rehg, and
+  Zhang}]{ye2024mmspubench}
+Ye, W.; Zheng, G.; Ma, Y.; Cao, X.; Rehg, J.~M.; and Zhang, A. 2024.
+\newblock {MM-SpuBench}: Towards better understanding of spurious biases in
+  multimodal {LLMs}.
+\newblock \emph{arXiv preprint arXiv:2406.17126}.
+
+\bibitem[{Y{\"u}ksekg{\"o}n{\"u}l et~al.(2023)Y{\"u}ksekg{\"o}n{\"u}l, Bianchi,
+  Kalluri, Jurafsky, and Zou}]{yuksekgonul2023when}
+Y{\"u}ksekg{\"o}n{\"u}l, M.; Bianchi, F.; Kalluri, P.; Jurafsky, D.; and Zou,
+  J. 2023.
+\newblock When and Why Vision-Language Models Behave like Bags-of-Words, and
+  What to Do About It?
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Zhang et~al.(2016)Zhang, Goyal, Summers-Stay, Batra, and
+  Parikh}]{zhang2016yin}
+Zhang, P.; Goyal, Y.; Summers-Stay, D.; Batra, D.; and Parikh, D. 2016.
+\newblock Yin and Yang: Balancing and Answering Binary Visual Questions.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}, 5014--5022.
+
+\bibitem[{Zhu et~al.(2025)Zhu, Liu, Chen, Liu, Ye, Gu, Tian, Duan, Su, Shao
+  et~al.}]{zhu2025internvl3}
+Zhu, J.; Liu, W.; Chen, Z.; Liu, Z.; Ye, S.; Gu, L.; Tian, H.; Duan, Y.; Su,
+  W.; Shao, J.; et~al. 2025.
+\newblock {InternVL3}: Exploring advanced training and test-time recipes for
+  open-source multimodal models.
+\newblock \emph{arXiv preprint arXiv:2504.10479}.
 
 \end{thebibliography}

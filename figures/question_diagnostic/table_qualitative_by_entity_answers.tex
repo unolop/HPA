@@ -1,0 +1,26 @@
+\begin{table*}[t]
+\centering
+\caption{Top questions by C$\to$A degradation per entity type (variant~C, 7/8B). These are the strongest entity-anchor-dependence cases within each entity class, with compact human/model answer summaries.}
+\label{tab:qual_entity_answers}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{4.0cm}llrrrp{2.6cm}p{2.6cm}}
+\toprule
+ & Ent & Op & HM & HH & C$\to$A & Human top & Model top \\
+Question &  &  &  &  &  &  &  \\
+\midrule
+What is on the man's ear? & person & attr & 0.533 & 0.620 & 0.310 & earrings (20); earphones (5) & earring (6); nothing (2) \\
+What is this player's position called? & person & ident & 0.561 & 0.574 & 0.304 & striker (9); goalkeeper (6) & goalie (6); goalkeeper (2) \\
+How many people touching the elephant trunk? & person & count & 0.673 & 0.686 & 0.182 & 2 (15); 1 (9) & 1 (6); 0 (5) \\
+What type of bear is this? & animal & ident & 0.572 & 0.674 & 0.343 & brown bear (11); polar bear (9) & grizzly bear (4); black (3) \\
+What breed of dog is on the left? & animal & attr & 0.545 & 0.534 & 0.164 & poodle (7); maltese (5) & labrador retriever (3); labrador (3) \\
+Where are the cows? & animal & spat & 0.405 & 0.368 & 0.152 & field (5); ranch (5) & farm (4); on farm (3) \\
+What are the flowers in? & object & spat & 0.642 & 0.630 & 0.324 & vase (25); pot (7) & vase (11); bushes (1) \\
+What kind of trees are in the picture? & object & attr & 0.458 & 0.642 & 0.181 & tree (21); apple (4) & oak (6); oak trees (4) \\
+What is the bowl made of? & object & attr & 0.534 & 0.531 & 0.170 & ceramic (17); dirt (9) & ceramic (5); glass (3) \\
+What type of bread does this appear to be? & food & ident & 0.482 & 0.518 & 0.267 & baguette (9); sandwich bread (9) & white bread (5); wheat (3) \\
+What animal is this cake meant to represent? & food & ident & 0.444 & 0.536 & 0.229 & cat (9); dog (8) & dog (3); cat (2) \\
+What condiments are on the hot dog? & food & ident & 0.701 & 0.709 & 0.227 & ketchup (18); mustard (7) & ketchup and mustard (5); mustard and ketchup (3) \\
+\bottomrule
+\end{tabular}
+\end{table*}

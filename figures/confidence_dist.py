@@ -338,12 +338,19 @@ GROUP_SHORT = {
 
 for set_name, allowed_models in MODEL_SETS:
     set_suffix = '' if set_name == 'all' else f'_{set_name}'
-    plot_df = df[df['condition'].isin(['blind', 'inst_blind'])].copy()
+    # Keep filename semantics correct: violin_outputclass_q{N}_h{H} uses the
+    # same question subset as the human study (qids in human_qids).
+    plot_df = df[
+        df['condition'].isin(['blind', 'inst_blind']) &
+        df['question_id'].isin(human_qids)
+    ].copy()
     if allowed_models is not None:
         plot_df = plot_df[plot_df['model'].isin(allowed_models)]
     plot_df = plot_df[plot_df['output_class'].isin(CLASS_ORDER) & plot_df['model_group'].isin(GROUP_ORDER)]
 
     if not plot_df.empty:
+        print(f'  violin ({set_name}): rows={len(plot_df):,}, q={plot_df["question_id"].nunique()}, '
+              f'models={plot_df["model"].nunique()}')
         fig, axes = plt.subplots(1, 2, figsize=(12.4, 4.9), sharey=True)
         width = 0.16
         x = np.arange(len(CLASS_ORDER))
@@ -419,7 +426,81 @@ GROUP_STYLE = {
     'standalone LLM (think)': {'ls': ':', 'lw': 2.2},
 }
 
-# NOTE: family-level non-group KDE exports removed by request.
+# ── Family-level KDE exports (restored) ──────────────────────────────────────
+for set_name, allowed_models in MODEL_SETS:
+    set_suffix = '' if set_name == 'all' else f'_{set_name}'
+    for condition, subset_qids, fname_suffix, show_human in DIST_PLAN:
+        sub = df[(df['condition'] == condition) & (df['control_type'] == 'question')].copy()
+        if allowed_models is not None:
+            sub = sub[sub['model'].isin(allowed_models)]
+        if subset_qids is not None:
+            sub = sub[sub['question_id'].isin(subset_qids)]
+        sub = sub[sub['model_group'].isin(GROUP_STYLE.keys())]
+        if sub.empty:
+            continue
+
+        fig, ax = plt.subplots(figsize=(7.2, 4.4))
+        x_grid = np.linspace(0, 1, 300)
+        any_drawn = False
+        shown_families = set()
+        model_rows = (
+            sub[['model', 'model_group']]
+            .drop_duplicates()
+            .sort_values(['model_group', 'model'])
+        )
+        model_names = model_rows['model'].tolist()
+
+        for _, r in model_rows.iterrows():
+            model = r['model']
+            grp = r['model_group']
+            vals = sub[sub['model'] == model]['confidence'].dropna().values
+            if len(vals) < 10:
+                continue
+            kde = gaussian_kde(vals, bw_method=0.12)
+            fam = MODEL_FAMILY.get(model, 'Unknown')
+            fam_color = MODEL_FAMILY_COLORS.get(fam, '#888888')
+            fam_label = fam if fam not in shown_families else None
+            shown_families.add(fam)
+            st = GROUP_STYLE[grp]
+            st_scale = model_scale_line_style(model, reference_models=model_names)
+            ax.plot(
+                x_grid,
+                kde(x_grid),
+                color=fam_color,
+                ls=st['ls'],
+                lw=st_scale['linewidth'],
+                alpha=st_scale['line_alpha'],
+                label=fam_label,
+            )
+            any_drawn = True
+
+        if show_human and len(human_conf_norm) >= 10:
+            hkde = gaussian_kde(human_conf_norm, bw_method=0.18)
+            ax.plot(x_grid, hkde(x_grid), color=HUMAN_COLOR, lw=2.2, ls='--', label='Human')
+            any_drawn = True
+
+        if not any_drawn:
+            plt.close(fig)
+            continue
+
+        apply_axis_style(ax, grid_axis='y')
+        ax.set_xlim(0, 1)
+        ax.set_xlabel('Confidence', fontsize=10)
+        ax.set_ylabel('Density', fontsize=10)
+        title_suffix = '' if set_name == 'all' else ' (7B subset)'
+        ax.set_title(f'Confidence Density by Family — {COND_LABELS[condition]}{title_suffix}',
+                     fontsize=11, fontweight='bold')
+
+        fam_handles, _ = ax.get_legend_handles_labels()
+        style_handles = [
+            mlines.Line2D([], [], color='#666666', ls='-', lw=1.8, label='base'),
+            mlines.Line2D([], [], color='#666666', ls=':', lw=1.8, label='decoder/think'),
+        ]
+        leg1 = ax.legend(handles=fam_handles, fontsize=8, loc='upper left', frameon=True, title='Family')
+        ax.add_artist(leg1)
+        ax.legend(handles=style_handles, fontsize=8, loc='upper right', frameon=True, title='Style')
+        fig.tight_layout()
+        save(fig, 'kde', f'kde_{condition}_density{fname_suffix}{set_suffix}.png')
 
 # ── Group-split, per-model KDEs in separate folder (by_groups) ───────────────
 for set_name, allowed_models in MODEL_SETS:

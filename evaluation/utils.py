@@ -59,7 +59,7 @@ def format_prompt(data, qkey='question', dataset='vqa_1k', condition=''):
         prompt += "\nAnswer:"
     return prompt
 
-def get_dataset(data_name:str, json_path:str=None):
+def get_dataset(data_name:str, json_path:str=None, image_dir:str=None):
     print("Loading dataset...", data_name)
 
     if data_name == "mmstar":
@@ -106,16 +106,17 @@ def get_dataset(data_name:str, json_path:str=None):
         from dataset.vqav2 import VQADataset_json
         prompt = blind_push if "push" in data_name else (blind_inst if "inst" in data_name else '')
         
+        img_dir = image_dir or VQA_IMAGE_DIR
         if 'control' in data_name:
             dataset = VQADataset_json(
                 prompt=prompt,
-                image_dir_path=VQA_IMAGE_DIR,
+                image_dir_path=img_dir,
                 json_path=json_path or VQA_1K_CONTROL,
             )
         elif json_path:
-            dataset = VQADataset_json(prompt=prompt, json_path=json_path)
+            dataset = VQADataset_json(prompt=prompt, image_dir_path=img_dir, json_path=json_path)
         else:
-            dataset = VQADataset_json(prompt=prompt)
+            dataset = VQADataset_json(prompt=prompt, image_dir_path=img_dir)
 
     elif data_name == "vqa_5k":
         from dataset.vqav2 import VQADataset

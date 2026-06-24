@@ -74,7 +74,7 @@ exports = read_response_exports(ROOT, subset_qids=common_qids)
 human       = exports['human']
 model_blind = exports['model_blind']
 model_inst  = exports['model_inst_blind']
-pair_df     = load_pair_cache(ROOT, subset_qids=common_qids, verbose=True)
+pair_df     = load_pair_cache(ROOT, include_yesno=True, subset_qids=common_qids, verbose=True)
 
 print(f'  human rows: {len(human)} | model_blind: {len(model_blind)} '
       f'| model_inst: {len(model_inst)} | pairs: {len(pair_df)}')

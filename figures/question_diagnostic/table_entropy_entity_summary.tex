@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{Per-entity-group entropy and alignment statistics (variant~C, 7/8B, $q=88$ free-text). Gap $=$ H(model) $-$ H(human); negative values indicate model overconfidence.}
+\label{tab:entropy_entity}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+ & N & H(human) & H(model) & Gap & HM SBERT & C$\to$A deg. \\
+Entity &  &  &  &  &  &  \\
+\midrule
+Person & 20 & 3.664 & 2.486 & -1.178 & 0.421 & 0.048 \\
+Animal & 12 & 3.475 & 2.176 & -1.298 & 0.494 & 0.095 \\
+Object & 23 & 3.260 & 2.200 & -1.060 & 0.470 & 0.070 \\
+Food & 11 & 3.364 & 2.213 & -1.151 & 0.527 & 0.137 \\
+Other & 22 & 3.755 & 2.224 & -1.531 & 0.434 & 0.065 \\
+All & 88 & 3.518 & 2.269 & -1.248 & 0.460 & 0.076 \\
+\bottomrule
+\end{tabular}
+\end{table}

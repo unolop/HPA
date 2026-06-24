@@ -113,12 +113,16 @@ class VQADataset_json(Dataset):
                     continue
                 if isinstance(self.questions[idx][k], str):
                     annot[k] = f"Question: {self.questions[idx][k]} Answer the question using a single word or phrase. {self.prompt}\nAnswer:"
- 
+        else:
+            if 'question' in annot and isinstance(annot['question'], str):
+                annot['question'] = f"Question: {annot['question']} Answer the question using a single word or phrase. {self.prompt}\nAnswer:"
+
         image_id = annot.get('image_id')
         if isinstance(image_id, int):
             padded_id = str(image_id).zfill(12)
-            filename = f"COCO_val2014_{padded_id}.jpg" 
-        else: 
-            filename = str(image_id) 
-        annot['image'] = os.path.join(self.image_dir_path, filename) 
-        return annot 
+            split = 'train2014' if 'train2014' in self.image_dir_path else 'val2014'
+            filename = f"COCO_{split}_{padded_id}.jpg"
+        else:
+            filename = str(image_id)
+        annot['image'] = os.path.join(self.image_dir_path, filename)
+        return annot

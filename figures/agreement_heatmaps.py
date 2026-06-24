@@ -28,6 +28,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 sys.path.insert(0, str(ROOT / 'figures'))
 from helpers import clear_output_plots, get_exports_dir, load_pair_cache
+from config import MODELS_7B
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--overwrite', action='store_true',
@@ -35,8 +36,10 @@ parser.add_argument('--overwrite', action='store_true',
 args = parser.parse_args()
 
 EXPORTS = get_exports_dir(ROOT)
-OUTPUT_DIR = ROOT / "figures/agreement_heatmaps"
+OUTPUT_DIR    = ROOT / "figures/agreement_heatmaps"
+OUTPUT_DIR_7B = OUTPUT_DIR / "7b"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+OUTPUT_DIR_7B.mkdir(parents=True, exist_ok=True)
 clear_output_plots(OUTPUT_DIR, overwrite=args.overwrite)
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -48,7 +51,6 @@ METRICS = {
     "chrf":     ("chrf_score",     "chrF",                (0, 1)),
     "sbert":    ("sbert_score",    "SBERT Cosine",        (0.2, 1.0)),
     "simcse":   ("simcse_score",   "SimCSE Cosine",       (0.2, 1.0)),
-    "bertscore":("bertscore_f1",   "BERTScore F1",        (0.7, 1.0)),
 }
 
 # Display-name order and group colours
@@ -186,9 +188,11 @@ def build_group_means_matrix(mat, subjects_df):
 
 # ── Load data ─────────────────────────────────────────────────────────────────
 print('Building / updating pair_cache…')
-df = load_pair_cache(ROOT, verbose=True)
+df = load_pair_cache(ROOT, include_yesno=True, verbose=True)
 df_v = df[df["variant"] == VARIANT].copy()
-print(f"  {len(df_v):,} pairs (variant={VARIANT})")
+N_QUESTIONS = df_v["question_id"].nunique()
+QSUFFIX = f"_q{N_QUESTIONS}"
+print(f"  {len(df_v):,} pairs (variant={VARIANT}, {N_QUESTIONS} questions)")
 
 # Build ordered subject list
 s1 = df_v[["subject_group_1", "subject_1"]].rename(
@@ -213,6 +217,33 @@ print(f"  {len(subjects_df)} raters: "
       + ", ".join(f"{g}={sum(subjects_df['group']==g)}"
                   for g in GROUP_ORDER if g in subjects_df["group"].values))
 
+# ── 7B subset: keep humans + 7–8 B models only ──────────────────────────────
+_7b_set = set(MODELS_7B)
+df_v_7b = df_v[
+    (df_v['subject_group_1'] == 'human') | (df_v['subject_1'].isin(_7b_set))
+].copy()
+df_v_7b = df_v_7b[
+    (df_v_7b['subject_group_2'] == 'human') | (df_v_7b['subject_2'].isin(_7b_set))
+].copy()
+
+s1_7b = df_v_7b[["subject_group_1", "subject_1"]].rename(
+    columns={"subject_group_1": "group", "subject_1": "subject"})
+s2_7b = df_v_7b[["subject_group_2", "subject_2"]].rename(
+    columns={"subject_group_2": "group", "subject_2": "subject"})
+subjects_df_7b = (pd.concat([s1_7b, s2_7b])
+                  .drop_duplicates()
+                  .reset_index(drop=True))
+subjects_df_7b["_order"] = subjects_df_7b["group"].map(
+    {g: i for i, g in enumerate(GROUP_ORDER)})
+subjects_df_7b = subjects_df_7b.sort_values(["_order", "subject"]).reset_index(drop=True)
+subjects_df_7b.drop(columns="_order", inplace=True)
+
+subject_index_7b = {row["subject"]: idx for idx, row in subjects_df_7b.iterrows()}
+labels_7b = [short_label(row["group"], row["subject"])
+             for _, row in subjects_df_7b.iterrows()]
+groups_7b = subjects_df_7b["group"].tolist()
+print(f"\n  7B subset: {len(subjects_df_7b)} raters")
+
 # ── Generate one heatmap set per metric ───────────────────────────────────────
 for metric_key, (col, display_name, mrange) in METRICS.items():
     print(f"\n── {display_name} ({col}) ──")
@@ -223,7 +254,7 @@ for metric_key, (col, display_name, mrange) in METRICS.items():
         mat, labels, groups,
         title=f"Pairwise {display_name} — all raters (variant {VARIANT})",
         metric_range=mrange,
-        out_path=OUTPUT_DIR / f"v{VARIANT}_{metric_key}_all.png",
+        out_path=OUTPUT_DIR / f"v{VARIANT}_{metric_key}_all{QSUFFIX}.png",
         figsize=(14, 13),
         fontsize_tick=6.5,
     )
@@ -251,9 +282,52 @@ for metric_key, (col, display_name, mrange) in METRICS.items():
     ax2.set_title(f"Group-mean {display_name} (variant {VARIANT})",
                   fontsize=10, pad=8)
     plt.tight_layout()
-    out2 = OUTPUT_DIR / f"v{VARIANT}_{metric_key}_groups.png"
+    out2 = OUTPUT_DIR / f"v{VARIANT}_{metric_key}_groups{QSUFFIX}.png"
     fig2.savefig(out2, dpi=150, bbox_inches="tight")
     plt.close(fig2)
     print(f"  saved: {out2.name}")
+
+    # ── 7B: full heatmap (humans + 7–8 B models) ─────────────────────────────
+    mat_7b = build_matrix(df_v_7b, col, subjects_df_7b["subject"].tolist(),
+                          subject_index_7b)
+
+    plot_heatmap(
+        mat_7b, labels_7b, groups_7b,
+        title=f"Pairwise {display_name} — 7–8 B models (variant {VARIANT})",
+        metric_range=mrange,
+        out_path=OUTPUT_DIR_7B / f"v{VARIANT}_{metric_key}_all{QSUFFIX}.png",
+        figsize=(14, 13),
+        fontsize_tick=6.5,
+    )
+
+    # 7B group-mean compact heatmap
+    gmat7, glabels7, gcolors7, gordered7 = build_group_means_matrix(
+        mat_7b, subjects_df_7b)
+    fig7, ax7 = plt.subplots(figsize=(6, 5))
+    norm7 = Normalize(vmin=mrange[0], vmax=mrange[1])
+    im7 = ax7.imshow(gmat7, cmap="RdYlGn", norm=norm7, aspect="auto")
+    n7 = len(glabels7)
+    ax7.set_xticks(range(n7)); ax7.set_xticklabels(glabels7, rotation=30,
+                                                     ha="right", fontsize=8)
+    ax7.set_yticks(range(n7)); ax7.set_yticklabels(glabels7, fontsize=8)
+    for tick, c in zip(ax7.get_xticklabels(), gcolors7):
+        tick.set_color(c)
+    for tick, c in zip(ax7.get_yticklabels(), gcolors7):
+        tick.set_color(c)
+    for i in range(n7):
+        for j in range(n7):
+            if not np.isnan(gmat7[i, j]):
+                ax7.text(j, i, f"{gmat7[i,j]:.3f}", ha="center", va="center",
+                         fontsize=8.5, fontweight="bold",
+                         color="black" if gmat7[i,j] > (mrange[0]+mrange[1])/2
+                         else "white")
+    plt.colorbar(im7, ax=ax7, fraction=0.04, pad=0.02)
+    ax7.set_title(f"Group-mean {display_name} — 7–8 B (variant {VARIANT})",
+                  fontsize=10, pad=8)
+    plt.tight_layout()
+    out7 = OUTPUT_DIR_7B / f"v{VARIANT}_{metric_key}_groups{QSUFFIX}.png"
+    fig7.savefig(out7, dpi=150, bbox_inches="tight")
+    plt.close(fig7)
+    print(f"  saved: 7b/{out7.name}")
 
 print(f"\nAll heatmaps saved to {OUTPUT_DIR}")

@@ -273,14 +273,22 @@ class VQAAnswerMapper:
         if self._qid_to_answers is not None:
             return
 
-        if not os.path.exists(self.annotations_path):
-            print(f"⚠️  VQA annotations not found: {self.annotations_path}")
-            self._qid_to_answers = {}
-            self._qid_to_gt_visual = {}
-            return
+        ann_path = Path(self.annotations_path)
+        if not ann_path.exists():
+            # Fallback to repo-local annotations when external /data mount is absent.
+            local_fallback = Path(__file__).resolve().parents[2] / 'dataset/vqa/v2_mscoco_val2014_annotations.json'
+            if local_fallback.exists():
+                ann_path = local_fallback
+                self.annotations_path = str(local_fallback)
+                print(f"ℹ️  Using local VQA annotations fallback: {self.annotations_path}")
+            else:
+                print(f"⚠️  VQA annotations not found: {self.annotations_path}")
+                self._qid_to_answers = {}
+                self._qid_to_gt_visual = {}
+                return
 
-        print(f"   Loading VQA annotations from {self.annotations_path}...")
-        with open(self.annotations_path, 'r', encoding='utf-8') as f:
+        print(f"   Loading VQA annotations from {ann_path}...")
+        with open(ann_path, 'r', encoding='utf-8') as f:
             annotations = json.load(f)
 
         self._qid_to_answers = {}

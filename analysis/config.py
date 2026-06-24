@@ -88,6 +88,49 @@ MODEL_GROUP = {
     'Qwen3-32B (think)':    'standalone LLM (think)',
 }
 
+# ── VLM → base LLM backbone mapping ─────────────────────────────────────────
+# Maps each VLM display name to the standalone LLM it was built on.
+# InternVL3.5 uses Qwen3 as its language backbone (not InternLM).
+VLM_BASE_LLM = {
+    'Qwen3-VL-2B':   'Qwen3-1.7B',     # Qwen3-VL-2B  → Qwen3-1.7B
+    'Qwen3-VL-4B':   'Qwen3-4B',       # Qwen3-VL-4B  → Qwen3-4B
+    'Qwen3-VL-8B':   'Qwen3-8B',       # Qwen3-VL-8B  → Qwen3-8B
+    'Qwen3-VL-32B':  'Qwen3-32B',      # Qwen3-VL-32B → Qwen3-32B
+    'InternVL-1B':   'Qwen3-0.6B',     # InternVL3.5-1B → Qwen3-0.6B
+    'InternVL-2B':   'Qwen3-1.7B',     # InternVL3.5-2B → Qwen3-1.7B
+    'InternVL-8B':   'Qwen3-8B',       # InternVL3.5-8B → Qwen3-8B
+    'LLaVA-1.5-7B':  'Vicuna-7B',      # LLaVA-1.5     → Vicuna-7B-v1.5
+    'LLaVA-Mistral':  'Mistral-7B',    # LLaVA-v1.6    → Mistral-7B-Instruct-v0.2
+    'LLaVA-Vicuna':   'Vicuna-7B',     # LLaVA-v1.6    → Vicuna-7B-v1.5
+    'LLaVA-Vicuna-13B':'Vicuna-13B',   # LLaVA-v1.6    → Vicuna-13B-v1.5
+}
+
+# ── Family-matched model subsets (VLM + backbone + base LLM from same family) ─
+# Each entry: suffix → (label, [model list])
+FAMILY_SUBSETS = {
+    'qwen3': ('Qwen3 (8B)', [
+        'Qwen3-VL-8B', 'Qwen3-VL-8B (LM)',
+        'Qwen3-8B', 'Qwen3-8B (think)',
+    ]),
+    'llava': ('LLaVA (7B)', [
+        'LLaVA-1.5-7B', 'LLaVA-Mistral', 'LLaVA-Vicuna',
+        'LLaVA-1.5 (LM)', 'LLaVA-Mistral (LM)', 'LLaVA-Vicuna (LM)',
+        'Vicuna-7B', 'Mistral-7B',
+    ]),
+    'internvl_8b': ('InternVL-8B (Qwen3)', [
+        'InternVL-8B', 'InternVL-8B (LM)',
+        'Qwen3-8B', 'Qwen3-8B (think)',
+    ]),
+    'internvl_2b': ('InternVL-2B (Qwen3)', [
+        'InternVL-2B', 'InternVL-2B (LM)',
+        'Qwen3-1.7B', 'Qwen3-1.7B (think)',
+    ]),
+    'internvl_1b': ('InternVL-1B (Qwen3)', [
+        'InternVL-1B', 'InternVL-1B (LM)',
+        'Qwen3-0.6B', 'Qwen3-0.6B (think)',
+    ]),
+}
+
 # ── Short display labels for figures ─────────────────────────────────────────
 MODEL_LABEL_SHORT = {
     'LLaVA-1.5 (LM)':       'LLaVA-1.5 (bb)',

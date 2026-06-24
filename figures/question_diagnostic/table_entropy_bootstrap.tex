@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\caption{Bootstrapped entropy comparison: model group entropy vs.\ size-matched human subsamples (500 iterations, variant~C, 7/8B). Gap $=$ H(model) $-$ H(human); Sig.\ indicates model entropy falls outside the 95\% human bootstrap CI.}
+\label{tab:entropy_bootstrap}
+\small
+\begin{tabular}{lrlllll}
+\toprule
+ & N & H(model) & H(human) & 95% CI & Gap & Sig. \\
+Group &  &  &  &  &  &  \\
+\midrule
+VLM & 5 & 1.083 & 1.634 & [1.567, 1.694] & -0.551 & Yes \\
+VLM backbone decoder & 5 & 0.991 & 1.635 & [1.567, 1.700] & -0.644 & Yes \\
+standalone LLM & 5 & 1.517 & 1.631 & [1.572, 1.698] & -0.114 & Yes \\
+standalone LLM (think) & 1 & 0.000 & 0.000 & [0.000, 0.000] & +0.000 & No \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -289,6 +289,73 @@ _BASE_MARKER = {
     'standalone LLM (think)': 's',   # same shape as LLM, hollow
 }
 
+# Small x-offset by group to avoid visual overlap at identical parameter counts.
+# Keeps ordering deterministic: base (filled) slightly left, derivative (hollow) right.
+_GROUP_XSHIFT = {
+    'VLM': -0.015,
+    'VLM backbone decoder': 0.015,
+    'standalone LLM': -0.015,
+    'standalone LLM (think)': 0.015,
+}
+
+
+def _x_with_shift(size: float, group: str) -> float:
+    return float(size) * (1.0 + float(_GROUP_XSHIFT.get(group, 0.0)))
+
+
+def _vlm_decoder_pairs_from_registry() -> list[tuple[str, str]]:
+    pairs: list[tuple[str, str]] = []
+    for model in MODELS_ALL:
+        if MODEL_GROUP.get(model) != 'VLM':
+            continue
+        decoder = 'LLaVA-1.5 (LM)' if model == 'LLaVA-1.5-7B' else f'{model} (LM)'
+        if MODEL_GROUP.get(decoder) == 'VLM backbone decoder':
+            pairs.append((model, decoder))
+    return pairs
+
+
+_VLM_DECODER_PAIRS = _vlm_decoder_pairs_from_registry()
+
+
+def _audit_vlm_decoder_coverage(stats: pd.DataFrame, label: str):
+    """Print coverage + overlap diagnostics for VLM ↔ decoder counterparts."""
+    present = set(stats['model'].tolist())
+    available, missing = [], []
+    for vlm, dec in _VLM_DECODER_PAIRS:
+        if vlm in present and dec in present:
+            available.append((vlm, dec))
+        else:
+            missing.append((vlm, dec))
+
+    print(f'  [audit:{label}] VLM/decoder pairs present: {len(available)}/{len(_VLM_DECODER_PAIRS)}')
+    if missing:
+        print('  [audit] Missing pairs:')
+        for vlm, dec in missing:
+            print(f'    - {vlm} ↔ {dec}')
+    else:
+        print('  [audit] All expected VLM/decoder pairs are present.')
+
+    if not available:
+        return
+
+    exact_overlap = []
+    for vlm, dec in available:
+        rv = stats[stats['model'] == vlm]
+        rd = stats[stats['model'] == dec]
+        if rv.empty or rd.empty:
+            continue
+        sv, mv = float(rv.iloc[0]['size']), float(rv.iloc[0]['mean'])
+        sd, md = float(rd.iloc[0]['size']), float(rd.iloc[0]['mean'])
+        if np.isclose(sv, sd) and np.isclose(mv, md):
+            exact_overlap.append((vlm, dec, sv, mv))
+
+    if exact_overlap:
+        print(f'  [audit] Exact coordinate overlaps (size, mean): {len(exact_overlap)}')
+        for vlm, dec, size, mean in exact_overlap:
+            print(f'    - {vlm} ↔ {dec}: size={size:g}, mean={mean:.6f}')
+    else:
+        print('  [audit] No exact coordinate overlaps between VLM and decoder points.')
+
 def _plot_by_models(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci: float):
     _draw_hh(ax, hh_mean, hh_ci)
 
@@ -299,13 +366,15 @@ def _plot_by_models(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
         for base_grp, _ in GROUP_PAIR_ORDER:
             sub = fdf[fdf['group'] == base_grp].sort_values('size')
             if len(sub) > 1:
-                ax.plot(sub['size'].values, sub['mean'].values,
+                x = [_x_with_shift(s, base_grp) for s in sub['size'].values]
+                ax.plot(x, sub['mean'].values,
                         color=color, lw=1.2, ls='-', alpha=0.4, zorder=2)
         # Dotted line through derivative (hollow) models
         for _, deriv_grp in GROUP_PAIR_ORDER:
             sub = fdf[fdf['group'] == deriv_grp].sort_values('size')
             if len(sub) > 1:
-                ax.plot(sub['size'].values, sub['mean'].values,
+                x = [_x_with_shift(s, deriv_grp) for s in sub['size'].values]
+                ax.plot(x, sub['mean'].values,
                         color=color, lw=1.2, ls=':', alpha=0.4, zorder=2)
         # Vertical dotted connector between base↔derivative at same size
         for base_grp, deriv_grp in GROUP_PAIR_ORDER:
@@ -316,7 +385,9 @@ def _plot_by_models(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
                 d = deriv_rows[deriv_rows['size'] == size]
                 if b.empty or d.empty:
                     continue
-                ax.plot([size, size],
+                xb = _x_with_shift(size, base_grp)
+                xd = _x_with_shift(size, deriv_grp)
+                ax.plot([xb, xd],
                         [b['mean'].values[0], d['mean'].values[0]],
                         color=color, lw=1.0, ls=':', alpha=0.55, zorder=2)
 
@@ -327,7 +398,8 @@ def _plot_by_models(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
         hollow = GROUP_HOLLOW.get(row['group'], False)
         mfc    = 'none' if hollow else color
         mec    = color
-        ax.errorbar(row['size'], row['mean'], yerr=row['ci'],
+        x      = _x_with_shift(row['size'], row['group'])
+        ax.errorbar(x, row['mean'], yerr=row['ci'],
                     fmt=mkr, color=color, ms=8, capsize=3, capthick=0.8,
                     elinewidth=0.8, alpha=0.88, zorder=3,
                     markerfacecolor=mfc, markeredgecolor=mec, markeredgewidth=1.2)
@@ -389,14 +461,15 @@ def _plot_by_groups(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
         label  = grp.replace('standalone LLM', 'SA-LLM') \
                     .replace('VLM backbone decoder', 'Backbone')
 
-        ax.errorbar(gdf['size'].values, gdf['mean'].values, yerr=gdf['ci'].values,
+        x = np.array([_x_with_shift(s, grp) for s in gdf['size'].values], dtype=float)
+        ax.errorbar(x, gdf['mean'].values, yerr=gdf['ci'].values,
                     fmt=mkr, color=color, ms=7, capsize=3, capthick=0.8,
                     elinewidth=0.8, alpha=0.85, zorder=3,
                     markerfacecolor=mfc, markeredgecolor=mec,
                     markeredgewidth=mew, label=label)
 
         # Log-linear trend line if ≥3 distinct sizes
-        xs = gdf['size'].values
+        xs = x
         ys = gdf['mean'].values
         if len(np.unique(xs)) >= 3:
             coeffs = np.polyfit(np.log(xs), ys, 1)
@@ -448,61 +521,96 @@ plot_fn = _PLOT_FN.get(AGG)  # None for 'by_group' (handled separately)
 # Generate figures
 # ─────────────────────────────────────────────────────────────────────────────
 
+VARIANTS = ['C', 'B', 'A']
+VAR_LABELS = {'C': 'Original (C)', 'B': 'Weaker (B)', 'A': 'Pronoun. (A)'}
+
 if AGG == 'by_group':
     # One figure per group subset; reuses _plot_by_models logic on filtered stats.
     if METRIC == 'agreement':
         for key, (metric_name, col) in AGREEMENT_METRICS.items():
-            print(f'\n── {metric_name} ──')
-            stats_all = model_stats(col, variant='C')
-            hh_mean, hh_ci = human_baseline(col, variant='C')
+            for var in VARIANTS:
+                print(f'\n── {metric_name} variant {var} ──')
+                stats_all = model_stats(col, variant=var)
+                _audit_vlm_decoder_coverage(stats_all, f'{metric_name}/by_group/v{var}')
+                hh_mean, hh_ci = human_baseline(col, variant=var)
+                for slug, title, grps in _GROUP_SUBSETS:
+                    sub = stats_all[stats_all['group'].isin(grps)]
+                    if sub.empty:
+                        continue
+                    fig, ax = plt.subplots(figsize=(7, 5))
+                    _plot_by_models(ax, sub, f'Mean {metric_name}', hh_mean, hh_ci)
+                    ax.set_title(f'{metric_name} — {title} — {VAR_LABELS[var]}', fontsize=12)
+                    plt.tight_layout()
+                    _save(fig, f'inst_blind_agreement_models_{key}_v{var}_{slug}{SUFFIX}.png')
+    else:
+        for var in VARIANTS:
+            print(f'\n── Accuracy variant {var} ──')
+            stats_all = model_stats('accuracy', variant=var)
+            hh_mean, hh_ci = human_baseline('accuracy', variant=var)
             for slug, title, grps in _GROUP_SUBSETS:
                 sub = stats_all[stats_all['group'].isin(grps)]
                 if sub.empty:
                     continue
                 fig, ax = plt.subplots(figsize=(7, 5))
-                _plot_by_models(ax, sub, f'Mean {metric_name}', hh_mean, hh_ci)
-                ax.set_title(f'{metric_name} — {title}', fontsize=12)
+                _plot_by_models(ax, sub, 'Mean accuracy', hh_mean, hh_ci)
+                ax.set_title(f'Accuracy — {title} — {VAR_LABELS[var]}', fontsize=12)
                 plt.tight_layout()
-            _save(fig, f'inst_blind_agreement_models_{key}_vC_{slug}{SUFFIX}.png')
-    else:
-        var = 'C'
-        print(f'\n── Accuracy variant {var} ──')
-        stats_all = model_stats('accuracy', variant=var)
-        hh_mean, hh_ci = human_baseline('accuracy', variant=var)
-        for slug, title, grps in _GROUP_SUBSETS:
-            sub = stats_all[stats_all['group'].isin(grps)]
-            if sub.empty:
-                continue
-            fig, ax = plt.subplots(figsize=(7, 5))
-            _plot_by_models(ax, sub, 'Mean accuracy', hh_mean, hh_ci)
-            ax.set_title(f'Accuracy — {title}', fontsize=12)
-            plt.tight_layout()
-            _save(fig, f'inst_blind_accuracy_models_v{var}_{slug}{SUFFIX}.png')
+                _save(fig, f'inst_blind_accuracy_models_v{var}_{slug}{SUFFIX}.png')
 
 elif METRIC == 'agreement':
     for key, (metric_name, col) in AGREEMENT_METRICS.items():
-        print(f'\n── {metric_name} ──')
-        stats = model_stats(col, variant='C')
-        if stats.empty:
-            print('  (no data, skipped)')
+        for var in VARIANTS:
+            print(f'\n── {metric_name} variant {var} ──')
+            stats = model_stats(col, variant=var)
+            if stats.empty:
+                print('  (no data, skipped)')
+                continue
+            _audit_vlm_decoder_coverage(stats, f'{metric_name}/{AGG_SHORT}/v{var}')
+            hh_mean, hh_ci = human_baseline(col, variant=var)
+
+            fig, ax = plt.subplots(figsize=(8, 5))
+            plot_fn(ax, stats, f'Mean {metric_name}', hh_mean, hh_ci)
+            plt.tight_layout()
+            _save(fig, f'inst_blind_agreement_{AGG_SHORT}_{key}_v{var}{SUFFIX}.png')
+
+else:  # accuracy — all variants
+    for var in VARIANTS:
+        print(f'\n── Accuracy variant {var} ──')
+        stats = model_stats('accuracy', variant=var)
+        if not stats.empty:
+            hh_mean, hh_ci = human_baseline('accuracy', variant=var)
+            fig, ax = plt.subplots(figsize=(8, 5))
+            plot_fn(ax, stats, 'Mean accuracy', hh_mean, hh_ci)
+            plt.tight_layout()
+            _save(fig, f'inst_blind_accuracy_{AGG_SHORT}_v{var}{SUFFIX}.png')
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Multi-panel: C→B→A degradation by scale (agreement only, primary metrics)
+# One 3-panel figure per metric: left=C, middle=B, right=A
+# ─────────────────────────────────────────────────────────────────────────────
+if METRIC == 'agreement' and AGG in ('by_models', 'by_groups'):
+    PRIMARY_METRICS = ['sbert', 'simcse', 'exact']
+    for key in PRIMARY_METRICS:
+        if key not in AGREEMENT_METRICS:
             continue
-        hh_mean, hh_ci = human_baseline(col, variant='C')
+        metric_name, col = AGREEMENT_METRICS[key]
+        print(f'\n── Multi-panel {metric_name} C→B→A ──')
 
-        fig, ax = plt.subplots(figsize=(8, 5))
-        plot_fn(ax, stats, f'Mean {metric_name}', hh_mean, hh_ci)
-        plt.tight_layout()
-        _save(fig, f'inst_blind_agreement_{AGG_SHORT}_{key}_vC{SUFFIX}.png')
+        fig, axes = plt.subplots(1, 3, figsize=(18, 5.5), sharey=True)
+        for i, var in enumerate(VARIANTS):
+            ax = axes[i]
+            stats = model_stats(col, variant=var)
+            if stats.empty:
+                continue
+            hh_mean, hh_ci = human_baseline(col, variant=var)
+            plot_fn(ax, stats, f'Mean {metric_name}' if i == 0 else '', hh_mean, hh_ci)
+            ax.set_title(VAR_LABELS[var], fontsize=12)
+            if i > 0:
+                ax.set_ylabel('')
+                ax.legend().set_visible(False)
 
-else:  # accuracy — variant C only
-    var = 'C'
-    print(f'\n── Accuracy variant {var} ──')
-    stats = model_stats('accuracy', variant=var)
-    if not stats.empty:
-        hh_mean, hh_ci = human_baseline('accuracy', variant=var)
-        fig, ax = plt.subplots(figsize=(8, 5))
-        plot_fn(ax, stats, 'Mean accuracy', hh_mean, hh_ci)
         plt.tight_layout()
-        _save(fig, f'inst_blind_accuracy_{AGG_SHORT}_v{var}{SUFFIX}.png')
+        _save(fig, f'inst_blind_agreement_{AGG_SHORT}_{key}_vCBA{SUFFIX}.png')
 
 print(f'\nDone. Saved to: {OUT_DIR}')
 print(f'Suffix: {SUFFIX}')

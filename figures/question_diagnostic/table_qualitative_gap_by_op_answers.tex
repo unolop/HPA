@@ -1,0 +1,29 @@
+\begin{table*}[t]
+\centering
+\caption{Top questions by HH$-$HM gap per operation type (variant~C, 7/8B). These are the clearest human-consensus / model-mismatch examples within each operation, with compact human/model answer summaries.}
+\label{tab:qual_gap_op_answers}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{4.0cm}llrrrp{2.6cm}p{2.6cm}}
+\toprule
+ & Op & Ent & HM & HH & HH-HM & Human top & Model top \\
+Question &  &  &  &  &  &  &  \\
+\midrule
+What type of bear is this? & ident & animal & 0.572 & 0.674 & 0.102 & brown bear (11); polar bear (9) & grizzly bear (4); black (3) \\
+What animal is this cake meant to represent? & ident & food & 0.444 & 0.536 & 0.091 & cat (9); dog (8) & dog (3); cat (2) \\
+What type of shoe is that? & ident & product & 0.613 & 0.653 & 0.039 & sneakers (13); slippers (5) & sneaker (13); without image or additional context it is impossible to provide accurate answer please provide more information for helpful response (1) \\
+How many of these people are female? & count & person & 0.452 & 0.708 & 0.256 & 3 (13); 2 (8) & 0 (6); 1 (3) \\
+How many empty chairs are there? & count & object & 0.459 & 0.660 & 0.201 & 1 (9); 2 (7) & 0 (8); twelve (2) \\
+How many benches are in the background? & count & object & 0.535 & 0.729 & 0.194 & 2 (15); 3 (7) & 0 (5); 2 (4) \\
+What kind of trees are in the picture? & attr & object & 0.458 & 0.642 & 0.185 & tree (21); apple (4) & oak (6); oak trees (4) \\
+What transportation is on the subway door? & attr & object & 0.268 & 0.389 & 0.121 & bike (8); metro (6) & 0 (3); train (2) \\
+What is on the man's ear? & attr & person & 0.533 & 0.620 & 0.087 & earrings (20); earphones (5) & earring (6); nothing (2) \\
+What is the elephant eating? & act & animal & 0.442 & 0.507 & 0.066 & grass (18); banana (3) & grass (7); elephant is eating grass (2) \\
+What is this man being pulled by? & act & person & 0.289 & 0.279 & -0.010 & dog (4); police (3) & rope (8); horse (2) \\
+Do the horses love each other? & act & animal & 0.801 & 0.770 & -0.031 & yes (28); no (8) & yes (13); no (1) \\
+What is on the man's face? & spat & person & 0.256 & 0.318 & 0.062 & mole (11); indoor (3) & beard (6); nothing (3) \\
+What location is the luggage at? & spat & object & 0.287 & 0.345 & 0.058 & house (5); in room (2) & airport (6); at airport (4) \\
+Which way is the arrow pointing? & spat & object & 0.406 & 0.442 & 0.036 & right (15); left (9) & right (7); up (4) \\
+\bottomrule
+\end{tabular}
+\end{table*}

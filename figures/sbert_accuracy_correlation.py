@@ -31,6 +31,7 @@ Run from repo root:
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -38,6 +39,7 @@ import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 from scipy import stats
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -70,17 +72,35 @@ parser.add_argument(
     help="Model response condition to analyze.",
 )
 parser.add_argument(
+    "--y_axis",
+    default="gap",
+    choices=["gap", "accuracy"],
+    help="Y-axis metric for SBERT correlation plots: accuracy gap or model accuracy.",
+)
+parser.add_argument(
     "--include_yesno",
     action="store_true",
     help="Extend the HM pair cache with yes/no questions and use the q113 human-study subset.",
 )
 parser.add_argument("--min_answers", type=int, default=MIN_ANSWERS_DEFAULT)
 parser.add_argument(
+    "--quadrant_group",
+    default="VLM",
+    choices=["all"] + GROUP_ORDER,
+    help="Model group used to define quadrant splits for entity/op distribution plots.",
+)
+parser.add_argument(
     "--overwrite",
     action="store_true",
     help="Delete existing plot files in the output folder before exporting.",
 )
 args = parser.parse_args()
+
+Y_COL = "mean_acc_gap" if args.y_axis == "gap" else "mean_model_acc"
+Y_TITLE = "accuracy gap" if args.y_axis == "gap" else "model accuracy"
+Y_LABEL_Q = "Accuracy gap (model - human)" if args.y_axis == "gap" else "Model accuracy"
+Y_LABEL_M = "Mean accuracy gap (model - human)" if args.y_axis == "gap" else "Mean model accuracy"
+Y_ZERO_LINE = args.y_axis == "gap"
 
 
 EXPORTS = get_exports_dir(ROOT)
@@ -108,6 +128,10 @@ def _save(fig: plt.Figure, name: str) -> None:
     fig.savefig(path, dpi=220, bbox_inches="tight")
     plt.close(fig)
     print(f"  [sbert_accuracy_corr] {name}")
+
+
+def _slug(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
 
 
 def _corr_row(df: pd.DataFrame, x_col: str, y_col: str, label: str) -> dict[str, object]:
@@ -162,6 +186,118 @@ def _annotate_subset(
             fontsize=7,
             color=row[color_col],
         )
+
+
+if args.y_axis == "gap":
+    QUADRANT_ORDER = [
+        "high_sim_high_gap",
+        "high_sim_low_gap",
+        "low_sim_high_gap",
+        "low_sim_low_gap",
+    ]
+    QUADRANT_LABELS = {
+        "high_sim_high_gap": "High sim / high gap",
+        "high_sim_low_gap": "High sim / low gap",
+        "low_sim_high_gap": "Low sim / high gap",
+        "low_sim_low_gap": "Low sim / low gap",
+    }
+else:
+    QUADRANT_ORDER = [
+        "high_sim_high_acc",
+        "high_sim_low_acc",
+        "low_sim_high_acc",
+        "low_sim_low_acc",
+    ]
+    QUADRANT_LABELS = {
+        "high_sim_high_acc": "High sim / high acc",
+        "high_sim_low_acc": "High sim / low acc",
+        "low_sim_high_acc": "Low sim / high acc",
+        "low_sim_low_acc": "Low sim / low acc",
+    }
+
+QUADRANT_COLORS = dict(
+    zip(
+        QUADRANT_ORDER,
+        ["#8e24aa", "#3949ab", "#ef6c00", "#2e7d32"],
+    )
+)
+
+
+def _plot_quadrant_distribution(
+    quad_df: pd.DataFrame,
+    category_col: str,
+    *,
+    title: str,
+    filename: str,
+    stem: str,
+    suffix: str,
+    group_slug: str,
+) -> None:
+    dist = (
+        quad_df.groupby(["quadrant", category_col], dropna=False, observed=False)
+        .size()
+        .reset_index(name="count")
+    )
+    if dist.empty:
+        print(f"  [sbert_accuracy_corr] skip {filename}: no rows")
+        return
+
+    dist[category_col] = dist[category_col].fillna("unknown").astype(str)
+    totals = dist.groupby("quadrant", observed=False)["count"].sum().rename("n_quadrant")
+    dist = dist.merge(totals, on="quadrant", how="left")
+    dist["share"] = np.where(dist["n_quadrant"] > 0, dist["count"] / dist["n_quadrant"], np.nan)
+
+    cat_order = (
+        dist.groupby(category_col)["count"]
+        .sum()
+        .sort_values(ascending=False)
+        .index.tolist()
+    )
+    dist[category_col] = pd.Categorical(dist[category_col], categories=cat_order, ordered=True)
+    dist["quadrant"] = pd.Categorical(dist["quadrant"], categories=QUADRANT_ORDER, ordered=True)
+    dist = dist.sort_values([category_col, "quadrant"])
+
+    dist.to_csv(
+        OUT_DIR / f"{stem}_quadrant_{filename}_share_{group_slug}{suffix}.csv",
+        index=False,
+    )
+
+    counts_wide = (
+        dist.pivot(index="quadrant", columns=category_col, values="count")
+        .fillna(0)
+        .reindex(QUADRANT_ORDER)
+    )
+    counts_wide.to_csv(OUT_DIR / f"{stem}_quadrant_{filename}_counts_{group_slug}{suffix}.csv")
+
+    fig, ax = plt.subplots(figsize=(max(9.0, 0.75 * len(cat_order) + 5.0), 5.0))
+    sns.barplot(
+        data=dist,
+        x=category_col,
+        y="share",
+        hue="quadrant",
+        hue_order=QUADRANT_ORDER,
+        palette=QUADRANT_COLORS,
+        errorbar=None,
+        ax=ax,
+    )
+
+    quad_sizes = quad_df["quadrant"].value_counts()
+    handles, labels = ax.get_legend_handles_labels()
+    pretty_labels = [
+        f"{QUADRANT_LABELS.get(lbl, lbl)} (n={int(quad_sizes.get(lbl, 0))})"
+        for lbl in labels
+    ]
+    ax.legend(handles, pretty_labels, title="Quadrant", frameon=True, fontsize=8)
+    ax.set_xlabel(category_col.replace("_", " ").title())
+    ax.set_ylabel("Share within quadrant")
+    ax.set_ylim(0, 1)
+    ax.set_title(title)
+    for tick in ax.get_xticklabels():
+        tick.set_rotation(35)
+        tick.set_ha("right")
+    ax.grid(axis="y", alpha=0.18)
+    plt.tight_layout()
+    _save(fig, f"{stem}_quadrant_{filename}_{group_slug}{suffix}.png")
 
 
 print(f"\nLoading human subset (min_answers={args.min_answers})…")
@@ -240,28 +376,31 @@ suffix = f"_q{n_questions}_h{n_humans}"
 if args.include_yesno:
     suffix += "_yesno"
 stem = f"{args.condition}_v{args.variant}"
+if args.y_axis == "accuracy":
+    stem = f"{stem}_yacc"
 
 print(f"  joined rows: {len(joined)}")
 print(f"  question-group rows: {len(q_group)}")
 print(f"  model rows: {len(model_summary)}")
+print(f"  y-axis metric: {Y_TITLE}")
 
 # Correlation tables
-q_corr_rows = [_corr_row(q_group, "mean_sbert", "mean_acc_gap", "pooled")]
+q_corr_rows = [_corr_row(q_group, "mean_sbert", Y_COL, "pooled")]
 for grp in GROUP_ORDER:
     sub = q_group[q_group["model_group"] == grp]
     if not sub.empty:
-        q_corr_rows.append(_corr_row(sub, "mean_sbert", "mean_acc_gap", grp))
+        q_corr_rows.append(_corr_row(sub, "mean_sbert", Y_COL, grp))
 q_corr = pd.DataFrame(q_corr_rows)
 q_corr.to_csv(OUT_DIR / f"{stem}_questiongroup_corr{suffix}.csv", index=False)
 
-m_corr_rows = [_corr_row(model_summary, "mean_sbert", "mean_acc_gap", "pooled")]
+m_corr_rows = [_corr_row(model_summary, "mean_sbert", Y_COL, "pooled")]
 for grp in GROUP_ORDER:
     sub = model_summary[model_summary["model_group"] == grp]
     if not sub.empty:
-        m_corr_rows.append(_corr_row(sub, "mean_sbert", "mean_acc_gap", grp))
+        m_corr_rows.append(_corr_row(sub, "mean_sbert", Y_COL, grp))
 m_corr = pd.DataFrame(m_corr_rows)
 m_corr.to_csv(OUT_DIR / f"{stem}_modellevel_corr{suffix}.csv", index=False)
-model_summary.sort_values(["model_group", "mean_acc_gap"], ascending=[True, False]).to_csv(
+model_summary.sort_values(["model_group", Y_COL], ascending=[True, False]).to_csv(
     OUT_DIR / f"{stem}_modellevel_summary{suffix}.csv", index=False
 )
 
@@ -272,17 +411,18 @@ for ax, grp in zip(axes, GROUP_ORDER):
     color = GROUP_COLORS.get(grp, "#666666")
     ax.scatter(
         sub["mean_sbert"],
-        sub["mean_acc_gap"],
+        sub[Y_COL],
         s=18,
         alpha=0.45,
         color=color,
         edgecolors="none",
     )
-    ax.axhline(0, color="#999999", lw=0.8, ls="--")
+    if Y_ZERO_LINE:
+        ax.axhline(0, color="#999999", lw=0.8, ls="--")
     ax.set_title(grp.replace("standalone ", "SA-"))
     ax.set_xlabel("Mean SBERT")
     if not sub.empty and len(sub) >= 3:
-        corr = _corr_row(sub, "mean_sbert", "mean_acc_gap", grp)
+        corr = _corr_row(sub, "mean_sbert", Y_COL, grp)
         ax.text(
             0.03,
             0.96,
@@ -292,9 +432,11 @@ for ax, grp in zip(axes, GROUP_ORDER):
             fontsize=8,
             color=color,
         )
+    if args.y_axis == "accuracy":
+        ax.set_ylim(0, 1)
     ax.grid(True, alpha=0.15)
-axes[0].set_ylabel("Accuracy gap (model - human)")
-fig.suptitle(f"{args.condition} v{args.variant}: question-level SBERT vs accuracy gap by model group")
+axes[0].set_ylabel(Y_LABEL_Q)
+fig.suptitle(f"{args.condition} v{args.variant}: question-level SBERT vs {Y_TITLE} by model group")
 plt.tight_layout()
 _save(fig, f"{stem}_questiongroup_by_group{suffix}.png")
 
@@ -308,7 +450,7 @@ for grp in GROUP_ORDER:
     marker = GROUP_MARKER.get(grp, "o")
     ax.scatter(
         sub["mean_sbert"],
-        sub["mean_acc_gap"],
+        sub[Y_COL],
         s=22,
         alpha=0.38,
         color=color,
@@ -316,14 +458,17 @@ for grp in GROUP_ORDER:
         edgecolors="none",
         label=grp,
     )
-ax.axhline(0, color="#777777", lw=1.0, ls="--")
-pooled_corr = _corr_row(q_group, "mean_sbert", "mean_acc_gap", "pooled")
+if Y_ZERO_LINE:
+    ax.axhline(0, color="#777777", lw=1.0, ls="--")
+pooled_corr = _corr_row(q_group, "mean_sbert", Y_COL, "pooled")
 ax.set_title(
-    f"{args.condition} v{args.variant}: pooled question-level SBERT vs accuracy gap\n"
+    f"{args.condition} v{args.variant}: pooled question-level SBERT vs {Y_TITLE}\n"
     f"Pearson r={pooled_corr['pearson_r']:.2f}, Spearman rho={pooled_corr['spearman_rho']:.2f}"
 )
 ax.set_xlabel("Mean SBERT (model ↔ human)")
-ax.set_ylabel("Accuracy gap (model - human)")
+ax.set_ylabel(Y_LABEL_Q)
+if args.y_axis == "accuracy":
+    ax.set_ylim(0, 1)
 ax.legend(frameon=True)
 ax.grid(True, alpha=0.15)
 plt.tight_layout()
@@ -339,7 +484,7 @@ for grp in GROUP_ORDER:
     marker = GROUP_MARKER.get(grp, "o")
     ax.scatter(
         sub["mean_sbert"],
-        sub["mean_acc_gap"],
+        sub[Y_COL],
         s=90,
         color=color,
         marker=marker,
@@ -353,19 +498,22 @@ for grp in GROUP_ORDER:
         ax,
         sub,
         x_col="mean_sbert",
-        y_col="mean_acc_gap",
+        y_col=Y_COL,
         label_col="model_label",
         color_col="label_color",
         max_labels=3,
     )
-ax.axhline(0, color="#777777", lw=1.0, ls="--")
-model_corr = _corr_row(model_summary, "mean_sbert", "mean_acc_gap", "pooled")
+if Y_ZERO_LINE:
+    ax.axhline(0, color="#777777", lw=1.0, ls="--")
+model_corr = _corr_row(model_summary, "mean_sbert", Y_COL, "pooled")
 ax.set_title(
-    f"{args.condition} v{args.variant}: model-level SBERT vs accuracy gap\n"
+    f"{args.condition} v{args.variant}: model-level SBERT vs {Y_TITLE}\n"
     f"Pearson r={model_corr['pearson_r']:.2f}, Spearman rho={model_corr['spearman_rho']:.2f}"
 )
 ax.set_xlabel("Mean SBERT (model ↔ human)")
-ax.set_ylabel("Mean accuracy gap (model - human)")
+ax.set_ylabel(Y_LABEL_M)
+if args.y_axis == "accuracy":
+    ax.set_ylim(0, 1)
 ax.legend(frameon=True)
 ax.grid(True, alpha=0.15)
 plt.tight_layout()
@@ -383,7 +531,7 @@ for fam in sorted(families):
         marker = GROUP_MARKER.get(row["model_group"], "o")
         ax.scatter(
             row["mean_sbert"],
-            row["mean_acc_gap"],
+            row[Y_COL],
             s=90,
             color=color,
             marker=marker,
@@ -396,7 +544,7 @@ for fam in sorted(families):
         ax,
         fam_df,
         x_col="mean_sbert",
-        y_col="mean_acc_gap",
+        y_col=Y_COL,
         label_col="model_label",
         color_col="label_color",
         max_labels=2,
@@ -410,13 +558,89 @@ group_handles = [
     mlines.Line2D([], [], color="#555555", marker=GROUP_MARKER.get(grp, "o"), ls="none", ms=7, label=grp)
     for grp in GROUP_ORDER
 ]
-ax.axhline(0, color="#777777", lw=1.0, ls="--")
-ax.set_title(f"{args.condition} v{args.variant}: model-level SBERT vs accuracy gap by family")
+if Y_ZERO_LINE:
+    ax.axhline(0, color="#777777", lw=1.0, ls="--")
+ax.set_title(f"{args.condition} v{args.variant}: model-level SBERT vs {Y_TITLE} by family")
 ax.set_xlabel("Mean SBERT (model ↔ human)")
-ax.set_ylabel("Mean accuracy gap (model - human)")
+ax.set_ylabel(Y_LABEL_M)
+if args.y_axis == "accuracy":
+    ax.set_ylim(0, 1)
 ax.legend(handles=family_handles + group_handles, frameon=True, loc="best", ncol=2)
 ax.grid(True, alpha=0.15)
 plt.tight_layout()
 _save(fig, f"{stem}_modellevel_by_family{suffix}.png")
+
+# Figure 5/6: quadrant-wise entity/op distribution (median split)
+quad_scope = q_group.copy()
+if args.quadrant_group != "all":
+    quad_scope = quad_scope[quad_scope["model_group"] == args.quadrant_group].copy()
+quad_scope = quad_scope.dropna(subset=["mean_sbert", Y_COL, "ent", "op"]).copy()
+
+if quad_scope.empty:
+    print(
+        f"  [sbert_accuracy_corr] No rows for quadrant distribution "
+        f"(group={args.quadrant_group}) — skipped."
+    )
+else:
+    sbert_med = float(quad_scope["mean_sbert"].median())
+    y_med = float(quad_scope[Y_COL].median())
+    quad_scope["quadrant"] = np.select(
+        [
+            (quad_scope["mean_sbert"] >= sbert_med) & (quad_scope[Y_COL] >= y_med),
+            (quad_scope["mean_sbert"] >= sbert_med) & (quad_scope[Y_COL] < y_med),
+            (quad_scope["mean_sbert"] < sbert_med) & (quad_scope[Y_COL] >= y_med),
+            (quad_scope["mean_sbert"] < sbert_med) & (quad_scope[Y_COL] < y_med),
+        ],
+        QUADRANT_ORDER,
+        default="other",
+    )
+    quad_scope = quad_scope[quad_scope["quadrant"] != "other"].copy()
+    quad_scope["quadrant"] = pd.Categorical(
+        quad_scope["quadrant"], categories=QUADRANT_ORDER, ordered=True
+    )
+
+    group_slug = _slug(args.quadrant_group)
+    quad_scope[
+        [
+            "question_id",
+            "model_group",
+            "ent",
+            "op",
+            "mean_sbert",
+            "mean_model_acc",
+            "mean_acc_gap",
+            "quadrant",
+            "question_en",
+            "gt",
+        ]
+    ].to_csv(OUT_DIR / f"{stem}_quadrant_assignment_{group_slug}{suffix}.csv", index=False)
+
+    print("\nQuadrant counts:")
+    print(quad_scope["quadrant"].value_counts().reindex(QUADRANT_ORDER, fill_value=0))
+
+    _plot_quadrant_distribution(
+        quad_scope,
+        "ent",
+        title=(
+            f"{args.condition} v{args.variant}: Entity distribution by quadrant "
+            f"({args.quadrant_group}, y={Y_TITLE})"
+        ),
+        filename="entity_distribution",
+        stem=stem,
+        suffix=suffix,
+        group_slug=group_slug,
+    )
+    _plot_quadrant_distribution(
+        quad_scope,
+        "op",
+        title=(
+            f"{args.condition} v{args.variant}: Op-type distribution by quadrant "
+            f"({args.quadrant_group}, y={Y_TITLE})"
+        ),
+        filename="op_distribution",
+        stem=stem,
+        suffix=suffix,
+        group_slug=group_slug,
+    )
 
 print("\nSaved figures to:", OUT_DIR)

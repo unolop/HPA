@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\caption{Per-operation-type entropy and alignment statistics (variant~C, 7/8B, $q=88$ free-text). Identity questions show the highest C$\to$A degradation (+0.216), confirming entity-noun dependence.}
+\label{tab:entropy_op}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+ & N & H(human) & H(model) & Gap & HM SBERT & C$\to$A deg. \\
+Operation &  &  &  &  &  &  \\
+\midrule
+act & 3 & 3.039 & 1.646 & -1.394 & 0.510 & 0.027 \\
+attr & 29 & 3.579 & 2.304 & -1.275 & 0.444 & 0.061 \\
+cause & 1 & 4.622 & 2.906 & -1.716 & 0.276 & -0.033 \\
+comp & 2 & 4.441 & 3.174 & -1.267 & 0.335 & 0.012 \\
+count & 22 & 2.979 & 1.835 & -1.143 & 0.539 & 0.062 \\
+ident & 9 & 3.641 & 2.502 & -1.139 & 0.495 & 0.216 \\
+know & 2 & 2.807 & 2.203 & -0.605 & 0.532 & 0.145 \\
+spat & 12 & 3.801 & 2.449 & -1.353 & 0.391 & 0.100 \\
+temp & 3 & 4.106 & 2.944 & -1.162 & 0.422 & -0.006 \\
+text & 5 & 4.262 & 2.638 & -1.624 & 0.364 & 0.004 \\
+All & 88 & 3.518 & 2.269 & -1.248 & 0.460 & 0.076 \\
+\bottomrule
+\end{tabular}
+\end{table}

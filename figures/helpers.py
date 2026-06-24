@@ -75,6 +75,7 @@ def read_response_exports(
 def load_pair_cache(
     root: Path,
     *,
+    condition: str = 'inst_blind',
     include_yesno: bool = False,
     subset_qids: Optional[Iterable[int]] = None,
     verbose: bool = True,
@@ -83,10 +84,55 @@ def load_pair_cache(
     from config import extend_pair_cache_with_yesno
 
     exports = get_exports_dir(root)
-    pair_df = build_pair_cache(root, exports, verbose=verbose)
+    pair_df = build_pair_cache(root, exports, condition=condition, verbose=verbose)
     if include_yesno:
         if verbose:
             print("Extending pair_cache with yes/no question pairs…")
+        pair_df = extend_pair_cache_with_yesno(pair_df, exports)
+    if subset_qids is not None:
+        qids = set(int(q) for q in subset_qids)
+        pair_df = pair_df[pair_df["question_id"].isin(qids)].copy()
+    return pair_df
+
+
+def load_cleaned_pair_cache(
+    root: Path,
+    *,
+    condition: str = 'inst_blind',
+    max_words: int = 5,
+    include_yesno: bool = False,
+    subset_qids: Optional[Iterable[int]] = None,
+    no_bertscore: bool = True,
+    verbose: bool = True,
+) -> pd.DataFrame:
+    """Load the cleaned (length-normalized) pair cache, building if needed."""
+    from build_pair_cache import build_cleaned_pair_cache, DEFAULT_MAX_WORDS
+    from config import extend_pair_cache_with_yesno
+
+    exports = get_exports_dir(root)
+    suffix = '_blind' if condition == 'blind' else ''
+    out_path = exports / f'pair_cache_cleaned{suffix}.parquet'
+
+    if out_path.exists():
+        pair_df = pd.read_parquet(out_path)
+        # Validate it has the expected columns (not a stale version)
+        if 'variant' in pair_df.columns and 'sbert_score' in pair_df.columns:
+            if verbose:
+                print(f'Loaded cleaned pair cache: {len(pair_df):,} rows from {out_path}')
+        else:
+            if verbose:
+                print(f'Stale cleaned pair cache detected, rebuilding …')
+            pair_df = build_cleaned_pair_cache(
+                root, exports, max_words=max_words,
+                no_bertscore=no_bertscore, condition=condition, verbose=verbose)
+    else:
+        pair_df = build_cleaned_pair_cache(
+            root, exports, max_words=max_words,
+            no_bertscore=no_bertscore, condition=condition, verbose=verbose)
+
+    if include_yesno:
+        if verbose:
+            print("Extending cleaned pair_cache with yes/no question pairs…")
         pair_df = extend_pair_cache_with_yesno(pair_df, exports)
     if subset_qids is not None:
         qids = set(int(q) for q in subset_qids)

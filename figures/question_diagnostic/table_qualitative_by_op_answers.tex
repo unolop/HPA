@@ -1,0 +1,29 @@
+\begin{table*}[t]
+\centering
+\caption{Top questions by C$\to$A degradation per operation type (variant~C, 7/8B). These are the most entity-anchor-sensitive examples within each operation, with compact human/model answer summaries.}
+\label{tab:qual_op_answers}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{4.0cm}llrrrp{2.6cm}p{2.6cm}}
+\toprule
+ & Op & Ent & HM & HH & C$\to$A & Human top & Model top \\
+Question &  &  &  &  &  &  &  \\
+\midrule
+What type of shoe is that? & ident & product & 0.613 & 0.653 & 0.382 & sneakers (13); slippers (5) & sneaker (13); without image or additional context it is impossible to provide accurate answer please provide more information for helpful response (1) \\
+What type of bear is this? & ident & animal & 0.572 & 0.674 & 0.343 & brown bear (11); polar bear (9) & grizzly bear (4); black (3) \\
+What is this player's position called? & ident & person & 0.561 & 0.574 & 0.304 & striker (9); goalkeeper (6) & goalie (6); goalkeeper (2) \\
+How many people touching the elephant trunk? & count & person & 0.673 & 0.686 & 0.182 & 2 (15); 1 (9) & 1 (6); 0 (5) \\
+How many hot dogs are on this bun? & count & food & 0.644 & 0.770 & 0.157 & 1 (21); 3 (6) & 0 (7); 1 (5) \\
+How many ski poles is this person holding? & count & object & 0.754 & 0.750 & 0.157 & 2 (22); 1 (5) & 2 (10); 0 (3) \\
+What type of computer is the cat using? & attr & product & 0.517 & 0.462 & 0.316 & macbook (9); laptop (5) & laptop (10); desktop (2) \\
+What is on the man's ear? & attr & person & 0.533 & 0.620 & 0.310 & earrings (20); earphones (5) & earring (6); nothing (2) \\
+What kind of trees are in the picture? & attr & object & 0.458 & 0.642 & 0.181 & tree (21); apple (4) & oak (6); oak trees (4) \\
+What is the elephant eating? & act & animal & 0.442 & 0.507 & 0.105 & grass (18); banana (3) & grass (7); elephant is eating grass (2) \\
+What is this man being pulled by? & act & person & 0.289 & 0.279 & 0.001 & dog (4); police (3) & rope (8); horse (2) \\
+Do the horses love each other? & act & animal & 0.801 & 0.770 & -0.025 & yes (28); no (8) & yes (13); no (1) \\
+What are the flowers in? & spat & object & 0.642 & 0.630 & 0.324 & vase (25); pot (7) & vase (11); bushes (1) \\
+Where is the salad? & spat & food & 0.418 & 0.378 & 0.206 & on table (9); refrigerator (4) & on table (4); on plate (3) \\
+Which way is the green car going to go? & spat & vehicle & 0.431 & 0.411 & 0.157 & right (15); left (6) & left (6); right (5) \\
+\bottomrule
+\end{tabular}
+\end{table*}

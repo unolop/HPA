@@ -48,8 +48,26 @@ data/translation_cache.json
 # OS
 .DS_Store
 Thumbs.db 
-# generated eval outputs
+# Generated eval outputs
 evaluation/logits/
+evaluation/results/
 
-# generated eval outputs
-evaluation/logits/
+# Large generated data (reproducible from code + parquet)
+analysis/session2/exports/*.csv
+analysis/session2/exports/*.npz
+analysis/session2/exports/*.bak.*
+
+# Keep parquet files (smaller, canonical) but ignore CSV duplicates
+# To track a specific CSV, use: git add -f <path>
+
+# VQA dataset files (download separately)
+dataset/vqa/*.json
+dataset/vqa/*.zip
+dataset/vqa/*.jsonl
+
+# LaTeX build artifacts and reference PDFs
+latex/AAAI2026/LaTeX/*.pdf
+latex/AAAI2026/references/
+
+# Misc caches
+.cache/

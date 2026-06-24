@@ -40,11 +40,16 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "analysis"))
 
 from utils.constants import GROUP_COLORS, GROUP_ORDER
-from helpers import clear_output_plots, read_export
+from helpers import clear_output_plots, read_export, load_pair_cache
+from config import MODELS_7B
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--overwrite', action='store_true',
                     help='Delete existing plot files in the output folder before exporting.')
+parser.add_argument('--include_yesno', action='store_true',
+                    help='Include yes/no question pairs in HM/HH agreement aggregation.')
+parser.add_argument('--only_7b', action='store_true',
+                    help='Restrict model curves to MODELS_7B matched-size subset.')
 args = parser.parse_args()
 
 OUT_DIR = ROOT / "figures/confidence_calibration"
@@ -199,10 +204,33 @@ if conf_df.empty:
 
 model_df = read_export(ROOT, "responses_model_inst_blind.csv", variant="C")
 human_df = read_export(ROOT, "responses_human.csv", variant="C")
-pair_df = read_export(ROOT, "answer_pairs_sbert_text.csv", variant="C")
+pair_df = load_pair_cache(ROOT, include_yesno=args.include_yesno, verbose=False)
+pair_df = pair_df[pair_df["variant"] == "C"].copy()
+
+if args.only_7b:
+    conf_df = conf_df[conf_df["model"].isin(MODELS_7B)].copy()
+    model_df = model_df[model_df["model"].isin(MODELS_7B)].copy()
+    pair_df = pair_df[
+        (pair_df["pair_type"] != "HM")
+        | (pair_df["subject_2"].isin(MODELS_7B))
+    ].copy()
 
 N_Q_ACC = model_df["question_id"].nunique()
 N_H = human_df["participant"].nunique()
+tag_parts = []
+if args.include_yesno:
+    tag_parts.append("yesno")
+if args.only_7b:
+    tag_parts.append("7b")
+MODE_SUFFIX = "".join(f"_{x}" for x in tag_parts)
+MODE_TITLE = ""
+if tag_parts:
+    mode_labels = []
+    if args.include_yesno:
+        mode_labels.append("incl. yes/no")
+    if args.only_7b:
+        mode_labels.append("7B-only")
+    MODE_TITLE = " (" + ", ".join(mode_labels) + ")"
 
 model_df = model_df[["question_id", "model", "model_group", "accuracy", "response"]].copy()
 merged = conf_df.merge(model_df, on=["question_id", "model"], how="inner")
@@ -226,7 +254,7 @@ for grp in GROUP_ORDER:
              .reset_index())
     ax.plot(agg["mean_conf"], agg["metric"], marker="o", ms=6, lw=2,
             color=GROUP_COLORS[grp], label=grp)
-    ax.scatter(agg["mean_conf"], agg["metric"], s=20 + 0.35 * agg["count"],
+    ax.scatter(agg["mean_conf"], agg["metric"], s=36,
                color=GROUP_COLORS[grp], alpha=0.8)
     ece = compute_ece(agg, len(sub))
     ece_handles.append(mlines.Line2D([], [], color=GROUP_COLORS[grp], marker="o", lw=2,
@@ -238,11 +266,11 @@ ax.set_xlim(0.0, 1.0)
 ax.set_ylim(0.0, 1.0)
 ax.set_xlabel("Mean token probability")
 ax.set_ylabel("Empirical accuracy")
-ax.set_title("Reliability by Model Group — Inst-Blind, Variant C")
+ax.set_title(f"Reliability by Model Group — Inst-Blind, Variant C{MODE_TITLE}")
 ax.legend(handles=ece_handles + [mlines.Line2D([], [], color="#666666", lw=1.2, ls="--", label="perfect calibration")],
           loc="lower right", frameon=True)
 fig.tight_layout()
-save(fig, f"inst_blind_vC_group_reliability_accuracy_q{N_Q_ACC}_h{N_H}.png")
+save(fig, f"inst_blind_vC_group_reliability_accuracy_q{N_Q_ACC}_h{N_H}{MODE_SUFFIX}.png")
 
 # Confidence vs HM SBERT alignment
 hm = pair_df[pair_df["pair_type"] == "HM"].copy()
@@ -269,7 +297,7 @@ for grp in GROUP_ORDER:
              .reset_index())
     ax.plot(agg["mean_conf"], agg["hm_sbert"], marker="o", ms=6, lw=2,
             color=GROUP_COLORS[grp], label=grp)
-    ax.scatter(agg["mean_conf"], agg["hm_sbert"], s=20 + 0.35 * agg["count"],
+    ax.scatter(agg["mean_conf"], agg["hm_sbert"], s=36,
                color=GROUP_COLORS[grp], alpha=0.8)
 
 if not np.isnan(hh_ref):
@@ -280,9 +308,9 @@ ax.set_xlim(0.0, 1.0)
 ax.set_ylim(0.0, 1.0)
 ax.set_xlabel("Mean token probability")
 ax.set_ylabel("Mean HM SBERT (clipped cosine)")
-ax.set_title("Confidence vs Human Alignment — Inst-Blind, Variant C")
+ax.set_title(f"Confidence vs Human Alignment — Inst-Blind, Variant C{MODE_TITLE}")
 ax.legend(loc="lower right", frameon=True)
 fig.tight_layout()
-save(fig, f"inst_blind_vC_group_confidence_hm_sbert_q{N_Q_HM}_h{N_H}.png")
+save(fig, f"inst_blind_vC_group_confidence_hm_sbert_q{N_Q_HM}_h{N_H}{MODE_SUFFIX}.png")
 
 print("\nDone. Figures saved to:", OUT_DIR)

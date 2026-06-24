@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\caption{Global correlations between answer entropy and alignment metrics (variant~C, 7/8B, $q=88$ free-text). All Pearson $r$.}
+\label{tab:entropy_corr}
+\small
+\begin{tabular}{lllrl}
+\toprule
+ & r & p & N & Interpretation \\
+Pair &  &  &  &  \\
+\midrule
+H(human) vs H(model) & 0.532 & 9.4e-08 & 88 & Shared uncertainty \\
+H(human) vs HM SBERT & -0.847 & 2.8e-25 & 88 & Consensus drives alignment \\
+Entropy gap vs C$\to$A & 0.107 & 0.323 & 88 & Orthogonal mechanisms \\
+\bottomrule
+\end{tabular}
+\end{table}
