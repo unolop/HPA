@@ -72,7 +72,6 @@ LABEL_MAP = {
     'Qwen3-1.7B (think)': 'Qwen3-1.7B-T',
     'Qwen3-0.6B':         'Qwen3-0.6B',
     'Qwen3-0.6B (think)': 'Qwen3-0.6B-T',
-    'Qwen2.5-7B':         'Qwen2.5-7B',
     'Phi-3.5-mini':       'Phi-3.5',
     'Mistral-7B':         'Mistral-7B',
     'Vicuna-13B':         'Vicuna-13B',
@@ -373,6 +372,81 @@ def _draw_merged_abstention(ax, df_inst):
     ax.axvline(0, color='gray', lw=0.5, ls='-', alpha=0.3)
 
 
+def _draw_grouped_merged_abstention(ax, df_inst):
+    """Compact group-level abstention plot for the main paper."""
+    HARD_OFFSET = 0.34
+    group_df = (
+        df_inst.groupby('group', as_index=False)[['soft_b', 'soft_i', 'hard_b', 'hard_i']]
+        .mean()
+    )
+    group_df['group'] = pd.Categorical(group_df['group'], categories=GROUP_ORDER, ordered=True)
+    group_df = group_df.sort_values('group').dropna(subset=['group']).reset_index(drop=True)
+
+    y_base = {grp: idx for idx, grp in enumerate(group_df['group'])}
+    max_val = max(group_df[['soft_b', 'soft_i', 'hard_b', 'hard_i']].max().max(), 0.01)
+    xlim = min(max_val * 1.35, 0.55)
+
+    for xv in [0.1, 0.2, 0.3, 0.4, 0.5]:
+        if xv < xlim:
+            ax.axvline(xv, color='#CCCCCC', lw=0.7, ls=':', zorder=0)
+
+    for _, row in group_df.iterrows():
+        grp = row['group']
+        c = GROUP_COLORS[grp]
+        y = y_base[grp]
+        yh = y + HARD_OFFSET
+
+        ax.annotate(
+            "",
+            xy=(row['soft_i'], y), xytext=(row['soft_b'], y),
+            arrowprops=dict(arrowstyle='-|>', color=c, lw=1.3,
+                            linestyle='dotted', mutation_scale=7, alpha=0.6),
+            annotation_clip=False, zorder=2
+        )
+        ax.scatter([row['soft_b']], [y], color=c, s=56, zorder=3,
+                   marker='o', facecolors='none', edgecolors=c, linewidths=1.1)
+        ax.scatter([row['soft_i']], [y], color=c, s=56, zorder=3,
+                   marker='s', facecolors='none', edgecolors=c, linewidths=1.1)
+
+        ax.annotate(
+            "",
+            xy=(row['hard_i'], yh), xytext=(row['hard_b'], yh),
+            arrowprops=dict(arrowstyle='-|>', color=c, lw=1.6,
+                            mutation_scale=8, alpha=0.8),
+            annotation_clip=False, zorder=2
+        )
+        ax.scatter([row['hard_b']], [yh], color=c, s=42, zorder=3,
+                   marker='o', edgecolors='white', linewidths=0.5)
+        ax.scatter([row['hard_i']], [yh], color=c, s=42, zorder=3,
+                   marker='s', edgecolors='white', linewidths=0.5)
+
+        ax.text(-0.01, y + HARD_OFFSET / 2, grp, va='center', ha='right',
+                fontsize=9, color=c, fontweight='bold',
+                transform=ax.get_yaxis_transform())
+
+    handles = [
+        mlines.Line2D([], [], color='#888888', marker='o', ls=':', ms=6,
+                      markerfacecolor='none', markeredgecolor='#888888',
+                      label='soft / blind'),
+        mlines.Line2D([], [], color='#888888', marker='s', ls=':', ms=6,
+                      markerfacecolor='none', markeredgecolor='#888888',
+                      label='soft / inst_blind'),
+        mlines.Line2D([], [], color='#888888', marker='o', ls='-', ms=6,
+                      markeredgecolor='white', label='hard / blind'),
+        mlines.Line2D([], [], color='#888888', marker='s', ls='-', ms=6,
+                      markeredgecolor='white', label='hard / inst_blind'),
+    ]
+    ax.legend(handles=handles, fontsize=8, frameon=True, ncol=4,
+              loc='upper center', bbox_to_anchor=(0.5, -0.12))
+    ax.set_yticks([])
+    ax.set_xlabel('Abstention rate', fontsize=10)
+    ax.set_title('Group-level abstention: blind → inst_blind', fontsize=11)
+    ax.set_xlim(-xlim * 0.05, xlim)
+    ax.set_ylim(-0.2, len(group_df) - 0.15 + HARD_OFFSET)
+    ax.invert_yaxis()
+    ax.axvline(0, color='gray', lw=0.5, ls='-', alpha=0.3)
+
+
 # ─── Generate figures for each dataset ───────────────────────────────────────
 for suffix, df_mb, df_mi in DATASETS:
     print(f'\n══ {suffix} ══')
@@ -411,5 +485,11 @@ for suffix, df_mb, df_mi in DATASETS:
     _draw_merged_abstention(ax, df_inst)
     plt.tight_layout()
     save(fig, f'merged_abstention_{suffix}.png')
+
+    print('  ── merged_abstention_groups ──')
+    fig, ax = plt.subplots(figsize=(6.4, 3.2))
+    _draw_grouped_merged_abstention(ax, df_inst)
+    plt.tight_layout()
+    save(fig, f'merged_abstention_groups_{suffix}.png')
 
 print('\nDone. Outputs in:', OUT_DIR)

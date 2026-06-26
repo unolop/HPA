@@ -87,8 +87,7 @@ LM_DECODER_DIR_TO_MODEL = {
 BACKBONE_NOTHINK_DIR_TO_MODEL = {
     "Mistral-7B-Instruct-v0.2": "Mistral-7B",
     "Phi-3.5-mini-instruct": "Phi-3.5-mini",
-    "Qwen2.5-7B": "Qwen2.5-7B",
-    "Qwen2.5-7B-Instruct": "Qwen2.5-7B",
+    "Qwen2.5-7B-Instruct": "Qwen2.5-7B-Instruct",
     "Qwen3-0.6B": "Qwen3-0.6B",
     "Qwen3-1.7B": "Qwen3-1.7B",
     "Qwen3-4B": "Qwen3-4B",

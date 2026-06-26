@@ -30,6 +30,7 @@ SOFT_WORDS = frozenset({
     'nothing', 'unanswerable', 'unclear', 'unknown', 'nowhere',
     'n/a', 'na', 'indeterminate', 'unidentifiable', 'no sign',
     "can't tell", 'cannot tell', 'not clear', 'not visible',
+    'uncertain', 'unsure', 'possibly', 'maybe', 'perhaps',
 })
 
 # Degenerate: structurally empty answers

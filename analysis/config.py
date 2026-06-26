@@ -38,7 +38,7 @@ MODELS_7B = [
     'Qwen3-VL-8B (LM)', 'InternVL-8B (LM)',
     'LLaVA-1.5 (LM)', 'LLaVA-Mistral (LM)', 'LLaVA-Vicuna (LM)',
     'Qwen3-8B', 'Qwen3-8B (think)',
-    'Qwen2.5-7B', 'Qwen2.5-7B-Instruct', 'Mistral-7B', 'Vicuna-7B',
+    'Qwen2.5-7B-Instruct', 'Mistral-7B', 'Vicuna-7B',
 ]
 
 # ── Group assignment for every model in MODELS_ALL ────────────────────────────
@@ -74,7 +74,6 @@ MODEL_GROUP = {
     'Qwen3-4B':             'standalone LLM',
     'Qwen3-8B':             'standalone LLM',
     'Qwen3-32B':            'standalone LLM',
-    'Qwen2.5-7B':           'standalone LLM',
     'Qwen2.5-7B-Instruct':  'standalone LLM',
     'Phi-3.5-mini':         'standalone LLM',
     'Mistral-7B':           'standalone LLM',
@@ -162,7 +161,6 @@ MODEL_LABEL_SHORT = {
     'Qwen3-1.7B (think)':   'Qwen3-1.7B-T',
     'Qwen3-0.6B':           'Qwen3-0.6B',
     'Qwen3-0.6B (think)':   'Qwen3-0.6B-T',
-    'Qwen2.5-7B':           'Qwen2.5-7B',
     'Qwen2.5-7B-Instruct':  'Qwen2.5-7B-IT',
     'Phi-3.5-mini':         'Phi-3.5',
     'Mistral-7B':           'Mistral-7B',

@@ -188,7 +188,7 @@ BB_MODELS = [
     'Qwen3-0.6B', 'Qwen3-1.7B', 'Qwen3-4B', 'Qwen3-8B', 'Qwen3-32B',
     'Mistral-7B',
     'Vicuna-7B', 'Vicuna-13B',
-    'Qwen2.5-7B', 'Phi-3.5-mini',
+    'Phi-3.5-mini',
 ]
 
 # ── Model family membership (display-name → family) ─────────────────────────
@@ -234,7 +234,6 @@ MODEL_FAMILY = {
     'Vicuna-7B':           'Vicuna',
     'Vicuna-13B':           'Vicuna',
     'Phi-3.5-mini':         'Phi',
-    'Qwen2.5-7B':           'Qwen2.5',
     'Qwen2.5-7B-Instruct':  'Qwen2.5',
 }
 
@@ -367,7 +366,6 @@ MODEL_SIZE_B = {
     'Vicuna-7B':            7.0,
     'Vicuna-13B':          13.0,
     'Phi-3.5-mini':         3.8,
-    'Qwen2.5-7B':           7.0,
     'Qwen2.5-7B-Instruct':  7.0,
 }
 

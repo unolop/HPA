@@ -33,7 +33,7 @@ if str(ROOT / "analysis") not in sys.path:
 from config import MIN_ANSWERS_DEFAULT
 from utils.load_session import load_human_data
 from utils.model_registry import MODEL_TYPE, default_all_models
-from utils.normalize_korean import clean_korean_answer
+from utils.normalize_korean import clean_korean_answer, normalize_korean_answer
 from utils.vqa import preprocess_answer, vqa_accuracy
 
 
@@ -157,7 +157,16 @@ def main(*, translate: bool = True) -> None:
         ["question_id", "variant", "participant", "answer_kr", "answer_en", "accuracy"]
     ].copy()
     hrows["canonical_kr"] = hrows["answer_kr"].apply(clean_korean_answer)
-    hrows["response"] = hrows["answer_en"]
+    # Use normalize_korean_answer() when it produces a mapped English translation;
+    # fall back to the original API-translated answer_en for unmapped entries.
+    def _best_english(row):
+        kr = row["answer_kr"]
+        normalized = normalize_korean_answer(kr)
+        # If normalizer returned raw Korean (unmapped), use API translation
+        if normalized == kr or normalized == kr.strip():
+            return row["answer_en"]
+        return normalized
+    hrows["response"] = hrows.apply(_best_english, axis=1)
     hrows["question_en"] = hrows.apply(
         lambda r: q_en_map.get((int(r.question_id), r.variant), ""), axis=1
     )

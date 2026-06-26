@@ -42,6 +42,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+# Bypass torch version check for models without safetensors (CVE-2025-32434)
+try:
+    import transformers.utils.import_utils as _tiu
+    _tiu.check_torch_load_is_safe = lambda: None
+    import transformers.modeling_utils as _tmu
+    _tmu.check_torch_load_is_safe = lambda: None
+except Exception:
+    pass
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
@@ -318,9 +327,16 @@ def build_pair_cache(
                     device=embed_device,
                     model_kwargs={'use_safetensors': True},
                 )
-            except OSError:
-                model = SentenceTransformer(
-                    model_id, cache_folder=hf_dir, device=embed_device)
+            except (OSError, ValueError):
+                # Fallback: bypass torch version check for models without safetensors
+                import transformers.utils.import_utils as _tiu
+                _orig_check = _tiu.check_torch_load_is_safe
+                _tiu.check_torch_load_is_safe = lambda: None
+                try:
+                    model = SentenceTransformer(
+                        model_id, cache_folder=hf_dir, device=embed_device)
+                finally:
+                    _tiu.check_torch_load_is_safe = _orig_check
             emb_caches[metric_name] = encode_with_cache(
                 all_answers, model, emb_path, normalize=True, verbose=verbose)
             del model

@@ -38,10 +38,8 @@ MODEL_TYPE = {
     'Mistral-7B':          'standalone LLM',
     'Vicuna-7B':           'standalone LLM',
     'Vicuna-13B':          'standalone LLM',
-    'Qwen2.5-7B':          'standalone LLM',
     'Qwen2.5-7B-Instruct': 'standalone LLM',
     'Phi-3.5-mini':        'standalone LLM',
-    # Qwen2.5-7B = base pretrained; Qwen2.5-7B-Instruct = instruction-tuned — kept separate for base vs instruct comparison
     # standalone LLM — think variants (chain-of-thought enabled)
     'Qwen3-0.6B (think)':  'standalone LLM (think)',
     'Qwen3-1.7B (think)':  'standalone LLM (think)',
@@ -79,7 +77,6 @@ def backbone_models(base: Path) -> dict:
         'Mistral-7B':          (bn, 'Mistral-7B-Instruct-v0.2'),
         'Vicuna-7B':           (bn, 'vicuna-7b-v1.5'),
         'Vicuna-13B':          (bn, 'vicuna-13b-v1.5'),
-        'Qwen2.5-7B':          (bn, 'Qwen2.5-7B'),
         'Qwen2.5-7B-Instruct': (bn, 'Qwen2.5-7B-Instruct'),
         'Phi-3.5-mini':        (bn, 'Phi-3.5-mini-instruct'),
     }

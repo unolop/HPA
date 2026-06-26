@@ -15,9 +15,11 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[4]   # HPA/
 sys.path.insert(0, str(ROOT / 'analysis'))
+sys.path.insert(0, str(ROOT / 'figures'))
+from helpers import load_cleaned_pair_cache
 
 EXPORTS = ROOT / 'analysis/session2/exports'
-pc = pd.read_parquet(EXPORTS / 'pair_cache_cleaned.parquet')
+pc = load_cleaned_pair_cache(ROOT, include_yesno=True, verbose=False)
 mr = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
 hr = pd.read_csv(EXPORTS / 'responses_human.csv')
 
@@ -87,11 +89,11 @@ VARIANT_LABELS = {
 }
 
 
-def get_vals(model, group):
+def get_vals(model, group, variants):
     result = {}
     for label, col, src in METRIC_KEYS:
         vals = []
-        for v in VARIANTS:
+        for v in variants:
             if src == 'acc':
                 if group == 'Human':
                     val = hr[hr['variant']==v].groupby('question_id')['accuracy'].mean().mean()
@@ -108,10 +110,13 @@ def get_vals(model, group):
                     val = (wc.mean() if len(wc) > 0 else np.nan) / 100.0
             else:
                 if group == 'Human':
-                    d = hh[hh['variant']==v][col]
+                    d = hh[hh['variant']==v]
                 else:
-                    d = hm[(hm['subject_2']==model) & (hm['variant']==v)][col]
-                val = d.mean() if len(d) > 0 else np.nan
+                    d = hm[(hm['subject_2']==model) & (hm['variant']==v)]
+                if len(d) > 0:
+                    val = d.groupby('question_id')[col].mean().mean()
+                else:
+                    val = np.nan
             vals.append(val)
         result[label] = vals
     return result
@@ -159,7 +164,7 @@ def sort_models(models):
 
 def row_cells(vals):
     cells = []
-    for variant_idx, _variant in enumerate(VARIANTS):
+    for variant_idx in range(len(vals['Acc'])):
         for metric_label, _col, _src in METRIC_KEYS:
             metric_vals = vals[metric_label]
             cell = fmt_len(metric_vals[variant_idx]) if metric_label == 'Len' else fmt(metric_vals[variant_idx])
@@ -169,7 +174,7 @@ def row_cells(vals):
 
 def flat_numeric_cells(vals):
     cells = []
-    for variant_idx, _variant in enumerate(VARIANTS):
+    for variant_idx in range(len(vals['Acc'])):
         for metric_label, _col, _src in METRIC_KEYS:
             cells.append(vals[metric_label][variant_idx])
     return cells
@@ -187,8 +192,8 @@ def row_name(model, group):
     return name
 
 
-def section_column_rankings(models, group):
-    rows = [flat_numeric_cells(get_vals(model, group)) for model in models]
+def section_column_rankings(models, group, variants):
+    rows = [flat_numeric_cells(get_vals(model, group, variants)) for model in models]
     rankings = []
     for col_idx in range(len(rows[0])):
         col = np.array([row[col_idx] for row in rows], dtype=float)
@@ -217,7 +222,7 @@ def format_highlighted_cell(value, metric_label, best_value, second_value):
 def highlighted_row_cells(vals, rankings):
     cells = []
     flat_idx = 0
-    for variant_idx, _variant in enumerate(VARIANTS):
+    for variant_idx in range(len(vals['Acc'])):
         for metric_label, _col, _src in METRIC_KEYS:
             value = vals[metric_label][variant_idx]
             best_value, second_value = rankings[flat_idx]
@@ -268,43 +273,60 @@ think_models = sort_models([
 
 # ── Build table ──
 
-def build_table():
+def variant_block_spec(variants):
+    if len(variants) == 1:
+        title = VARIANT_LABELS[variants[0]]
+        return (
+            r"\begin{tabular}{lc|cccccc}",
+            r"\textbf{Model} & \textbf{Size} "
+            rf"& \multicolumn{{6}}{{c}}{{\textbf{{{title}}}}} \\",
+            r"\cmidrule(lr){3-8}",
+            r" & "
+            r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\",
+        )
+    return (
+        r"\begin{tabular}{lc|cccccc|cccccc|cccccc}",
+        r"\textbf{Model} & \textbf{Size} "
+        r"& \multicolumn{6}{c|}{\textbf{Original}}"
+        r"& \multicolumn{6}{c|}{\textbf{Weaker}}"
+        r"& \multicolumn{6}{c}{\textbf{Pronominalized}} \\",
+        r"\cmidrule(lr){3-8}\cmidrule(lr){9-14}\cmidrule(lr){15-20}",
+        r" & "
+        r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}"
+        r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}"
+        r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\",
+    )
+
+
+def build_table(variants=VARIANTS, label="tab:comprehensive_inst_blind"):
     lines = []
     lines.append(r"\begin{table*}[t]")
     lines.append(r"\scriptsize")
     lines.append(r"\centering")
     lines.append(r"\setlength{\tabcolsep}{2.5pt}")
     lines.append(r"\resizebox{\textwidth}{!}{%")
-    lines.append(r"\begin{tabular}{lc|cccccc|cccccc|cccccc}")
+    tabular_spec, header1, cmidrule, header2 = variant_block_spec(variants)
+    lines.append(tabular_spec)
     lines.append(r"\toprule")
-    lines.append(
-        r"\textbf{Model} & \textbf{Size} "
-        r"& \multicolumn{6}{c|}{\textbf{Original}}"
-        r"& \multicolumn{6}{c|}{\textbf{Weaker}}"
-        r"& \multicolumn{6}{c}{\textbf{Pronominalized}} \\"
-    )
-    lines.append(r"\cmidrule(lr){3-8}\cmidrule(lr){9-14}\cmidrule(lr){15-20}")
-    lines.append(
-        r" & "
-        r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}"
-        r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}"
-        r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\"
-    )
+    lines.append(header1)
+    lines.append(cmidrule)
+    lines.append(header2)
     lines.append(r"\midrule")
 
     # Human row
-    hvals = get_vals('Human (N=40)', 'Human')
+    hvals = get_vals('Human (N=40)', 'Human', variants)
     cols = row_cells(hvals)
     lines.append(r"\textbf{Human (N=40)} & -- & " + " & ".join(cols) + r" \\")
     lines.append(r"\midrule")
 
     def emit_section(title, models, group):
-        lines.append(r"\multicolumn{20}{c}{\textit{" + title + r"}} \\")
+        ncols = 2 + len(variants) * len(METRIC_KEYS)
+        lines.append(rf"\multicolumn{{{ncols}}}{{c}}{{\textit{{{title}}}}} \\")
         lines.append(r"\midrule")
-        rankings = section_column_rankings(models, group)
+        rankings = section_column_rankings(models, group, variants)
         rows = []
         for model in models:
-            vals = get_vals(model, group)
+            vals = get_vals(model, group, variants)
             name = row_name(model, group)
             size = SIZE_LABEL.get(model, '?')
             cols = highlighted_row_cells(vals, rankings)
@@ -322,12 +344,23 @@ def build_table():
     lines.append(r"\bottomrule")
     lines.append(r"\end{tabular}")
     lines.append(r"}")
-    lines.append(r"\caption{\small Blind performance across evaluation variants "
-        r"(Original, Weaker, Pronominalized). "
-        r"Acc = VQA accuracy (\%); Len = mean answer length in words; "
-        r"SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). "
-        r"Human row shows human--human (HH) agreement.}")
-    lines.append(r"\label{tab:comprehensive_inst_blind}")
+    if len(variants) == 1:
+        caption = (
+            r"\caption{\small Blind+Inst performance on the original question variant only. "
+            r"Acc = VQA accuracy (\%); Len = mean answer length in words; "
+            r"SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). "
+            r"Human row shows human--human (HH) agreement.}"
+        )
+    else:
+        caption = (
+            r"\caption{\small Blind performance across evaluation variants "
+            r"(Original, Weaker, Pronominalized). "
+            r"Acc = VQA accuracy (\%); Len = mean answer length in words; "
+            r"SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). "
+            r"Human row shows human--human (HH) agreement.}"
+        )
+    lines.append(caption)
+    lines.append(rf"\label{{{label}}}")
     lines.append(r"\end{table*}")
     return "\n".join(lines)
 
@@ -336,12 +369,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--write", action="store_true",
                         help="Write output to comprehensive_inst_blind.tex")
+    parser.add_argument("--variant", choices=VARIANTS,
+                        help="Emit a single-variant table only.")
     args = parser.parse_args()
 
-    table = build_table()
+    variants = [args.variant] if args.variant else VARIANTS
+    label = "tab:comprehensive_inst_blind_vc" if args.variant == "C" else "tab:comprehensive_inst_blind"
+    table = build_table(variants=variants, label=label)
 
     if args.write:
-        out = Path(__file__).resolve().parent / "comprehensive_inst_blind.tex"
+        filename = "comprehensive_inst_blind_vC.tex" if args.variant == "C" else "comprehensive_inst_blind.tex"
+        out = Path(__file__).resolve().parent / filename
         out.write_text(table + "\n")
         print(f"Wrote {out}")
     else:

@@ -55,6 +55,7 @@ evaluation/results/
 # Large generated data (reproducible from code + parquet)
 analysis/session2/exports/*.csv
 analysis/session2/exports/*.npz
+analysis/session2/exports/*.bak
 analysis/session2/exports/*.bak.*
 
 # Keep parquet files (smaller, canonical) but ignore CSV duplicates
