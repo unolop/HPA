@@ -46,6 +46,16 @@ MANUAL_MAP = {
     "eight": "8",
     "nine": "9",
     "ten": "10",
+    "eleven": "11",
+    "twelve": "12",
+    "thirteen": "13",
+    "fourteen": "14",
+    "fifteen": "15",
+    "sixteen": "16",
+    "seventeen": "17",
+    "eighteen": "18",
+    "nineteen": "19",
+    "twenty": "20",
 }
 ARTICLES = ["a", "an", "the"]
 PERIOD_STRIP = re.compile(r"(?!<=\d)(\.)(?!\d)")
@@ -54,6 +64,39 @@ PUNCT = [';', r"/", '[', ']', '"', '{', '}',
          '(', ')', '=', '+', '\\', '_', '-',
          '>', '<', '@', '`', ',', '?', '!']
 THINK_RE = re.compile(r'<think>.*?</think>\s*', flags=re.DOTALL)
+LEAKED_THINK_PREFIX_RE = re.compile(
+    r'^\s*(?:think\s+okay|okay\s+let[\'’]?s\s+|let[\'’]?s\s+see|hmm\b|user\s+is\s+asking\b)',
+    flags=re.IGNORECASE,
+)
+FINAL_ANSWER_PATTERNS = [
+    re.compile(
+        r'(?:final answer|answer|safest answer|best answer|most reasonable answer|likely answer)\s*'
+        r'(?:might be|would be|is|:)\s*["“]?([a-z0-9][a-z0-9\s,/\-\'&]{0,80})["”]?\s*$',
+        flags=re.IGNORECASE,
+    ),
+    re.compile(
+        r'(?:so|thus|therefore)\s+(?:maybe\s+)?["“]?([a-z0-9][a-z0-9\s,/\-\'&]{0,80})["”]?\s+is\s+(?:the\s+)?answer\s*$',
+        flags=re.IGNORECASE,
+    ),
+    re.compile(
+        r'(?:so|thus|therefore)\s+(?:the\s+)?answer\s+is\s+["“]?([a-z0-9][a-z0-9\s,/\-\'&]{0,80})["”]?\s*$',
+        flags=re.IGNORECASE,
+    ),
+]
+ANSWER_WRAPPER_PATTERNS = [
+    re.compile(
+        r'^\s*(?:the\s+)?answer\s+(?:to\s+(?:the\s+)?question\s+)?(?:is|:)\s+',
+        flags=re.IGNORECASE,
+    ),
+    re.compile(
+        r'^\s*answer\s+to\s+(?:the\s+)?question(?:\s+how\s+many[^:]{0,120})?\s+(?:is|:)\s+',
+        flags=re.IGNORECASE,
+    ),
+    re.compile(
+        r'^\s*(?:my\s+)?(?:final\s+)?answer\s+(?:is|:)\s+',
+        flags=re.IGNORECASE,
+    ),
+]
 
 _vqa_mapper = None
 
@@ -70,6 +113,16 @@ NUMBER_WORDS = {
     "eight": 8,
     "nine": 9,
     "ten": 10,
+    "eleven": 11,
+    "twelve": 12,
+    "thirteen": 13,
+    "fourteen": 14,
+    "fifteen": 15,
+    "sixteen": 16,
+    "seventeen": 17,
+    "eighteen": 18,
+    "nineteen": 19,
+    "twenty": 20,
 }
 
 NUMBER_REGEX = re.compile(
@@ -84,8 +137,36 @@ NUMBER_REGEX = re.compile(
 )
 
 
+def _recover_final_answer_from_reasoning(text: str) -> str:
+    txt = ' '.join(str(text or '').strip().split())
+    # Prefer the last explicit final-answer cue near the end of the response.
+    for pat in FINAL_ANSWER_PATTERNS:
+        matches = list(pat.finditer(txt))
+        if matches:
+            cand = matches[-1].group(1).strip(" \t\n\r .,:;!?-'\"")
+            if 0 < len(cand.split()) <= 8:
+                return cand
+    return ''
+
+
 def strip_think_answer(text):
-    return THINK_RE.sub('', str(text or '')).strip()
+    txt = THINK_RE.sub('', str(text or '')).strip()
+    if LEAKED_THINK_PREFIX_RE.match(txt):
+        recovered = _recover_final_answer_from_reasoning(txt)
+        return recovered
+    return txt
+
+
+def strip_answer_wrapper(text: str) -> str:
+    txt = str(text or '').strip()
+    for pat in ANSWER_WRAPPER_PATTERNS:
+        new_txt = pat.sub('', txt).strip()
+        if new_txt != txt:
+            txt = new_txt
+            break
+    # Remove residual boxing/template markers after wrapper stripping.
+    txt = re.sub(r'^\s*(?:boxed|box)\s+', '', txt, flags=re.IGNORECASE).strip()
+    return txt
 
 
 def process_punctuation(in_text):
@@ -116,6 +197,7 @@ def preprocess_answer(text, strip_think=True):
     # Always drop hidden chain-of-thought wrappers before any other normalization.
     # `strip_think` remains only for backwards compatibility at call sites.
     out_text = strip_think_answer(out_text)
+    out_text = strip_answer_wrapper(out_text)
     out_text = process_punctuation(out_text)
     out_text = process_digit_article(out_text)
     return out_text.strip()

@@ -1,0 +1,67 @@
+\begin{table*}[t]
+\scriptsize
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lc|cccccc|cccccc|cccccc}
+\toprule
+\textbf{Model} & \textbf{Size} & \multicolumn{6}{c|}{\textbf{Original}}& \multicolumn{6}{c|}{\textbf{Weaker}}& \multicolumn{6}{c}{\textbf{Pronominalized}} \\
+\cmidrule(lr){3-8}\cmidrule(lr){9-14}\cmidrule(lr){15-20}
+ & & \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\
+\midrule
+\textbf{Human (N=40)} & -- & 26.3 & 1.3 & 59.4 & 27.5 & 24.6 & 22.6 & 22.9 & 1.3 & 57.8 & 26.9 & 23.7 & 22.4 & 22.6 & 1.3 & 56.0 & 24.4 & 21.1 & 20.2 \\
+\midrule
+\multicolumn{20}{c}{\textit{Vision-Language Models}} \\
+\midrule
+\multirow{3}{*}{InternVL} & 1B & 36.9 & 1.2 & \underline{57.7} & 23.5 & 20.1 & 18.5 & 36.6 & 1.2 & 54.9 & 21.9 & 19.1 & 17.9 & 33.6 & 1.2 & \underline{53.6} & \underline{21.8} & \underline{18.7} & \underline{18.0} \\
+ & 2B & 44.5 & 1.3 & 55.4 & 21.1 & 17.8 & 15.7 & 38.6 & 1.2 & \underline{55.6} & 22.0 & 19.0 & 17.6 & 39.2 & 1.3 & 53.0 & 20.5 & 17.0 & 16.2 \\
+ & 8B & 37.2 & 1.5 & \textbf{61.7} & \textbf{28.1} & \textbf{24.4} & \textbf{21.7} & 33.3 & \underline{1.7} & \textbf{60.1} & \textbf{27.1} & \textbf{24.1} & \textbf{22.7} & 29.5 & \underline{1.7} & \textbf{56.7} & \textbf{23.3} & \textbf{20.3} & \textbf{18.8} \\
+LLaVA-1.5 & 7B & 47.2 & 1.0 & 51.9 & 19.0 & 15.5 & 15.0 & \textbf{47.5} & 1.0 & 50.8 & 17.0 & 14.3 & 13.7 & 35.4 & 1.1 & 48.7 & 16.7 & 14.0 & 13.6 \\
+LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 55.7 & 22.1 & 18.3 & 17.2 & \underline{46.0} & 1.1 & 53.9 & 20.8 & 17.9 & 17.3 & \underline{41.3} & 1.1 & 50.7 & 18.4 & 15.2 & 14.6 \\
+\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 51.6 & 1.0 & 54.5 & 21.2 & 18.1 & 16.7 & 44.2 & 1.0 & 52.3 & 19.2 & 16.1 & 15.3 & \textbf{42.3} & 1.0 & 51.1 & 18.6 & 15.5 & 14.9 \\
+ & 13B & \underline{52.4} & 1.0 & 56.8 & 24.3 & 21.1 & \underline{20.3} & 38.6 & 1.1 & 54.5 & 23.0 & 20.1 & 19.4 & 37.5 & 1.0 & 52.0 & 18.8 & 15.7 & 15.3 \\
+\multirow{4}{*}{Qwen3-VL} & 2B & 47.6 & 1.3 & 56.1 & 21.9 & 18.2 & 16.3 & 41.9 & 1.3 & 53.6 & 21.0 & 17.3 & 16.4 & 40.2 & 1.3 & 52.8 & 19.4 & 16.1 & 15.4 \\
+ & 4B & 50.1 & 1.2 & 56.9 & 23.9 & 19.9 & 18.3 & 37.5 & 1.2 & 55.2 & 24.2 & 20.7 & 19.9 & 38.7 & 1.1 & 52.8 & 21.0 & 18.0 & 17.1 \\
+ & 8B & 47.3 & \underline{3.3} & 57.0 & 24.0 & 20.6 & 18.9 & 38.4 & 1.5 & 54.9 & \underline{24.5} & 21.1 & \underline{20.1} & 33.3 & 1.3 & 52.3 & 21.5 & 18.2 & 17.5 \\
+ & 32B & 37.5 & \textbf{28} & 56.4 & \underline{25.2} & \underline{22.3} & 19.7 & 27.4 & \textbf{29} & 53.4 & 23.9 & \underline{21.2} & 19.2 & 17.1 & \textbf{35} & 51.5 & 19.5 & 16.4 & 15.4 \\
+\midrule
+\multicolumn{20}{c}{\textit{VLM Backbone Decoders}} \\
+\midrule
+\multirow{3}{*}{InternVL} & 1B & 28.9 & 1.4 & 59.5 & 27.6 & \underline{24.7} & 22.8 & 26.0 & 1.2 & 57.3 & 27.0 & 23.9 & 22.4 & 23.8 & 1.7 & 55.3 & 24.4 & 20.8 & 19.8 \\
+ & 2B & 30.7 & \underline{3.9} & 55.4 & 25.7 & 22.6 & 20.4 & 25.7 & 3.9 & 55.3 & 26.4 & 23.6 & 21.8 & 25.3 & \underline{5.5} & 54.0 & \underline{25.3} & \textbf{22.2} & \textbf{20.9} \\
+ & 8B & 39.8 & 3.8 & \textbf{60.9} & \textbf{30.5} & \textbf{26.5} & \textbf{23.8} & 34.5 & \textbf{5.1} & \underline{59.3} & \textbf{30.1} & \textbf{26.8} & \textbf{25.1} & 19.9 & \textbf{15} & 52.5 & \textbf{25.4} & \underline{21.6} & 20.0 \\
+LLaVA-1.5 & 7B & \textbf{53.7} & 1.1 & 58.9 & 27.3 & 23.6 & 22.2 & 35.1 & 1.2 & 57.0 & 27.3 & 23.5 & 22.6 & 32.1 & 1.6 & \underline{56.3} & 23.4 & 19.7 & 19.1 \\
+LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 59.0 & 25.7 & 22.0 & 20.8 & \textbf{39.5} & 1.1 & 57.5 & 25.4 & 22.2 & 21.6 & \underline{37.2} & 1.3 & 55.8 & 23.4 & 19.8 & 19.2 \\
+\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 44.5 & 1.1 & 59.4 & 27.5 & 23.8 & 22.5 & 36.9 & 1.1 & 57.1 & 26.9 & 23.5 & 22.4 & 30.4 & 1.4 & 55.8 & 23.9 & 20.6 & 19.5 \\
+ & 13B & \underline{47.2} & 1.0 & 58.9 & 27.4 & 24.0 & \underline{23.0} & 36.0 & 1.1 & \textbf{59.8} & \underline{29.1} & \underline{25.9} & \underline{25.0} & \textbf{37.5} & 1.0 & \textbf{56.8} & 24.0 & 20.2 & 19.5 \\
+\multirow{4}{*}{Qwen3-VL} & 2B & 39.2 & \textbf{5.1} & 58.7 & 26.6 & 23.1 & 20.6 & 34.5 & \underline{4.6} & 57.4 & 27.3 & 23.8 & 22.4 & 25.3 & 1.5 & 54.6 & 24.4 & 21.4 & \underline{20.3} \\
+ & 4B & 40.7 & 1.2 & 59.6 & \underline{27.9} & 23.9 & 21.6 & 33.3 & 1.2 & 58.1 & 28.6 & 24.7 & 23.2 & 23.5 & 1.2 & 55.0 & 23.8 & 20.5 & 19.5 \\
+ & 8B & 42.2 & 1.4 & \underline{59.7} & 26.6 & 23.0 & 20.3 & 32.4 & 1.8 & 56.7 & 27.3 & 23.7 & 23.0 & 29.5 & 1.3 & 54.7 & 23.6 & 20.4 & 19.0 \\
+ & 32B & 45.1 & 2.2 & 59.5 & 26.2 & 22.3 & 20.0 & \underline{38.9} & 1.2 & 57.5 & 27.4 & 23.6 & 22.4 & 33.9 & 2.7 & 55.8 & 23.5 & 20.0 & 18.6 \\
+\midrule
+\multicolumn{20}{c}{\textit{Standalone LLMs}} \\
+\midrule
+Mistral & 7B & 0.0 & \textbf{30} & 25.8 & 4.4 & 3.2 & 0.0 & 0.0 & \textbf{30} & 21.3 & 4.0 & 3.7 & 0.0 & 0.0 & \textbf{28} & 20.3 & 2.8 & 0.9 & 0.0 \\
+Phi-3.5-mini & 3.8B & 5.6 & \underline{14} & 40.0 & 11.0 & 10.5 & 4.2 & 4.7 & \underline{16} & 40.2 & 13.3 & 11.9 & 7.6 & 9.7 & \underline{15} & 43.5 & 13.1 & 11.4 & 8.3 \\
+Qwen2.5-Instruct & 7B & \textbf{35.4} & 1.3 & 54.4 & 21.9 & 18.0 & 16.6 & \textbf{28.3} & 1.6 & \underline{51.2} & 21.6 & 17.7 & 17.0 & \textbf{24.4} & 1.3 & 45.3 & 17.6 & 12.9 & 12.5 \\
+\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.7 & 3.5 & 2.4 & 7.7 & 1.2 & 32.4 & 8.1 & 2.3 & 1.7 & 5.7 & 1.3 & 37.7 & 10.4 & 5.4 & 4.4 \\
+ & 1.7B & 9.1 & 7.8 & 46.6 & 15.1 & 12.6 & 10.1 & 10.0 & 7.5 & 43.7 & 16.2 & 13.0 & 12.0 & 8.0 & 5.7 & 43.7 & 16.5 & 12.7 & 10.9 \\
+ & 4B & 18.0 & 1.3 & 54.4 & \underline{25.0} & \underline{20.9} & \underline{18.3} & 20.1 & 1.2 & \textbf{52.2} & \textbf{24.4} & \textbf{21.1} & \textbf{20.0} & 18.0 & 1.1 & \textbf{50.1} & \textbf{22.4} & \textbf{19.3} & \textbf{18.1} \\
+ & 8B & 27.1 & 2.3 & 52.1 & 21.8 & 17.0 & 14.7 & \underline{21.5} & 1.2 & 51.1 & 22.2 & 18.7 & 17.1 & 15.0 & 1.4 & 44.2 & 16.3 & 12.2 & 10.9 \\
+ & 32B & \underline{32.7} & 1.9 & \textbf{55.4} & \textbf{25.9} & \textbf{21.4} & \textbf{18.9} & 20.9 & 1.8 & 50.2 & \underline{22.9} & \underline{19.9} & \underline{17.8} & \underline{19.5} & 3.2 & 46.2 & \underline{19.1} & \underline{15.6} & \underline{13.7} \\
+\multirow{2}{*}{Vicuna} & 7B & 17.4 & 6.9 & 44.2 & 16.3 & 15.5 & 11.8 & 14.6 & 5.2 & 41.0 & 15.4 & 15.0 & 11.5 & 9.3 & 5.3 & 39.9 & 14.6 & 13.7 & 11.5 \\
+ & 13B & 26.8 & 3.0 & \underline{55.1} & 22.5 & 20.5 & 16.3 & 19.5 & 2.9 & 47.1 & 15.9 & 15.1 & 9.8 & 17.3 & 5.1 & \underline{47.7} & 16.8 & 14.7 & 11.5 \\
+\midrule
+\multicolumn{20}{c}{\textit{Standalone LLMs with Thinking}} \\
+\midrule
+\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.7 & 3.5 & 2.4 & 7.7 & 1.2 & 32.4 & 8.1 & 2.3 & 1.7 & 5.7 & 1.3 & 37.7 & 10.4 & 5.4 & 4.4 \\
+ & 1.7B & 16.7 & \underline{198} & \underline{53.5} & \underline{22.4} & \underline{19.3} & \underline{17.9} & 9.4 & \underline{204} & \textbf{57.7} & \underline{27.5} & \underline{24.1} & \underline{22.7} & 11.5 & \underline{230} & \underline{48.7} & \underline{20.3} & \underline{16.4} & \underline{14.8} \\
+ & 4B & \underline{18.0} & 1.3 & 50.2 & 21.0 & 16.8 & 14.0 & \underline{20.1} & 1.2 & 46.2 & 18.7 & 15.5 & 14.2 & \textbf{18.0} & 1.1 & 47.1 & 16.8 & 14.1 & 12.2 \\
+ & 8B & \textbf{27.1} & 2.3 & 52.1 & 21.8 & 17.0 & 14.7 & \textbf{21.5} & 1.2 & 51.1 & 22.2 & 18.7 & 17.1 & \underline{15.0} & 1.4 & 44.2 & 16.3 & 12.2 & 10.9 \\
+ & 32B & 11.2 & \textbf{216} & \textbf{60.0} & \textbf{31.6} & \textbf{29.6} & \textbf{26.7} & 10.4 & \textbf{217} & \underline{56.1} & \textbf{31.3} & \textbf{29.2} & \textbf{26.6} & 8.3 & \textbf{252} & \textbf{54.9} & \textbf{27.2} & \textbf{23.6} & \textbf{22.0} \\
+\bottomrule
+\end{tabular}
+}
+\caption{\small Blind performance across evaluation variants (Original, Weaker, Pronominalized). Acc = VQA accuracy (\%); Len = mean answer length in words; SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). Human row shows human--human (HH) agreement.}
+\label{tab:comprehensive_inst_blind_w5}
+\end{table*}

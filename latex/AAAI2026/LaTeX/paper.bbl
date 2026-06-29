@@ -1,4 +1,4 @@
-\begin{thebibliography}{36}
+\begin{thebibliography}{31}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Agrawal et~al.(2018)Agrawal, Batra, Parikh, and
@@ -23,6 +23,13 @@ Bai, S.; Cai, Y.; Chen, R.; Chen, Z.; Deng, L.; Ding, W.; Gao, C.; Ge, C.; Ge,
   W.; Guo, Z.; et~al. 2025.
 \newblock Qwen3-{VL} Technical Report.
 \newblock \emph{arXiv preprint}.
+
+\bibitem[{Bao et~al.(2026)Bao, Wu, Liu, Li, Cao, and
+  Evans}]{bao2026imagination}
+Bao, H.; Wu, S.; Liu, X.; Li, S.; Cao, S.; and Evans, J.~A. 2026.
+\newblock Contemporary {AI} Lacks the Imagination to Diverge or Negate in
+  Science.
+\newblock arXiv:2606.08251.
 
 \bibitem[{Chen et~al.(2024)Chen, Li, Dong, Zhang, Zang, Chen, Duan, Wang, Qiao,
   Lin et~al.}]{chen2024are}
@@ -51,13 +58,6 @@ Guo, C.; Pleiss, G.; Sun, Y.; and Weinberger, K.~Q. 2017.
 \newblock On Calibration of Modern Neural Networks.
 \newblock In \emph{International Conference on Machine Learning}, 1321--1330.
   PMLR.
-
-\bibitem[{Gururangan et~al.(2018)Gururangan, Swayamdipta, Levy, Schwartz,
-  Bowman, and Smith}]{gururangan2018annotation}
-Gururangan, S.; Swayamdipta, S.; Levy, O.; Schwartz, R.; Bowman, S.; and Smith,
-  N.~A. 2018.
-\newblock Annotation artifacts in natural language inference data.
-\newblock In \emph{Proceedings of NAACL-HLT 2018}, 107--112.
 
 \bibitem[{Han et~al.(2024)Han, Lian, Pan, Pi, Zhang, Diao, Lin, and
   Zhang}]{han2024instinctive}
@@ -92,18 +92,6 @@ Kahneman, D. 2011.
 \newblock \emph{Thinking, Fast and Slow}.
 \newblock Farrar, Straus and Giroux.
 
-\bibitem[{Kalai et~al.(2025)Kalai, Vempala, Nachum, and
-  Zhang}]{kalai2025hallucinate}
-Kalai, A.; Vempala, S.; Nachum, O.; and Zhang, E. 2025.
-\newblock Why language models hallucinate.
-\newblock \emph{arXiv preprint arXiv:2403.00048}.
-
-\bibitem[{Kim, Lee, and Park(2025)}]{kim2025subtlebench}
-Kim, M.; Lee, S.; and Park, D. 2025.
-\newblock {VLM-SubtleBench}: How Far Are {VLM}s from Human-Level Subtle
-  Comparative Reasoning?
-\newblock \emph{arXiv preprint arXiv:2603.07888}.
-
 \bibitem[{Lan, Frassinelli, and Plank(2025)}]{lan2025mind}
 Lan, J.; Frassinelli, D.; and Plank, B. 2025.
 \newblock Mind the Uncertainty in Human Disagreement: Evaluating Discrepancies
@@ -127,12 +115,6 @@ Lee, K.~i.; Kim, M.; Yoon, S.; Kim, M.; Lee, D.; Koh, H.; and Jung, K. 2024.
   models.
 \newblock \emph{arXiv preprint}.
 
-\bibitem[{Li et~al.(2023)Li, Du, Zhou, Wang, Zhao, and Wen}]{li2023evaluating}
-Li, Y.; Du, Y.; Zhou, K.; Wang, J.; Zhao, W.~X.; and Wen, J.-R. 2023.
-\newblock Evaluating Object Hallucination in Large Vision-Language Models.
-\newblock In \emph{Proceedings of the Conference on Empirical Methods in
-  Natural Language Processing}, 292--305.
-
 \bibitem[{Liu et~al.(2024)Liu, Li, Li, Li, Zhang, Shen, and
   Lee}]{liu2024llavanext}
 Liu, H.; Li, C.; Li, Y.; Li, B.; Zhang, Y.; Shen, S.; and Lee, Y.~J. 2024.
@@ -145,12 +127,6 @@ Liu, H.; Li, C.; Wu, Q.; and Lee, Y.~J. 2023.
 \newblock \emph{Advances in Neural Information Processing Systems}, 36:
   34892--34916.
 
-\bibitem[{Lu, Chai, and Wang(2025)}]{lu2025mitigating}
-Lu, S.; Chai, J.; and Wang, X. 2025.
-\newblock Mitigating Spurious Correlations in Zero-Shot Multimodal Models.
-\newblock In \emph{The Thirteenth International Conference on Learning
-  Representations}.
-
 \bibitem[{McCoy et~al.(2024)McCoy, Yao, Friedman, Hardy, and
   Griffiths}]{mccoy2024embers}
 McCoy, R.~T.; Yao, S.; Friedman, D.; Hardy, M.~D.; and Griffiths, T.~L. 2024.
@@ -158,6 +134,13 @@ McCoy, R.~T.; Yao, S.; Friedman, D.; Hardy, M.~D.; and Griffiths, T.~L. 2024.
   the problem they are trained to solve.
 \newblock \emph{Proceedings of the National Academy of Sciences}, 121(41):
   e2322420121.
+
+\bibitem[{Min et~al.(2020)Min, Michael, Hajishirzi, and
+  Zettlemoyer}]{min2020ambigqa}
+Min, S.; Michael, J.; Hajishirzi, H.; and Zettlemoyer, L. 2020.
+\newblock AmbigQA: Answering Ambiguous Open-domain Questions.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing}, 5783--5797.
 
 \bibitem[{Niu et~al.(2021)Niu, Tang, Zhang, Lu, Hua, and
   Wen}]{niu2021counterfactual}
@@ -172,25 +155,12 @@ Niu, Y.; Tang, K.; Zhang, H.; Lu, Z.; Hua, X.-S.; and Wen, J.-R. 2021.
 \newblock Technical report, OpenAI.
 \newblock \url{https://openai.com/index/gpt-4o-system-card}.
 
-\bibitem[{Poliak et~al.(2018)Poliak, Naradowsky, Haldar, Rudinger, and
-  Van~Durme}]{poliak2018hypothesis}
-Poliak, A.; Naradowsky, J.; Haldar, A.; Rudinger, R.; and Van~Durme, B. 2018.
-\newblock Hypothesis only baselines in natural language inference.
-\newblock In \emph{Proceedings of the Seventh Joint Conference on Lexical and
-  Computational Semantics}, 180--191.
-
 \bibitem[{Rohrbach et~al.(2018)Rohrbach, Hendricks, Burns, Darrell, and
   Saenko}]{rohrbach2018object}
 Rohrbach, A.; Hendricks, L.~A.; Burns, K.; Darrell, T.; and Saenko, K. 2018.
 \newblock Object hallucination in image captioning.
 \newblock In \emph{Conference on Empirical Methods in Natural Language
   Processing}.
-
-\bibitem[{Torralba and Efros(2011)}]{torralba2011unbiased}
-Torralba, A.; and Efros, A.~A. 2011.
-\newblock Unbiased Look at Dataset Bias.
-\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
-  and Pattern Recognition}, 1521--1528.
 
 \bibitem[{Tversky and Kahneman(1974)}]{tversky1974judgment}
 Tversky, A.; and Kahneman, D. 1974.

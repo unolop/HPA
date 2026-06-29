@@ -51,31 +51,84 @@ plt.rcParams.update({
 })
 
 LABEL_MAP = {
-    'Qwen3-VL-32B (LM)':  'Qwen3-VL-32B\n(backbone)',
-    'LLaVA-Mistral (LM)': 'LLaVA-M\n(backbone)',
-    'LLaVA-Vicuna (LM)':  'LLaVA-V\n(backbone)',
-    'LLaVA-1.5 (LM)':     'LLaVA-1.5\n(backbone)',
-    'LLaVA-Mistral':      'LLaVA-M',
-    'LLaVA-Vicuna':       'LLaVA-V',
+    'Qwen3-VL-2B (LM)':   'Qwen3-VL-2B',
+    'Qwen3-VL-4B (LM)':   'Qwen3-VL-4B',
+    'Qwen3-VL-8B (LM)':   'Qwen3-VL-8B',
+    'Qwen3-VL-32B (LM)':  'Qwen3-VL-32B',
+    'LLaVA-Mistral (LM)': 'LLaVA-Mistral',
+    'LLaVA-Vicuna (LM)':  'LLaVA-Vicuna',
+    'LLaVA-1.5 (LM)':     'LLaVA-1.5',
+    'InternVL-1B (LM)':   'InternVL-1B',
+    'InternVL-2B (LM)':   'InternVL-2B',
+    'InternVL-8B (LM)':   'InternVL-8B',
+    'LLaVA-Mistral':      'LLaVA-Mistral',
+    'LLaVA-Vicuna':       'LLaVA-Vicuna',
     'LLaVA-1.5-7B':       'LLaVA-1.5',
+    'Qwen3-VL-2B':        'Qwen3-VL-2B',
+    'Qwen3-VL-4B':        'Qwen3-VL-4B',
     'Qwen3-VL-8B':        'Qwen3-VL-8B',
-    'InternVL-1B':        'IVL-1B',
-    'InternVL-2B':        'IVL-2B',
-    'InternVL-8B':        'IVL-8B',
+    'InternVL-1B':        'InternVL-1B',
+    'InternVL-2B':        'InternVL-2B',
+    'InternVL-8B':        'InternVL-8B',
     'Qwen3-8B':           'Qwen3-8B',
-    'Qwen3-8B (think)':   'Qwen3-8B-T',
+    'Qwen3-8B (think)':   'Qwen3-8B',
     'Qwen3-32B':          'Qwen3-32B',
-    'Qwen3-32B (think)':  'Qwen3-32B-T',
+    'Qwen3-32B (think)':  'Qwen3-32B',
     'Qwen3-4B':           'Qwen3-4B',
-    'Qwen3-4B (think)':   'Qwen3-4B-T',
+    'Qwen3-4B (think)':   'Qwen3-4B',
     'Qwen3-1.7B':         'Qwen3-1.7B',
-    'Qwen3-1.7B (think)': 'Qwen3-1.7B-T',
+    'Qwen3-1.7B (think)': 'Qwen3-1.7B',
     'Qwen3-0.6B':         'Qwen3-0.6B',
-    'Qwen3-0.6B (think)': 'Qwen3-0.6B-T',
+    'Qwen3-0.6B (think)': 'Qwen3-0.6B',
     'Phi-3.5-mini':       'Phi-3.5',
     'Mistral-7B':         'Mistral-7B',
     'Vicuna-13B':         'Vicuna-13B',
 }
+
+
+def _family_key(model: str) -> str:
+    base = (
+        model.replace(' (LM)', '')
+             .replace(' (think)', '')
+             .replace('-7B', '')
+    )
+    if base.startswith('InternVL'):
+        return 'InternVL'
+    if base.startswith('LLaVA-1.5'):
+        return 'LLaVA-1.5'
+    if base.startswith('LLaVA-Mistral'):
+        return 'LLaVA-Mistral'
+    if base.startswith('LLaVA-Vicuna-13B'):
+        return 'LLaVA-Vicuna-13B'
+    if base.startswith('LLaVA-Vicuna'):
+        return 'LLaVA-Vicuna'
+    if base.startswith('Qwen3-VL'):
+        return 'Qwen3-VL'
+    if base.startswith('Qwen2.5'):
+        return 'Qwen2.5'
+    if base.startswith('Qwen3'):
+        return 'Qwen3'
+    if base.startswith('Mistral'):
+        return 'Mistral'
+    if base.startswith('Vicuna-13B'):
+        return 'Vicuna-13B'
+    if base.startswith('Vicuna-7B'):
+        return 'Vicuna-7B'
+    if base.startswith('Phi'):
+        return 'Phi'
+    return base
+
+
+def _size_key(model: str) -> float:
+    size_order = [
+        ('32B', 32.0), ('13B', 13.0), ('8B', 8.0), ('7B', 7.0),
+        ('4B', 4.0), ('3.8B', 3.8), ('2B', 2.0), ('1.7B', 1.7),
+        ('1B', 1.0), ('0.6B', 0.6),
+    ]
+    for token, val in size_order:
+        if token in model:
+            return val
+    return 999.0
 
 
 def norm_ans(s):
@@ -131,9 +184,14 @@ print(f'  inst_blind: {len(df_full_i)} rows, '
       f'{df_full_i["model"].nunique()} models')
 
 print('\nLoading 113-question human-study subset from exports…')
-exports = read_response_exports(ROOT, variant=VARIANT)
+exports = read_response_exports(ROOT, variant=VARIANT, check_completeness=False)
 df_sub_b = exports['model_blind']
 df_sub_i = exports['model_inst_blind']
+# Re-clean exported model answers so abstention is measured on the recovered
+# final answer rather than any leaked think trace present in older exports.
+for _df in (df_sub_b, df_sub_i):
+    if not _df.empty and 'response' in _df.columns:
+        _df['response'] = _df['response'].fillna('').astype(str).apply(clean_answer)
 N_SUB = df_sub_b['question_id'].nunique()
 print(f'  blind: {len(df_sub_b)} rows, {N_SUB} questions, '
       f'{df_sub_b["model"].nunique()} models')
@@ -145,7 +203,7 @@ DATASETS = [
 
 
 # ─── Stats computation ────────────────────────────────────────────────────────
-def compute_stats(df_mb, df_mi, min_n=50):
+def compute_stats(df_mb, df_mi, min_n=50, max_missing=None):
     df_mb = df_mb.copy()
     df_mi = df_mi.copy()
     df_mb['resp_norm'] = df_mb['response'].apply(norm_ans)
@@ -156,11 +214,16 @@ def compute_stats(df_mb, df_mi, min_n=50):
         lambda x: classify(str(x) if not pd.isna(x) else '', None))
 
     rows = []
+    expected_n = max(df_mb['question_id'].nunique(), df_mi['question_id'].nunique())
     for model in df_mb['model'].unique():
         b = df_mb[df_mb['model'] == model]
         i = df_mi[df_mi['model'] == model]
         if len(b) < min_n or len(i) < min_n:
             continue
+        if max_missing is not None:
+            if (expected_n - len(b['question_id'].unique()) > max_missing or
+                expected_n - len(i['question_id'].unique()) > max_missing):
+                continue
         grp = b['model_group'].iloc[0]
 
         soft_b = (b['cls'] == 'soft_abstained').mean()
@@ -181,13 +244,22 @@ def compute_stats(df_mb, df_mi, min_n=50):
                          change=change))
 
     df = pd.DataFrame(rows)
-    df['label'] = df['model'].map(LABEL_MAP).fillna(df['model'])
-    return df.sort_values(['group', 'change'], ascending=[True, True])
+    df['label'] = df['model'].map(LABEL_MAP).fillna(
+        df['model'].str.replace(' (LM)', '', regex=False)
+    )
+    df['family'] = df['model'].map(_family_key)
+    df['size_key'] = df['model'].map(_size_key)
+    return df.sort_values(['group', 'family', 'size_key', 'label'],
+                          ascending=[True, True, True, True])
 
 
 # ─── Shared: build y-positions from change-sorted order ──────────────────────
 def _build_y_positions(df, sort_col='change'):
-    df_s = df.sort_values(['group', sort_col], ascending=[True, True])
+    if {'family', 'size_key'}.issubset(df.columns):
+        df_s = df.sort_values(['group', 'family', 'size_key', 'label'],
+                              ascending=[True, True, True, True])
+    else:
+        df_s = df.sort_values(['group', sort_col], ascending=[True, True])
     y_pos, y, spans = {}, 0, {}
     for grp in GROUP_ORDER:
         sub_ = df_s[df_s['group'] == grp].reset_index(drop=True)
@@ -353,23 +425,23 @@ def _draw_merged_abstention(ax, df_inst):
     handles = [
         mlines.Line2D([], [], color='#888888', marker='o', ls=':',  ms=6,
                       markerfacecolor='none', markeredgecolor='#888888',
-                      label='soft / blind'),
+                      label='soft'),
         mlines.Line2D([], [], color='#888888', marker='s', ls=':',  ms=6,
                       markerfacecolor='none', markeredgecolor='#888888',
-                      label='soft / inst_blind'),
+                      label='soft + instruction'),
         mlines.Line2D([], [], color='#888888', marker='o', ls='-', ms=6,
-                      markeredgecolor='white', label='hard / blind'),
+                      markeredgecolor='white', label='hard'),
         mlines.Line2D([], [], color='#888888', marker='s', ls='-', ms=6,
-                      markeredgecolor='white', label='hard / inst_blind'),
+                      markeredgecolor='white', label='hard + instruction'),
     ]
     ax.legend(handles=handles, fontsize=8, frameon=True, ncol=4,
               loc='upper center', bbox_to_anchor=(0.5, -0.08))
 
     ax.set_yticks([])
     ax.set_xlabel('Abstention rate', fontsize=10)
-    ax.set_title('Soft & hard abstention: blind → inst_blind', fontsize=11)
     ax.set_xlim(-xlim * 0.05, xlim)
     ax.axvline(0, color='gray', lw=0.5, ls='-', alpha=0.3)
+    ax.invert_yaxis()
 
 
 def _draw_grouped_merged_abstention(ax, df_inst):
@@ -427,14 +499,14 @@ def _draw_grouped_merged_abstention(ax, df_inst):
     handles = [
         mlines.Line2D([], [], color='#888888', marker='o', ls=':', ms=6,
                       markerfacecolor='none', markeredgecolor='#888888',
-                      label='soft / blind'),
+                      label='soft'),
         mlines.Line2D([], [], color='#888888', marker='s', ls=':', ms=6,
                       markerfacecolor='none', markeredgecolor='#888888',
-                      label='soft / inst_blind'),
+                      label='soft + instruction'),
         mlines.Line2D([], [], color='#888888', marker='o', ls='-', ms=6,
-                      markeredgecolor='white', label='hard / blind'),
+                      markeredgecolor='white', label='hard'),
         mlines.Line2D([], [], color='#888888', marker='s', ls='-', ms=6,
-                      markeredgecolor='white', label='hard / inst_blind'),
+                      markeredgecolor='white', label='hard + instruction'),
     ]
     ax.legend(handles=handles, fontsize=8, frameon=True, ncol=4,
               loc='upper center', bbox_to_anchor=(0.5, -0.12))
@@ -450,7 +522,8 @@ def _draw_grouped_merged_abstention(ax, df_inst):
 # ─── Generate figures for each dataset ───────────────────────────────────────
 for suffix, df_mb, df_mi in DATASETS:
     print(f'\n══ {suffix} ══')
-    df_inst = compute_stats(df_mb, df_mi)
+    max_missing = 1 if suffix == f'v{VARIANT}_q{N_SUB}' else 0
+    df_inst = compute_stats(df_mb, df_mi, max_missing=max_missing)
     print(f'  Models with sufficient data: {len(df_inst)}')
 
     print('  ── fig_soft_abstention ──')
@@ -481,7 +554,7 @@ for suffix, df_mb, df_mi in DATASETS:
     save(fig, f'response_change_{suffix}.png')
 
     print('  ── merged_abstention ──')
-    fig, ax = plt.subplots(figsize=(7, 6))
+    fig, ax = plt.subplots(figsize=(7, 8.6))
     _draw_merged_abstention(ax, df_inst)
     plt.tight_layout()
     save(fig, f'merged_abstention_{suffix}.png')

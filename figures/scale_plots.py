@@ -55,8 +55,8 @@ from utils.constants import (
     GROUP_COLORS, GROUP_ORDER, GROUP_MARKER, GROUP_HOLLOW, GROUP_PAIR_ORDER,
     MODEL_FAMILY, MODEL_FAMILY_COLORS, MODEL_SIZE_B,
 )
-from helpers import clear_output_plots, get_exports_dir, load_human_subset, load_pair_cache, read_export
-from config import MODELS_ALL, MODEL_GROUP, MIN_ANSWERS_DEFAULT
+from helpers import clear_output_plots, get_exports_dir, load_human_subset, read_export
+from config import MODELS_ALL, MODEL_GROUP, MIN_ANSWERS_DEFAULT, extend_pair_cache_with_yesno
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CLI
@@ -122,10 +122,12 @@ print(f'  common_qids: {len(common_qids)}  |  participants: {n_humans}')
 # ─────────────────────────────────────────────────────────────────────────────
 print(f'\nLoading {METRIC} data…')
 
-# Auto-compute HM pairs for any models with complete inst_blind data
-# that are not yet in the cache, then load the (possibly updated) cache.
-pair_cache = load_pair_cache(ROOT, include_yesno=True, verbose=True)
-pair_cache = pair_cache[pair_cache['question_id'].isin(common_qids)]
+# Read the existing pair cache directly. For this manuscript we do not want
+# the scale exporter to trigger metric backfills (e.g. BERTScore) just to
+# redraw accuracy / SBERT figures.
+pair_cache = pd.read_parquet(EXPORTS / 'pair_cache.parquet')
+pair_cache = extend_pair_cache_with_yesno(pair_cache, EXPORTS)
+pair_cache = pair_cache[pair_cache['question_id'].isin(common_qids)].copy()
 
 if METRIC == 'agreement':
     raw = pair_cache[pair_cache['pair_type'] == 'HM'].copy()
@@ -157,6 +159,8 @@ SUFFIX = f'_q{n_questions}_h{n_humans_suffix}_yesno'
 # Models with known parameter counts
 # ─────────────────────────────────────────────────────────────────────────────
 MODELS_SIZED = [m for m in MODELS_ALL if m in MODEL_SIZE_B]
+EXCLUDED_MODELS = {'Mistral-7B', 'Phi-3.5-mini'}
+MODELS_SIZED = [m for m in MODELS_SIZED if m not in EXCLUDED_MODELS]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CI helpers
@@ -589,7 +593,7 @@ else:  # accuracy — all variants
 # One 3-panel figure per metric: left=C, middle=B, right=A
 # ─────────────────────────────────────────────────────────────────────────────
 if METRIC == 'agreement' and AGG in ('by_models', 'by_groups'):
-    PRIMARY_METRICS = ['sbert', 'simcse', 'exact']
+    PRIMARY_METRICS = ['sbert', 'chrf', 'simcse', 'exact']
     for key in PRIMARY_METRICS:
         if key not in AGREEMENT_METRICS:
             continue

@@ -40,6 +40,8 @@ sys.path.insert(0, str(ROOT / "figures"))
 
 from config import MODELS_7B
 from helpers import clear_output_plots, get_exports_dir, load_cleaned_pair_cache
+from utils.abstention import classify, is_abstained
+from utils.load_session import clean_answer
 from utils.constants import MODEL_FAMILY, MODEL_FAMILY_COLORS, MODEL_SIZE_B
 
 
@@ -54,9 +56,17 @@ parser.add_argument(
     action="store_true",
     help="Use the q113 yes/no-inclusive pair cache and response exports.",
 )
+parser.add_argument(
+    "--filter_abstentions",
+    action="store_true",
+    help="Restrict model-level statistics to substantive (non-abstaining) answers only.",
+)
 args = parser.parse_args()
 
-OUT_DIR = ROOT / ("figures/variant_ladders_yesno" if args.include_yesno else "figures/variant_ladders")
+base_dir = "figures/variant_ladders_yesno" if args.include_yesno else "figures/variant_ladders"
+if args.filter_abstentions:
+    base_dir += "_filtered"
+OUT_DIR = ROOT / base_dir
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
@@ -151,6 +161,8 @@ def mean_and_ci(values: pd.Series) -> tuple[float, float]:
 resp_df = resp_df[
     resp_df["model_group"].isin(GROUPS) & resp_df["model"].isin(INCLUDED_MODELS)
 ].copy()
+resp_df["response"] = resp_df["response"].fillna("").astype(str).apply(clean_answer)
+resp_df["is_substantive"] = resp_df["response"].apply(lambda x: not is_abstained(classify(x, None)))
 pair_df = pair_df[
     pair_df["pair_type"].isin(["HM", "HH"])
             & (
@@ -173,6 +185,20 @@ suffix = f"_q{n_questions}_h{n_humans}" + ("_yesno" if args.include_yesno else "
 
 MODEL_ORDER = sorted(INCLUDED_MODELS, key=model_sort_key)
 
+SUBSTANTIVE_QIDS: dict[tuple[str, str], set[int]] = {}
+for (model, variant), sub in resp_df.groupby(["model", "variant"]):
+    SUBSTANTIVE_QIDS[(str(model), str(variant))] = set(
+        sub.loc[sub["is_substantive"], "question_id"].astype(int).tolist()
+    )
+
+
+def filtered_qvals_hm(df: pd.DataFrame, model: str, variant: str, substantive_only: bool) -> pd.Series:
+    sub = df[(df["subject_2"] == model) & (df["variant"] == variant)]
+    if substantive_only:
+        keep = SUBSTANTIVE_QIDS.get((model, variant), set())
+        sub = sub[sub["question_id"].isin(keep)]
+    return sub.groupby("question_id")["sbert_score"].mean() * 100
+
 
 def build_accuracy_stats() -> tuple[
     dict[str, dict[str, dict[str, list[float]]]],
@@ -187,6 +213,8 @@ def build_accuracy_stats() -> tuple[
             cis = []
             for var in VARIANTS:
                 sub = resp_df[(resp_df["model"] == model) & (resp_df["variant"] == var)]
+                if args.filter_abstentions:
+                    sub = sub[sub["is_substantive"]]
                 q_vals = sub.groupby("question_id")["accuracy"].mean() * 100
                 mean, ci = mean_and_ci(q_vals)
                 means.append(mean)
@@ -216,9 +244,8 @@ def build_sbert_stats() -> tuple[
         for model in models:
             means = []
             cis = []
-            subm = hm[hm["subject_2"] == model]
             for var in VARIANTS:
-                q_vals = subm[subm["variant"] == var].groupby("question_id")["sbert_score"].mean() * 100
+                q_vals = filtered_qvals_hm(hm, model, var, args.filter_abstentions)
                 mean, ci = mean_and_ci(q_vals)
                 means.append(mean)
                 cis.append(ci)
@@ -290,15 +317,15 @@ def save_combined_plot(
                 means,
                 yerr=np.vstack([lower, upper]),
                 color=color,
-                lw=1.8,
-                ls="-",
-                alpha=0.95,
+                lw=1.25 if args.filter_abstentions else 1.8,
+                ls=":" if args.filter_abstentions else "-",
+                alpha=0.9 if args.filter_abstentions else 0.95,
                 marker="o",
-                markersize=5.6,
+                markersize=5.0 if args.filter_abstentions else 5.6,
                 markerfacecolor="none",
                 markeredgecolor=color,
                 markeredgewidth=1.0,
-                elinewidth=1.0,
+                elinewidth=0.9 if args.filter_abstentions else 1.0,
                 capsize=2.8,
                 capthick=1.0,
             )
@@ -357,14 +384,125 @@ def save_combined_plot(
         columnspacing=1.0,
     )
     fig.subplots_adjust(left=0.07, right=0.995, top=0.88, bottom=0.22, wspace=0.10)
-    path = OUT_DIR / f"inst_blind_{metric_slug}_groups_3step{suffix}.png"
+    extra = "_filtered" if args.filter_abstentions else ""
+    path = OUT_DIR / f"inst_blind_{metric_slug}_groups_3step{suffix}{extra}.png"
     fig.savefig(path, dpi=220, bbox_inches="tight")
     plt.close(fig)
     print(f"[variant_ladders] {path.name}")
 
 
-acc_stats, human_acc = build_accuracy_stats()
-save_combined_plot("accuracy", acc_stats, human_acc, "Mean accuracy (%)")
+def save_overlay_plot(
+    metric_slug: str,
+    base_stats: dict[str, dict[str, dict[str, list[float]]]],
+    filt_stats: dict[str, dict[str, dict[str, list[float]]]],
+    ref_stats: dict[str, list[float]],
+    ylabel: str,
+    *,
+    filename_suffix: str = "_overlay",
+):
+    ymin, ymax = axis_limits(base_stats, ref_stats)
+    x = np.arange(len(VARIANTS))
+    fig, axes = plt.subplots(1, 3, figsize=FIGSIZE, sharey=True)
+    legend_handles = []
+    legend_labels = []
 
-sbert_stats, hh_sbert = build_sbert_stats()
-save_combined_plot("sbert", sbert_stats, hh_sbert, "Mean HM SBERT (%)")
+    ref_mean = np.array(ref_stats["mean"], dtype=float)
+    ref_ci = np.array(ref_stats["ci"], dtype=float)
+    ref_lo = np.clip(ref_mean - ref_ci, 0.0, 100.0)
+    ref_hi = np.clip(ref_mean + ref_ci, 0.0, 100.0)
+
+    for ax, group in zip(axes, GROUPS):
+        for model, stat in base_stats[group].items():
+            family = MODEL_FAMILY.get(model, model)
+            color = MODEL_COLOR_OVERRIDE.get(model, MODEL_FAMILY_COLORS.get(family, "#666666"))
+            means = np.array(stat["mean"], dtype=float)
+            cis = np.array(stat["ci"], dtype=float)
+            lower = np.minimum(cis, means)
+            upper = np.minimum(cis, 100.0 - means)
+            container = ax.errorbar(
+                x, means, yerr=np.vstack([lower, upper]),
+                color=color, lw=1.8, ls="-", alpha=0.95,
+                marker="o", markersize=5.6, markerfacecolor="none",
+                markeredgecolor=color, markeredgewidth=1.0,
+                elinewidth=1.0, capsize=2.8, capthick=1.0,
+            )
+            if model not in legend_labels:
+                legend_handles.append(container.lines[0])
+                legend_labels.append(model)
+
+        for model, stat in filt_stats[group].items():
+            family = MODEL_FAMILY.get(model, model)
+            color = MODEL_COLOR_OVERRIDE.get(model, MODEL_FAMILY_COLORS.get(family, "#666666"))
+            means = np.array(stat["mean"], dtype=float)
+            cis = np.array(stat["ci"], dtype=float)
+            lower = np.minimum(cis, means)
+            upper = np.minimum(cis, 100.0 - means)
+            ax.errorbar(
+                x, means, yerr=np.vstack([lower, upper]),
+                color=color, lw=1.15, ls=":", alpha=0.88,
+                marker="o", markersize=4.8, markerfacecolor="none",
+                markeredgecolor=color, markeredgewidth=0.9,
+                elinewidth=0.8, capsize=2.4, capthick=0.8,
+            )
+
+        ax.fill_between(x, ref_lo, ref_hi, color=REF_BAND_COLOR, alpha=0.35, zorder=0, linewidth=0)
+        ax.plot(x, ref_mean, color=REF_COLOR, lw=1.8, ls="--", marker="D", markersize=4.8, zorder=1)
+        ax.set_title(GROUP_TITLE[group], fontsize=11, pad=6)
+        ax.set_xticks(x)
+        ax.set_xticklabels([VAR_LABELS[v] for v in VARIANTS])
+        ax.set_ylim(ymin, ymax)
+        ax.grid(axis="y", color="#D9D9D9", linewidth=0.8, alpha=0.7)
+        ax.set_axisbelow(True)
+        ax.spines["left"].set_linewidth(0.8)
+        ax.spines["bottom"].set_linewidth(0.8)
+        ax.tick_params(length=3.5, width=0.8, color="#555555")
+
+    axes[0].set_ylabel(ylabel)
+    vlm_order = [m for m in MODEL_ORDER if m in legend_labels and "(LM)" not in m and model_group(m) == "VLM"]
+    llm_order = [m for m in MODEL_ORDER if m in legend_labels and "(LM)" not in m and model_group(m) == "standalone LLM"]
+    order = vlm_order + llm_order
+    label_map = {m: display_label(m) for m in legend_labels}
+    handle_map = {m: h for m, h in zip(legend_labels, legend_handles)}
+    ordered_handles = [handle_map[m] for m in order]
+    ordered_labels = [label_map[m] for m in order]
+    fig.legend(
+        ordered_handles,
+        ordered_labels,
+        loc="lower center",
+        bbox_to_anchor=(0.5, -0.01),
+        ncol=len(order),
+        frameon=False,
+        handlelength=2.0,
+        columnspacing=1.0,
+    )
+    fig.subplots_adjust(left=0.07, right=0.995, top=0.88, bottom=0.22, wspace=0.10)
+    path = OUT_DIR / f"inst_blind_{metric_slug}_groups_3step{suffix}{filename_suffix}.png"
+    fig.savefig(path, dpi=220, bbox_inches="tight")
+    plt.close(fig)
+    print(f"[variant_ladders] {path.name}")
+
+
+if args.filter_abstentions:
+    # overlay original solid lines with substantive-only dotted lines
+    args.filter_abstentions = False
+    acc_base, human_acc = build_accuracy_stats()
+    sbert_base, hh_sbert = build_sbert_stats()
+    args.filter_abstentions = True
+    acc_filt, _ = build_accuracy_stats()
+    sbert_filt, _ = build_sbert_stats()
+    save_combined_plot("accuracy", acc_filt, human_acc, "Mean accuracy (%)")
+    save_combined_plot("sbert", sbert_filt, hh_sbert, "Mean HM SBERT (%)")
+    save_overlay_plot(
+        "accuracy", acc_base, acc_filt, human_acc, "Mean accuracy (%)",
+        filename_suffix="_filtered",
+    )
+    save_overlay_plot(
+        "sbert", sbert_base, sbert_filt, hh_sbert, "Mean HM SBERT (%)",
+        filename_suffix="_filtered",
+    )
+else:
+    acc_stats, human_acc = build_accuracy_stats()
+    save_combined_plot("accuracy", acc_stats, human_acc, "Mean accuracy (%)")
+
+    sbert_stats, hh_sbert = build_sbert_stats()
+    save_combined_plot("sbert", sbert_stats, hh_sbert, "Mean HM SBERT (%)")

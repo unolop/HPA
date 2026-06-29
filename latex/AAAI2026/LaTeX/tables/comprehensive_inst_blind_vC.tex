@@ -9,56 +9,56 @@
 \cmidrule(lr){3-8}
  & & \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\
 \midrule
-\textbf{Human (N=40)} & -- & 26.3 & 1.3 & 51.4 & 19.0 & 15.3 & 12.7 \\
+\textbf{Human (N=40)} & -- & 26.3 & 1.3 & 59.4 & 27.2 & 23.9 & 22.6 \\
 \midrule
 \multicolumn{8}{c}{\textit{Vision-Language Models}} \\
 \midrule
-\multirow{3}{*}{InternVL} & 1B & 36.9 & 1.2 & \underline{49.6} & 15.0 & 10.6 & 8.5 \\
- & 2B & 44.5 & 1.3 & 47.6 & 14.9 & 10.6 & 7.9 \\
- & 8B & 37.2 & 1.5 & \textbf{54.5} & \textbf{20.6} & \textbf{15.7} & \textbf{12.3} \\
-LLaVA-1.5 & 7B & 47.2 & 1.0 & 43.2 & 12.4 & 8.0 & 7.4 \\
-LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 47.6 & 14.9 & 10.0 & 8.6 \\
-\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 51.6 & 1.0 & 46.1 & 14.0 & 9.9 & 8.1 \\
- & 13B & \underline{52.4} & 1.0 & 48.7 & 16.9 & 12.8 & \underline{11.7} \\
-\multirow{4}{*}{Qwen3-VL} & 2B & 47.6 & 1.3 & 48.5 & 16.1 & 11.3 & 8.9 \\
- & 4B & 50.1 & 1.2 & 49.3 & \underline{17.8} & 12.7 & 10.6 \\
- & 8B & 47.3 & \underline{3.3} & 48.9 & 16.6 & 12.3 & 10.1 \\
- & 32B & 37.5 & \textbf{28} & 46.8 & 17.4 & \underline{13.8} & 10.3 \\
+\multirow{3}{*}{InternVL} & 1B & 36.9 & 1.2 & \underline{57.7} & 23.2 & 19.3 & 18.5 \\
+ & 2B & 44.5 & 1.3 & 55.4 & 20.9 & 17.1 & 15.7 \\
+ & 8B & 37.2 & 1.5 & \textbf{61.2} & \textbf{27.4} & \textbf{22.9} & \textbf{21.5} \\
+LLaVA-1.5 & 7B & 47.2 & 1.0 & 51.9 & 18.6 & 15.0 & 15.0 \\
+LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 55.6 & 21.8 & 17.8 & 17.2 \\
+\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 51.6 & 1.0 & 54.4 & 20.8 & 17.4 & 16.7 \\
+ & 13B & \underline{52.4} & 1.0 & 56.3 & \underline{23.8} & \underline{20.4} & \underline{20.1} \\
+\multirow{4}{*}{Qwen3-VL} & 2B & 47.6 & 1.3 & 56.1 & 21.6 & 17.5 & 16.3 \\
+ & 4B & 50.1 & 1.2 & 56.8 & 23.5 & 19.2 & 18.3 \\
+ & 8B & 47.3 & \underline{3.3} & 56.1 & 23.0 & 19.5 & 18.6 \\
+ & 32B & 37.5 & \textbf{28} & 51.6 & 20.3 & 18.0 & 16.2 \\
 \midrule
 \multicolumn{8}{c}{\textit{VLM Backbone Decoders}} \\
 \midrule
-\multirow{3}{*}{InternVL} & 1B & 28.9 & 1.4 & 50.8 & 16.6 & 12.9 & 10.5 \\
- & 2B & 30.7 & \underline{3.9} & 46.0 & 16.0 & 12.0 & 9.3 \\
- & 8B & 39.8 & 3.8 & \textbf{52.2} & \textbf{20.0} & \textbf{14.9} & 11.2 \\
-LLaVA-1.5 & 7B & \textbf{53.7} & 1.1 & 50.8 & \underline{18.9} & \underline{14.2} & \textbf{12.4} \\
-LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 51.5 & 18.4 & 13.6 & 12.0 \\
-\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 44.5 & 1.1 & 51.0 & 17.6 & 12.8 & 11.1 \\
- & 13B & \underline{47.2} & 1.0 & 50.5 & 18.1 & 13.7 & \underline{12.3} \\
-\multirow{4}{*}{Qwen3-VL} & 2B & 39.2 & \textbf{5.1} & 50.1 & 17.0 & 12.5 & 9.2 \\
- & 4B & 40.7 & 1.2 & 51.5 & 18.7 & 13.5 & 10.6 \\
- & 8B & 42.2 & 1.4 & 51.7 & 17.3 & 12.9 & 9.3 \\
- & 32B & 45.1 & 2.2 & \underline{51.8} & 18.4 & 13.4 & 10.5 \\
+\multirow{3}{*}{InternVL} & 1B & 28.9 & 1.4 & \textbf{59.5} & 27.3 & \underline{23.9} & \underline{22.8} \\
+ & 2B & 30.7 & \underline{3.9} & 55.1 & 25.1 & 21.5 & 20.2 \\
+ & 8B & 39.8 & 3.8 & 58.9 & \textbf{28.8} & \textbf{24.4} & 22.7 \\
+LLaVA-1.5 & 7B & \textbf{53.7} & 1.1 & 58.8 & 27.0 & 22.9 & 22.2 \\
+LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 59.0 & 25.4 & 21.4 & 20.8 \\
+\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 44.5 & 1.1 & 59.3 & 27.2 & 23.1 & 22.5 \\
+ & 13B & \underline{47.2} & 1.0 & 58.8 & 27.1 & 23.4 & \textbf{23.0} \\
+\multirow{4}{*}{Qwen3-VL} & 2B & 39.2 & \textbf{5.1} & 57.8 & 25.9 & 21.9 & 20.2 \\
+ & 4B & 40.7 & 1.2 & \underline{59.5} & \underline{27.4} & 23.0 & 21.6 \\
+ & 8B & 42.2 & 1.4 & 58.8 & 25.7 & 21.8 & 20.0 \\
+ & 32B & 45.1 & 2.2 & 58.9 & 25.6 & 21.3 & 19.8 \\
 \midrule
 \multicolumn{8}{c}{\textit{Standalone LLMs}} \\
 \midrule
-Mistral & 7B & 0.0 & \textbf{30} & 25.8 & 5.9 & 3.8 & 0.0 \\
-Phi-3.5-mini & 3.8B & 5.6 & \underline{14} & 38.0 & 9.0 & 7.4 & 2.2 \\
-Qwen2.5-Instruct & 7B & \textbf{35.4} & 1.3 & 47.4 & 15.5 & 11.0 & \underline{9.2} \\
-\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 35.5 & 9.5 & 4.5 & 3.1 \\
- & 1.7B & 9.1 & 7.8 & 37.4 & 9.2 & 6.2 & 3.4 \\
- & 4B & 18.0 & 1.3 & 44.9 & 15.8 & 10.8 & 7.5 \\
- & 8B & 27.1 & 2.3 & 47.2 & 16.9 & 12.1 & 9.1 \\
- & 32B & \underline{32.7} & 1.9 & \underline{48.0} & \underline{17.5} & \underline{12.1} & 8.9 \\
-\multirow{2}{*}{Vicuna} & 7B & 16.2 & 7.0 & 34.0 & 8.0 & 6.2 & 2.9 \\
- & 13B & 26.8 & 3.0 & \textbf{48.5} & \textbf{17.7} & \textbf{14.2} & \textbf{11.0} \\
+Mistral & 7B & 0.0 & \textbf{30} & 25.1 & 1.9 & 1.2 & 0.0 \\
+Phi-3.5-mini & 3.8B & 5.6 & \underline{14} & 36.7 & 9.2 & 8.6 & 3.8 \\
+Qwen2.5-Instruct & 7B & \textbf{35.4} & 1.3 & 54.4 & 21.5 & 17.3 & 16.6 \\
+\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.6 & 3.4 & 2.4 \\
+ & 1.7B & 9.1 & 7.8 & 45.6 & 14.2 & 11.8 & 9.7 \\
+ & 4B & 18.0 & 1.3 & \underline{54.4} & \underline{24.7} & \textbf{20.4} & \underline{18.3} \\
+ & 8B & 27.1 & 2.3 & 52.2 & 21.3 & 16.3 & 14.7 \\
+ & 32B & \underline{32.7} & 1.9 & \textbf{54.9} & \textbf{25.2} & \underline{20.3} & \textbf{18.7} \\
+\multirow{2}{*}{Vicuna} & 7B & 17.4 & 6.9 & 43.6 & 15.8 & 15.4 & 11.8 \\
+ & 13B & 26.8 & 3.0 & 54.4 & 21.8 & 19.4 & 16.1 \\
 \midrule
 \multicolumn{8}{c}{\textit{Standalone LLMs with Thinking}} \\
 \midrule
-\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 35.5 & 9.5 & 4.5 & 3.1 \\
- & 1.7B & 16.4 & \underline{198} & 37.9 & 13.0 & 7.9 & 7.4 \\
- & 4B & \underline{18.0} & 1.3 & \underline{44.9} & \underline{15.8} & 10.8 & 7.5 \\
- & 8B & \textbf{27.1} & 2.3 & \textbf{47.2} & \textbf{16.9} & \underline{12.1} & \underline{9.1} \\
- & 32B & 11.2 & \textbf{216} & 41.6 & 15.8 & \textbf{13.2} & \textbf{9.5} \\
+\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.6 & 3.4 & 2.4 \\
+ & 1.7B & 16.7 & \underline{198} & 39.9 & 12.0 & 10.0 & 10.1 \\
+ & 4B & \underline{18.0} & 1.3 & \underline{50.2} & \underline{20.7} & \underline{16.2} & \underline{14.0} \\
+ & 8B & \textbf{27.1} & 2.3 & \textbf{52.2} & \textbf{21.3} & \textbf{16.3} & \textbf{14.7} \\
+ & 32B & 11.2 & \textbf{216} & 42.3 & 16.4 & 15.4 & 13.9 \\
 \bottomrule
 \end{tabular}
 }

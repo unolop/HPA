@@ -558,10 +558,11 @@ TRAIL_RE = _re.compile(
     r'[,;.]\s+(?:but|however|although|though|which|since|because|as\s+it|if\s+).*$',
     _re.IGNORECASE)
 
-DEFAULT_MAX_WORDS = 5
+DEFAULT_MAX_WORDS = None
+W5_MAX_WORDS = 5
 
 
-def clean_answer(raw: str, max_words: int = DEFAULT_MAX_WORDS) -> str:
+def clean_answer(raw: str, max_words: int | None = DEFAULT_MAX_WORDS) -> str:
     """Clean a raw answer: strip refusals, preamble, trailing elaboration,
     apply VQA normalization, and truncate to max_words."""
     from utils.vqa import preprocess_answer
@@ -577,18 +578,29 @@ def clean_answer(raw: str, max_words: int = DEFAULT_MAX_WORDS) -> str:
     # VQA normalize (articles, punctuation, number words)
     text = preprocess_answer(text)
     words = text.split()
-    if len(words) > max_words:
+    if max_words is not None and len(words) > max_words:
         words = words[:max_words]
     return ' '.join(words).strip()
+
+
+def _cleaned_suffix(output_tag: str | None) -> str:
+    return f"_{output_tag}" if output_tag else ""
+
+
+def _cleaned_embed_cache_path(exports: Path, model_id: str, output_tag: str | None) -> Path:
+    tag = model_id.split('/')[-1]
+    suffix = _cleaned_suffix(output_tag)
+    return exports / f'embeddings_cleaned_{tag}{suffix}.npz'
 
 
 def build_cleaned_pair_cache(
     root: Path,
     exports: Path,
-    max_words: int = DEFAULT_MAX_WORDS,
+    max_words: int | None = DEFAULT_MAX_WORDS,
     no_bertscore: bool = False,
     hf_cache: str | None = None,
     condition: str = 'inst_blind',
+    output_tag: str | None = None,
     verbose: bool = True,
 ) -> pd.DataFrame:
     """Build pair_cache_cleaned.parquet from the raw pair_cache.
@@ -612,7 +624,8 @@ def build_cleaned_pair_cache(
 
     suffix = '_blind' if condition == 'blind' else ''
     raw_path = exports / f'pair_cache{suffix}.parquet'
-    out_path = exports / f'pair_cache_cleaned{suffix}.parquet'
+    tag_suffix = _cleaned_suffix(output_tag)
+    out_path = exports / f'pair_cache_cleaned{tag_suffix}{suffix}.parquet'
 
     if not raw_path.exists():
         raise FileNotFoundError(f'Raw pair cache not found: {raw_path}')
@@ -623,7 +636,8 @@ def build_cleaned_pair_cache(
 
     # ── 1. Clean answers ────────────────────────────────────────────────────
     if verbose:
-        print(f'Cleaning answers (max_words={max_words}) …')
+        trunc_msg = f'max_words={max_words}' if max_words is not None else 'no truncation'
+        print(f'Cleaning answers ({trunc_msg}) …')
 
     # Cache cleaned answers to avoid redundant work
     clean_cache: dict[str, str] = {}
@@ -692,10 +706,15 @@ def build_cleaned_pair_cache(
             clean_df[col_clip] = float('nan')
             continue
 
-        # Encode cleaned answers (fresh, no cache reuse — they're different text)
-        embs = model.encode(all_cleaned, normalize_embeddings=True,
-                            show_progress_bar=verbose, batch_size=256)
-        emb_dict = {txt: embs[i] for i, txt in enumerate(all_cleaned)}
+        cache_path = _cleaned_embed_cache_path(exports, model_id, output_tag)
+        emb_dict = encode_with_cache(
+            all_cleaned,
+            model,
+            cache_path,
+            batch_size=256,
+            normalize=True,
+            verbose=verbose,
+        )
         del model
 
         scores = []
@@ -761,8 +780,10 @@ if __name__ == '__main__':
                         help='Also build the cleaned (length-normalized) pair cache')
     parser.add_argument('--cleaned_only', action='store_true',
                         help='Only build the cleaned pair cache (skip raw)')
-    parser.add_argument('--max_words', type=int, default=DEFAULT_MAX_WORDS,
-                        help=f'Max words after cleaning (default: {DEFAULT_MAX_WORDS})')
+    parser.add_argument('--max_words', type=int, default=None,
+                        help='Optional max words after cleaning (default: no truncation)')
+    parser.add_argument('--output_tag', default=None,
+                        help='Optional filename tag for cleaned cache outputs (e.g. w5)')
     args = parser.parse_args()
 
     root    = Path(args.root) if args.root else ROOT
@@ -785,5 +806,6 @@ if __name__ == '__main__':
             no_bertscore=args.no_bertscore,
             hf_cache=None,
             condition=args.condition,
+            output_tag=args.output_tag,
             verbose=True,
         )

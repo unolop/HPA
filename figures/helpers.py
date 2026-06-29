@@ -99,19 +99,21 @@ def load_cleaned_pair_cache(
     root: Path,
     *,
     condition: str = 'inst_blind',
-    max_words: int = 5,
+    max_words: int | None = None,
+    output_tag: Optional[str] = None,
     include_yesno: bool = False,
     subset_qids: Optional[Iterable[int]] = None,
     no_bertscore: bool = True,
     verbose: bool = True,
 ) -> pd.DataFrame:
     """Load the cleaned (length-normalized) pair cache, building if needed."""
-    from build_pair_cache import build_cleaned_pair_cache, DEFAULT_MAX_WORDS
+    from build_pair_cache import build_cleaned_pair_cache
     from config import extend_pair_cache_with_yesno
 
     exports = get_exports_dir(root)
     suffix = '_blind' if condition == 'blind' else ''
-    out_path = exports / f'pair_cache_cleaned{suffix}.parquet'
+    tag_suffix = f'_{output_tag}' if output_tag else ''
+    out_path = exports / f'pair_cache_cleaned{tag_suffix}{suffix}.parquet'
 
     if out_path.exists():
         pair_df = pd.read_parquet(out_path)
@@ -124,11 +126,13 @@ def load_cleaned_pair_cache(
                 print(f'Stale cleaned pair cache detected, rebuilding …')
             pair_df = build_cleaned_pair_cache(
                 root, exports, max_words=max_words,
-                no_bertscore=no_bertscore, condition=condition, verbose=verbose)
+                no_bertscore=no_bertscore, condition=condition,
+                output_tag=output_tag, verbose=verbose)
     else:
         pair_df = build_cleaned_pair_cache(
             root, exports, max_words=max_words,
-            no_bertscore=no_bertscore, condition=condition, verbose=verbose)
+            no_bertscore=no_bertscore, condition=condition,
+            output_tag=output_tag, verbose=verbose)
 
     if include_yesno:
         if verbose:

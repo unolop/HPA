@@ -4,9 +4,9 @@ and HH baseline overlays.
 
 Outputs
 -------
-- figures/supplementary/sbert_gap_7b/hm_sbert_entity_op_grouped_variants_7b.png
-- figures/supplementary/sbert_gap_7b/hm_sbert_entity_op_grouped_variants_all.png
-- figures/supplementary/sbert_gap_7b/hm_sbert_bb_vlm_dumbbell_entity_op_7b.png
+- figures/supplementary/sbert_gap_7b/hm_sbert_entity_op_grouped_variants_matched_7b.png
+- figures/supplementary/sbert_gap_7b/hm_sbert_entity_op_grouped_variants_all_models.png
+- figures/supplementary/sbert_gap_7b/hm_sbert_entity_op_grouped_variants_family_*.png
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'analysis'))
 sys.path.insert(0, str(ROOT / 'figures'))
 
-from config import MODELS_7B
+from config import MODELS_7B, FAMILY_SUBSETS
 from utils.constants import GROUP_COLORS, GROUP_ORDER, VARIANT_ORDER, MODEL_FAMILY, MODEL_SIZE_B
 from helpers import load_human_subset
 
@@ -34,6 +34,7 @@ MIN_ANS = 348
 ENT_MIN_Q = 10
 OP_MIN_Q = 7
 GROUPS = GROUP_ORDER  # include think group
+EXCLUDED_MATCHED_MODELS = {'Mistral-7B', 'Phi-3.5-mini'}
 
 # Family marker mapping (shared with other variant-plot scripts)
 FAMILY_MARKER = {
@@ -206,14 +207,14 @@ def _plot_main(ax, grp, pts, hh, category_col, order, n_map, title, reference_mo
         ax.errorbar(xpos, y, yerr=np.vstack([ylow, yhigh]), fmt='none',
                     ecolor=GROUP_COLORS[g], capsize=3, elinewidth=1.2, zorder=4)
 
-        # per-model scatter (mean across variants)
+        # per-model scatter (mean across variants), ordered by sbert value
         spts = pts[pts['subject_group_2'] == g]
-        rng = np.random.default_rng(gi + 7)
         for i, cat in enumerate(order):
-            cpts = spts[spts[category_col] == cat][['subject_2', 'sbert']]
+            cpts = spts[spts[category_col] == cat][['subject_2', 'sbert']].sort_values('sbert')
             if cpts.empty:
                 continue
-            jitter = rng.uniform(-w * 0.22, w * 0.22, len(cpts))
+            n = len(cpts)
+            jitter = np.linspace(-w * 0.22, w * 0.22, n) if n > 1 else np.array([0.0])
             for j, row in enumerate(cpts.itertuples(index=False)):
                 fam = MODEL_FAMILY.get(row.subject_2, '')
                 marker = FAMILY_MARKER.get(fam, 'o')
@@ -315,7 +316,12 @@ def plot_entity_op_grouped(pair, meta, subset_models, suffix, drop_think=False):
     _plot_main(axes[1], op_grp, op_pts, op_hh, 'op_grp', op_order, op_n, 'Operation Groups',
                reference_models, groups_plot, show_ylabel=False)
 
-    title_scope = '7/8B matched models' if subset_models is not None else 'all models'
+    if subset_models is None:
+        title_scope = 'all models'
+    elif len(subset_models) <= 6:
+        title_scope = ', '.join(sorted(subset_models))
+    else:
+        title_scope = f'{len(subset_models)} matched models'
     fig.suptitle(
         f'HM SBERT by grouped entity/op categories with variant-spread error bars ({title_scope})',
         fontsize=12
@@ -330,57 +336,22 @@ def plot_entity_op_grouped(pair, meta, subset_models, suffix, drop_think=False):
     return ent_grp, op_grp, ent_order, op_order
 
 
-def plot_bb_vlm_dumbbell(ent_grp, op_grp, ent_order, op_order):
-    def _prep(df, cat):
-        p = df[df['subject_group_2'].isin(['VLM', 'VLM backbone decoder'])].copy()
-        p = p.pivot_table(index=cat, columns='subject_group_2', values='center')
-        return p.reindex(ent_order if cat == 'ent_grp' else op_order)
-
-    ent = _prep(ent_grp, 'ent_grp')
-    op = _prep(op_grp, 'op_grp')
-
-    fig, axes = plt.subplots(1, 2, figsize=(12.5, 5.2))
-    for ax, df, title in [(axes[0], ent, 'Entity Groups'), (axes[1], op, 'Operation Groups')]:
-        y = np.arange(len(df))
-        for i, cat in enumerate(df.index):
-            v = df.loc[cat, 'VLM']
-            b = df.loc[cat, 'VLM backbone decoder']
-            ax.plot([v, b], [i, i], color='#999', lw=1.2, zorder=1)
-            ax.scatter(v, i, color=GROUP_COLORS['VLM'], s=35, zorder=2)
-            ax.scatter(b, i, color=GROUP_COLORS['VLM backbone decoder'], s=35, zorder=2)
-        ax.set_yticks(y)
-        ax.set_yticklabels(df.index)
-        ax.invert_yaxis()
-        ax.grid(axis='x', alpha=0.25)
-        ax.set_xlabel('Mean HM SBERT (across A/B/C)')
-        ax.set_title(title)
-        ax.set_xlim(0.35, 0.65)
-
-    from matplotlib.lines import Line2D
-    handles = [
-        Line2D([0], [0], marker='o', color='w', markerfacecolor=GROUP_COLORS['VLM'],
-               label='VLM', markersize=7),
-        Line2D([0], [0], marker='o', color='w', markerfacecolor=GROUP_COLORS['VLM backbone decoder'],
-               label='Backbone decoder', markersize=7),
-    ]
-    fig.legend(handles=handles, loc='lower center', ncol=2, frameon=True)
-    fig.suptitle('Backbone vs VLM HM SBERT by grouped categories (7/8B)', fontsize=12)
-    plt.tight_layout(rect=[0, 0.06, 1, 0.93])
-    out = OUT_DIR / 'hm_sbert_bb_vlm_dumbbell_entity_op_7b.png'
-    fig.savefig(out, dpi=180, bbox_inches='tight')
-    plt.close(fig)
-    print('Saved:', out)
-
 
 def main():
     plt.rcParams.update({'font.family': 'DejaVu Sans', 'axes.spines.top': False, 'axes.spines.right': False})
 
+    matched_models = set(MODELS_7B) - EXCLUDED_MATCHED_MODELS
     pair, meta = _load()
-    ent_grp_7b, op_grp_7b, ent_order_7b, op_order_7b = plot_entity_op_grouped(
-        pair, meta, set(MODELS_7B), '7b', drop_think=True
-    )
-    plot_entity_op_grouped(pair, meta, None, 'all', drop_think=False)
-    plot_bb_vlm_dumbbell(ent_grp_7b, op_grp_7b, ent_order_7b, op_order_7b)
+
+    # 7B matched-size comparison (drop think group)
+    plot_entity_op_grouped(pair, meta, matched_models, 'matched_7b', drop_think=True)
+
+    # All models
+    plot_entity_op_grouped(pair, meta, None, 'all_models', drop_think=False)
+
+    # Family-specific subsets from config
+    for suffix, (label, model_list) in FAMILY_SUBSETS.items():
+        plot_entity_op_grouped(pair, meta, set(model_list), f'family_{suffix}', drop_think=False)
 
 
 if __name__ == '__main__':

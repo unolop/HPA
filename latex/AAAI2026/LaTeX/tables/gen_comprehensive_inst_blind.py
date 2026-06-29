@@ -2,8 +2,9 @@
 Generate the comprehensive blind-response LaTeX table.
 
 Usage:
-    python gen_comprehensive_inst_blind.py           # prints to stdout
-    python gen_comprehensive_inst_blind.py --write   # writes to comprehensive_inst_blind.tex
+    python gen_comprehensive_inst_blind.py                      # prints to stdout
+    python gen_comprehensive_inst_blind.py --write              # writes to comprehensive_inst_blind.tex
+    python gen_comprehensive_inst_blind.py --cleaned --max_words 5 --output_tag w5 --output_dir ../tables_5words --write
 """
 import argparse
 import re
@@ -16,12 +17,41 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[4]   # HPA/
 sys.path.insert(0, str(ROOT / 'analysis'))
 sys.path.insert(0, str(ROOT / 'figures'))
-from helpers import load_cleaned_pair_cache
+from helpers import load_pair_cache, load_cleaned_pair_cache
 
 EXPORTS = ROOT / 'analysis/session2/exports'
-pc = load_cleaned_pair_cache(ROOT, include_yesno=True, verbose=False)
+
+# Parse early so we know whether to filter
+_pre = argparse.ArgumentParser(add_help=False)
+_pre.add_argument("--filtered", action="store_true")
+_pre.add_argument("--cleaned", action="store_true")
+_pre.add_argument("--max_words", type=int, default=None)
+_pre.add_argument("--output_tag", default=None)
+_pre_args, _ = _pre.parse_known_args()
+
+if _pre_args.filtered or _pre_args.cleaned:
+    pc = load_cleaned_pair_cache(
+        ROOT,
+        include_yesno=True,
+        max_words=_pre_args.max_words,
+        output_tag=_pre_args.output_tag,
+        verbose=False,
+    )
+else:
+    pc = load_pair_cache(ROOT, include_yesno=True, verbose=False)
 mr = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
 hr = pd.read_csv(EXPORTS / 'responses_human.csv')
+
+if _pre_args.filtered:
+    from utils.abstention import classify, is_abstained
+    from utils.vqa import preprocess_answer
+    mr = mr.copy()
+    mr['_clean'] = mr['response'].fillna('').astype(str).apply(
+        lambda x: preprocess_answer(x, strip_think=True))
+    mr['_is_subst'] = mr['_clean'].apply(
+        lambda x: not is_abstained(classify(x, None)))
+    mr = mr[mr['_is_subst']].copy()
+    mr.drop(columns=['_clean', '_is_subst'], inplace=True)
 
 VARIANTS = ['C', 'B', 'A']
 hh = pc[pc['pair_type'] == 'HH']
@@ -344,12 +374,15 @@ def build_table(variants=VARIANTS, label="tab:comprehensive_inst_blind"):
     lines.append(r"\bottomrule")
     lines.append(r"\end{tabular}")
     lines.append(r"}")
+    filt_note = r" Abstaining responses are excluded." if _pre_args.filtered else ""
+    clean_note = r" All answers are length-normalized ($\leq$5 words) before scoring." if (_pre_args.cleaned or _pre_args.max_words) else ""
     if len(variants) == 1:
         caption = (
             r"\caption{\small Blind+Inst performance on the original question variant only. "
             r"Acc = VQA accuracy (\%); Len = mean answer length in words; "
             r"SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). "
-            r"Human row shows human--human (HH) agreement.}"
+            r"Human row shows human--human (HH) agreement."
+            + clean_note + filt_note + r"}"
         )
     else:
         caption = (
@@ -357,7 +390,8 @@ def build_table(variants=VARIANTS, label="tab:comprehensive_inst_blind"):
             r"(Original, Weaker, Pronominalized). "
             r"Acc = VQA accuracy (\%); Len = mean answer length in words; "
             r"SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). "
-            r"Human row shows human--human (HH) agreement.}"
+            r"Human row shows human--human (HH) agreement."
+            + clean_note + filt_note + r"}"
         )
     lines.append(caption)
     lines.append(rf"\label{{{label}}}")
@@ -371,15 +405,33 @@ if __name__ == "__main__":
                         help="Write output to comprehensive_inst_blind.tex")
     parser.add_argument("--variant", choices=VARIANTS,
                         help="Emit a single-variant table only.")
+    parser.add_argument("--filtered", action="store_true",
+                        help="Filter out abstentions before computing statistics.")
+    parser.add_argument("--cleaned", action="store_true",
+                        help="Use the cleaned agreement cache instead of the raw cache.")
+    parser.add_argument("--max_words", type=int, default=None,
+                        help="Optional max words used by the cleaned cache.")
+    parser.add_argument("--output_tag", default=None,
+                        help="Optional cleaned-cache tag (e.g. w5).")
+    parser.add_argument("--output_dir", default=".",
+                        help="Directory to write the .tex file into when --write is set.")
     args = parser.parse_args()
 
+    filtered_tag = "_filtered" if args.filtered else ""
+    cleaned_tag = f"_{args.output_tag}" if args.output_tag else ""
     variants = [args.variant] if args.variant else VARIANTS
-    label = "tab:comprehensive_inst_blind_vc" if args.variant == "C" else "tab:comprehensive_inst_blind"
+    base_label = "tab:comprehensive_inst_blind_vc" if args.variant == "C" else "tab:comprehensive_inst_blind"
+    label = f"{base_label}{cleaned_tag}{filtered_tag}"
     table = build_table(variants=variants, label=label)
 
     if args.write:
-        filename = "comprehensive_inst_blind_vC.tex" if args.variant == "C" else "comprehensive_inst_blind.tex"
-        out = Path(__file__).resolve().parent / filename
+        if args.variant == "C":
+            filename = f"comprehensive_inst_blind_vC{cleaned_tag}{filtered_tag}.tex"
+        else:
+            filename = f"comprehensive_inst_blind{cleaned_tag}{filtered_tag}.tex"
+        out_dir = (Path(__file__).resolve().parent / args.output_dir).resolve()
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / filename
         out.write_text(table + "\n")
         print(f"Wrote {out}")
     else:
