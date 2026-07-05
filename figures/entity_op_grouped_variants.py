@@ -11,6 +11,7 @@ Outputs
 
 from __future__ import annotations
 
+import argparse
 import sys
 from pathlib import Path
 
@@ -49,6 +50,11 @@ FAMILY_MARKER = {
     'Phi':           '*',
     'Qwen2.5':       'p',
 }
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--all-models", action="store_true", help="Also export the all-model grouped figure.")
+parser.add_argument("--families", action="store_true", help="Also export family-specific grouped figures.")
+args = parser.parse_args()
 
 
 def _model_point_area(model: str, reference_models: list[str] | None) -> float:
@@ -343,15 +349,15 @@ def main():
     matched_models = set(MODELS_7B) - EXCLUDED_MATCHED_MODELS
     pair, meta = _load()
 
-    # 7B matched-size comparison (drop think group)
+    # Default: only the matched 7/8B comparison used in the paper.
     plot_entity_op_grouped(pair, meta, matched_models, 'matched_7b', drop_think=True)
 
-    # All models
-    plot_entity_op_grouped(pair, meta, None, 'all_models', drop_think=False)
+    if args.all_models:
+        plot_entity_op_grouped(pair, meta, None, 'all_models', drop_think=False)
 
-    # Family-specific subsets from config
-    for suffix, (label, model_list) in FAMILY_SUBSETS.items():
-        plot_entity_op_grouped(pair, meta, set(model_list), f'family_{suffix}', drop_think=False)
+    if args.families:
+        for suffix, (label, model_list) in FAMILY_SUBSETS.items():
+            plot_entity_op_grouped(pair, meta, set(model_list), f'family_{suffix}', drop_think=False)
 
 
 if __name__ == '__main__':
