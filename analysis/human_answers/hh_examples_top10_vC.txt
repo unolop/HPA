@@ -1,0 +1,39 @@
+count  | object  | HH=0.783 | H=1.94 | acc=0.000
+  Q: "How many bottles of water are on the table?"
+  Top answers: "1" (16), "3" (11), "2" (10), "44 bottles" (1), "4" (1)
+
+act    | animal  | HH=0.770 | H=1.51 | acc=0.900
+  Q: "Do the horses love each other?"
+  Top answers: "yes" (27), "no" (8), "not really" (1), "They do." (1), "I don't know." (1)
+
+count  | food    | HH=0.770 | H=2.24 | acc=0.500
+  Q: "How many hot dogs are on this bun?"
+  Top answers: "1" (21), "3" (6), "2" (6), "7" (1), "10" (1)
+
+attr   | object  | HH=0.761 | H=2.30 | acc=0.475
+  Q: "What color are the appliances?"
+  Top answers: "white" (16), "black" (13), "gray" (3), "White" (2), "silver" (2)
+
+count  | product | HH=0.756 | H=2.14 | acc=0.600
+  Q: "How many earrings does the man have?"
+  Top answers: "2" (18), "1" (9), "0" (7), "4" (2), "3" (2)
+
+count  | object  | HH=0.750 | H=2.33 | acc=0.550
+  Q: "How many ski poles is this person holding?"
+  Top answers: "2" (22), "1" (5), "3" (4), "0" (2), "12" (1)
+
+count  | object  | HH=0.740 | H=2.71 | acc=0.417
+  Q: "How many train track are there?"
+  Top answers: "2" (14), "3" (8), "1" (5), "4" (5), "8" (2)
+
+attr   | object  | HH=0.729 | H=2.84 | acc=0.175
+  Q: "What is the color of the dog's collar?"
+  Top answers: "red" (13), "black" (9), "brown" (4), "white" (4), "pink" (3)
+
+count  | object  | HH=0.729 | H=2.78 | acc=0.233
+  Q: "How many benches are in the background?"
+  Top answers: "2" (15), "3" (7), "1" (5), "4" (4), "5" (2)
+
+count  | object  | HH=0.724 | H=2.49 | acc=0.233
+  Q: "How many red suitcases?"
+  Top answers: "1" (13), "2" (11), "3" (6), "0" (5), "453" (1)

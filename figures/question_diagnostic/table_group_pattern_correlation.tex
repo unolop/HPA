@@ -1,0 +1,38 @@
+\begin{table*}[t]
+\centering
+\caption{Correlation between each model's grouped HM-SBERT profile and the human grouped HH-SBERT profile (matched 7/8B subset, variants averaged). Higher values indicate that the model preserves the same category-level patterning as humans, regardless of absolute score level.}
+\label{tab:group_pattern_correlation}
+\small
+\begin{tabular}{lllrrr}
+\toprule
+Model & Group & Dimension & Pearson r & Spearman $\rho$ & N groups \\
+\midrule
+LLaVA-M bb & VLM backbone decoder & Entity groups & 0.982 & 1.000 & 5 \\
+InternVL-8B & VLM & Entity groups & 0.976 & 1.000 & 5 \\
+LLaVA-M & VLM & Entity groups & 0.945 & 0.900 & 5 \\
+Qwen3-VL-8B bb & VLM backbone decoder & Entity groups & 0.863 & 0.700 & 5 \\
+LLaVA-1.5 bb & VLM backbone decoder & Entity groups & 0.846 & 0.900 & 5 \\
+Qwen3-8B & standalone LLM & Entity groups & 0.789 & 0.900 & 5 \\
+LLaVA-V bb & VLM backbone decoder & Entity groups & 0.789 & 0.700 & 5 \\
+InternVL-8B bb & VLM backbone decoder & Entity groups & 0.769 & 0.900 & 5 \\
+Qwen3-VL-8B & VLM & Entity groups & 0.693 & 0.600 & 5 \\
+Qwen2.5-7B-Instruct & standalone LLM & Entity groups & 0.675 & 0.700 & 5 \\
+LLaVA-1.5 & VLM & Entity groups & 0.515 & 0.400 & 5 \\
+Vicuna-7B & standalone LLM & Entity groups & 0.497 & 0.600 & 5 \\
+LLaVA-V & VLM & Entity groups & 0.397 & 0.500 & 5 \\
+InternVL-8B & VLM & Operation groups & 0.991 & 1.000 & 6 \\
+LLaVA-M bb & VLM backbone decoder & Operation groups & 0.926 & 0.943 & 6 \\
+Qwen3-VL-8B & VLM & Operation groups & 0.907 & 0.771 & 6 \\
+LLaVA-1.5 bb & VLM backbone decoder & Operation groups & 0.895 & 0.943 & 6 \\
+LLaVA-1.5 & VLM & Operation groups & 0.881 & 0.714 & 6 \\
+LLaVA-V & VLM & Operation groups & 0.879 & 0.714 & 6 \\
+LLaVA-M & VLM & Operation groups & 0.872 & 0.829 & 6 \\
+LLaVA-V bb & VLM backbone decoder & Operation groups & 0.854 & 1.000 & 6 \\
+Qwen3-VL-8B bb & VLM backbone decoder & Operation groups & 0.853 & 1.000 & 6 \\
+Qwen2.5-7B-Instruct & standalone LLM & Operation groups & 0.715 & 0.886 & 6 \\
+Qwen3-8B & standalone LLM & Operation groups & 0.618 & 0.829 & 6 \\
+Vicuna-7B & standalone LLM & Operation groups & 0.545 & 0.886 & 6 \\
+InternVL-8B bb & VLM backbone decoder & Operation groups & 0.471 & 0.943 & 6 \\
+\bottomrule
+\end{tabular}
+\end{table*}

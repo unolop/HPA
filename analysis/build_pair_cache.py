@@ -95,6 +95,7 @@ def build_pair_cache(
     no_bertscore: bool = False,
     hf_cache: str | None = None,
     condition: str = 'inst_blind',
+    include_yesno: bool = False,
     verbose: bool = True,
 ) -> pd.DataFrame:
     """Build or incrementally update pair_cache.parquet.
@@ -161,12 +162,16 @@ def build_pair_cache(
     answer_type_map = {q['question_id']: q['answer_type'] for q in q_meta_list}
 
     common_qids = set(h_csv['question_id'].astype(int).unique())
-    text_qids   = {qid for qid in common_qids if answer_type_map.get(qid) == 'text'}
+    if include_yesno:
+        text_qids = common_qids
+    else:
+        text_qids = {qid for qid in common_qids if answer_type_map.get(qid) == 'text'}
 
     if verbose:
         yesno = common_qids - text_qids
         print(f'Questions: {len(common_qids)} total — '
-              f'{len(text_qids)} free-text, {len(yesno)} yes/no')
+              f'{len(text_qids)} {"all (incl. yes/no)" if include_yesno else "free-text"}'
+              f'{f", {len(yesno)} yes/no excluded" if not include_yesno else ""}')
 
     # Variant-aware question text: (qid, var) → en / kr
     q_en  = {q['question_id']: q.get('question_en', '') for q in q_meta_list}
@@ -784,6 +789,8 @@ if __name__ == '__main__':
                         help='Optional max words after cleaning (default: no truncation)')
     parser.add_argument('--output_tag', default=None,
                         help='Optional filename tag for cleaned cache outputs (e.g. w5)')
+    parser.add_argument('--include_yesno', action='store_true',
+                        help='Include yes/no questions (default: free-text only)')
     args = parser.parse_args()
 
     root    = Path(args.root) if args.root else ROOT
@@ -795,6 +802,7 @@ if __name__ == '__main__':
             exports=exports,
             no_bertscore=args.no_bertscore,
             condition=args.condition,
+            include_yesno=args.include_yesno,
             verbose=True,
         )
 

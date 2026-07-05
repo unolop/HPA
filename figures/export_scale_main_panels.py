@@ -33,10 +33,10 @@ plt.rcParams.update({
     "font.family": "DejaVu Sans",
     "axes.spines.top": False,
     "axes.spines.right": False,
-    "axes.labelsize": 11,
-    "axes.titlesize": 13,
-    "xtick.labelsize": 10,
-    "ytick.labelsize": 10,
+    "axes.labelsize": 12,
+    "axes.titlesize": 14,
+    "xtick.labelsize": 11,
+    "ytick.labelsize": 11,
 })
 
 
@@ -63,8 +63,8 @@ def _configure_xaxis(ax):
     sizes = sorted(set(MODEL_SIZE_B[m] for m in MODELS_SIZED))
     ax.set_xscale("log")
     ax.set_xticks(sizes)
-    ax.set_xticklabels([str(int(s)) if s == int(s) else str(s) for s in sizes], fontsize=8)
-    ax.set_xlabel("Parameters (B)", fontsize=10)
+    ax.set_xticklabels([str(int(s)) if s == int(s) else str(s) for s in sizes], fontsize=9)
+    ax.set_xlabel("Parameters (B)", fontsize=11)
     margin = 0.15
     ax.set_xlim(sizes[0] * (10 ** -margin), sizes[-1] * (10 ** margin))
 
@@ -118,7 +118,7 @@ def _plot_by_groups(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
             ax.plot(x_rng, y_fit, color=color, ls=":" if hollow else "--", lw=1.2, alpha=0.35 if grp == "standalone LLM (think)" else 0.45, zorder=line_z)
 
     hh_handle = mlines.Line2D([], [], color=HH_COLOR, ls="--", lw=1.6, label="Human baseline")
-    ax.set_ylabel(ylabel, fontsize=10)
+    ax.set_ylabel(ylabel, fontsize=11)
     _configure_xaxis(ax)
     _ensure_hh_visible(ax, hh_mean)
     handles, labels = ax.get_legend_handles_labels()
@@ -126,7 +126,7 @@ def _plot_by_groups(ax, stats: pd.DataFrame, ylabel: str, hh_mean: float, hh_ci:
     ax.legend(
         handles=[h for h, _ in filtered] + [hh_handle],
         labels=[l for _, l in filtered] + ["Human baseline"],
-        fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.18), ncol=5, frameon=True,
+        fontsize=9, loc="upper center", bbox_to_anchor=(0.5, -0.18), ncol=5, frameon=True,
     )
 
 

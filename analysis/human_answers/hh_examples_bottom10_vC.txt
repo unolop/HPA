@@ -1,0 +1,39 @@
+ident  | other   | HH=0.183 | H=5.27 | acc=0.000
+  Q: "What kind of information does the yellow and white book look like it contains?"
+  Top answers: "cooking" (2), "Environment" (1), "treasure map" (1), "Phone numbers" (1), "Exhibition information" (1)
+
+text   | object  | HH=0.219 | H=5.02 | acc=0.000
+  Q: "What does the shirt say?"
+  Top answers: "3" (2), "brand logo" (2), "english" (2), "number" (2), "Hello" (2)
+
+attr   | person  | HH=0.226 | H=5.17 | acc=0.000
+  Q: "What does the man's gesture mean?"
+  Top answers: "Anger" (2), "Okay" (2), "stop" (2), "It means to come here." (1), "Bye" (1)
+
+comp   | person  | HH=0.227 | H=5.00 | acc=0.017
+  Q: "What might a milkman have in common with the man with the backpack?"
+  Top answers: "gender" (3), "Carrying luggage" (2), "They are both men." (2), "person" (2), "Both are men." (2)
+
+text   | object  | HH=0.230 | H=4.95 | acc=0.075
+  Q: "What does the mile say?"
+  Top answers: "number" (3), "left" (2), "caution" (2), "Stop" (2), "english" (2)
+
+attr   | text    | HH=0.234 | H=5.12 | acc=0.000
+  Q: "What letter is yellow and white?"
+  Top answers: "english" (2), "number" (2), "warning" (2), "Alphabet" (2), "unknown" (1)
+
+attr   | object  | HH=0.270 | H=4.62 | acc=0.083
+  Q: "What is orange on the bike?"
+  Top answers: "pedal" (4), "saddle" (3), "wheel" (3), "light" (3), "Steering wheel" (2)
+
+act    | person  | HH=0.278 | H=4.68 | acc=0.033
+  Q: "What is this man being pulled by?"
+  Top answers: "dog" (4), "police" (3), "line" (3), "another person" (2), "person" (2)
+
+attr   | place   | HH=0.287 | H=5.20 | acc=0.000
+  Q: "What is the name of the store closest to the van?"
+  Top answers: "starbucks" (3), "Happy Coffee" (1), "Seven Eleven" (1), "Shin Woo Distribution" (1), "Gimbap Cheonguk" (1)
+
+spat   | animal  | HH=0.303 | H=4.53 | acc=0.075
+  Q: "What is the zebra standing in?"
+  Top answers: "thicket" (5), "savanna" (3), "grass" (3), "forest" (3), "desert" (2)

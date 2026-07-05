@@ -237,10 +237,10 @@ def _plot_main(ax, grp, pts, hh, category_col, order, n_map, title, reference_mo
     # xticks with counts
     labels = [f"{c}\n(n={int(n_map.get(c, 0))})" for c in order]
     ax.set_xticks(x)
-    ax.set_xticklabels(labels, fontsize=8)
+    ax.set_xticklabels(labels, fontsize=9.5)
     if show_ylabel:
-        ax.set_ylabel('HM SBERT cosine')
-    ax.set_title(title, fontsize=11)
+        ax.set_ylabel('HM SBERT cosine', fontsize=11)
+    ax.set_title(title, fontsize=12)
     ax.set_ylim(0.25, 0.70)
     ax.grid(axis='y', alpha=0.25)
 
@@ -281,7 +281,7 @@ def _add_legend(fig, reference_models, groups_plot):
                        lw=0, markersize=6, label=label)
             )
 
-    fig.legend(handles=handles, loc='lower center', ncol=6, frameon=True, fontsize=8,
+    fig.legend(handles=handles, loc='lower center', ncol=6, frameon=True, fontsize=9,
                bbox_to_anchor=(0.5, -0.01))
 
 
@@ -324,7 +324,7 @@ def plot_entity_op_grouped(pair, meta, subset_models, suffix, drop_think=False):
         title_scope = f'{len(subset_models)} matched models'
     fig.suptitle(
         f'HM SBERT by grouped entity/op categories with variant-spread error bars ({title_scope})',
-        fontsize=12
+        fontsize=13
     )
     _add_legend(fig, reference_models, groups_plot)
     plt.tight_layout(rect=[0, 0.06, 1, 0.93])

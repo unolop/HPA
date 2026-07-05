@@ -95,10 +95,10 @@ plt.rcParams.update(
         "axes.spines.top": False,
         "axes.spines.right": False,
         "axes.grid": False,
-        "axes.labelsize": 11,
-        "xtick.labelsize": 10,
-        "ytick.labelsize": 10,
-        "legend.fontsize": 8,
+        "axes.labelsize": 12,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "legend.fontsize": 9,
     }
 )
 
