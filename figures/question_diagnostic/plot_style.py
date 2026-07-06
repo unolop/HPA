@@ -5,10 +5,9 @@ Usage: import plot_style  (at top of each plotting script, before any plt calls)
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-# 10pt Times New Roman throughout
+# 10pt, default sans-serif font family
 plt.rcParams.update({
-    "font.family": "serif",
-    "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
+    "font.family": "sans-serif",
     "font.size": 10,
     "axes.titlesize": 10,
     "axes.labelsize": 10,
@@ -16,5 +15,4 @@ plt.rcParams.update({
     "ytick.labelsize": 9,
     "legend.fontsize": 9,
     "figure.titlesize": 11,
-    "mathtext.fontset": "stix",  # Times-compatible math
 })

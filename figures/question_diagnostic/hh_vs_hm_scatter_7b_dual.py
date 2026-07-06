@@ -8,6 +8,8 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+import plot_style  # noqa: F401 — sets 10pt Times New Roman
+
 ROOT = Path(__file__).resolve().parents[2]
 EXPORTS = ROOT / "analysis/session2/exports"
 OUTDIR = Path(__file__).resolve().parent
@@ -79,10 +81,10 @@ def make_scatter(pc: pd.DataFrame, models: list[str], suffix: str, title_extra: 
                 r_v, _ = stats.pearsonr(vs["hh_sbert"], vs["hm_sbert"])
                 corr_text += f"{short}: r={r_v:.3f}\n"
 
-        ax.set_title(model, fontsize=11, fontweight="bold")
+        ax.set_title(model, fontsize=10, fontweight="bold")
         ax.text(
             0.02, 0.98, corr_text.strip(), transform=ax.transAxes,
-            fontsize=7.5, va="top", ha="left",
+            fontsize=8, va="top", ha="left",
             bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
         )
         ax.plot([0.1, 0.95], [0.1, 0.95], "--", color="gray", alpha=0.4, lw=1)
@@ -90,9 +92,9 @@ def make_scatter(pc: pd.DataFrame, models: list[str], suffix: str, title_extra: 
         ax.set_ylim(0.1, 0.95)
 
         if idx % ncols == 0:
-            ax.set_ylabel("HM SBERT", fontsize=10)
+            ax.set_ylabel("HM SBERT")
         if idx // ncols == nrows - 1:
-            ax.set_xlabel("HH SBERT", fontsize=10)
+            ax.set_xlabel("HH SBERT")
 
     for idx in range(len(models), nrows * ncols):
         axes[idx // ncols][idx % ncols].set_visible(False)
@@ -102,15 +104,15 @@ def make_scatter(pc: pd.DataFrame, models: list[str], suffix: str, title_extra: 
         if row_idx < nrows:
             axes[row_idx][0].annotate(
                 label, xy=(-0.35, 0.5), xycoords="axes fraction",
-                fontsize=12, fontweight="bold", rotation=90,
+                fontsize=10, fontweight="bold", rotation=90,
                 ha="center", va="center",
             )
 
     handles, labels = axes[0][0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="upper center", ncol=3, fontsize=11,
+    fig.legend(handles, labels, loc="upper center", ncol=3,
                bbox_to_anchor=(0.5, 1.02))
     n_q = pc[pc["pair_type"] == "HH"]["question_id"].nunique()
-    fig.suptitle(f"HH vs HM SBERT (7B scale, n={n_q}){title_extra}", fontsize=14, y=1.05)
+    fig.suptitle(f"HH vs HM SBERT (7B scale, n={n_q}){title_extra}", fontsize=11, y=1.05)
     plt.tight_layout()
     fig.subplots_adjust(left=0.07)
 

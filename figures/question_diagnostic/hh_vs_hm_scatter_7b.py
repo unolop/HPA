@@ -9,6 +9,8 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+import plot_style  # noqa: F401 — sets 10pt Times New Roman
+
 ROOT = Path(__file__).resolve().parents[2]
 EXPORTS = ROOT / "analysis/session2/exports"
 OUTDIR = Path(__file__).resolve().parent
@@ -38,7 +40,7 @@ models_7b = [
     # Backbone decoder
     "InternVL-8B (LM)", "Qwen3-VL-8B (LM)", "LLaVA-1.5 (LM)", "LLaVA-Mistral (LM)", "LLaVA-Vicuna (LM)",
     # Standalone LLM
-    "Qwen3-8B", "Qwen3-8B (think)", "Qwen2.5-7B-Instruct", "Vicuna-7B", "Mistral-7B",
+    "Qwen3-8B", "Qwen2.5-7B-Instruct", "Vicuna-7B", "Mistral-7B",
 ]
 models_7b = [m for m in models_7b if m in hm_agg["subject_2"].unique()]
 
@@ -50,9 +52,9 @@ merged = hm_agg[hm_agg["subject_2"].isin(models_7b)].merge(
 variant_colors = {"C": "#1f77b4", "B": "#ff7f0e", "A": "#2ca02c"}
 variant_labels = {"C": "Original", "B": "Weaker", "A": "Pronominalized"}
 
-ncols = 5
+ncols = 4
 nrows = int(np.ceil(len(models_7b) / ncols))
-fig, axes = plt.subplots(nrows, ncols, figsize=(4.2 * ncols, 4 * nrows), squeeze=False)
+fig, axes = plt.subplots(nrows, ncols, figsize=(4.8 * ncols, 4.6 * nrows), squeeze=False)
 
 for idx, model in enumerate(models_7b):
     ax = axes[idx // ncols][idx % ncols]
@@ -63,7 +65,7 @@ for idx, model in enumerate(models_7b):
         ax.scatter(
             vs["hh_sbert"], vs["hm_sbert"],
             c=variant_colors[v], label=variant_labels[v],
-            alpha=0.5, s=20, edgecolors="none",
+            alpha=0.55, s=18, edgecolors="none",
         )
 
     # Correlations
@@ -75,11 +77,11 @@ for idx, model in enumerate(models_7b):
             r_v, _ = stats.pearsonr(vs["hh_sbert"], vs["hm_sbert"])
             corr_text += f"{short}: r={r_v:.3f}\n"
 
-    ax.set_title(model, fontsize=11, fontweight="bold")
+    ax.set_title(model, fontsize=10, fontweight="bold")
     ax.text(
         0.02, 0.98, corr_text.strip(), transform=ax.transAxes,
-        fontsize=7.5, va="top", ha="left",
-        bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
+        fontsize=8, va="top", ha="left",
+        bbox=dict(boxstyle="round,pad=0.35", facecolor="white", alpha=0.88),
     )
 
     ax.plot([0.1, 0.95], [0.1, 0.95], "--", color="gray", alpha=0.4, lw=1)
@@ -87,9 +89,9 @@ for idx, model in enumerate(models_7b):
     ax.set_ylim(0.1, 0.95)
 
     if idx % ncols == 0:
-        ax.set_ylabel("HM SBERT", fontsize=10)
+        ax.set_ylabel("HM SBERT")
     if idx // ncols == nrows - 1:
-        ax.set_xlabel("HH SBERT", fontsize=10)
+        ax.set_xlabel("HH SBERT")
 
 for idx in range(len(models_7b), nrows * ncols):
     axes[idx // ncols][idx % ncols].set_visible(False)
@@ -100,16 +102,16 @@ for row_idx, label in enumerate(row_labels):
     if row_idx < nrows:
         axes[row_idx][0].annotate(
             label, xy=(-0.35, 0.5), xycoords="axes fraction",
-            fontsize=12, fontweight="bold", rotation=90,
+            fontsize=10, fontweight="bold", rotation=90,
             ha="center", va="center",
         )
 
 handles, labels = axes[0][0].get_legend_handles_labels()
-fig.legend(handles, labels, loc="upper center", ncol=3, fontsize=11,
+fig.legend(handles, labels, loc="upper center", ncol=3,
            bbox_to_anchor=(0.5, 1.02))
-fig.suptitle("Human–Human vs Human–Model SBERT (7B scale)", fontsize=14, y=1.05)
+fig.suptitle("Human\u2013Human vs Human\u2013Model SBERT (7B scale)", fontsize=11, y=1.04)
 plt.tight_layout()
-fig.subplots_adjust(left=0.07)
+fig.subplots_adjust(left=0.09)
 
 out = OUTDIR / "hh_vs_hm_scatter_7b.png"
 fig.savefig(out, dpi=200, bbox_inches="tight")

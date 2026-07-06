@@ -8,6 +8,8 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
+import plot_style  # noqa: F401 — sets 10pt Times New Roman
+
 ROOT = Path(__file__).resolve().parents[2]
 EXPORTS = ROOT / "analysis/session2/exports"
 OUTDIR = Path(__file__).resolve().parent
@@ -96,12 +98,12 @@ def make_heatmap(pc: pd.DataFrame, suffix: str, title_extra: str = ""):
     for y_pos, label in group_labels.items():
         ax.text(
             len(op_order) + 0.6, y_pos + 0.5, label,
-            fontsize=9, fontweight="bold", va="center", ha="left",
+            fontsize=10, fontweight="bold", va="center", ha="left",
         )
 
-    ax.set_xlabel("Operation Type", fontsize=12)
+    ax.set_xlabel("Operation Type")
     ax.set_ylabel("")
-    ax.set_title(f"HM SBERT by Operation Group (7B scale){title_extra}", fontsize=13)
+    ax.set_title(f"HM SBERT by Operation Group (7B scale){title_extra}")
     plt.tight_layout()
 
     out = OUTDIR / f"hh_vs_hm_heatmap_7b{suffix}.png"

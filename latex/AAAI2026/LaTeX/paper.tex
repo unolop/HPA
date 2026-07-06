@@ -37,47 +37,36 @@
 % ─────────────────────────────────────────────────────────────────────────────
 \begin{abstract}
 Vision-Language Models (VLMs) can achieve non-trivial accuracy on visual
-question answering (VQA) benchmarks without any visual input, indicating
-reliance on linguistic priors embedded in the question text. We argue that
-this is not only a benchmark artifact but a structural weakness of current
-modular VLMs: when visual evidence is uninformative, the vision encoder lacks
-a neutral mode and perturbs the language backbone rather than cleanly
-withdrawing. Prior work has diagnosed this phenomenon through benchmark
-filtering and counterfactual images, but the \emph{structure} of these
-priors---and whether they resemble human linguistic expectations---remains
-largely unexplored. Humans facing questions under incomplete information are
-known to fall back on cognitive heuristics such as availability and
-representativeness, producing structured prior-driven responses rather than
-random guesses. Understanding whether model priors mirror these human
-heuristics---or diverge from them---is essential for diagnosing shortcut
-reliance versus genuinely human-like reasoning. Using a human blind-answer
-dataset ($N{=}40$) and 37 models spanning four architectural groups, we
-measure semantic agreement rather than ground-truth accuracy, separating
-linguistic prior alignment from training-set leakage.
-We introduce an \emph{operation--entity taxonomy} that categorizes each
-question by its reasoning operation (count, identity, action, attribute,
-spatial) and entity type (person, animal, object, food, place), capturing
-semantic structure not reflected in the VQA dataset's original
-question-type annotations.
-Human blind agreement is organized primarily by operation type---count
-questions maintain strong consensus (mean pairwise semantic
-similarity${=}0.66$) while identity questions collapse under lexical
-weakening (from $0.53$ to $0.34$)---whereas entity type has no significant
-effect ($p{>}0.38$, one-way ANOVA).
-A counterintuitive finding emerges: the model group most aligned with human
-blind priors is not the full VLM but the \emph{backbone decoder}---the same
-weights with the vision encoder bypassed. Image-condition ablations
-confirm that the vision encoder has no neutral
-mode: even on uninformative input it actively modulates the language model's
-output distribution, pushing answers away from the human linguistic prior.
-\emph{Control question variants}---progressive reformulations that strip
-content-noun anchors---serve as a pronominalization test for visual
-grounding: model agreement drops monotonically while the human--human
-ceiling barely moves, confirming lexical-anchor dependence. The
-operation--entity decomposition identifies
-where alignment holds (action, attribute) and where it breaks:
-count questions show the largest human--model gap despite high human
-consensus, and identity questions are most sensitive to lexical anchor removal.
+question answering (VQA) benchmarks without any visual input, suggesting
+reliance on linguistic priors embedded in the question text. This is
+typically treated as a training-data leakage artifact or shortcut
+behavior, but humans facing questions under incomplete information also
+rely on systematic cognitive heuristics---availability,
+representativeness, and world knowledge---to produce structured rather
+than random responses. Are model blind priors merely dataset leakage, or
+do they reflect something closer to the human cognitive priors that
+arise under the same conditions? Prior work has diagnosed this phenomenon
+through benchmark filtering and counterfactual images, but the
+\emph{structure} of these model priors---and whether they resemble the
+human priors that arise under the same conditions---remains largely
+unexplored. We address this gap by comparing blind responses from 37 models
+across three architectural groups against a human blind-answer reference
+($N{=}40$), measuring semantic agreement rather than ground-truth accuracy.
+To analyze where human and model priors converge or diverge, we introduce an
+\emph{operation--entity taxonomy} that categorizes each question by its
+reasoning operation (count, identity, action, attribute, spatial) and entity
+type (person, animal, object, food, place). A counterintuitive finding
+emerges: the model group most aligned with human blind priors is not the full
+VLM but the \emph{backbone decoder}---the same weights with the vision encoder
+bypassed. Image-condition ablations show that on uninformative input, the
+vision encoder actively modulates the language model's output distribution
+rather than cleanly withdrawing. Progressive reformulations that strip
+content-noun anchors reveal lexical-anchor dependence: model agreement drops
+monotonically while the human--human ceiling barely moves. The
+operation--entity decomposition further shows that alignment varies
+systematically by reasoning type, with identity questions most sensitive to
+anchor removal and count questions showing persistent human--model divergence
+in answer distributions.
 \end{abstract}
 
 % ─────────────────────────────────────────────────────────────────────────────
@@ -88,17 +77,18 @@ answering (VQA) benchmarks \citep{antol2015vqa,goyal2016making}. Yet prior
 work has shown that text-only models can achieve non-trivial accuracy on VQA
 without any visual input \citep{jabri2016revisiting,zhang2016yin}, and recent
 benchmark audits confirm that language-only signals remain exploitable in
-modern multimodal evaluations \citep{chen2024are,lee2024vlind}. This suggests
-that models can rely on the language-model side of the system and exploit
-shortcut priors carried by the question itself, producing plausible answers
-without grounding them in the image. In this paper we argue that the problem
-is not only shortcut use at the benchmark level, but also a structural
-weakness of current modular VLMs: when visual evidence is uninformative, the
-vision encoder lacks a neutral mode and can act as a nuisance variable that
-pushes the language backbone away from the blind prior it would otherwise
-express. This raises a fundamental question: when visual grounding is
-unavailable, what priors drive those answers, and to what extent are those
-priors shared between humans and modern AI systems?
+modern multimodal evaluations \citep{chen2024are,lee2024vlind}.
+Analogous to hypothesis-only baselines in natural language inference
+\citep{poliak2018hypothesis}, where models can predict entailment from the
+hypothesis alone without seeing the premise, VLMs can exploit shortcut priors
+carried by the question text to produce plausible answers without grounding
+them in the image. This raises a broader question beyond benchmark accuracy:
+when visual grounding is unavailable, what priors drive model answers, and to
+what extent are those priors shared with human linguistic expectations? In
+this paper, we investigate this question by comparing blind model responses
+against a human reference, revealing that the vision encoder's behavior on
+uninformative input plays a key role in shaping how model priors diverge from
+human ones.
 
 Prior work on VQA has largely approached this issue through the lens of
 dataset bias and shortcut learning. Early work showed that text-only models
@@ -123,7 +113,10 @@ expectations \citep{kahneman2011thinking}. This makes human blind answers a
 meaningful reference point, not mere noise. Recent work on human--AI alignment
 argues that model behavior should be evaluated against human response
 distributions rather than only against task labels
-\citep{lan2025mind,bao2026imagination}. Under ambiguous or underspecified
+\citep{lan2025mind,bao2026imagination}. \citet{kwon2025whatllms} show that
+LLMs exhibit distinct intrinsic generative biases even under minimal
+prompts, with different model families favoring systematically different
+topical and structural defaults. Under ambiguous or underspecified
 inputs, humans show structured patterns of agreement and disagreement that
 reveal latent expectations about plausible interpretations, whereas
 contemporary models often collapse toward narrow modal regions of response
@@ -268,7 +261,7 @@ families, plus standalone LLM baselines (Qwen3 \citep{yang2025qwen3},
 Qwen2.5-7B(-Instruct), Mistral-7B, Vicuna-7B/13B, Phi-3.5-mini).
 All evaluations are zero-shot at temperature~0. Throughout the paper, we use
 \emph{model family} for named lineages such as Qwen3-VL, InternVL, and
-LLaVA, and \emph{model group} for the four evaluation categories below.
+LLaVA, and \emph{model group} for the three evaluation categories below.
 Models are organized into three groups:
 \textbf{VLM} (full vision-language stack), \textbf{Backbone decoder} (same
 checkpoint, vision encoder bypassed), \textbf{standalone LLM}, and
@@ -290,19 +283,15 @@ The subset covers the full semantic range of the
 pool, confirmed by t-SNE embedding visualization
 (Appendix~\ref{app:tsne}).
 
-Our main experimental paradigm is \textbf{blind answering with an explicit
-awareness instruction}: a blank 224$\times$224 black PNG replacing the image,
-plus the instruction
-\textit{``Note: No images are provided. For each question, imagine an
-appropriate image exists and answer based on the most common or universal
-scenario.''} This framing elicits prior-driven answers without triggering
-refusal behavior. As a supplementary ablation, we also evaluate blind
-answering without the instruction (blank image only) and report
-instruction-effect analyses---including abstention shifts and
-calibration---as robustness checks
+Our experimental paradigm uses a blank 224$\times$224 black image in place of
+the original visual input, together with the instruction \textit{``Note: No
+images are provided. For each question, imagine an appropriate image exists
+and answer based on the most common or universal scenario.''} This framing
+elicits prior-driven answers while reducing refusal behavior. Because
+abstention is also an informative aspect of model behavior, we additionally
+evaluate blind answering without the instruction and report the resulting
+abstention shifts as a supplementary robustness analysis
 (Appendix~\ref{app:abstention_calibration}).
-Image-content ablations (gray, noise, and white images) are reported
-separately in Section~\ref{sec:ablation}.
 
 \subsection{Control Question Variants}
 \label{sec:control}
@@ -326,67 +315,59 @@ depend primarily on lexical cues or on broader semantic and commonsense priors.
 For analysis, each question is additionally annotated along two orthogonal
 dimensions: \emph{operation} (e.g., count, attribute, action, spatial,
 identity) and \emph{entity} (e.g., person, animal, object, vehicle, food,
-place). This taxonomy enables us to disentangle effects arising from the
-reasoning operation required by a question from those associated with the
-entities mentioned in it.
+place). We use this two-axis taxonomy to separate \emph{what kind of reasoning}
+the question demands from \emph{what semantic field} its lexical anchors evoke,
+so that agreement patterns can be analyzed independently by operation and by
+entity type rather than conflated in a single label space.
 
 \subsection{Human Data Collection}
 \label{sec:human_data}
 
 40 participants were recruited via online university community forums under
-an IRB-approved protocol (10,000~KRW/hour). Participants answered text-only
+an IRB-approved protocol. Participants answered text-only
 explicit no-image blind-instruction questions in Korean or English; responses were translated and
-normalized. We applied a raw-response qualification threshold ($\geq$348)
-before subset intersection, then restricted analysis to the questions answered
-by all qualifying participants across three controlled reformulations
-(original / weaker-object / pronominalized), yielding 339 question--variant
-pairs per participant. Human--model comparisons use this full
-question--variant set under the explicit no-image blind condition.
-Free-text-only slices (excluding yes/no) are treated as robustness checks. For instruction-effect human--model deltas and common-set filtering, we use the
-open-ended slice within this subset to avoid yes/no lexical
-ceiling effects. Translation and normalization are applied uniformly before
+normalized. Translation and normalization are applied uniformly before
 scoring so that agreement metrics reflect semantic content rather than
-language-specific formatting differences. Full protocol in
-Appendix~\ref{app:human}.
+language-specific formatting differences (Appendix~\ref{app:human}).
+Agreement metrics are computed over 339 question--variant pairs
+per human and per model.
 
 \subsection{Metrics and Evaluation Protocols}
 \label{sec:eval_protocols}
 
-Task accuracy uses the standard VQA soft evaluation
-\citep{antol2015vqa}. For semantic agreement, we compute pairwise
+\textbf{Task Performance.} Although no image is provided at inference time,
+we report blind VQA task accuracy as a complementary behavioral signal of how
+models respond to question-only inputs. We include it as a secondary metric
+because it also indicates how strongly models leverage question-side priors,
+biases, and shortcuts rather than true visual grounding under blind answering
+\citep{chen2024are,lee2024vlind}.
+
+\textbf{Alignment.} For semantic agreement, we compute pairwise
 Sentence-BERT cosine similarity \citep{wang2020minilm} between responses,
-applied to both human--human pairs (measuring within-group consensus) and
-human--model pairs (measuring cross-group alignment). This allows us to
-compare how closely models approximate the human prior structure at the
-per-question level. We additionally report lexical overlap metrics (chrF,
-ROUGE-1, exact match) as robustness checks in Appendix~\ref{app:metrics}.
+applied to human--human (HH) pairs (measuring within-group consensus),
+human--model (HM) pairs (measuring alignment to human priors), and
+model--model pairs. This allows us to compare how closely models approximate
+the human prior structure at the per-question level. Because embedding-based
+agreement can be mildly affected by response length before cosine comparison,
+we use raw SBERT as the primary semantic metric and report truncated-answer
+robustness tables in Appendix~\ref{app:metrics}; these are mainly relevant
+for more verbose standalone LLM outputs. We additionally report lexical
+overlap metrics (chrF, ROUGE-1, exact match) as robustness checks in
+Appendix~\ref{app:metrics}.
 % \textbf{Difficulty correlation} is Pearson~$r$ between per-question human
 % accuracy and per-model accuracy. \textbf{Krippendorff's $\alpha$} (nominal)
 % measures within- and cross-group reliability. \textbf{Token confidence} is
 % mean token probability from output logprobs.
 
-All answers undergo VQA-standard preprocessing before scoring: stripping
+\textbf{Preprocessing.} All answers undergo VQA-standard preprocessing before scoring: stripping
 articles (\textit{a, an, the}), normalizing punctuation, and converting
-common count words (e.g., \textit{three}, \textit{twelve}) to digits for both
-human and model responses \citep{antol2015vqa}. Generic answer wrappers
+and common count words (e.g., \textit{three}, \textit{twelve}) to digits for
+both human and model responses \citep{antol2015vqa}. Generic answer wrappers
 (e.g.,\ \textit{``answer is ...''}) are removed before normalization, and
-Korean answers are translated to English and then lightly normalized for
-VQA-style comparison. These translated and normalized strings are the inputs
-to the HH/HM SBERT calculations.
-
-To separate content-level agreement from refusal and verbosity artifacts, we
-report two complementary agreement views in the supplement. The
-inclusive view preserves all available responses, including abstention
-behavior. A shared substantive-response view restricts comparison to question
-IDs on which the relevant models produced non-abstaining answers, allowing
-matched-group robustness checks under a common question set.
-
-% Outputs are classified as \textit{hard-abstained}, \textit{soft-abstained},
-% \textit{committed-correct}, and \textit{committed-wrong}.
-Instruction effects
-are treated as a supplementary robustness analysis, where we separately check
-agreement and abstention shifts so that apparent human--model gains are
-not misread as simple refusal collapse.
+Korean answers are translated to English and then processed with the same
+VQA-style normalization used elsewhere in the paper. These translated and
+normalized strings are the inputs to the pairwise human--human and
+human--model agreement calculations.
 
 \textbf{Shared substantive-response evaluation} addresses the confound that
 some models abstain while others answer. For this robustness view, we remove
@@ -506,6 +487,8 @@ decreases only modestly under pronominalization. This gives the reference
 point for the model analysis below: humans do lose some agreement when
 entity cues are stripped, but the loss is concentrated in a few operations
 rather than being global.
+Within the human reference itself, identity shows the clearest observed
+degradation, while count provides the most stable contrast case.
 
 \begin{figure*}[t]
 \centering
@@ -565,6 +548,9 @@ reasoning does not depend on content-noun anchors in the same way as models.
 The same backbone $>$ VLM relation also holds within individual model
 families, with the widest paired gap in InternVL and a notable low-alignment
 outlier at Qwen3-VL-32B (Appendix~\ref{app:family_alignment}).
+Among the tested groups, backbone decoders remain the closest to the human
+trajectory under lexical weakening, with InternVL providing the clearest
+within-family backbone-over-VLM contrast.
 
 \subsection{Scale Trends}
 \label{sec:scale}
@@ -599,7 +585,9 @@ how strongly that regime is expressed. We treat substantive-response
 filtering as a supplementary robustness check rather than a separate
 evaluation regime; it narrows some absolute gaps for verbose
 models but does not change the group ordering
-(Appendix~\ref{app:metrics}; Table~\ref{tab:comprehensive_inst_blind}).
+(Appendix~\ref{app:metrics}; Table~\ref{tab:comprehensive_inst_blind}). At
+this scale, the strongest blind-accuracy models are full VLMs, whereas
+backbone decoders remain closer to the human reference on semantic alignment.
 
 \subsection{Aggregate Agreement Levels}
 \label{sec:model_similarity}
@@ -642,6 +630,14 @@ refusal behavior or format mismatch---drive the separation. As the
 distribution analysis later shows, part of this gap comes from standalone LLMs
 placing much more mass on heterogeneous ``other'' answers rather than on the
 compact VQA-style answer sets that humans and decoders more often occupy.
+This contrast is visible even at the model level. On the instruction-only
+original blind condition, the highest blind-accuracy models are
+LLaVA-Mistral, LLaVA-1.5 (LM), and LLaVA-Mistral (LM), all at 0.537,
+whereas Mistral-7B falls to 0.000. Yet the strongest human--model SBERT in
+the same condition comes from InternVL-8B (0.619), with several backbone
+decoders clustered close behind. High blind accuracy therefore does not by
+itself signal stronger human alignment; among the tested model groups,
+backbone decoders remain closest to the human reference overall.
 
 % ═══════════════════════════════════════════════════════════════════════════
 % §5  CATEGORY-LEVEL PATTERNS
@@ -679,7 +675,16 @@ be shifted downward overall. We therefore treat HH$\to$HM correlation as a
 structural complement to the raw alignment level, not a replacement for it.
 Grouped operation/entity summaries remain useful for interpretation and are
 reported in the supplementary material (Figure~\ref{fig:op_hm};
-Table~\ref{tab:group_pattern_correlation}).
+Tables~\ref{tab:group_corr_op} and~\ref{tab:group_corr_ent}). At that grouped level,
+InternVL-8B provides the closest operation-level match to the human profile
+($\rho=0.982$), while LLaVA-Mistral (LM) is strongest on entity groups
+($\rho=0.900$).
+The dense upper-right region of Figure~\ref{fig:hh_hm_scatter} is populated
+mainly by constrained-answer questions, especially yes/no and some count
+items, where both human consensus and human--model agreement are relatively
+high. This concentration reflects both genuinely stronger shared priors and
+the fact that compact answer spaces are easier to align under SBERT, so the
+scatter is interpreted jointly with the answer-distribution analysis below.
 
 The same answer-distribution mechanisms remain visible beneath this scatter.
 Identity questions are especially sensitive to anchor removal in the human
@@ -699,6 +704,9 @@ as \emph{``asleep''}, \emph{``closed''}, or \emph{``not always''}, and
 count-type outputs such as \emph{``many''}, \emph{``half''}, or
 \emph{``infinite''}). That broader ``other'' region is one reason their
 human--model alignment remains lower even when abstentions are filtered.
+At the per-question level, backbone decoders most consistently track the
+human agreement structure, and InternVL-8B is the single
+highest-correlation panel in the matched set.
 
 % ═══════════════════════════════════════════════════════════════════════════
 % §6  IMAGE-CONDITION ABLATION
@@ -762,6 +770,9 @@ and on uninformative input that contribution is noise that pushes the
 language model away from the human-like linguistic prior it would otherwise
 express. This explains why the backbone decoder---free from this
 modulation---produces the most human-aligned blind responses.
+Among the tested full VLMs, LLaVA-Mistral is the most stable across
+uninformative image conditions, whereas Qwen3-VL-8B is the most
+image-sensitive; neither family recovers the decoder-level reference.
 
 % ═══════════════════════════════════════════════════════════════════════════
 % §7  INSTRUCTION EFFECTS AND CONFUND CONTROLS
@@ -793,6 +804,9 @@ The shared substantive-response comparison restricts to questions on which
 models produced non-abstaining answers. human--model SBERT increases modestly under
 filtering, but the backbone--VLM--standalone ordering is preserved,
 showing that the main pattern is not an artifact of abstention-heavy items.
+After these controls, the backbone-decoder group still remains closest to
+human answers, indicating that the main alignment result is not a refusal or
+formatting artifact.
 
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Discussion}
@@ -1019,9 +1033,141 @@ Tables~\ref{tab:comprehensive_inst_blind}
 and~\ref{tab:comprehensive_inst_blind_w5} report agreement across all metrics.
 chrF scores are computed with the \texttt{sacrebleu} implementation.
 
-\input{tables/comprehensive_inst_blind}
+\begin{table*}[t]
+\scriptsize
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lc|cccccc|cccccc|cccccc}
+\toprule
+\textbf{Model} & \textbf{Size} & \multicolumn{6}{c|}{\textbf{Original}}& \multicolumn{6}{c|}{\textbf{Weaker}}& \multicolumn{6}{c}{\textbf{Pronominalized}} \\
+\cmidrule(lr){3-8}\cmidrule(lr){9-14}\cmidrule(lr){15-20}
+ & & \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\
+\midrule
+\textbf{Human (N=40)} & -- & 26.3 & 1.3 & 59.4 & 27.2 & 23.9 & 22.6 & 22.9 & 1.3 & 57.8 & 26.7 & 23.3 & 22.4 & 22.6 & 1.3 & 55.9 & 24.1 & 20.7 & 20.2 \\
+\midrule
+\multicolumn{20}{c}{\textit{Vision-Language Models}} \\
+\midrule
+\multirow{3}{*}{InternVL} & 1B & 36.9 & 1.2 & \underline{57.7} & 23.2 & 19.3 & 18.5 & 36.6 & 1.2 & 54.8 & 21.6 & 18.3 & 17.9 & 33.6 & 1.2 & \underline{53.4} & \underline{21.6} & \underline{18.3} & \underline{18.0} \\
+ & 2B & 44.5 & 1.3 & 55.4 & 20.9 & 17.1 & 15.7 & 38.6 & 1.2 & \underline{55.6} & 21.8 & 18.4 & 17.6 & 39.2 & 1.3 & 52.7 & 20.3 & 16.5 & 16.2 \\
+ & 8B & 37.2 & 1.5 & \textbf{61.2} & \textbf{27.4} & \textbf{22.9} & \textbf{21.5} & 33.3 & \underline{1.7} & \textbf{59.0} & \textbf{26.2} & \textbf{22.9} & \textbf{22.1} & 29.5 & \underline{1.7} & \textbf{55.5} & \textbf{22.4} & \textbf{19.1} & \textbf{18.3} \\
+LLaVA-1.5 & 7B & 47.2 & 1.0 & 51.9 & 18.6 & 15.0 & 15.0 & \textbf{47.5} & 1.0 & 50.8 & 16.8 & 13.9 & 13.7 & 35.4 & 1.1 & 48.5 & 16.2 & 13.5 & 13.6 \\
+LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 55.6 & 21.8 & 17.8 & 17.2 & \underline{46.0} & 1.1 & 53.9 & 20.6 & 17.5 & 17.3 & \underline{41.3} & 1.1 & 50.2 & 17.9 & 14.6 & 14.5 \\
+\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 51.6 & 1.0 & 54.4 & 20.8 & 17.4 & 16.7 & 44.2 & 1.0 & 52.2 & 18.9 & 15.6 & 15.3 & \textbf{42.3} & 1.0 & 50.9 & 18.2 & 15.0 & 14.9 \\
+ & 13B & \underline{52.4} & 1.0 & 56.3 & \underline{23.8} & \underline{20.4} & \underline{20.1} & 38.6 & 1.1 & 54.5 & 22.8 & 19.7 & 19.4 & 37.5 & 1.0 & 51.9 & 18.5 & 15.3 & 15.3 \\
+\multirow{4}{*}{Qwen3-VL} & 2B & 47.6 & 1.3 & 56.1 & 21.6 & 17.5 & 16.3 & 41.9 & 1.3 & 53.4 & 20.6 & 16.6 & 16.4 & 40.2 & 1.3 & 52.6 & 19.0 & 15.6 & 15.4 \\
+ & 4B & 50.1 & 1.2 & 56.8 & 23.5 & 19.2 & 18.3 & 37.5 & 1.2 & 55.2 & 23.9 & 20.2 & 19.9 & 38.7 & 1.1 & 52.7 & 20.7 & 17.5 & 17.1 \\
+ & 8B & 47.3 & \underline{3.3} & 56.1 & 23.0 & 19.5 & 18.6 & 38.4 & 1.5 & 54.8 & \underline{24.1} & \underline{20.4} & \underline{20.1} & 33.3 & 1.3 & 52.2 & 21.1 & 17.7 & 17.5 \\
+ & 32B & 37.5 & \textbf{28} & 51.6 & 20.3 & 18.0 & 16.2 & 27.4 & \textbf{29} & 48.8 & 19.7 & 17.4 & 16.2 & 17.1 & \textbf{35} & 46.5 & 15.1 & 12.8 & 12.2 \\
+\midrule
+\multicolumn{20}{c}{\textit{VLM Backbone Decoders}} \\
+\midrule
+\multirow{3}{*}{InternVL} & 1B & 28.9 & 1.4 & \textbf{59.5} & 27.3 & \underline{23.9} & \underline{22.8} & 26.0 & 1.2 & 57.3 & 26.9 & 23.5 & 22.4 & 23.8 & 1.7 & 55.1 & \underline{24.0} & 20.3 & 19.8 \\
+ & 2B & 30.7 & \underline{3.9} & 55.1 & 25.1 & 21.5 & 20.2 & 25.7 & 3.9 & 54.8 & 25.8 & 22.8 & 21.4 & 25.3 & \underline{5.5} & 53.4 & \textbf{24.8} & \textbf{21.5} & \textbf{20.7} \\
+ & 8B & 39.8 & 3.8 & 58.9 & \textbf{28.8} & \textbf{24.4} & 22.7 & 34.5 & \textbf{5.1} & 55.8 & 26.9 & 23.7 & 22.7 & 19.9 & \textbf{15} & 46.9 & 20.9 & 17.8 & 16.8 \\
+LLaVA-1.5 & 7B & \textbf{53.7} & 1.1 & 58.8 & 27.0 & 22.9 & 22.2 & 35.1 & 1.2 & 56.9 & 27.2 & 23.1 & 22.6 & 32.1 & 1.6 & 55.5 & 22.7 & 19.0 & 18.8 \\
+LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 59.0 & 25.4 & 21.4 & 20.8 & \textbf{39.5} & 1.1 & 57.5 & 25.3 & 21.9 & 21.6 & \underline{37.2} & 1.3 & \underline{55.7} & 23.1 & 19.4 & 19.2 \\
+\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 44.5 & 1.1 & 59.3 & 27.2 & 23.1 & 22.5 & 36.9 & 1.1 & 57.1 & 26.8 & 23.1 & 22.4 & 30.4 & 1.4 & 54.9 & 23.2 & 19.8 & 19.1 \\
+ & 13B & \underline{47.2} & 1.0 & 58.8 & 27.1 & 23.4 & \textbf{23.0} & 36.0 & 1.1 & \textbf{59.7} & \textbf{28.9} & \textbf{25.5} & \textbf{25.0} & \textbf{37.5} & 1.0 & \textbf{56.7} & 23.6 & 19.8 & 19.5 \\
+\multirow{4}{*}{Qwen3-VL} & 2B & 39.2 & \textbf{5.1} & 57.8 & 25.9 & 21.9 & 20.2 & 34.5 & \underline{4.6} & 57.1 & 26.7 & 22.7 & 22.2 & 25.3 & 1.5 & 54.1 & 24.0 & \underline{20.7} & \underline{20.1} \\
+ & 4B & 40.7 & 1.2 & \underline{59.5} & \underline{27.4} & 23.0 & 21.6 & 33.3 & 1.2 & \underline{58.0} & \underline{28.2} & \underline{23.9} & \underline{23.2} & 23.5 & 1.2 & 54.9 & 23.4 & 19.9 & 19.5 \\
+ & 8B & 42.2 & 1.4 & 58.8 & 25.7 & 21.8 & 20.0 & 32.4 & 1.8 & 56.5 & 26.9 & 23.0 & 23.0 & 29.5 & 1.3 & 53.9 & 23.0 & 19.7 & 18.6 \\
+ & 32B & 45.1 & 2.2 & 58.9 & 25.6 & 21.3 & 19.8 & \underline{38.9} & 1.2 & 57.4 & 27.1 & 23.0 & 22.4 & 33.9 & 2.7 & 54.6 & 22.5 & 18.8 & 18.1 \\
+\midrule
+\multicolumn{20}{c}{\textit{Standalone LLMs}} \\
+\midrule
+Mistral & 7B & 0.0 & \textbf{30} & 25.1 & 1.9 & 1.2 & 0.0 & 0.0 & \textbf{30} & 21.8 & 1.8 & 1.7 & 0.0 & 0.0 & \textbf{28} & 17.8 & 1.4 & 0.4 & 0.0 \\
+Phi-3.5-mini & 3.8B & 5.6 & \underline{14} & 36.7 & 9.2 & 8.6 & 3.8 & 4.7 & \underline{16} & 36.5 & 11.2 & 9.7 & 6.7 & 9.7 & \underline{15} & 41.4 & 11.8 & 10.1 & 8.0 \\
+Qwen2.5-Instruct & 7B & \textbf{35.4} & 1.3 & 54.4 & 21.5 & 17.3 & 16.6 & \textbf{28.3} & 1.6 & \underline{51.3} & 21.3 & 17.2 & 16.8 & \textbf{24.4} & 1.3 & 44.8 & 17.1 & 12.3 & 12.3 \\
+\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.6 & 3.4 & 2.4 & 7.7 & 1.2 & 32.6 & 8.1 & 2.2 & 1.7 & 5.7 & 1.3 & 37.6 & 10.2 & 5.2 & 4.4 \\
+ & 1.7B & 9.1 & 7.8 & 45.6 & 14.2 & 11.8 & 9.7 & 10.0 & 7.5 & 43.1 & 15.8 & 12.8 & 11.9 & 8.0 & 5.7 & 42.1 & 14.8 & 11.2 & 9.8 \\
+ & 4B & 18.0 & 1.3 & \underline{54.4} & \underline{24.7} & \textbf{20.4} & \underline{18.3} & 20.1 & 1.2 & \textbf{52.2} & \textbf{24.2} & \textbf{20.7} & \textbf{20.0} & 18.0 & 1.1 & \textbf{50.1} & \textbf{22.2} & \textbf{19.0} & \textbf{18.1} \\
+ & 8B & 27.1 & 2.3 & 52.2 & 21.3 & 16.3 & 14.7 & \underline{21.5} & 1.2 & 51.1 & 21.9 & 18.1 & 17.1 & 15.0 & 1.4 & 44.1 & 16.2 & 11.9 & 10.9 \\
+ & 32B & \underline{32.7} & 1.9 & \textbf{54.9} & \textbf{25.2} & \underline{20.3} & \textbf{18.7} & 20.9 & 1.8 & 50.0 & \underline{22.4} & \underline{19.2} & \underline{17.7} & \underline{19.5} & 3.2 & 45.8 & \underline{18.4} & \underline{14.8} & \underline{13.4} \\
+\multirow{2}{*}{Vicuna} & 7B & 17.4 & 6.9 & 43.6 & 15.8 & 15.4 & 11.8 & 14.6 & 5.2 & 41.1 & 15.0 & 15.0 & 11.4 & 9.3 & 5.3 & 39.4 & 13.8 & 13.0 & 10.9 \\
+ & 13B & 26.8 & 3.0 & 54.4 & 21.8 & 19.4 & 16.1 & 19.5 & 2.9 & 46.7 & 15.6 & 14.4 & 9.8 & 17.3 & 5.1 & \underline{46.6} & 15.9 & 13.9 & 11.3 \\
+\midrule
+\multicolumn{20}{c}{\textit{Standalone LLMs with Thinking}} \\
+\midrule
+\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.6 & 3.4 & 2.4 & 7.7 & 1.2 & 32.6 & 8.1 & 2.2 & 1.7 & 5.7 & 1.3 & 37.6 & 10.2 & 5.2 & 4.4 \\
+ & 1.7B & 16.7 & \underline{198} & 39.9 & 12.0 & 10.0 & 10.1 & 9.4 & \underline{204} & 39.1 & 13.4 & 11.9 & 11.2 & 11.5 & \underline{230} & 34.9 & 10.1 & 8.2 & 7.9 \\
+ & 4B & \underline{18.0} & 1.3 & \underline{50.2} & \underline{20.7} & \underline{16.2} & \underline{14.0} & \underline{20.1} & 1.2 & \underline{46.2} & \underline{18.5} & 15.1 & 14.2 & \textbf{18.0} & 1.1 & \textbf{47.1} & \textbf{16.6} & \textbf{13.9} & \textbf{12.2} \\
+ & 8B & \textbf{27.1} & 2.3 & \textbf{52.2} & \textbf{21.3} & \textbf{16.3} & \textbf{14.7} & \textbf{21.5} & 1.2 & \textbf{51.1} & \textbf{21.9} & \textbf{18.1} & \textbf{17.1} & \underline{15.0} & 1.4 & \underline{44.1} & \underline{16.2} & \underline{11.9} & \underline{10.9} \\
+ & 32B & 11.2 & \textbf{216} & 42.3 & 16.4 & 15.4 & 13.9 & 10.4 & \textbf{217} & 40.3 & 16.6 & \underline{15.3} & \underline{14.3} & 8.3 & \textbf{252} & 36.8 & 12.2 & 10.5 & 9.9 \\
+\bottomrule
+\end{tabular}
+}
+\caption{\small Blind performance across evaluation variants (Original, Weaker, Pronominalized). Acc = VQA accuracy (\%); Len = mean answer length in words; SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). Human row shows human--human (HH) agreement.}
+\label{tab:comprehensive_inst_blind}
+\end{table*}
 
-\input{tables/comprehensive_inst_blind_w5}
+\begin{table*}[t]
+\scriptsize
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lc|cccccc|cccccc|cccccc}
+\toprule
+\textbf{Model} & \textbf{Size} & \multicolumn{6}{c|}{\textbf{Original}}& \multicolumn{6}{c|}{\textbf{Weaker}}& \multicolumn{6}{c}{\textbf{Pronominalized}} \\
+\cmidrule(lr){3-8}\cmidrule(lr){9-14}\cmidrule(lr){15-20}
+ & & \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\
+\midrule
+\textbf{Human (N=40)} & -- & 26.3 & 1.3 & 59.4 & 27.5 & 24.6 & 22.6 & 22.9 & 1.3 & 57.8 & 26.9 & 23.7 & 22.4 & 22.6 & 1.3 & 56.0 & 24.4 & 21.1 & 20.2 \\
+\midrule
+\multicolumn{20}{c}{\textit{Vision-Language Models}} \\
+\midrule
+\multirow{3}{*}{InternVL} & 1B & 36.9 & 1.2 & \underline{57.7} & 23.5 & 20.1 & 18.5 & 36.6 & 1.2 & 54.9 & 21.9 & 19.1 & 17.9 & 33.6 & 1.2 & \underline{53.6} & \underline{21.8} & \underline{18.7} & \underline{18.0} \\
+ & 2B & 44.5 & 1.3 & 55.4 & 21.1 & 17.8 & 15.7 & 38.6 & 1.2 & \underline{55.6} & 22.0 & 19.0 & 17.6 & 39.2 & 1.3 & 53.0 & 20.5 & 17.0 & 16.2 \\
+ & 8B & 37.2 & 1.5 & \textbf{61.7} & \textbf{28.1} & \textbf{24.4} & \textbf{21.7} & 33.3 & \underline{1.7} & \textbf{60.1} & \textbf{27.1} & \textbf{24.1} & \textbf{22.7} & 29.5 & \underline{1.7} & \textbf{56.7} & \textbf{23.3} & \textbf{20.3} & \textbf{18.8} \\
+LLaVA-1.5 & 7B & 47.2 & 1.0 & 51.9 & 19.0 & 15.5 & 15.0 & \textbf{47.5} & 1.0 & 50.8 & 17.0 & 14.3 & 13.7 & 35.4 & 1.1 & 48.7 & 16.7 & 14.0 & 13.6 \\
+LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 55.7 & 22.1 & 18.3 & 17.2 & \underline{46.0} & 1.1 & 53.9 & 20.8 & 17.9 & 17.3 & \underline{41.3} & 1.1 & 50.7 & 18.4 & 15.2 & 14.6 \\
+\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 51.6 & 1.0 & 54.5 & 21.2 & 18.1 & 16.7 & 44.2 & 1.0 & 52.3 & 19.2 & 16.1 & 15.3 & \textbf{42.3} & 1.0 & 51.1 & 18.6 & 15.5 & 14.9 \\
+ & 13B & \underline{52.4} & 1.0 & 56.8 & 24.3 & 21.1 & \underline{20.3} & 38.6 & 1.1 & 54.5 & 23.0 & 20.1 & 19.4 & 37.5 & 1.0 & 52.0 & 18.8 & 15.7 & 15.3 \\
+\multirow{4}{*}{Qwen3-VL} & 2B & 47.6 & 1.3 & 56.1 & 21.9 & 18.2 & 16.3 & 41.9 & 1.3 & 53.6 & 21.0 & 17.3 & 16.4 & 40.2 & 1.3 & 52.8 & 19.4 & 16.1 & 15.4 \\
+ & 4B & 50.1 & 1.2 & 56.9 & 23.9 & 19.9 & 18.3 & 37.5 & 1.2 & 55.2 & 24.2 & 20.7 & 19.9 & 38.7 & 1.1 & 52.8 & 21.0 & 18.0 & 17.1 \\
+ & 8B & 47.3 & \underline{3.3} & 57.0 & 24.0 & 20.6 & 18.9 & 38.4 & 1.5 & 54.9 & \underline{24.5} & 21.1 & \underline{20.1} & 33.3 & 1.3 & 52.3 & 21.5 & 18.2 & 17.5 \\
+ & 32B & 37.5 & \textbf{28} & 56.4 & \underline{25.2} & \underline{22.3} & 19.7 & 27.4 & \textbf{29} & 53.4 & 23.9 & \underline{21.2} & 19.2 & 17.1 & \textbf{35} & 51.5 & 19.5 & 16.4 & 15.4 \\
+\midrule
+\multicolumn{20}{c}{\textit{VLM Backbone Decoders}} \\
+\midrule
+\multirow{3}{*}{InternVL} & 1B & 28.9 & 1.4 & 59.5 & 27.6 & \underline{24.7} & 22.8 & 26.0 & 1.2 & 57.3 & 27.0 & 23.9 & 22.4 & 23.8 & 1.7 & 55.3 & 24.4 & 20.8 & 19.8 \\
+ & 2B & 30.7 & \underline{3.9} & 55.4 & 25.7 & 22.6 & 20.4 & 25.7 & 3.9 & 55.3 & 26.4 & 23.6 & 21.8 & 25.3 & \underline{5.5} & 54.0 & \underline{25.3} & \textbf{22.2} & \textbf{20.9} \\
+ & 8B & 39.8 & 3.8 & \textbf{60.9} & \textbf{30.5} & \textbf{26.5} & \textbf{23.8} & 34.5 & \textbf{5.1} & \underline{59.3} & \textbf{30.1} & \textbf{26.8} & \textbf{25.1} & 19.9 & \textbf{15} & 52.5 & \textbf{25.4} & \underline{21.6} & 20.0 \\
+LLaVA-1.5 & 7B & \textbf{53.7} & 1.1 & 58.9 & 27.3 & 23.6 & 22.2 & 35.1 & 1.2 & 57.0 & 27.3 & 23.5 & 22.6 & 32.1 & 1.6 & \underline{56.3} & 23.4 & 19.7 & 19.1 \\
+LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 59.0 & 25.7 & 22.0 & 20.8 & \textbf{39.5} & 1.1 & 57.5 & 25.4 & 22.2 & 21.6 & \underline{37.2} & 1.3 & 55.8 & 23.4 & 19.8 & 19.2 \\
+\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 44.5 & 1.1 & 59.4 & 27.5 & 23.8 & 22.5 & 36.9 & 1.1 & 57.1 & 26.9 & 23.5 & 22.4 & 30.4 & 1.4 & 55.8 & 23.9 & 20.6 & 19.5 \\
+ & 13B & \underline{47.2} & 1.0 & 58.9 & 27.4 & 24.0 & \underline{23.0} & 36.0 & 1.1 & \textbf{59.8} & \underline{29.1} & \underline{25.9} & \underline{25.0} & \textbf{37.5} & 1.0 & \textbf{56.8} & 24.0 & 20.2 & 19.5 \\
+\multirow{4}{*}{Qwen3-VL} & 2B & 39.2 & \textbf{5.1} & 58.7 & 26.6 & 23.1 & 20.6 & 34.5 & \underline{4.6} & 57.4 & 27.3 & 23.8 & 22.4 & 25.3 & 1.5 & 54.6 & 24.4 & 21.4 & \underline{20.3} \\
+ & 4B & 40.7 & 1.2 & 59.6 & \underline{27.9} & 23.9 & 21.6 & 33.3 & 1.2 & 58.1 & 28.6 & 24.7 & 23.2 & 23.5 & 1.2 & 55.0 & 23.8 & 20.5 & 19.5 \\
+ & 8B & 42.2 & 1.4 & \underline{59.7} & 26.6 & 23.0 & 20.3 & 32.4 & 1.8 & 56.7 & 27.3 & 23.7 & 23.0 & 29.5 & 1.3 & 54.7 & 23.6 & 20.4 & 19.0 \\
+ & 32B & 45.1 & 2.2 & 59.5 & 26.2 & 22.3 & 20.0 & \underline{38.9} & 1.2 & 57.5 & 27.4 & 23.6 & 22.4 & 33.9 & 2.7 & 55.8 & 23.5 & 20.0 & 18.6 \\
+\midrule
+\multicolumn{20}{c}{\textit{Standalone LLMs}} \\
+\midrule
+Mistral & 7B & 0.0 & \textbf{30} & 25.8 & 4.4 & 3.2 & 0.0 & 0.0 & \textbf{30} & 21.3 & 4.0 & 3.7 & 0.0 & 0.0 & \textbf{28} & 20.3 & 2.8 & 0.9 & 0.0 \\
+Phi-3.5-mini & 3.8B & 5.6 & \underline{14} & 40.0 & 11.0 & 10.5 & 4.2 & 4.7 & \underline{16} & 40.2 & 13.3 & 11.9 & 7.6 & 9.7 & \underline{15} & 43.5 & 13.1 & 11.4 & 8.3 \\
+Qwen2.5-Instruct & 7B & \textbf{35.4} & 1.3 & 54.4 & 21.9 & 18.0 & 16.6 & \textbf{28.3} & 1.6 & \underline{51.2} & 21.6 & 17.7 & 17.0 & \textbf{24.4} & 1.3 & 45.3 & 17.6 & 12.9 & 12.5 \\
+\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.7 & 3.5 & 2.4 & 7.7 & 1.2 & 32.4 & 8.1 & 2.3 & 1.7 & 5.7 & 1.3 & 37.7 & 10.4 & 5.4 & 4.4 \\
+ & 1.7B & 9.1 & 7.8 & 46.6 & 15.1 & 12.6 & 10.1 & 10.0 & 7.5 & 43.7 & 16.2 & 13.0 & 12.0 & 8.0 & 5.7 & 43.7 & 16.5 & 12.7 & 10.9 \\
+ & 4B & 18.0 & 1.3 & 54.4 & \underline{25.0} & \underline{20.9} & \underline{18.3} & 20.1 & 1.2 & \textbf{52.2} & \textbf{24.4} & \textbf{21.1} & \textbf{20.0} & 18.0 & 1.1 & \textbf{50.1} & \textbf{22.4} & \textbf{19.3} & \textbf{18.1} \\
+ & 8B & 27.1 & 2.3 & 52.1 & 21.8 & 17.0 & 14.7 & \underline{21.5} & 1.2 & 51.1 & 22.2 & 18.7 & 17.1 & 15.0 & 1.4 & 44.2 & 16.3 & 12.2 & 10.9 \\
+ & 32B & \underline{32.7} & 1.9 & \textbf{55.4} & \textbf{25.9} & \textbf{21.4} & \textbf{18.9} & 20.9 & 1.8 & 50.2 & \underline{22.9} & \underline{19.9} & \underline{17.8} & \underline{19.5} & 3.2 & 46.2 & \underline{19.1} & \underline{15.6} & \underline{13.7} \\
+\multirow{2}{*}{Vicuna} & 7B & 17.4 & 6.9 & 44.2 & 16.3 & 15.5 & 11.8 & 14.6 & 5.2 & 41.0 & 15.4 & 15.0 & 11.5 & 9.3 & 5.3 & 39.9 & 14.6 & 13.7 & 11.5 \\
+ & 13B & 26.8 & 3.0 & \underline{55.1} & 22.5 & 20.5 & 16.3 & 19.5 & 2.9 & 47.1 & 15.9 & 15.1 & 9.8 & 17.3 & 5.1 & \underline{47.7} & 16.8 & 14.7 & 11.5 \\
+\midrule
+\multicolumn{20}{c}{\textit{Standalone LLMs with Thinking}} \\
+\midrule
+\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.7 & 3.5 & 2.4 & 7.7 & 1.2 & 32.4 & 8.1 & 2.3 & 1.7 & 5.7 & 1.3 & 37.7 & 10.4 & 5.4 & 4.4 \\
+ & 1.7B & 16.7 & \underline{198} & \underline{53.5} & \underline{22.4} & \underline{19.3} & \underline{17.9} & 9.4 & \underline{204} & \textbf{57.7} & \underline{27.5} & \underline{24.1} & \underline{22.7} & 11.5 & \underline{230} & \underline{48.7} & \underline{20.3} & \underline{16.4} & \underline{14.8} \\
+ & 4B & \underline{18.0} & 1.3 & 50.2 & 21.0 & 16.8 & 14.0 & \underline{20.1} & 1.2 & 46.2 & 18.7 & 15.5 & 14.2 & \textbf{18.0} & 1.1 & 47.1 & 16.8 & 14.1 & 12.2 \\
+ & 8B & \textbf{27.1} & 2.3 & 52.1 & 21.8 & 17.0 & 14.7 & \textbf{21.5} & 1.2 & 51.1 & 22.2 & 18.7 & 17.1 & \underline{15.0} & 1.4 & 44.2 & 16.3 & 12.2 & 10.9 \\
+ & 32B & 11.2 & \textbf{216} & \textbf{60.0} & \textbf{31.6} & \textbf{29.6} & \textbf{26.7} & 10.4 & \textbf{217} & \underline{56.1} & \textbf{31.3} & \textbf{29.2} & \textbf{26.6} & 8.3 & \textbf{252} & \textbf{54.9} & \textbf{27.2} & \textbf{23.6} & \textbf{22.0} \\
+\bottomrule
+\end{tabular}
+}
+\caption{\small Blind performance across evaluation variants (Original, Weaker, Pronominalized). Acc = VQA accuracy (\%); Len = mean answer length in words; SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). Human row shows human--human (HH) agreement. All answers are length-normalized ($\leq$5 words) before scoring.}
+\label{tab:comprehensive_inst_blind_w5}
+\end{table*}
 
 \section{Blind Awareness Instruction Effect}
 \label{app:inst}
@@ -1053,7 +1199,24 @@ variance-robust tests lead to the same qualitative conclusions. We therefore
 report the standard ANOVA statistics in the main text for readability, while
 interpreting them together with practical effect-size estimates ($\eta^2$)
 rather than $p$-values alone.
-\input{tables/human_hh_effect_sizes}
+\begin{table}[t]
+\centering
+\caption{Effect-size summary for human--human SBERT group differences across control variants ($q{=}113$). $\eta^2$ is reported alongside one-way ANOVA and Kruskal--Wallis statistics. Operation effects are moderate-to-large across all variants, while entity effects remain negligible.}
+\label{tab:human_hh_effect_sizes}
+\small
+\begin{tabular}{llrrrrr}
+\toprule
+Dimension & Variant & $N$ & Groups & $F$ & $H$ & $\eta^2$ \\
+\midrule
+Operation & Original & 113 & 11 & 5.75 & 41.82 & 0.361 \\
+Operation & Weaker & 113 & 11 & 5.93 & 41.44 & 0.368 \\
+Operation & Pronominalized & 113 & 11 & 6.60 & 41.51 & 0.393 \\
+Entity & Original & 113 & 5 & 0.92 & 3.49 & 0.033 \\
+Entity & Weaker & 113 & 5 & 0.68 & 2.56 & 0.024 \\
+Entity & Pronominalized & 113 & 5 & 0.19 & 0.53 & 0.007 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 % \section{Corpus Frequency Comparison}
 % \label{app:corpus_freq}
@@ -1168,13 +1331,34 @@ flat line at zero.
 \centering
 \includegraphics[width=\textwidth]{hm_sbert_entity_op_grouped_variants_7b}
 \caption{Human--model SBERT by entity and operation groups (7--8B scale).
-Bars: group means across variants; error bars: min--max; dotted lines: HH baseline.
-Identity and action show some of the clearest backbone--VLM separation, while
-count remains a low-agreement region under SBERT.}
+Bars show group means across model types (VLM, backbone decoder, standalone LLM);
+error bars indicate variant spread (min--max across Original/Weaker/Pronominalized);
+dotted lines mark the HH baseline (mean across variants).
+Individual model markers are overlaid. Identity and action show some of the
+clearest backbone--VLM separation, while count remains a low-agreement region.}
 \label{fig:op_hm}
 \end{figure*}
 
-\input{tables/table_group_pattern_correlation.tex}
+\input{tables/group_corr_op}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{question_diagnostic/hh_vs_hm_group_scatter_7b_op}
+\caption{Per-model group-level scatter: HH vs.\ HM SBERT aggregated by operation type.
+Each point is one operation group under one variant; text labels identify the group.
+Spearman $\rho$, cosine similarity, and rmcorr are shown per panel.}
+\label{fig:group_scatter_op}
+\end{figure*}
+
+\input{tables/group_corr_ent}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{question_diagnostic/hh_vs_hm_group_scatter_7b_ent}
+\caption{Per-model group-level scatter: HH vs.\ HM SBERT aggregated by entity type.
+Layout mirrors Figure~\ref{fig:group_scatter_op}; entity labels annotate each point.}
+\label{fig:group_scatter_ent}
+\end{figure*}
 
 \section{Answer Distribution Biases}
 \label{app:distributions}
@@ -1199,7 +1383,25 @@ the human split.
 numeric defaults, whereas humans distribute across plausible small counts.
 \textbf{Abstention} in standalone LLMs: they often fail to inhabit the VQA
 answer distribution at all, instead hedging or abstaining.
-\input{tables/table_identity_focus_examples.tex}
+\begin{table*}[t]
+\centering
+\caption{Identity-focused human examples with the largest human degradation under pronominalization. These cases highlight where human agreement itself collapses most strongly, making identity the most fragile operation under referential underspecification.}
+\label{tab:identity_focus_examples}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrll}
+\toprule
+Question & Entity & HH$_C$ & HH$_A$ & $\Delta_{C\to A}^{HH}$ & HH-HM & Human top & Model top \\
+\midrule
+What animal is this cake meant to represent? & food & 0.536 & 0.199 & 0.336 & 0.070 & cat (9); dog (8); rabbit (7) & dog (3); cat (2); bear (2) \\
+What type of bear is this? & animal & 0.674 & 0.341 & 0.332 & 0.035 & brown bear (10); polar bear (9); asian black bear (8) & grizzly bear (4); black (3); brown (2) \\
+What type of shoe is that? & product & 0.653 & 0.335 & 0.318 & 0.033 & sneakers (13); slippers (5); sandals (4) & sneaker (12); sneakers (1) \\
+What is this player's position called? & person & 0.574 & 0.337 & 0.237 & 0.112 & striker (9); Goalkeeper (6); midfielder (5) & goalie (6); goalkeeper (2); outfielder (2) \\
+What type of bread does this appear to be? & food & 0.526 & 0.316 & 0.210 & 0.055 & sandwich bread (9); baguette (8); salt bread (2) & white bread (4); wheat (3); sourdough (3) \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
 
 % Correlation with VQA~v2.0 training frequencies is weak or negative for VLMs,
 % suggesting VLM blind biases are uncertainty defaults shaped by uninformative
@@ -1284,6 +1486,35 @@ agreement structure.}
 \label{fig:hh_hm_scatter_app}
 \end{figure*}
 
-\input{tables/hh_hm_scatter_correlations_7b}
+\begin{table*}[t]
+\centering
+\caption{Per-model correlation summary for Figure~\ref{fig:hh_hm_scatter}. Pearson correlation is computed between per-question HH SBERT and HM SBERT across the matched 7/8B models. Variant columns report the same correlation within each control formulation. The misprocessed think variant is excluded.}
+\label{tab:hh_hm_scatter_corr}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrr}
+\toprule
+Model & Group & All $r$ & $p$ & Original & Weaker & Pronominalized & $N$ \\
+\midrule
+InternVL-8B & VLM & 0.935 & 9.4e-150 & 0.931 & 0.932 & 0.944 & 331 \\
+Qwen3-VL-8B & VLM & 0.895 & 5.2e-119 & 0.892 & 0.889 & 0.904 & 335 \\
+LLaVA-1.5-7B & VLM & 0.872 & 2.4e-106 & 0.853 & 0.856 & 0.902 & 339 \\
+LLaVA-Mistral & VLM & 0.879 & 4.9e-110 & 0.878 & 0.868 & 0.890 & 338 \\
+LLaVA-Vicuna & VLM & 0.884 & 8.4e-113 & 0.882 & 0.882 & 0.886 & 338 \\
+InternVL-8B (LM) & Backbone decoder & 0.896 & 1.3e-108 & 0.886 & 0.913 & 0.888 & 304 \\
+Qwen3-VL-8B (LM) & Backbone decoder & 0.890 & 1.9e-115 & 0.858 & 0.892 & 0.916 & 334 \\
+LLaVA-1.5 (LM) & Backbone decoder & 0.921 & 2.0e-138 & 0.917 & 0.907 & 0.937 & 336 \\
+LLaVA-Mistral (LM) & Backbone decoder & 0.928 & 4.6e-146 & 0.918 & 0.926 & 0.937 & 338 \\
+LLaVA-Vicuna (LM) & Backbone decoder & 0.918 & 1.5e-136 & 0.925 & 0.913 & 0.918 & 336 \\
+Qwen3-8B & Standalone LLM & 0.581 & 5.5e-32 & 0.533 & 0.641 & 0.564 & 339 \\
+Qwen2.5-7B-Instruct & Standalone LLM & 0.699 & 1.9e-50 & 0.747 & 0.649 & 0.704 & 335 \\
+Vicuna-7B & Standalone LLM & 0.671 & 1.5e-44 & 0.669 & 0.619 & 0.724 & 330 \\
+Mistral-7B & Standalone LLM & -0.185 & 4.2e-02 & -0.108 & -0.212 & -0.243 & 121 \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+\input{tables/results_winner_summary}
 
 \end{document}
