@@ -16,6 +16,7 @@
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{enumitem}
 
 \graphicspath{
   {./}
@@ -487,8 +488,10 @@ robust variance checks (Appendix~\ref{app:chrf_human}). Entity group, by contras
 
 However, the degradation under entity removal is not uniform. Paired $t$-tests
 within each operation type (original vs.\ pronominalized) reveal that identity questions
-collapse ($0.534 \to 0.337$, $p{=}0.002$), whereas count questions
-remain stable ($0.662 \to 0.671$, $p{=}0.55$). Among entity groups,
+collapse ($0.534 \to 0.337$, $p{<}0.0001$), whereas count questions
+show a numerically negligible increase ($0.662 \to 0.671$, $\Delta{=}{+}0.009$, $p{<}0.001$)
+whose effect size is trivial ($\eta^2{<}0.01$) and is driven by a narrowing answer space
+rather than any genuine improvement. Among entity groups,
 food shows one of the larger observed drops ($0.566 \to 0.470$, $p{=}0.017$),
 with animal and object groups showing borderline drops ($p{\approx}0.06$);
 person and other groups are stable ($p{>}0.28$). The highest-HH questions
@@ -551,15 +554,71 @@ degradation, while count provides the most stable contrast case.
 \label{fig:human_degradation}
 \end{figure*}
 
+\subsection{Instruction Effect on Model Abstentions}
+\label{sec:inst_abstention}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.72\textwidth]{figures/merged_abstention_vC_q113}
+\caption{Blind vs.\ instruction-aware abstention rates (soft and hard combined)
+across model groups (variant~C, $q{=}113$).
+Circles~=~soft abstention; squares~=~hard abstention; hollow~=~blind; filled~=~instruction-aware.
+Think-mode standalone LLMs show the largest instruction-driven hard-abstention increases;
+VLMs and backbone decoders remain near zero throughout.
+Extended version with all 37 models on 1{,}000 questions in Figure~\ref{fig:merged_abstention}.}
+\label{fig:inst_abstention}
+\end{figure*}
+
+While human abstention is negligible ($0.25\%$), models respond to the blind-awareness
+instruction very differently depending on architecture.
+Figure~\ref{fig:inst_abstention} shows the change in hard and soft abstention between
+the blind and instruction-aware conditions.
+VLMs and backbone decoders remain near zero abstention in both conditions ($<$2\%):
+the instruction does not trigger refusals in models that already commit to an answer
+when given a blank image.
+Standalone LLMs (no-think) span a wider range: Mistral-7B drops from ${\sim}43\%$
+hard abstention to ${\sim}33\%$ under instruction, while Qwen3 models cluster near 0--10\%.
+The sharpest effect appears in think-mode models: Qwen3-4B (think) jumps from near-zero
+to ${\sim}43\%$ hard abstention under instruction, and Qwen3-1.7B and Qwen3-32B (think)
+also shift substantially. Chain-of-thought reasoning interacts strongly with the
+``imagine a scenario'' framing and triggers hedging behavior that suppresses committed answers.
+
+This instruction sensitivity extends to answer content beyond abstention:
+standalone LLMs change 25--96\% of answers between conditions, compared to
+12--42\% for VLMs and backbone decoders, with think models most sensitive (60--91\%).
+Despite this large behavioral shift, instruction changes accuracy by only a few points
+on average, confirming it reroutes the model's language prior rather than
+unlocking latent visual knowledge.
+
+\subsection{Answer Distribution Alignment}
+\label{sec:dist_alignment}
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.45\textwidth]{inst_blind_qwen3_vl_8b_yesno_abstsplit}\\[0.5em]
 \includegraphics[width=0.45\textwidth]{inst_blind_qwen3_vl_8b_number_abstsplit}
-\caption{Blind answer distributions for the Qwen3 family (top: yes/no,
-bottom: count). Ground truth uses all 10 per-question VQA annotator
+\caption{Blind answer distributions for Qwen3-VL-8B (top: yes/no, bottom: count),
+abstention-filtered. Ground truth uses all 10 per-question VQA annotator
 responses. All-model version in Figure~\ref{fig:dist}.}
 \label{fig:dist_main}
 \end{figure}
+
+Beyond aggregate agreement, three systematic distributional biases emerge across
+all model groups (Figure~\ref{fig:dist_main}; all-model version in
+Appendix Figure~\ref{fig:dist}).
+\textbf{No-bias} in yes/no: full VLMs default to a narrower yes/no prior that
+departs from the human split, while backbone decoders move back toward the human distribution.
+\textbf{Zero-bias} in count: full VLMs collapse toward a small set of numeric
+defaults, whereas humans distribute across plausible small counts.
+\textbf{Abstention collapse} in standalone LLMs: they often fail to occupy the
+VQA answer distribution, instead hedging or abstaining.
+
+At the grouped level, these patterns are stable across operation and entity categories
+(Appendix~\ref{app:grouped_distribution_alignment}): backbone decoders are
+strongest on operation-grouped yes/no structure, while InternVL-8B best reproduces
+the human small-number count distribution. Text-category slices are more heterogeneous,
+mirroring the broad lexical diversity of low-HH identity and text questions
+discussed above.
 
 \subsection{Control-Variant Trends}
 \label{sec:degradation}
@@ -783,11 +842,12 @@ We verify that the agreement patterns above are not measurement artifacts
 of abstention or answer format. Across all checks, the central ordering
 (backbone $>$ VLM $>$ standalone LLM) is preserved.
 
-Adding the blind-awareness instruction increases human--model agreement modestly
-(${\approx}{+}0.02$ SBERT), with the largest gains on the original
-variant and smaller gains as entity cues are removed
-(Appendix~\ref{app:inst}). Instruction framing nudges models toward
-human-like blind answers but does not overturn the architectural ordering
+Adding the blind-awareness instruction increases human--model agreement
+(${\approx}{+}0.09$ SBERT on average; VLM $+$0.10, backbone $+$0.10,
+standalone LLM $+$0.07), with the largest gains on the original
+variant and diminishing returns as entity cues are removed
+(Appendix~\ref{app:inst}). Instruction framing substantially shifts
+model outputs but does not overturn the architectural ordering
 or remove the backbone advantage.
 
 \subsection{Abstention Effects}
@@ -1432,7 +1492,8 @@ unlocking latent visual knowledge.
 Instruction changes accuracy by only a few points on average, confirming
 that it does not reliably improve task performance even when it
 substantially changes answer behavior. Human--model SBERT agreement
-increases by ${\approx}{+}0.02$ on average, with the largest gains on
+increases by ${\approx}{+}0.09$ on average (VLM $+$0.10, backbone $+$0.10,
+standalone LLM $+$0.07), with the largest gains on
 variant~C and diminishing returns on variant~A, consistent with
 instruction acting primarily as a lexical-anchor activator rather than a
 general alignment mechanism (Section~\ref{sec:confounds}).
@@ -1511,6 +1572,15 @@ Row~1: VLMs (solid) and backbone decoders (dotted).
 Row~2: standalone LLMs and think variants.
 Right column: group-mean summary with 95\% CI. Line weight scales with parameter count.}
 \label{fig:family}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{inst_blind_sbert_family_vABC_q113_yesno_filtered}
+\caption{Per-family SBERT human--model agreement (abstention-filtered).
+Same layout as Figure~\ref{fig:family} but pairs where either answer is a hard or soft abstention are excluded.
+Filtering primarily removes model-abstaining HM pairs; the family-level trend is robust across both views.}
+\label{fig:family_filtered}
 \end{figure*}
 
 Figure~\ref{fig:family} decomposes the group-level trend into individual
