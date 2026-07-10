@@ -156,6 +156,33 @@ def load_human_subset(
     return load_human_data(root, min_answers=min_answers, translate=translate, verbose=verbose)
 
 
+def filter_abstained_pairs(pc: pd.DataFrame, *,
+                           answer_col_1: str = 'answer_1_clean',
+                           answer_col_2: str = 'answer_2_clean') -> pd.DataFrame:
+    """Remove pair_cache rows where either answer is a hard or soft abstention.
+
+    Applied uniformly to HH and HM pairs using the same classify() standard.
+    Human abstention is ~0.25% so HH pairs are barely affected; this primarily
+    removes model-abstaining HM pairs.
+    """
+    import sys as _sys
+    from pathlib import Path as _Path
+    _root = _Path(__file__).resolve().parent.parent
+    if str(_root) not in _sys.path:
+        _sys.path.insert(0, str(_root))
+    from analysis.utils.abstention import classify, is_abstained
+
+    mask1 = pc[answer_col_1].fillna('').astype(str).apply(
+        lambda x: is_abstained(classify(x, None)))
+    mask2 = pc[answer_col_2].fillna('').astype(str).apply(
+        lambda x: is_abstained(classify(x, None)))
+    keep = ~(mask1 | mask2)
+    n_removed = (~keep).sum()
+    print(f'  [filter_abstained] removed {n_removed:,}/{len(pc):,} pairs '
+          f'({n_removed/len(pc):.1%})')
+    return pc[keep].copy()
+
+
 PLOT_FILE_PATTERNS = ("*.png", "*.pdf", "*.svg", "*.jpg", "*.jpeg")
 
 

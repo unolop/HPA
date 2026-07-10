@@ -9,6 +9,21 @@ from utils.abstention import classify, is_abstained
 
 cls = classify(output_text, gt_answers)   # → str
 if is_abstained(cls): ...
+
+Design choices
+--------------
+Hard abstention: output contains an explicit image-reference refusal keyword
+  (cannot, can't, no image, unable, not visible, blank, etc.).
+
+Soft abstention: the full normalized answer is an *epistemic hedge* — a word
+  that signals the model cannot or will not commit to an answer.
+  Excluded from soft abstention:
+    - "nothing"  → valid content answer (e.g. "nothing is in the bowl");
+                   for number questions callers may map it to "0"
+    - "maybe", "possibly", "perhaps", "uncertain", "unsure"
+                 → partial yes/no attempts; treated as committed (other)
+                   rather than abstention, so they appear in the answer
+                   distribution alongside human responses
 """
 from __future__ import annotations
 
@@ -25,12 +40,13 @@ _HARD_RE = re.compile(
     re.IGNORECASE,
 )
 
-# Soft abstention: implicit hedge words that signal the model won't commit
+# Soft abstention: epistemic hedge words that signal the model won't commit.
+# NOTE: "nothing", "maybe", "possibly", "perhaps", "uncertain", "unsure"
+# are intentionally excluded — see module docstring.
 SOFT_WORDS = frozenset({
-    'nothing', 'unanswerable', 'unclear', 'unknown', 'nowhere',
+    'unanswerable', 'unclear', 'unknown', 'nowhere',
     'n/a', 'na', 'indeterminate', 'unidentifiable', 'no sign',
     "can't tell", 'cannot tell', 'not clear', 'not visible',
-    'uncertain', 'unsure', 'possibly', 'maybe', 'perhaps',
 })
 
 # Degenerate: structurally empty answers
@@ -44,9 +60,9 @@ def classify(output: str, gt_answers: Optional[List[str]]) -> str:
     Categories
     ----------
     hard_abstained       — explicit refusal ("I cannot see the image")
-    soft_abstained       — implicit abstention ("nothing", "unknown")
+    soft_abstained       — epistemic hedge ("unknown", "unanswerable")
     hallucinated_correct — committed answer, happens to score > 0 on GT
-    hallucinated_wrong   — committed wrong answer
+    hallucinated_wrong   — committed wrong answer (incl. "nothing", "maybe")
     degenerate           — empty or structurally invalid output
 
     Parameters
