@@ -423,7 +423,8 @@ exclude hedged yes/no words (\textit{``maybe''}, \textit{``possibly''}, \textit{
 which represent partial committed responses rather than refusals and therefore
 appear in the answer distribution alongside human \textit{``other''} responses.
 The same classifier is applied uniformly to both model and human answers; human
-abstention is negligible ($<$0.3\%) so the distinction primarily matters for models.
+hard and soft abstention are effectively zero (0.00\% each under this classifier),
+so the distinction primarily matters for models.
 
 \textbf{Shared substantive-response evaluation} addresses the confound that
 some models abstain while others answer. For this robustness view, we remove
@@ -522,20 +523,23 @@ This complements the stable count examples above: count often remains compact
 because its answer space is already narrow, whereas identity opens into a
 broader set of plausible guesses once the lexical anchor is removed.
 
-Human abstention is negligible: only 0.25\% of responses are explicit
-abstentions (e.g.,\ ``unknown'', ``I don't know''), rising marginally
-from 0.22\% (Original) to 0.29\% (Pronominalized). Unlike models---where
-the cleaning pipeline strips refusals and generic wrappers---human answers
-pass through essentially unchanged (0.7\% of HH
-answer tokens are affected, all by minor VQA normalization). The few
-``unknown'' responses that remain are concentrated on questions that
-genuinely require visual content (e.g.,\ brand identification,
-ethnicity), confirming that they reflect true ambiguity rather than
-participant disengagement. For human--model (HM) comparison, the shared
-pipeline ensures that SBERT scores reflect semantic content rather than
-format mismatch: model refusals and preambles are stripped before
-embedding, so low human--model SBERT indicates genuine disagreement rather than
-verbosity artifacts.
+Human abstention under both classifier definitions is effectively zero:
+no responses match the hard abstention keywords and no responses match
+the soft abstention word list, yielding 0.00\% hard and 0.00\% soft
+abstention across all three variants (C, B, A).
+Participants responded with a committed answer in essentially every case,
+and this committed-answer rate does not change with question abstraction:
+unlike models---where soft and hard abstention measurably rise as
+lexical anchors are stripped (see Section~\ref{sec:inst_abstention} and
+Appendix~\ref{app:abstention_calibration})---human participants continued
+to answer with direct committed responses even when content nouns were fully
+pronominalized. Unlike models---where the cleaning pipeline strips refusals
+and generic wrappers---human answers pass through essentially unchanged
+(0.7\% of HH answer tokens are affected, all by minor VQA normalization).
+For human--model (HM) comparison, the shared pipeline ensures that SBERT
+scores reflect semantic content rather than format mismatch: model refusals
+and preambles are stripped before embedding, so low human--model SBERT
+indicates genuine disagreement rather than verbosity artifacts.
 
 These patterns are robust to entity manipulation: per-question HH SBERT
 correlates $r{>}0.88$ across all variant pairs (C--A: $r{=}0.889$; C--B: $r{=}0.935$; B--A: $r{=}0.922$), and overall human agreement
@@ -1043,13 +1047,19 @@ mean of 1.11 words (Figure~\ref{fig:human_stats}C). This is consistent with
 the VQA-style instruction asking for short, direct answers and confirms that
 participants were not providing free-form explanations.
 
-\paragraph{Soft abstention.}
-Hard abstention (empty responses) was 0.00\%. Soft abstention---responses
-matching patterns such as ``don't know'', ``none'', or ``unanswerable''---was
-0.03\% overall (C: 0.04\%, B: 0.02\%, A: 0.04\%)
-(Figure~\ref{fig:human_stats}E). This near-zero rate confirms that the
-blind-instruction framing successfully elicited prior-driven answers from
-human participants, mirroring the design intent applied to the VLMs.
+\paragraph{Abstention.}
+Hard abstention was 0.00\% and soft abstention was 0.00\% across all three
+variants under the paper's classifier (exact match against the soft-abstention
+word list on the normalized answer; Section~\ref{sec:eval_protocols},
+Appendix~\ref{app:abstention_classifier}).
+This rate does not increase with question abstraction: committed answers are
+invariant across the original (C), weaker (B), and pronominalized (A)
+variants (Figure~\ref{fig:human_stats}E), which sharply contrasts with
+models---where soft abstention rises as lexical anchors are removed
+(e.g., Qwen3-VL-8B: 1.4\%$\to$3.2\% C$\to$A; its backbone decoder:
+0.4\%$\to$2.4\%). This confirms that the blind-instruction framing
+successfully elicited prior-driven answers from all participants regardless
+of question specificity.
 
 \paragraph{Confidence ratings.}
 Participants used the full 1--5 Likert scale with a mean of 3.07 ($\sigma =
@@ -1331,6 +1341,15 @@ variance-robust tests lead to the same qualitative conclusions. We therefore
 report the standard ANOVA statistics in the main text for readability, while
 interpreting them together with practical effect-size estimates ($\eta^2$)
 rather than $p$-values alone.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{chrf_entity_op_bar_q113_yesno}
+\caption{Human--human chrF agreement by entity type (left) and operation type (right) across the three control variants.
+Unlike SBERT, chrF shows no significant grouping effect for either dimension, confirming that the operation-type structure in HH SBERT reflects semantic similarity rather than surface-form overlap.}
+\label{fig:chrf_hh}
+\end{figure*}
+
 \begin{table}[t]
 \centering
 \caption{Effect-size summary for human--human SBERT group differences across control variants ($q{=}113$). $\eta^2$ is reported alongside one-way ANOVA and Kruskal--Wallis statistics. Operation effects are moderate-to-large across all variants, while entity effects remain negligible.}
@@ -1563,6 +1582,14 @@ text    &  4 & 0.447 & 0.504 & $-$0.056 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{human_entropy_entity_op_bar_q113_yesno}
+\caption{Human answer entropy (bits) by entity type (left) and operation type (right) across the three control variants.
+Higher entropy indicates more diverse human responses. Operation types show marked variation: identity and attribute questions elicit high-entropy (diverse) answers, while existence and count questions yield lower entropy (convergent answers).}
+\label{fig:human_entropy}
+\end{figure*}
 
 \section{Agreement by Scale and Variant}
 \label{app:scale_variant}
