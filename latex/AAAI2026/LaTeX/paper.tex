@@ -575,19 +575,41 @@ Extended version with all 37 models on 1{,}000 questions in Figure~\ref{fig:merg
 \label{fig:inst_abstention}
 \end{figure*}
 
-While human abstention is negligible ($0.25\%$), models respond to the blind-awareness
+While human abstention is effectively zero (0.00\% hard and soft across all
+variants under the paper's classifier), models respond to the blind-awareness
 instruction very differently depending on architecture.
 Figure~\ref{fig:inst_abstention} shows the change in hard and soft abstention between
 the blind and instruction-aware conditions.
-VLMs and backbone decoders remain near zero abstention in both conditions ($<$2\%):
-the instruction does not trigger refusals in models that already commit to an answer
-when given a blank image.
+VLMs and backbone decoders remain near zero abstention in both conditions ($<$2\%
+for most): the instruction does not trigger refusals in models that already commit to an
+answer when given a blank image.
 Standalone LLMs (no-think) span a wider range: Mistral-7B drops from ${\sim}43\%$
 hard abstention to ${\sim}33\%$ under instruction, while Qwen3 models cluster near 0--10\%.
 The sharpest effect appears in think-mode models: Qwen3-4B (think) jumps from near-zero
 to ${\sim}43\%$ hard abstention under instruction, and Qwen3-1.7B and Qwen3-32B (think)
 also shift substantially. Chain-of-thought reasoning interacts strongly with the
 ``imagine a scenario'' framing and triggers hedging behavior that suppresses committed answers.
+
+\paragraph{Abstention across control variants.}
+Beyond the instruction effect, abstention also varies across the three question
+formulations (C$\to$B$\to$A). In contrast to humans---whose abstention stays at
+0.00\% regardless of variant---models show a systematic increase in soft abstention as
+content nouns are replaced by pronouns. The Qwen3-VL family shows the clearest trend
+among VLMs (8B: C$=$1.4\%, B$=$3.2\%, A$=$3.2\%; 4B: C$=$0.7\%, B$=$1.8\%, A$=$3.0\%),
+and this pattern carries through to backbone decoders
+(Qwen3-VL-8B decoder: C$=$0.4\%, B$=$1.0\%, A$=$2.4\%;
+LLaVA-Mistral decoder: C$=$0.3\%, B$=$0.5\%, A$=$0.8\%).
+Hard abstention shows a qualitatively different pattern:
+Mistral-7B---whose refusals are explicitly entity-triggered
+(``I cannot see the \{object\}'')---actually \emph{decreases} from C to A
+(C$=$29.8\%, B$=$27.0\%, A$=$22.7\%), because pronominalized questions remove the
+noun that triggers the refusal phrase.
+Qwen3-VL-32B represents the opposite extreme: its hard abstention more than doubles
+from C to A (C$=$13.5\%, B$=$15.2\%, A$=$24.1\%), suggesting the 32B model defers more
+when the question becomes semantically underspecified.
+Think-mode models amplify all of these trends (Qwen3-1.7B think:
+C$=$49.1\%, B$=$50.7\%, A$=$59.1\%), confirming that chain-of-thought reasoning
+magnifies sensitivity to question underspecification.
 
 This instruction sensitivity extends to answer content beyond abstention:
 standalone LLMs change 25--96\% of answers between conditions, compared to
@@ -1775,7 +1797,7 @@ agreement structure.}
 
 \begin{table*}[t]
 \centering
-\caption{Per-model correlation summary for Figure~\ref{fig:hh_hm_scatter}. Pearson correlation is computed between per-question HH SBERT and HM SBERT across the matched 7/8B models. Variant columns report the same correlation within each control formulation. The misprocessed think variant is excluded.}
+\caption{Per-model correlation summary for Figure~\ref{fig:scatter_sbert}. Pearson correlation is computed between per-question HH SBERT and HM SBERT across the matched 7/8B models. Variant columns report the same correlation within each control formulation. The misprocessed think variant is excluded.}
 \label{tab:hh_hm_scatter_corr}
 \small
 \resizebox{\textwidth}{!}{%
@@ -1838,8 +1860,11 @@ Two categories are deliberately excluded from soft abstention:
     categorized, enabling a fair distributional comparison.
 \end{itemize}
 The same classifier is applied uniformly to both model and human answers.
-Human hard abstention is 0.00\% and soft abstention is $<$0.3\%, so the
-distinction is a model-side phenomenon.
+Human hard abstention is 0.00\% and soft abstention is 0.00\% across all
+three variants---the abstention distinction is therefore a model-side
+phenomenon. Crucially, human abstention is invariant to question abstraction
+(0.00\% in variants C, B, and A), whereas model abstention tends to rise as
+lexical anchors are removed (Section~\ref{app:human_stats}).
 
 \subsection{Instruction Gating Effect}
 \label{app:inst_gating}
@@ -1852,9 +1877,9 @@ Standalone LLMs show large shifts; VLMs/backbones are nearly unchanged.}
 \label{fig:abstention_shift_models}
 \end{figure}
 
-For reference, human explicit abstention is negligible (0.3\% overall), so
-the abstention patterns below are primarily a model-side phenomenon rather
-than a general property of blind answering.
+For reference, human abstention is effectively zero (0.00\% hard and soft
+under the paper's classifier), so the abstention patterns below are a
+model-side phenomenon rather than a general property of blind answering.
 
 Instruction (blind $\to$ blind with awareness instruction) increases human--model agreement most on
 original questions ($+$0.020 SBERT) and attenuates as lexical anchors are
@@ -1962,6 +1987,88 @@ and control variant. Only Qwen3-1.7B shows a reliable alignment gain
 regressions. Qwen3-4B and 8B yield identical scores because their
 think/no-think pairs share the same cached pair values.}
 \label{fig:think_nothink}
+\end{figure}
+
+
+\section{SBERT Metric Robustness}
+\label{app:sbert_robustness}
+
+\subsection{Alternative Embedding Models}
+\label{app:embed_compare}
+
+Table~\ref{tab:robustness_embedding} compares group-level human--model alignment
+under three embedding metrics: our primary SBERT (all-mpnet-base-v2), a
+supervised contrastive model (SimCSE; sup-simcse-roberta-large), and BERTScore~F1.
+The backbone~$>$~VLM~$>$~SA-LLM ordering is reproduced under all three embeddings.
+Spearman~$\rho$ between individual model rankings under SBERT and SimCSE is 0.961,
+confirming that the group-level finding is not an artefact of the choice of
+embedding model. BERTScore exhibits a compressed dynamic range across groups
+(0.912--0.948), making it less discriminative, but preserves the same
+group ordering.
+
+\input{tables/robustness_embedding_compare}
+
+\subsection{Pairwise Metric Correlations}
+\label{app:metric_corr}
+
+Figure~\ref{fig:metric_corr} shows pairwise Pearson correlations between all
+seven evaluation metrics at the per-question$\times$variant aggregation level.
+SBERT and SimCSE are tightly coupled ($r{=}0.87$), confirming that both
+capture the same underlying semantic signal.
+Lexical metrics (ChrF, ROUGE-1, Jaccard, Exact) form a separate cluster
+with much weaker correlation to the embedding-based metrics ($r{\approx}0.3$--$0.5$),
+consistent with the null chrF result in Appendix~\ref{app:chrf_human}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.72\columnwidth]{robustness/metric_correlation}
+\caption{Pairwise Pearson~$r$ between evaluation metrics at the
+per-question$\times$variant mean level ($n{=}113$ questions, HM pairs).
+SBERT and SimCSE form a tight cluster ($r{=}0.87$); lexical metrics form a
+separate cluster. Lower triangle shown; diagonal is 1.}
+\label{fig:metric_corr}
+\end{figure}
+
+\subsection{Group Rankings Across Operation Types}
+\label{app:op_group}
+
+Table~\ref{tab:robustness_op_group} breaks down mean HM SBERT by operation
+type and model group. The backbone~$\geq$~VLM advantage holds for every one
+of the eleven operation types, including existence ($\Delta{=}+0.067$) and
+action ($\Delta{=}+0.046$). SA-LLMs fall furthest below the HH reference
+across all operation types.
+
+\input{tables/robustness_op_group_sbert}
+
+\subsection{Ranking Stability Across Control Variants}
+\label{app:variant_ranking}
+
+Table~\ref{tab:robustness_variant_ranking} shows that the
+backbone~$>$~VLM~$>$~SA-LLM ordering is stable across all three control
+variants (C, B, A). All groups decline monotonically from C to A as
+lexical anchors are removed, but relative group positions are preserved.
+
+\input{tables/robustness_variant_ranking}
+
+\subsection{Entropy-Stratified Analysis}
+\label{app:entropy_stratified}
+
+Figure~\ref{fig:entropy_stratified} stratifies human--model SBERT by human
+answer entropy (bits, variant~C). Low-entropy questions elicit convergent
+human answers (e.g.\ existence, count); high-entropy questions elicit
+diverse answers (e.g.\ attribute, identity).
+Backbone decoders exceed VLMs in all three tertiles.
+The SA-LLM gap widens on high-entropy questions, suggesting that
+SA-LLMs are particularly sensitive to questions with open-ended answer
+distributions.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{robustness/entropy_stratified_sbert}
+\caption{Mean human--model SBERT by human answer entropy tertile (variant~C)
+and model group. Error bars: 95\%~CI. Backbone~$>$~VLM holds across all
+entropy levels; the backbone--SA-LLM gap widens on high-entropy questions.}
+\label{fig:entropy_stratified}
 \end{figure}
 
 \end{document}

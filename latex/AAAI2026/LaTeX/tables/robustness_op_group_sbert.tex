@@ -1,0 +1,23 @@
+\begin{table}[h]
+\centering
+\small
+\caption{Mean human--model SBERT by question operation type and model group (all variants combined, HM pairs, unfiltered). HH ref = mean human--human SBERT for that operation type. Sorted by HH reference score. Backbone exceeds VLM in every operation type.}
+\label{tab:robustness_op_group}
+\begin{tabular}{lrrrrr}
+\toprule
+Operation & HH ref & VLM & Backbone & SA-LLM & Think \\
+\midrule
+Existence & 0.873 & 0.819 & 0.886 & 0.646 & 0.699 \\
+Knowledge & 0.721 & 0.680 & 0.696 & 0.425 & 0.504 \\
+Action & 0.719 & 0.708 & 0.754 & 0.543 & 0.553 \\
+Count & 0.665 & 0.577 & 0.607 & 0.439 & 0.440 \\
+Attribute & 0.568 & 0.555 & 0.583 & 0.441 & 0.482 \\
+Temporal & 0.516 & 0.487 & 0.520 & 0.369 & 0.390 \\
+Identity & 0.443 & 0.390 & 0.441 & 0.414 & 0.451 \\
+Text & 0.404 & 0.396 & 0.400 & 0.301 & 0.348 \\
+Spatial & 0.392 & 0.373 & 0.378 & 0.319 & 0.358 \\
+Causal & 0.352 & 0.382 & 0.430 & 0.323 & 0.373 \\
+Compare & 0.341 & 0.319 & 0.322 & 0.335 & 0.315 \\
+\bottomrule
+\end{tabular}
+\end{table}
