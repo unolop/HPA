@@ -4,7 +4,6 @@ SBERT robustness checks for the supplementary.
 Generates:
   Figures → latex/AAAI2026/LaTeX/figures/robustness/
     metric_correlation.png        — pairwise Pearson r heatmap across all metrics
-    entropy_stratified_sbert.png  — HM SBERT by human-entropy tertile × model group
 
   Tables → latex/AAAI2026/LaTeX/tables/
     robustness_embedding_compare.tex — group means: SBERT vs SimCSE vs BERTScore
@@ -20,10 +19,9 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import seaborn as sns
-from scipy.stats import entropy as sp_entropy, spearmanr
+from scipy.stats import spearmanr
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -34,7 +32,7 @@ from figures.helpers import filter_abstained_pairs
 from analysis.utils.constants import GROUP_COLORS, VARIANT_ORDER
 
 EXPORTS   = ROOT / "analysis/session2/exports"
-FIG_DIR   = ROOT / "latex/AAAI2026/LaTeX/figures/robustness"
+FIG_DIR   = ROOT / "latex/AAAI2026/LaTeX/figures/appQ_sbert_robustness"
 TABLE_DIR = ROOT / "latex/AAAI2026/LaTeX/tables"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -105,13 +103,8 @@ def make_metric_correlation(hm: pd.DataFrame) -> None:
         square=True, linewidths=0.5,
         cbar_kws={"shrink": 0.75, "label": "Pearson r"},
     )
-    ax.set_title(
-        "Metric pairwise correlations\n"
-        "(per-question\u00d7variant mean, HM pairs, $n$=113 questions)",
-        fontsize=10,
-    )
     plt.tight_layout()
-    out = FIG_DIR / "metric_correlation.png"
+    out = FIG_DIR / "metric_correlation_per_question_hm_113.png"
     fig.savefig(out, dpi=180, bbox_inches="tight")
     plt.close(fig)
     print(f"Saved: {out}")
@@ -264,80 +257,6 @@ def make_variant_ranking_table(hm: pd.DataFrame, hh: pd.DataFrame) -> None:
     out.write_text("\n".join(lines) + "\n")
     print(f"Saved: {out}")
 
-
-# ── 5. Entropy-stratified SBERT ──────────────────────────────────────────────
-
-def make_entropy_stratified(hm: pd.DataFrame) -> None:
-    """Bar chart: HM SBERT by human answer-entropy tertile × model group."""
-    human = pd.read_csv(EXPORTS / "responses_human.csv")
-
-    def answer_entropy(responses: pd.Series) -> float:
-        counts = responses.value_counts()
-        probs = counts / counts.sum()
-        return float(sp_entropy(probs, base=2))
-
-    q_entropy = (
-        human[human["variant"] == "C"]
-        .groupby("question_id")["response"]
-        .apply(answer_entropy)
-        .rename("entropy")
-        .reset_index()
-    )
-    q_entropy["tertile"] = pd.qcut(
-        q_entropy["entropy"], 3, labels=["Low", "Mid", "High"]
-    )
-
-    # Entropy range labels for x-axis
-    bins_edges = pd.qcut(q_entropy["entropy"], 3, retbins=True)[1]
-    bin_labels = [
-        f"Low\n[{bins_edges[0]:.1f}–{bins_edges[1]:.1f}]",
-        f"Mid\n[{bins_edges[1]:.1f}–{bins_edges[2]:.1f}]",
-        f"High\n[{bins_edges[2]:.1f}–{bins_edges[3]:.1f}]",
-    ]
-
-    hm_e = hm.merge(q_entropy[["question_id", "tertile"]], on="question_id", how="inner")
-    sub = hm_e[hm_e["subject_group_2"].isin(GROUP_ORDER)]
-
-    agg = (
-        sub.groupby(["tertile", "subject_group_2"])["sbert_score"]
-        .agg(mean="mean", sem="sem")
-        .reset_index()
-    )
-
-    TERTILES = ["Low", "Mid", "High"]
-    n_t = len(TERTILES)
-    n_g = len(GROUP_ORDER)
-    x = np.arange(n_t)
-    width = 0.18
-    offsets = np.linspace(-(n_g - 1) / 2, (n_g - 1) / 2, n_g) * width
-
-    fig, ax = plt.subplots(figsize=(8, 4.5))
-    for i, grp in enumerate(GROUP_ORDER):
-        sub_g = agg[agg["subject_group_2"] == grp].set_index("tertile")
-        y    = [sub_g.loc[t, "mean"] if t in sub_g.index else np.nan for t in TERTILES]
-        yerr = [sub_g.loc[t, "sem"] * 1.96 if t in sub_g.index else np.nan for t in TERTILES]
-        ax.bar(
-            x + offsets[i], y, width=width, yerr=yerr,
-            color=GROUP_COLORS[grp], alpha=0.87, capsize=3,
-            label=GROUP_SHORT[grp], edgecolor="white", linewidth=0.5,
-        )
-
-    ax.set_xticks(x)
-    ax.set_xticklabels(bin_labels, fontsize=9)
-    ax.set_ylabel("Mean HM SBERT")
-    ax.set_xlabel("Human answer entropy (bits, variant C)")
-    ax.set_title("Human–model SBERT by human answer entropy tertile")
-    ax.legend(title="Model group", ncol=2, fontsize=9)
-    ax.grid(axis="y", alpha=0.25)
-    ax.spines[["top", "right"]].set_visible(False)
-
-    plt.tight_layout()
-    out = FIG_DIR / "entropy_stratified_sbert.png"
-    fig.savefig(out, dpi=180, bbox_inches="tight")
-    plt.close(fig)
-    print(f"Saved: {out}")
-
-
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
@@ -356,8 +275,5 @@ if __name__ == "__main__":
 
     print("\n4. Variant ranking table…")
     make_variant_ranking_table(hm, hh)
-
-    print("\n5. Entropy-stratified SBERT figure…")
-    make_entropy_stratified(hm)
 
     print("\nDone.")
