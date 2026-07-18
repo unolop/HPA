@@ -78,7 +78,7 @@ print('Loading data…')
 df_b = pd.read_csv(EXPORTS / 'responses_model_blind.csv')
 df_i = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
 df_h = pd.read_csv(EXPORTS / 'responses_human.csv')
-pair_df = pd.read_parquet(EXPORTS / 'pair_cache.parquet')
+pair_df = pd.read_parquet(EXPORTS / 'pair_cache_raw.parquet')
 
 df_b = df_b[df_b['variant'] == 'C'].copy()
 df_i = df_i[df_i['variant'] == 'C'].copy()

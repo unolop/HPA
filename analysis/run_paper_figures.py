@@ -40,19 +40,9 @@ def run(script: str, *args: str, label: str = ''):
 run('../analysis/build_pair_cache.py',
     label='Build / update pair_cache (new humans + new models)')
 
-# ── Agreement figures ─────────────────────────────────────────────────────────
-run('agreement_variants.py',
-    *(('--overwrite',) if args.overwrite else ()),
-    label='Agreement by variant: group-level lineplots + heatmaps')
-
-run('agreement_variants.py', *(('--overwrite',) if args.overwrite else ()), '--include_yesno',
-    label='Agreement by variant (+ yes/no questions)')
-
-run('agreement_variants_by_models.py', *(('--overwrite',) if args.overwrite else ()),
-    label='Agreement by variant: per-model lineplots')
-
-run('agreement_heatmaps.py', *(('--overwrite',) if args.overwrite else ()),
-    label='Pairwise agreement heatmaps (all raters + group-mean)')
+# ── Agreement / alignment figures ────────────────────────────────────────────
+run('hh_hm/variants_family.py', *(('--overwrite',) if args.overwrite else ()), '--include_yesno',
+    label='Family-level HM agreement across control variants (+ yes/no)')
 
 # ── Accuracy figures ──────────────────────────────────────────────────────────
 run('accuracy_variants.py', *(('--overwrite',) if args.overwrite else ()),
@@ -93,7 +83,7 @@ print('All figures generated. Outputs in:')
 print('  figures/')
 print()
 print('Key paper figures:')
-print('  agreement_heatmaps/  vC_sbert_{all,groups}.png')
+print('  hh_hm/variants_family/  inst_blind_sbert_family_vABC_q113_yesno.png')
 print('  instruction_effect/  soft_abstention_vC_*.png')
 print('  instruction_effect/  response_change_vC_*.png')
 print('  entity_analysis/     fig_hm_alignment*.png')

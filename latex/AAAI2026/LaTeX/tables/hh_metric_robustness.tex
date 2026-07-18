@@ -1,0 +1,42 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.2pt}
+\caption{Human--human agreement by group across metrics and variants, with answer entropy (bits) as a final column (113-question inst-blind subset). Values are mean question-level scores. Best and second-best values are highlighted within each metric/variant column for agreement metrics only. SBERT captures semantic grouping (Existence/Action/World Know.\ $>$ Comparison/Identity/Text Reading), while surface-form metrics (chrF, ROUGE-1, Jaccard) show a flatter profile; entropy confirms that response diversity is structured primarily by operation type, not entity type.}
+\label{tab:hh_metric_robustness}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrrrrrrrrr}
+\toprule
+Group & \multicolumn{3}{c}{SBERT} & \multicolumn{3}{c}{chrF} & \multicolumn{3}{c}{ROUGE-1} & \multicolumn{3}{c}{Jaccard} & \multicolumn{3}{c}{Entropy (bits)} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13} \cmidrule(lr){14-16}
+ & Orig. & Wkr. & Pron. & Orig. & Wkr. & Pron. & Orig. & Wkr. & Pron. & Orig. & Wkr. & Pron. & Orig. & Wkr. & Pron. \\
+\midrule
+\multicolumn{16}{l}{\textit{By operation type}} \\
+\midrule
+Existence (n=7)  & \textbf{.872} & \textbf{.890} & \textbf{.856} & \textbf{.575} & \textbf{.633} & \textbf{.520} & \textbf{.575} & \textbf{.633} & \textbf{.520} & \textbf{.575} & \textbf{.633} & \textbf{.520} & 0.87 & 0.78 & 0.95 \\
+World Know. (n=4)  & \underline{.755} & \underline{.731} & .677 & .443 & .382 & .379 & .402 & .342 & .341 & .401 & .341 & .341 & 1.82 & 2.00 & 2.21 \\
+Action (n=7)  & .723 & .725 & \underline{.711} & \underline{.460} & \underline{.480} & \underline{.447} & \underline{.446} & \underline{.468} & \underline{.433} & \underline{.445} & \underline{.466} & \underline{.432} & 1.79 & 1.82 & 1.90 \\
+Count (n=22)  & .662 & .661 & .671 & .186 & .202 & .169 & .175 & .191 & .156 & .172 & .188 & .155 & 2.98 & 2.94 & 3.00 \\
+Attribute (n=41)  & .588 & .560 & .555 & .301 & .276 & .272 & .273 & .244 & .241 & .267 & .241 & .239 & 2.78 & 3.02 & 3.04 \\
+Identity (n=9)  & .534 & .456 & .338 & .194 & .141 & .100 & .154 & .088 & .047 & .138 & .082 & .043 & 3.64 & 4.06 & 4.55 \\
+Temporal (n=3)  & .496 & .538 & .513 & .186 & .187 & .180 & .089 & .072 & .066 & .079 & .066 & .062 & 4.11 & 4.11 & 4.20 \\
+Spatial (n=12)  & .401 & .412 & .362 & .182 & .193 & .152 & .133 & .154 & .101 & .127 & .146 & .097 & 3.80 & 3.65 & 4.04 \\
+Text Reading (n=5)  & .401 & .370 & .442 & .116 & .109 & .129 & .071 & .063 & .084 & .069 & .062 & .084 & 4.25 & 4.35 & 4.07 \\
+Causality (n=1)  & .397 & .316 & .342 & .158 & .144 & .144 & .127 & .077 & .093 & .084 & .054 & .064 & 4.92 & 4.85 & 4.83 \\
+Comparison (n=2)  & .339 & .353 & .330 & .203 & .212 & .161 & .130 & .152 & .090 & .101 & .122 & .070 & 4.44 & 4.34 & 4.57 \\
+\addlinespace[4pt]
+\multicolumn{16}{l}{\textit{By entity type}} \\
+\midrule
+Food (n=16)  & \textbf{.662} & \textbf{.643} & \textbf{.598} & .320 & \underline{.318} & .273 & \underline{.298} & \underline{.294} & \underline{.245} & \underline{.291} & \underline{.289} & \underline{.242} & 2.58 & 2.75 & 2.99 \\
+Animal (n=17)  & \underline{.629} & .613 & .576 & .290 & .273 & .255 & .271 & .251 & .233 & .263 & .250 & .230 & 2.73 & 2.74 & 3.03 \\
+Place (n=5)  & .620 & \underline{.637} & \underline{.586} & \underline{.333} & \textbf{.371} & \textbf{.316} & .291 & \textbf{.336} & \textbf{.282} & .289 & \textbf{.335} & \textbf{.281} & 2.49 & 2.37 & 2.56 \\
+Object (n=27)  & .593 & .571 & .552 & .251 & .238 & .194 & .231 & .211 & .165 & .227 & .209 & .164 & 2.90 & 3.10 & 3.31 \\
+Person (n=26)  & .574 & .549 & .553 & .288 & .279 & .271 & .253 & .241 & .236 & .246 & .235 & .232 & 3.01 & 3.22 & 3.11 \\
+Product (n=5)  & .565 & .589 & .507 & .200 & .234 & .169 & .162 & .201 & .140 & .155 & .198 & .139 & 3.30 & 3.20 & 3.52 \\
+Vehicle (n=4)  & .562 & .550 & .518 & \textbf{.348} & .300 & \underline{.287} & \textbf{.304} & .271 & .244 & \textbf{.296} & .257 & .236 & 2.81 & 2.89 & 3.07 \\
+Other (n=9)  & .543 & .544 & .567 & .245 & .246 & .265 & .200 & .200 & .213 & .192 & .195 & .210 & 3.34 & 3.18 & 3.12 \\
+Text (n=4)  & .447 & .417 & .504 & .133 & .126 & .149 & .082 & .079 & .104 & .081 & .079 & .103 & 4.16 & 4.14 & 3.86 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}

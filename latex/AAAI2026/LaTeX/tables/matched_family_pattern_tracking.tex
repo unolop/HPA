@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\tiny
+\setlength{\tabcolsep}{3pt}
+\caption{Per-question pattern-tracking comparison for matched decoder--VLM families on the abstention-filtered pooled control set (C+B+A). For each family, $r_{\mathrm{dec}}$ and $r_{\mathrm{vlm}}$ are Pearson correlations between per-question HH SBERT and HM SBERT over the same matched question--variant items. $\Delta r = r_{\mathrm{dec}} - r_{\mathrm{vlm}}$. The interval is a bootstrap 95\% CI over question--variant items. This is a structural alignment test: higher values indicate better tracking of the human easy/hard agreement pattern, rather than higher absolute HM SBERT. Stars on $\Delta r$ indicate that the 95\% bootstrap CI excludes zero.}
+\label{tab:matched_family_pattern_tracking}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Family} & \textbf{$N$} & \textbf{$r_{\mathrm{dec}}$} & \textbf{$r_{\mathrm{vlm}}$} & \textbf{$\Delta r$} & \textbf{95\% CI} \\
+\midrule
+InternVL & 301 & 0.892 & 0.941 & -0.049$^{*}$ & [-0.080, -0.022] \\
+Qwen3-VL & 317 & 0.894 & 0.902 & -0.008 & [-0.058, 0.030] \\
+LLaVA-1.5 & 324 & 0.922 & 0.868 & +0.054$^{*}$ & [0.028, 0.082] \\
+LLaVA-Mistral & 325 & 0.926 & 0.875 & +0.051$^{*}$ & [0.030, 0.075] \\
+LLaVA-Vicuna & 333 & 0.918 & 0.881 & +0.038$^{*}$ & [0.015, 0.061] \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

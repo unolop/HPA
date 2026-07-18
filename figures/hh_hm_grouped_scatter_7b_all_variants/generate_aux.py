@@ -1,0 +1,406 @@
+from __future__ import annotations
+
+import json
+import glob
+import shutil
+import sys
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from matplotlib.lines import Line2D
+from scipy import stats
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "figures"))
+import plot_style  # noqa: F401
+from helpers import filter_abstained_pairs
+from analysis.utils.abstention import classify, is_abstained
+
+OUTDIR = Path(__file__).resolve().parent
+OUTDIR.mkdir(parents=True, exist_ok=True)
+LATEX_DIR = ROOT / "latex/AAAI2026/LaTeX/figures/hh_hm_grouped_scatter_7b_all_variants"
+LATEX_DIR.mkdir(parents=True, exist_ok=True)
+
+EXPORTS = ROOT / "analysis/session2/exports"
+
+MODEL_FAMILIES = [
+    ("o", "InternVL-8B", "InternVL-8B (LM)", None, "InternVL"),
+    ("X", "Qwen3-VL-8B", "Qwen3-VL-8B (LM)", "Qwen3-8B", "Qwen3"),
+    ("D", "LLaVA-1.5-7B", "LLaVA-1.5 (LM)", None, "LLaVA-1.5"),
+    ("^", "LLaVA-Mistral", "LLaVA-Mistral (LM)", "Mistral-7B", "Mistral"),
+    ("v", "LLaVA-Vicuna", "LLaVA-Vicuna (LM)", "Vicuna-7B", "Vicuna"),
+    ("+", None, None, "Qwen3-8B (think)", "Qwen3 (think)"),
+    ("s", None, None, "Qwen2.5-7B-Instruct", "Qwen2.5-Instruct"),
+]
+
+MODEL_STYLE = {}
+for marker, vlm, dec, llm, _ in MODEL_FAMILIES:
+    if vlm:
+        MODEL_STYLE[vlm] = marker
+    if dec:
+        MODEL_STYLE[dec] = marker
+    if llm:
+        MODEL_STYLE[llm] = marker
+
+MODEL_GROUPS = {
+    "VLM": ["InternVL-8B", "Qwen3-VL-8B", "LLaVA-1.5-7B", "LLaVA-Mistral", "LLaVA-Vicuna"],
+    "Backbone Decoder": ["InternVL-8B (LM)", "Qwen3-VL-8B (LM)", "LLaVA-1.5 (LM)",
+                         "LLaVA-Mistral (LM)", "LLaVA-Vicuna (LM)"],
+    "Standalone LLM": ["Qwen3-8B", "Qwen3-8B (think)", "Qwen2.5-7B-Instruct",
+                       "Vicuna-7B", "Mistral-7B"],
+}
+ROW_ORDER = ["VLM", "Backbone Decoder", "Standalone LLM"]
+ROW_LABELS = {"VLM": "VLM", "Backbone Decoder": "Backbone", "Standalone LLM": "SA-LLM"}
+
+_tab20 = plt.colormaps["tab20"]
+OP_PALETTE = [_tab20(i) for i in range(0, 22, 2)][:11]
+ENT_PALETTE = [_tab20(i) for i in range(1, 19, 2)][:9]
+
+OP_FULL_NAMES = {
+    "act": "Action", "attr": "Attribute", "cause": "Causality",
+    "comp": "Comparison", "count": "Count", "exist": "Existence",
+    "ident": "Identity", "know": "World Know.", "spat": "Spatial",
+    "temp": "Temporal", "text": "Text Reading", "other": "Other",
+}
+ENT_FULL_NAMES = {
+    "animal": "Animal", "food": "Food", "object": "Object",
+    "other": "Other", "person": "Person", "place": "Place",
+    "product": "Product", "text": "Text", "vehicle": "Vehicle",
+}
+
+CT_TO_VARIANT = {"question": "C", "weaker_object": "B", "pronominalized": "A"}
+EOS_TOKENS = {"<|im_end|>", "</s>", "<eos>", "<|endoftext|>", "<|end|>"}
+
+VLM_DIR_TO_MODEL = {
+    "InternVL3_5-8B": "InternVL-8B",
+    "llava-1.5-7b-hf": "LLaVA-1.5-7B",
+    "llava-v1.6-mistral-7b-hf": "LLaVA-Mistral",
+    "llava-v1.6-vicuna-7b-hf": "LLaVA-Vicuna",
+    "Qwen3-VL-8B-Instruct": "Qwen3-VL-8B",
+}
+LM_DECODER_DIR_TO_MODEL = {
+    "InternVL3_5-8B": "InternVL-8B (LM)",
+    "llava-1.5-7b-hf": "LLaVA-1.5 (LM)",
+    "llava-v1.6-mistral-7b-hf": "LLaVA-Mistral (LM)",
+    "llava-v1.6-vicuna-7b-hf": "LLaVA-Vicuna (LM)",
+    "Qwen3-VL-8B-Instruct": "Qwen3-VL-8B (LM)",
+}
+BACKBONE_DIR_TO_MODEL = {
+    "Mistral-7B-Instruct-v0.2": "Mistral-7B",
+    "Qwen2.5-7B-Instruct": "Qwen2.5-7B-Instruct",
+    "Qwen3-8B": "Qwen3-8B",
+    "vicuna-7b-v1.5": "Vicuna-7B",
+}
+LOGIT_SOURCES = [
+    (ROOT / "evaluation/logits/vlm/pretrained", VLM_DIR_TO_MODEL),
+    (ROOT / "evaluation/logits/lm_decoder/pretrained", LM_DECODER_DIR_TO_MODEL),
+    (ROOT / "evaluation/logits/backbone/pretrained", BACKBONE_DIR_TO_MODEL),
+]
+
+
+def model_class_map() -> dict[str, str]:
+    out = {}
+    for grp, models in MODEL_GROUPS.items():
+        for m in models:
+            out[m] = grp
+    return out
+
+
+def family_handles():
+    handles = [
+        Line2D([0], [0], marker=marker, color="#666", markerfacecolor="#666",
+               linestyle="None", markersize=5, label=label)
+        for marker, _, _, _, label in MODEL_FAMILIES
+    ]
+    return sorted(handles, key=lambda h: h.get_label().lower())
+
+
+def qgroup_handles(groups_sorted, color_map):
+    return [
+        Line2D([0], [0], marker="o", color=color_map[g], linestyle="None",
+               markersize=4.8, label=g)
+        for g in groups_sorted
+    ]
+
+
+def build_palette(n: int, base: list):
+    if n <= len(base):
+        return base[:n]
+    extra = [_tab20(i % 20) for i in range(n)]
+    return extra
+
+
+def save(fig, name: str):
+    path = OUTDIR / name
+    fig.savefig(path, dpi=300, bbox_inches="tight")
+    shutil.copy(path, LATEX_DIR / name)
+    plt.close(fig)
+    print(f"saved {path}")
+
+
+def format_p_value(p: float) -> str:
+    if np.isnan(p):
+        return "n/a"
+    if p < 0.001:
+        return "<.001"
+    return f"={p:.3f}"
+
+
+def load_accuracy_frames(*, abstfiltered: bool = False):
+    human = pd.read_csv(EXPORTS / "responses_human.csv")
+    model = pd.read_csv(EXPORTS / "responses_model_inst_blind.csv")
+    keep_models = {m for ms in MODEL_GROUPS.values() for m in ms}
+    model = model[model["model"].isin(keep_models)].copy()
+    if abstfiltered:
+        model = model[~model["response"].fillna("").astype(str).apply(
+            lambda x: is_abstained(classify(x, None))
+        )].copy()
+    return human, model
+
+
+def load_confidence_frames(*, abstfiltered: bool = False):
+    sem_df = pd.read_json(ROOT / "dataset/vqa/vqa1k_semantics.jsonl", lines=True)[["question_id", "ent", "op"]]
+    human_files = sorted(glob.glob(str(ROOT / "evaluation/humans/by_participant/*.json")))
+    human_rows = []
+    for fp in human_files:
+        with open(fp) as f:
+            data = json.load(f)
+        pid = data.get("code", Path(fp).stem)
+        for ans in data.get("answers", []):
+            raw_conf = ans.get("confidence", 3)
+            human_rows.append({
+                "question_id": ans["question_id"],
+                "participant": pid,
+                "variant": ans.get("variant", "C"),
+                "confidence": (raw_conf - 1) / 4.0,
+            })
+    human_df = pd.DataFrame(human_rows).merge(sem_df, on="question_id", how="left")
+    human_qids = set(human_df["question_id"].unique())
+    keep_rows = None
+    if abstfiltered:
+        resp = pd.read_csv(EXPORTS / "responses_model_inst_blind.csv")
+        keep_models = {m for ms in MODEL_GROUPS.values() for m in ms}
+        resp = resp[resp["model"].isin(keep_models)].copy()
+        resp = resp[~resp["response"].fillna("").astype(str).apply(
+            lambda x: is_abstained(classify(x, None))
+        )].copy()
+        keep_rows = set(
+            zip(
+                resp["question_id"].astype(int),
+                resp["model"].astype(str),
+                resp["variant"].astype(str),
+            )
+        )
+
+    rows = []
+    for base_dir, mapping in LOGIT_SOURCES:
+        for dir_name, display in mapping.items():
+            fpath = base_dir / dir_name / "vqa_1k_control_inst_blind.jsonl"
+            if not fpath.exists():
+                continue
+            with open(fpath) as f:
+                for line in f:
+                    if not line.strip():
+                        continue
+                    ex = json.loads(line)
+                    qid = ex["question_id"]
+                    if qid not in human_qids:
+                        continue
+                    logits = ex.get("generated_logits", {})
+                    for ct, variant in CT_TO_VARIANT.items():
+                        logit_data = logits.get(ct)
+                        if not logit_data:
+                            continue
+                        probs = [np.exp(t["logprob"]) for t in logit_data.get("content", [])
+                                 if t.get("token") not in EOS_TOKENS]
+                        if not probs:
+                            continue
+                        if keep_rows is not None and (qid, display, variant) not in keep_rows:
+                            continue
+                        rows.append({
+                            "question_id": qid,
+                            "model": display,
+                            "variant": variant,
+                            "confidence": float(np.mean(probs)),
+                        })
+    model_df = pd.DataFrame(rows).merge(sem_df, on="question_id", how="left")
+    return human_df, model_df
+
+
+def build_group_metric_frames(metric: str, *, abstfiltered: bool = False):
+    cls_map = model_class_map()
+    if metric == "accuracy":
+        human_df, model_df = load_accuracy_frames(abstfiltered=abstfiltered)
+        value_col = "accuracy"
+    elif metric == "confidence":
+        human_df, model_df = load_confidence_frames(abstfiltered=abstfiltered)
+        value_col = "confidence"
+    elif metric == "sbert":
+        pc = pd.read_parquet(EXPORTS / "pair_cache_cleaned.parquet")
+        if abstfiltered:
+            pc = filter_abstained_pairs(pc)
+        hh = pc[pc["pair_type"] == "HH"].copy()
+        hm = pc[pc["pair_type"] == "HM"].copy()
+        keep_models = {m for ms in MODEL_GROUPS.values() for m in ms}
+        hm = hm[hm["subject_2"].isin(keep_models)].copy()
+        human_op = hh.groupby("op")["sbert_score"].mean().reset_index().rename(columns={"sbert_score": "human_value"})
+        human_ent = hh.groupby("ent")["sbert_score"].mean().reset_index().rename(columns={"sbert_score": "human_value"})
+        hm["model_class"] = hm["subject_2"].map(cls_map)
+        hm = hm.dropna(subset=["model_class"]).copy()
+        op = (hm.groupby(["op", "subject_2", "model_class"])["sbert_score"]
+              .mean().reset_index().rename(columns={"subject_2": "model", "sbert_score": "sbert"})
+              .merge(human_op, on="op"))
+        ent = (hm.groupby(["ent", "subject_2", "model_class"])["sbert_score"]
+               .mean().reset_index().rename(columns={"subject_2": "model", "sbert_score": "sbert"})
+               .merge(human_ent, on="ent"))
+        return op, ent
+    else:
+        raise ValueError(metric)
+
+    human_op = human_df.groupby("op")[value_col].mean().reset_index().rename(columns={value_col: "human_value"})
+    human_ent = human_df.groupby("ent")[value_col].mean().reset_index().rename(columns={value_col: "human_value"})
+
+    model_df["model_class"] = model_df["model"].map(cls_map)
+    model_df = model_df.dropna(subset=["model_class"]).copy()
+
+    op = (model_df.groupby(["op", "model", "model_class"])[value_col]
+          .mean().reset_index().merge(human_op, on="op"))
+    ent = (model_df.groupby(["ent", "model", "model_class"])[value_col]
+           .mean().reset_index().merge(human_ent, on="ent"))
+    return op, ent
+
+
+def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
+    op_df, ent_df = build_group_metric_frames(metric, abstfiltered=abstfiltered)
+    op_df["op"] = op_df["op"].map(OP_FULL_NAMES).fillna(op_df["op"])
+    ent_df["ent"] = ent_df["ent"].map(ENT_FULL_NAMES).fillna(ent_df["ent"])
+    specs = [("op", op_df, "Operation", OP_PALETTE, "op"),
+             ("ent", ent_df, "Entity", ENT_PALETTE, "ent")]
+    if metric == "accuracy":
+        xlab = "Human acc."
+        ylab = "Model accuracy"
+        lims = [0.0, 1.0]
+        metric_col = "accuracy"
+    elif metric == "sbert":
+        xlab = "HH SBERT"
+        ylab = "HM SBERT"
+        lims = [0.15, 0.75]
+        metric_col = "sbert"
+    else:
+        xlab = "Human conf."
+        ylab = "Model confidence"
+        lims = [0.0, 1.0]
+        metric_col = "confidence"
+
+    color_maps = {}
+    for group_type, df, _, palette, _ in specs:
+        groups_sorted = sorted(df[group_type].unique())
+        palette_use = build_palette(len(groups_sorted), palette)
+        color_maps[group_type] = (groups_sorted, {g: palette_use[i] for i, g in enumerate(groups_sorted)})
+
+    fig, axes = plt.subplots(
+        3, 2, figsize=(5.5, 4.0), sharex=True, sharey=True,
+        gridspec_kw={"hspace": 0.18, "wspace": 0.10, "left": 0.12, "right": 0.68, "top": 0.93, "bottom": 0.10},
+    )
+
+    for col_idx, (group_type, df, title, _, _) in enumerate(specs):
+        groups_sorted, color_map = color_maps[group_type]
+        for row_idx, row_title in enumerate(ROW_ORDER):
+            ax = axes[row_idx, col_idx]
+            sub = df[df["model_class"] == row_title]
+            for model, msub in sub.groupby("model"):
+                marker = MODEL_STYLE.get(model, "o")
+                for _, row in msub.iterrows():
+                    c = color_map[row[group_type]]
+                    ax.scatter(
+                        row["human_value"], row[metric_col],
+                        s=22, alpha=1.0, color=c, marker=marker,
+                        edgecolors="white", linewidth=0.45, zorder=3,
+                    )
+
+            mean_df = (
+                sub.groupby(group_type)
+                .agg(
+                    human_value=("human_value", "mean"),
+                    model_mean=(metric_col, "mean"),
+                    model_sem=(metric_col, lambda x: np.std(x, ddof=1) / np.sqrt(len(x)) if len(x) > 1 else 0.0),
+                )
+                .reset_index()
+            )
+            for _, row in mean_df.iterrows():
+                c = color_map[row[group_type]]
+                ax.errorbar(
+                    row["human_value"], row["model_mean"], yerr=row["model_sem"],
+                    fmt="none", ecolor=c, elinewidth=1.0, capsize=2, zorder=3, alpha=0.95,
+                )
+                ax.scatter(
+                    row["human_value"], row["model_mean"],
+                    s=44, alpha=0.95, color=c, edgecolors="black", linewidth=0.45, zorder=4,
+                )
+
+            if len(mean_df) >= 3:
+                r_val, p_val = stats.pearsonr(mean_df["human_value"], mean_df["model_mean"])
+                stat_text = f"r={r_val:.2f}\np{format_p_value(p_val)}"
+                ax.text(
+                    0.97, 0.06, stat_text,
+                    transform=ax.transAxes,
+                    ha="right", va="bottom", fontsize=7.4,
+                    bbox=dict(boxstyle="round,pad=0.22", facecolor="white", alpha=0.82, linewidth=0.0),
+                )
+
+            ax.plot(lims, lims, "--", color="gray", alpha=0.35, lw=1, zorder=1)
+            ax.set_xlim(lims)
+            ax.set_ylim(lims)
+            ax.set_facecolor("#f7f7f7")
+            ax.grid(True, color="#d9d9d9", linewidth=0.7, alpha=0.8)
+            ax.set_axisbelow(True)
+            ax.tick_params(labelsize=9)
+            if col_idx == 0:
+                ax.set_ylabel(ROW_LABELS[row_title], fontsize=10)
+
+    op_groups, op_color_map = color_maps["op"]
+    ent_groups, ent_color_map = color_maps["ent"]
+
+    # Family handles — bottom center
+    fig.legend(
+        handles=family_handles(), loc="lower center",
+        bbox_to_anchor=(0.40, -0.045), ncol=4,
+        fontsize=7.8, frameon=False,
+        handletextpad=0.25, borderpad=0.32, labelspacing=0.20, columnspacing=0.9,
+    )
+
+    # Operation legend — right side, top, 1 column
+    op_leg = fig.legend(
+        handles=qgroup_handles(op_groups, op_color_map),
+        loc="upper left", bbox_to_anchor=(0.70, 0.94),
+        ncol=1, title="Operation", title_fontsize=8.0,
+        fontsize=7.5, frameon=True, framealpha=0.9,
+        handletextpad=0.25, borderpad=0.35, labelspacing=0.22,
+    )
+    fig.add_artist(op_leg)
+
+    # Entity legend — right side, bottom, 1 column
+    fig.legend(
+        handles=qgroup_handles(ent_groups, ent_color_map),
+        loc="lower left", bbox_to_anchor=(0.70, 0.07),
+        ncol=1, title="Entity", title_fontsize=8.0,
+        fontsize=7.5, frameon=True, framealpha=0.9,
+        handletextpad=0.25, borderpad=0.35, labelspacing=0.22,
+    )
+
+    suffix = "_abstfiltered" if abstfiltered else ""
+    if metric == "sbert":
+        out_name = f"7b_sbert_op_ent{suffix}.png"
+    elif metric == "accuracy":
+        out_name = f"7b_accuracy_op_ent{suffix}.png"
+    else:
+        out_name = f"7b_confidence_op_ent{suffix}.png"
+    save(fig, out_name)
+if __name__ == "__main__":
+    plot_metric_combined("sbert", abstfiltered=True)
+    plot_metric_combined("accuracy", abstfiltered=False)
+    plot_metric_combined("accuracy", abstfiltered=True)
+    plot_metric_combined("confidence", abstfiltered=False)
+    plot_metric_combined("confidence", abstfiltered=True)

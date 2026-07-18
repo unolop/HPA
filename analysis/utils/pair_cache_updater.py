@@ -1,5 +1,5 @@
 """
-Auto-update pair_cache.parquet with HM pairs for newly available models.
+Auto-update pair_cache_raw.parquet with HM pairs for newly available models.
 
 Called at the start of export scripts that consume pair_cache so plots
 are always generated from the freshest data without running nb10 manually.
@@ -59,13 +59,13 @@ def ensure_pair_cache(
     complete (1000 lines) but is not yet represented in pair_cache, this
     function computes HM pairs and appends them before returning.
 
-    The updated parquet is written back to exports/pair_cache.parquet so
+    The updated parquet is written back to exports/pair_cache_raw.parquet so
     subsequent calls are instant (all models already cached).
 
     Parameters
     ----------
     root     : repository root (Path)
-    exports  : exports directory containing pair_cache.parquet, responses_human.csv
+    exports  : exports directory containing pair_cache_raw.parquet, responses_human.csv
     hf_cache : optional HuggingFace cache directory for the SBERT model
     verbose  : print progress messages
     """
@@ -78,7 +78,7 @@ def ensure_pair_cache(
 
     root    = Path(root)
     exports = Path(exports)
-    cache_path = exports / 'pair_cache.parquet'
+    cache_path = exports / 'pair_cache_raw.parquet'
 
     pair_cache = pd.read_parquet(cache_path)
     cached_models = set(

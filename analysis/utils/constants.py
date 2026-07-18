@@ -71,9 +71,9 @@ VARIANT_LABELS = {
 }
 
 VARIANT_COLORS = {
-    'C': '#2196F3',
-    'B': '#FF9800',
-    'A': '#E91E63',
+    'C': '#2a4e6e',   # dark blue   — concrete / original
+    'B': '#678cac',   # mid blue    — weaker
+    'A': '#bdccde',   # light blue  — pronominalized / most abstract
 }
 
 # ── Model group colors (canonical — used by all notebooks and scripts) ────────

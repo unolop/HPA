@@ -1,0 +1,44 @@
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\renewcommand{\arraystretch}{0.95}
+
+\begin{tabular}{lcccc@{\hspace{6pt}}cccc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} &
+\multicolumn{4}{c}{\textbf{Yes/No} ($N{=}78$)} &
+\multicolumn{4}{c}{\textbf{Count} ($N{=}78$)} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
+& $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ & \textbf{TV}$\downarrow$ & \textbf{Mode}$\uparrow$ & $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ & \textbf{TV}$\downarrow$ & \textbf{Mode}$\uparrow$ \\
+\midrule
+\textbf{Human LOO} & 78 & .271 & .423 & .653 & 78 & .524 & .679 & .485 \\
+\midrule
+\multicolumn{9}{c}{\textbf{VLMs}} \\
+\midrule
+Qwen3-VL & 78 & .277 & .431 & .654 & 75 & .788 & .871 & .093 \\
+InternVL & 78 & .230 & .374 & .782 & 78 & \underline{.586} & \underline{.724} & \textbf{.385} \\
+LLaVA-1.5 & 78 & .421 & .603 & .321 & 78 & .824 & .906 & .038 \\
+LLaVA-Mistral & 78 & .357 & .527 & .449 & 78 & .787 & .873 & .103 \\
+LLaVA-Vicuna & 78 & .385 & .560 & .397 & 78 & .837 & .912 & .051 \\
+\midrule
+\multicolumn{9}{c}{\textbf{Backbone Decoders}} \\
+\midrule
+Qwen3-VL & 78 & .230 & .370 & \underline{.821} & 76 & .745 & .839 & .158 \\
+InternVL & 78 & \textbf{.209} & \textbf{.348} & \textbf{.872} & 62 & \underline{.599} & \underline{.725} & \underline{.371} \\
+LLaVA-1.5 & 78 & .241 & .388 & .731 & 78 & \textbf{.663} & \textbf{.790} & .192 \\
+LLaVA-Mistral & 78 & .275 & .429 & .654 & 78 & .671 & .794 & .205 \\
+LLaVA-Vicuna & 78 & \underline{.223} & \underline{.366} & .808 & 78 & .693 & .818 & .141 \\
+\midrule
+\multicolumn{9}{c}{\textbf{Standalone LLMs}} \\
+\midrule
+Qwen2.5 & 78 & .440 & .578 & .436 & 67 & .688 & .796 & .224 \\
+Qwen3 & 78 & .531 & .617 & .513 & 73 & .721 & .815 & .233 \\
+Qwen3 (think) & 76 & .397 & .505 & .684 & 76 & .610 & .738 & \underline{.355} \\
+Mistral & 47 & .848 & .870 & .170 & 51 & .901 & .945 & .059 \\
+Vicuna & 78 & .225 & .367 & \underline{.821} & 78 & .788 & .881 & .051 \\
+\bottomrule
+\end{tabular}
+\caption{Answer distribution alignment for yes/no and count questions under the blind condition. JS = Jensen--Shannon divergence; TV = total variation distance; Mode = fraction of questions where the model's modal answer matches the human modal answer. Human LOO is a leave-one-out human baseline. \textbf{Bold}: best per column; \underline{underline}: second best.}
+\label{tab:hm_grouped_distribution_7b_compact_filtered}
+\end{table}

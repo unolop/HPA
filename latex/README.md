@@ -94,7 +94,7 @@ This means:
 | `accuracy_scatter/inst_blind_vC_groups_q113_h40.png` | Raw per-question architecture scatter |
 | `agreement_scatter/inst_blind_vC_sbert_exact_models_q88_h40.png` | Per-model lexical vs semantic agreement view |
 | `scale_plots/inst_blind_groups_sbert_q88_h40.png` | Scale robustness view |
-| `agreement_heatmaps/vC_sbert_groups.png` | Structural confirmation of model-group separation |
+| `inst_blind_sbert_family_vABC_q113_yesno.png` | Family-level control-variant alignment breakdown |
 | `instruction_effect/soft_abstention_vC_q113.png` | More detailed abstention breakdown |
 | `instruction_effect/response_change_vC_q113.png` | Model-wise response-change detail |
 

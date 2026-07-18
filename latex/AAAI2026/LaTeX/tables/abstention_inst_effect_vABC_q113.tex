@@ -1,0 +1,57 @@
+\begin{table}[t]
+\scriptsize
+\centering
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lc|cc|cc|cc}
+\toprule
+\textbf{Model} & \textbf{Size} & \multicolumn{2}{c|}{\textbf{Original}} & \multicolumn{2}{c|}{\textbf{Weaker}} & \multicolumn{2}{c}{\textbf{Pronominalized}} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+ & & \textbf{Soft} & \textbf{Hard} & \textbf{Soft} & \textbf{Hard} & \textbf{Soft} & \textbf{Hard} \\
+\midrule
+\multicolumn{8}{c}{\textit{Vision-Language Models}} \\
+\midrule
+InternVL & 1B & 0.0 & 0.9 \textcolor{teal}{{+0.9}} & 0.0 & 0.9 \textcolor{teal}{{+0.9}} & 0.0 & 0.0 \\
+ & 2B & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+ & 8B & 0.0 & 0.9 \textcolor{teal}{{+0.9}} & 0.0 & 2.7 \textcolor{teal}{{+2.7}} & 0.0 & 1.8 \textcolor{teal}{{+1.8}} \\
+LLaVA-1.5 & 7B & 3.5 \textcolor{teal}{{+0.9}} & 0.0 & 4.4 \textcolor{teal}{{+0.9}} & 0.0 & 1.8 & 0.9 \\
+LLaVA-1.6-Mistral & 7B & 0.9 \textcolor{red}{{-1.8}} & 0.0 & 2.7 & 0.0 & 0.9 \textcolor{red}{{-1.8}} & 0.9 \textcolor{teal}{{+0.9}} \\
+LLaVA-1.6-Vicuna & 7B & 0.9 \textcolor{red}{{-0.9}} & 0.0 & 1.8 \textcolor{red}{{-2.7}} & 0.0 & 0.0 \textcolor{red}{{-1.8}} & 0.0 \\
+ & 13B & 0.0 \textcolor{red}{{-2.7}} & 0.9 \textcolor{teal}{{+0.9}} & 0.9 \textcolor{red}{{-1.8}} & 0.0 & 0.0 \textcolor{red}{{-1.8}} & 0.0 \\
+Qwen3-VL & 2B & 0.9 & 0.9 \textcolor{teal}{{+0.9}} & 1.8 \textcolor{red}{{-0.9}} & 0.0 \textcolor{red}{{-0.9}} & 2.7 & 1.8 \textcolor{teal}{{+1.8}} \\
+ & 4B & 0.0 \textcolor{red}{{-3.5}} & 0.9 \textcolor{teal}{{+0.9}} & 3.5 \textcolor{red}{{-1.8}} & 0.9 \textcolor{teal}{{+0.9}} & 4.5 \textcolor{red}{{-0.8}} & 1.8 \textcolor{teal}{{+1.8}} \\
+ & 8B & 0.0 \textcolor{red}{{-3.5}} & 0.9 \textcolor{teal}{{+0.9}} & 6.2 \textcolor{red}{{-0.8}} & 0.0 & 4.5 \textcolor{red}{{-0.9}} & 0.0 \\
+ & 32B & 0.0 \textcolor{red}{{-5.3}} & 17.7 \textcolor{red}{{-66.5}} & 0.0 & 17.7 \textcolor{red}{{-78.0}} & 1.8 \textcolor{teal}{{+1.8}} & 21.2 \textcolor{red}{{-74.4}} \\
+\midrule
+\multicolumn{8}{c}{\textit{VLM Backbone Decoders}} \\
+\midrule
+InternVL & 1B & 0.0 & 0.9 \textcolor{teal}{{+0.9}} & 0.0 & 0.0 & 0.0 & 0.0 \\
+ & 2B & 0.0 & 5.3 \textcolor{teal}{{+4.4}} & 0.0 & 2.7 \textcolor{teal}{{+1.8}} & 0.0 & 3.6 \textcolor{teal}{{+1.8}} \\
+ & 8B & 0.0 & 3.5 \textcolor{red}{{-9.7}} & 0.0 & 6.2 \textcolor{red}{{-3.5}} & 0.0 & 11.6 \textcolor{teal}{{+1.0}} \\
+LLaVA-1.5 & 7B & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 1.8 \textcolor{teal}{{+1.8}} \\
+LLaVA-1.6-Mistral & 7B & 0.0 & 0.9 \textcolor{teal}{{+0.9}} & 0.0 & 0.0 & 2.7 \textcolor{teal}{{+1.8}} & 2.7 \textcolor{teal}{{+2.7}} \\
+LLaVA-1.6-Vicuna & 7B & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \textcolor{red}{{-0.9}} & 1.8 \textcolor{teal}{{+1.8}} \\
+ & 13B & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \textcolor{red}{{-1.8}} \\
+Qwen3-VL & 2B & 0.0 & 2.7 \textcolor{teal}{{+0.9}} & 0.9 & 1.8 \textcolor{teal}{{+0.9}} & 0.0 \textcolor{red}{{-0.9}} & 1.8 \textcolor{teal}{{+0.9}} \\
+ & 4B & 0.0 & 1.8 \textcolor{teal}{{+1.8}} & 0.9 \textcolor{red}{{-0.9}} & 0.9 \textcolor{teal}{{+0.9}} & 1.8 \textcolor{red}{{-0.9}} & 2.7 \textcolor{teal}{{+0.9}} \\
+ & 8B & 0.0 & 1.8 \textcolor{teal}{{+0.9}} & 1.8 \textcolor{red}{{-3.5}} & 0.9 \textcolor{teal}{{+0.9}} & 3.6 \textcolor{red}{{-6.2}} & 1.8 \textcolor{teal}{{+1.8}} \\
+ & 32B & 0.0 \textcolor{red}{{-1.8}} & 0.9 \textcolor{red}{{-1.8}} & 0.9 \textcolor{red}{{-1.8}} & 0.0 \textcolor{red}{{-2.7}} & 0.0 \textcolor{red}{{-2.7}} & 2.7 \textcolor{teal}{{+0.9}} \\
+\midrule
+\multicolumn{8}{c}{\textit{Standalone LLMs}} \\
+\midrule
+Mistral & 7B & 0.0 & 30.1 \textcolor{red}{{-13.3}} & 0.0 & 23.9 \textcolor{red}{{-16.8}} & 0.0 & 21.2 \textcolor{red}{{-9.7}} \\
+Phi-3.5 & 3.8B & 0.0 & 4.4 & 0.0 & 1.8 & 0.0 & 4.4 \textcolor{red}{{-3.5}} \\
+Qwen2.5-Instruct & 7B & 1.8 \textcolor{red}{{-1.8}} & 3.5 \textcolor{red}{{-0.9}} & 1.8 \textcolor{red}{{-2.7}} & 2.7 \textcolor{teal}{{+1.8}} & 3.6 \textcolor{red}{{-5.3}} & 6.2 \textcolor{teal}{{+3.6}} \\
+Qwen3 & 0.6B & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+ & 1.7B & 0.0 & 6.2 \textcolor{red}{{-4.5}} & 0.0 & 3.5 \textcolor{red}{{-6.2}} & 0.0 & 5.3 \textcolor{teal}{{+2.6}} \\
+ & 4B & 0.0 & 0.0 \textcolor{red}{{-3.5}} & 0.0 & 0.0 & 0.0 & 0.0 \textcolor{red}{{-0.9}} \\
+ & 8B & 0.0 \textcolor{red}{{-6.2}} & 0.0 & 2.7 \textcolor{red}{{-8.0}} & 0.0 \textcolor{red}{{-0.9}} & 11.5 \textcolor{red}{{-8.0}} & 0.0 \\
+ & 32B & 3.5 \textcolor{teal}{{+1.8}} & 0.0 \textcolor{red}{{-0.9}} & 5.3 \textcolor{teal}{{+4.4}} & 2.7 \textcolor{teal}{{+1.8}} & 3.5 \textcolor{teal}{{+2.7}} & 1.8 \\
+Vicuna & 7B & 0.0 & 0.0 \textcolor{red}{{-1.8}} & 0.0 & 0.0 & 0.0 & 2.7 \textcolor{teal}{{+1.8}} \\
+ & 13B & 0.9 \textcolor{red}{{-0.9}} & 0.9 \textcolor{teal}{{+0.9}} & 1.8 \textcolor{red}{{-0.9}} & 0.0 \textcolor{red}{{-0.9}} & 0.0 \textcolor{red}{{-1.8}} & 1.8 \\
+\bottomrule
+\end{tabular}
+}
+\caption{\small Per-model abstention on the 113-question subset across all three control variants. Values show the with-instruction abstention rate (\%); colored deltas indicate change relative to blind-only: \textcolor{teal}{positive} = more abstention, \textcolor{red}{negative} = less.}
+\label{tab:abstention_inst_effect_vABC_q113}
+\end{table}

@@ -15,8 +15,11 @@
 \setlength{\pdfpageheight}{11in}
 \usepackage{amsmath}
 \usepackage{booktabs}
+\usepackage{colortbl}
 \usepackage{multirow}
+\usepackage[table]{xcolor}
 \usepackage{enumitem}
+\usepackage{tabularx}
 \usepackage{arydshln}
 
 \graphicspath{
@@ -28,7 +31,7 @@
 
 \setcounter{secnumdepth}{2}
 
-\title{Human and Model Priors under Referential Underspecification in Visual Questions}
+\title{When AIs Dream of Electric Sheep: Human Cognitive Priors and Alignment Without Vision}
 
 \author{Anonymous}
 \affiliations{Anonymous Institution}
@@ -38,37 +41,38 @@
 
 % ─────────────────────────────────────────────────────────────────────────────
 \begin{abstract}
-Vision-Language Models (VLMs) can achieve non-trivial accuracy on visual
-question answering (VQA) benchmarks without any visual input, suggesting
-reliance on linguistic priors embedded in the question text. This is
-typically treated as a training-data leakage artifact or shortcut
-behavior, but humans facing questions under incomplete information also
-rely on systematic cognitive heuristics---availability,
-representativeness, and world knowledge---to produce structured rather
-than random responses. Are model blind priors merely dataset leakage, or
-do they reflect something closer to the human cognitive priors that
-arise under the same conditions? Prior work has diagnosed this phenomenon
-through benchmark filtering and counterfactual images, but the
-\emph{structure} of these model priors---and whether they resemble the
-human priors that arise under the same conditions---remains largely
-unexplored. We address this gap by comparing blind responses from 37 models
-across three architectural groups against a human blind-answer reference
-($N{=}40$, 113 questions, 3 variants), measuring semantic agreement rather than ground-truth accuracy.
-To analyze where human and model priors converge or diverge, we introduce an
-\emph{operation--entity taxonomy} that categorizes each question by its
-reasoning operation (count, identity, action, attribute, spatial) and entity
-type (person, animal, object, food, place). A counterintuitive finding
-emerges: the model group most aligned with human blind priors is not the full
-VLM but the \emph{backbone decoder}---the same weights with the vision encoder
-bypassed. Image-condition ablations show that on uninformative input, the
-vision encoder actively modulates the language model's output distribution
-rather than cleanly withdrawing. Progressive reformulations that strip
-content-noun anchors reveal lexical-anchor dependence: model agreement drops
-monotonically while the human--human ceiling barely moves. The
-operation--entity decomposition further shows that alignment varies
-systematically by reasoning type, with identity questions most sensitive to
-anchor removal and count questions showing persistent human--model divergence
-in answer distributions.
+Vision-Language Models (VLMs) have achieved strong performance on visual
+question answering by learning from large paired datasets of images and text.
+Alongside these capabilities, VLMs are known to sometimes generate responses
+that are fluent and plausible but not fully grounded in the visual input---a
+tendency broadly discussed as hallucination. Part of this reflects statistical
+regularities in training text: question-answer co-occurrences, lexical cues,
+and world-knowledge patterns that can support answering even without visual
+grounding, to the point where VLMs can produce answers without seeing any
+image at all. Whether humans show analogous structure under the same
+conditions---and whether model priors reflect something beyond dataset
+leakage---is less clear and is what we investigate here.
+We probe this by presenting blank images to both models and humans,
+\emph{provoking} each to construct a plausible answer from language alone.
+The contrast is stark: humans imagine a world where things exist---answering
+\emph{yes} 65\% of the time on binary questions and distributing count answers
+around small positive quantities (2--3)---while most VLMs default to absence,
+collapsing to \emph{no} and \emph{zero}---as if applying an \emph{empty-world prior}
+rather than imagining a plausible scene.
+We compare blind responses from 37 models across three
+architectural groups against a human blind-answer reference ($N{=}40$,
+339 question--variant pairs), measuring semantic agreement rather than
+accuracy. Questions are progressively reformulated by removing content-noun
+anchors to isolate where humans and models anchor when lexical cues are
+stripped away. A counterintuitive finding emerges: the model group most
+aligned with human blind priors is not the full VLM but the
+\emph{backbone decoder}---the same weights with the vision encoder bypassed.
+Image-condition ablations show that the vision encoder actively modulates the
+language model's output on uninformative input rather than cleanly withdrawing.
+Alignment varies systematically by reasoning type: identity questions are most
+sensitive to anchor removal while count questions show the largest persistent
+human--model gap. Extended reasoning traces from thinking models partially
+modulate these priors without closing the gap.
 \end{abstract}
 
 % ─────────────────────────────────────────────────────────────────────────────
@@ -86,11 +90,11 @@ hypothesis alone without seeing the premise, VLMs can exploit shortcut priors
 carried by the question text to produce plausible answers without grounding
 them in the image. This raises a broader question beyond benchmark accuracy:
 when visual grounding is unavailable, what priors drive model answers, and to
-what extent are those priors shared with human linguistic expectations? In
-this paper, we investigate this question by comparing blind model responses
-against a human reference, revealing that the vision encoder's behavior on
-uninformative input plays a key role in shaping how model priors diverge from
-human ones.
+what extent are those priors shared with human linguistic expectations? In this paper, we investigate this question by comparing blind model responses
+against a human reference, finding that the degree of alignment depends
+more on model architecture than on scale or question content, and that
+human blind priors are more structured and operation-specific than
+typically assumed.
 
 Prior work on VQA has largely approached this issue through the lens of
 dataset bias and shortcut learning. Early work showed that text-only models
@@ -108,7 +112,7 @@ answer 37--54\% correctly without seeing any image.
 However, most prior work evaluates this phenomenon
 primarily in terms of benchmark accuracy. Much less is known about the
 \emph{structure} of the underlying answer priors themselves, including which
-lexical anchors allow models to shortcut image grounding.
+lexical anchors activate scene priors in place of visual grounding.
 
 At the same time, research in cognitive psychology has long established that
 humans facing decisions under uncertainty rely on systematic heuristics---such
@@ -127,7 +131,16 @@ topical and structural defaults. Under ambiguous or underspecified
 inputs, humans show structured patterns of agreement and disagreement that
 reveal latent expectations about plausible interpretations, whereas
 contemporary models often collapse toward narrow modal regions of response
-space \citep{bao2026imagination}. In our setting, this motivates treating
+space \citep{bao2026imagination}.
+The contrast is particularly sharp on categorical questions: when asked to
+imagine a scene without visual evidence, humans treat objects as likely
+\emph{present} and counts as small but non-zero, reflecting a positive-world
+prior shaped by everyday experience. VLMs, by contrast, frequently default
+to absence---\emph{no} on binary questions, \emph{zero} on count
+questions---responding as though the blank image signals an empty world rather
+than an unspecified one. This asymmetry runs deeper than benchmark accuracy:
+it reveals that models and humans construct fundamentally different default
+worlds when forced to think without sight. In our setting, this motivates treating
 blind VQA answers not just as right or wrong guesses, but as distributions
 over plausible interpretations: some questions induce strong shared human
 priors, while others open up pluralistic answer regions once lexical anchors
@@ -149,11 +162,6 @@ categories whose answers rapidly diversify under ambiguity. We then compare
 these patterns against a diverse set of vision-language models, backbone
 decoders, and language-only models to investigate where model priors align
 with human priors and where they diverge.
-
-This control-variant ladder also functions as a pronominalization test for
-visual grounding. If a model continues to perform well after content-noun
-anchors have been weakened or replaced by pronouns, then its blind behavior is
-more likely to be carried by shortcut priors than by robust grounding cues.
 
 Our contribution lies in the combination of four methodological tools.
 First, we recruit 40 participants to answer VQA
@@ -183,17 +191,20 @@ backbone decoder---the same weights with the vision encoder bypassed
 that architecture, rather than capacity, determines how human-like the
 resulting priors are. As content-noun anchors are progressively removed,
 model--human agreement drops monotonically while the human--human ceiling
-barely moves (Figure~\ref{fig:variants} in Appendix), confirming that models depend
-heavily on specific lexical cues that humans do not require.
+barely moves (Figure~\ref{fig:human_degradation}), confirming that models depend
+heavily on lexical anchors for prior activation, whereas human imaginative defaults are more robust to their removal.
 Image-condition ablations (blank, gray, noise, white) further show that the
 vision encoder actively modulates the language model's output even on
 uninformative input (Table~\ref{tab:image_ablation_main}); the backbone
 decoder, free from this modulation, falls back on the pure linguistic
-prior---which turns out to be the most human-like. Finally, our taxonomy
+prior---a form of language-embedded scene imagination---which turns out to be the most human-like. Finally, our taxonomy
 reveals where human--model alignment holds and where it breaks: counting
-questions show the largest persistent gap despite high human consensus,
-with models collapsing to generic small numbers while humans distribute
-more broadly (Figure~\ref{fig:op_hm}).
+questions show the largest persistent gap: humans imagine small populated
+scenes (2--3 objects most frequent) while models collapse to zero,
+treating absence of image as absence of content. We additionally probe
+whether extended reasoning traces from thinking models help bridge this
+gap---they partially modulate answer priors but do not restore
+human-like scene imagination.
 
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Related Work}
@@ -260,92 +271,113 @@ distributions as visual grounding is progressively weakened.
 % instruction, model confidence \emph{increases} instead---indicating committed
 % hallucination rather than acknowledged uncertainty.
 
+\paragraph{Chain-of-Thought and Thinking Models.}
+Chain-of-thought prompting \citep{wei2022chain} showed that eliciting
+intermediate reasoning steps substantially improves LLM performance on
+multi-step tasks. Subsequent work extended this to multimodal settings,
+where reasoning traces help models integrate visual and linguistic evidence
+\citep{zhang2023multimodal}. More recently, \emph{thinking models}---such as
+DeepSeek-R1 \citep{deepseekai2025deepseekr1} and the Qwen3 thinking series---are
+trained with reinforcement learning to produce extended internal reasoning
+before emitting a final answer, developing what can be described as a capacity
+for deliberate reflection before committing. In grounded settings, such traces
+have been shown to improve calibration and reduce shortcut reliance. We probe
+whether this capacity extends to the blind setting: does more deliberate
+reasoning help a model construct a more human-like imagined scene when no visual
+input is available? Our results suggest that extended traces modulate but do not
+fundamentally alter the absence-default behavior of VLMs, pointing to a
+distinction between reasoning \emph{capacity} and learned visual \emph{priors}.
+
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Experimental Setup}
 \label{sec:setup}
 
-\subsection{Models, Dataset, and Inference Conditions}
+\subsection{Dataset}
+\label{sec:dataset}
 
-We evaluate VLMs from the Qwen3-VL \citep{bai2025qwen3vl}, LLaVA
-\citep{liu2023visual,liu2024llavanext}, and InternVL \citep{zhu2025internvl3}
-families, plus standalone LLM baselines (Qwen3 \citep{yang2025qwen3},
-Qwen2.5-7B(-Instruct), Mistral-7B, Vicuna-7B/13B, Phi-3.5-mini).
-All evaluations are zero-shot at temperature~0. Throughout the paper, we use
-\emph{model family} for named lineages such as Qwen3-VL, InternVL, and
-LLaVA, and \emph{model group} for the three evaluation categories below.
-Models are organized into three groups:
-\textbf{VLM} (full vision-language stack), \textbf{Backbone decoder} (same
-checkpoint, vision encoder bypassed), \textbf{standalone LLM}, and
-a 7--8B scale-matched subset is used for fair size-controlled comparisons.
-Importantly, \textbf{Backbone decoder} runs are weight-identical to their paired
-VLM checkpoints and differ only by removing image input at inference, whereas
-\textbf{standalone LLM} runs use separate family-matched checkpoints (e.g.,
-Mistral-7B as the standalone counterpart to LLaVA-Mistral, Qwen3-8B to InternVL-8B)
-rather than decoders extracted from the VLM weights.
-All inference and analysis runs were executed on a workstation with dual
-NVIDIA TITAN RTX GPUs.
+\paragraph{Question pool and abstention filtering.}
+We begin with 1{,}000 questions randomly sampled from the VQA v2.0 validation split \citep{goyal2016making}, spanning yes/no, numerical, and open-ended types. A preliminary blind-only sweep over this full pool showed that abstention is highly model-dependent, especially without the explicit no-image instruction: some standalone configurations refuse a large fraction of questions, whereas most VLMs and backbone decoders remain near zero (Appendix~\ref{app:abstention_calibration}, Figure~\ref{fig:abstention_scale}). Because human--model comparison on refusal-heavy items would mostly measure whether a model declines to answer rather than what prior it expresses, we construct a matched 113-question subset that minimizes this distortion.
 
-Our evaluation dataset is drawn from a pool of 1{,}000 questions randomly
-sampled from the VQA v2.0 validation split \citep{goyal2016making}, spanning
-yes/no, numerical, and open-ended types.
-Human--model comparisons use 113 questions common to all qualifying
-participants (\S\ref{sec:human_data}) across three controlled reformulations,
-yielding 339 question--variant pairs.
+% \paragraph{Shared substantive-response subset.}
+For this filtering step, we treat \emph{hard abstention} as explicit refusal or no-image language (e.g., \textit{``cannot''}, \textit{``no image''}) and \emph{soft abstention} as non-substantive placeholders that withhold an answer (e.g., \textit{``unknown''}, \textit{``unanswerable''}); hedged guesses such as \textit{``maybe 2''} are retained as committed responses (Appendix~\ref{app:abstention_classifier}, Table~\ref{tab:abstention_keywords}). We then select questions on which all model groups give substantive answers, while avoiding a narrow concentration in just a few semantic clusters. This produces a subset whose abstention stays under 12\% for all models (Table~\ref{tab:abstention_inst_effect_vABC_q113}) and whose questions remain spread across the broader pool (Appendix~\ref{app:tsne}).
 
-\textbf{Question subset selection.}
-Abstention varies dramatically across model groups: think-mode standalone LLMs abstain on 50--92\% of questions
-while most VLMs and backbone decoders remain near zero (Figure~\ref{fig:abstention_scale}).
-Comparing human answers to model refusals would not meaningfully measure linguistic prior use.
-We therefore selected the 113-question subset to target questions on which models across all
-groups \emph{provide substantive answers}.
-On this subset, abstention drops to under 12\% for all models,
-and several models---including InternVL-2B (VLM) and Qwen3-0.6B (standalone LLM)---show
-0.0\% abstention across both blind and instruction conditions (Table~\ref{tab:abstention_inst_effect_vC_q113}).
-The subset covers the full semantic range of the pool, confirmed by t-SNE embedding
-(Appendix~\ref{app:tsne}), and was drawn to span all entity categories (object, person,
-animal, food, place, vehicle, product, text, other) and operation types (count,
-yes/no, attribute, relation, etc.), so that group-level comparisons are not dominated
-by any single question type.
-Main semantic-agreement analyses are reported on this matched subset, while
-shared substantive-response filtering---which removes hard and soft
-abstentions and recomputes alignment only where both sides give committed
-answers---is used as a supplementary robustness view to verify that the core
-architectural ordering is not driven by refusal behavior alone.
+\paragraph{Entity coverage and diversity.}
+Our dataset subset is designed to preserve variety while keeping the human--model comparison meaningful under blind prompting. The original VQA metadata is organized largely around surface question forms such as \textit{what}, \textit{how many}, or \textit{is there}, but those labels do not cleanly separate the reasoning demand from the semantic field of the anchor-bearing noun phrase. For analysis, we therefore annotate each question along two orthogonal dimensions: \emph{operation} (e.g., count, attribute, action, spatial, identity) and \emph{entity} (e.g., person, animal, object, vehicle, food, place). This two-axis taxonomy separates \emph{what kind of reasoning} the question requires from \emph{what semantic field} its lexical anchors evoke, so agreement patterns can be analyzed independently by operation and by entity type rather than conflated in a single label space.
 
-\begin{figure*}[t]
+Within that taxonomy, we aim for relatively even coverage across \emph{entity} groupings. This matters for the control-variant analysis below: once lexical anchors are weakened or replaced by pronouns, some question types remain interpretable under broad commonsense priors while others become heavily anchor-dependent. Broad entity coverage therefore helps test that degradation pattern across a wider range of latent scene priors rather than concentrating it in a small number of repeated object domains. The resulting 113-question subset is also broadly spread across the larger question space (Appendix~\ref{app:tsne}, Figure~\ref{fig:tsne}).
+
+% \paragraph{Question taxonomy.}
+The resulting subset covers a broad range of entity categories and reasoning operations; Tables~\ref{tab:taxonomy} summarize the taxonomy. These labels were extracted with a structured prompt-based annotation pipeline, and Appendix~\ref{app:sem_extraction} provides the prompt and annotation details.
+Each question is annotated along two axes:
+\emph{operation type} captures the reasoning demand and \emph{entity type} captures the semantic field of the subject.
+Human--model comparisons use 113 questions across three controlled reformulations (\S\ref{sec:control}), yielding 339 question--variant pairs.
+
+\begin{table}[t]
 \centering
-\includegraphics[width=\textwidth]{abstention_by_variant_scatter}
-\caption{Soft and hard abstention rates (\%) across the full 1{,}000-question pool as a function of
-model scale (parameters in billions), split by model group and question variant
-(dark = Original, mid = Weaker, light = Pronominalized;
-filled markers = blind+instruction, hollow = blind).
-Think-mode standalone LLMs (bottom right) abstain on up to 90\% of questions---far too high for meaningful
-human comparison---which motivates our selection of the 113-question substantive-response subset.
-VLMs and backbone decoders (top row) remain near zero across all conditions.}
-\label{fig:abstention_scale}
-\end{figure*}
+\caption{Question taxonomy used for group-level analysis.}
+\label{tab:taxonomy}
 
-Our experimental paradigm uses a blank 224$\times$224 black image in place of
-the original visual input, together with the instruction \textit{``Note: No
-images are provided. For each question, imagine an appropriate image exists
-and answer based on the most common or universal scenario.''} This framing
-elicits prior-driven answers while reducing refusal behavior. Because
-abstention is also an informative aspect of model behavior, we additionally
-evaluate blind answering without the instruction and report the resulting
-abstention shifts as a supplementary robustness analysis
-(Appendix~\ref{app:abstention_calibration}). In practice, VLMs and backbone
-decoders remain near-zero abstention in both conditions, whereas standalone
-and think-mode LLMs are much more instruction-sensitive and can change
-25--96\% of answers between blind and instruction-aware prompting even when
-accuracy moves by only a few points. This indicates that the instruction
-primarily reroutes the language prior rather than unlocking new visual
-knowledge.
+{\fontsize{8}{9}\selectfont
+\renewcommand{\arraystretch}{0.95}
+\setlength{\tabcolsep}{4pt}
 
-\subsection{Control Question Variants}
+\begin{tabularx}{\columnwidth}{@{}p{0.243\columnwidth}cX@{}}
+\toprule
+\textbf{Category} & \textbf{\textit{N}} & \textbf{Description} \\
+\midrule
+
+\rowcolor{gray!12}
+\multicolumn{3}{c}{\textbf{\textit{Operations}}} \\
+\midrule
+
+\rowcolor{gray!6}
+Attribute       & 41 & Color, material, type, age, name, or location. \\
+Count           & 22 & Quantity or number of entities. \\
+\rowcolor{gray!6}
+Spatial         & 12 & Relative position, direction, or location. \\
+Identity        & 9  & What or who a specific entity is. \\
+\rowcolor{gray!6}
+Action          & 7  & What an entity is doing or engaged in. \\
+Existence       & 7  & Whether an entity is present in the scene. \\
+\rowcolor{gray!6}
+Text Reading    & 5  & Reading visible writing, signs, labels, or logos. \\
+World Knowledge & 4  & Factual or commonsense knowledge. \\
+\rowcolor{gray!6}
+Temporal        & 3  & Duration, age, or temporal ordering of events. \\
+Comparison      & 2  & Comparative or superlative judgment. \\
+\rowcolor{gray!6}
+Causality       & 1  & Reason or causal explanation. \\
+
+\midrule
+\rowcolor{gray!12}
+\multicolumn{3}{c}{\textbf{\textit{Entities}}} \\
+\midrule
+
+\rowcolor{gray!6}
+Object      & 27 & General physical objects. \\
+Person      & 26 & Human subjects, including people, faces, and body parts. \\
+\rowcolor{gray!6}
+Animal      & 17 & Non-human living creatures. \\
+Food        & 16 & Food and drink items, including prepared dishes. \\
+\rowcolor{gray!6}
+Other       & 9  & Questions that do not fit any other entity category. \\
+Place       & 5  & Locations, scenes, settings, or environments. \\
+\rowcolor{gray!6}
+Product     & 5  & Manufactured objects such as furniture, tools, or appliances. \\
+Vehicle     & 4  & Cars, buses, bicycles, aircraft, or watercraft. \\
+\rowcolor{gray!6}
+Text        & 4  & Visible written content such as signs, labels, or logos. \\
+
+\bottomrule
+\end{tabularx}
+}
+
+\end{table}
+
+\paragraph{Control question variants.}
 \label{sec:control}
-
-To isolate the contribution of linguistic priors, we generate progressively
-abstracted variants of each VQA question using GPT-4.1-mini under a constrained
+To test how strongly blind answers depend on entity-denoting lexical anchors,
+we generate progressively abstracted variants of each VQA question using GPT-4.1-mini under a constrained
 JSON schema. The transformations systematically remove lexical information while
 preserving the underlying question structure and reasoning operation. We create
 four variants: (1) deictic markers and spatial references removed, (2) specific
@@ -360,26 +392,88 @@ These variants define a controlled abstraction hierarchy that progressively
 reduces entity-specific information while preserving the operation required to
 answer the question. This allows us to test whether human and model responses
 depend primarily on lexical cues or on broader semantic and commonsense priors.
-For analysis, each question is additionally annotated along two orthogonal
-dimensions: \emph{operation} (e.g., count, attribute, action, spatial,
-identity) and \emph{entity} (e.g., person, animal, object, vehicle, food,
-place). We use this two-axis taxonomy to separate \emph{what kind of reasoning}
-the question demands from \emph{what semantic field} its lexical anchors evoke,
-so that agreement patterns can be analyzed independently by operation and by
-entity type rather than conflated in a single label space.
+The same ladder also functions as a pronominalization test for anchor
+dependence: if blind behavior degrades sharply when content-noun anchors are
+weakened or replaced by pronouns, then the model is relying on surface lexical
+anchors rather than stable, human-like scene priors.
+
+\subsection{Models and Inference Setup}
+\label{sec:inference}
+
+We evaluate models in three groups:
+\textbf{VLM} (full vision-language stack), \textbf{Backbone decoder} (same
+checkpoint, vision encoder bypassed), \textbf{Standalone LLM}. VLMs span the Qwen3-VL \citep{bai2025qwen3vl}, LLaVA
+\citep{liu2023visual,liu2024llavanext}, and InternVL \citep{zhu2025internvl3}
+families; standalone LLM baselines include Qwen3 \citep{yang2025qwen3},
+Qwen2.5-7B-Instruct, Mistral-7B, Vicuna-7B/13B, and Phi-3.5-mini.
+All evaluations are zero-shot at temperature~0.
+% , and a 7--8B scale-matched subset is used for all main architectural comparisons; the scale analysis (Appendix~\ref{app:scale_variant}) spans the full model range.
+\textbf{Backbone decoder} runs are weight-identical to their paired VLM checkpoints and differ only by removing image input at inference; \textbf{standalone LLM} checkpoints are family-matched to the language decoders of those VLMs (e.g., Mistral-7B for LLaVA-Mistral, Qwen3-8B for InternVL-8B).
+All inference runs were executed on dual NVIDIA TITAN RTX GPUs.
+
+Our experimental paradigm replaces the original image with a blank 224$\times$224 black image together with the instruction \textit{``Note: No images are provided. For each question, imagine an appropriate image exists and answer based on the most common or universal scenario.''} This framing elicits prior-driven answers while reducing refusal behavior.
+We also run additional blind-only control experiments and report the resulting values in appendix tables (Appendix~\ref{app:abstention_calibration}).
 
 \subsection{Human Data Collection}
 \label{sec:human_data}
 
 40 participants (online university forums, IRB-approved) answered text-only
-blind-instruction VQA questions in Korean or English.
-Responses were translated and VQA-normalized uniformly before scoring
-so that agreement metrics reflect semantic content rather than surface form;
-full protocol and participant statistics are in Appendix~\ref{app:human}.
-Metrics cover 339 question--variant pairs per participant.
+blind-instruction VQA questions in Korean or English, yielding 15,336 total responses
+(339 question--variant pairs per participant).
+Participants were given the same blind-awareness instruction used for the model
+condition: \textit{``Note: No images are provided. For each question, imagine an
+appropriate image exists and answer based on the most common or universal
+scenario.''}
+Responses were translated and VQA-normalized uniformly before scoring.
+Full protocol details and distributions are in Appendix~\ref{app:human}
+and~\ref{app:human_stats}.
 
 \subsection{Metrics and Evaluation Protocols}
 \label{sec:eval_protocols}
+
+\textbf{Preprocessing.} Before scoring, all answers are translated to English
+when needed, normalized with the standard VQA pipeline
+\citep{antol2015vqa}, and stripped of generic wrappers so human and model
+responses are compared on the same cleaned answer string. These normalized
+responses are the inputs to the human--human and human--model agreement
+calculations. Appendix~\ref{app:human} and
+Appendix~\ref{app:abstention_classifier} provide the full preprocessing and
+cleaning details.
+
+\textbf{Distributional alignment.} For categorical questions such as \textit{yes/no}
+and \textit{count}, we compare each model response (a single answer per question--variant
+at temperature~0) against the per-question human answer distribution using
+Jensen--Shannon divergence, total variation distance, and a modal-match rate
+(`Mode': whether the model's answer matches the human modal answer for that question).
+All comparisons are per-question: the model's answer is treated as a point mass and
+evaluated against the empirical distribution of 40 human responses for the same question--variant.
+
+\textbf{Semantic alignment.} For answer-level semantic agreement, we compute pairwise
+Sentence-BERT \citep{reimers2019sentence} cosine similarity between responses.
+Specifically, we use the \texttt{all-mpnet-base-v2} encoder
+\citep{song2020mpnet}. For each question and variant, we compare each model
+answer against the set of human answers and average over humans to obtain a
+per-question human--model score. Human--human (HH) agreement is computed
+analogously from distinct human pairs.
+
+% For model $m$, question $q$, and variant $v$,
+% $\mathrm{HM}_{m,q,v}$ is the mean SBERT cosine between the model answer and
+% all individual human answers, and $\mathrm{HH}_{q,v}$ is the mean SBERT cosine
+% across distinct human--human pairs for the same question and variant. For
+% grouped views such as the HH--HM scatterplots, we average these per-question
+% scores over the questions and variants in slice $g$ to obtain
+% $\overline{\mathrm{HM}}_{m,g}$ and $\overline{\mathrm{HH}}_g$.
+
+Embedding-based agreement can be sensitive to answer length and response
+format. This matters here because VQA-style answers are typically short,
+whereas some standalone LLMs produce longer explanatory responses. We
+therefore use raw SBERT as the primary metric, report lexical-overlap
+robustness checks (chrF, ROUGE-1, exact match), and include a length-normalized
+evaluation that truncates answers to $\leq$5 words after preprocessing. The
+main ranking is largely stable, though some more verbose models shift more
+under truncation; details are reported in Appendix~\ref{app:metrics} and
+Appendix~\ref{app:thinking} (Table~\ref{tab:comprehensive_inst_blind};
+Figure~\ref{fig:sbert_truncation_scatter}; Figure~\ref{fig:think_abs_vs_length}).
 
 \textbf{Task Performance.} Although no image is provided at inference time,
 we report blind VQA task accuracy as a complementary behavioral signal of how
@@ -388,106 +482,11 @@ because it also indicates how strongly models leverage question-side priors,
 biases, and shortcuts rather than true visual grounding under blind answering
 \citep{chen2024are,lee2024vlind}.
 
-\textbf{Alignment.} For semantic agreement, we compute pairwise
-Sentence-BERT \citep{reimers2019sentence} cosine similarity between responses.
-Specifically, we use the \texttt{all-mpnet-base-v2} encoder
-\citep{song2020mpnet}---a 768-dimensional model pre-trained with masked and
-permuted language modelling objectives that achieves stronger semantic textual
-similarity performance than compact distilled alternatives (e.g.\ MiniLM-L6)
-and is more robust to variation in short response lengths. Similarities are
-applied to human--human (HH) pairs (measuring within-group consensus),
-human--model (HM) pairs (measuring alignment to human priors), and
-model--model pairs. This allows us to compare how closely models approximate
-the human prior structure at the per-question level. Because embedding-based
-agreement can be mildly affected by response length before cosine comparison,
-we use raw SBERT as the primary semantic metric and report truncated-answer
-robustness tables in Appendix~\ref{app:metrics}; these are mainly relevant
-for more verbose standalone LLM outputs. We additionally report lexical
-overlap metrics (chrF, ROUGE-1, exact match) as robustness checks in
-Appendix~\ref{app:metrics}. Concretely, for model $m$, question $q$, and
-variant $v$, we write
-\begin{align*}
-\mathrm{HM}_{m,q,v}&=\frac{1}{|H|}\sum_{h \in H}s(y_{m,q,v},y_{h,q,v}),\\
-\mathrm{HH}_{q,v}&=\frac{1}{|P_q|}\sum_{(h,h') \in P_q}s(y_{h,q,v},y_{h',q,v}),
-\end{align*}
-where $s(\cdot,\cdot)$ is SBERT cosine similarity and $P_q$ is the set of
-human pairs for question $q$. For grouped views such as the HH--HM
-scatterplots, we average these scores within operation or entity slices
-$g$, e.g.
-\begin{align*}
-\overline{\mathrm{HM}}_{m,g}&=\frac{1}{|Q_g||V|}\sum_{q \in Q_g}\sum_{v \in V}\mathrm{HM}_{m,q,v},\\
-\overline{\mathrm{HH}}_{g}&=\frac{1}{|Q_g||V|}\sum_{q \in Q_g}\sum_{v \in V}\mathrm{HH}_{q,v},
-\end{align*}
-where $Q_g$ is the question set assigned to slice $g$ and $V$ is the set of
-included variants. We then compare these grouped profiles across models and
-against the human reference.
-
-\textbf{Distributional alignment.} Beyond answer-level semantic agreement, we
-also compare model and human response \emph{patterns}. For a given answer type
-$a$ (yes/no, count, or free text) and grouping slice $g$ (operation or
-entity), we form pooled empirical distributions
-\[
-p_H(r \mid a,g), \qquad p_m(r \mid a,g),
-\]
-over normalized answer categories $r$, pooled across the matched question set
-and, in the supplementary grouped tables, across all three variants. We then
-compare $p_m$ against $p_H$ using Jensen--Shannon divergence and total
-variation distance as the primary structural-alignment metrics, with
-chi-square and Cramer's $V$ reported as supplementary mismatch diagnostics.
-The supplementary grouped tables additionally report a human leave-one-out
-baseline, which compares each participant's grouped distribution against the
-pooled distribution of the remaining humans under the same protocol.
-% \textbf{Difficulty correlation} is Pearson~$r$ between per-question human
-% accuracy and per-model accuracy. \textbf{Krippendorff's $\alpha$} (nominal)
-% measures within- and cross-group reliability. \textbf{Token confidence} is
-% mean token probability from output logprobs.
-
-\textbf{Preprocessing.} All answers undergo VQA-standard preprocessing before scoring: stripping
-articles (\textit{a, an, the}), normalizing punctuation, and converting
-common count words (e.g., \textit{three}, \textit{twelve}) to digits for
-both human and model responses \citep{antol2015vqa}. Generic answer wrappers
-(e.g.,\ \textit{``answer is ...''}) are removed before normalization, and
-Korean answers are translated to English and then processed with the same
-VQA-style normalization used elsewhere in the paper. These translated and
-normalized strings are the inputs to the pairwise human--human and
-human--model agreement calculations.
-
-\textbf{Abstention classification.}
-We distinguish two abstention types based on the cleaned, normalized answer string.
-\emph{Hard abstention}: the output contains an explicit image-reference refusal keyword
-(e.g., \textit{``cannot''}, \textit{``no image''}, \textit{``unable to see''}, \textit{``blank''}).
-\emph{Soft abstention}: the full normalized answer is a pure epistemic hedge
-(\textit{``unknown''}, \textit{``unanswerable''}, \textit{``unclear''}, \textit{``n/a''}, \textit{``indeterminate''}, etc.).
-We intentionally exclude \textit{``nothing''} from soft abstention---it is a valid content
-answer (e.g., \textit{``What is in the bowl?''} $\to$ \textit{``nothing''})---and
-exclude hedged yes/no words (\textit{``maybe''}, \textit{``possibly''}, \textit{``uncertain''}, \textit{``unsure''})
-which represent partial committed responses rather than refusals and therefore
-appear in the answer distribution alongside human \textit{``other''} responses.
-The same classifier is applied uniformly to both model and human answers; human
-hard and soft abstention are effectively zero (0.00\% each under this classifier),
-so the distinction primarily matters for models.
-
-\textbf{Shared substantive-response evaluation} addresses the confound that
-some models abstain while others answer. For this robustness view, we remove
-hard and soft abstentions (as defined above), strip generic answer wrappers (e.g.,
-\textit{``The answer is''}), apply VQA answer normalization, and recompute
-agreement on the remaining substantive responses only. This isolates
-content-level agreement from refusal behavior while preserving the paper's
-main raw-answer evaluation in the primary results.
-
-\textbf{Length-normalized evaluation} additionally truncates all answers to
-$\leq$5 words after preprocessing, controlling for the format mismatch
-between terse VLM outputs and verbose standalone LLM
-responses. This primarily affects reasoning-mode (think) models
-($\Delta\text{SBERT}{=}{+}0.046$) and has negligible impact on VLMs and
-backbone decoders ($\Delta\text{SBERT}{<}{+}0.006$); standalone LLMs
-without think mode are also minimally affected
-($\Delta\text{SBERT}{<}{+}0.02$). We report both raw and
-length-normalized tables in the supplement
-(Tables~\ref{tab:comprehensive_inst_blind}
-and~\ref{tab:comprehensive_inst_blind_w5}) to confirm that group rankings
-are preserved regardless of truncation.
-
+\textbf{Confidence alignment.} We also analyze token-level confidence as an
+auxiliary diagnostic of whether models express uncertainty in a human-like way.
+These analyses are not a primary selection metric in the main paper, but they
+provide a complementary view of calibration and question-level difficulty
+tracking.
 % ─────────────────────────────────────────────────────────────────────────────
 % ═══════════════════════════════════════════════════════════════════════════
 % §4  HUMAN-MODEL BLIND ALIGNMENT (LEAD SECTION)
@@ -495,343 +494,374 @@ are preserved regardless of truncation.
 \section{Human-Model Blind Alignment}
 \label{sec:alignment}
 
-We begin with a basic comparison: when models answer VQA questions
-without seeing any image, how closely do their ``imagined'' answers
-match those of humans under the same condition? Rather than measuring
-accuracy against ground truth---which conflates linguistic prior
-exploitation with genuine visual reasoning---we measure \emph{semantic
-agreement} between blind model outputs and blind human responses. The
-results are organized around four questions:
-\textbf{(1) What do humans agree on without seeing?}
-\textbf{(2) What priors do models default to?}
-\textbf{(3) Which models align most closely with humans?}
-\textbf{(4) Do models express human-like uncertainty?}
-We answer these in turn before testing the encoder mechanism directly in
-\S\ref{sec:ablation}.
-
-\subsection{What Do Humans Agree on Without Seeing?}
+\subsection{Human Blind Priors: Reliability and Patterns}
 \label{sec:human_patterns}
 
-To interpret model-human agreement, we first need the structure of human
-blind agreement itself. We therefore measure pairwise human--human (HH)
-SBERT per question across all three entity variants
-(original $\to$ weaker-object $\to$ pronominalized). Throughout, we use mean pairwise HH
-agreement as a human reference ceiling: because humans themselves disagree,
-this quantity is below 1 and should be interpreted as a behavioral reference
-level rather than a hard upper bound.
-
-Figure~\ref{fig:human_degradation} shows the distribution of
-per-question HH SBERT by operation type and entity group across
-variants. Operation type is the primary axis along which human
-agreement varies: a one-way ANOVA of HH SBERT by operation type is
-significant in every variant ($F{=}5.75$, $5.93$, $6.60$ for the
-original, weaker-object, and pronominalized variants, respectively;
-all $p{<}10^{-5}$). This operation-level separation is stable across
-formulations (Kruskal-Wallis $H{\approx}41.5$--$41.8$ in both the
-original and pronominalized variants), with full per-operation and entity statistics
-in Appendix~\ref{app:hh_stats}. The associated effect sizes are practically
-meaningful rather than merely significant, and the same conclusion holds under
-surface-metric robustness (Appendix~\ref{app:chrf_human}). Entity group, by contrast, is never significant
-($p{>}0.74$ in every variant).
-
-However, the degradation under entity removal is not uniform. Paired $t$-tests
-within each operation type (original vs.\ pronominalized) reveal that identity questions
-collapse ($0.534 \to 0.338$, $p{=}0.002$), whereas count questions
-remain stable ($0.663 \to 0.671$, $\Delta{=}{+}0.008$, $p{=}0.56$, n.s.)---the
-answer space is already narrow and entity removal adds no new ambiguity.
-Among entity groups, food shows the largest significant drop ($0.662 \to 0.598$, $p{=}0.031$),
-with animal ($0.629{\to}0.576$) and object ($0.593{\to}0.552$) groups showing
-borderline drops ($p{\approx}0.06$);
-person and other groups are stable ($p{>}0.19$)
-(Table~\ref{tab:hh_type_stats}). The highest-HH questions
-in the diagnostic ranking make this concrete: \emph{``How many bottles of
-water are on the table?''} (count/object, HH${=}0.783$),
-\emph{``Do the horses love each other?''} (action/animal, HH${=}0.770$),
-and \emph{``How many hot dogs are on this bun?''} (count/food,
-HH${=}0.770$) all lie in operations with tightly constrained answer spaces.
-By contrast, the lowest-HH questions cluster in entity- and visually grounded
-categories: \emph{``What kind of information does the yellow and white book
-look like it contains?''} (identity/other, HH${=}0.183$),
-\emph{``What does the shirt say?''} (text/object, HH${=}0.219$), and
-\emph{``What does the man's gesture mean?''} (attribute/person,
-HH${=}0.226$). These examples match Figure~\ref{fig:human_degradation}:
-high-consensus human priors are concentrated in count and some action
-questions, while low-consensus cases are disproportionately identity,
-text, and person/other-grounded questions that require missing visual detail.
-Identity is the clearest operation-level example of this anchor sensitivity in
-our human subset. When the noun is preserved, questions such as \emph{``What
-animal is this cake meant to represent?''}, \emph{``What type of bear is
-this?''}, and \emph{``What type of shoe is that?''} still elicit partial
-consensus around a compact set of plausible answers; once the noun is
-pronominalized, the same questions spread across multiple candidate referents
-and HH agreement drops sharply (Appendix~\ref{app:distributions}).
-This complements the stable count examples above: count often remains compact
-because its answer space is already narrow, whereas identity opens into a
-broader set of plausible guesses once the lexical anchor is removed.
-
-As a construct validity check, we examine whether three independently
-collected signals---subjective confidence, behavioral response time (RT),
-and inter-rater HH SBERT---converge on the same latent difficulty dimension.
-Figure~\ref{fig:conf_rt_sbert_triangle} confirms this: confidence
-positively correlates with HH SBERT and RT negatively correlates
-(Appendix~\ref{app:human_ecdf}, Table~\ref{tab:conf_rt_sbert_r}),
-consistent across all three variants.
-
-The ECDF of human confidence (Figure~\ref{fig:conf_rt_sbert_triangle}, bottom)
-shows that this distribution is strikingly stable across variants: the mean
-decreases only modestly from original to pronominalized ($0.526 \to 0.491$),
-and the three ECDF curves are nearly indistinguishable.
-The slight rightward shift at the $0.5$ confidence step under pronominalization
-reflects a specific pattern: when the referent noun is replaced by a pronoun,
-some participants default to a prototypical answer and report high confidence
-in that guess rather than reporting uncertainty.
-On an identity question such as \emph{``What type of bear is this?''}
-(original), participants who cannot recall the breed may hedge;
-on the pronominalized form \emph{``What type is it?''}, the same participants
-often commit to a high-frequency prototype (e.g., \emph{``grizzly''} or
-\emph{``brown''}) with equal or greater stated confidence, even though
-the answer is less grounded.
-This is the human analogue of corpus-frequency prior use: uncertainty is
-absorbed into a confident prototypical guess rather than expressed as explicit
-doubt. The net effect is that human confidence is robust to pronominalization
-at the distributional level---unlike models, where instruction framing alone
-can shift confidence by $+0.08$ log-probability units uniformly
-(Appendix~\ref{app:confidence_alignment}).
+\paragraph{Signal convergence and reference reliability.}
+Participants responded quickly (median RT 4.1~s) and concisely (92.6\%
+single-word answers), with response times nearly identical across all three
+formulations and abstention effectively absent throughout. Three independently
+collected signals---subjective confidence, behavioral RT, and inter-rater
+semantic agreement (HH SBERT)---converge on the same per-question difficulty
+dimension (Figure~\ref{fig:conf_rt_sbert_triangle}): RT is strongly negatively
+correlated with HH SBERT across all variants ($r{=}{-}0.854$ to $-0.860$;
+all $p{<}.001$), and confidence tracks positively in the original and
+weaker-object variants ($r{=}0.228$--$0.299$; both $p{<}.016$). Per-question
+HH SBERT is also highly stable across formulations ($r{>}0.88$ for all variant
+pairs), confirming that the human reference captures a reliable latent
+difficulty signal rather than annotation noise. We use mean pairwise HH
+agreement throughout as a behavioral reference ceiling.
 
 \begin{figure}[t]
 \centering
-\begin{minipage}[t]{0.64\columnwidth}
-\centering
-\includegraphics[width=\linewidth]{confidence/conf_rt_sbert_triangle}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.33\columnwidth}
-\centering
-\includegraphics[width=\linewidth]{confidence/human_ecdf}
-\end{minipage}
-\caption{Left: per-question confidence and RT vs.\ HH SBERT
-($n{=}113$, 40 participants; dark/mid/light = Original/Weaker/Pronominalized).
-Right: ECDF of human self-reported confidence across variants.
-The three curves are nearly identical, confirming that human confidence
-is robust to lexical-anchor removal.
-Full $r$ values in Table~\ref{tab:conf_rt_sbert_r}.}
+\includegraphics[width=\columnwidth]{confidence/conf_rt_sbert_triangle}
+\caption{Per-question confidence and RT vs.\ HH SBERT.
+Inset text reports per-variant Pearson $r$.}
 \label{fig:conf_rt_sbert_triangle}
 \end{figure}
 
-Human abstention under both classifier definitions is effectively zero:
-no responses match the hard abstention keywords and no responses match
-the soft abstention word list, yielding 0.00\% hard and 0.00\% soft
-abstention across all three variants (C, B, A).
-Participants responded with a committed answer in essentially every case,
-and this committed-answer rate does not change with question abstraction:
-unlike models---where soft and hard abstention measurably rise as
-lexical anchors are stripped (Appendix~\ref{app:abstention_calibration})---human participants continued
-to answer with direct committed responses even when content nouns were fully
-pronominalized. Unlike models---where the cleaning pipeline strips refusals
-and generic wrappers---human answers pass through essentially unchanged
-(0.7\% of HH answer tokens are affected, all by minor VQA normalization).
-For human--model (HM) comparison, the shared pipeline ensures that SBERT
-scores reflect semantic content rather than format mismatch: model refusals
-and preambles are stripped before embedding, so low human--model SBERT
-indicates genuine disagreement rather than verbosity artifacts.
-
-These patterns are robust to entity manipulation: per-question HH SBERT
-correlates $r{>}0.88$ across all variant pairs (C--A: $r{=}0.889$; C--B: $r{=}0.935$; B--A: $r{=}0.922$), and overall human agreement
-decreases only modestly under pronominalization. This gives the reference
-point for the model analysis below: humans do lose some agreement when
-entity cues are stripped, but the loss is concentrated in a few operations
-rather than being global.
-Within the human reference itself, identity shows the clearest observed
-degradation, while count provides the most stable contrast case.
+\paragraph{Structural patterns.}
+Human blind agreement varies systematically across question types
+(Figure~\ref{fig:human_degradation}).
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.96\columnwidth]{sbert_by_op_variant_box_q113_yesno}\\[0.15em]
-\includegraphics[width=0.96\columnwidth]{sbert_by_entity_variant_box_q113_yesno}
-\caption{HH SBERT degradation across control variants.
-\textbf{Top:} by operation---identity collapses most ($\Delta{=}{-}0.198$), while count remains stable.
-\textbf{Bottom:} by entity---weaker separation, confirming that human blind priors are structured primarily by reasoning operation rather than entity type.}
+\begin{minipage}{\columnwidth}
+  \centering
+  \includegraphics[width=\linewidth]{sbert_by_op_variant_box_q113_yesno}\\[1pt]
+  \small (a) by reasoning operation
+\end{minipage}\\[6pt]
+\begin{minipage}{\columnwidth}
+  \centering
+  \includegraphics[width=\linewidth]{sbert_by_entity_variant_box_q113_yesno}\\[1pt]
+  \small (b) by entity type
+\end{minipage}
+\caption{HH SBERT by \textbf{(a)} reasoning operation and \textbf{(b)} entity type across control variants. Brackets mark significant Original$\to$Pronominalized drops ($^{**}p{<}.01$, $^{*}p{<}.05$).}
 \label{fig:human_degradation}
 \end{figure}
 
-\subsection{What Priors Do Models Default To?}
+Operation type is the primary structural axis: a Kruskal-Wallis test on HH SBERT by
+operation type is significant in every variant (all $p{<}10^{-5}$), whereas
+entity group is never significant in any variant. The degradation is selective
+rather than global: identity questions collapse most under pronominalization
+($\Delta{=}{-}0.198$, Wilcoxon $p{=}0.012$), while count questions remain stable
+($p{=}0.52$; operation groups have $n{=}2$--$41$ questions, so we use
+non-parametric tests throughout).
+For example, \textit{``What type of bear is this?''} reaches HH SBERT of $0.67$
+when the noun anchor is present---humans converge on specific species---but drops
+to $0.34$ when pronominalized, as the referent disappears and answers scatter.
+At the entity level, food questions show the steepest degradation ($0.662 \to 0.598$);
+\textit{``What type of bread does this appear to be?''} illustrates this, with HH SBERT
+falling from $0.53$ to $0.32$ under pronominalization.
+The same conclusion holds under surface-metric robustness (Appendix~\ref{app:chrf_human}).
+
+A methodological note: SBERT agreement partly reflects answer-space breadth. Categories
+with tightly clustered answers appear more stable because semantically similar
+responses remain close in embedding space even under lexical weakening.
+Existence questions illustrate this: 93 of 95 exist-type questions are yes/no
+(Table~\ref{tab:q113_sample_composition}), so humans converge by default and
+HH SBERT remains high ($0.87$) even under pronominalization.
+We therefore treat the weaker entity-group degradation as an interpretive
+limitation of the metric and rely more heavily on operation-type differences
+when characterizing anchor fragility.
+% Human confidence is likewise largely
+% stable under pronominalization; detailed distributions are deferred to
+% Appendix~\ref{app:human_ecdf} and Appendix~\ref{app:confidence_alignment}.
+
+% Optional expanded prose from the appendix, kept here as a commented draft in case
+% the main text later needs more concrete human-side examples.
+% \paragraph{Possible expanded human-pattern vignette.}
+% Existence and knowledge questions (e.g.\ \textit{``Is there a couch?''},
+% \textit{``Can one use the fur of these animals to make clothing?''}) yield
+% near-ceiling HH SBERT and remain stable across variants, showing that some
+% blind priors are both shared and robust to lexical abstraction. Count
+% questions provide a different stable case: their agreement is lower than
+% yes/no existence questions but remains essentially unchanged under
+% pronominalization, consistent with a narrow answer space that does not widen
+% when the noun anchor is removed. Identity questions are the opposite extreme:
+% once the subject noun is replaced by a pronoun, multiple object categories
+% become plausible even for humans, and HH agreement drops sharply. Spatial
+% questions show a weaker version of the same pattern.
+
+\subsection{Categorical Answer Distribution Alignment}
 \label{sec:dist_alignment}
 
-Beyond aggregate agreement, two systematic distributional biases emerge in yes/no and count question types
-(Appendix~\ref{app:distributions}).
-\textbf{No-bias} in yes/no: full VLMs default to a narrower yes/no prior that
-departs from the human split, while backbone decoders move back toward the human distribution
-(bias rankings stable across question variants; Appendix~\ref{app:yesno_stability}).
-\textbf{Zero-bias} in count: full VLMs collapse toward ``0'' on 81.4\% of
-count questions under the blind condition---interpreting the absence of an image
-as the absence of objects rather than imagining a plausible scene---while humans
-distribute across small counts (``2'' most frequent, ``0'' only 5th).
+JS divergence and TV distance scores in Table~\ref{tab:hm_grouped_distribution_7b_compact_filtered}
+quantify how closely each model's answers align with the human response distribution per question---revealing systematic biases that exact-match accuracy cannot detect. 
+Backbone decoders and InternVL are the closest match to human answer distributions, while full VLMs and standalone LLMs diverge more sharply. 
+% The table also includes a human leave-one-out baseline, which measures how well an individual human answer matches the remaining human response distribution
+% for the same question; the best model rows approach this baseline on yes/no
+% questions but remain well below it on count questions.
+\input{tables/hm_grouped_distribution_7b_compact_filtered}
+
+\paragraph{Yes/no prior bias.} Most full VLMs suppress the human yes-leaning prior,
+answering \textit{yes} on only 20--37\% of yes/no questions for the LLaVA family
+and 0--41\% for Qwen3-VL, against a human baseline of 65\%
+(Figure~\ref{fig:dist_human_vs_model}). This \emph{no-bias} is the binary counterpart to the count zero-default
+discussed next. Backbone decoders move back toward the human distribution
+(LLaVA-1.5~LM: 71\%, Qwen3-VL-8B~LM: 73\%), though some overshoot.
+InternVL-8B is the notable exception among full VLMs, matching the human
+yes-rate closely (66\%)---consistent with its stronger distributional
+alignment on count questions as well.
+
+\paragraph{Zero-default in count.} Together, both biases reflect a shared
+\emph{absence prior}: the blank image is interpreted as an empty or null scene
+rather than an unspecified one. On count questions this is most stark: full VLMs
+collapse toward ``0'' on 81.4\% of items---treating image absence as object
+absence---while humans distribute across small counts (``2'' most frequent,
+``0'' only 5th).
 Standalone LLMs show a separate phenomenon: they often fail to occupy the VQA answer
 distribution entirely, replacing content answers with hedges or refusals
 (see Appendix~\ref{app:abstention_calibration}).
 
-\textbf{Can instruction restore scene imagination?}
-Count questions provide a direct test: a model forming a plausible internal representation
-should shift away from ``0'' when instructed to imagine a scene.
-Adding the instruction barely moves VLMs (81.4\%$\to$75.6\%), while think-mode models
-respond more strongly (20.9\%$\to$8.2\%), consistent with chain-of-thought enabling
-some generative inference.
-Yet neither group recovers the human count distribution, and high response-change rate
-(VLMs: 14\%, think: 86\%) does not predict distributional alignment---responsiveness to
-instruction does not entail more human-like counts \citep{bao2026imagination}.
-This suggests that current models reroute a linguistic prior rather than construct a scene,
-and that genuine scene imagination may require architectural conditions beyond instruction tuning.
+Figure~\ref{fig:dist_human_vs_model} illustrates both biases side by side for
+the InternVL-8B family: the full VLM suppresses the human yes-lean on yes/no
+questions and collapses toward zero on count, while the backbone decoder
+partially recovers the human shape.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{answer_distribution/blind/yesno/internvl_8b}\\[0.4em]
+\includegraphics[width=\columnwidth]{answer_distribution/blind/number/internvl_8b}
+\caption{Answer distributions under the blind condition for yes/no (\textbf{top}) and count (\textbf{bottom}) questions. Bars show humans, ground truth, InternVL-8B (full VLM), InternVL-8B backbone decoder (LM), and Qwen3-8B.}
+\label{fig:dist_human_vs_model}
+\end{figure}
+
+Pooling answers by question type reveals the \emph{direction} of this divergence:
+models and humans imagine systematically different default worlds.
+Appendix~\ref{app:distributions} shows combined yes/no and count distributions
+across all model families, making these biases visible at scale.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{answer_distribution/transition/vABC_qwen_integer_err_b400}
+\caption{Count-answer distributions for the Qwen3-8B family ($N{=}339$ question--variant instances; hollow = blind, filled = +instruction). Error bars: 95\% bootstrap CIs (400 resamples).}
+\label{fig:count_transition}
+\end{figure}
+
+\paragraph{Can instruction restore scene imagination?}
+Given the VLM zero-default established above, a natural question is whether
+an explicit instruction to \emph{imagine a scene} actually activates scene imagination---or
+merely perturbs the answer surface without inducing a coherent imagined world.
+Figure~\ref{fig:count_transition} shows this for the Qwen3 family across all
+three architecture types; the architecture ordering is consistent, but none
+fully recovers the human distribution.
+
+Concrete examples expose the quality of the ``imagination'' instruction triggers.
+For \emph{``How many birds?''}, humans blind-answer with a spread of small
+positive numbers (modal: ``3''); VLMs answer ``0'' both blind
+and with instruction, while backbone decoders shift to arbitrary values (10, 5, 2)
+that are plausible but uncoordinated.
+For \emph{``How many stripes does the zebra have?''}, humans distribute
+across approximate counts (2, 20, 50, countless), reflecting calibrated uncertainty
+about a recall-from-memory question; VLMs that are stuck at ``0'' blind jump to
+arbitrarily large values (50, 100) when instructed, overshooting the human
+distribution rather than anchoring near it.
+% For \emph{``How many apple trees are in the picture?''}, humans imagine a
+% small orchard scene (modal: ``3''; range 1--6), consistent with scene priors
+% built from real-world experience; VLMs remain at ``0'' even under instruction,
+% unable to disengage from a null-image interpretation. [redundant with birds example]
+The architecture ordering in how much instruction shifts answers is itself
+revealing: standalone LLMs change most readily (68\%) because their language
+backbone retains count priors from text-only pretraining; backbone decoders
+follow at 38\%; full VLMs resist most strongly (14\%), as the vision encoder's
+null-image signal suppresses the language prior even when instruction explicitly
+asks the model to imagine a scene
+(Table~\ref{tab:image_ablation_main}, \S\ref{sec:ablation}).
+This points to a specific failure mode of vision-language pretraining: the
+language backbone defers count retrieval to the visual pathway, which atrophies
+its independent linguistic count priors \citep{paiss2023teaching,parcalabescu2022valse}.
+When the visual pathway receives no meaningful signal, that deference becomes a
+liability---producing not an ``I cannot see'' abstention, but a committed
+zero-default that instruction alone cannot dislodge.
 
 
-At the grouped level, these patterns are stable across operation and entity categories
-(Appendix~\ref{app:grouped_distribution_alignment}): backbone decoders are
-strongest on operation-grouped yes/no structure, while InternVL-8B best reproduces
-the human small-number count distribution. Text-category slices are more heterogeneous,
-mirroring the broad lexical diversity of low-HH identity and text questions
-discussed above.
 
-\subsection{Which Models Align Most Closely with Humans?}
+
+\subsection{Semantic Alignment}
 \label{sec:alignment_main}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.96\columnwidth]{vABC_allscales_all_abstfiltered_compact}
-\caption{HH vs.\ HM SBERT per operation category (one point = class-mean, 11 operations, C+B+A avg, abstention-filtered).
-Rows = model class; points above diagonal = class aligns with humans better than humans agree among themselves.}
+\includegraphics[width=\linewidth]{hh_hm_grouped_scatter_7b_all_variants/7b_sbert_op_ent_abstfiltered}
+\caption{HH vs.\ HM SBERT grouped by operation type (left) and entity type (right). Rows are model classes; smaller translucent markers show individual models and larger markers show class means with standard-error bars. Each panel reports Pearson $r$ and $p$ over the grouped means.}
 \label{fig:scatter_sbert}
 \end{figure}
 
-\paragraph{Which model group is closest to the human reference?}
-The human--human ceiling is $\overline{\text{SBERT}}_{\text{HH}} = 0.577$.
-Backbone decoders reach $0.573$---within $0.004$ of the ceiling---while full VLMs score
-$0.543$ and standalone LLMs $0.433$.
-Figure~\ref{fig:scatter_sbert} shows HH vs.\ HM SBERT per operation category for each model class.
-The backbone decoder panel sits \emph{above} the VLM panel despite sharing identical weights,
-confirming that blind-image processing introduces systematic bias absent from the pure language prior.
-Standalone LLMs cluster furthest below the diagonal.
-High blind accuracy co-occurs with a \emph{high} SBERT gap: VLMs outperform humans
-by $+16$ pp on average, backbone decoders by $+11$ pp.
-In the blind setting this is prior exploitation---not reasoning---so high blind accuracy
-signals convergence on benchmark-favored shortcuts rather than faithful visual grounding.
-The strongest human--model SBERT comes from InternVL-8B ($0.598$), with backbone
-decoders clustered close behind; the highest blind-accuracy models (LLaVA-Mistral,
-LLaVA-1.5 LM, all at $0.537$) do not lead on alignment.
-Per-group scatter plots, top-question examples, and Fisher $z$-pooled HH--HM correlations
-across variants are in Appendix~\ref{app:grouped_patterns}.
+\paragraph{Backbone decoders are the most human-aligned.}
+Among all architectures, backbone decoders best reproduce human blind priors,
+reaching an HM SBERT of $0.573$---within $0.004$ of the
+human--human ceiling ($0.577$) and above both full VLMs ($0.543$) and standalone
+LLMs ($0.433$).
+This double advantage is interpretable: backbone decoders inherit the rich,
+visually grounded world knowledge encoded in VLM language decoders during
+multimodal training, while not receiving any visual signal from a blank image
+that was never part of their training distribution.
+Standalone LLMs lack the former; full VLMs are exposed to the latter.
+The result is that the language decoder of a VLM---on its own---carries
+the most human-calibrated blind prior among the architectures we test.
+Figure~\ref{fig:scatter_sbert} makes this concrete: the backbone decoder panel
+sits \emph{above} the full VLM panel across every operation and entity group,
+despite weight-identical parameters.
+Matched-family tests confirm this in four of five decoder--VLM pairs
+(Holm-significant, $\Delta{=}{+}0.013$ to ${+}0.066$); InternVL is the lone
+exception where the full VLM slightly leads ($\Delta{=}{-}0.021$, $p{=}0.008$).
+Against matched standalone LLMs, every decoder comparison is positive and
+significant ($\Delta{=}{+}0.085$ to ${+}0.327$;
+Appendix~\ref{tab:matched_family_alignment_tests}).
 
-\paragraph{Does scale matter once architecture is fixed?}
-Figure~\ref{fig:scale} (Appendix~\ref{app:scale_variant}) separates group from scale.
-On blind accuracy, VLMs show a \emph{positive} size trend (${\approx}38\%$ at 1B
-to ${\approx}51\%$ at 4--8B), consistent with larger models encoding stronger
-linguistic priors; backbone decoders are comparatively flat near the human baseline.
-Standalone LLMs follow a strong positive trend (${\approx}7.7\%$ at 0.6B to
-${\approx}33\%$ at 32B) but stay near or below the human baseline (${\approx}27\%$)
-until 32B.
-Think-mode models improve monotonically up to 8B (${\approx}31\%$) but the
-32B think model drops back to ${\approx}20\%$ across all variants---a likely
-format penalty, as larger reasoning chains produce verbose answers that fail
-VQA exact-match scoring.
-On human--model alignment (Table~\ref{tab:comprehensive_inst_blind}), backbone
-decoders improve modestly with scale, approaching the HH ceiling, while
-full VLMs are flat; \emph{group membership predicts alignment better than size},
-with a 1B backbone decoder exceeding a 7B standalone LLM.
+\paragraph{Commonsense operations align; identity and spatial questions expose the lexical gap.}
+Figure~\ref{fig:scatter_sbert} reveals two distinct alignment regimes by operation type.
 
-\paragraph{How much do models depend on lexical anchors?}
-VLM and backbone accuracy drop 11--13 pp from the original to the pronominalized variant;
-human accuracy barely changes. The scale $\times$ variant interaction shows larger models can
-become \emph{more} anchor-sensitive rather than less (Appendix~\ref{app:scale_variant}).
-To characterize \emph{where} alignment is strong or weak, Appendix~\ref{app:degradation}
-breaks down Pearson $r$(human difficulty, model score) by operation and entity type across
-variants: operation type drives the largest variance, with identity and spatial questions
-collapsing most under pronominalization, while count and action questions remain robust
-(Figures~\ref{fig:variants}--\ref{fig:variants_acc}).
+\textit{Anchor-robust.}
+Existence, Action, and World Knowledge questions sit in the top-right of the
+scatter, near or above the diagonal across all model classes.
+Both humans and models converge on strong priors regardless of whether the anchor
+noun is present---\textit{``What is the animal doing?''} and \textit{``What is
+it doing?''} draw on the same locomotion prior, so the lexical cue adds little.
 
-\paragraph{Does thinking mode help blind human alignment?}
-Think-mode Qwen3 models engage more reasoning on harder pronominalized questions, but think-chain
-length \emph{negatively} correlates with HM SBERT ($r{=}{-}0.26$--$0.28$, $p{<}0.01$)---more
-deliberation means lower alignment, not higher---with the exception of Qwen3-1.7B
-($\Delta\text{SBERT}{=}{+}0.12$, $p{<}0.001$; full EDA in Appendix~\ref{app:think}).
-The backbone $>$ VLM $>$ standalone LLM ordering is robust to abstention filtering
-(Appendix~\ref{app:abstention_calibration}).
+\textit{Anchor-sensitive.}
+Comparison, Identity, and Spatial questions cluster in the bottom-left and fall
+\emph{below} the diagonal: human agreement is already low because these questions
+are inherently referent-specific, and models fall further below humans once the
+anchor is removed.
+Count questions are a different case---they sit \emph{above} the diagonal for
+VLMs, but this reflects the zero-default shortcut rather than genuine alignment.
 
-\subsection{Do Models Express Human-Like Uncertainty?}
-\label{sec:confidence}
+% \textit{Within model classes.}
+InternVL is the best-aligned VLM across nearly all groups;
+Mistral-7B is the lowest standalone LLM, consistently furthest below the
+diagonal.
+Backbone decoders show the tightest within-class clustering, confirming that
+architecture dominates individual model variation.
+Taken together, alignment is determined first by architecture, then by the
+reasoning demand of the question.
 
-Human self-reported confidence decreases from the original to the pronominalized
-variant ($0.526 \to 0.491$), indicating that anchor removal increases uncertainty
-for people as well as models. Models are also systematically more confident overall
-than humans (mean confidence: human $0.53$, VLM $0.68$, backbone $0.69$,
-standalone LLM $0.75$, think $0.79$), but the more informative result is
-\emph{which questions} each group treats as easy or hard.
-Table~\ref{tab:confidence_corr_by_variant} (Appendix~\ref{app:confidence_alignment}) shows that this uncertainty structure depends
-strongly on architecture. Backbone decoders and standalone LLMs exhibit the
-highest positive human--model confidence correlation on original questions
-(backbone: $r{=}0.38$--$0.39$; standalone LLM: $r{=}0.41$), and both degrade
-under anchor removal (to $r{=}0.27$ on variant A). VLMs are weakest throughout
-($r{=}0.13$, $0.13$, and $-0.04$ for C, B, and A respectively), despite strong
-blind accuracy. Think-mode standalone LLMs remain positive but lower
-($r{=}0.30 \to 0.19$ from C to A). Thus answer alignment and uncertainty
-alignment dissociate: a model can answer blindly in a benchmark-favored way
-without matching the questions humans themselves experience as easy or hard.
+\iffalse
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{degradation_by_ent_op_7b_inst_blind/sbert/combined}
+\caption{HM SBERT degradation profiles across control variants
+(Original$\to$Weaker$\to$Pronominalized). Top row: by operation type; bottom row: by entity type.
+Operation type is the cleaner structural axis: count and action remain relatively stable,
+while identity and spatial questions degrade most under pronominalization; entity type is flatter and less consistent.
+Bold lines show group means; thin lines show individual models.
+Accuracy breakdown by subgroup is in Appendix~\ref{app:degradation}.}
+\label{fig:variants}
+\end{figure*}
+\fi
+
+% \subsection{Capacity to Think: Scale and Extended Reasoning}
+% (merged into \section{What Modulates Alignment} above)
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{think_eda/think_abs_sbert_accuracy_horiz}
+\caption{HM SBERT, blind accuracy, and mean answer log-probability for Qwen3 thinking models vs.\ mean reasoning-trace length. Gray band and dashed lines mark the human reference. Filled markers = blind-with-instruction; open = blind-only.}
+\label{fig:think_abs_vs_length}
+\end{figure}
+
+% \subsection{Uncertainty Alignment}
+% \label{sec:confidence}
+
+% Models do not express uncertainty in a human-like way: the questions humans find
+% easy or hard are tracked best by backbone decoders and standalone LLMs, and worst by full VLMs.
+% Human self-reported confidence decreases from the original to the pronominalized
+% variant ($0.526 \to 0.491$), indicating that anchor removal increases uncertainty
+% for people as well as models. Models are also systematically more confident overall
+% than humans (mean confidence: human $0.53$, VLM $0.68$, backbone $0.69$,
+% standalone LLM $0.75$), but the more informative result is
+% \emph{which questions} each group treats as easy or hard. Appendix~\ref{app:confidence_alignment}
+% shows that this uncertainty structure depends
+% strongly on architecture. Backbone decoders and standalone LLMs exhibit the
+% highest positive human--model confidence correlation on original questions
+% (backbone: $r{=}0.38$--$0.39$; standalone LLM: $r{=}0.41$), and both degrade
+% under anchor removal (to $r{=}0.27$ on the pronominalized variant). VLMs are weakest throughout
+% ($r{=}0.13$, $0.13$, and $0.04$ for the original, weaker, and pronominalized variants respectively), despite strong
+% blind accuracy. In other words, answer alignment and uncertainty
+% alignment dissociate: a model can answer blindly in a benchmark-favored way
+% without matching the questions humans themselves experience as easy or hard.
 
 % ═══════════════════════════════════════════════════════════════════════════
-% §6  IMAGE-CONDITION ABLATION
+% §6  WHAT MODULATES ALIGNMENT
 % ═══════════════════════════════════════════════════════════════════════════
-\section{Why Does the Vision Encoder Hurt Alignment?}
+\section{What Modulates Alignment}
 \label{sec:ablation}
 
-Does the backbone decoder advantage reflect blank-image adversarial effects, or a fundamental encoder property?
-If the former, a different uninformative image should recover alignment; if the latter, backbone decoders should outperform VLMs under \emph{any} uninformative input.
-We test blank, gray, noise, and white conditions on representative VLMs from two families
-(full results in Appendix~Table~\ref{tab:image_ablation_main}).
-In every condition, the full VLM stays below decoder-level alignment: for Qwen3-VL-8B,
-SBERT drops from 0.541 (blank) to 0.399 (noise), and moving across conditions increases
-answer instability rather than restoring backbone behavior.
-LLaVA-Mistral is more stable but still degrades under noise.
-The encoder has no neutral mode: any image embedding shifts the output distribution
-away from the pure language prior, even when the image carries no task-relevant signal.
+\paragraph{Visual encoding.}
+The backbone decoder advantage is not a black-image artifact.
+Testing blank, gray, noise, and white inputs on Qwen3-VL-8B and LLaVA-Mistral
+shows that no uninformative image condition recovers backbone-level alignment:
+for Qwen3-VL-8B, SBERT ranges from $0.399$ (noise) to $0.549$ (white),
+never reaching the backbone's $0.573$.
+Any active vision pathway shifts answers away from the pure language prior---not
+as a failure to help, but as a grounding-oriented bias that persists even when
+the visual input carries no task-relevant signal.
+Full ablation results are in Appendix~\ref{app:ablation} (Table~\ref{tab:image_ablation_main}).
+
+\paragraph{Scale.}
+Scale matters within groups, but not across them: increasing parameter count
+does not erase the backbone $>$ VLM $>$ standalone LLM ordering.
+On human--model alignment, backbone decoders improve modestly with scale and
+approach the HH ceiling, while full VLMs are flat; \emph{group membership
+predicts alignment better than size}, with a 1B backbone decoder exceeding a
+7B standalone LLM.
+Higher blind accuracy with scale does not track better alignment---VLMs at
+4--8B reach ${\approx}51\%$ blind accuracy yet fall below the human--human
+SBERT ceiling, reflecting shortcut convergence rather than human-like priors
+(Appendix~\ref{app:scale_variant}, Figure~\ref{fig:scale}).
+
+\paragraph{Extended reasoning.}
+Thinking does not reliably improve human--model alignment.
+Within the Qwen3 family, longer reasoning traces raise blind accuracy for 4B
+and 8B models but do not consistently improve HM SBERT
+(8B: $0.507$ vs.\ $0.522$ non-thinking, on original questions).
+The 32B thinking model takes the opposite pattern: near-empty traces yet
+slightly better alignment, at the cost of sharply lower accuracy.
+Thinking therefore behaves more like a family-specific decoding intervention
+than a general route to more human-like blind priors
+(Figure~\ref{fig:think_abs_vs_length}, Appendix~\ref{app:thinking}).
 
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Discussion}
 \label{sec:discussion}
 
-\paragraph{The vision encoder has no neutral mode.}
-Our central finding is that removing the vision encoder from a VLM
-\emph{improves} blind human-model alignment. Image-condition ablations
-confirm this is not a blank-image artifact: the vision encoder actively
-modulates outputs on any uninformative image, and no condition recovers
-backbone-level alignment. Vision co-training embeds human-like
-linguistic priors in the language backbone, but the encoder itself
-introduces distributional biases that push answers away from those priors
-when no meaningful visual content is present. This has practical
-implications: blind VQA diagnosis should test backbone decoders
-separately, and VLM architectures may benefit from a learned
-``visual uncertainty'' signal or explicit gating mechanism that suppresses
-encoder influence when input is uninformative.
+\paragraph{Backbone decoders carry the most human-calibrated prior.}
+Vision co-training embeds rich, human-like linguistic priors in the language
+backbone, but the vision encoder introduces distributional biases that push
+responses away from those priors when no meaningful visual content is present.
+The backbone decoder---approximating a question-conditioned prior $P(a \mid q)$
+rather than $P(a \mid q, v_0)$---is therefore the most human-aligned
+architecture, not because it is more capable, but because it is not exposed to
+an out-of-distribution visual signal.
+This sensitivity is not purely a defect: a VLM that remains responsive to the
+visual pathway may be better positioned to use genuine visual evidence when
+present. The limitation our diagnostic exposes is not that the encoder is
+``too visual,'' but that the model lacks a reliable way to distinguish
+informative from uninformative visual states---a gap that VLM design could
+address through learned input-uncertainty gating.
 
-\paragraph{An information-theoretic view.}
-The backbone decoder computes $P(a \mid q)$ shaped by VQA co-occurrence statistics,
-while the VLM computes $P(a \mid q, v_0)$ where the encoder output $v_0 \neq \mathbf{0}$
-acts as a nuisance variable even for uninformative images.
-Supplementary entropy diagnostics (Appendix~\ref{app:entropy_diagnostics})
-provide a complementary response-dispersion view of these alignment failures.
-
-\paragraph{Lexical anchors as prior activators.}
+\paragraph{Lexical anchors as prior activators, structured by operation type.}
 The control-variant degradation chain reveals that blind model success is
-predominantly carried by content-noun lexical cues. When these are
-stripped, models diverge from human priors while humans barely change.
-This identifies a concrete mechanism---lexically anchored prior recall---that
-benchmark design and debiasing interventions can explicitly target.
+predominantly carried by content-noun lexical cues. When these are stripped,
+models diverge from human priors while humans barely change---but this effect
+is not uniform.
+Commonsense-grounded operations (Existence, Action, World Knowledge) are
+anchor-robust: both humans and models draw on stable scene priors that survive
+pronominalization.
+Referent-specific operations (Identity, Spatial, Comparison) are
+anchor-sensitive: once the content noun is removed, both human agreement and
+model alignment collapse, but models fall further---revealing that model
+answers in these categories are driven more by lexical cues than by robust
+world knowledge.
+This operation-level structure identifies a concrete mechanism---lexically
+anchored prior recall---that benchmark design and debiasing interventions can
+explicitly target.
 We note that benchmark contamination may amplify this effect:
-\citet{chen2024are} show that VLMs can achieve non-trivial scores on
-multimodal benchmarks without visual input, partly due to training-set
-leakage. Our control-variant design partially disentangles the two
-sources---pronominalized questions remove the lexical cues that
-memorization would exploit, yet models still retain above-chance
-performance, suggesting that corpus-level priors contribute beyond
-direct memorization. A stronger mechanistic test would relate shortcut answer
-frequencies directly to pretraining or fine-tuning corpus statistics; we view
-that correlation analysis as a natural next step for strengthening the prior
-account.
+\citet{chen2024are} show that VLMs can achieve non-trivial scores without
+visual input partly due to training-set leakage; our pronominalization test
+partially disentangles memorization from corpus-level priors, since models
+retain above-chance performance even after lexical cues are removed.
 
 \paragraph{Linguistic priors as structured imagination.}
 Backbone decoders achieve near-human semantic agreement ($r \approx 0.57$--$0.72$
@@ -855,19 +885,38 @@ Human data covers only the instruction-blind condition; corpus-frequency correla
 % ─────────────────────────────────────────────────────────────────────────────
 \section{Conclusion}
 
-Backbone decoders achieve near-human semantic agreement (HM SBERT $0.573$
-vs.\ HH ceiling $0.577$) while full VLMs score lower ($0.543$) and standalone LLMs diverge
-($0.433$). Image-condition ablations show this is not a blank-image artifact: the vision
-encoder has no neutral mode and actively distorts the backbone's linguistic prior on
-any uninformative input. Blind VQA evaluation of backbone decoders should therefore
-be a standard diagnostic---blind accuracy above 40\% signals over-indexing on
-knowledge-accessible question types.
-Control variants show that blind model success is carried by content-noun lexical anchors:
-stripping these collapses model--human agreement while the human ceiling barely moves.
-The pronominalization test is a simple diagnostic for separating lexical shortcut behavior
-from more robust visual grounding, stable across scales and robust to confound controls.
+This work studies how VLMs respond to visual questions in the absence of
+any image, and how closely that behavior resembles the blind priors that
+humans themselves express under the same condition.
+
+Backbone decoders---the language components of VLMs, stripped of visual input---come
+closest to human blind priors, nearly reaching the human--human agreement ceiling
+and consistently outperforming both full VLMs and standalone LLMs.
+This confirms the intuition that VLM language decoders carry rich world knowledge
+from multimodal training, while also showing that the vision encoder introduces
+a distributional pull on uninformative images that pushes responses away from
+those very priors.
+High blind accuracy does not accompany this: the models with the strongest shortcut
+behavior score well on VQA metrics while diverging from human response distributions,
+underscoring that accuracy alone is an unreliable proxy for whether a model is
+doing what humans do.
+
+The operation-level breakdown provides the most concrete evidence.
+Existence, Action, and World Knowledge questions carry stable priors that survive
+pronominalization for both humans and models---these are questions with strong
+commonsense answers that do not depend on the specific referent.
+Comparison, Identity, and Spatial questions are anchor-dependent: both human
+agreement and human--model alignment drop when content nouns are removed, but
+models fall further, revealing that their answers are driven more by surface
+lexical cues than by the kind of robust scene imagination humans apply.
+Entity type, by contrast, explains little of the variance---what matters is the
+reasoning demand, not the semantic domain.
+Together, these findings suggest that lexical prior exploitation in VLMs is not
+uniform but structured, and that pronominalization-based probing offers a practical
+tool for separating genuine world knowledge from surface-anchored shortcut behavior.
 
 % ─────────────────────────────────────────────────────────────────────────────
+\clearpage
 \bibliography{paper}
 
 % ─────────────────────────────────────────────────────────────────────────────
@@ -878,132 +927,20 @@ from more robust visual grounding, stable across scales and robust to confound c
 \renewcommand{\thefigure}{A\arabic{figure}}
 \renewcommand{\thetable}{A\arabic{table}}
 
-\section{Question Embedding Coverage}
-\label{app:tsne}
+\section{Dataset and Human Study Details}
+\label{app:data}
 
-Figure~\ref{fig:tsne} shows t-SNE projections of the 1,000-question pool
-(all-mpnet-base-v2) with the human-study question subset highlighted.
-The subset covers the full semantic range of the pool across both entity
-and operation dimensions, confirming that human-comparison results are not
-restricted to a narrow semantic region.
+\subsection{Human-Study Subset Composition}
+\label{app:sample_composition}
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\columnwidth]{subset_tsne_entities}%
-% \hspace{0.01\columnwidth}%
-\includegraphics[width=\columnwidth]{subset_tsne_operations}
-\caption{t-SNE of the 1k VQA pool (gray) with the human-study
-subset highlighted. \textbf{Left:} colored by entity type.
-\textbf{Right:} colored by operation type. The subset is distributed
-across the full embedding space.}
-\label{fig:tsne}
-\end{figure*}
+% Table~\ref{tab:q113_sample_composition} summarizes the 113-question subset used
+% for the human study and matched human--model comparisons. The subset spans all
+% three answer formats and preserves broad coverage across both operation type and
+% entity type.
 
-\section{Abstention and Calibration Ablations}
-\label{app:abstention_calibration}
+\input{tables/sample_q113_composition}
 
-This section presents robustness analyses for the blind
-setting: abstention behavior and instruction-induced abstention collapse.
-Together they clarify that the backbone
-advantage is not an artifact of refusal behavior.
-
-\subsection{Full Pool Abstention (1{,}000 Questions)}
-\label{app:abstention_full}
-\label{app:abstention_scale_full}
-
-Figure~\ref{fig:abstention_scale} in the main text shows the full-pool abstention-scale
-pattern that motivates the 113-question substantive-response subset. The
-remainder of this appendix section provides the corresponding per-condition and
-per-variant breakdowns on the matched subset.
-
-%\begin{figure}[t]
-%\centering
-%\includegraphics[width=\columnwidth]{merged_abstention_vC_q1000}
-%\caption{Blind vs.\ instruction-aware abstention rates for all 37 models
-%(variant~C, full 1{,}000-question pool).
-%Think-mode standalone LLMs show the largest instruction-driven shifts;
-%VLMs and backbone decoders remain near zero in both conditions.}
-%\label{fig:merged_abstention_q1000}
-%\end{figure}
-
-\subsection{Abstention Classifier Details}
-\label{app:abstention_classifier}
-
-\paragraph{Hard abstention} is detected via a regex match on the raw output for
-explicit image-reference refusal phrases: \texttt{cannot}, \texttt{can't},
-\texttt{don't see}, \texttt{no image}, \texttt{unable}, \texttt{not visible},
-\texttt{no visual}, \texttt{i'm not able}, and \texttt{\textbackslash bblank\textbackslash b}.
-
-\paragraph{Soft abstention} is detected by exact match on the full normalized answer
-against a fixed word list: \{\textit{unknown, unanswerable, unclear, nowhere, n/a, na,
-indeterminate, unidentifiable, no sign, can't tell, cannot tell, not clear, not visible}\}.
-
-\paragraph{Design choices.}
-Two categories are deliberately excluded from soft abstention:
-\begin{itemize}
-  \item \textbf{\textit{``nothing''}}: a valid content answer for questions about
-    empty scenes or absent objects (e.g., \textit{``What is in the bowl?''} $\to$
-    \textit{``nothing''}). Treating it as abstention would remove meaningful
-    negative-evidence responses from the distribution.
-  \item \textbf{Hedged yes/no words} (\textit{maybe, possibly, perhaps, uncertain,
-    unsure}): these represent partial committed responses to yes/no questions rather
-    than refusals. They fall into the \textit{other} category in the answer
-    distribution (Figure~\ref{fig:dist}), consistent with how human responses are
-    categorized, enabling a fair distributional comparison.
-\end{itemize}
-The same classifier is applied uniformly to both model and human answers.
-Human hard abstention is 0.00\% and soft abstention is 0.00\% across all
-three variants---the abstention distinction is therefore a model-side
-phenomenon. Crucially, human abstention is invariant to question abstraction
-(0.00\% in variants C, B, and A), whereas model abstention tends to rise as
-lexical anchors are removed (Section~\ref{app:human_stats}).
-
-\subsection{Instruction Gating Effect}
-\label{app:inst_gating}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{merged_abstention_vC_q113}
-\caption{Soft and hard abstention rates (blind $\to$ blind+instruction) per model (variant~C, 113 questions).
-Shaded bands indicate model group. Standalone LLMs show large shifts; VLMs/backbones are nearly unchanged.}
-\label{fig:abstention_shift_models}
-\end{figure}
-
-\input{tables/abstention_inst_effect_vC_q113}
-
-For reference, human abstention is effectively zero (0.00\% hard and soft
-under the paper's classifier), so the abstention patterns below are a
-model-side phenomenon rather than a general property of blind answering.
-
-Instruction (blind $\to$ blind with awareness instruction) increases human--model agreement most on
-original questions ($+$0.020 SBERT) and attenuates as lexical anchors are
-removed (pronominalized: $+$0.012). The behavioral mechanism is abstention
-collapse: standalone LLMs shift from $\sim$30\% soft abstention (epistemic hedges
-such as \textit{``unknown''} or \textit{``unanswerable''}) to near
-zero (Figure~\ref{fig:abstention_shift_models}), while VLMs and backbones barely
-change---indicating their priors are expressed unconditionally. Accuracy
-does not improve (Appendix~\ref{app:inst}), confirming that instruction
-primarily converts refusal into committed hallucination rather than grounded
-reasoning.
-
-\subsection{Abstention Across Control Variants}
-\label{app:abstention_variants}
-
-On the 113-question subset, combined soft and hard abstention remains low
-relative to the full 1{,}000-question pool but still rises across the
-control variants C$\to$A.
-Hard abstention---explicit refusals such as \textit{``I cannot answer without seeing the image''}---is
-suppressed to near-zero for VLMs and backbone decoders by the baked-in
-single-word response instruction, and remains negligible for most standalone LLMs.
-The exception is Mistral-7B, which produces verbose refusals that bypass
-the instruction, and think-mode models, whose chain-of-thought reasoning
-can resolve to an explicit refusal on the hardest (pronominalized) questions.
-Soft abstentions---single-word hedges such as ``unknown'' or ``unanswerable''---drive
-the overall pattern: abstention rises as entity anchors are removed (C$\to$A)
-across all groups, most sharply for VLMs (${\sim}2$--3\% at C to ${\sim}6$--11\% at A).
-Human abstention is 0\% at every variant, as participants were required to provide an answer.
-
-\section{Control Question Extraction Prompt}
+\subsection{Control Question Extraction Pipeline}
 \label{app:ctl}
 
 Control variants are extracted using GPT-4.1-mini-2025-04-14 (temperature~0,
@@ -1042,7 +979,45 @@ Keep ONLY question words, copula, prepositions, predicate/attribute, and pronoun
 Use ``it''/``they''/``them''---never ``the object''.
 \end{quote}
 
-\section{Human Study Protocol}
+\subsection{Question Taxonomy Extraction}
+\label{app:sem_extraction}
+
+Each question in the pool is annotated along two axes --- \emph{operation type} (what reasoning the question demands) and \emph{entity type} (what semantic field its subject belongs to) --- using GPT-4.1-mini-2025-04-14 (temperature~0, seed~42, JSON schema mode).
+The output schema enforces \texttt{op} and \texttt{ent} as required enumerated string fields.
+Annotations were extracted in batches of 50 questions per API call with \texttt{additionalProperties:~false} enforced throughout.
+The system prompt is reproduced verbatim below:
+
+\begin{quote}\small
+Extract VQA question semantics from text only; do not invent visual details.
+Return ONLY a JSON object \texttt{\{"results":[...]\}} matching the schema exactly; preserve input order.
+
+\textbf{Decision rules:}
+
+1) \textit{op} priority (highest to lowest):
+\texttt{text} (reading cue: written/word/number/say/spell/label/sign/license; brand/logo only if implied visible/printed) $>$
+\texttt{count} (how many/number of) $>$
+\texttt{spat} (explicit left/right/top/bottom/foreground/background; where-questions; relations like behind/next to) $>$
+\texttt{temp} (how long/how old/aged/before/after) $>$
+\texttt{cause} (why/reason) $>$
+\texttt{comp} (comparative/superlative) $>$
+\texttt{attr} (color/material/type/age/duration/name/location asked) $>$
+\texttt{exist} (only existential presence: ``is/are there'', ``any'', ``present'') $>$
+\texttt{ident} (who/what/which entity is) $>$
+\texttt{act} (activity/doing) $>$
+\texttt{know} (world knowledge beyond simple visual attributes, when no text-reading cue) $>$ \texttt{other}.
+
+2) If \texttt{w=yesno} AND \texttt{op=exist} $\Rightarrow$ \texttt{ans=bool}, \texttt{space=bin}. Other yes/no use \texttt{op} based on content.
+
+3) \texttt{attr} consistency: color$\to$\texttt{ans=color}, \texttt{space=cat}; material$\to$\texttt{mat,cat}; age$\to$\texttt{age,num}; duration$\to$\texttt{dur,num}; count$\to$\texttt{num,num}; name$\to$\texttt{text,cat}; location$\to$\texttt{loc,cat}; type/ident$\to$\texttt{cat,cat}.
+
+4) \texttt{txt=true} iff \texttt{op=text}. \texttt{know=true} iff \texttt{op=know}.
+
+5) \texttt{sp}/\texttt{rel}/\texttt{dx} only if explicit in question.
+
+6) If \texttt{w=where} and \texttt{op} not in \{\texttt{text,know}\} $\Rightarrow$ \texttt{op=spat}, \texttt{attr=loc}, \texttt{ans=loc}, \texttt{space=cat}.
+\end{quote}
+
+\subsection{Human Study Protocol and Preprocessing}
 \label{app:human}
 
 A total of 40 participants were included. Participants were recruited via
@@ -1058,7 +1033,9 @@ answered by all qualifying participants across all three reformulations
 (339 question--variant pairs per participant).
 Participants were compensated at 10,000~KRW per hour. Responses in Korean or
 English were translated to English and processed with the same VQA-style
-normalization described in Section~\ref{sec:eval_protocols}.
+normalization described in Section~\ref{sec:eval_protocols}. Model outputs are
+processed with the same normalization plus the abstention-cleaning pipeline
+described in Appendix~\ref{app:abstention_classifier}.
 
 As a supplementary human-only diagnostic, Appendix~\ref{app:entropy_diagnostics}
 examines the relationship between per-question answer entropy and human VQA
@@ -1069,60 +1046,17 @@ sensitivity rather than accuracy.
 \subsection{Participant Response Statistics}
 \label{app:human_stats}
 
-Figure~\ref{fig:human_stats} summarizes response-level and participant-level
-statistics for the 40-participant study (15,336 total responses across three
-variants).
-
-\paragraph{Response time.}
-The median response time is 4.1~s (mean 5.6~s, IQR 2.8--6.3~s after capping
-at the 99th percentile of 35.8~s to exclude rare mid-session pauses).
-Per-variant means are nearly identical (C: 5.5~s, B: 5.6~s, A: 5.6~s; medians
-all ${\approx}4.1$~s), confirming that removing entity anchors does not
-increase deliberation time.
-Per-participant median RTs range from 2.6~s to 7.5~s with no extreme outliers,
-indicating consistent engagement across all participants
-(Figure~\ref{fig:human_stats}A--B).
-
-\paragraph{Answer length.}
-Responses are concise: 92.6\% of answers consist of a single word, with a
-mean of 1.11 words (Figure~\ref{fig:human_stats}C). This is consistent with
-the VQA-style instruction asking for short, direct answers and confirms that
-participants were not providing free-form explanations.
-
-\paragraph{Abstention.}
-Hard abstention was 0.00\% and soft abstention was 0.00\% across all three
-variants under the paper's classifier (exact match against the soft-abstention
-word list on the normalized answer; Section~\ref{sec:eval_protocols},
-Appendix~\ref{app:abstention_classifier}).
-This rate does not increase with question abstraction: committed answers are
-invariant across the original (C), weaker (B), and pronominalized (A)
-variants (Figure~\ref{fig:human_stats_conf}E), which sharply contrasts with
-models---where soft abstention rises as lexical anchors are removed
-(e.g., Qwen3-VL-8B: 1.4\%$\to$3.2\% C$\to$A; its backbone decoder:
-0.4\%$\to$2.4\%). This confirms that the blind-instruction framing
-successfully elicited prior-driven answers from all participants regardless
-of question specificity.
-
-\paragraph{Confidence ratings.}
-Participants used the full 1--5 Likert scale with a mean of 3.07 ($\sigma =
-1.26$) and an approximately uniform distribution across levels
-(Figure~\ref{fig:human_stats_conf}D). Confidence distributions are nearly
-identical across the three variants, suggesting that question surface form does
-not systematically inflate or suppress self-reported certainty.
-Per-participant mean confidence ranges from 1.5 to 4.7, indicating
-genuine heterogeneity in individual certainty levels rather than a ceiling or
-floor effect (Figure~\ref{fig:human_stats_conf}F).
-
-\paragraph{Response time--confidence relationship.}
-As a convergent validity check, we correlated log response time with
-confidence rating per participant. The mean per-participant Pearson $r$ is
-$-0.067$ ($t = -2.68$, $p = 0.011$, one-sample $t$-test vs.\ 0), confirming
-a small but reliable tendency for participants to respond faster when they are
-more confident. The effect is consistent across all three variants
-($r_C = -0.082$, $r_B = -0.089$, $r_A = -0.116$, all $p < .001$) and mean
-RT decreases monotonically from 6.2~s at confidence level~1 to 4.8~s at
-level~5. Together, these results support the
-validity of the self-reported confidence scale as a behavioral measure.
+Summary statistics are reported in Section~\ref{sec:human_data}.
+Figures~\ref{fig:human_stats}--\ref{fig:human_stats_conf} show the full
+response-time, answer-length, abstention, and confidence distributions.
+Per-participant median RTs range from 2.6~s to 7.5~s with no extreme outliers.
+Confidence ranges from 1.5 to 4.7 per participant (mean 3.07), with
+per-variant distributions nearly identical---suggesting question surface form
+does not systematically inflate or suppress self-reported certainty.
+The RT--confidence correlation is consistent across variants
+($r_C = -0.082$, $r_B = -0.089$, $r_A = -0.116$, all $p{<}.001$), with
+mean RT decreasing monotonically from 6.2~s at confidence level~1 to 4.8~s
+at level~5.
 
 \begin{figure}[t]
 \centering
@@ -1144,204 +1078,234 @@ validity of the self-reported confidence scale as a behavioral measure.
 \label{fig:human_stats_conf}
 \end{figure}
 
+\subsection{Question Embedding Coverage}
+\label{app:tsne}
 
-\section{Comprehensive Multi-Metric Blind-With-Instruction Performance}
-\label{app:metrics}
+Figure~\ref{fig:tsne} shows a t-SNE projection of the 1,000-question pool (all-mpnet-base-v2) with the human-study subset highlighted. 
+The subset is distributed across the full embedding space rather than concentrating in a narrow semantic region.
+Cluster centroids are marked with a labeled anchor point; the nearest
+question to each centroid serves as a representative example for that
+category (see Table~\ref{tab:question_taxonomy} for category definitions).
 
-Tables~\ref{tab:comprehensive_inst_blind}
-and~\ref{tab:comprehensive_inst_blind_w5} report agreement across all metrics.
-chrF scores are computed with the \texttt{sacrebleu} implementation.
-
-\begin{table*}[t]
-\scriptsize
+\begin{figure}[t]
 \centering
-\setlength{\tabcolsep}{2.5pt}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lc|cccccc|cccccc|cccccc}
-\toprule
-\textbf{Model} & \textbf{Size} & \multicolumn{6}{c|}{\textbf{Original}}& \multicolumn{6}{c|}{\textbf{Weaker}}& \multicolumn{6}{c}{\textbf{Pronominalized}} \\
-\cmidrule(lr){3-8}\cmidrule(lr){9-14}\cmidrule(lr){15-20}
- & & \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\
-\midrule
-\textbf{Human (N=40)} & -- & 26.3 & 1.3 & 59.4 & 27.2 & 23.9 & 22.6 & 22.9 & 1.3 & 57.8 & 26.7 & 23.3 & 22.4 & 22.6 & 1.3 & 55.9 & 24.1 & 20.7 & 20.2 \\
-\midrule
-\multicolumn{20}{c}{\textit{Vision-Language Models}} \\
-\midrule
-\multirow{3}{*}{InternVL} & 1B & 36.9 & 1.2 & \underline{57.7} & 23.2 & 19.3 & 18.5 & 36.6 & 1.2 & 54.8 & 21.6 & 18.3 & 17.9 & 33.6 & 1.2 & \underline{53.4} & \underline{21.6} & \underline{18.3} & \underline{18.0} \\
- & 2B & 44.5 & 1.3 & 55.4 & 20.9 & 17.1 & 15.7 & 38.6 & 1.2 & \underline{55.6} & 21.8 & 18.4 & 17.6 & 39.2 & 1.3 & 52.7 & 20.3 & 16.5 & 16.2 \\
- & 8B & 37.2 & 1.5 & \textbf{61.2} & \textbf{27.4} & \textbf{22.9} & \textbf{21.5} & 33.3 & \underline{1.7} & \textbf{59.0} & \textbf{26.2} & \textbf{22.9} & \textbf{22.1} & 29.5 & \underline{1.7} & \textbf{55.5} & \textbf{22.4} & \textbf{19.1} & \textbf{18.3} \\
-LLaVA-1.5 & 7B & 47.2 & 1.0 & 51.9 & 18.6 & 15.0 & 15.0 & \textbf{47.5} & 1.0 & 50.8 & 16.8 & 13.9 & 13.7 & 35.4 & 1.1 & 48.5 & 16.2 & 13.5 & 13.6 \\
-LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 55.6 & 21.8 & 17.8 & 17.2 & \underline{46.0} & 1.1 & 53.9 & 20.6 & 17.5 & 17.3 & \underline{41.3} & 1.1 & 50.2 & 17.9 & 14.6 & 14.5 \\
-\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 51.6 & 1.0 & 54.4 & 20.8 & 17.4 & 16.7 & 44.2 & 1.0 & 52.2 & 18.9 & 15.6 & 15.3 & \textbf{42.3} & 1.0 & 50.9 & 18.2 & 15.0 & 14.9 \\
- & 13B & \underline{52.4} & 1.0 & 56.3 & \underline{23.8} & \underline{20.4} & \underline{20.1} & 38.6 & 1.1 & 54.5 & 22.8 & 19.7 & 19.4 & 37.5 & 1.0 & 51.9 & 18.5 & 15.3 & 15.3 \\
-\multirow{4}{*}{Qwen3-VL} & 2B & 47.6 & 1.3 & 56.1 & 21.6 & 17.5 & 16.3 & 41.9 & 1.3 & 53.4 & 20.6 & 16.6 & 16.4 & 40.2 & 1.3 & 52.6 & 19.0 & 15.6 & 15.4 \\
- & 4B & 50.1 & 1.2 & 56.8 & 23.5 & 19.2 & 18.3 & 37.5 & 1.2 & 55.2 & 23.9 & 20.2 & 19.9 & 38.7 & 1.1 & 52.7 & 20.7 & 17.5 & 17.1 \\
- & 8B & 47.3 & \underline{3.3} & 56.1 & 23.0 & 19.5 & 18.6 & 38.4 & 1.5 & 54.8 & \underline{24.1} & \underline{20.4} & \underline{20.1} & 33.3 & 1.3 & 52.2 & 21.1 & 17.7 & 17.5 \\
- & 32B & 37.5 & \textbf{28} & 51.6 & 20.3 & 18.0 & 16.2 & 27.4 & \textbf{29} & 48.8 & 19.7 & 17.4 & 16.2 & 17.1 & \textbf{35} & 46.5 & 15.1 & 12.8 & 12.2 \\
-\midrule
-\multicolumn{20}{c}{\textit{VLM Backbone Decoders}} \\
-\midrule
-\multirow{3}{*}{InternVL} & 1B & 28.9 & 1.4 & \textbf{59.5} & 27.3 & \underline{23.9} & \underline{22.8} & 26.0 & 1.2 & 57.3 & 26.9 & 23.5 & 22.4 & 23.8 & 1.7 & 55.1 & \underline{24.0} & 20.3 & 19.8 \\
- & 2B & 30.7 & \underline{3.9} & 55.1 & 25.1 & 21.5 & 20.2 & 25.7 & 3.9 & 54.8 & 25.8 & 22.8 & 21.4 & 25.3 & \underline{5.5} & 53.4 & \textbf{24.8} & \textbf{21.5} & \textbf{20.7} \\
- & 8B & 39.8 & 3.8 & 58.9 & \textbf{28.8} & \textbf{24.4} & 22.7 & 34.5 & \textbf{5.1} & 55.8 & 26.9 & 23.7 & 22.7 & 19.9 & \textbf{15} & 46.9 & 20.9 & 17.8 & 16.8 \\
-LLaVA-1.5 & 7B & \textbf{53.7} & 1.1 & 58.8 & 27.0 & 22.9 & 22.2 & 35.1 & 1.2 & 56.9 & 27.2 & 23.1 & 22.6 & 32.1 & 1.6 & 55.5 & 22.7 & 19.0 & 18.8 \\
-LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 59.0 & 25.4 & 21.4 & 20.8 & \textbf{39.5} & 1.1 & 57.5 & 25.3 & 21.9 & 21.6 & \underline{37.2} & 1.3 & \underline{55.7} & 23.1 & 19.4 & 19.2 \\
-\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 44.5 & 1.1 & 59.3 & 27.2 & 23.1 & 22.5 & 36.9 & 1.1 & 57.1 & 26.8 & 23.1 & 22.4 & 30.4 & 1.4 & 54.9 & 23.2 & 19.8 & 19.1 \\
- & 13B & \underline{47.2} & 1.0 & 58.8 & 27.1 & 23.4 & \textbf{23.0} & 36.0 & 1.1 & \textbf{59.7} & \textbf{28.9} & \textbf{25.5} & \textbf{25.0} & \textbf{37.5} & 1.0 & \textbf{56.7} & 23.6 & 19.8 & 19.5 \\
-\multirow{4}{*}{Qwen3-VL} & 2B & 39.2 & \textbf{5.1} & 57.8 & 25.9 & 21.9 & 20.2 & 34.5 & \underline{4.6} & 57.1 & 26.7 & 22.7 & 22.2 & 25.3 & 1.5 & 54.1 & 24.0 & \underline{20.7} & \underline{20.1} \\
- & 4B & 40.7 & 1.2 & \underline{59.5} & \underline{27.4} & 23.0 & 21.6 & 33.3 & 1.2 & \underline{58.0} & \underline{28.2} & \underline{23.9} & \underline{23.2} & 23.5 & 1.2 & 54.9 & 23.4 & 19.9 & 19.5 \\
- & 8B & 42.2 & 1.4 & 58.8 & 25.7 & 21.8 & 20.0 & 32.4 & 1.8 & 56.5 & 26.9 & 23.0 & 23.0 & 29.5 & 1.3 & 53.9 & 23.0 & 19.7 & 18.6 \\
- & 32B & 45.1 & 2.2 & 58.9 & 25.6 & 21.3 & 19.8 & \underline{38.9} & 1.2 & 57.4 & 27.1 & 23.0 & 22.4 & 33.9 & 2.7 & 54.6 & 22.5 & 18.8 & 18.1 \\
-\midrule
-\multicolumn{20}{c}{\textit{Standalone LLMs}} \\
-\midrule
-Mistral & 7B & 0.0 & \textbf{30} & 25.1 & 1.9 & 1.2 & 0.0 & 0.0 & \textbf{30} & 21.8 & 1.8 & 1.7 & 0.0 & 0.0 & \textbf{28} & 17.8 & 1.4 & 0.4 & 0.0 \\
-Phi-3.5-mini & 3.8B & 5.6 & \underline{14} & 36.7 & 9.2 & 8.6 & 3.8 & 4.7 & \underline{16} & 36.5 & 11.2 & 9.7 & 6.7 & 9.7 & \underline{15} & 41.4 & 11.8 & 10.1 & 8.0 \\
-Qwen2.5-Instruct & 7B & \textbf{35.4} & 1.3 & 54.4 & 21.5 & 17.3 & 16.6 & \textbf{28.3} & 1.6 & \underline{51.3} & 21.3 & 17.2 & 16.8 & \textbf{24.4} & 1.3 & 44.8 & 17.1 & 12.3 & 12.3 \\
-\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.6 & 3.4 & 2.4 & 7.7 & 1.2 & 32.6 & 8.1 & 2.2 & 1.7 & 5.7 & 1.3 & 37.6 & 10.2 & 5.2 & 4.4 \\
- & 1.7B & 9.1 & 7.8 & 45.6 & 14.2 & 11.8 & 9.7 & 10.0 & 7.5 & 43.1 & 15.8 & 12.8 & 11.9 & 8.0 & 5.7 & 42.1 & 14.8 & 11.2 & 9.8 \\
- & 4B & 18.0 & 1.3 & \underline{54.4} & \underline{24.7} & \textbf{20.4} & \underline{18.3} & 20.1 & 1.2 & \textbf{52.2} & \textbf{24.2} & \textbf{20.7} & \textbf{20.0} & 18.0 & 1.1 & \textbf{50.1} & \textbf{22.2} & \textbf{19.0} & \textbf{18.1} \\
- & 8B & 27.1 & 2.3 & 52.2 & 21.3 & 16.3 & 14.7 & \underline{21.5} & 1.2 & 51.1 & 21.9 & 18.1 & 17.1 & 15.0 & 1.4 & 44.1 & 16.2 & 11.9 & 10.9 \\
- & 32B & \underline{32.7} & 1.9 & \textbf{54.9} & \textbf{25.2} & \underline{20.3} & \textbf{18.7} & 20.9 & 1.8 & 50.0 & \underline{22.4} & \underline{19.2} & \underline{17.7} & \underline{19.5} & 3.2 & 45.8 & \underline{18.4} & \underline{14.8} & \underline{13.4} \\
-\multirow{2}{*}{Vicuna} & 7B & 17.4 & 6.9 & 43.6 & 15.8 & 15.4 & 11.8 & 14.6 & 5.2 & 41.1 & 15.0 & 15.0 & 11.4 & 9.3 & 5.3 & 39.4 & 13.8 & 13.0 & 10.9 \\
- & 13B & 26.8 & 3.0 & 54.4 & 21.8 & 19.4 & 16.1 & 19.5 & 2.9 & 46.7 & 15.6 & 14.4 & 9.8 & 17.3 & 5.1 & \underline{46.6} & 15.9 & 13.9 & 11.3 \\
-\midrule
-\multicolumn{20}{c}{\textit{Standalone LLMs with Thinking}} \\
-\midrule
-\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.6 & 3.4 & 2.4 & 7.7 & 1.2 & 32.6 & 8.1 & 2.2 & 1.7 & 5.7 & 1.3 & 37.6 & 10.2 & 5.2 & 4.4 \\
- & 1.7B & 16.7 & \underline{198} & 39.9 & 12.0 & 10.0 & 10.1 & 9.4 & \underline{204} & 39.1 & 13.4 & 11.9 & 11.2 & 11.5 & \underline{230} & 34.9 & 10.1 & 8.2 & 7.9 \\
- & 4B & \underline{18.0} & 1.3 & \underline{50.2} & \underline{20.7} & \underline{16.2} & \underline{14.0} & \underline{20.1} & 1.2 & \underline{46.2} & \underline{18.5} & 15.1 & 14.2 & \textbf{18.0} & 1.1 & \textbf{47.1} & \textbf{16.6} & \textbf{13.9} & \textbf{12.2} \\
- & 8B & \textbf{27.1} & 2.3 & \textbf{52.2} & \textbf{21.3} & \textbf{16.3} & \textbf{14.7} & \textbf{21.5} & 1.2 & \textbf{51.1} & \textbf{21.9} & \textbf{18.1} & \textbf{17.1} & \underline{15.0} & 1.4 & \underline{44.1} & \underline{16.2} & \underline{11.9} & \underline{10.9} \\
- & 32B & 11.2 & \textbf{216} & 42.3 & 16.4 & 15.4 & 13.9 & 10.4 & \textbf{217} & 40.3 & 16.6 & \underline{15.3} & \underline{14.3} & 8.3 & \textbf{252} & 36.8 & 12.2 & 10.5 & 9.9 \\
-\bottomrule
-\end{tabular}
-}
-\caption{\small Blind performance across evaluation variants (Original, Weaker, Pronominalized). Acc = VQA accuracy (\%); Len = mean answer length in words; SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). Human row shows human--human (HH) agreement.}
-\label{tab:comprehensive_inst_blind}
-\end{table*}
+\includegraphics[width=\linewidth]{subset_tsne_entities}\\[0.4em]
+\includegraphics[width=\linewidth]{subset_tsne_operations}
+\caption{t-SNE of the 1{,}000-question pool (gray) with the 113-question
+human-study subset highlighted. \textbf{Top:} colored by entity type.
+\textbf{Bottom:} colored by operation type. Cluster centroids are marked;
+the nearest question to each centroid provides a representative example
+for the corresponding taxonomy category (Table~\ref{tab:question_taxonomy}).
+The subset spans the full embedding space without concentrating in any
+narrow semantic region.}
+\label{fig:tsne}
+\end{figure}
 
-\begin{table*}[t]
-\scriptsize
+\section{Calibration and Instruction Effects}
+\label{app:calibration}
+
+\subsection{Abstention and Calibration Ablations}
+\label{app:abstention_calibration}
+
+This section presents robustness analyses for the blind
+setting: abstention behavior and instruction-induced abstention collapse.
+Together they clarify that the backbone
+advantage is not an artifact of refusal behavior.
+
+\subsection{Full Pool Abstention (1{,}000 Questions)}
+\label{app:abstention_full}
+\label{app:abstention_scale_full}
+
+Figure~\ref{fig:abstention_scale} compares the full-pool abstention-scale
+pattern with the matched 113-question subset. The full pool motivates the
+substantive-response restriction; the subset panel shows the corresponding
+per-model breakdown after filtering.
+
+\begin{figure}[t]
 \centering
-\setlength{\tabcolsep}{2.5pt}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lc|cccccc|cccccc|cccccc}
-\toprule
-\textbf{Model} & \textbf{Size} & \multicolumn{6}{c|}{\textbf{Original}}& \multicolumn{6}{c|}{\textbf{Weaker}}& \multicolumn{6}{c}{\textbf{Pronominalized}} \\
-\cmidrule(lr){3-8}\cmidrule(lr){9-14}\cmidrule(lr){15-20}
- & & \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\
-\midrule
-\textbf{Human (N=40)} & -- & 26.3 & 1.3 & 59.4 & 27.5 & 24.6 & 22.6 & 22.9 & 1.3 & 57.8 & 26.9 & 23.7 & 22.4 & 22.6 & 1.3 & 56.0 & 24.4 & 21.1 & 20.2 \\
-\midrule
-\multicolumn{20}{c}{\textit{Vision-Language Models}} \\
-\midrule
-\multirow{3}{*}{InternVL} & 1B & 36.9 & 1.2 & \underline{57.7} & 23.5 & 20.1 & 18.5 & 36.6 & 1.2 & 54.9 & 21.9 & 19.1 & 17.9 & 33.6 & 1.2 & \underline{53.6} & \underline{21.8} & \underline{18.7} & \underline{18.0} \\
- & 2B & 44.5 & 1.3 & 55.4 & 21.1 & 17.8 & 15.7 & 38.6 & 1.2 & \underline{55.6} & 22.0 & 19.0 & 17.6 & 39.2 & 1.3 & 53.0 & 20.5 & 17.0 & 16.2 \\
- & 8B & 37.2 & 1.5 & \textbf{61.7} & \textbf{28.1} & \textbf{24.4} & \textbf{21.7} & 33.3 & \underline{1.7} & \textbf{60.1} & \textbf{27.1} & \textbf{24.1} & \textbf{22.7} & 29.5 & \underline{1.7} & \textbf{56.7} & \textbf{23.3} & \textbf{20.3} & \textbf{18.8} \\
-LLaVA-1.5 & 7B & 47.2 & 1.0 & 51.9 & 19.0 & 15.5 & 15.0 & \textbf{47.5} & 1.0 & 50.8 & 17.0 & 14.3 & 13.7 & 35.4 & 1.1 & 48.7 & 16.7 & 14.0 & 13.6 \\
-LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 55.7 & 22.1 & 18.3 & 17.2 & \underline{46.0} & 1.1 & 53.9 & 20.8 & 17.9 & 17.3 & \underline{41.3} & 1.1 & 50.7 & 18.4 & 15.2 & 14.6 \\
-\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 51.6 & 1.0 & 54.5 & 21.2 & 18.1 & 16.7 & 44.2 & 1.0 & 52.3 & 19.2 & 16.1 & 15.3 & \textbf{42.3} & 1.0 & 51.1 & 18.6 & 15.5 & 14.9 \\
- & 13B & \underline{52.4} & 1.0 & 56.8 & 24.3 & 21.1 & \underline{20.3} & 38.6 & 1.1 & 54.5 & 23.0 & 20.1 & 19.4 & 37.5 & 1.0 & 52.0 & 18.8 & 15.7 & 15.3 \\
-\multirow{4}{*}{Qwen3-VL} & 2B & 47.6 & 1.3 & 56.1 & 21.9 & 18.2 & 16.3 & 41.9 & 1.3 & 53.6 & 21.0 & 17.3 & 16.4 & 40.2 & 1.3 & 52.8 & 19.4 & 16.1 & 15.4 \\
- & 4B & 50.1 & 1.2 & 56.9 & 23.9 & 19.9 & 18.3 & 37.5 & 1.2 & 55.2 & 24.2 & 20.7 & 19.9 & 38.7 & 1.1 & 52.8 & 21.0 & 18.0 & 17.1 \\
- & 8B & 47.3 & \underline{3.3} & 57.0 & 24.0 & 20.6 & 18.9 & 38.4 & 1.5 & 54.9 & \underline{24.5} & 21.1 & \underline{20.1} & 33.3 & 1.3 & 52.3 & 21.5 & 18.2 & 17.5 \\
- & 32B & 37.5 & \textbf{28} & 56.4 & \underline{25.2} & \underline{22.3} & 19.7 & 27.4 & \textbf{29} & 53.4 & 23.9 & \underline{21.2} & 19.2 & 17.1 & \textbf{35} & 51.5 & 19.5 & 16.4 & 15.4 \\
-\midrule
-\multicolumn{20}{c}{\textit{VLM Backbone Decoders}} \\
-\midrule
-\multirow{3}{*}{InternVL} & 1B & 28.9 & 1.4 & 59.5 & 27.6 & \underline{24.7} & 22.8 & 26.0 & 1.2 & 57.3 & 27.0 & 23.9 & 22.4 & 23.8 & 1.7 & 55.3 & 24.4 & 20.8 & 19.8 \\
- & 2B & 30.7 & \underline{3.9} & 55.4 & 25.7 & 22.6 & 20.4 & 25.7 & 3.9 & 55.3 & 26.4 & 23.6 & 21.8 & 25.3 & \underline{5.5} & 54.0 & \underline{25.3} & \textbf{22.2} & \textbf{20.9} \\
- & 8B & 39.8 & 3.8 & \textbf{60.9} & \textbf{30.5} & \textbf{26.5} & \textbf{23.8} & 34.5 & \textbf{5.1} & \underline{59.3} & \textbf{30.1} & \textbf{26.8} & \textbf{25.1} & 19.9 & \textbf{15} & 52.5 & \textbf{25.4} & \underline{21.6} & 20.0 \\
-LLaVA-1.5 & 7B & \textbf{53.7} & 1.1 & 58.9 & 27.3 & 23.6 & 22.2 & 35.1 & 1.2 & 57.0 & 27.3 & 23.5 & 22.6 & 32.1 & 1.6 & \underline{56.3} & 23.4 & 19.7 & 19.1 \\
-LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 59.0 & 25.7 & 22.0 & 20.8 & \textbf{39.5} & 1.1 & 57.5 & 25.4 & 22.2 & 21.6 & \underline{37.2} & 1.3 & 55.8 & 23.4 & 19.8 & 19.2 \\
-\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 44.5 & 1.1 & 59.4 & 27.5 & 23.8 & 22.5 & 36.9 & 1.1 & 57.1 & 26.9 & 23.5 & 22.4 & 30.4 & 1.4 & 55.8 & 23.9 & 20.6 & 19.5 \\
- & 13B & \underline{47.2} & 1.0 & 58.9 & 27.4 & 24.0 & \underline{23.0} & 36.0 & 1.1 & \textbf{59.8} & \underline{29.1} & \underline{25.9} & \underline{25.0} & \textbf{37.5} & 1.0 & \textbf{56.8} & 24.0 & 20.2 & 19.5 \\
-\multirow{4}{*}{Qwen3-VL} & 2B & 39.2 & \textbf{5.1} & 58.7 & 26.6 & 23.1 & 20.6 & 34.5 & \underline{4.6} & 57.4 & 27.3 & 23.8 & 22.4 & 25.3 & 1.5 & 54.6 & 24.4 & 21.4 & \underline{20.3} \\
- & 4B & 40.7 & 1.2 & 59.6 & \underline{27.9} & 23.9 & 21.6 & 33.3 & 1.2 & 58.1 & 28.6 & 24.7 & 23.2 & 23.5 & 1.2 & 55.0 & 23.8 & 20.5 & 19.5 \\
- & 8B & 42.2 & 1.4 & \underline{59.7} & 26.6 & 23.0 & 20.3 & 32.4 & 1.8 & 56.7 & 27.3 & 23.7 & 23.0 & 29.5 & 1.3 & 54.7 & 23.6 & 20.4 & 19.0 \\
- & 32B & 45.1 & 2.2 & 59.5 & 26.2 & 22.3 & 20.0 & \underline{38.9} & 1.2 & 57.5 & 27.4 & 23.6 & 22.4 & 33.9 & 2.7 & 55.8 & 23.5 & 20.0 & 18.6 \\
-\midrule
-\multicolumn{20}{c}{\textit{Standalone LLMs}} \\
-\midrule
-Mistral & 7B & 0.0 & \textbf{30} & 25.8 & 4.4 & 3.2 & 0.0 & 0.0 & \textbf{30} & 21.3 & 4.0 & 3.7 & 0.0 & 0.0 & \textbf{28} & 20.3 & 2.8 & 0.9 & 0.0 \\
-Phi-3.5-mini & 3.8B & 5.6 & \underline{14} & 40.0 & 11.0 & 10.5 & 4.2 & 4.7 & \underline{16} & 40.2 & 13.3 & 11.9 & 7.6 & 9.7 & \underline{15} & 43.5 & 13.1 & 11.4 & 8.3 \\
-Qwen2.5-Instruct & 7B & \textbf{35.4} & 1.3 & 54.4 & 21.9 & 18.0 & 16.6 & \textbf{28.3} & 1.6 & \underline{51.2} & 21.6 & 17.7 & 17.0 & \textbf{24.4} & 1.3 & 45.3 & 17.6 & 12.9 & 12.5 \\
-\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.7 & 3.5 & 2.4 & 7.7 & 1.2 & 32.4 & 8.1 & 2.3 & 1.7 & 5.7 & 1.3 & 37.7 & 10.4 & 5.4 & 4.4 \\
- & 1.7B & 9.1 & 7.8 & 46.6 & 15.1 & 12.6 & 10.1 & 10.0 & 7.5 & 43.7 & 16.2 & 13.0 & 12.0 & 8.0 & 5.7 & 43.7 & 16.5 & 12.7 & 10.9 \\
- & 4B & 18.0 & 1.3 & 54.4 & \underline{25.0} & \underline{20.9} & \underline{18.3} & 20.1 & 1.2 & \textbf{52.2} & \textbf{24.4} & \textbf{21.1} & \textbf{20.0} & 18.0 & 1.1 & \textbf{50.1} & \textbf{22.4} & \textbf{19.3} & \textbf{18.1} \\
- & 8B & 27.1 & 2.3 & 52.1 & 21.8 & 17.0 & 14.7 & \underline{21.5} & 1.2 & 51.1 & 22.2 & 18.7 & 17.1 & 15.0 & 1.4 & 44.2 & 16.3 & 12.2 & 10.9 \\
- & 32B & \underline{32.7} & 1.9 & \textbf{55.4} & \textbf{25.9} & \textbf{21.4} & \textbf{18.9} & 20.9 & 1.8 & 50.2 & \underline{22.9} & \underline{19.9} & \underline{17.8} & \underline{19.5} & 3.2 & 46.2 & \underline{19.1} & \underline{15.6} & \underline{13.7} \\
-\multirow{2}{*}{Vicuna} & 7B & 17.4 & 6.9 & 44.2 & 16.3 & 15.5 & 11.8 & 14.6 & 5.2 & 41.0 & 15.4 & 15.0 & 11.5 & 9.3 & 5.3 & 39.9 & 14.6 & 13.7 & 11.5 \\
- & 13B & 26.8 & 3.0 & \underline{55.1} & 22.5 & 20.5 & 16.3 & 19.5 & 2.9 & 47.1 & 15.9 & 15.1 & 9.8 & 17.3 & 5.1 & \underline{47.7} & 16.8 & 14.7 & 11.5 \\
-\midrule
-\multicolumn{20}{c}{\textit{Standalone LLMs with Thinking}} \\
-\midrule
-\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 32.2 & 8.7 & 3.5 & 2.4 & 7.7 & 1.2 & 32.4 & 8.1 & 2.3 & 1.7 & 5.7 & 1.3 & 37.7 & 10.4 & 5.4 & 4.4 \\
- & 1.7B & 16.7 & \underline{198} & \underline{53.5} & \underline{22.4} & \underline{19.3} & \underline{17.9} & 9.4 & \underline{204} & \textbf{57.7} & \underline{27.5} & \underline{24.1} & \underline{22.7} & 11.5 & \underline{230} & \underline{48.7} & \underline{20.3} & \underline{16.4} & \underline{14.8} \\
- & 4B & \underline{18.0} & 1.3 & 50.2 & 21.0 & 16.8 & 14.0 & \underline{20.1} & 1.2 & 46.2 & 18.7 & 15.5 & 14.2 & \textbf{18.0} & 1.1 & 47.1 & 16.8 & 14.1 & 12.2 \\
- & 8B & \textbf{27.1} & 2.3 & 52.1 & 21.8 & 17.0 & 14.7 & \textbf{21.5} & 1.2 & 51.1 & 22.2 & 18.7 & 17.1 & \underline{15.0} & 1.4 & 44.2 & 16.3 & 12.2 & 10.9 \\
- & 32B & 11.2 & \textbf{216} & \textbf{60.0} & \textbf{31.6} & \textbf{29.6} & \textbf{26.7} & 10.4 & \textbf{217} & \underline{56.1} & \textbf{31.3} & \textbf{29.2} & \textbf{26.6} & 8.3 & \textbf{252} & \textbf{54.9} & \textbf{27.2} & \textbf{23.6} & \textbf{22.0} \\
-\bottomrule
-\end{tabular}
-}
-\caption{\small Blind performance across evaluation variants (Original, Weaker, Pronominalized). Acc = VQA accuracy (\%); Len = mean answer length in words; SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). Human row shows human--human (HH) agreement. All answers are length-normalized ($\leq$5 words) before scoring.}
-\label{tab:comprehensive_inst_blind_w5}
-\end{table*}
+\includegraphics[width=\linewidth]{abstention_by_variant_scatter}\par
+\vspace{0.5em}
+\includegraphics[width=\linewidth]{abstention_by_variant_scatter_q113_merged}
+\caption{\textbf{Top:} total model abstention rate (soft + hard, \%) across the full 1{,}000-question pool as a function of
+model scale (parameters in billions), split by model group and question variant
+(dark = Original, mid = Weaker, light = Pronominalized; filled markers = instruction-blind, hollow = blind-only).
+Some standalone configurations abstain on a large fraction of questions, which
+motivates our restriction to the 113-question substantive-response subset for
+main human--model comparisons. \textbf{Bottom:} the same view on the 113-question subset. After filtering, abstention drops sharply, but standalone and think models remain the most sensitive to anchor removal, while VLMs and backbone decoders stay near zero.}
+\label{fig:abstention_scale}
+\end{figure}
+% \fi
 
-\section{HH Agreement Statistics by Question Type}
-\label{app:hh_stats}
+\subsection{Abstention Classifier Details}
+\label{app:abstention_classifier}
 
-Table~\ref{tab:hh_type_stats} reports mean human--human SBERT agreement
-for all operation and entity types, with paired $t$-test significance for
-the C$\to$A drop. Operation effects are moderate-to-large
-($\eta^2{=}0.36$--$0.39$ across variants; ANOVA $F{=}5.75$--$6.60$,
-$p{<}10^{-5}$); entity effects are negligible ($\eta^2{<}0.04$,
-$p{>}0.74$).
+\input{tables/abstention_keyword_table}
+
+\paragraph{Hard vs.\ soft abstention.}
+Hard abstention is detected from the raw output and corresponds to explicit
+refusal or visibility-based non-response. Soft abstention is detected after
+normalization and corresponds to non-substantive placeholders that withhold an
+answer without an explicit refusal. Table~\ref{tab:abstention_keywords} lists
+the keyword categories used in the shared classifier.
+
+\paragraph{Design choices.}
+Two categories are deliberately excluded from soft abstention:
+\begin{itemize}
+  \item \textbf{\textit{``nothing''}}: a valid content answer for questions about
+    empty scenes or absent objects (e.g., \textit{``What is in the bowl?''} $\to$
+    \textit{``nothing''}). Treating it as abstention would remove meaningful
+    negative-evidence responses from the distribution.
+  \item \textbf{Hedged yes/no words} (\textit{maybe, possibly, perhaps, uncertain,
+    unsure}): these represent partial committed responses to yes/no questions rather
+    than refusals. They fall into the \textit{other} category in the answer
+    distribution (Figure~\ref{fig:dist}), consistent with how human responses are
+    categorized, enabling a fair distributional comparison.
+\end{itemize}
+All abstention figures and tables in the paper first apply
+\texttt{clean\_answer(..., strip\_think=True)} to recover the final answer and
+then run the same shared classifier on that cleaned string. The same
+classifier is applied uniformly to both model and human answers.
+Human hard abstention is 0.00\% and soft abstention is near-zero ($<$0.04\% per variant) across all
+three variants---the abstention distinction is therefore a model-side
+phenomenon. Crucially, human abstention is invariant to question abstraction
+across the original, weaker, and pronominalized variants, whereas model abstention tends to rise as
+lexical anchors are removed (Section~\ref{app:human_stats}).
+
+\subsection{Instruction Gating Effect}
+\label{app:inst_gating}
+
+For reference, human abstention is effectively zero (hard: 0.00\%, soft: $<$0.04\% per variant),
+so the abstention patterns below are a model-side phenomenon rather than a general property of blind answering.
+
+Instruction (blind $\to$ blind with awareness instruction) increases human--model agreement most on
+original questions ($+$0.020 SBERT) and attenuates as lexical anchors are
+removed (pronominalized: $+$0.012). The behavioral mechanism is abstention
+collapse: standalone LLMs shift from $\sim$30\% soft abstention (epistemic hedges
+such as \textit{``unknown''} or \textit{``unanswerable''}) to near
+zero (Table~\ref{tab:abstention_inst_effect_vABC_q113}), while VLMs and backbones barely
+change---indicating their priors are expressed unconditionally. Accuracy
+does not improve (Appendix~\ref{app:inst}), confirming that instruction
+primarily converts refusal into committed hallucination rather than grounded
+reasoning.
+
+\subsection{Abstention Across Control Variants}
+\label{app:abstention_variants}
+
+On the 113-question subset, combined soft and hard abstention remains low
+relative to the full 1{,}000-question pool but still rises across the
+control variants from original to pronominalized.
+Hard abstention---explicit refusals such as \textit{``I cannot answer without seeing the image''}---is
+suppressed to near-zero for VLMs and backbone decoders by the baked-in
+single-word response instruction, and remains negligible for most standalone LLMs.
+The exception is Mistral-7B, which produces verbose refusals that bypass
+the instruction.
+Soft abstentions---single-word hedges such as ``unknown'' or ``unanswerable''---drive
+the overall pattern: abstention rises as entity anchors are removed from original to pronominalized
+across all groups, most sharply for VLMs (${\sim}2$--3\% on the original variant to ${\sim}6$--11\% on the pronominalized variant).
+Under the paper's abstention classifier, human hard abstention is 0.00\% and
+soft abstention is near-zero ($<$0.04\% per variant) at every variant, so the abstention patterns below are a
+model-side phenomenon.
+The lower panel of Figure~\ref{fig:abstention_scale} shows the full per-model breakdown.
+
+\input{tables/abstention_inst_effect_vABC_q113}
+
+\subsection{Blind Awareness Instruction Effect}
+\label{app:inst}
+
+The explicit blind-awareness instruction was: \textit{``Note: No images are provided. For each
+question, imagine an appropriate image exists and answer based on the most
+common or universal scenario.''}
+
+\paragraph{Effect on abstention.}
+On the full 1{,}000-question pool, VLMs and backbone decoders remain near zero ($<$2\% and $<$5\%
+respectively) in both conditions; standalone LLMs span a wide range (Mistral-7B: 43\%$\to$33\%).
+The per-model numerical breakdown is in Table~\ref{tab:abstention_inst_effect_vABC_q113}.
+
+\paragraph{Effect on response content.}
+Table~\ref{tab:response_change_variants} shows the fraction of answers that change
+between blind and instruction-aware conditions, across all three question
+variants (original, subject-ablated, and pronominalized).
+Instruction is a far stronger behavioral perturbation for standalone LLMs
+(25--96\% of answers change) than for VLMs (12--42\%) or backbone
+decoders (20--42\%). Change rates are broadly stable across variants for VLMs and
+backbones, but standalone LLMs tend to be more responsive on the pronominalized variant
+(pronominalized), where lexical anchors are removed.
+This large behavioral shift without corresponding accuracy gains
+confirms that instruction reroutes the model's language prior rather than
+unlocking latent visual knowledge.
+
+\input{tables/response_change_variants}
+
+\paragraph{Effect on accuracy and agreement.}
+Instruction changes accuracy by only a few points on average, confirming
+that it does not reliably improve task performance even when it
+substantially changes answer behavior. Human--model SBERT agreement
+increases by ${\approx}{+}0.09$ on average (VLM $+$0.10, backbone $+$0.10,
+standalone LLM $+$0.07), with the largest gains on
+the original variant and diminishing returns on the pronominalized variant, consistent with
+instruction acting primarily as a lexical-anchor activator rather than a
+general alignment mechanism.
+
+\section{Image-Condition Ablation}
+\label{app:ablation}
+
+Table~\ref{tab:image_ablation_main} reports alignment metrics under four
+uninformative image conditions (black, gray, noise, white) for Qwen3-VL-8B
+and LLaVA-Mistral-7B. No condition recovers backbone-level alignment,
+confirming that the backbone advantage reflects a fundamental encoder property.
 
 \begin{table}[h]
 \centering
+\caption{Image-condition ablation (original formulation).
+No uninformative image recovers backbone-level alignment. \textbf{Bold}: best within model across image conditions; \underline{underline}: second best.}
+\label{tab:image_ablation_main}
 \small
-\caption{Mean HH SBERT by question type ($q{=}113$).
-\textit{Top}: operation types across variants (C=original,
-B=weaker-object, A=pronominalized). \textit{Bottom}: entity types
-for C and A only (B omitted; pattern is identical).
-$\Delta{=}C{-}A$; significance: $^{**}p{<}0.01$, $^{*}p{<}0.05$,
-$^{\dagger}p{<}0.10$.}
-\label{tab:hh_type_stats}
-\begin{tabular}{lrcccc}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llcccc}
 \toprule
-Type & $n$ & C & B & A & $\Delta$ \\
+\textbf{Model} & \textbf{Image} & \textbf{Acc.} & \textbf{chrF} & \textbf{SBERT} & \textbf{Abstention} \\
 \midrule
-\multicolumn{6}{l}{\textit{Operation}} \\
+\multirow{4}{*}{Qwen3-VL} & Black & \textbf{0.478} & \underline{0.215} & \underline{0.541} & \underline{4.5\%} \\
+ & Gray  & 0.357 & 0.172 & 0.473 & 10.9\% \\
+ & Noise & 0.277 & 0.136 & 0.399 & 28.4\% \\
+ & White & \underline{0.466} & \textbf{0.223} & \textbf{0.549} & \textbf{2.2\%} \\
 \midrule
-exist  &  7 & 0.873 & 0.890 & 0.856 & $+$0.016 \\
-know   &  4 & 0.755 & 0.731 & 0.677 & $+$0.079 \\
-act    &  7 & 0.723 & 0.725 & 0.711 & $+$0.012 \\
-count  & 22 & 0.663 & 0.661 & 0.671 & $-$0.008 \\
-attr   & 41 & 0.588 & 0.560 & 0.555 & $+$0.034$^{\dagger}$ \\
-ident  &  9 & 0.534 & 0.456 & 0.338 & $+$0.196$^{**}$ \\
-temp   &  3 & 0.496 & 0.538 & 0.514 & $-$0.018$^{\dagger}$ \\
-spat   & 12 & 0.402 & 0.412 & 0.362 & $+$0.040 \\
-text   &  5 & 0.401 & 0.370 & 0.442 & $-$0.042 \\
-\midrule
-\multicolumn{6}{l}{\textit{Entity (B omitted; stable across variants)}} \\
-\midrule
-food    & 16 & 0.662 & --- & 0.598 & $+$0.064$^{*}$ \\
-animal  & 17 & 0.629 & --- & 0.576 & $+$0.052$^{\dagger}$ \\
-place   &  5 & 0.620 & --- & 0.586 & $+$0.034 \\
-object  & 27 & 0.593 & --- & 0.552 & $+$0.041$^{\dagger}$ \\
-person  & 26 & 0.574 & --- & 0.553 & $+$0.021 \\
-product &  5 & 0.565 & --- & 0.507 & $+$0.058 \\
-vehicle &  4 & 0.562 & --- & 0.518 & $+$0.044 \\
-other   &  9 & 0.544 & --- & 0.567 & $-$0.024 \\
-text    &  4 & 0.447 & --- & 0.504 & $-$0.056 \\
+\multirow{4}{*}{LLaVA-Mistral} & Black & \textbf{0.558} & \underline{0.197} & \underline{0.534} & 2.9\% \\
+ & Gray  & \underline{0.543} & 0.195 & \textbf{0.535} & \underline{2.5\%} \\
+ & Noise & 0.478 & 0.180 & 0.503 & 3.0\% \\
+ & White & 0.519 & \textbf{0.198} & 0.531 & \textbf{2.4\%} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\input{tables/human_entropy_op_ent}
+\section{Model Behavior and Alignment Diagnostics}
+\label{app:model_diagnostics}
 
-\section{Metric Robustness: Surface-Form vs.\ Semantic Agreement}
+\subsection{Comprehensive Multi-Metric Blind-With-Instruction Performance}
+\label{app:metrics}
+
+Table~\ref{tab:comprehensive_inst_blind} reports agreement across all metrics.
+chrF scores are computed with the \texttt{sacrebleu} implementation.
+
+\input{tables/comprehensive_inst_blind_table}
+
+Figure~\ref{fig:sbert_truncation_scatter} summarizes the length-normalization
+robustness check on the original variant. Most models lie close to the
+diagonal, indicating that truncating answers to five words leaves the main
+ranking intact; the largest upward shifts are concentrated in verbose models,
+especially Qwen3-VL-32B and Mistral-like outliers.
+
+\begin{figure}[t]
+\centering
+\input{figures/appQ_sbert_robustness/sbert_truncation_scatter_vc_picture}
+\caption{Raw vs.\ 5-word SBERT on the original variant. Points near the
+diagonal are stable under length normalization; labeled points are the largest
+movers. The main group ordering is preserved, with the largest gains confined
+to verbose models.}
+\label{fig:sbert_truncation_scatter}
+\end{figure}
+
+\subsection{Metric Robustness: Surface-Form vs.\ Semantic Agreement}
 \label{app:chrf_human}
 
 Table~\ref{tab:hh_metric_robustness} reports human--human agreement by
@@ -1356,7 +1320,7 @@ profile — notably, \emph{count} questions score 0.662 on SBERT but only
 0.186 on chrF, because humans agree on a number semantically (e.g.\ ``three'')
 while varying in surface form.
 ANOVA on HH chrF confirms no significant operation-type effect in any variant
-($F{=}0.83$, $p{=}0.59$ for C; $F{=}1.08$, $p{=}0.39$ for B; $F{=}0.98$, $p{=}0.46$ for A);
+($F{=}0.83$, $p{=}0.59$ for the original variant; $F{=}1.08$, $p{=}0.39$ for the weaker variant; $F{=}0.98$, $p{=}0.46$ for the pronominalized variant);
 entity group is likewise non-significant ($p{>}0.36$ for all variants).
 This null result on surface metrics, contrasted with the significant SBERT
 grouping, confirms that the operation-type structure reflects genuine semantic
@@ -1364,44 +1328,16 @@ similarity rather than surface-form overlap.
 
 \input{tables/hh_metric_robustness}
 
-\input{tables/sample_q113_composition}
-
-\section{Answer Distribution Biases}
+\subsection{Answer Distribution Biases}
 \label{app:distributions}
 
-\begin{table}[h]
+\begin{figure}[t]
 \centering
-\small
-\caption{Fraction of count-question answers equal to ``0'', by group and condition
-(variant~C, 22 count questions). Human rate (${\approx}5\%$) reflects natural scene
-plausibility; VLMs interpret the absence of an image as the absence of objects.}
-\label{tab:zero_bias_count}
-\setlength{\tabcolsep}{5pt}
-\begin{tabular}{lcc}
-\toprule
-Group & Blind & +Instruction \\
-\midrule
-VLM                    & 81.4\% & 75.6\% \\
-Backbone decoder       & 48.8\% & 47.1\% \\
-Standalone LLM         & 14.1\% & 12.7\% \\
-Think (Qwen3)          & 20.9\% &  8.2\% \\
-\midrule
-Human                  & \multicolumn{2}{c}{${\approx}5\%$} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.49\textwidth]{answer_distribution/inst_blind_abstsplit/yesno/combined}%
-\hfill%
-\includegraphics[width=0.49\textwidth]{answer_distribution/inst_blind_abstsplit/number/combined}
-\caption{All-model blind answer distributions (yes/no left, count right).
-Ground truth uses all 10 per-question annotator responses.
-The backbone$>$VLM no-bias and zero-bias patterns are consistent across all model families;
-standalone LLMs show substantial abstention and format mismatch.}
+\includegraphics[width=\linewidth]{answer_distribution/inst_blind_abstsplit/yesno/combined}\\[0.4em]
+\includegraphics[width=\linewidth]{answer_distribution/inst_blind_abstsplit/number/combined}
+\caption{All-model blind answer distributions (yes/no left, count right). Backbone decoders track the human distribution more closely than full VLMs, while standalone LLMs show stronger abstention and format mismatch.}
 \label{fig:dist}
-\end{figure*}
+\end{figure}
 
 Three systematic biases emerge in the combined distribution view:
 \textbf{No-bias} in yes/no: full VLMs default to narrower yes/no priors that
@@ -1411,6 +1347,30 @@ the human split.
 numeric defaults, whereas humans distribute across plausible small counts.
 \textbf{Abstention} in standalone LLMs: they often fail to inhabit the VQA
 answer distribution at all, instead hedging or abstaining.
+
+% Figure moved to main text as descriptive example (§\ref{sec:dist_alignment}).
+% \begin{figure}[t]
+% \centering
+% \includegraphics[width=\columnwidth]{answer_distribution/exist_yesno_7b/vABC_exist_yesno_llava_15_7b_7b_inst_blind_abstsplit}
+% \caption{Existence-question yes/no distributions for the LLaVA-1.5 family, pooling all three variants
+% (original/weaker/pronominalized). Model outputs are from the \texttt{inst\_blind} condition with abstentions retained as a separate
+% darker-grey segment. The human row shows only the substantive yes/no/other distribution; the abstention bucket is applied to model outputs.
+% The LLaVA-1.5 decoder tracks the human yes/no split more closely than the full VLM,
+% while the Vicuna-7B standalone baseline remains comparably well calibrated on this narrow binary prior.}
+% \label{fig:exist_yesno_llava15}
+% \end{figure}
+
+Existence questions make the yes/no prior story concrete. For \textit{``Is there
+a couch?''}, humans answer \textit{yes} 31/40 times in the original formulation,
+and the LLaVA-1.5 decoder and Vicuna-7B both recover that majority, whereas
+full VLMs are more likely to flip on specific items. Similarly, for
+\textit{``Is there cheese on the sandwich?''} humans again split 31/9 toward
+\textit{yes}, and the decoder stays close to that distribution across variants.
+This is consistent with the pooled yes/no JS results in
+Table~\ref{tab:hm_grouped_distribution_7b_compact_filtered}: backbone decoders,
+especially LLaVA-1.5 (LM), are the closest overall match to the human binary
+prior, while full VLMs are more sensitive to item-specific distortions.
+
 \paragraph{Identity collapse examples.}
 The identity questions with the largest human degradation under
 pronominalization ($\Delta_{C\to A}^{HH}{=}0.21$--$0.34$)
@@ -1432,50 +1392,8 @@ $\Delta{=}0.24$, HH-HM gap${=}0.11$) show the largest human--model gap,
 driven by dialect variation (\textit{goalie} vs.\ \textit{goalkeeper})
 that the model does not resolve.
 
-\subsection{Yes/No Bias Stability Across Variants}
-\label{app:yesno_stability}
 
-Table~\ref{tab:hm_yesno_js_all_variants} reports JS divergence from the human yes/no
-prior for each model across all three control variants. A Friedman test across variants
-yields $\chi^2=0.615$, $p=0.735$: the bias rankings are statistically stable, consistent
-with a relatively stable model-level blind-answer tendency rather than a one-off
-response to entity framing.
-
-\input{tables/hm_yesno_js_all_variants}
-
-\subsection{Grouped Distributional Alignment by Question Type}
-\label{app:grouped_distribution_alignment}
-
-Tables~\ref{tab:hm_grouped_distribution_7b_op}--\ref{tab:hm_grouped_distribution_7b_ent_filtered}
-extend the aggregate yes/no and count plots by asking whether each model's
-\emph{grouped} answer distributions resemble the corresponding human
-distributions when responses are pooled across all three variants. We report
-both an inclusive view and a shared substantive-response view with abstentions
-removed; in the latter, human and model distributions are compared on the same
-non-abstaining subset. The `Human LOO' row provides a leave-one-out human
-baseline, showing how closely one participant's grouped response pattern
-matches the remaining humans under the same protocol.
-
-Two patterns are especially stable. First, backbone decoders are strongest on
-operation-group yes/no structure, with Qwen3-VL-8B (LM) achieving the lowest
-JS divergence and total variation in both the inclusive and filtered views.
-Second, InternVL-8B is the strongest model on grouped number distributions in
-both operation- and entity-pooled comparisons, indicating that its count-like
-blind priors most closely follow the human small-number pattern. Text slices
-are more heterogeneous: the strongest model depends on whether the grouping is
-by operation or entity and whether abstentions are filtered, which mirrors the
-broader lexical diversity of the low-HH identity/text examples discussed in
-the main paper.
-
-\input{tables/hm_grouped_distribution_7b_op_all_variants}
-
-\input{tables/hm_grouped_distribution_7b_op_all_variants_filtered}
-
-\input{tables/hm_grouped_distribution_7b_ent_all_variants}
-
-\input{tables/hm_grouped_distribution_7b_ent_all_variants_filtered}
-
-\section{Agreement by Scale and Variant}
+\subsection{Agreement by Scale and Variant}
 \label{app:scale_variant}
 
 Figure~\ref{fig:scale} extends the scale analysis
@@ -1486,355 +1404,173 @@ mild degradation, and standalone LLMs fall further below the human reference.
 Scale alone does not predict degradation, and family-specific outliers remain
 visible. This matched subset excludes Mistral-7B and Phi-3.5-mini to avoid
 known blind-answer outliers from dominating the small standalone-LLM comparison.
+We analyze Qwen3 thinking models separately, because they are a within-family
+decoding intervention rather than a distinct architecture group and are only
+available for the standalone Qwen3 checkpoints.
 
-\begin{figure*}[t]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.97\textwidth]{s4-4_scale_alignment/scale_variant_accuracy_q113_h40_abstfiltered}
+\includegraphics[width=\linewidth]{scale_alignment_variant/accuracy_q113_h40_abstfiltered}
 \caption{Blind accuracy vs.\ parameter count, abstention-filtered, broken down by
-control variant (C=blue, B=amber, A=red; 113 questions, 40 participants).
+control variant (blue = original, amber = weaker, red = pronominalized; 113 questions, 40 participants).
 Each panel is one model group; backbone decoders shown hollow.
 Dashed lines are per-variant human baselines.
-Accuracy degrades C$\to$A across all groups, confirming that removing
+Accuracy degrades from original to pronominalized across all groups, confirming that removing
 lexical anchors degrades performance.}
 \label{fig:scale}
-\end{figure*}
-
-% ═══════════════════════════════════════════════════════════════════════════
-% SUPPLEMENTARY: CHAIN-OF-THOUGHT ANALYSIS
-% ═══════════════════════════════════════════════════════════════════════════
-\section{Grouped Operation and Entity Patterns}
-\label{app:grouped_patterns}
-
-The following vignettes illustrate how operation type shapes both human and model agreement in the blind setting.
-
-\paragraph{High-agreement, robust questions.}
-Existence and knowledge questions (e.g.\ \textit{``Is there a couch?'',
-``Can one use the fur of these animals to make clothing?''}) yield HH SBERT
-around 0.87--0.89 and remain stable across variants ($\Delta_{C\to A} < 0.02$).
-The answer space is binary and the correct answer is strongly determined by
-world knowledge rather than visual detail, so both humans and models agree
-without visual grounding.
-Attribution questions (e.g.\ \textit{``Is this car clean?''}) are similarly
-robust (HH\,=\,0.92; $\Delta_{C\to A} \approx +0.06$).
-
-\paragraph{Count questions: stable but systematically below humans.}
-Count questions (e.g.\ \textit{``How many hot dogs are on this bun?''}) show
-moderate HH agreement (0.66--0.78) that does \emph{not} degrade under
-pronominalization ($\Delta_{C\to A} \approx 0$). Models achieve
-substantially lower HM SBERT (0.64--0.68), suggesting a persistent
-distributional bias toward small default counts (mainly ``1'') regardless
-of the question.
-
-\paragraph{Identity questions: sharpest collapse.}
-Identity questions (e.g.\ \textit{``What type of bear is this?'',
-``What condiments are on the hot dog?''}) have the steepest
-pronominalization drop among all operation types: HH falls from
-$\sim$0.53 to $\sim$0.34 ($\Delta = +0.20$, $p{<}0.01$), and HM
-SBERT falls almost in parallel. When the subject noun is replaced by
-a pronoun (\textit{``What type is it?''}), even humans diverge because
-multiple object categories become plausible, and models track this
-uncertainty faithfully.
-
-Entity type is a weaker predictor overall (entity ANOVA $p{>}0.74$
-in all variants; $\eta^2{<}0.04$). Within entities, food and person
-questions tend toward high agreement (mostly yes/no or common-attribute
-format), while text-related questions (language identification, number
-reading) sit at the lower end.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{hm_sbert_entity_op_grouped_variants_7b_abstfiltered}
-\caption{Human--model SBERT by entity and operation groups (7--8B scale), abstention-filtered.
-Bars show group means across model types (VLM, backbone decoder, standalone LLM);
-error bars indicate variant spread (min--max across Original/Weaker/Pronominalized);
-dotted lines mark the HH baseline (mean across variants).
-Individual model markers are overlaid. Identity and action show some of the
-clearest backbone--VLM separation, while count remains a low-agreement region.}
-\label{fig:op_hm}
-\end{figure*}
-
-\input{tables/group_corr_combined}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{appJ_grouped_patterns/hh_vs_hm_group_scatter_7b_op}
-\caption{Per-model group-level scatter: HH vs.\ HM SBERT aggregated by operation type.
-Each point is one operation group under one variant; text labels identify the group.
-Spearman $\rho$ and rmcorr are shown per panel.}
-\label{fig:group_scatter_op}
-\end{figure*}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{appJ_grouped_patterns/hh_vs_hm_group_scatter_7b_ent}
-\caption{Per-model group-level scatter: HH vs.\ HM SBERT aggregated by entity type.
-Layout mirrors Figure~\ref{fig:group_scatter_op}; entity labels annotate each point.}
-\label{fig:group_scatter_ent}
-\end{figure*}
-
-\subsection{HH--HM Correlation Pooled Across All Variants}
-\label{app:corr_pooled}
-
-Table~\ref{tab:hm_hh_corr_all_variants} extends the per-variant HH--HM correlation
-to a pooled estimate using Fisher $z$-averaging across all three variants and a
-linear mixed-effects model (LME) with question-level random intercepts and variant as
-a covariate. The LME $\beta$ coefficient measures how much a unit increase in human
-agreement predicts model agreement while controlling for within-question dependence.
-All models show $p < 0.001$; backbone decoders and InternVL-8B have the highest Fisher
-pooled $r$ ($\geq 0.89$), while standalone LLMs are substantially lower ($r \leq 0.70$),
-consistent with the per-variant patterns but now confirmed over the full gradient.
-
-\input{tables/hm_hh_correlation_all_variants}
-
-\section{Human--Model Alignment by Operation and Entity Type}
-\label{app:degradation}
-
-The following figures show Pearson $r$(human difficulty per question, model score per
-question) broken down by operation type and entity type across control variants
-C$\to$B$\to$A, under the instruction-blind condition.
-Each panel is one question subgroup; each line is one model group (VLM, backbone
-decoder, SA-LLM, think), with individual model trajectories shown as thin translucent
-lines behind the bold group mean.
-Operation type is the stronger structural axis: count and action questions maintain
-high alignment across all variants, while identity and spatial questions collapse
-under pronominalization. Entity type produces a flatter, less consistent profile.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{r_by_ent_op/r_by_op_sbert_inst_blind}\\[0.75em]
-\includegraphics[width=\textwidth]{r_by_ent_op/r_by_ent_sbert_inst_blind}
-\caption{Pearson $r$(human HH SBERT difficulty, model HM SBERT) per question subgroup
-across variants C$\to$B$\to$A (instruction-blind). Top: by operation type; bottom: by
-entity type. Bold lines show group means (VLM, Backbone, SA-LLM, Think); thin lines
-show individual models. Operation type drives the largest variance: count and action
-subgroups are robust, identity and spatial collapse under pronominalization.}
-\label{fig:variants}
-\end{figure*}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{r_by_ent_op/r_by_op_accuracy_inst_blind}\\[0.75em]
-\includegraphics[width=\textwidth]{r_by_ent_op/r_by_ent_accuracy_inst_blind}
-\caption{Pearson $r$(human accuracy, model accuracy) per question subgroup across
-variants C$\to$B$\to$A (instruction-blind). Top: by operation type; bottom: by
-entity type. Mirrors the SBERT pattern: operation type predicts alignment more
-reliably than entity type, with identity questions showing the sharpest misalignment
-under pronominalization.}
-\label{fig:variants_acc}
-\end{figure*}
-
-\section{Chain-of-Thought Thinking Analysis}
-\label{app:think}
-
-We tested Qwen3 standalone LLMs at five scales (0.6B--32B) with thinking mode
-enabled, which prepends an explicit reasoning chain inside
-$\langle$\textit{think}$\rangle$ tags before the final answer token.
-The analysis covers think-chain length, engagement rate, and its relationship
-to human question difficulty and human--model alignment.
-
-\paragraph{Scale determines whether models engage.}
-Qwen3-4B and 8B almost always generate a reasoning chain (empty-think rate
-${\leq}8\%$), while Qwen3-1.7B and 32B skip thinking on the majority of
-questions ($51$--$66\%$; Table~\ref{tab:think_stats}).
-This suggests a capacity threshold: 1.7B cannot sustain coherent reasoning
-under pure textual uncertainty, while 32B appears to have learned to shortcut
-the reasoning step when the answer manifold is obvious from the question alone.
-
-\paragraph{Mid-scale models allocate more reasoning to underspecified questions.}
-For Qwen3-4B and 8B, mean think-chain length \emph{increases} from the
-original to the pronominalized variant ($389{\to}478$ and $439{\to}505$ words;
-Figure~\ref{fig:think_variant}). These models detect added ambiguity and
-deliberate more. By contrast, Qwen3-1.7B and 32B disengage further under
-pronominalization: the empty-think rate rises from $51.7\%{\to}71.6\%$ for 1.7B
-and $60\%{\to}66\%$ for 32B, meaning they give up reasoning exactly when
-questions are hardest.
-
-\paragraph{Thinking does not improve human--model alignment.}
-Enabling thinking mode provides no consistent gain in HM SBERT: only
-Qwen3-1.7B shows a reliable improvement ($\Delta\text{SBERT}{=}{+}0.12$,
-$p{<}0.001$ for the original variant; Figure~\ref{fig:think_nothink}).
-All other scales yield $\Delta{\approx}0$ or small negatives.
-Furthermore, within 4B and 8B, think-chain length \emph{negatively} correlates
-with HM SBERT on the same question (4B variant B: $r{=}{-}0.26$, $p{=}0.008$;
-8B variant C: $r{=}{-}0.28$, $p{=}0.004$): more deliberation is associated
-with \emph{lower} human alignment, not higher. This suggests the additional
-tokens reflect exploratory wandering rather than calibrated prior recall.
-
-\paragraph{Thinking and answering are decoupled.}
-The mean log-probability of thinking tokens is essentially uncorrelated with
-the log-probability of the final answer token ($r{=}0.08$ to $0.23$ across
-scales; Figure~\ref{fig:think_conf}). A model can reason extensively and still produce a highly confident
-single-token answer, or skip reasoning entirely and answer with equal
-confidence. The reasoning process does not modulate the answer's certainty,
-which suggests thinking tokens in this blind-VQA setting function more as
-exploratory search than as confidence calibration.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{appL_cot_thinking/confidence_think_vs_final}
-\caption{Top: distribution of mean log-probability for thinking-token spans (blue) vs.\ answer-token spans after \texttt{</think>} (orange) across five Qwen3 scales. Bottom: per-question scatter of think-span mean logprob vs.\ answer-span mean logprob. The legend count $n$ denotes valid responses whose thinking and answer spans could be parsed from the generated token stream, so it differs across models. Answer spans cluster near 0 (high confidence) while thinking-token spans are far more dispersed. Pearson $r$ ranges from $0.004$ (8B) to $0.228$ (32B), confirming that reasoning confidence is largely decoupled from answer confidence.}
-\label{fig:think_conf}
 \end{figure}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{appL_cot_thinking/think_length_by_variant}
-\caption{Mean think-chain length (words) by scale and control variant.
-4B and 8B allocate more thinking to pronominalized questions; 1.7B and 32B are
-flat or declining. Empty-think rates are reported in Table~\ref{tab:think_stats}.}
-\label{fig:think_variant}
-\end{figure}
+\subsection{Does More Thinking Help?}
+\label{app:thinking}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{appL_cot_thinking/think_hm_vs_nothink_hm}
-\caption{Human--model SBERT for think vs.\ no-think Qwen3 variants by scale
-and control variant. Only Qwen3-1.7B shows a reliable alignment gain
-($\Delta{+}0.12$, $p{<}0.001$); other scales show no improvement or slight
-regressions. Qwen3-4B and 8B yield identical scores because their
-think/no-think pairs share the same cached pair values.}
-\label{fig:think_nothink}
-\end{figure}
-
-Table~\ref{tab:think_stats} provides the underlying numerical statistics for the
-figures above.
+To test whether explicit reasoning traces improve blind priors, we again focus on Qwen3,
+which provides matched thinking and non-thinking variants within the same model family
+across sizes (0.6B--32B), allowing scale and family to be held constant.
+We compare standalone Qwen3 models with and without thinking mode at matched
+parameter sizes. Two quantities matter: the length of the emitted reasoning
+trace and whether the model emits a trace at all. Table~\ref{tab:think_stats} and Figure~\ref{fig:think_abs_vs_length}
+show that neither quantity predicts better human alignment in a monotonic way.
+The longest traces come from the 4B and 8B thinking models, but their HM SBERT
+is comparable to or lower than the corresponding non-thinking models. The 32B
+thinking model is the opposite extreme: it frequently emits no reasoning trace,
+has much lower blind accuracy than the 32B non-thinking model, but is slightly
+more human-aligned under SBERT. The strongest positive case is Qwen3-1.7B,
+where thinking improves both HM SBERT and blind accuracy on the original
+question form, but that benefit does not scale cleanly. Taken together, these
+results suggest that extra reasoning text changes the decoder's answer policy,
+but does not provide a dependable path to more human-like blind priors.
 
 \input{tables/think_consolidated}
 
-\paragraph{Think-chain length and alignment.}
-At 4B and 8B, longer thinking chains are associated with \emph{lower}
-human--model SBERT ($r \approx -0.26$ to $-0.28$; $p < 0.01$),
-the same questions that trigger more deliberation also show the greatest
-divergence from human responses.
-Crucially, human self-reported confidence is uncorrelated with think-chain
-length at any scale ($|r| < 0.10$): models deliberate more when linguistic
-anchors are absent, whereas human uncertainty is driven by perceptual ambiguity
-that no amount of text-based reasoning can resolve.
-This mirrors the image-ablation finding (Section~\ref{sec:ablation}) that
-activating the vision pathway introduces noise rather than information, and
-the supplementary entropy diagnostics (Appendix~\ref{app:entropy_diagnostics}),
-which show that model answer distributions are typically more concentrated
-than human ones.
-At 1.7B and 32B---which disengage on most questions---correlations are near
-zero, consistent with the capacity-threshold interpretation rather than any
-alignment benefit.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{think_eda/think_abs_confidence}
+\caption{Mean answer log-probability for Qwen3 thinking models as a function of reasoning-trace length. Longer traces correlate with higher token confidence, particularly for 4B and 8B models under instruction. Marker conventions follow Figure~\ref{fig:think_abs_vs_length}.}
+\label{fig:think_confidence}
+\end{figure}
+\label{app:think_confidence}
+
+This distinction is especially visible on count questions. Under instruction,
+Qwen3-8B (think) often moves away from blind defaults such as ``0'' or
+non-numeric responses and into plausible small counts, which makes its
+\emph{aggregate} count distribution look more human-like. But at the
+\emph{question-specific} level the same shift often remains misaligned with the
+human majority: for example, a model may move from ``0'' to a plausible count
+such as ``1'' or ``3'' while humans concentrate on a different nearby number.
+Thus more human-like \emph{marginal} count distributions do not necessarily
+translate into higher HM SBERT.
+
+\subsection{Grouped Operation and Entity Patterns}
+\label{app:degradation}
+\label{app:grouped_patterns}
+
+Figure~\ref{fig:combined_accuracy} shows the accuracy degradation ladder by operation and entity type,
+complementing the subgroup SBERT discussion in Section~\ref{sec:alignment_main}.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{degradation_by_ent_op_7b_inst_blind/accuracy/combined}
+\caption{Matched 7/8B instruction-blind accuracy degradation profiles across control variants
+(Original$\to$Weaker$\to$Pronominalized). Top row: by operation type; bottom row: by entity type.
+The operation-type pattern mirrors the SBERT result: identity and spatial questions collapse
+most under pronominalization, while count and action questions remain relatively robust.
+Bold lines show group means; thin lines show individual models.}
+\label{fig:combined_accuracy}
+\end{figure*}
+
+Entity-conditioned distributional JS rankings were qualitatively similar to the
+pooled results in Table~\ref{tab:hm_grouped_distribution_7b_compact_filtered} and
+did not change the main interpretation. Backbone decoders remained the closest
+match on yes/no distributions, count questions remained misaligned across all
+architectures, and text questions were uniformly easier because of their narrow
+answer space. We therefore summarize the entity-conditioned breakdown in prose
+rather than repeating a second compact table with the same ordering.
+
+% The longer descriptive vignettes from this section were moved to the main body
+% as commented draft prose, to keep the appendix more compact while preserving
+% the text for later reuse.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{hh_hm_grouped_scatter_7b_all_variants/7b_accuracy_op_ent}
+\caption{Human vs.\ model blind accuracy grouped by operation type (left) and entity type (right). Each panel reports Pearson $r$ and $p$ over the grouped means. The same family ordering appears under accuracy, but operation grouping remains the more separating structural axis.}
+\label{fig:scatter_accuracy}
+\end{figure}
 
 
-\section{Confidence Alignment by Architecture}
+\section{Confidence and Uncertainty Diagnostics}
+\label{app:uncertainty_appendix}
+
+\subsection{Confidence Alignment by Architecture}
 \label{app:confidence_alignment}
 
 Per-question Pearson correlation between mean human self-reported confidence and mean
 model token log-probability reveals a structural dissociation: answer alignment and
 uncertainty alignment can diverge substantially across architecture groups.
 
-\begin{table}[t]
-\centering
-\small
-\caption{Per-question Pearson $r$ between mean human self-reported confidence and mean model token log-probability, by architecture group and control variant. Bold = highest per column; underline = second highest.}
-\label{tab:confidence_corr_by_variant}
-\begin{tabular}{lrrr}
-\toprule
-\textbf{Group} & \textbf{C (Orig.)} & \textbf{B (Wkr.)} & \textbf{A (Pron.)} \\
-\midrule
-VLM                  & 0.13          & 0.13          & 0.04 \\
-Backbone decoder     & \underline{0.38} & \textbf{0.39} & \textbf{0.27} \\
-Standalone LLM       & \textbf{0.41} & \underline{0.32} & \textbf{0.27} \\
-Standalone LLM (think) & 0.17        & 0.27          & \underline{0.14} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 Backbone decoders and standalone LLMs exhibit the highest positive
 human--model confidence correlation on original questions
 (backbone: $r{=}0.38$--$0.39$; standalone LLM: $r{=}0.41$), and both degrade
-under anchor removal (to $r{=}0.27$ on variant A). VLMs are weakest throughout
-($r{=}0.13$, $0.13$, and $-0.04$ for C, B, and A respectively), despite strong
-blind accuracy. Think-mode standalone LLMs remain positive but lower
-($r{=}0.30 \to 0.19$ from C to A). A model can answer blindly in a
+under anchor removal (to $r{=}0.27$ on the pronominalized variant). VLMs are weakest throughout
+($r{=}0.13$, $0.13$, and $0.04$ for the original, weaker, and pronominalized variants respectively), despite strong
+blind accuracy. A model can answer blindly in a
 benchmark-favored way without matching the questions humans experience as easy or hard.
+Figure~\ref{fig:scatter_confidence} shows the same pattern at the grouped level:
+confidence is comparatively flat across both operation and entity categories and
+separates architecture groups less clearly than semantic agreement does.
 
 Figure~\ref{fig:ecdf_confidence_7b} shows the ECDF of mean token log-probability
-for each 7B/8B model grouped by architecture (human confidence shown separately
-in Appendix~\ref{app:human_ecdf}).
+for each 7B/8B model grouped by architecture (human confidence ECDF shown in
+Figure~\ref{fig:human_ecdf}).
 Two patterns recur across groups.
 First, several models operate in a compressed high-confidence regime: curves rise
 sharply near logprob~$0$, indicating that many blind questions receive similarly
-strong token confidence regardless of difficulty. This is most extreme for
-Qwen3-8B (think), whose near-vertical rise suggests weak uncertainty resolution
-rather than calibrated differentiation.
-Second, variant separation is highly model-dependent: VLMs show little shift
-across variants, while backbone decoders and standalone LLMs show larger
-C$\to$A shifts, consistent with the correlation table above.
-Together, these distributional differences explain why token confidence is a weak
-proxy for human-like uncertainty despite being numerically high across most models.
+strong token confidence regardless of difficulty. Second, variant separation is
+highly model-dependent: VLMs show little shift across variants, while backbone
+decoders and standalone LLMs show larger original-to-pronominalized shifts. In contrast, the human
+confidence ECDF below is nearly unchanged across variants, with only a modest
+downward shift under pronominalization. Humans therefore appear to preserve a
+stable confidence scale under abstraction, whereas model confidence is more
+architecture-dependent and often less discriminative. Together, these
+distributional differences explain why token confidence is a weak proxy for
+human-like uncertainty despite being numerically high across most models.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{hh_hm_grouped_scatter_7b_all_variants/7b_confidence_op_ent}
+\caption{Human vs.\ model confidence grouped by operation type (left) and entity type (right). Each panel reports Pearson $r$ and $p$ over the grouped means. Confidence is visibly flatter than SBERT and accuracy, reinforcing that token confidence is a weak proxy for human-like uncertainty.}
+\label{fig:scatter_confidence}
+\end{figure}
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.97\textwidth]{confidence/grouped_7b}
-\caption{ECDF of mean token log-probability per answer, split by question variant
-(dark = C Original, mid = B Weaker, light = A Pronominalized).
+\includegraphics[width=\textwidth]{confidence/grouped_7b}
+\caption{ECDF of mean token log-probability per answer.
 Rows = model group (row labels indicate group; backbone decoder column titles omit ``(LM)'');
-columns = individual 7B/8B models, with Qwen3-8B think placed next to its nothink counterpart.}
+columns = individual 7B/8B models.}
 \label{fig:ecdf_confidence_7b}
 \end{figure*}
 
-\input{figures/confidence/conf_rt_sbert_table}
+% \input{figures/confidence/conf_rt_sbert_table}
 
 % ═══════════════════════════════════════════════════════════════════════════
 
-\section{Blind Awareness Instruction Effect}
-\label{app:inst}
+\subsection{Human Confidence ECDF}
+\label{app:human_ecdf}
 
-The explicit blind-awareness instruction was: \textit{``Note: No images are provided. For each
-question, imagine an appropriate image exists and answer based on the most
-common or universal scenario.''}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{confidence/human_ecdf}
+\caption{ECDF of human self-reported confidence (normalised to $[0,1]$) by question
+variant. The three curves are nearly identical, with only a modest downward shift
+under pronominalization, confirming that human confidence is robust to lexical-anchor
+removal and more stable across variants than model token confidence.}
+\label{fig:human_ecdf}
+\end{figure}
 
-\paragraph{Effect on abstention.}
-On the full 1{,}000-question pool, VLMs and backbone decoders remain near zero ($<$2\% and $<$5\%
-respectively) in both conditions; non-think standalone LLMs span a wide range (Mistral-7B: 43\%$\to$33\%);
-think-mode models show the largest shifts (Qwen3-4B: near-zero$\to$43\% hard abstention).
-The per-model numerical breakdown is in Table~\ref{tab:abstention_inst_effect_vC_q113}.
+% ═══════════════════════════════════════════════════════════════════════════
 
-\paragraph{Effect on response content.}
-Table~\ref{tab:response_change_variants} shows the fraction of answers that change
-between blind and instruction-aware conditions, across all three question
-variants (C: original, B: subject-ablated, A: pronominalized).
-Instruction is a far stronger behavioral perturbation for standalone LLMs
-(25--96\% of answers change) than for VLMs (12--42\%) or backbone
-decoders (20--42\%). Think models are most sensitive (60--91\% change),
-suggesting their chain-of-thought process is highly responsive to
-framing. Change rates are broadly stable across variants for VLMs and
-backbones, but standalone LLMs tend to be more responsive on variant~A
-(pronominalized), where lexical anchors are removed.
-This large behavioral shift without corresponding accuracy gains
-confirms that instruction reroutes the model's language prior rather than
-unlocking latent visual knowledge.
-
-\input{tables/response_change_variants}
-
-\paragraph{Effect on accuracy and agreement.}
-Instruction changes accuracy by only a few points on average, confirming
-that it does not reliably improve task performance even when it
-substantially changes answer behavior. Human--model SBERT agreement
-increases by ${\approx}{+}0.09$ on average (VLM $+$0.10, backbone $+$0.10,
-standalone LLM $+$0.07), with the largest gains on
-variant~C and diminishing returns on variant~A, consistent with
-instruction acting primarily as a lexical-anchor activator rather than a
-general alignment mechanism.
-
-% \begin{figure*}[t]
-% \centering
-% \includegraphics[width=\textwidth]{figures/response_change_variants_q113}
-% \caption{Fraction of answers that change between blind and
-% instruction-aware conditions across question variants~C, B, and~A
-% (113 questions, 36 models). Columns share the same model order (set by
-% variant~C change rate). Colored background bands indicate model groups.
-% Standalone LLMs---especially think-mode---are most sensitive to
-% instruction framing across all variants; VLMs show the smallest shift.}
-% \label{fig:response_change}
-% \end{figure*}
-
-\section{Question-Level Alignment Details}
+\subsection{Question-Level Alignment Details}
 \label{sec:question_level_alignment}
 \label{app:case_study}
 
@@ -1872,79 +1608,19 @@ is strongly negatively correlated with human VQA accuracy ($r \approx -0.77$),
 indicating that questions eliciting more diverse blind answers are also the
 questions humans find harder to answer correctly.
 
-Table~\ref{tab:entropy_stratified} reports the same entropy stratification
-at the individual-model level rather than averaging within architecture groups.
-Across matched pairs, backbone decoders consistently exceed their parent VLMs
-in all three tertiles, and performance declines monotonically as human answer
-entropy increases. Among standalone LLMs, stronger models remain competitive
-on low-entropy questions but still degrade sharply on high-entropy ones,
-highlighting the difficulty of open-ended answer distributions.
 
-\input{tables/entropy_stratified_sbert_models}
+Table~\ref{tab:hh_hm_scatter_corr_compact} reports the corresponding per-model
+HH--HM correlation summary. VLMs and backbone decoders cluster near
+$r{=}0.87$--$0.94$ with tight variant spread, while standalone LLMs are
+consistently lower.
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{appJ_grouped_patterns/hh_vs_hm_scatter_7b}
-\caption{Per-question HH vs.\ HM SBERT scatter for the matched 7--8B model set.
-Each panel corresponds to one model; colors indicate control variants. Models
-closer to the diagonal more faithfully preserve the human question-level
-agreement structure.}
-\label{fig:hh_hm_scatter_app}
-\end{figure*}
+\input{tables/hh_hm_scatter_correlations_compact}
 
-\begin{table*}[t]
-\centering
-\caption{Per-model correlation summary for Figure~\ref{fig:scatter_sbert}. Pearson correlation is computed between per-question HH SBERT and HM SBERT across the matched 7/8B models. Variant columns report the same correlation within each control formulation. The misprocessed think variant is excluded.}
-\label{tab:hh_hm_scatter_corr}
-\small
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrrrr}
-\toprule
-Model & Group & All $r$ & $p$ & Original & Weaker & Pronominalized & $N$ \\
-\midrule
-InternVL-8B & VLM & 0.935 & 9.4e-150 & 0.931 & 0.932 & 0.944 & 331 \\
-Qwen3-VL-8B & VLM & 0.895 & 5.2e-119 & 0.892 & 0.889 & 0.904 & 335 \\
-LLaVA-1.5-7B & VLM & 0.872 & 2.4e-106 & 0.853 & 0.856 & 0.902 & 339 \\
-LLaVA-Mistral & VLM & 0.879 & 4.9e-110 & 0.878 & 0.868 & 0.890 & 338 \\
-LLaVA-Vicuna & VLM & 0.884 & 8.4e-113 & 0.882 & 0.882 & 0.886 & 338 \\
-InternVL-8B (LM) & Backbone decoder & 0.896 & 1.3e-108 & 0.886 & 0.913 & 0.888 & 304 \\
-Qwen3-VL-8B (LM) & Backbone decoder & 0.890 & 1.9e-115 & 0.858 & 0.892 & 0.916 & 334 \\
-LLaVA-1.5 (LM) & Backbone decoder & 0.921 & 2.0e-138 & 0.917 & 0.907 & 0.937 & 336 \\
-LLaVA-Mistral (LM) & Backbone decoder & 0.928 & 4.6e-146 & 0.918 & 0.926 & 0.937 & 338 \\
-LLaVA-Vicuna (LM) & Backbone decoder & 0.918 & 1.5e-136 & 0.925 & 0.913 & 0.918 & 336 \\
-Qwen3-8B & Standalone LLM & 0.581 & 5.5e-32 & 0.533 & 0.641 & 0.564 & 339 \\
-Qwen2.5-7B-Instruct & Standalone LLM & 0.699 & 1.9e-50 & 0.747 & 0.649 & 0.704 & 335 \\
-Vicuna-7B & Standalone LLM & 0.671 & 1.5e-44 & 0.669 & 0.619 & 0.724 & 330 \\
-Mistral-7B & Standalone LLM & -0.185 & 4.2e-02 & -0.108 & -0.212 & -0.243 & 121 \\
-\bottomrule
-\end{tabular}
-}
-\end{table*}
+\input{tables/matched_family_alignment_tests}
 
-\begin{table}[t]
-\centering
-\caption{Image-condition ablation (original formulation).
-No uninformative image recovers backbone-level alignment.}
-\label{tab:image_ablation_main}
-\small
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{llcccc}
-\toprule
-\textbf{Model} & \textbf{Image} & \textbf{Acc.} & \textbf{chrF} & \textbf{SBERT} & \textbf{Soft-abs.} \\
-\midrule
-\multirow{4}{*}{Qwen3-VL-8B} & Blank & 0.478 & 0.215 & 0.541 & 8.0\% \\
- & Gray  & 0.357 & 0.172 & 0.473 & 21.2\% \\
- & Noise & 0.277 & 0.136 & 0.399 & 36.3\% \\
- & White & 0.466 & 0.223 & 0.549 & 5.3\% \\
-\midrule
-\multirow{4}{*}{LLaVA-Mistral} & Blank & 0.558 & 0.197 & 0.534 & 8.8\% \\
- & Gray  & 0.543 & 0.195 & 0.535 & 8.0\% \\
- & Noise & 0.478 & 0.180 & 0.503 & 11.5\% \\
- & White & 0.519 & 0.198 & 0.531 & 8.8\% \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{tables/matched_family_pattern_tracking}
 
+\input{tables/weighted_group_pattern_robustness}
 
 % ─── COMMENTED OUT (app:aggregation): not referenced from main body ───
 \iffalse
@@ -1969,20 +1645,19 @@ and $\phi$ maps raw answers to canonical forms.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=\textwidth]{inst_blind_sbert_family_vABC_q113_yesno_raw}
+\includegraphics[width=\textwidth]{variants_ladder_family_sbert_inst_blind/sbert_family_vABC_q113_yesno_raw}
 \caption{Per-family SBERT human--model agreement across control variants (raw, unfiltered).
 Row~1: VLMs (solid) and backbone decoders (dotted).
-Row~2: standalone LLMs and think variants.
 Right column: group-mean summary with 95\% CI. Line weight scales with parameter count.}
 \label{fig:family}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=\textwidth]{inst_blind_sbert_family_vABC_q113_yesno_abstfiltered}
+\includegraphics[width=\textwidth]{variants_ladder_family_sbert_inst_blind/sbert_family_vABC_q113_yesno_abstfiltered}
 \caption{Per-family SBERT human--model agreement (abstention-filtered).
 Same layout as Figure~\ref{fig:family} but pairs where either answer is a hard or soft abstention are excluded.
-Filtering primarily removes model-abstaining HM pairs; the family-level trend is robust across both views.}
+Filtering primarily removes model responses that abstain before comparison against human responses; the family-level trend is robust across both views.}
 \label{fig:family_filtered}
 \end{figure*}
 
@@ -2048,7 +1723,7 @@ consistent with the null chrF result in Appendix~\ref{app:chrf_human}.
 \centering
 \includegraphics[width=0.72\columnwidth]{appQ_sbert_robustness/metric_correlation_per_question_hm_113}
 \caption{Pairwise Pearson~$r$ between evaluation metrics at the
-per-question$\times$variant mean level ($n{=}113$ questions, HM pairs).
+per-question$\times$variant mean level ($n{=}113$ questions, model-to-human response comparisons).
 SBERT and SimCSE form a tight cluster ($r{=}0.87$); lexical metrics form a
 separate cluster. Lower triangle shown; diagonal is 1.}
 \label{fig:metric_corr}
@@ -2065,15 +1740,6 @@ across all operation types.
 
 \input{tables/robustness_op_group_sbert}
 
-\subsection{Ranking Stability Across Control Variants}
-\label{app:variant_ranking}
-
-Table~\ref{tab:robustness_variant_ranking} shows that the
-backbone~$>$~VLM~$>$~SA-LLM ordering is stable across all three control
-variants (C, B, A). All groups decline monotonically from C to A as
-lexical anchors are removed, but relative group positions are preserved.
-
-\input{tables/robustness_variant_ranking}
 
 \fi
 % ─── END COMMENTED OUT ───

@@ -120,15 +120,32 @@ def get_dataset(data_name:str, json_path:str=None, image_dir:str=None):
 
     elif data_name == "vqa_5k":
         from dataset.vqav2 import VQADataset
-        from torch.utils.data import Subset 
+        from torch.utils.data import Subset
 
         with open(VQA_5K_QIDS, 'r') as file:
             qids = json.load(file)
 
-        dataset = VQADataset(prompt=prompt, filter_qids=qids) 
+        dataset = VQADataset(prompt=prompt, filter_qids=qids)
         dataset = Subset(dataset, np.random.choice(len(dataset), size=5000, replace=False))
 
-    return dataset 
+    elif data_name in ("vqa_full", "vqa_full_blind", "vqa_full_inst_blind"):
+        from dataset.vqav2 import VQADataset
+        from dataset.paths import VQA_QUESTIONS, VQA_ANNOT, HPA_DIR
+        import os
+        # VQA_ANNOT may point to wrong location; fall back to dataset/vqa/ copy
+        annot_path = VQA_ANNOT if os.path.exists(VQA_ANNOT) else f"{HPA_DIR}/dataset/vqa/v2_mscoco_val2014_annotations.json"
+        if "inst" in data_name:
+            prompt = blind_inst
+        else:
+            prompt = ''
+        dataset = VQADataset(
+            question_path=VQA_QUESTIONS,
+            annotations_path=annot_path,
+            image_dir_path=image_dir or VQA_IMAGE_DIR,
+            prompt=prompt,
+        )
+
+    return dataset
 
 def skip_processed_idx(existing_keys, output_jsonl_path): 
     id_keys = ['idx', 'qid', 'question_id', 'index']

@@ -11,7 +11,7 @@ Within each panel:
   - Line weight/alpha scales with parameter count
   - HH ceiling (dashed blue) in every panel
 
-Output: figures/hh_hm/variants_family/
+Output: figures/variants_ladder_family_sbert_inst_blind/
 
 Run from repo root:
   conda run -n zero python figures/hh_hm/variants_family.py
@@ -49,7 +49,7 @@ parser.add_argument('--metric', default='sbert',
                              'rouge1', 'jaccard', 'exact'])
 args = parser.parse_args()
 
-OUT_DIR = ROOT / 'figures/hh_hm/variants_family'
+OUT_DIR = ROOT / 'figures/variants_ladder_family_sbert_inst_blind'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
@@ -60,7 +60,7 @@ if args.filter_abstentions:
     pair_df = filter_abstained_pairs(pair_df, answer_col_1='answer_1', answer_col_2='answer_2')
 
 SUFFIX = '_yesno' if args.include_yesno else ''
-SUFFIX += '_filtered' if args.filter_abstentions else ''
+SUFFIX += '_abstfiltered' if args.filter_abstentions else '_raw'
 
 METRICS = {
     'sbert':     ('SBERT cosine',  'sbert_score'),
@@ -360,7 +360,7 @@ for row_idx, row_panels in enumerate(PANELS):
 plt.tight_layout(h_pad=3.0)
 
 n_questions = pair_df[pair_df['pair_type'] == 'HH']['question_id'].nunique()
-out_name = f'inst_blind_{args.metric}_family_vABC_q{n_questions}{SUFFIX}.png'
+out_name = f'{args.metric}_family_vABC_q{n_questions}{SUFFIX}.png'
 out_path = OUT_DIR / out_name
 fig.savefig(out_path, dpi=200, bbox_inches='tight')
 plt.close(fig)

@@ -1,13 +1,13 @@
 """
-Build or incrementally update pair_cache.parquet.
+Build or incrementally update pair_cache_raw.parquet.
 
 Computes pairwise agreement between all raters (human participants + models)
 on free-text VQA questions using:
   exact, jaccard, rouge1, chrf, sbert, simcse, bertscore
 
 Supports two conditions:
-  inst_blind (default) — reads responses_model_inst_blind.csv → pair_cache.parquet
-  blind                — reads responses_model_blind.csv      → pair_cache_blind.parquet
+  inst_blind (default) — reads responses_model_inst_blind.csv → pair_cache_raw.parquet
+  blind                — reads responses_model_blind.csv      → pair_cache_blind_raw.parquet
 
 Incremental: any (subject_1, subject_2, question_id, variant) tuple already
 in the target parquet is skipped, so re-runs are fast.
@@ -17,13 +17,13 @@ Detects:
   - New models in responses_model_{condition}.csv not yet in HM/MM pairs
 
 Outputs (for inst_blind):
-  exports/pair_cache.parquet          — full incremental pair store
-  exports/pair_cache.csv              — CSV mirror of the parquet cache
+  exports/pair_cache_raw.parquet      — full incremental pair store
+  exports/pair_cache_raw.csv          — CSV mirror of the parquet cache
   exports/answer_pairs_sbert_text.csv — legacy CSV mirror for downstream scripts
 
 Outputs (for blind):
-  exports/pair_cache_blind.parquet    — full incremental pair store
-  exports/pair_cache_blind.csv        — CSV mirror of the parquet cache
+  exports/pair_cache_blind_raw.parquet — full incremental pair store
+  exports/pair_cache_blind_raw.csv     — CSV mirror of the parquet cache
 
 Run from repo root:
   conda run -n zero python analysis/build_pair_cache.py
@@ -98,12 +98,12 @@ def build_pair_cache(
     include_yesno: bool = False,
     verbose: bool = True,
 ) -> pd.DataFrame:
-    """Build or incrementally update pair_cache.parquet.
+    """Build or incrementally update pair_cache_raw.parquet.
 
     Parameters
     ----------
     root         : repository root Path
-    exports      : exports directory (contains pair_cache.parquet, responses_*.csv)
+    exports      : exports directory (contains pair_cache_raw.parquet, responses_*.csv)
     no_bertscore : skip BERTScore computation (faster, leaves bertscore_f1 as NaN)
     hf_cache     : HuggingFace cache directory override
     condition    : 'inst_blind' (default) or 'blind'
@@ -130,10 +130,10 @@ def build_pair_cache(
 
     # Condition-dependent paths
     if condition == 'blind':
-        cache_path = exports / 'pair_cache_blind.parquet'
+        cache_path = exports / 'pair_cache_blind_raw.parquet'
         model_csv_name = 'responses_model_blind.csv'
     else:
-        cache_path = exports / 'pair_cache.parquet'
+        cache_path = exports / 'pair_cache_raw.parquet'
         model_csv_name = 'responses_model_inst_blind.csv'
 
     if verbose:
@@ -523,7 +523,7 @@ def build_pair_cache(
         pairs_df = new_df.copy()
 
     pairs_df.to_parquet(cache_path, index=False)
-    csv_path = exports / f'pair_cache{"_blind" if condition == "blind" else ""}.csv'
+    csv_path = exports / ('pair_cache_blind_raw.csv' if condition == 'blind' else 'pair_cache_raw.csv')
     pairs_df.to_csv(csv_path, index=False)
     if condition == 'inst_blind':
         pairs_df.to_csv(exports / 'answer_pairs_sbert_text.csv', index=False)
@@ -608,7 +608,7 @@ def build_cleaned_pair_cache(
     output_tag: str | None = None,
     verbose: bool = True,
 ) -> pd.DataFrame:
-    """Build pair_cache_cleaned.parquet from the raw pair_cache.
+    """Build pair_cache_cleaned.parquet from the raw pair_cache file.
 
     Cleans both answer columns, re-scores all lexical and embedding metrics,
     and preserves all metadata columns (variant, ent, op, etc.).
@@ -628,7 +628,8 @@ def build_cleaned_pair_cache(
     embed_device = _resolve_embed_device()
 
     suffix = '_blind' if condition == 'blind' else ''
-    raw_path = exports / f'pair_cache{suffix}.parquet'
+    raw_name = 'pair_cache_blind_raw.parquet' if condition == 'blind' else 'pair_cache_raw.parquet'
+    raw_path = exports / raw_name
     tag_suffix = _cleaned_suffix(output_tag)
     out_path = exports / f'pair_cache_cleaned{tag_suffix}{suffix}.parquet'
 
@@ -773,7 +774,7 @@ def build_cleaned_pair_cache(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Build or incrementally update pair_cache.parquet')
+        description='Build or incrementally update pair_cache_raw.parquet')
     parser.add_argument('--no_bertscore', action='store_true',
                         help='Skip BERTScore (faster, leaves bertscore_f1 as NaN)')
     parser.add_argument('--condition', default='inst_blind',

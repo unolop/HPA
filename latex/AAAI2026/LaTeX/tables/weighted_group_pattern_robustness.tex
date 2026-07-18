@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+% \scriptsize
+\setlength{\tabcolsep}{4pt}
+\caption{Weighted operation-group robustness for the matched decoder--VLM families, using the same abstention-filtered cache as the main grouped SBERT figure. We compute a weighted Pearson correlation between grouped HH SBERT and grouped HM SBERT, weighting each operation by its number of questions. Positive $\Delta r_w$ means the decoder preserves the grouped human pattern better than the paired VLM after accounting for uneven operation counts.}
+\label{tab:weighted_group_pattern_robustness}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Family} & \textbf{$r_{w,\mathrm{dec}}$} & \textbf{$r_{w,\mathrm{vlm}}$} & \textbf{$\Delta r_w$} \\
+\midrule
+InternVL & 0.940 & 0.991 & -0.051 \\
+Qwen3-VL & 0.921 & 0.930 & -0.009 \\
+LLaVA-1.5 & 0.976 & 0.951 & +0.025 \\
+LLaVA-Mistral & 0.979 & 0.956 & +0.023 \\
+LLaVA-Vicuna & 0.955 & 0.940 & +0.015 \\
+\bottomrule
+\end{tabular}
+\end{table}

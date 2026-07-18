@@ -41,6 +41,9 @@ OUT_DIR = ROOT / "figures/instruction_effect"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 clear_output_plots(OUT_DIR, overwrite=args.overwrite)
 
+TABLE_DIR = ROOT / "latex/AAAI2026/LaTeX/tables"
+TABLE_DIR.mkdir(parents=True, exist_ok=True)
+
 VARIANT = 'C'
 
 plt.rcParams.update({
@@ -320,43 +323,62 @@ def _draw_dumbbell(ax, df_s, y_pos, spans, col_b, col_i, xlabel, title, xlim=Non
     ax.axvline(0, color='gray', lw=0.5, ls='--', alpha=0.4)
 
 
-def _draw_response_change(ax, df_inst):
-    df_s = df_inst.sort_values(['group', 'change'], ascending=[True, False])
-    y_pos2, y2, grp_spans2 = {}, 0, {}
+def _draw_response_change(ax, df_inst, y_pos_shared=None, grp_spans_shared=None,
+                          show_labels=True, title='Response change rate: blind → inst_blind',
+                          shared_xlim=1.18):
+    """Draw a response-change horizontal bar chart.
+
+    If y_pos_shared / grp_spans_shared are provided the caller controls row
+    placement (for aligned multi-variant panels).  Otherwise positions are
+    built internally from df_inst sorted by change rate within each group.
+
+    Returns (y_pos, grp_spans) so callers can reuse them.
+    """
+    if y_pos_shared is None:
+        df_s = df_inst.sort_values(['group', 'change'], ascending=[True, False])
+        y_pos2, y2, grp_spans2 = {}, 0, {}
+        for grp in GROUP_ORDER:
+            sub_ = df_s[df_s['group'] == grp].reset_index(drop=True)
+            if sub_.empty:
+                continue
+            start = y2
+            for _, row in sub_.iterrows():
+                y_pos2[row['model']] = y2
+                y2 += 1
+            grp_spans2[grp] = (start, y2 - 1)
+            y2 += 0.6
+    else:
+        y_pos2, grp_spans2 = y_pos_shared, grp_spans_shared
+
+    # Colored background bands instead of text group annotations
+    for grp, (s, e) in grp_spans2.items():
+        ax.axhspan(s - 0.35, e + 0.35, color=GROUP_COLORS[grp], alpha=0.07, zorder=0)
+
     for grp in GROUP_ORDER:
-        sub_ = df_s[df_s['group'] == grp].reset_index(drop=True)
-        if sub_.empty:
-            continue
-        start = y2
-        for _, row in sub_.iterrows():
-            y_pos2[row['model']] = y2
-            y2 += 1
-        grp_spans2[grp] = (start, y2 - 1)
-        y2 += 0.6
-    for grp in GROUP_ORDER:
-        sub_ = df_s[df_s['group'] == grp]
+        sub_ = df_inst[df_inst['group'] == grp]
         if sub_.empty:
             continue
         c = GROUP_COLORS[grp]
         for _, row in sub_.iterrows():
-            yp = y_pos2[row['model']]
+            yp = y_pos2.get(row['model'])
+            if yp is None:
+                continue
             ax.barh(yp, row['change'], color=c, alpha=0.8, height=0.65,
                     edgecolor='none')
             ax.text(row['change'] + 0.01, yp,
                     f"{row['change']:.0%}", va='center', fontsize=7.5,
                     color='#333333')
-            ax.text(-0.01, yp, row['label'], va='center', ha='right',
-                    fontsize=7, color='#333333')
-    for grp, (s, e) in grp_spans2.items():
-        mid = (s + e) / 2
-        ax.text(1.02, mid, grp, va='center', ha='left', fontsize=7.5,
-                color=GROUP_COLORS[grp], fontweight='bold',
-                transform=ax.get_yaxis_transform())
+            if show_labels:
+                ax.text(-0.01, yp, row['label'], va='center', ha='right',
+                        fontsize=7, color='#333333')
+
     ax.set_yticks([])
     ax.set_xlabel('Fraction of responses changed', fontsize=10)
-    ax.set_title('Response change rate: blind → inst_blind', fontsize=11)
-    ax.set_xlim(-0.15, 1.18)
+    if title:
+        ax.set_title(title, fontsize=11)
+    ax.set_xlim(-0.15, shared_xlim)
     ax.axvline(0, color='gray', lw=0.5, ls='-', alpha=0.3)
+    return y_pos2, grp_spans2
 
 
 def _draw_merged_abstention(ax, df_inst):
@@ -411,31 +433,39 @@ def _draw_merged_abstention(ax, df_inst):
 
             # Model label anchored to y-axis, centred between the two rows
             ax.text(-0.01, yp + HARD_OFFSET / 2, row['label'],
-                    va='center', ha='right', fontsize=7, color='#333333',
+                    va='center', ha='right', fontsize=8, color='#333333',
                     transform=ax.get_yaxis_transform())
 
-    # Group labels on right
+    # Colored background bands per group (replace text labels)
+    _GROUP_SHORT = {
+        'VLM':                    'VLM',
+        'VLM backbone decoder':   'Backbone',
+        'standalone LLM':         'SA-LLM',
+        'standalone LLM (think)': 'Think',
+    }
     for grp, (s, e) in spans.items():
-        mid = (s + e) / 2 + HARD_OFFSET / 2
-        ax.text(1.02, mid, grp, va='center', ha='left', fontsize=7.5,
-                color=GROUP_COLORS[grp], fontweight='bold',
-                transform=ax.get_yaxis_transform())
+        c = GROUP_COLORS[grp]
+        ax.axhspan(s - 0.35, e + HARD_OFFSET + 0.35, color=c, alpha=0.07, zorder=0)
 
-    # Legend below — all 4 entries in one horizontal row
-    handles = [
+    import matplotlib.patches as mpatches
+    group_handles = [
+        mpatches.Patch(color=GROUP_COLORS[g], alpha=0.45, label=_GROUP_SHORT[g])
+        for g in GROUP_ORDER if g in spans
+    ]
+    style_handles = [
         mlines.Line2D([], [], color='#888888', marker='o', ls=':',  ms=6,
                       markerfacecolor='none', markeredgecolor='#888888',
                       label='soft'),
         mlines.Line2D([], [], color='#888888', marker='s', ls=':',  ms=6,
                       markerfacecolor='none', markeredgecolor='#888888',
-                      label='soft + instruction'),
+                      label='soft+inst'),
         mlines.Line2D([], [], color='#888888', marker='o', ls='-', ms=6,
                       markeredgecolor='white', label='hard'),
         mlines.Line2D([], [], color='#888888', marker='s', ls='-', ms=6,
-                      markeredgecolor='white', label='hard + instruction'),
+                      markeredgecolor='white', label='hard+inst'),
     ]
-    ax.legend(handles=handles, fontsize=8, frameon=True, ncol=4,
-              loc='upper center', bbox_to_anchor=(0.5, -0.08))
+    ax.legend(handles=group_handles + style_handles, fontsize=7.5, frameon=True,
+              ncol=4, loc='upper center', bbox_to_anchor=(0.5, -0.10))
 
     ax.set_yticks([])
     ax.set_xlabel('Abstention rate', fontsize=10)
@@ -519,6 +549,75 @@ def _draw_grouped_merged_abstention(ax, df_inst):
     ax.axvline(0, color='gray', lw=0.5, ls='-', alpha=0.3)
 
 
+# ─── Table: per-model abstention rates ───────────────────────────────────────
+
+_GROUP_LABEL = {
+    'VLM':                    r'\textit{Vision-Language Models}',
+    'VLM backbone decoder':   r'\textit{VLM Backbone Decoders}',
+    'standalone LLM':         r'\textit{Standalone LLMs}',
+    'standalone LLM (think)': r'\textit{Standalone LLMs (thinking)}',
+}
+
+
+def make_abstention_table(df_inst: pd.DataFrame, suffix: str) -> None:
+    """Write a LaTeX table of per-model abstention rates for a given dataset."""
+    group_rank = {g: i for i, g in enumerate(GROUP_ORDER)}
+    df_s = df_inst.copy()
+    df_s['_grp_idx'] = df_s['group'].map(group_rank).fillna(99)
+    df_s = df_s.sort_values(['_grp_idx', 'family', 'size_key', 'label'])
+
+    def _pct(v):
+        return f"{v * 100:.1f}"
+
+    def _delta(a, b):
+        d = (b - a) * 100
+        return f"$+${d:.1f}" if d >= 0 else f"${d:.1f}$"
+
+    lines = [
+        r"\begin{table*}[h]",
+        r"\centering",
+        r"\small",
+        (r"\caption{Per-model soft and hard abstention rates under blind and "
+         r"blind-with-instruction conditions (variant~C, 113 questions). "
+         r"B\,=\,blind; I\,=\,blind+instruction; $\Delta$\,=\,I\,$-$\,B (pp). "
+         r"Resp\,$\Delta$ = fraction of answers that change blind$\to$instruction.}"),
+        rf"\label{{tab:abstention_inst_effect_{suffix}}}",
+        r"\begin{tabular}{lrrrrrr}",
+        r"\toprule",
+        r"& \multicolumn{3}{c}{Soft abstention (\%)} "
+        r"& \multicolumn{3}{c}{Hard abstention (\%)} \\",
+        r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
+        r"Model & B & I & $\Delta$ & B & I & $\Delta$ \\",
+        r"\midrule",
+    ]
+
+    prev_grp = None
+    for _, row in df_s.iterrows():
+        grp = row['group']
+        if grp != prev_grp:
+            if prev_grp is not None:
+                lines.append(r"\midrule")
+            lines.append(f"\\multicolumn{{7}}{{l}}{{{_GROUP_LABEL.get(grp, grp)}}} \\\\")
+            lines.append(r"\midrule")
+            prev_grp = grp
+
+        lines.append(
+            f"{row['label']} "
+            f"& {_pct(row['soft_b'])} & {_pct(row['soft_i'])} & {_delta(row['soft_b'], row['soft_i'])} "
+            f"& {_pct(row['hard_b'])} & {_pct(row['hard_i'])} & {_delta(row['hard_b'], row['hard_i'])} \\\\"
+        )
+
+    lines += [
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\end{table*}",
+    ]
+
+    out = TABLE_DIR / f"abstention_inst_effect_{suffix}.tex"
+    out.write_text("\n".join(lines) + "\n")
+    print(f"  [table] {out.name}")
+
+
 # ─── Generate figures for each dataset ───────────────────────────────────────
 for suffix, df_mb, df_mi in DATASETS:
     print(f'\n══ {suffix} ══')
@@ -554,7 +653,8 @@ for suffix, df_mb, df_mi in DATASETS:
     save(fig, f'response_change_{suffix}.png')
 
     print('  ── merged_abstention ──')
-    fig, ax = plt.subplots(figsize=(7, 8.6))
+    h = max(5.5, len(df_inst) * 0.20 + 1.8)
+    fig, ax = plt.subplots(figsize=(4.8, h))
     _draw_merged_abstention(ax, df_inst)
     plt.tight_layout()
     save(fig, f'merged_abstention_{suffix}.png')
@@ -564,6 +664,10 @@ for suffix, df_mb, df_mi in DATASETS:
     _draw_grouped_merged_abstention(ax, df_inst)
     plt.tight_layout()
     save(fig, f'merged_abstention_groups_{suffix}.png')
+
+    if suffix == f'v{VARIANT}_q{N_SUB}':
+        print('  ── abstention table ──')
+        make_abstention_table(df_inst, suffix)
 
 # ─── 3-column variant (C/B/A) figure: merged abstention on q113 subset ────────
 print('\n══ 3-column variant figure (C/B/A, q113) ══')
@@ -676,5 +780,142 @@ fig.legend(handles=handles, fontsize=8, frameon=True, ncol=4,
 fig.suptitle('Abstention shift: blind → inst_blind across question variants', fontsize=12, y=1.01)
 plt.tight_layout(rect=[0, 0.06, 1, 1])
 save(fig, f'merged_abstention_variants_q{N_SUB}.png')
+
+# ─── 3-column response change figure (C/B/A) — replaced by table ─────────────
+# print('\n══ 3-column response change figure (C/B/A, q113) ══')
+#
+# vc_df = variant_stats['C'].sort_values(['group', 'change'], ascending=[True, False])
+# y_pos_rc, y_rc, spans_rc = {}, 0, {}
+# for grp in GROUP_ORDER:
+#     sub_ = vc_df[vc_df['group'] == grp].reset_index(drop=True)
+#     if sub_.empty:
+#         continue
+#     start = y_rc
+#     for _, row in sub_.iterrows():
+#         y_pos_rc[row['model']] = y_rc
+#         y_rc += 1
+#     spans_rc[grp] = (start, y_rc - 1)
+#     y_rc += 0.6
+#
+# n_rows = max(y_pos_rc.values()) + 1 if y_pos_rc else 12
+# fig, axes = plt.subplots(1, 3, figsize=(15, max(6, n_rows * 0.38 + 2)), sharey=False)
+#
+# VARIANT_TITLES_RC = {
+#     'C': 'Variant C\n(original)',
+#     'B': 'Variant B\n(subject ablated)',
+#     'A': 'Variant A\n(pronominalized)',
+# }
+# for col_idx, v in enumerate(VARIANT_ORDER_3COL):
+#     ax = axes[col_idx]
+#     _draw_response_change(
+#         ax, variant_stats[v],
+#         y_pos_shared=y_pos_rc,
+#         grp_spans_shared=spans_rc,
+#         show_labels=(col_idx == 0),
+#         title=VARIANT_TITLES_RC[v],
+#         shared_xlim=1.05,
+#     )
+#     ax.invert_yaxis()
+#
+# import matplotlib.patches as mpatches
+# _GROUP_SHORT_RC = {
+#     'VLM':                    'VLM',
+#     'VLM backbone decoder':   'Backbone',
+#     'standalone LLM':         'SA-LLM',
+#     'standalone LLM (think)': 'Think',
+# }
+# group_handles = [
+#     mpatches.Patch(color=GROUP_COLORS[g], alpha=0.45, label=_GROUP_SHORT_RC[g])
+#     for g in GROUP_ORDER if g in spans_rc
+# ]
+# fig.legend(handles=group_handles, fontsize=8, frameon=True, ncol=4,
+#            loc='lower center', bbox_to_anchor=(0.5, 0.01))
+# fig.suptitle('Response change rate: blind → inst_blind across question variants',
+#              fontsize=12, y=1.01)
+# plt.tight_layout(rect=[0, 0.05, 1, 1])
+# rc_fname = f'response_change_variants_q{N_SUB}.png'
+# save(fig, rc_fname)
+
+# ─── Table: response change rate (blind → inst_blind) per model × variant ─────
+print('\n══ Response change table ══')
+
+_GROUP_LABEL_RC = {
+    'VLM':                    r'\textit{Vision-Language Models}',
+    'VLM backbone decoder':   r'\textit{VLM Backbone Decoders}',
+    'standalone LLM':         r'\textit{Standalone LLMs}',
+    'standalone LLM (think)': r'\textit{Standalone LLMs (thinking)}',
+}
+
+# Merge variant_stats into one wide dataframe
+rc_frames = []
+for v in VARIANT_ORDER_3COL:
+    tmp = variant_stats[v][['model', 'group', 'family', 'size_key', 'label', 'change']].copy()
+    tmp.rename(columns={'change': f'change_{v}'}, inplace=True)
+    rc_frames.append(tmp.set_index('model'))
+
+rc_wide = rc_frames[0].join(rc_frames[1][f'change_B']).join(rc_frames[2][f'change_A'])
+rc_wide = rc_wide.reset_index()
+
+group_rank = {g: i for i, g in enumerate(GROUP_ORDER)}
+rc_wide['_grp_idx'] = rc_wide['group'].map(group_rank).fillna(99)
+rc_wide = rc_wide.sort_values(['_grp_idx', 'family', 'size_key', 'label'])
+
+def _pct_rc(v):
+    return f"{v * 100:.1f}\\%" if not pd.isna(v) else "---"
+
+def _delta_colored(base, other):
+    if pd.isna(base) or pd.isna(other):
+        return ""
+    d = (other - base) * 100
+    if abs(d) < 0.05:
+        return ""
+    sign = "+" if d > 0 else ""
+    color = "teal" if d > 0 else "red"
+    return r" \textcolor{" + color + r"}{(" + sign + f"{d:.1f}" + r")}"
+
+lines_rc = [
+    r"\begin{table}[h]",
+    r"\centering",
+    r"\small",
+    (r"\caption{Response change rate (\% of answers changed blind"
+     r"$\to$blind+instruction) per model and variant (C/B/A, 113 questions)."
+     r" Colored deltas show change relative to variant~C:"
+     r" \textcolor{teal}{positive} = more change, \textcolor{red}{negative} = less.}"),
+    rf"\label{{tab:response_change_variants}}",
+    r"\begin{tabular}{lrrr}",
+    r"\toprule",
+    r"Model & Orig (C) & Weaker (B) & Pronom (A) \\",
+    r"\midrule",
+]
+
+prev_grp = None
+for _, row in rc_wide.iterrows():
+    grp = row['group']
+    if grp != prev_grp:
+        if prev_grp is not None:
+            lines_rc.append(r"\midrule")
+        lines_rc.append(
+            f"\\multicolumn{{4}}{{l}}{{{_GROUP_LABEL_RC.get(grp, grp)}}} \\\\"
+        )
+        lines_rc.append(r"\midrule")
+        prev_grp = grp
+
+    cell_c = _pct_rc(row['change_C'])
+    cell_b = _pct_rc(row['change_B']) + _delta_colored(row['change_C'], row['change_B'])
+    cell_a = _pct_rc(row['change_A']) + _delta_colored(row['change_C'], row['change_A'])
+    lines_rc.append(f"{row['label']} & {cell_c} & {cell_b} & {cell_a} \\\\")
+
+lines_rc += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+
+rc_tex_out = TABLE_DIR / "response_change_variants.tex"
+rc_tex_out.write_text("\n".join(lines_rc) + "\n")
+print(f"  [table] {rc_tex_out.name}")
+
+# Also save CSV
+rc_csv_out = OUT_DIR / "response_change_variants.csv"
+rc_wide[['label', 'group', 'change_C', 'change_B', 'change_A']].to_csv(
+    rc_csv_out, index=False, float_format="%.4f"
+)
+print(f"  [csv]   {rc_csv_out.name}")
 
 print('\nDone. Outputs in:', OUT_DIR)
