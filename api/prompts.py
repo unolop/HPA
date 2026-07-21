@@ -142,3 +142,24 @@ CTL_SCHEMA = {
     "required": ["results"],
     "additionalProperties": False
 }
+
+# ── Translation ────────────────────────────────────────────────────────────────
+
+SYSTEM_TRANSLATE = (
+    "You are a professional Korean translator specializing in survey questions. "
+    "Translate each English question to natural, concise Korean. "
+    "Preserve the meaning exactly. Return ONLY a JSON object {\"results\": [str, ...]} "
+    "with one Korean string per input question, in the same order."
+)
+
+TRANSLATE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "results": {
+            "type": "array",
+            "items": {"type": "string"}
+        }
+    },
+    "required": ["results"],
+    "additionalProperties": False
+}

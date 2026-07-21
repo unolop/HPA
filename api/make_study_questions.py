@@ -15,6 +15,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from api.gpt_utils import call_api
+from api.prompts import SYSTEM_TRANSLATE, TRANSLATE_SCHEMA
 
 ROOT      = Path(__file__).parent.parent
 OUT_DIR   = ROOT / "experiment"
@@ -27,26 +28,6 @@ HVQA_CSV    = ROOT / "analysis/csv/human_vqa.csv"
 CONTROL_TYPES = ["question", "weaker_object", "pronominalized"]
 EXPERIMENT_NAME = "human_study"
 BATCH_SIZE = 40
-
-# ── Translation schema ────────────────────────────────────────────────────────
-SYSTEM_TRANSLATE = (
-    "You are a professional Korean translator specializing in survey questions. "
-    "Translate each English question to natural, concise Korean. "
-    "Preserve the meaning exactly. Return ONLY a JSON object {\"results\": [str, ...]} "
-    "with one Korean string per input question, in the same order."
-)
-
-TRANSLATE_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "results": {
-            "type": "array",
-            "items": {"type": "string"}
-        }
-    },
-    "required": ["results"],
-    "additionalProperties": False
-}
 
 def translate_batch(texts: list[str]) -> list[str]:
     """Translate a batch of English questions to Korean."""
