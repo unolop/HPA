@@ -1,0 +1,36 @@
+\begin{table}[t]
+\centering
+\tiny
+\renewcommand{\arraystretch}{0.95}
+\caption{Matched 7/8B blind-VQA answer-distribution JS divergence to human answers across all control variants (inclusive version). Lower is better. Bold = best; underline = second-best.}
+\label{tab:hm_grouped_distribution_7b_compact}
+\setlength{\tabcolsep}{2.1pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lrr}
+\toprule
+Model & Yes/No & Count \\
+\midrule
+\multicolumn{3}{c}{\textbf{Backbone decoders}} \\
+\midrule
+InternVL & .028 & .478 \\
+LLaVA-1.5 & \textbf{.001} & .503 \\
+LLaVA-Mistral & .013 & .476 \\
+LLaVA-Vicuna & .044 & .525 \\
+Qwen3-VL & \underline{.010} & .621 \\
+\multicolumn{3}{c}{\textbf{VLMs}} \\
+\midrule
+InternVL & .017 & \textbf{.231} \\
+LLaVA-1.5 & .223 & .748 \\
+LLaVA-Mistral & .126 & .667 \\
+LLaVA-Vicuna & .154 & .814 \\
+Qwen3-VL & .011 & .738 \\
+\multicolumn{3}{c}{\textbf{Standalone LLMs}} \\
+\midrule
+Qwen2.5 & .143 & .484 \\
+Qwen3 & .241 & .591 \\
+Qwen3 (think) & .159 & \underline{.374} \\
+Vicuna & .132 & .727 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

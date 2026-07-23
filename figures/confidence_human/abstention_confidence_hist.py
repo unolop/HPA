@@ -170,48 +170,65 @@ def summarize_by_group(df: pd.DataFrame) -> pd.DataFrame:
     return summary
 
 
-def plot_hist(df: pd.DataFrame) -> None:
+MODELS_7B = {
+    "InternVL-8B", "InternVL-8B (LM)",
+    "LLaVA-1.5-7B", "LLaVA-1.5 (LM)",
+    "LLaVA-Mistral", "LLaVA-Mistral (LM)",
+    "LLaVA-Vicuna", "LLaVA-Vicuna (LM)",
+    "Qwen3-VL-8B", "Qwen3-VL-8B (LM)",
+    "Mistral-7B", "Qwen2.5-7B-Instruct", "Qwen3-8B", "Vicuna-7B",
+    "Qwen3-8B (think)",
+}
+
+
+def plot_committed_vs_abstained(df: pd.DataFrame, suffix: str = "", title_suffix: str = "") -> None:
     bins = np.linspace(0.0, 1.0, 31)
-    colors = {
-        "Committed": "#2a6fbb",
-        "Abstained": "#c23b22",
-        "soft_abstained": "#f28e2b",
-        "hard_abstained": "#8c1d18",
-    }
+    colors = {"Committed": "#2a6fbb", "Abstained": "#c23b22"}
 
     committed = df.loc[df["abstention_group"] == "Committed", "confidence"].to_numpy()
     abstained = df.loc[df["abstention_group"] == "Abstained", "confidence"].to_numpy()
+
+    fig, ax = plt.subplots(figsize=(5.0, 3.0),
+                           gridspec_kw={"left": 0.12, "right": 0.98, "bottom": 0.13, "top": 0.92})
+    ax.hist(committed, bins=bins, density=True, alpha=0.55, color=colors["Committed"], label=f"Committed (n={len(committed):,})")
+    ax.hist(abstained, bins=bins, density=True, alpha=0.55, color=colors["Abstained"], label=f"Abstained (n={len(abstained):,})")
+    ax.axvline(np.median(committed), color=colors["Committed"], linestyle="--", linewidth=1.3)
+    ax.axvline(np.median(abstained), color=colors["Abstained"], linestyle="--", linewidth=1.3)
+    ax.set_title(f"Committed vs abstained{title_suffix}")
+    ax.legend(loc="upper left", frameon=True)
+    ax.set_xlim(0.0, 1.0)
+    ax.set_xlabel("Mean token probability")
+    ax.set_ylabel("Density")
+    ax.grid(True, alpha=0.25)
+    ax.set_axisbelow(True)
+
+    save(fig, f"abstention_committed_vs_abstained_inst_blind{suffix}.png")
+
+
+def plot_type_split(df: pd.DataFrame, suffix: str = "", title_suffix: str = "") -> None:
+    bins = np.linspace(0.0, 1.0, 31)
+    colors = {"Committed": "#2a6fbb", "soft_abstained": "#f28e2b", "hard_abstained": "#8c1d18"}
+
+    committed = df.loc[df["abstention_group"] == "Committed", "confidence"].to_numpy()
     soft = df.loc[df["abstention_class"] == "soft_abstained", "confidence"].to_numpy()
     hard = df.loc[df["abstention_class"] == "hard_abstained", "confidence"].to_numpy()
 
-    fig, axes = plt.subplots(
-        1, 2, figsize=(9.0, 3.2), sharey=True,
-        gridspec_kw={"wspace": 0.14, "left": 0.08, "right": 0.98, "bottom": 0.18, "top": 0.88},
-    )
+    fig, ax = plt.subplots(figsize=(5.0, 3.0),
+                           gridspec_kw={"left": 0.12, "right": 0.98, "bottom": 0.13, "top": 0.92})
+    ax.hist(committed, bins=bins, density=True, histtype="step", linewidth=1.8, color=colors["Committed"], label="Committed")
+    ax.hist(soft, bins=bins, density=True, alpha=0.50, color=colors["soft_abstained"], label=f"Soft abst. (n={len(soft):,})")
+    ax.hist(hard, bins=bins, density=True, alpha=0.45, color=colors["hard_abstained"], label=f"Hard abst. (n={len(hard):,})")
+    ax.axvline(np.median(soft), color=colors["soft_abstained"], linestyle="--", linewidth=1.2)
+    ax.axvline(np.median(hard), color=colors["hard_abstained"], linestyle="--", linewidth=1.2)
+    ax.set_title(f"Abstention type split{title_suffix}")
+    ax.legend(loc="upper left", frameon=True)
+    ax.set_xlim(0.0, 1.0)
+    ax.set_xlabel("Mean token probability")
+    ax.set_ylabel("Density")
+    ax.grid(True, alpha=0.25)
+    ax.set_axisbelow(True)
 
-    axes[0].hist(committed, bins=bins, density=True, alpha=0.55, color=colors["Committed"], label=f"Committed (n={len(committed):,})")
-    axes[0].hist(abstained, bins=bins, density=True, alpha=0.55, color=colors["Abstained"], label=f"Abstained (n={len(abstained):,})")
-    axes[0].axvline(np.median(committed), color=colors["Committed"], linestyle="--", linewidth=1.3)
-    axes[0].axvline(np.median(abstained), color=colors["Abstained"], linestyle="--", linewidth=1.3)
-    axes[0].set_title("Committed vs abstained")
-    axes[0].legend(loc="upper left", frameon=True)
-
-    axes[1].hist(committed, bins=bins, density=True, histtype="step", linewidth=1.8, color=colors["Committed"], label="Committed")
-    axes[1].hist(soft, bins=bins, density=True, alpha=0.50, color=colors["soft_abstained"], label=f"Soft abst. (n={len(soft):,})")
-    axes[1].hist(hard, bins=bins, density=True, alpha=0.45, color=colors["hard_abstained"], label=f"Hard abst. (n={len(hard):,})")
-    axes[1].axvline(np.median(soft), color=colors["soft_abstained"], linestyle="--", linewidth=1.2)
-    axes[1].axvline(np.median(hard), color=colors["hard_abstained"], linestyle="--", linewidth=1.2)
-    axes[1].set_title("Abstention type split")
-    axes[1].legend(loc="upper left", frameon=True)
-
-    for ax in axes:
-        ax.set_xlim(0.0, 1.0)
-        ax.set_xlabel("Mean token probability")
-        ax.grid(True, alpha=0.25)
-        ax.set_axisbelow(True)
-    axes[0].set_ylabel("Density")
-
-    save(fig, "abstention_vs_confidence_hist_inst_blind.png")
+    save(fig, f"abstention_vs_confidence_hist_inst_blind{suffix}.png")
 
 
 def main() -> None:
@@ -238,7 +255,11 @@ def main() -> None:
     print("\nBy group:")
     print(by_group.to_string(index=False))
 
-    plot_hist(merged)
+    plot_committed_vs_abstained(merged)
+    plot_type_split(merged)
+    merged_7b = merged[merged["model"].isin(MODELS_7B)]
+    plot_committed_vs_abstained(merged_7b, suffix="_7b", title_suffix=" (7/8B)")
+    plot_type_split(merged_7b, suffix="_7b", title_suffix=" (7/8B)")
 
 
 if __name__ == "__main__":

@@ -320,7 +320,7 @@ for ent in pair_ib["ent"].unique():
 
     valid_CA = q_v.dropna(subset=["C", "A"]) if ("C" in q_v.columns and "A" in q_v.columns) else pd.DataFrame()
     if len(valid_CA) >= 2:
-        _, p_CA = stats.ttest_rel(valid_CA["C"], valid_CA["A"])
+        _, p_CA = stats.wilcoxon(valid_CA["C"], valid_CA["A"])
     else:
         p_CA = np.nan
 
@@ -330,7 +330,7 @@ for ent in pair_ib["ent"].unique():
         hh_C_mean=round(c_mean, 4) if not np.isnan(c_mean) else np.nan,
         hh_A_mean=round(a_mean, 4) if not np.isnan(a_mean) else np.nan,
         delta_CA=round(c_mean - a_mean, 4) if not (np.isnan(c_mean) or np.isnan(a_mean)) else np.nan,
-        ttest_p_CA=round(p_CA, 4) if not np.isnan(p_CA) else np.nan,
+        wilcoxon_p_CA=round(p_CA, 4) if not np.isnan(p_CA) else np.nan,
     ))
 
     if ent in entities_paper:
@@ -342,9 +342,9 @@ for ent in pair_ib["ent"].unique():
             a_mean,
             f"Mean HH SBERT for entity={ent}, variant A",
             "§4 / Table 3")
-        add(f"hh_{ent}_ttest_p",
+        add(f"hh_{ent}_wilcoxon_p",
             p_CA,
-            f"Paired t-test p-value HH SBERT variant C vs A for entity={ent}",
+            f"Wilcoxon signed-rank p-value HH SBERT variant C vs A for entity={ent}",
             "§4 / Table 3")
 
 # ---------------------------------------------------------------------------

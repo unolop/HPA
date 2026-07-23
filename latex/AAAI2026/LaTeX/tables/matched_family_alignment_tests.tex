@@ -1,21 +1,20 @@
-\begin{table}[t]
+\begin{table}[ht]
 \centering
-\scriptsize
+\small
 \setlength{\tabcolsep}{4pt}
-\caption{Matched-family hypothesis tests for abstention-filtered HM SBERT on the pooled control set (original + weaker + pronominalized). Each row shows the backbone decoder score alongside its paired full VLM and (where available) matched standalone LLM. $\Delta$ is decoder minus comparator; tests are two-sided Wilcoxon signed-rank with Holm correction. $^{*}p_{\mathrm{Holm}}<.05$, $^{**}p_{\mathrm{Holm}}<.01$.}
+
+\caption{Matched-family hypothesis tests for abstention-filtered HM SBERT on the pooled control set (original + weaker + pronominalized). Each row shows the backbone decoder score alongside its paired full VLM and matched standalone LLM. SA-LLM pairings: InternVL--Qwen3-8B; LLaVA-1.5--Vicuna-7B; Qwen3-VL--Qwen3-8B; LLaVA-Mistral--Mistral-7B; LLaVA-Vicuna--Vicuna-7B. $\Delta$ (in parentheses) is decoder minus comparator; tests are two-sided Wilcoxon signed-rank with Holm correction. $^{*}p_{\mathrm{Holm}}<.05$, $^{**}p_{\mathrm{Holm}}<.01$.}
 \label{tab:matched_family_alignment_tests}
-\begin{tabular}{lccc@{\hspace{6pt}}cc}
+\begin{tabular}{lccc}
 \toprule
-\multirow{2}{*}{\textbf{Family}} & \multirow{2}{*}{\textbf{Decoder}} & \multicolumn{2}{c}{\textbf{vs.\ Full VLM}} & \multicolumn{2}{c}{\textbf{vs.\ SA-LLM}} \\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}
-& & \textbf{VLM} & $\boldsymbol{\Delta}$ & \textbf{LLM} & $\boldsymbol{\Delta}$ \\
+\textbf{Family} & \textbf{Decoder} & \textbf{vs.\ Full VLM} & \textbf{vs.\ SA-LLM} \\
 \midrule
-\multicolumn{6}{l}{\textit{VLMs}} \\
-InternVL     & 0.580 & 0.601 & $-0.021^{**}$ & ---  & --- \\
-Qwen3-VL     & 0.580 & 0.567 & $+0.013^{**}$ & 0.498 & $+0.085^{**}$ \\
-LLaVA-1.5    & 0.581 & 0.514 & $+0.066^{**}$ & ---  & --- \\
-LLaVA-Mistral & 0.590 & 0.546 & $+0.043^{**}$ & 0.214 & $+0.327^{**}$ \\
-LLaVA-Vicuna & 0.576 & 0.528 & $+0.048^{**}$ & 0.407 & $+0.171^{**}$ \\
+\multicolumn{4}{l}{\textit{VLMs}} \\
+InternVL & 0.580 & 0.601 {\scriptsize ($-0.021^{**}$)} & 0.477 {\scriptsize ($+0.103^{**}$)} \\
+Qwen3-VL & 0.569 & 0.552 {\scriptsize ($+0.017^{**}$)} & 0.481 {\scriptsize ($+0.087^{**}$)} \\
+LLaVA-1.5 & 0.574 & 0.505 {\scriptsize ($+0.069^{**}$)} & 0.407 {\scriptsize ($+0.167^{**}$)} \\
+LLaVA-Mistral & 0.577 & 0.535 {\scriptsize ($+0.041^{**}$)} & 0.210 {\scriptsize ($+0.337^{**}$)} \\
+LLaVA-Vicuna & 0.574 & 0.526 {\scriptsize ($+0.049^{**}$)} & 0.407 {\scriptsize ($+0.171^{**}$)} \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -1,0 +1,270 @@
+
+======================================================================
+  TEST 1: Scale vs HM SBERT within groups (Pearson r)
+======================================================================
+Using pair_cache_cleaned.parquet (inst_blind, abstention-filtered).
+Per-model mean HM SBERT (averaged across all variants and questions).
+
+Group: VLM (n=11 models)
+  Pearson r = -0.1546  p = 6.4994e-01  n = 11
+  Model breakdown:
+    InternVL-1B                     params=1.0B  mean_HM_SBERT=0.5513
+    InternVL-2B                     params=2.0B  mean_HM_SBERT=0.5438
+    Qwen3-VL-2B                     params=2.0B  mean_HM_SBERT=0.5406
+    Qwen3-VL-4B                     params=4.0B  mean_HM_SBERT=0.5508
+    LLaVA-1.5-7B                    params=7.0B  mean_HM_SBERT=0.5028
+    LLaVA-Mistral                   params=7.0B  mean_HM_SBERT=0.5346
+    LLaVA-Vicuna                    params=7.0B  mean_HM_SBERT=0.5239
+    InternVL-8B                     params=8.0B  mean_HM_SBERT=0.5976
+    Qwen3-VL-8B                     params=8.0B  mean_HM_SBERT=0.5489
+    LLaVA-Vicuna-13B                params=13.0B  mean_HM_SBERT=0.5459
+    Qwen3-VL-32B                    params=32.0B  mean_HM_SBERT=0.5300
+
+Group: VLM backbone decoder (n=11 models)
+  Pearson r = 0.3833  p = 2.4459e-01  n = 11
+  Model breakdown:
+    InternVL-1B (LM)                params=1.0B  mean_HM_SBERT=0.5742
+    InternVL-2B (LM)                params=2.0B  mean_HM_SBERT=0.5490
+    Qwen3-VL-2B (LM)                params=2.0B  mean_HM_SBERT=0.5693
+    Qwen3-VL-4B (LM)                params=4.0B  mean_HM_SBERT=0.5772
+    LLaVA-1.5 (LM)                  params=7.0B  mean_HM_SBERT=0.5739
+    LLaVA-Mistral (LM)              params=7.0B  mean_HM_SBERT=0.5757
+    LLaVA-Vicuna (LM)               params=7.0B  mean_HM_SBERT=0.5745
+    InternVL-8B (LM)                params=8.0B  mean_HM_SBERT=0.5750
+    Qwen3-VL-8B (LM)                params=8.0B  mean_HM_SBERT=0.5683
+    LLaVA-Vicuna-13B (LM)           params=13.0B  mean_HM_SBERT=0.5863
+    Qwen3-VL-32B (LM)               params=32.0B  mean_HM_SBERT=0.5771
+
+Group: standalone LLM (n=10 models)
+  Pearson r = 0.3352  p = 3.4367e-01  n = 10
+  Model breakdown:
+    Qwen3-0.6B                      params=0.6B  mean_HM_SBERT=0.3294
+    Qwen3-1.7B                      params=1.7B  mean_HM_SBERT=0.4292
+    Phi-3.5-mini                    params=3.8B  mean_HM_SBERT=0.3554
+    Qwen3-4B                        params=4.0B  mean_HM_SBERT=0.5192
+    Mistral-7B                      params=7.0B  mean_HM_SBERT=0.2100
+    Qwen2.5-7B-Instruct             params=7.0B  mean_HM_SBERT=0.5001
+    Vicuna-7B                       params=7.0B  mean_HM_SBERT=0.4070
+    Qwen3-8B                        params=8.0B  mean_HM_SBERT=0.4772
+    Vicuna-13B                      params=13.0B  mean_HM_SBERT=0.4532
+    Qwen3-32B                       params=32.0B  mean_HM_SBERT=0.4952
+
+Group: standalone LLM (think) (n=5 models)
+  Pearson r = 0.4606  p = 4.3495e-01  n = 5
+  Model breakdown:
+    Qwen3-0.6B (think)              params=0.6B  mean_HM_SBERT=0.3301
+    Qwen3-1.7B (think)              params=1.7B  mean_HM_SBERT=0.5566
+    Qwen3-4B (think)                params=4.0B  mean_HM_SBERT=0.5192
+    Qwen3-8B (think)                params=8.0B  mean_HM_SBERT=0.4772
+    Qwen3-32B (think)               params=32.0B  mean_HM_SBERT=0.5566
+
+
+======================================================================
+  TEST 2: Thinking vs non-thinking HM SBERT (paired Wilcoxon)
+======================================================================
+Using pair_cache_cleaned.parquet (inst_blind, abstention-filtered).
+Per-question mean HM SBERT (averaged over human raters AND variants).
+
+  0.6B:
+    mean_nothink = 0.3293
+    mean_think   = 0.3298
+    delta (think - nothink) = +0.0005
+    Wilcoxon W = 0.0  p = 3.1731e-01  n_questions = 113
+
+  1.7B:
+    mean_nothink = 0.4478
+    mean_think   = 0.5588
+    delta (think - nothink) = +0.1110
+    Wilcoxon W = 568.5  p = 3.4553e-08  n_questions = 87
+
+  4B: all differences are zero — Wilcoxon test not applicable.
+    mean_nothink = 0.5192  mean_think = 0.5192
+
+  8B: all differences are zero — Wilcoxon test not applicable.
+    mean_nothink = 0.4772  mean_think = 0.4772
+
+  32B:
+    mean_nothink = 0.5322
+    mean_think   = 0.5344
+    delta (think - nothink) = +0.0022
+    Wilcoxon W = 1544.0  p = 8.6035e-01  n_questions = 84
+
+  POOLED (all 5 sizes):
+    mean_nothink = 0.4578
+    mean_think   = 0.4772
+    delta (think - nothink) = +0.0194
+    Wilcoxon W = 4339.0  p = 4.4764e-05  n_total = 510
+
+======================================================================
+  TEST 3: Instruction effect on HM SBERT (paired Wilcoxon per group)
+======================================================================
+pair_cache_cleaned.parquet  = inst_blind condition (abstention-filtered)
+pair_cache_cleaned_blind.parquet = blind condition (abstention-filtered)
+
+For each group: per-question mean HM SBERT (across human raters AND variants),
+matched by (question_id, subject_2).  Two-sided Wilcoxon.
+
+  Group: VLM
+    mean_blind      = 0.4450
+    mean_inst_blind = 0.4561
+    delta (inst_blind - blind) = +0.0111
+    n_pairs = 879
+    Wilcoxon W = 80421.5  p = 4.8749e-04
+
+  Group: VLM backbone decoder
+    mean_blind      = 0.4674
+    mean_inst_blind = 0.4783
+    delta (inst_blind - blind) = +0.0108
+    n_pairs = 958
+    Wilcoxon W = 118520.5  p = 6.9606e-05
+
+  Group: standalone LLM
+    mean_blind      = 0.3657
+    mean_inst_blind = 0.3826
+    delta (inst_blind - blind) = +0.0168
+    n_pairs = 834
+    Wilcoxon W = 125033.0  p = 1.1619e-05
+
+  Group: standalone LLM (think)
+    mean_blind      = 0.3742
+    mean_inst_blind = 0.4262
+    delta (inst_blind - blind) = +0.0519
+    n_pairs = 378
+    Wilcoxon W = 18219.0  p = 1.0050e-10
+
+
+======================================================================
+  TEST 4: Trace length vs token confidence (Pearson r)
+======================================================================
+Looking for think-model JSONL files with trace lengths and logprobs.
+
+Found 25 think-mode JSONL file(s).
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone_think_tmp_4b/pretrained/Qwen3-4B/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone_think_tmp/pretrained/Qwen3-4B/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/ablation/pretrained/Qwen3-VL-4B-Instruct/vqa_1k_blind_gray_old_think.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/ablation/pretrained/Qwen3-VL-4B-Instruct/vqa_1k_blind_white_old_think.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/ablation/pretrained/Qwen3-VL-4B-Instruct/vqa_1k_blind_noise_old_think.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/ablation/pretrained/Qwen3-VL-4B-Instruct/vqa_1k_blind_old_think.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone_think_tmp_8b_4bit/pretrained/Qwen3-8B/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone_think_tmp_8b/pretrained/Qwen3-8B/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-8B_think/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-8B_think/vqa_1k_control_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-32B_think/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-32B_think/vqa_1k_control_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-0.6B_think/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-0.6B_think/vqa_1k_control_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-1.7B_think/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-1.7B_think/vqa_1k_control_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-4B_think_bak_20260704/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-4B_think_bak_20260704/vqa_1k_control_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-0.6B_think_bak_20260704/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-0.6B_think_bak_20260704/vqa_1k_control_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-4B_think_bak_20260705/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-4B_think_bak_20260705/vqa_1k_control_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-4B_think_new/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-4B_think/vqa_1k_control_inst_blind.jsonl
+  /home/david/Desktop/yuna/HPA/evaluation/logits/backbone/pretrained/Qwen3-4B_think/vqa_1k_control_blind.jsonl
+
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-4B: 5003 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-4B: 626 records
+  Processed vqa_1k_blind_gray_old_think.jsonl from Qwen3-VL-4B-Instruct: 3983 records
+  Processed vqa_1k_blind_white_old_think.jsonl from Qwen3-VL-4B-Instruct: 3983 records
+  Processed vqa_1k_blind_noise_old_think.jsonl from Qwen3-VL-4B-Instruct: 3983 records
+  Processed vqa_1k_blind_old_think.jsonl from Qwen3-VL-4B-Instruct: 3983 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-8B: 0 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-8B: 5001 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-8B_think: 5001 records
+  Processed vqa_1k_control_blind.jsonl from Qwen3-8B_think: 5001 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-32B_think: 2109 records
+  Processed vqa_1k_control_blind.jsonl from Qwen3-32B_think: 5000 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-0.6B_think: 5004 records
+  Processed vqa_1k_control_blind.jsonl from Qwen3-0.6B_think: 5000 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-1.7B_think: 2286 records
+  Processed vqa_1k_control_blind.jsonl from Qwen3-1.7B_think: 5002 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-4B_think_bak_20260704: 5004 records
+  Processed vqa_1k_control_blind.jsonl from Qwen3-4B_think_bak_20260704: 2139 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-0.6B_think_bak_20260704: 5001 records
+  Processed vqa_1k_control_blind.jsonl from Qwen3-0.6B_think_bak_20260704: 5001 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-4B_think_bak_20260705: 5004 records
+  Processed vqa_1k_control_blind.jsonl from Qwen3-4B_think_bak_20260705: 2139 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-4B_think_new: 626 records
+  Processed vqa_1k_control_inst_blind.jsonl from Qwen3-4B_think: 5003 records
+  Processed vqa_1k_control_blind.jsonl from Qwen3-4B_think: 2139 records
+
+  n = 93,021 observations (think-trace token count vs mean token logprob)
+
+  Pearson r (trace_length vs mean_logprob ALL tokens):
+    r = 0.0628  p = 7.0901e-82
+
+  Pearson r (trace_length vs mean_logprob FINAL ANSWER tokens):
+    r = 0.2600  p = 0.0000e+00
+
+  Descriptive stats:
+    trace_length: mean=155.0  median=0.0  sd=230.6
+    mean_logprob: mean=-0.2610  sd=0.2222
+
+  Pre-computed Spearman rho from think_length_correlations.csv
+  (trace_length vs final_words, pooled across variants):
+    Qwen3-0.6B (think): rho=-0.2032  p=6.0517e-57  n=6000
+    Qwen3-1.7B (think): rho=-0.8126  p=0.0000e+00  n=6000
+    Qwen3-32B (think): rho=-0.7020  p=0.0000e+00  n=6000
+    Qwen3-4B (think): rho=-0.3064  p=1.2806e-130  n=6000
+    Qwen3-8B (think): rho=-0.2789  p=1.2221e-107  n=6000
+    Qwen3-0.6B (think): rho=-0.1529  p=4.7802e-03  n=339
+    Qwen3-1.7B (think): rho=0.1078  p=4.7240e-02  n=339
+    Qwen3-32B (think): rho=0.2487  p=3.5774e-06  n=339
+    Qwen3-4B (think): rho=-0.0884  p=1.0438e-01  n=339
+    Qwen3-8B (think): rho=-0.1525  p=4.8967e-03  n=339
+    Qwen3-0.6B (think): rho=0.0750  p=1.6897e-01  n=338
+    Qwen3-1.7B (think): rho=0.1382  p=1.0862e-01  n=136
+    Qwen3-32B (think): rho=0.2944  p=4.5689e-04  n=138
+    Qwen3-4B (think): rho=-0.1204  p=2.6620e-02  n=339
+    Qwen3-8B (think): rho=-0.1588  p=3.3771e-03  n=339
+    Qwen3-0.6B (think): rho=-0.2370  p=3.7946e-75  n=5825
+    Qwen3-1.7B (think): rho=-0.1023  p=9.9183e-07  n=2278
+    Qwen3-32B (think): rho=-0.1018  p=2.8238e-06  n=2106
+    Qwen3-4B (think): rho=0.1789  p=9.9753e-42  n=5630
+    Qwen3-8B (think): rho=0.0226  p=9.1491e-02  n=5587
+    Qwen3-0.6B (think): rho=-0.4611  p=0.0000e+00  n=6000
+    Qwen3-1.7B (think): rho=0.1653  p=5.3441e-38  n=6000
+    Qwen3-32B (think): rho=-0.0691  p=8.3421e-08  n=6000
+    Qwen3-4B (think): rho=-0.5233  p=0.0000e+00  n=6000
+    Qwen3-8B (think): rho=-0.5638  p=0.0000e+00  n=6000
+    Qwen3-0.6B (think): rho=-0.4331  p=4.0225e-265  n=5828
+    Qwen3-1.7B (think): rho=-0.3916  p=1.2094e-84  n=2286
+    Qwen3-32B (think): rho=-0.3331  p=8.2433e-56  n=2109
+    Qwen3-4B (think): rho=-0.5199  p=0.0000e+00  n=5630
+    Qwen3-8B (think): rho=-0.6070  p=0.0000e+00  n=5587
+
+======================================================================
+  TEST 5: Within-class variance comparison (backbone decoders vs VLMs)
+======================================================================
+Using pair_cache_cleaned.parquet (inst_blind, abstention-filtered).
+Per (question_id, subject_2) mean HM SBERT (across human raters).
+Then: within-question SD across models in each group.
+
+  VLM: 1,238 (question, model) pairs, 11 models
+  VLM backbone decoder: 1,242 (question, model) pairs, 11 models
+
+  VLM:
+    Mean within-question SD across models = 0.0617
+    Median within-question SD             = 0.0534
+    N questions with >= 2 models           = 113
+
+  VLM backbone decoder:
+    Mean within-question SD across models = 0.0477
+    Median within-question SD             = 0.0409
+    N questions with >= 2 models           = 113
+
+  Levene's test (VLM vs backbone decoder raw scores):
+    F = 1.9949  p = 1.5795e-01
+    n_VLM = 1,238  n_backbone = 1,242
+
+  Levene's test on per-question SDs (matched questions, n=113):
+    F = 2.5114  p = 1.1444e-01
+    Mean VLM within-Q SD     = 0.0617
+    Mean backbone within-Q SD = 0.0477
+
+======================================================================
+  Done.
+======================================================================

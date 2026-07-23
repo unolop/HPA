@@ -1,59 +1,64 @@
 \begin{table}[h]
 \centering
 \small
-\caption{Response change rate (\% of answers changed blind$\to$blind+instruction) per model and variant (original/weaker/pronominalized, 113 questions). Colored deltas show change relative to the original variant: \textcolor{teal}{positive} = more change, \textcolor{red}{negative} = less.}
+
+\caption{Fraction of answers changed with instruction per model, across three reformulations (Original/Weaker/Pronominalized) of the same questions.}
 \label{tab:response_change_variants}
-\begin{tabular}{lrrr}
+\begin{tabular}{llrrrr}
 \toprule
-Model & Original & Weaker & Pron. \\
+Family & Model & Size (B) & Orig & Weaker & Pronom \\
 \midrule
-\multicolumn{4}{l}{\textit{Vision-Language Models}} \\
+\multicolumn{6}{l}{\textit{Vision-Language Models}} \\
 \midrule
-InternVL-1B & 41.1\% & 35.4\% \textcolor{red}{(-5.7)} & 40.2\% \textcolor{red}{(-0.9)} \\
-InternVL-2B & 28.6\% & 34.5\% \textcolor{teal}{(+5.9)} & 34.8\% \textcolor{teal}{(+6.2)} \\
-InternVL-8B & 43.4\% & 45.1\% \textcolor{teal}{(+1.8)} & 58.0\% \textcolor{teal}{(+14.7)} \\
-LLaVA-1.5 & 14.2\% & 12.4\% \textcolor{red}{(-1.8)} & 22.1\% \textcolor{teal}{(+8.0)} \\
-LLaVA-Mistral & 23.9\% & 16.8\% \textcolor{red}{(-7.1)} & 17.7\% \textcolor{red}{(-6.2)} \\
-LLaVA-Vicuna & 17.7\% & 19.5\% \textcolor{teal}{(+1.8)} & --- \\
-LLaVA-Vicuna-13B & 28.6\% & 35.4\% \textcolor{teal}{(+6.8)} & 23.2\% \textcolor{red}{(-5.4)} \\
-Qwen3-VL-2B & 27.7\% & 38.1\% \textcolor{teal}{(+10.4)} & 30.4\% \textcolor{teal}{(+2.7)} \\
-Qwen3-VL-4B & 34.5\% & 42.5\% \textcolor{teal}{(+8.0)} & 30.4\% \textcolor{red}{(-4.2)} \\
-Qwen3-VL-8B & 32.1\% & 32.1\% & 30.4\% \textcolor{red}{(-1.8)} \\
+\multirow{3}{*}{InternVL} & InternVL & 1 & 41.1 & 35.4 & 40.2 \\
+ & InternVL & 2 & 28.6 & 34.5 & 34.8 \\
+ & InternVL & 8 & 43.4 & 45.1 & 58.0 \\
 \midrule
-\multicolumn{4}{l}{\textit{VLM Backbone Decoders}} \\
+\multirow{4}{*}{LLaVA} & LLaVA-1.5 & 7 & 14.2 & 12.4 & 22.1 \\
+ & LLaVA-Mistral & 7 & 23.9 & 16.8 & 17.7 \\
+ & LLaVA-Vicuna & 7 & 17.7 & 19.5 & --- \\
+ & LLaVA-Vicuna & 13 & 28.6 & 35.4 & 23.2 \\
 \midrule
-InternVL-1B & 40.2\% & 31.0\% \textcolor{red}{(-9.2)} & 31.2\% \textcolor{red}{(-8.9)} \\
-InternVL-2B & 46.0\% & 50.4\% \textcolor{teal}{(+4.4)} & 55.4\% \textcolor{teal}{(+9.3)} \\
-InternVL-8B & 52.2\% & 52.2\% & 67.9\% \textcolor{teal}{(+15.6)} \\
-LLaVA-1.5 & 20.4\% & 20.4\% & 31.2\% \textcolor{teal}{(+10.9)} \\
-LLaVA-Mistral & 19.5\% & 22.1\% \textcolor{teal}{(+2.7)} & 32.1\% \textcolor{teal}{(+12.7)} \\
-LLaVA-Vicuna & 17.7\% & 22.1\% \textcolor{teal}{(+4.4)} & 25.9\% \textcolor{teal}{(+8.2)} \\
-LLaVA-Vicuna-13B & 29.2\% & 31.0\% \textcolor{teal}{(+1.8)} & --- \\
-Qwen3-VL-2B & 26.5\% & 31.0\% \textcolor{teal}{(+4.4)} & 44.6\% \textcolor{teal}{(+18.1)} \\
-Qwen3-VL-4B & 27.4\% & 31.0\% \textcolor{teal}{(+3.5)} & 39.3\% \textcolor{teal}{(+11.9)} \\
-Qwen3-VL-8B & 33.6\% & 31.9\% \textcolor{red}{(-1.8)} & 33.9\% \textcolor{teal}{(+0.3)} \\
-Qwen3-VL-32B & 37.2\% & 35.4\% \textcolor{red}{(-1.8)} & 47.3\% \textcolor{teal}{(+10.2)} \\
+\multirow{3}{*}{Qwen3-VL} & Qwen3-VL & 2 & 27.7 & 38.1 & 30.4 \\
+ & Qwen3-VL & 4 & 34.5 & 42.5 & 30.4 \\
+ & Qwen3-VL & 8 & 32.1 & 32.1 & 30.4 \\
 \midrule
-\multicolumn{4}{l}{\textit{Standalone LLMs}} \\
+\multicolumn{6}{l}{\textit{VLM Backbone Decoders}} \\
 \midrule
-Mistral-7B & 96.5\% & 95.6\% \textcolor{red}{(-0.9)} & 93.8\% \textcolor{red}{(-2.7)} \\
-Phi-3.5 & 78.8\% & 80.5\% \textcolor{teal}{(+1.8)} & 82.3\% \textcolor{teal}{(+3.5)} \\
-Qwen2.5-7B-Instruct & 35.4\% & 42.5\% \textcolor{teal}{(+7.1)} & 43.8\% \textcolor{teal}{(+8.4)} \\
-Qwen3-0.6B & 33.9\% & 33.9\% & --- \\
-Qwen3-4B & 51.3\% & 44.2\% \textcolor{red}{(-7.1)} & 51.3\% \\
-Qwen3-1.7B & 82.1\% & 74.3\% \textcolor{red}{(-7.8)} & 78.6\% \textcolor{red}{(-3.6)} \\
-Qwen3-8B & 45.5\% & 47.8\% \textcolor{teal}{(+2.3)} & 54.0\% \textcolor{teal}{(+8.4)} \\
-Qwen3-32B & 45.1\% & 48.7\% \textcolor{teal}{(+3.5)} & 59.3\% \textcolor{teal}{(+14.2)} \\
-Vicuna-7B & 60.2\% & 58.0\% \textcolor{red}{(-2.1)} & --- \\
-Vicuna-13B & 51.3\% & 56.6\% \textcolor{teal}{(+5.3)} & 62.5\% \textcolor{teal}{(+11.2)} \\
+\multirow{3}{*}{InternVL} & InternVL & 1 & 40.2 & 31.0 & 31.2 \\
+ & InternVL & 2 & 46.0 & 50.4 & 55.4 \\
+ & InternVL & 8 & 52.2 & 52.2 & 67.9 \\
 \midrule
-\multicolumn{4}{l}{\textit{Standalone LLMs (thinking)}} \\
+\multirow{4}{*}{LLaVA} & LLaVA-1.5 & 7 & 20.4 & 20.4 & 31.2 \\
+ & LLaVA-Mistral & 7 & 19.5 & 22.1 & 32.1 \\
+ & LLaVA-Vicuna & 7 & 17.7 & 22.1 & 25.9 \\
+ & LLaVA-Vicuna & 13 & 29.2 & 31.0 & --- \\
 \midrule
-Qwen3-0.6B & 62.5\% & 61.3\% \textcolor{red}{(-1.2)} & --- \\
-Qwen3-4B & 85.8\% & 86.6\% \textcolor{teal}{(+0.8)} & 95.5\% \textcolor{teal}{(+9.7)} \\
-Qwen3-1.7B & 94.6\% & 92.0\% \textcolor{red}{(-2.6)} & 95.5\% \textcolor{teal}{(+0.9)} \\
-Qwen3-8B & 69.6\% & 62.8\% \textcolor{red}{(-6.8)} & 75.2\% \textcolor{teal}{(+5.6)} \\
-Qwen3-32B & 87.6\% & 83.9\% \textcolor{red}{(-3.7)} & --- \\
+\multirow{4}{*}{Qwen3-VL} & Qwen3-VL & 2 & 26.5 & 31.0 & 44.6 \\
+ & Qwen3-VL & 4 & 27.4 & 31.0 & 39.3 \\
+ & Qwen3-VL & 8 & 33.6 & 31.9 & 33.9 \\
+ & Qwen3-VL & 32 & 37.2 & 35.4 & 47.3 \\
+\midrule
+\multicolumn{6}{l}{\textit{Standalone LLMs}} \\
+\midrule
+Mistral & Mistral & 7 & 96.5 & 95.6 & 93.8 \\
+Phi & Phi-3.5 & 3.5 & 78.8 & 80.5 & 82.3 \\
+\multirow{2}{*}{Vicuna} & Vicuna & 7 & 60.2 & 58.0 & --- \\
+ & Vicuna & 13 & 51.3 & 56.6 & 62.5 \\
+Qwen2.5 & Qwen2.5 & 7 & 35.4 & 42.5 & 43.8 \\
+\multirow{5}{*}{Qwen3} & Qwen3 & 0.6 & 33.9 & 33.9 & --- \\
+ & Qwen3 & 1.7 & 82.1 & 74.3 & 78.6 \\
+ & Qwen3 & 4 & 51.3 & 44.2 & 51.3 \\
+ & Qwen3 & 8 & 45.5 & 47.8 & 54.0 \\
+ & Qwen3 & 32 & 45.1 & 48.7 & 59.3 \\
+\midrule
+\multicolumn{6}{l}{\textit{Standalone LLMs (thinking)}} \\
+\midrule
+\multirow{5}{*}{Qwen3} & Qwen3 & 0.6 & 62.5 & 61.3 & --- \\
+ & Qwen3 & 1.7 & 94.6 & 92.0 & 95.5 \\
+ & Qwen3 & 4 & 85.8 & 86.6 & 95.5 \\
+ & Qwen3 & 8 & 69.6 & 62.8 & 75.2 \\
+ & Qwen3 & 32 & 87.6 & 83.9 & --- \\
 \bottomrule
 \end{tabular}
 \end{table}

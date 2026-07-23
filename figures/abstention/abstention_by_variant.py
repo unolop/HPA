@@ -53,8 +53,8 @@ FAMILY_MARKER = {
 MODEL_SIZE_B = {
     'InternVL-1B': 1.0, 'InternVL-2B': 2.0, 'InternVL-8B': 8.0,
     'InternVL-1B (LM)': 1.0, 'InternVL-2B (LM)': 2.0, 'InternVL-8B (LM)': 8.0,
-    'Qwen3-VL-2B': 2.0, 'Qwen3-VL-4B': 4.0, 'Qwen3-VL-8B': 8.0, 'Qwen3-VL-32B': 32.0,
-    'Qwen3-VL-2B (LM)': 2.0, 'Qwen3-VL-4B (LM)': 4.0, 'Qwen3-VL-8B (LM)': 8.0, 'Qwen3-VL-32B (LM)': 32.0,
+    'Qwen3-VL-2B': 2.0, 'Qwen3-VL-4B': 4.0, 'Qwen3-VL-8B': 8.0,
+    'Qwen3-VL-2B (LM)': 2.0, 'Qwen3-VL-4B (LM)': 4.0, 'Qwen3-VL-8B (LM)': 8.0,
     'LLaVA-1.5-7B': 7.0, 'LLaVA-Mistral': 7.0, 'LLaVA-Vicuna': 7.0, 'LLaVA-Vicuna-13B': 13.0,
     'LLaVA-1.5 (LM)': 7.0, 'LLaVA-Mistral (LM)': 7.0, 'LLaVA-Vicuna (LM)': 7.0, 'LLaVA-Vicuna-13B (LM)': 13.0,
     'Qwen3-0.6B': 0.6, 'Qwen3-1.7B': 1.7, 'Qwen3-4B': 4.0, 'Qwen3-8B': 8.0, 'Qwen3-32B': 32.0,
@@ -170,11 +170,10 @@ def _subset_rates() -> pd.DataFrame:
 
 
 def _plot_scale_scatter(df: pd.DataFrame, out_name: str, ymax_override: dict[str, float] | None = None):
-    fig, axes = plt.subplots(2, 2, figsize=(4.4, 4.6), sharex=True, sharey=False)
+    fig, axes = plt.subplots(2, 2, figsize=(4.4, 4.6), sharex=True, sharey=True)
     fig.subplots_adjust(left=0.10, right=0.97, top=0.94, bottom=0.24, wspace=0.38, hspace=0.35)
     axes_flat = axes.flatten()
-    for ax_idx, (ax, (title, group_name, default_ymax)) in enumerate(zip(axes_flat, PANELS)):
-        ymax = ymax_override.get(group_name, default_ymax) if ymax_override else default_ymax
+    for ax_idx, (ax, (title, group_name, _)) in enumerate(zip(axes_flat, PANELS)):
         is_top_row = ax_idx < 2
         for condition, filled in [('inst_blind', True), ('blind', False)]:
             sub = df[(df['group'] == group_name) & (df['condition'] == condition)]
@@ -195,7 +194,6 @@ def _plot_scale_scatter(df: pd.DataFrame, out_name: str, ymax_override: dict[str
         ax.set_xscale('log')
         ax.set_xticks(SIZE_TICKS)
         ax.set_xlim(0.4, 45)
-        ax.set_ylim(-ymax * 0.06, ymax)
         ax.set_title(title, fontweight='bold', fontsize=8.5, pad=4)
         ax.tick_params(labelsize=7)
         if is_top_row:
@@ -222,12 +220,7 @@ def main():
     full = _full_rates()
     subset = _subset_rates()
     _plot_scale_scatter(full, 'abstention_by_variant_scatter.png')
-    _plot_scale_scatter(subset, 'abstention_by_variant_scatter_q113_merged.png', {
-        'VLM': 15.0,
-        'VLM backbone decoder': 10.0,
-        'standalone LLM': 35.0,
-        'standalone LLM (think)': 95.0,
-    })
+    _plot_scale_scatter(subset, 'abstention_by_variant_scatter_q113_merged.png')
 
 
 if __name__ == '__main__':

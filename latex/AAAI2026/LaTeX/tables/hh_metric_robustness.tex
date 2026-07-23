@@ -1,8 +1,9 @@
-\begin{table*}[t]
+\begin{table*}[ht]
 \centering
-\scriptsize
+\small
 \setlength{\tabcolsep}{3.2pt}
-\caption{Human--human agreement by group across metrics and variants, with answer entropy (bits) as a final column (113-question inst-blind subset). Values are mean question-level scores. Best and second-best values are highlighted within each metric/variant column for agreement metrics only. SBERT captures semantic grouping (Existence/Action/World Know.\ $>$ Comparison/Identity/Text Reading), while surface-form metrics (chrF, ROUGE-1, Jaccard) show a flatter profile; entropy confirms that response diversity is structured primarily by operation type, not entity type.}
+
+\caption{Human--human agreement by group across metrics and variants, with answer entropy (bits) as a final column (113-question subset). Values are mean question-level scores. Best and second-best values are highlighted within each metric/variant column for agreement metrics only. SBERT captures semantic grouping (Existence/Action/World Know.\ $>$ Comparison/Identity/Text Reading), while surface-form metrics (chrF, ROUGE-1, Jaccard) show a flatter profile; entropy confirms that response diversity is structured primarily by operation type, not entity type.}
 \label{tab:hh_metric_robustness}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrrrrrrrrrr}
@@ -25,6 +26,7 @@ Text Reading (n=5)  & .401 & .370 & .442 & .116 & .109 & .129 & .071 & .063 & .0
 Causality (n=1)  & .397 & .316 & .342 & .158 & .144 & .144 & .127 & .077 & .093 & .084 & .054 & .064 & 4.92 & 4.85 & 4.83 \\
 Comparison (n=2)  & .339 & .353 & .330 & .203 & .212 & .161 & .130 & .152 & .090 & .101 & .122 & .070 & 4.44 & 4.34 & 4.57 \\
 \addlinespace[4pt]
+\midrule
 \multicolumn{16}{l}{\textit{By entity type}} \\
 \midrule
 Food (n=16)  & \textbf{.662} & \textbf{.643} & \textbf{.598} & .320 & \underline{.318} & .273 & \underline{.298} & \underline{.294} & \underline{.245} & \underline{.291} & \underline{.289} & \underline{.242} & 2.58 & 2.75 & 2.99 \\
@@ -37,6 +39,6 @@ Vehicle (n=4)  & .562 & .550 & .518 & \textbf{.348} & .300 & \underline{.287} & 
 Other (n=9)  & .543 & .544 & .567 & .245 & .246 & .265 & .200 & .200 & .213 & .192 & .195 & .210 & 3.34 & 3.18 & 3.12 \\
 Text (n=4)  & .447 & .417 & .504 & .133 & .126 & .149 & .082 & .079 & .104 & .081 & .079 & .103 & 4.16 & 4.14 & 3.86 \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
+}% end resizebox
 \end{table*}

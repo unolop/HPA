@@ -31,7 +31,7 @@ MODEL_FAMILIES = [
     ("D", "LLaVA-1.5-7B", "LLaVA-1.5 (LM)", None, "LLaVA-1.5"),
     ("^", "LLaVA-Mistral", "LLaVA-Mistral (LM)", "Mistral-7B", "Mistral"),
     ("v", "LLaVA-Vicuna", "LLaVA-Vicuna (LM)", "Vicuna-7B", "Vicuna"),
-    ("+", None, None, "Qwen3-8B (think)", "Qwen3 (think)"),
+    ("P", None, None, "Qwen3-8B (think)", "Qwen3 (think)"),
     ("s", None, None, "Qwen2.5-7B-Instruct", "Qwen2.5-Instruct"),
 ]
 
@@ -140,12 +140,16 @@ def save(fig, name: str):
     print(f"saved {path}")
 
 
-def format_p_value(p: float) -> str:
+def sig_stars(p: float) -> str:
     if np.isnan(p):
-        return "n/a"
+        return ""
     if p < 0.001:
-        return "<.001"
-    return f"={p:.3f}"
+        return "***"
+    if p < 0.01:
+        return "**"
+    if p < 0.05:
+        return "*"
+    return ""
 
 
 def load_accuracy_frames(*, abstfiltered: bool = False):
@@ -300,16 +304,18 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
         palette_use = build_palette(len(groups_sorted), palette)
         color_maps[group_type] = (groups_sorted, {g: palette_use[i] for i, g in enumerate(groups_sorted)})
 
+    # 2 rows (op / ent) × 3 cols (VLM / Backbone / SA-LLM)
     fig, axes = plt.subplots(
-        3, 2, figsize=(5.5, 4.0), sharex=True, sharey=True,
-        gridspec_kw={"hspace": 0.18, "wspace": 0.10, "left": 0.12, "right": 0.68, "top": 0.93, "bottom": 0.10},
+        2, 3, figsize=(7.5, 3.6), sharex=True, sharey=True,
+        gridspec_kw={"hspace": 0.14, "wspace": 0.10,
+                     "left": 0.09, "right": 0.72, "top": 0.91, "bottom": 0.15},
     )
 
-    for col_idx, (group_type, df, title, _, _) in enumerate(specs):
+    for row_idx, (group_type, df, row_label, _, _) in enumerate(specs):
         groups_sorted, color_map = color_maps[group_type]
-        for row_idx, row_title in enumerate(ROW_ORDER):
+        for col_idx, col_title in enumerate(ROW_ORDER):
             ax = axes[row_idx, col_idx]
-            sub = df[df["model_class"] == row_title]
+            sub = df[df["model_class"] == col_title]
             for model, msub in sub.groupby("model"):
                 marker = MODEL_STYLE.get(model, "o")
                 for _, row in msub.iterrows():
@@ -342,11 +348,12 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
 
             if len(mean_df) >= 3:
                 r_val, p_val = stats.pearsonr(mean_df["human_value"], mean_df["model_mean"])
-                stat_text = f"r={r_val:.2f}\np{format_p_value(p_val)}"
+                stars = sig_stars(p_val)
+                stat_text = f"r={r_val:.2f}{stars}"
                 ax.text(
-                    0.97, 0.06, stat_text,
+                    0.03, 0.97, stat_text,
                     transform=ax.transAxes,
-                    ha="right", va="bottom", fontsize=7.4,
+                    ha="left", va="top", fontsize=7.4,
                     bbox=dict(boxstyle="round,pad=0.22", facecolor="white", alpha=0.82, linewidth=0.0),
                 )
 
@@ -356,9 +363,17 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
             ax.set_facecolor("#f7f7f7")
             ax.grid(True, color="#d9d9d9", linewidth=0.7, alpha=0.8)
             ax.set_axisbelow(True)
-            ax.tick_params(labelsize=9)
+            ax.tick_params(labelsize=8.5)
+
+            # column headers on top row
+            if row_idx == 0:
+                ax.set_title(ROW_LABELS[col_title], fontsize=9.5, fontweight="bold")
+            # row labels on left column
             if col_idx == 0:
-                ax.set_ylabel(ROW_LABELS[row_title], fontsize=10)
+                ax.set_ylabel(f"$\\bf{{{row_label}}}$\n{ylab}", fontsize=8.5)
+            # x-axis label on bottom row
+            if row_idx == len(specs) - 1:
+                ax.set_xlabel(xlab, fontsize=8.5)
 
     op_groups, op_color_map = color_maps["op"]
     ent_groups, ent_color_map = color_maps["ent"]
@@ -366,29 +381,31 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
     # Family handles — bottom center
     fig.legend(
         handles=family_handles(), loc="lower center",
-        bbox_to_anchor=(0.40, -0.045), ncol=4,
-        fontsize=7.8, frameon=False,
+        bbox_to_anchor=(0.40, -0.07), ncol=4,
+        fontsize=7.5, frameon=False,
         handletextpad=0.25, borderpad=0.32, labelspacing=0.20, columnspacing=0.9,
     )
 
-    # Operation legend — right side, top, 1 column
+    # Operation legend — right side, slightly below top
     op_leg = fig.legend(
         handles=qgroup_handles(op_groups, op_color_map),
-        loc="upper left", bbox_to_anchor=(0.70, 0.94),
+        loc="upper left", bbox_to_anchor=(0.73, 0.93),
         ncol=1, title="Operation", title_fontsize=8.0,
-        fontsize=7.5, frameon=True, framealpha=0.9,
-        handletextpad=0.25, borderpad=0.35, labelspacing=0.22,
+        fontsize=7.2, frameon=True, framealpha=0.9,
+        handletextpad=0.25, borderpad=0.35, labelspacing=0.20,
     )
+    op_leg.get_title().set_fontweight("bold")
     fig.add_artist(op_leg)
 
-    # Entity legend — right side, bottom, 1 column
-    fig.legend(
+    # Entity legend — right side, below Operation
+    ent_leg = fig.legend(
         handles=qgroup_handles(ent_groups, ent_color_map),
-        loc="lower left", bbox_to_anchor=(0.70, 0.07),
+        loc="upper left", bbox_to_anchor=(0.73, 0.48),
         ncol=1, title="Entity", title_fontsize=8.0,
-        fontsize=7.5, frameon=True, framealpha=0.9,
-        handletextpad=0.25, borderpad=0.35, labelspacing=0.22,
+        fontsize=7.2, frameon=True, framealpha=0.9,
+        handletextpad=0.25, borderpad=0.35, labelspacing=0.20,
     )
+    ent_leg.get_title().set_fontweight("bold")
 
     suffix = "_abstfiltered" if abstfiltered else ""
     if metric == "sbert":
@@ -399,6 +416,7 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
         out_name = f"7b_confidence_op_ent{suffix}.png"
     save(fig, out_name)
 if __name__ == "__main__":
+    plot_metric_combined("sbert", abstfiltered=False)
     plot_metric_combined("sbert", abstfiltered=True)
     plot_metric_combined("accuracy", abstfiltered=False)
     plot_metric_combined("accuracy", abstfiltered=True)

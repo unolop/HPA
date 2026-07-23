@@ -27,6 +27,12 @@ QWEN_MODELS = [
     "Qwen3-8B",
     "Qwen3-8B (think)",
 ]
+INTERNVL_MODELS = [
+    "InternVL-8B",
+    "InternVL-8B (LM)",
+    "Qwen3-8B",
+    "Qwen3-8B (think)",
+]
 ALL_MODELS = [
     "Qwen3-VL-8B",
     "LLaVA-1.5-7B",
@@ -518,7 +524,7 @@ def build_integer_plot_all_models(
     human_y = bin_distribution(human).to_numpy(dtype=float)
     nrows = len(ALL_MODEL_ROWS)
     ncols = max(len(row) for row in ALL_MODEL_ROWS)
-    fig, axes = plt.subplots(nrows, ncols, figsize=(10.8, 7.4), sharex=True, sharey=True)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(10.8, 5.8), sharex=True, sharey=True)
     ymax = human_y.max()
 
     for r, row_models in enumerate(ALL_MODEL_ROWS):
@@ -617,9 +623,12 @@ def build_integer_plot_ci_errorbars(
     inst: pd.DataFrame,
     human: pd.DataFrame,
     out_name: str = "vC_qwen_integer_err_b400.png",
+    model_list: list[str] | None = None,
 ) -> Path:
-    blind_qwen = blind[blind["model"].isin(QWEN_MODELS)].copy()
-    inst_qwen = inst[inst["model"].isin(QWEN_MODELS)].copy()
+    if model_list is None:
+        model_list = QWEN_MODELS
+    blind_qwen = blind[blind["model"].isin(model_list)].copy()
+    inst_qwen = inst[inst["model"].isin(model_list)].copy()
     x = list(range(len(X_LABELS)))
     fig, ax = plt.subplots(figsize=(4.8, 3.0))
 
@@ -631,7 +640,7 @@ def build_integer_plot_ci_errorbars(
     )
 
     ymax = float(human_hi.max())
-    for model in QWEN_MODELS:
+    for model in model_list:
         group_name = MODEL_TO_GROUP[model]
         blind_center, blind_lo, blind_hi = bootstrap_bin_ci(blind_qwen[blind_qwen["model"] == model])
         inst_center, inst_lo, inst_hi = bootstrap_bin_ci(inst_qwen[inst_qwen["model"] == model])
@@ -797,6 +806,92 @@ def build_arrow_plot(
     return out
 
 
+FAMILY_PANELS = [
+    ("InternVL",     ["InternVL-8B",   "InternVL-8B (LM)",   "Qwen3-8B",  "Qwen3-8B (think)"]),
+    ("LLaVA-1.5",   ["LLaVA-1.5-7B",  "LLaVA-1.5 (LM)",    "Vicuna-7B"]),
+    ("LLaVA-Mistral",["LLaVA-Mistral", "LLaVA-Mistral (LM)", "Mistral-7B"]),
+    ("LLaVA-Vicuna", ["LLaVA-Vicuna",  "LLaVA-Vicuna (LM)",  "Vicuna-7B"]),
+    ("Qwen3-VL",     ["Qwen3-VL-8B",   "Qwen3-VL-8B (LM)",   "Qwen3-8B",  "Qwen3-8B (think)"]),
+]
+
+
+def build_family_panels(
+    blind: pd.DataFrame,
+    inst: pd.DataFrame,
+    human: pd.DataFrame,
+    out_name: str = "vABC_family_panels_err_b400.png",
+) -> Path:
+    x = list(range(len(X_LABELS)))
+    ncols = 3
+    nrows = 2
+    fig, axes = plt.subplots(nrows, ncols, figsize=(10.5, 6.0), sharex=True, sharey=False,
+                             gridspec_kw={"hspace": 0.45, "wspace": 0.38})
+    axes_flat = axes.flatten()
+
+    human_center, human_lo, human_hi = bootstrap_bin_ci(human)
+
+    for idx, (family_name, model_list) in enumerate(FAMILY_PANELS):
+        ax = axes_flat[idx]
+        draw_condition_errorbars(
+            ax, x, human_center, human_lo, human_hi,
+            color="#444444", marker="D", filled=True,
+            linewidth=1.8, linestyle="-", markersize=4.0, zorder=4,
+        )
+        ymax = float(human_hi.max())
+        for model in model_list:
+            if model not in blind["model"].values:
+                continue
+            group_name = MODEL_TO_GROUP.get(model)
+            if group_name is None:
+                continue
+            b = blind[blind["model"] == model]
+            i = inst[inst["model"] == model]
+            bc, blo, bhi = bootstrap_bin_ci(b)
+            ic, ilo, ihi = bootstrap_bin_ci(i)
+            ymax = max(ymax, float(bhi.max()), float(ihi.max()))
+            draw_condition_errorbars(ax, x, ic, ilo, ihi,
+                color=GROUP_COLORS[group_name], marker=GROUP_MARKERS[group_name],
+                filled=True, linewidth=1.5, linestyle="-", markersize=3.5, zorder=3)
+            draw_condition_errorbars(ax, x, bc, blo, bhi,
+                color=GROUP_COLORS[group_name], marker=GROUP_MARKERS[group_name],
+                filled=False, linewidth=1.2, linestyle=":", markersize=4.2, zorder=5)
+        ax.set_ylim(0, max(0.9, ymax * 1.10))
+        ax.set_xticks(x[::2])
+        ax.set_xticklabels(X_LABELS[::2], fontsize=7.5)
+        ax.set_title(family_name, fontsize=10, fontweight="bold")
+        ax.grid(True, alpha=0.20)
+        if idx % ncols == 0:
+            ax.set_ylabel("Proportion", fontsize=9)
+        if idx // ncols == nrows - 1 or idx >= len(FAMILY_PANELS) - ncols:
+            ax.set_xlabel("Count answer", fontsize=9)
+
+    # Hide unused panel
+    for idx in range(len(FAMILY_PANELS), nrows * ncols):
+        axes_flat[idx].axis("off")
+
+    # Shared legend
+    legend_handles = [
+        Line2D([0], [0], color="#444444", linewidth=1.8, marker="D", markersize=4.5, label="Human"),
+    ]
+    for g in ["VLM", "VLM decoder", "LLM", "LLM (think)"]:
+        legend_handles.append(Line2D([0], [0], color=GROUP_COLORS[g], linewidth=1.8,
+                                     marker="o", markersize=4.5, label=g))
+    legend_handles += [
+        Line2D([0], [0], color="#666", linewidth=1.6, marker="o", markersize=4.5,
+               markerfacecolor="#666", label="w/ instruction"),
+        Line2D([0], [0], color="#666", linewidth=1.6, marker="o", markersize=4.5,
+               markerfacecolor="white", markeredgewidth=1.3, label="w/o instruction"),
+    ]
+    axes_flat[-1].axis("off")
+    axes_flat[-1].legend(handles=legend_handles, loc="center", fontsize=8.5,
+                         frameon=True, handlelength=1.6, labelspacing=0.45)
+
+    out = OUT_DIR / out_name
+    fig.savefig(out, dpi=200, bbox_inches="tight")
+    plt.close(fig)
+    return out
+
+
 def copy_to_latex(path: Path) -> None:
     LATEX_OUT_DIR.mkdir(parents=True, exist_ok=True)
     shutil.copy2(path, LATEX_OUT_DIR / path.name)
@@ -820,6 +915,8 @@ def main() -> None:
         build_integer_plot_ci(blind_vabc, inst_vabc, human_vabc, out_name="vABC_qwen_integer_ci_b400.png"),
         build_integer_plot_ci_errorbars(blind, inst, human, out_name="vC_qwen_integer_err_b400.png"),
         build_integer_plot_ci_errorbars(blind_vabc, inst_vabc, human_vabc, out_name="vABC_qwen_integer_err_b400.png"),
+        build_integer_plot_ci_errorbars(blind_vabc, inst_vabc, human_vabc, out_name="vABC_internvl_integer_err_b400.png", model_list=INTERNVL_MODELS),
+        build_family_panels(blind_vabc, inst_vabc, human_vabc, out_name="vABC_family_panels_err_b400.png"),
         build_integer_plot_all_models(blind, inst, human, out_name="vC_all_models.png"),
         build_integer_plot_all_models(blind_vabc, inst_vabc, human_vabc, out_name="vABC_all_models.png"),
         build_integer_plot_grouped_ci(blind, inst, human, out_name="vC_grouped_all_models_ci_b400.png"),

@@ -364,32 +364,24 @@ def build_dist_inst_effect_js_summary() -> str:
 
 
 def build_hm_grouped_distribution_7b_compact_filtered() -> str:
-    human_all, model_all = _distribution_base_table_variants_with_models(
-        condition="inst_blind",
-        variants=("C", "B", "A"),
-    )
-    human_all = _mark_abstentions(human_all)
-    model_all = _mark_abstentions(model_all)
+    variants = ("C", "B", "A")
+    human_all, model_blind = _distribution_base_table_variants_with_models("blind", variants)
+    _, model_inst = _distribution_base_table_variants_with_models("inst_blind", variants)
+    human_all  = _mark_abstentions(human_all)
+    model_blind = _mark_abstentions(model_blind)
+    model_inst  = _mark_abstentions(model_inst)
 
     pooled_n = {}
     for answer_type in ("yes/no", "number"):
         human_sub = _answer_type_subset(human_all.copy(), answer_type)
         pooled_n[answer_type] = len(set(zip(human_sub["question_id"].astype(int), human_sub["variant"].astype(str))))
 
-    rows = []
+    # Human LOO baseline (from human data, no instruction delta)
     human_row = {"Model": "Human LOO"}
     for answer_type in ("yes/no", "number"):
         human_sub = _answer_type_subset(human_all.copy(), answer_type)
-        _, human_sub, category_order = _prepare_distribution_category(
-            human_all.copy(),
-            human_sub.copy(),
-            answer_type,
-        )
-
-        js_vals = []
-        tv_vals = []
-        mode_hits = []
-        qv_seen = set()
+        _, human_sub, category_order = _prepare_distribution_category(human_all.copy(), human_sub.copy(), answer_type)
+        js_vals, mode_hits, qv_seen = [], [], set()
         for (qid, variant), hq in human_sub.groupby(["question_id", "variant"]):
             if hq.empty:
                 continue
@@ -399,45 +391,118 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
                 rest = hq.drop(index=idx)
                 if rest.empty:
                     continue
-
                 human_counts = rest["category"].value_counts().reindex(category_order, fill_value=0)
                 loo_counts = pd.Series(0, index=category_order, dtype=float)
                 if answer in loo_counts.index:
                     loo_counts.loc[answer] = 1.0
                 if human_counts.sum() == 0 or loo_counts.sum() == 0:
                     continue
-
-                _, _, js, tv, _ = _distribution_stats_from_counts(human_counts, loo_counts)
+                _, _, js, _, _ = _distribution_stats_from_counts(human_counts, loo_counts)
                 js_vals.append(js)
-                tv_vals.append(tv)
-
                 max_count = human_counts.max()
                 modal_cats = set(human_counts[human_counts == max_count].index.tolist())
                 mode_hits.append(float(answer in modal_cats))
-
-        human_row[(answer_type, "N")] = len(qv_seen)
-        human_row[(answer_type, "JS")] = float(pd.Series(js_vals).mean()) if js_vals else float("nan")
-        human_row[(answer_type, "TV")] = float(pd.Series(tv_vals).mean()) if tv_vals else float("nan")
+        human_row[(answer_type, "N")]    = len(qv_seen)
+        human_row[(answer_type, "JS")]   = float(pd.Series(js_vals).mean()) if js_vals else float("nan")
         human_row[(answer_type, "Mode")] = float(pd.Series(mode_hits).mean()) if mode_hits else float("nan")
-    rows.append(human_row)
 
+    blind_metrics = _compute_js_mode_per_model(human_all, model_blind)
+    inst_metrics  = _compute_js_mode_per_model(human_all, model_inst)
+
+    # Rankings over blind JS and Mode (models only, no LOO)
+    rankings = {}
+    model_set = {m for grp in MODEL_ORDER.values() for m in grp}
+    for atype in ("yes/no", "number"):
+        for metric, rev in [("JS", False), ("Mode", True)]:
+            vals = [blind_metrics[m][(atype, metric)] for m in model_set
+                    if m in blind_metrics and not pd.isna(blind_metrics[m].get((atype, metric), float("nan")))]
+            uniq = sorted(set(vals), reverse=rev)
+            rankings[(atype, metric)] = (uniq[0] if uniq else float("nan"),
+                                         uniq[1] if len(uniq) > 1 else float("nan"))
+
+    lines = [
+        r"\begin{table}[t]",
+        r"\centering",
+        r"\small",
+        r"\setlength{\tabcolsep}{2.2pt}",
+        r"\renewcommand{\arraystretch}{0.95}",
+        "",
+        r"\begin{tabular}{lccc@{\hspace{6pt}}ccc}",
+        r"\toprule",
+        r"\multirow{2}{*}{\textbf{Model}} &",
+        rf"\multicolumn{{3}}{{c}}{{\textbf{{Yes/No}} ($N{{=}}{pooled_n['yes/no']}$)}} &",
+        rf"\multicolumn{{3}}{{c}}{{\textbf{{Count}} ($N{{=}}{pooled_n['number']}$)}} \\",
+        r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
+        r"& $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ & $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ \\",
+        r"\midrule",
+    ]
+
+    # Human LOO row (no delta)
+    loo_yn_js   = _fmt_js(float(human_row[("yes/no", "JS")]))
+    loo_yn_mode = _fmt_js(float(human_row[("yes/no", "Mode")]))
+    loo_ct_js   = _fmt_js(float(human_row[("number", "JS")]))
+    loo_ct_mode = _fmt_js(float(human_row[("number", "Mode")]))
+    lines.append(
+        rf"\textbf{{Human LOO}} & {human_row[('yes/no','N')]} & {loo_yn_js} & {loo_yn_mode} "
+        rf"& {human_row[('number','N')]} & {loo_ct_js} & {loo_ct_mode} \\"
+    )
+    lines.append(r"\midrule")
+
+    for grp in GROUP_ORDER:
+        lines.append(rf"\multicolumn{{7}}{{c}}{{\textbf{{{SECTION_TITLES[grp]}}}}} \\")
+        lines.append(r"\midrule")
+        for model in MODEL_ORDER[grp]:
+            if model not in blind_metrics:
+                continue
+            bm = blind_metrics[model]
+            im = inst_metrics.get(model, {})
+            cells = []
+            for atype in ("yes/no", "number"):
+                n    = bm.get((atype, "N"), 0)
+                js   = bm.get((atype, "JS"), float("nan"))
+                mode = bm.get((atype, "Mode"), float("nan"))
+                js_i = im.get((atype, "JS"), float("nan"))
+                delta = (js_i - js) if (not pd.isna(js_i) and not pd.isna(js)) else float("nan")
+                js_s   = _style_val(js,   "JS",   *rankings[(atype, "JS")])
+                mode_s = _style_val(mode, "Mode", *rankings[(atype, "Mode")])
+                js_cell = js_s + _fmt_delta_inline(delta)
+                cells += [str(int(n)) if n else "--", js_cell, mode_s]
+            lines.append(f"{_display_name(model)} & {' & '.join(cells)} \\\\")
+        lines.append(r"\midrule")
+    if lines[-1] == r"\midrule":
+        lines.pop()
+    lines += [
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\caption{Per-question JS divergence and modal-answer match rate to the human answer distribution "
+        r"under the blind condition, pooled across all three control variants. "
+        r"$\Delta$ in parentheses shows the instruction effect (JS(w/ inst) $-$ JS(w/o inst)): "
+        r"\textcolor{teal}{teal} = reduces JS (improves alignment), "
+        r"\textcolor{red}{red} = worsens. "
+        r"Human LOO is a leave-one-out human baseline. "
+        r"\textbf{Bold}: best per column; \underline{underline}: second best.}",
+        r"\label{tab:hm_grouped_distribution_7b_compact_filtered}",
+        r"\end{table}",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+def _compute_js_mode_per_model(human_all: pd.DataFrame, model_all: pd.DataFrame) -> dict:
+    """Return {model: {(answer_type, metric): value}} using per-question JS and Mode."""
+    result = {}
     for model_name, model_sub_all in model_all.groupby("model"):
-        row = {"Model": model_name}
+        row = {}
         for answer_type in ("yes/no", "number"):
             human_sub, model_sub, category_order = _prepare_distribution_category(
                 human_all.copy(), model_sub_all.copy(), answer_type
             )
-
             model_sub = model_sub[~model_sub["is_abstained"]].copy()
             kept_qvs = set(zip(model_sub["question_id"].astype(int), model_sub["variant"].astype(str)))
             human_sub = human_sub[
                 [qv in kept_qvs for qv in zip(human_sub["question_id"].astype(int), human_sub["variant"].astype(str))]
             ].copy()
             human_sub = human_sub[~human_sub["is_abstained"]].copy()
-
-            js_vals = []
-            tv_vals = []
-            mode_hits = []
+            js_vals, mode_hits = [], []
             for (qid, variant), hq in human_sub.groupby(["question_id", "variant"]):
                 mq = model_sub[
                     (model_sub["question_id"].astype(int) == int(qid))
@@ -445,96 +510,124 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
                 ]
                 if hq.empty or mq.empty:
                     continue
-
                 human_counts = hq["category"].value_counts().reindex(category_order, fill_value=0)
                 model_counts = mq["category"].value_counts().reindex(category_order, fill_value=0)
                 if human_counts.sum() == 0 or model_counts.sum() == 0:
                     continue
-
-                _, _, js, tv, _ = _distribution_stats_from_counts(human_counts, model_counts)
+                _, _, js, _, _ = _distribution_stats_from_counts(human_counts, model_counts)
                 js_vals.append(js)
-                tv_vals.append(tv)
-
                 max_count = human_counts.max()
                 modal_cats = set(human_counts[human_counts == max_count].index.tolist())
-                model_cat = model_counts.idxmax()
-                mode_hits.append(float(model_cat in modal_cats))
-
+                mode_hits.append(float(model_counts.idxmax() in modal_cats))
             row[(answer_type, "N")] = len(js_vals)
             row[(answer_type, "JS")] = float(pd.Series(js_vals).mean()) if js_vals else float("nan")
-            row[(answer_type, "TV")] = float(pd.Series(tv_vals).mean()) if tv_vals else float("nan")
             row[(answer_type, "Mode")] = float(pd.Series(mode_hits).mean()) if mode_hits else float("nan")
-        rows.append(row)
+        result[model_name] = row
+    return result
 
-    summary = pd.DataFrame(rows).set_index("Model")
 
+def _fmt_delta_inline(delta: float) -> str:
+    """Render Δ as small colored text with arrow for inline display in JS cell."""
+    if pd.isna(delta):
+        return ""
+    s = f"{delta:+.3f}"
+    if s.startswith("+0."):
+        s = "+" + s[2:]
+    elif s.startswith("-0."):
+        s = "-" + s[2:]
+    if abs(delta) < 0.0005:
+        return rf" {{\scriptsize ({s})}}"
+    color = "teal" if delta < 0 else "red"
+    return rf" {{\scriptsize (\textcolor{{{color}}}{{{s}}})}}"
+
+
+def build_hm_dist_blind_inst_effect() -> str:
+    """Main distribution table: blind JS + inline inst-effect Δ, no TV column."""
+    variants = ("C", "B", "A")
+
+    human_blind, model_blind = _distribution_base_table_variants_with_models("blind", variants)
+    human_inst,  model_inst  = _distribution_base_table_variants_with_models("inst_blind", variants)
+    human_blind = _mark_abstentions(human_blind)
+    model_blind = _mark_abstentions(model_blind)
+    human_inst  = _mark_abstentions(human_inst)
+    model_inst  = _mark_abstentions(model_inst)
+
+    blind_metrics = _compute_js_mode_per_model(human_blind, model_blind)
+    inst_metrics  = _compute_js_mode_per_model(human_inst,  model_inst)
+
+    # pooled N from human side (blind)
+    pooled_n = {}
+    qid2atype = _qid_to_answer_type()
+    human_blind["answer_type"] = human_blind["question_id"].astype(int).map(qid2atype).fillna("other")
+    for atype, label in (("yes/no", "yes/no"), ("number", "number")):
+        sub = human_blind[human_blind["answer_type"] == atype]
+        pooled_n[atype] = len(set(zip(sub["question_id"].astype(int), sub["variant"].astype(str))))
+
+    # rankings over blind JS and Mode (exclude Human LOO)
     rankings = {}
-    for answer_type in ("yes/no", "number"):
-        for metric in ("JS", "TV", "Mode"):
-            vals = summary[(answer_type, metric)].dropna().astype(float)
-            uniq = sorted(set(vals.tolist()), reverse=(metric == "Mode"))
-            best = uniq[0] if uniq else float("nan")
-            second = uniq[1] if len(uniq) > 1 else float("nan")
-            rankings[(answer_type, metric)] = (best, second)
+    for atype in ("yes/no", "number"):
+        js_vals  = [v[(atype, "JS")]   for m, v in blind_metrics.items() if m in {mm for grp in MODEL_ORDER.values() for mm in grp}]
+        mode_vals= [v[(atype, "Mode")] for m, v in blind_metrics.items() if m in {mm for grp in MODEL_ORDER.values() for mm in grp}]
+        for metric, vals, rev in [("JS", js_vals, False), ("Mode", mode_vals, True)]:
+            uniq = sorted(set(v for v in vals if not pd.isna(v)), reverse=rev)
+            rankings[(atype, metric)] = (uniq[0] if uniq else float("nan"),
+                                         uniq[1] if len(uniq) > 1 else float("nan"))
 
-    lines = []
-    lines.append(r"\begin{table}[t]")
-    lines.append(r"\centering")
-    lines.append(r"\scriptsize")
-    lines.append(r"\setlength{\tabcolsep}{2.2pt}")
-    lines.append(r"\renewcommand{\arraystretch}{0.95}")
-    lines.append("")
-    lines.append(r"\begin{tabular}{lcccc@{\hspace{6pt}}cccc}")
-    lines.append(r"\toprule")
-    lines.append(r"\multirow{2}{*}{\textbf{Model}} &")
-    lines.append(rf"\multicolumn{{4}}{{c}}{{\textbf{{Yes/No}} ($N{{=}}{pooled_n['yes/no']}$)}} &")
-    lines.append(rf"\multicolumn{{4}}{{c}}{{\textbf{{Count}} ($N{{=}}{pooled_n['number']}$)}} \\")
-    lines.append(r"\cmidrule(lr){2-5}\cmidrule(lr){6-9}")
-    lines.append(r"& $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ & \textbf{TV}$\downarrow$ & \textbf{Mode}$\uparrow$ & $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ & \textbf{TV}$\downarrow$ & \textbf{Mode}$\uparrow$ \\")
-    lines.append(r"\midrule")
-    loo_yn_n = int(summary.at["Human LOO", ("yes/no", "N")])
-    loo_yn_js = _fmt_js(float(summary.at["Human LOO", ("yes/no", "JS")]))
-    loo_yn_tv = _fmt_js(float(summary.at["Human LOO", ("yes/no", "TV")]))
-    loo_yn_mode = _fmt_js(float(summary.at["Human LOO", ("yes/no", "Mode")]))
-    loo_ct_n = int(summary.at["Human LOO", ("number", "N")])
-    loo_ct_js = _fmt_js(float(summary.at["Human LOO", ("number", "JS")]))
-    loo_ct_tv = _fmt_js(float(summary.at["Human LOO", ("number", "TV")]))
-    loo_ct_mode = _fmt_js(float(summary.at["Human LOO", ("number", "Mode")]))
-    lines.append(
-        rf"\textbf{{Human LOO}} & {loo_yn_n} & {loo_yn_js} & {loo_yn_tv} & {loo_yn_mode} & {loo_ct_n} & {loo_ct_js} & {loo_ct_tv} & {loo_ct_mode} \\"
-    )
-    lines.append(r"\midrule")
+    lines = [
+        r"\begin{table}[t]",
+        r"\centering",
+        r"\small",
+        r"\setlength{\tabcolsep}{2.2pt}",
+        r"\renewcommand{\arraystretch}{0.95}",
+        "",
+        r"\begin{tabular}{lcccc@{\hspace{6pt}}cccc}",  # keep same col count: Nq JS Mode × 2 = 6 + model = 7 but header spans
+        r"\toprule",
+        r"\multirow{2}{*}{\textbf{Model}} &",
+        rf"\multicolumn{{3}}{{c}}{{\textbf{{Yes/No}} ($N{{=}}{pooled_n['yes/no']}$)}} &",
+        rf"\multicolumn{{3}}{{c}}{{\textbf{{Count}} ($N{{=}}{pooled_n['number']}$)}} \\",
+        r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
+        r"& $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ & $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ \\",
+        r"\midrule",
+    ]
+
     for grp in GROUP_ORDER:
-        lines.append(rf"\multicolumn{{9}}{{c}}{{\textbf{{{SECTION_TITLES[grp]}}}}} \\")
+        lines.append(rf"\multicolumn{{7}}{{c}}{{\textbf{{{SECTION_TITLES[grp]}}}}} \\")
         lines.append(r"\midrule")
         for model in MODEL_ORDER[grp]:
-            if model not in summary.index:
+            if model not in blind_metrics:
                 continue
-            yn_n = int(summary.at[model, ("yes/no", "N")])
-            yn_js = float(summary.at[model, ("yes/no", "JS")])
-            yn_tv = float(summary.at[model, ("yes/no", "TV")])
-            yn_mode = float(summary.at[model, ("yes/no", "Mode")])
-            ct_n = int(summary.at[model, ("number", "N")])
-            ct_js = float(summary.at[model, ("number", "JS")])
-            ct_tv = float(summary.at[model, ("number", "TV")])
-            ct_mode = float(summary.at[model, ("number", "Mode")])
-            yn_js_s = _style_val(yn_js, "JS", *rankings[("yes/no", "JS")])
-            yn_tv_s = _style_val(yn_tv, "TV", *rankings[("yes/no", "TV")])
-            yn_mode_s = _style_val(yn_mode, "Mode", *rankings[("yes/no", "Mode")])
-            ct_js_s = _style_val(ct_js, "JS", *rankings[("number", "JS")])
-            ct_tv_s = _style_val(ct_tv, "TV", *rankings[("number", "TV")])
-            ct_mode_s = _style_val(ct_mode, "Mode", *rankings[("number", "Mode")])
-            lines.append(
-                f"{_display_name(model)} & {yn_n} & {yn_js_s} & {yn_tv_s} & {yn_mode_s} & {ct_n} & {ct_js_s} & {ct_tv_s} & {ct_mode_s} \\\\"
-            )
+            bm = blind_metrics[model]
+            im = inst_metrics.get(model, {})
+            cells = []
+            for atype in ("yes/no", "number"):
+                n   = bm.get((atype, "N"), 0)
+                js  = bm.get((atype, "JS"), float("nan"))
+                mode= bm.get((atype, "Mode"), float("nan"))
+                js_i= im.get((atype, "JS"), float("nan"))
+                delta = (js_i - js) if (not pd.isna(js_i) and not pd.isna(js)) else float("nan")
+                js_s  = _style_val(js,   "JS",   *rankings[(atype, "JS")])
+                mode_s= _style_val(mode, "Mode", *rankings[(atype, "Mode")])
+                js_cell = js_s + _fmt_delta_inline(delta)
+                cells += [str(int(n)) if n else "--", js_cell, mode_s]
+            lines.append(f"{_display_name(model)} & {' & '.join(cells)} \\\\")
         lines.append(r"\midrule")
     if lines[-1] == r"\midrule":
         lines.pop()
-    lines.append(r"\bottomrule")
-    lines.append(r"\end{tabular}")
-    lines.append(r"\end{table}")
+    lines += [
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\caption{Per-question JS divergence and modal-answer match rate between model and human answer distributions, "
+        r"under the blind condition (pooled across all three control variants). "
+        r"$\Delta$ in parentheses shows the instruction effect: "
+        r"\textcolor{teal}{teal\,$\downarrow$} = instruction reduces JS (improves alignment), "
+        r"\textcolor{red}{red\,$\uparrow$} = worsens. "
+        r"\textbf{Bold}: best per column; \underline{underline}: second best.}",
+        r"\label{tab:hm_dist_blind_inst_effect}",
+        r"\end{table}",
+    ]
     return "\n".join(lines) + "\n"
 
 
 if __name__ == "__main__":
     _write(OUT_DIR / "hm_grouped_distribution_7b_compact_filtered.tex", build_hm_grouped_distribution_7b_compact_filtered())
+    _write(OUT_DIR / "hm_dist_blind_inst_effect.tex", build_hm_dist_blind_inst_effect())

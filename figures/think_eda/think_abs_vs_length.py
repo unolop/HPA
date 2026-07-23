@@ -162,6 +162,8 @@ plot_metric_panel(ax_conf,  "think_confidence",  "Mean answer logprob", None)
 ax_sbert.set_xlabel("Mean think words")
 ax_acc.set_xlabel("Mean think words")
 ax_conf.set_xlabel("Mean think words")
+for ax, label in zip([ax_sbert, ax_acc, ax_conf], ["(a)", "(b)", "(c)"]):
+    ax.text(0.03, 0.97, label, transform=ax.transAxes, fontsize=9, fontweight="bold", va="top", ha="left")
 
 fig.legend(
         handles=variant_handles,

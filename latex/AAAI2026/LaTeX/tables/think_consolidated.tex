@@ -1,14 +1,16 @@
-\begin{table*}[t]
+\begin{table*}[ht]
 \centering
 \small
+\setlength{\tabcolsep}{3pt}
+
 \caption{Thinking-mode statistics for Qwen3 standalone LLMs across control variants
 (Orig.\,=\,Original, Wkr.\,=\,Weaker, Pron.\,=\,Pronominalized; 113-question human-study subset).
 \textit{Think words}: mean reasoning-chain length (empty-think responses contribute 0).
 \textit{Empty-think \%}: fraction of questions with no reasoning chain.
 \textit{HM SBERT}: human--model semantic agreement.
-\textit{Accuracy \%}: VQA exact-match accuracy.}
+\textit{Accuracy \%}: VQA exact-match accuracy.
+Qwen3-1.7B is the clearest positive case: thinking improves both HM SBERT and accuracy on the original formulation, but this benefit does not carry to larger sizes.}
 \label{tab:think_stats}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{l rrr | rrr | rrr | rrr}
 \toprule
  & \multicolumn{3}{c|}{Think words} & \multicolumn{3}{c|}{Empty-think (\%)} & \multicolumn{3}{c|}{HM SBERT} & \multicolumn{3}{c}{Accuracy (\%)} \\
@@ -22,5 +24,4 @@ Qwen3-8B   & 439 & 450 & 505 &  7.0 &  6.6 &  6.4 & .507 & .502 & .422 & 30.7 & 
 Qwen3-32B  &  90 &  89 &  77 & 60.4 & 61.0 & 65.7 & .572 & .585 & .500 & 11.2 & 10.4 &  8.3 \\
 \bottomrule
 \end{tabular}
-}
 \end{table*}

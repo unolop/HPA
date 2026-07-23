@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+
+\caption{Fisher's $z$ comparison of per-model pattern correlation ($r$ between model and human HH SBERT across operation types, $n{=}10$ operation groups). $\bar{r}$ is the group mean back-transformed from Fisher $z$; $p$-values from two-sample Welch $t$-test on $z$ scores.}
+\label{tab:fisher_z_pattern}
+\begin{tabular}{lcccc}
+\toprule
+Comparison & $\bar{r}_1$ & $\bar{r}_2$ & $\Delta r$ & $p$ \\
+\midrule
+Backbone Decoder vs.\ VLM & 0.855 & 0.841 & +0.014 & 0.867 \\
+Backbone Decoder vs.\ Standalone LLM & 0.855 & 0.662 & +0.193 & 0.337 \\
+VLM vs.\ Standalone LLM & 0.841 & 0.662 & +0.179 & 0.349 \\
+\bottomrule
+\end{tabular}
+\end{table}

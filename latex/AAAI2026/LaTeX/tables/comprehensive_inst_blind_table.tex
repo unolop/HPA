@@ -1,7 +1,8 @@
-\begin{table*}[t]
-\scriptsize
+\begin{table*}[ht]
+\small
 \centering
 \setlength{\tabcolsep}{2.8pt}
+
 \caption{Blind performance across evaluation metrics and control variants (113-question inst-blind subset, 40 participants).
 Acc = VQA accuracy (\%); Len = mean answer length in words; SBERT, chrF, ROUGE-1, Exact = human--model agreement (\%).
 Human row shows human--human agreement. Bold = best; underline = second-best within each architecture group per metric.}
@@ -32,11 +33,11 @@ LLaVA-1.6-Mistral & 7B & \textbf{53.7} & \underline{46.0} & \underline{41.3} & 1
 \multirow{2}{*}{LLaVA-1.6-Vicuna}
  & 7B  & 51.6 & 44.2 & \textbf{42.3} & 1.0 & 1.0 & 1.0 & 54.4 & 52.2 & 50.9 & 20.8 & 18.9 & 18.2 & 17.4 & 15.6 & 15.0 & 16.7 & 15.3 & 14.9 \\
  & 13B & \underline{52.4} & 38.6 & 37.5 & 1.0 & 1.1 & 1.0 & 56.3 & 54.5 & 51.9 & \underline{23.8} & 22.8 & 18.5 & \underline{20.4} & 19.7 & 15.3 & \underline{20.1} & 19.4 & 15.3 \\
-\multirow{4}{*}{Qwen3-VL}
+\multirow{3}{*}{Qwen3-VL}
  & 2B  & 47.6 & 41.9 & 40.2 & 1.3 & 1.3 & 1.3 & 56.1 & 53.4 & 52.6 & 21.6 & 20.6 & 19.0 & 17.5 & 16.6 & 15.6 & 16.3 & 16.4 & 15.4 \\
  & 4B  & 50.1 & 37.5 & 38.7 & 1.2 & 1.2 & 1.1 & 56.8 & 55.2 & 52.7 & 23.5 & 23.9 & 20.7 & 19.2 & 20.2 & 17.5 & 18.3 & 19.9 & 17.1 \\
  & 8B  & 47.3 & 38.4 & 33.3 & \underline{3.3} & 1.5 & 1.3 & 56.1 & 54.8 & 52.2 & 23.0 & \underline{24.1} & 21.1 & 19.5 & \underline{20.4} & 17.7 & 18.6 & \underline{20.1} & 17.5 \\
- & 32B & 37.5 & 27.4 & 17.1 & \textbf{28} & \textbf{29} & \textbf{35} & 51.6 & 48.8 & 46.5 & 20.3 & 19.7 & 15.1 & 18.0 & 17.4 & 12.8 & 16.2 & 16.2 & 12.2 \\
+% 32B VLM excluded: incomplete inference data
 \midrule
 \multicolumn{20}{c}{\textit{VLM Backbone Decoders}} \\
 \midrule
@@ -49,11 +50,11 @@ LLaVA-1.6-Mistral & 7B & \textbf{53.7} & \textbf{39.5} & \underline{37.2} & 1.1 
 \multirow{2}{*}{LLaVA-1.6-Vicuna}
  & 7B  & 44.5 & 36.9 & 30.4 & 1.1 & 1.1 & 1.4 & 59.3 & 57.1 & 54.9 & 27.2 & 26.8 & 23.2 & 23.1 & 23.1 & 19.8 & 22.5 & 22.4 & 19.1 \\
  & 13B & \underline{47.2} & 36.0 & \textbf{37.5} & 1.0 & 1.1 & 1.0 & 58.8 & \textbf{59.7} & \textbf{56.7} & 27.1 & \textbf{28.9} & 23.6 & 23.4 & \textbf{25.5} & 19.8 & \textbf{23.0} & \textbf{25.0} & 19.5 \\
-\multirow{4}{*}{Qwen3-VL}
+\multirow{3}{*}{Qwen3-VL}
  & 2B  & 39.2 & 34.5 & 25.3 & \textbf{5.1} & \underline{4.6} & 1.5 & 57.8 & 57.1 & 54.1 & 25.9 & 26.7 & 24.0 & 21.9 & 22.7 & \underline{20.7} & 20.2 & 22.2 & \underline{20.1} \\
  & 4B  & 40.7 & 33.3 & 23.5 & 1.2 & 1.2 & 1.2 & \underline{59.5} & \underline{58.0} & 54.9 & \underline{27.4} & \underline{28.2} & 23.4 & 23.0 & \underline{23.9} & 19.9 & 21.6 & \underline{23.2} & 19.5 \\
  & 8B  & 42.2 & 32.4 & 29.5 & 1.4 & 1.8 & 1.3 & 58.8 & 56.5 & 53.9 & 25.7 & 26.9 & 23.0 & 21.8 & 23.0 & 19.7 & 20.0 & 23.0 & 18.6 \\
- & 32B & 45.1 & \underline{38.9} & 33.9 & 2.2 & 1.2 & 2.7 & 58.9 & 57.4 & 54.6 & 25.6 & 27.1 & 22.5 & 21.3 & 23.0 & 18.8 & 19.8 & 22.4 & 18.1 \\
+% 32B LM excluded: not discussed in paper
 \midrule
 \multicolumn{20}{c}{\textit{Standalone LLMs}} \\
 \midrule
@@ -65,11 +66,11 @@ Qwen2.5-Instruct & 7B & \textbf{35.4} & \textbf{28.3} & \textbf{24.4} & 1.3 & 1.
  & 1.7B & 9.1 & 10.0 & 8.0 & 7.8 & 7.5 & 5.7 & 45.6 & 43.1 & 42.1 & 14.2 & 15.8 & 14.8 & 11.8 & 12.8 & 11.2 & 9.7 & 11.9 & 9.8 \\
  & 4B  & 18.0 & 20.1 & 18.0 & 1.3 & 1.2 & 1.1 & \underline{54.4} & \textbf{52.2} & \textbf{50.1} & \underline{24.7} & \textbf{24.2} & \textbf{22.2} & \textbf{20.4} & \textbf{20.7} & \textbf{19.0} & \underline{18.3} & \textbf{20.0} & \textbf{18.1} \\
  & 8B  & 27.1 & \underline{21.5} & 15.0 & 2.3 & 1.2 & 1.4 & 52.2 & 51.1 & 44.1 & 21.3 & 21.9 & 16.2 & 16.3 & 18.1 & 11.9 & 14.7 & 17.1 & 10.9 \\
- & 32B & \underline{32.7} & 20.9 & \underline{19.5} & 1.9 & 1.8 & 3.2 & \textbf{54.9} & 50.0 & 45.8 & \textbf{25.2} & \underline{22.4} & \underline{18.4} & \underline{20.3} & \underline{19.2} & \underline{14.8} & \textbf{18.7} & \underline{17.7} & \underline{13.4} \\
+% & 32B excluded
 \multirow{2}{*}{Vicuna}
  & 7B  & 17.4 & 14.6 & 9.3 & 6.9 & 5.2 & 5.3 & 43.6 & 41.1 & 39.4 & 15.8 & 15.0 & 13.8 & 15.4 & 15.0 & 13.0 & 11.8 & 11.4 & 10.9 \\
  & 13B & 26.8 & 19.5 & 17.3 & 3.0 & 2.9 & 5.1 & 54.4 & 46.7 & \underline{46.6} & 21.8 & 15.6 & 15.9 & 19.4 & 14.4 & 13.9 & 16.1 & 9.8 & 11.3 \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
+}% end resizebox
 \end{table*}

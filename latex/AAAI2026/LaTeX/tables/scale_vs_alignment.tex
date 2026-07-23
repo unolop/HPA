@@ -1,0 +1,50 @@
+\begin{table}[ht]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption{Per-model mean HM SBERT (inst-blind, abstention-filtered, pooled across all variants and questions) against parameter count. Pearson $r$ between parameter count and mean HM SBERT is non-significant within every group (all $p > 0.24$), confirming that group membership---not size---drives the alignment ordering.}
+\label{tab:scale_vs_alignment}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Model} & \textbf{Params (B)} & \textbf{HM SBERT} \\
+\midrule
+\multicolumn{3}{l}{\textit{VLMs} \hfill $r = -0.15,\ p = 0.65$} \\
+InternVL-1B       & 1  & .551 \\
+InternVL-2B       & 2  & .544 \\
+Qwen3-VL-2B       & 2  & .541 \\
+Qwen3-VL-4B       & 4  & .551 \\
+LLaVA-Mistral     & 7  & .535 \\
+LLaVA-Vicuna      & 7  & .524 \\
+LLaVA-1.5-7B      & 7  & .503 \\
+InternVL-8B       & 8  & .598 \\
+Qwen3-VL-8B       & 8  & .549 \\
+LLaVA-Vicuna-13B  & 13 & .546 \\
+Qwen3-VL-32B      & 32 & .530 \\
+\midrule
+\multicolumn{3}{l}{\textit{Backbone decoders} \hfill $r = +0.38,\ p = 0.24$} \\
+InternVL-1B (LM)      & 1  & .574 \\
+InternVL-2B (LM)      & 2  & .549 \\
+Qwen3-VL-2B (LM)      & 2  & .569 \\
+Qwen3-VL-4B (LM)      & 4  & .577 \\
+LLaVA-1.5 (LM)        & 7  & .574 \\
+LLaVA-Mistral (LM)    & 7  & .576 \\
+LLaVA-Vicuna (LM)     & 7  & .575 \\
+InternVL-8B (LM)      & 8  & .575 \\
+Qwen3-VL-8B (LM)      & 8  & .568 \\
+LLaVA-Vicuna-13B (LM) & 13 & .586 \\
+Qwen3-VL-32B (LM)     & 32 & .577 \\
+\midrule
+\multicolumn{3}{l}{\textit{Standalone LLMs} \hfill $r = +0.34,\ p = 0.34$} \\
+Qwen3-0.6B          & 0.6 & .329 \\
+Qwen3-1.7B          & 1.7 & .429 \\
+Phi-3.5-mini        & 3.8 & .355 \\
+Qwen3-4B            & 4   & .519 \\
+Vicuna-7B           & 7   & .407 \\
+Mistral-7B          & 7   & .210 \\
+Qwen2.5-7B-Instruct & 7   & .500 \\
+Qwen3-8B            & 8   & .477 \\
+Vicuna-13B          & 13  & .453 \\
+Qwen3-32B           & 32  & .495 \\
+\bottomrule
+\end{tabular}
+\end{table}

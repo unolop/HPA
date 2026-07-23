@@ -1,40 +1,37 @@
-\begin{table}[t]
+\begin{table}[ht]
 \centering
-\scriptsize
+\small
 \setlength{\tabcolsep}{3pt}
-\caption{Compact summary of per-model Pearson correlation between per-question HH SBERT and HM SBERT for the matched 7/8B set. $^{***}p{<}.001$, $^{**}p{<}.01$, $^{*}p{<}.05$.}
+
+\caption{Per-model Pearson $r$ between per-question HH SBERT and HM SBERT for the matched 7/8B set, shown for pooled variants (All) and per variant. Human LOO serves as the ceiling reference. \textbf{Bold}: best per column; \underline{underline}: second best.}
 \label{tab:hh_hm_scatter_corr_compact}
-\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
 Model & All $r$ & Original & Weaker & Pron. \\
-\midrule
-\multicolumn{5}{l}{\textit{Human Reference}} \\
 \midrule
 Human (LOO) & 0.915 & 0.905 & 0.913 & 0.928 \\
 \midrule
 \multicolumn{5}{l}{\textit{Vision-Language Models}} \\
 \midrule
-InternVL-8B & $0.935^{***}$ & 0.931 & 0.932 & 0.944 \\
-Qwen3-VL-8B & $0.895^{***}$ & 0.892 & 0.889 & 0.904 \\
-LLaVA-Mistral & $0.879^{***}$ & 0.878 & 0.868 & 0.890 \\
-LLaVA-Vicuna & $0.884^{***}$ & 0.882 & 0.882 & 0.886 \\
-LLaVA-1.5-7B & $0.872^{***}$ & 0.853 & 0.856 & 0.902 \\
+InternVL-8B   & \textbf{0.935} & \textbf{0.931} & \textbf{0.932} & \textbf{0.944} \\
+Qwen3-VL-8B   & 0.895 & 0.892 & 0.889 & 0.904 \\
+LLaVA-Mistral & 0.879 & 0.878 & 0.868 & 0.890 \\
+LLaVA-Vicuna  & 0.884 & 0.882 & 0.882 & 0.886 \\
+LLaVA-1.5-7B  & 0.872 & 0.853 & 0.856 & 0.902 \\
 \midrule
 \multicolumn{5}{l}{\textit{VLM Backbone Decoders}} \\
 \midrule
-LLaVA-Mistral (LM) & $0.928^{***}$ & 0.918 & 0.926 & 0.937 \\
-InternVL-8B (LM) & $0.896^{***}$ & 0.886 & 0.913 & 0.888 \\
-LLaVA-Vicuna (LM) & $0.918^{***}$ & 0.925 & 0.913 & 0.918 \\
-LLaVA-1.5 (LM) & $0.921^{***}$ & 0.917 & 0.907 & 0.937 \\
-Qwen3-VL-8B (LM) & $0.890^{***}$ & 0.858 & 0.892 & 0.916 \\
+LLaVA-Mistral & \underline{0.928} & 0.918 & \underline{0.926} & \underline{0.937} \\
+InternVL-8B   & 0.896 & 0.886 & 0.913 & 0.888 \\
+LLaVA-Vicuna  & 0.918 & \underline{0.925} & 0.913 & 0.918 \\
+LLaVA-1.5     & 0.921 & 0.917 & 0.907 & \underline{0.937} \\
+Qwen3-VL-8B   & 0.890 & 0.858 & 0.892 & 0.916 \\
 \midrule
 \multicolumn{5}{l}{\textit{Standalone LLMs}} \\
 \midrule
-Qwen2.5-7B-Instruct & $0.699^{***}$ & 0.747 & 0.649 & 0.704 \\
-Vicuna-7B & $0.671^{***}$ & 0.669 & 0.619 & 0.724 \\
-Qwen3-8B & $0.581^{***}$ & 0.533 & 0.641 & 0.564 \\
+Qwen2.5-7B-Instruct & 0.699 & 0.747 & 0.649 & 0.704 \\
+Vicuna-7B           & 0.671 & 0.669 & 0.619 & 0.724 \\
+Qwen3-8B            & 0.581 & 0.533 & 0.641 & 0.564 \\
 \bottomrule
 \end{tabular}
-}
 \end{table}

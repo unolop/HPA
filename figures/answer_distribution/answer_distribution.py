@@ -37,6 +37,7 @@ OUT_BASE = ROOT / "figures" / "answer_distribution"
 TRIPLETS = [
     {"slug": "qwen3_vl_8b", "vlm": "Qwen3-VL-8B", "decoder": "Qwen3-VL-8B (LM)", "llm": "Qwen3-8B"},
     {"slug": "internvl_8b", "vlm": "InternVL-8B", "decoder": "InternVL-8B (LM)", "llm": "Qwen3-8B"},
+    {"slug": "internvl_8b_think", "vlm": "InternVL-8B", "decoder": "InternVL-8B (LM)", "llm": "Qwen3-8B", "extras": ["Qwen3-8B (think)"]},
     {"slug": "llava_15_7b", "vlm": "LLaVA-1.5-7B", "decoder": "LLaVA-1.5 (LM)", "llm": "Vicuna-7B"},
     {"slug": "llava_mistral_7b", "vlm": "LLaVA-Mistral", "decoder": "LLaVA-Mistral (LM)", "llm": "Mistral-7B"},
     {"slug": "llava_vicuna_7b", "vlm": "LLaVA-Vicuna", "decoder": "LLaVA-Vicuna (LM)", "llm": "Vicuna-7B"},
@@ -294,7 +295,7 @@ def export_triplet(
     yesno_dir: Path,
     number_dir: Path,
 ):
-    model_names = [triplet["vlm"], triplet["decoder"], triplet["llm"]]
+    model_names = [triplet["vlm"], triplet["decoder"], triplet["llm"]] + triplet.get("extras", [])
     subset = model_df[model_df["model"].isin(model_names)].copy()
     subset["source"] = subset["model"]
     base_df = pd.concat(

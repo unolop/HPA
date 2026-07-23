@@ -95,9 +95,7 @@ conda run -n zero python evaluation/inference.py \
 --image_override gray|white|noise   # default: blank
 ```
 
-**Quantization:**
 ```bash
---quantization_bit 4   # required for 32B models
 --fill_missing         # resume from partial JSONL (safe to re-run)
 ```
 

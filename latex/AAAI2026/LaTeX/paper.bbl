@@ -1,0 +1,268 @@
+\begin{thebibliography}{38}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Agrawal et~al.(2018)Agrawal, Batra, Parikh, and
+  Kembhavi}]{agrawal2018dont}
+Agrawal, A.; Batra, D.; Parikh, D.; and Kembhavi, A. 2018.
+\newblock Don't just assume; look and answer: Overcoming priors for visual
+  question answering.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}.
+
+\bibitem[{Antol et~al.(2015)Antol, Agrawal, Lu, Mitchell, Batra, Zitnick, and
+  Parikh}]{antol2015vqa}
+Antol, S.; Agrawal, A.; Lu, J.; Mitchell, M.; Batra, D.; Zitnick, C.~L.; and
+  Parikh, D. 2015.
+\newblock {VQA}: Visual question answering.
+\newblock In \emph{Proceedings of the IEEE International Conference on Computer
+  Vision}, 2425--2433.
+
+\bibitem[{Bai et~al.(2025)Bai, Cai, Chen, Chen, Deng, Ding, Gao, Ge, Ge, Guo
+  et~al.}]{bai2025qwen3vl}
+Bai, S.; Cai, Y.; Chen, R.; Chen, Z.; Deng, L.; Ding, W.; Gao, C.; Ge, C.; Ge,
+  W.; Guo, Z.; et~al. 2025.
+\newblock Qwen3-{VL} Technical Report.
+\newblock \emph{arXiv preprint}.
+
+\bibitem[{Bao et~al.(2026)Bao, Wu, Liu, Li, Cao, and
+  Evans}]{bao2026imagination}
+Bao, H.; Wu, S.; Liu, X.; Li, S.; Cao, S.; and Evans, J.~A. 2026.
+\newblock Contemporary {AI} Lacks the Imagination to Diverge or Negate in
+  Science.
+\newblock arXiv:2606.08251.
+
+\bibitem[{Bar(2007)}]{bar2007proactive}
+Bar, M. 2007.
+\newblock The proactive brain: using analogies and associations to generate
+  predictions.
+\newblock \emph{Trends in Cognitive Sciences}, 11(7): 280--289.
+
+\bibitem[{Chen et~al.(2024)Chen, Li, Dong, Zhang, Zang, Chen, Duan, Wang, Qiao,
+  Lin et~al.}]{chen2024are}
+Chen, L.; Li, J.; Dong, X.; Zhang, P.; Zang, Y.; Chen, Z.; Duan, H.; Wang, J.;
+  Qiao, Y.; Lin, D.; et~al. 2024.
+\newblock Are we on the right way for evaluating large vision-language models?
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:
+  27056--27087.
+
+\bibitem[{{DeepSeek-AI}(2025)}]{deepseekai2025deepseekr1}
+{DeepSeek-AI}. 2025.
+\newblock {DeepSeek-R1}: Incentivizing Reasoning Capability in {LLMs} via
+  Reinforcement Learning.
+\newblock arXiv:2501.12948.
+
+\bibitem[{Goyal et~al.(2016)Goyal, Khot, Summers-Stay, Batra, and
+  Parikh}]{goyal2016making}
+Goyal, Y.; Khot, T.; Summers-Stay, D.; Batra, D.; and Parikh, D. 2016.
+\newblock Making the {V} in {VQA} matter: Elevating the role of image
+  understanding in visual question answering.
+\newblock \emph{International Journal of Computer Vision}.
+
+\bibitem[{Han et~al.(2024)Han, Lian, Pan, Pi, Zhang, Diao, Lin, and
+  Zhang}]{han2024instinctive}
+Han, T.; Lian, Q.; Pan, R.; Pi, R.; Zhang, J.; Diao, S.; Lin, Y.; and Zhang, T.
+  2024.
+\newblock The instinctive bias: Spurious images lead to illusion in {MLLMs}.
+\newblock \emph{arXiv preprint arXiv:2402.03757}.
+
+\bibitem[{Jabri, Joulin, and van~der Maaten(2016)}]{jabri2016revisiting}
+Jabri, A.; Joulin, A.; and van~der Maaten, L. 2016.
+\newblock Revisiting Visual Question Answering Baselines.
+\newblock In \emph{European Conference on Computer Vision}, 727--739. Springer.
+
+\bibitem[{Ji et~al.(2023)Ji, Lee, Frieske, Yu, Su, Xu, Ishii, Bang, Madotto,
+  and Fung}]{ji2023survey}
+Ji, Z.; Lee, N.; Frieske, R.; Yu, T.; Su, D.; Xu, Y.; Ishii, E.; Bang, Y.~J.;
+  Madotto, A.; and Fung, P. 2023.
+\newblock Survey of hallucination in natural language generation.
+\newblock \emph{ACM Computing Surveys}, 55(12): 1--38.
+
+\bibitem[{Kahneman(2011)}]{kahneman2011thinking}
+Kahneman, D. 2011.
+\newblock \emph{Thinking, Fast and Slow}.
+\newblock Farrar, Straus and Giroux.
+
+\bibitem[{Kwon and Zou(2025)}]{kwon2025whatllms}
+Kwon, Y.; and Zou, J. 2025.
+\newblock What {LLMs} Think When You Don't Tell Them What to Think About?
+\newblock arXiv:2602.01689.
+
+\bibitem[{Lacombe, Wu, and Dilworth(2025)}]{lacombe2025dontthink}
+Lacombe, R.; Wu, K.; and Dilworth, E. 2025.
+\newblock Don't Think Twice! Over-Reasoning Impairs Confidence Calibration.
+\newblock ICML 2025 Workshop on Reliable and Responsible Foundation Models,
+  arXiv:2508.15050.
+
+\bibitem[{Lan, Frassinelli, and Plank(2025)}]{lan2025mind}
+Lan, J.; Frassinelli, D.; and Plank, B. 2025.
+\newblock Mind the Uncertainty in Human Disagreement: Evaluating Discrepancies
+  Between Model Predictions and Human Responses in VQA.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~39, 4446--4454.
+
+\bibitem[{Lee et~al.(2023)Lee, Kim, Won, Lee, Ghassemi, Thorne, Choi, Kwon, and
+  Choi}]{lee2023visalign}
+Lee, J.; Kim, S.; Won, S.; Lee, J.; Ghassemi, M.; Thorne, J.; Choi, J.; Kwon,
+  O.-K.; and Choi, E. 2023.
+\newblock {VisAlign}: Dataset for measuring the alignment between {AI} and
+  humans in visual perception.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36:
+  77119--77148.
+
+\bibitem[{Lee et~al.(2024)Lee, Kim, Yoon, Kim, Lee, Koh, and
+  Jung}]{lee2024vlind}
+Lee, K.~i.; Kim, M.; Yoon, S.; Kim, M.; Lee, D.; Koh, H.; and Jung, K. 2024.
+\newblock {VLind-Bench}: Measuring language priors in large vision-language
+  models.
+\newblock \emph{arXiv preprint}.
+
+\bibitem[{Liu et~al.(2024)Liu, Li, Li, Li, Zhang, Shen, and
+  Lee}]{liu2024llavanext}
+Liu, H.; Li, C.; Li, Y.; Li, B.; Zhang, Y.; Shen, S.; and Lee, Y.~J. 2024.
+\newblock {LLaVA-NeXT}: Improved reasoning, {OCR}, and world knowledge.
+\newblock \emph{arXiv preprint}.
+
+\bibitem[{Liu et~al.(2023)Liu, Li, Wu, and Lee}]{liu2023visual}
+Liu, H.; Li, C.; Wu, Q.; and Lee, Y.~J. 2023.
+\newblock Visual instruction tuning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36:
+  34892--34916.
+
+\bibitem[{McCoy et~al.(2024)McCoy, Yao, Friedman, Hardy, and
+  Griffiths}]{mccoy2024embers}
+McCoy, R.~T.; Yao, S.; Friedman, D.; Hardy, M.~D.; and Griffiths, T.~L. 2024.
+\newblock Embers of autoregression show how large language models are shaped by
+  the problem they are trained to solve.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 121(41):
+  e2322420121.
+
+\bibitem[{Min et~al.(2020)Min, Michael, Hajishirzi, and
+  Zettlemoyer}]{min2020ambigqa}
+Min, S.; Michael, J.; Hajishirzi, H.; and Zettlemoyer, L. 2020.
+\newblock AmbigQA: Answering Ambiguous Open-domain Questions.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing}, 5783--5797.
+
+\bibitem[{Niu et~al.(2021)Niu, Tang, Zhang, Lu, Hua, and
+  Wen}]{niu2021counterfactual}
+Niu, Y.; Tang, K.; Zhang, H.; Lu, Z.; Hua, X.-S.; and Wen, J.-R. 2021.
+\newblock Counterfactual {VQA}: A Cause-Effect Look at Language Bias.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}, 12700--12710.
+
+\bibitem[{Paiss et~al.(2023)Paiss, Ephrat, Tov, Zada, Mosseri, Irani, and
+  Dekel}]{paiss2023teaching}
+Paiss, R.; Ephrat, A.; Tov, O.; Zada, S.; Mosseri, I.; Irani, M.; and Dekel, T.
+  2023.
+\newblock Teaching {CLIP} to Count to Ten.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision (ICCV)}.
+
+\bibitem[{Parcalabescu et~al.(2022)Parcalabescu, Cafagna, Muradjan, Frank,
+  Calixto, and Gatt}]{parcalabescu2022valse}
+Parcalabescu, L.; Cafagna, M.; Muradjan, L.; Frank, A.; Calixto, I.; and Gatt,
+  A. 2022.
+\newblock {VALSE}: A Task-Independent Benchmark for Vision and Language Concept
+  Groundings.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association
+  for Computational Linguistics (ACL)}.
+
+\bibitem[{Poliak et~al.(2018)Poliak, Naradowsky, Haldar, Rudinger, and
+  Van~Durme}]{poliak2018hypothesis}
+Poliak, A.; Naradowsky, J.; Haldar, A.; Rudinger, R.; and Van~Durme, B. 2018.
+\newblock Hypothesis only baselines in natural language inference.
+\newblock In \emph{Proceedings of the Seventh Joint Conference on Lexical and
+  Computational Semantics}, 180--191.
+
+\bibitem[{Reimers and Gurevych(2019)}]{reimers2019sentence}
+Reimers, N.; and Gurevych, I. 2019.
+\newblock Sentence-{BERT}: Sentence Embeddings using Siamese {BERT}-Networks.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing}, 3982--3992.
+
+\bibitem[{Rohrbach et~al.(2018)Rohrbach, Hendricks, Burns, Darrell, and
+  Saenko}]{rohrbach2018object}
+Rohrbach, A.; Hendricks, L.~A.; Burns, K.; Darrell, T.; and Saenko, K. 2018.
+\newblock Object hallucination in image captioning.
+\newblock In \emph{Conference on Empirical Methods in Natural Language
+  Processing}.
+
+\bibitem[{R{\"o}ttger et~al.(2025)R{\"o}ttger, Pernisi, Vidgen, and
+  Hovy}]{rottger2025safetyprompts}
+R{\"o}ttger, P.; Pernisi, F.; Vidgen, B.; and Hovy, D. 2025.
+\newblock {SafetyPrompts}: a Systematic Review of Open Datasets for Evaluating
+  and Improving Large Language Model Safety.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}.
+\newblock Special Track on AI Alignment.
+
+\bibitem[{Song et~al.(2020)Song, Tan, Qin, Lu, and Liu}]{song2020mpnet}
+Song, K.; Tan, X.; Qin, T.; Lu, J.; and Liu, T.-Y. 2020.
+\newblock {MPNet}: Masked and Permuted Pre-training for Language Understanding.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~33, 16145--16155.
+
+\bibitem[{Tversky and Kahneman(1974)}]{tversky1974judgment}
+Tversky, A.; and Kahneman, D. 1974.
+\newblock Judgment under uncertainty: Heuristics and biases.
+\newblock \emph{Science}, 185(4157): 1124--1131.
+
+\bibitem[{Xiao and Wang(2021)}]{xiao2021hallucination}
+Xiao, Y.; and Wang, W.~Y. 2021.
+\newblock On hallucination and predictive uncertainty in conditional language
+  generation.
+\newblock In \emph{Conference of the European Chapter of the Association for
+  Computational Linguistics}.
+
+\bibitem[{Yang et~al.(2025)Yang, Li, Yang, Zhang, Hui, Zheng, Yu, Gao, Huang,
+  Lv et~al.}]{yang2025qwen3}
+Yang, A.; Li, A.; Yang, B.; Zhang, B.; Hui, B.; Zheng, B.; Yu, B.; Gao, C.;
+  Huang, C.; Lv, C.; et~al. 2025.
+\newblock Qwen3 Technical Report.
+\newblock \emph{arXiv preprint}.
+
+\bibitem[{Ye et~al.(2024)Ye, Zheng, Ma, Cao, Rehg, and
+  Zhang}]{ye2024mmspubench}
+Ye, W.; Zheng, G.; Ma, Y.; Cao, X.; Rehg, J.~M.; and Zhang, A. 2024.
+\newblock {MM-SpuBench}: Towards better understanding of spurious biases in
+  multimodal {LLMs}.
+\newblock \emph{arXiv preprint arXiv:2406.17126}.
+
+\bibitem[{Yoon et~al.(2025)Yoon, Kim, Yang, Kim, Kim, Kim, Choi, Kim, and
+  Seo}]{yoon2025reasoningconfidence}
+Yoon, D.; Kim, S.; Yang, S.; Kim, S.; Kim, S.; Kim, Y.; Choi, E.; Kim, Y.; and
+  Seo, M. 2025.
+\newblock Reasoning Models Better Express Their Confidence.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}.
+
+\bibitem[{Y{\"u}ksekg{\"o}n{\"u}l et~al.(2023)Y{\"u}ksekg{\"o}n{\"u}l, Bianchi,
+  Kalluri, Jurafsky, and Zou}]{yuksekgonul2023when}
+Y{\"u}ksekg{\"o}n{\"u}l, M.; Bianchi, F.; Kalluri, P.; Jurafsky, D.; and Zou,
+  J. 2023.
+\newblock When and Why Vision-Language Models Behave like Bags-of-Words, and
+  What to Do About It?
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Zhang et~al.(2016)Zhang, Goyal, Summers-Stay, Batra, and
+  Parikh}]{zhang2016yin}
+Zhang, P.; Goyal, Y.; Summers-Stay, D.; Batra, D.; and Parikh, D. 2016.
+\newblock Yin and Yang: Balancing and Answering Binary Visual Questions.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}, 5014--5022.
+
+\bibitem[{Zhang et~al.(2023)Zhang, Zhang, Li, Zhao, Karypis, and
+  Smola}]{zhang2023multimodal}
+Zhang, Z.; Zhang, A.; Li, M.; Zhao, H.; Karypis, G.; and Smola, A. 2023.
+\newblock Multimodal Chain-of-Thought Reasoning in Language Models.
+\newblock \emph{Transactions on Machine Learning Research}.
+
+\bibitem[{Zhu et~al.(2025)Zhu, Liu, Chen, Liu, Ye, Gu, Tian, Duan, Su, Shao
+  et~al.}]{zhu2025internvl3}
+Zhu, J.; Liu, W.; Chen, Z.; Liu, Z.; Ye, S.; Gu, L.; Tian, H.; Duan, Y.; Su,
+  W.; Shao, J.; et~al. 2025.
+\newblock {InternVL3}: Exploring advanced training and test-time recipes for
+  open-source multimodal models.
+\newblock \emph{arXiv preprint arXiv:2504.10479}.
+
+\end{thebibliography}

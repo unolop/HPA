@@ -1,0 +1,18 @@
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+
+\caption{Blind accuracy with instruction effect in brackets ($\Delta$ = inst$-$blind) per model group and control variant. Deltas are averaged across entity types. Instruction changes accuracy by at most $+$0.029, confirming it does not reliably improve task performance even when it substantially changes answer behavior.}
+\label{tab:accuracy_inst_effect}
+\begin{tabular}{lccc}
+\toprule
+Group & Original & Weaker & Pronominalized \\
+\midrule
+VLM            & .405 {\scriptsize[$+$.013]} & .344 {\scriptsize[$+$.019]} & .315 {\scriptsize[$-$.008]} \\
+Backbone       & .373 {\scriptsize[$+$.014]} & .315 {\scriptsize[$+$.016]} & .281 {\scriptsize[$-$.006]} \\
+Standalone LLM & .161 {\scriptsize[$+$.014]} & .126 {\scriptsize[$+$.010]} & .087 {\scriptsize[$+$.027]} \\
+Think          & .177 {\scriptsize[$+$.002]} & .130 {\scriptsize[$-$.001]} & .080 {\scriptsize[$+$.029]} \\
+\bottomrule
+\end{tabular}
+\end{table}

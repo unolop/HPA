@@ -1,0 +1,18 @@
+\begin{table}[ht]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption{Paired Wilcoxon signed-rank tests for thinking vs.\ non-thinking HM SBERT (inst-blind, abstention-filtered, per-question means averaged over human raters and all three control variants). 4B and 8B are excluded as their thinking and non-thinking inference produced identical outputs. $^{***}p < .001$.}
+\label{tab:thinking_wilcoxon}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Size} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} & \textbf{$p$} \\
+\midrule
+0.6B  & .330 & .330 & $+0.000$ & $.317$ \\
+1.7B  & .449 & .559 & $+0.110$ & $< .001^{***}$ \\
+% 32B excluded
+\midrule
+Pooled & .382 & .430 & $+0.048$ & $< .001^{***}$ \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -901,8 +901,8 @@ for _, row in rc_wide.iterrows():
         prev_grp = grp
 
     cell_c = _pct_rc(row['change_C'])
-    cell_b = _pct_rc(row['change_B']) + _delta_colored(row['change_C'], row['change_B'])
-    cell_a = _pct_rc(row['change_A']) + _delta_colored(row['change_C'], row['change_A'])
+    cell_b = _pct_rc(row['change_B'])
+    cell_a = _pct_rc(row['change_A'])
     lines_rc.append(f"{row['label']} & {cell_c} & {cell_b} & {cell_a} \\\\")
 
 lines_rc += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
