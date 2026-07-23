@@ -337,31 +337,9 @@ Figure~\ref{fig:count_transition_all} extends the InternVL-8B count-distribution
 \end{figure*}
 
 \clearpage
-\section{Human--Model Alignment: Correlation and Family-Level Tests}
+\section{Human--Model Alignment: Family-Level Tests}
 \label{app:degradation}
 \label{app:family_alignment_tests}
-
-Accuracy degradation and human--model correlation by operation and entity type, complementing the SBERT results in \S\ref{sec:alignment_main}.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{degradation_by_ent_op_7b_inst_blind/accuracy/combined}
-\caption{Matched 7/8B instruction-blind accuracy degradation profiles across control variants
-(Original$\to$Weaker$\to$Pronominalized). Top row: by operation type; bottom row: by entity type.
-The operation-type pattern mirrors the SBERT result: identity and spatial questions collapse
-most under pronominalization, while count and action questions remain relatively robust.
-Bold lines show group means; thin lines show individual models.}
-\label{fig:combined_accuracy}
-\end{figure*}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{hh_hm_grouped_scatter_7b_all_variants/7b_accuracy_op_ent_abstfiltered}
-\caption{Human vs.\ model blind accuracy grouped by operation type (left) and entity type (right), abstention-filtered. Each panel reports Pearson $r$ and $p$ over the grouped means. The same family ordering appears under accuracy, but operation grouping remains the more separating structural axis.}
-\label{fig:scatter_accuracy}
-\end{figure*}
-
-% hh_hm_scatter_corr_compact removed: correlation structure visible directly in scatter figures.
 
 Matched-family Wilcoxon signed-rank tests for backbone decoder vs.\ full VLM HM SBERT (Holm-corrected).
 
@@ -398,24 +376,38 @@ Human--human agreement by operation and entity type across four metrics (SBERT, 
 
 \input{tables/hh_metric_robustness}
 
+\subsection{Accuracy Degradation and Human--Model Correlation}
+
+Accuracy-based views complementing the SBERT results in \S\ref{sec:alignment_main}.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{degradation_by_ent_op_7b_inst_blind/accuracy/combined}
+\caption{Matched 7/8B instruction-blind accuracy degradation profiles across control variants
+(Original$\to$Weaker$\to$Pronominalized). Top row: by operation type; bottom row: by entity type.
+The operation-type pattern mirrors the SBERT result: identity and spatial questions collapse
+most under pronominalization, while count and action questions remain relatively robust.
+Bold lines show group means; thin lines show individual models.}
+\label{fig:combined_accuracy}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{hh_hm_grouped_scatter_7b_all_variants/7b_accuracy_op_ent_abstfiltered}
+\caption{Human vs.\ model blind accuracy grouped by operation type (left) and entity type (right), abstention-filtered. Each panel reports Pearson $r$ and $p$ over the grouped means. The same family ordering appears under accuracy, but operation grouping remains the more separating structural axis.}
+\label{fig:scatter_accuracy}
+\end{figure*}
+
 \subsection{Per-Model Agreement Across Metrics}
 
-Table~\ref{tab:comprehensive_inst_blind} reports per-model agreement across all metrics
-(accuracy, SBERT, chrF, ROUGE-1, exact match) for all three control variants
-under the blind-with-instruction condition.
-chrF scores are computed with the \texttt{sacrebleu} implementation.
+Per-model agreement across all metrics and variants (instruction-blind; chrF via \texttt{sacrebleu}; 32B excluded).
 \input{tables/comprehensive_inst_blind_table}
 
 \clearpage
 \section{Image-Condition Ablation}
 \label{app:ablation}
 
-Table~\ref{tab:image_ablation_main} reports alignment metrics under four
-uninformative image conditions for Qwen3-VL-8B, LLaVA-Mistral-7B, and InternVL-8B.
-For Qwen3-VL-8B and LLaVA-Mistral, no condition recovers backbone-level alignment.
-InternVL-8B is the exception: its VLM alignment ($0.658$ under black) exceeds its own
-backbone ($0.575$), and SBERT remains stable across all image types (range: $0.021$),
-indicating that InternVL's encoder enriches rather than suppresses the language prior.
+Alignment metrics under four uninformative image conditions (see \S\ref{sec:ablation} for discussion).
 
 \begin{table}[h]
 \centering
