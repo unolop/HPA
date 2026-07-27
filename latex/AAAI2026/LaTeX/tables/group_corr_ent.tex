@@ -1,0 +1,29 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Group-level correlation between HH and HM SBERT agreement, aggregated by \textbf{entity} type (n=9 groups). $\rho$: Spearman; $r$: Pearson; Cos: cosine similarity; MAD: mean absolute deviation from diagonal; rmcorr: repeated-measures correlation across variants.}
+\label{tab:group_corr_ent}
+\begin{tabular}{ll ccc cc}
+\toprule
+Group & Model & $\rho$ & Cos & MAD & rmcorr & $p$ \\
+\midrule
+VLM & InternVL-8B & 0.967 & 0.9991 & 0.025 & 0.745 & $<$.001 \\
+ & Qwen3-VL-8B & 0.867 & 0.9990 & 0.033 & 0.660 & 0.002 \\
+ & LLaVA-1.5-7B & 0.433 & 0.9959 & 0.066 & 0.569 & 0.011 \\
+ & LLaVA-Mistral & 0.800 & 0.9989 & 0.035 & 0.508 & 0.026 \\
+ & LLaVA-Vicuna & 0.633 & 0.9983 & 0.042 & 0.745 & $<$.001 \\
+\cdashline{2-7}
+Backbone Decoder & InternVL-8B {\scriptsize(LM)} & 0.883 & 0.9970 & 0.032 & 0.763 & $<$.001 \\
+ & Qwen3-VL-8B {\scriptsize(LM)} & 0.833 & 0.9995 & 0.016 & 0.881 & $<$.001 \\
+ & LLaVA-1.5 {\scriptsize(LM)} & 0.817 & 0.9990 & 0.023 & 0.797 & $<$.001 \\
+ & LLaVA-Mistral {\scriptsize(LM)} & 0.900 & 0.9990 & 0.016 & 0.658 & 0.002 \\
+ & LLaVA-Vicuna {\scriptsize(LM)} & 0.933 & 0.9985 & 0.020 & 0.804 & $<$.001 \\
+\cdashline{2-7}
+Standalone LLM & Qwen3-8B & 0.900 & 0.9887 & 0.106 & 0.510 & 0.026 \\
+ & Qwen3-8B {\scriptsize(think)} & 0.900 & 0.9887 & 0.106 & 0.510 & 0.026 \\
+ & Qwen2.5-Instruct & 0.817 & 0.9957 & 0.073 & 0.728 & $<$.001 \\
+ & Vicuna-7B & 0.800 & 0.9957 & 0.175 & 0.555 & 0.014 \\
+ & Mistral-7B & 0.417 & 0.9803 & 0.378 & 0.461 & 0.047 \\
+\bottomrule
+\end{tabular}
+\end{table*}

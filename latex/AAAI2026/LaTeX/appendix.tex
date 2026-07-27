@@ -166,7 +166,7 @@ online student community forums at universities. All procedures were conducted
 under an IRB-approved protocol adhering to the Declaration of Helsinki.
 Informed consent was obtained prior to participation.
 
-Participants answered text-only blind-instruction questions across the original, weaker-object, and pronominalized formulations in shuffled order (339 questions per participant).
+Participants answered text-only blind-instruction questions across the original, weaker-object, and pronominalized formulations in shuffled order ($N{=}339$ per participant).
 Participants were compensated at 10,000~KRW per hour.
 
 \subsection{Answer Preprocessing Pipeline}
@@ -237,12 +237,6 @@ removal and more stable across variants than model token confidence.}
 \subsection{Question Embedding Coverage}
 \label{app:tsne}
 
-Figure~\ref{fig:tsne} shows a t-SNE projection of the 1,000-question pool (all-mpnet-base-v2) with the human-study subset highlighted. 
-The subset is distributed across the full embedding space rather than concentrating in a narrow semantic region.
-Cluster centroids are marked with a labeled anchor point; the nearest
-question to each centroid serves as a representative example for that
-category (see Table~\ref{tab:taxonomy} for category definitions).
-
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{subset_tsne_entities}\\[0.4em]
@@ -259,6 +253,49 @@ narrow semantic region.}
 
 
 \clearpage
+\section{Model Inventory}
+\label{app:model_inventory}
+
+\begin{table*}[ht]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Model inventory (temperature 0). Each VLM is also evaluated as a
+  \textbf{backbone decoder} (text-only, no image tokens, identical weights).
+  Standalone Qwen3 models are additionally evaluated with thinking traces enabled
+  (same weights; decoding mode differs only).
+  $\dagger$~=~excluded from main analysis (incomplete inference data).}
+\label{tab:model_inventory}
+\begin{tabularx}{\textwidth}{@{}llllX@{}}
+\toprule
+\textbf{Model} & \textbf{Size} & \textbf{LLM Decoder} & \textbf{Vision Encoder} & \textbf{Notes} \\
+\midrule
+\multicolumn{5}{c}{\textit{Vision-Language Models}} \\
+\midrule
+InternVL3.5        & 1B   & Qwen3-0.6B         & InternViT-300M      & Multi-stage contrastive + generative training; InternViT aligned to Qwen3 backbone via dynamic-resolution tiling \citep{zhu2025internvl3}. \\
+InternVL3.5        & 2B   & Qwen3-1.7B         & InternViT-300M      & Same training recipe as 1B; larger Qwen3 decoder improves language grounding \citep{zhu2025internvl3}. \\
+InternVL3.5        & 8B   & Qwen3-8B           & InternViT-6B        & Uses the full InternViT-6B encoder; strongest VLM in this family on visual grounding tasks \citep{zhu2025internvl3}. \\
+LLaVA-1.5          & 7B   & Vicuna-7B v1.5     & CLIP ViT-L/14@336   & Two-stage visual instruction tuning with MLP projection; trained on LLaVA-665K dataset \citep{liu2023visual}. \\
+LLaVA-1.6-Mistral  & 7B   & Mistral-7B         & CLIP ViT-L/14@336   & Extends LLaVA-1.5 with AnyRes high-resolution tiling and richer instruction data for improved OCR and reasoning \citep{liu2024llavanext}. \\
+LLaVA-1.6-Vicuna   & 7B   & Vicuna-7B v1.5     & CLIP ViT-L/14@336   & Same AnyRes architecture as LLaVA-1.6-Mistral with Vicuna backbone \citep{liu2024llavanext}. \\
+LLaVA-1.6-Vicuna   & 13B  & Vicuna-13B v1.5    & CLIP ViT-L/14@336   & Larger Vicuna backbone under the same LLaVA-1.6 recipe \citep{liu2024llavanext}. \\
+Qwen3-VL           & 2B   & Qwen3-2B           & Qwen3-ViT           & Native dynamic-resolution vision encoder; trained on large-scale multimodal web data with long-context support \citep{bai2025qwen3vl}. \\
+Qwen3-VL           & 4B   & Qwen3-4B           & Qwen3-ViT           & Same architecture as Qwen3-VL-2B; stronger instruction following at 4B scale \citep{bai2025qwen3vl}. \\
+Qwen3-VL           & 8B   & Qwen3-8B           & Qwen3-ViT           & Primary Qwen3-VL model in our analysis; competitive with much larger models on standard benchmarks \citep{bai2025qwen3vl}. \\
+Qwen3-VL$^\dagger$ & 32B  & Qwen3-32B          & Qwen3-ViT           & Largest Qwen3-VL; excluded due to incomplete inference on the 113-question subset \citep{bai2025qwen3vl}. \\
+\midrule
+\multicolumn{5}{c}{\textit{Standalone LLMs (Qwen3 also evaluated with thinking traces enabled; same weights)}} \\
+\midrule
+Mistral-7B          & 7B   & \multicolumn{2}{l}{—} & Sliding-window attention with grouped-query attention; instruction-tuned on proprietary data \citep{jiang2023mistral}. \\
+Phi-3.5-mini        & 3.8B & \multicolumn{2}{l}{—} & Compact dense transformer trained on high-quality filtered web and synthetic data for efficiency. \\
+Qwen2.5-Instruct    & 7B   & \multicolumn{2}{l}{—} & Instruction-tuned on 18T tokens with RLHF; strong general-purpose baseline from the Qwen2.5 family. \\
+Qwen3               & 0.6B--8B & \multicolumn{2}{l}{—} & Dense models supporting both thinking and non-thinking decoding modes via the same checkpoint; trained with reinforcement learning for reasoning \citep{yang2025qwen3}. \\
+Qwen3$^\dagger$     & 32B  & \multicolumn{2}{l}{—} & Largest dense Qwen3; excluded from main analysis due to incomplete inference \citep{yang2025qwen3}. \\
+Vicuna              & 7B, 13B & \multicolumn{2}{l}{—} & LLaMA fine-tuned on ShareGPT conversations; widely used as VLM language backbone \citep{zheng2023vicuna}. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
 \section{Abstention}
 \label{app:abstention}
 
@@ -276,16 +313,17 @@ Per-model abstention rates by question type and condition (see \S\ref{sec:setup}
 
 \input{tables/abstention_by_qtype}
 
-\clearpage
-\section{Token Confidence Distributions}
-\label{app:uncertainty_appendix}
-
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{confidence/abstention_vs_confidence_hist_inst_blind}
-\caption{Token confidence (mean token probability) pooled across all model groups and scales (VLMs, backbone decoders, standalone LLMs, and thinking models; 0.6B--32B), all three question variants, instruction-blind condition. \textbf{Top:} committed vs.\ abstained answers. Abstained answers are markedly lower in confidence, confirming abstentions reflect genuine uncertainty rather than high-confidence refusals. \textbf{Bottom:} soft vs.\ hard abstention split. Soft abstentions show higher confidence than hard abstentions, consistent with partial commitment rather than complete uncertainty.}
+\caption{Token confidence (mean token probability) pooled across all model groups and scales (VLMs, backbone decoders, standalone LLMs, and thinking models; 0.6B--32B), instruction-blind condition ($N{=}339$ question--variant pairs). \textbf{Top:} committed vs.\ abstained answers. Abstained answers are markedly lower in confidence, confirming abstentions reflect genuine uncertainty rather than high-confidence refusals. \textbf{Bottom:} soft vs.\ hard abstention split. Soft abstentions show higher confidence than hard abstentions, consistent with partial commitment rather than complete uncertainty.}
 \label{fig:abstention_confidence_hist}
 \end{figure}
+
+\iffalse % Token Confidence Distributions — removed (not tied to main paper claims)
+\clearpage
+\section{Token Confidence Distributions}
+\label{app:uncertainty_appendix}
 
 \iffalse % Confidence Alignment by Architecture — removed (not discussed in main paper)
 \subsection{Confidence Alignment by Architecture}
@@ -304,7 +342,7 @@ Human--model confidence correlation (Pearson $r$ between mean human self-reporte
 \subsection{Model Token Confidence Distribution}
 \label{app:confidence_ecdf}
 
-ECDF of mean token log-probability per answer for matched 7/8B models (instruction-blind, all three variants).
+ECDF of mean token log-probability per answer for matched 7/8B models (instruction-blind, $N{=}339$).
 
 \begin{figure*}[t]
 \centering
@@ -313,6 +351,8 @@ ECDF of mean token log-probability per answer for matched 7/8B models (instructi
 \label{fig:ecdf_confidence_7b}
 \end{figure*}
 
+\fi % end token confidence distributions block
+
 \clearpage
 \section{Instruction Effects}
 \label{app:inst}
@@ -320,14 +360,19 @@ ECDF of mean token log-probability per answer for matched 7/8B models (instructi
 \label{app:abstention_full}
 \label{app:abstention_scale_full}
 
-Blind accuracy, HM SBERT, and abstention by group with instruction deltas (see \S\ref{sec:instruction} for discussion; per-model abstention by question type in Appendix~\ref{app:abstention_by_qtype}).
+Blind accuracy, HM SBERT, and abstention by group with instruction deltas (see \S\ref{sec:dist_alignment} for discussion; per-model abstention by question type in Appendix~\ref{app:abstention_by_qtype}).
 
 % js_instruction_effect table removed: Δ now shown inline in Table~\ref{tab:hm_grouped_distribution_7b_compact_filtered} in the main paper.
 
 \input{tables/inst_effect_combined}
 
+\label{app:yesno_dist}
+Table~\ref{tab:yesno_distribution_all} shows the full yes/no answer distribution for all models across all scales (see \S\ref{sec:dist_alignment} for discussion of the 7/8B matched subset).
+
+\input{tables/yesno_distribution_all_models}
+
 \label{app:count_dist}
-Figure~\ref{fig:count_transition_all} extends the InternVL-8B count-distribution view to all 7/8B models (see \S\ref{sec:instruction}).
+Figure~\ref{fig:count_transition_all} extends the InternVL-8B count-distribution view to all 7/8B models (see \S\ref{sec:dist_alignment}).
 
 \begin{figure*}[ht]
 \centering
@@ -337,25 +382,27 @@ Figure~\ref{fig:count_transition_all} extends the InternVL-8B count-distribution
 \end{figure*}
 
 \clearpage
-\section{Human--Model Alignment: Family-Level Tests}
-\label{app:degradation}
-\label{app:family_alignment_tests}
-
-Matched-family Wilcoxon signed-rank tests for backbone decoder vs.\ full VLM HM SBERT (Holm-corrected).
-
-\input{tables/matched_family_alignment_tests}
-
-\clearpage
-\section{Multi-Metric Robustness}
+\section{Alignment}
 \label{app:model_diagnostics}
 \label{app:metrics}
 \label{app:scale_variant}
 \label{fig:scale}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/subject_correlation_matrix}
+\caption{Pairwise mean SBERT matrix for all 77 subjects (40 humans + 37 models), original questions ($N{=}113$). Each cell is the mean SBERT score across all 113 questions for that subject pair; question--subject pairs where either participant abstained are excluded before computing scores. The Human$\times$Human block shows moderate within-group agreement; VLM$\times$VLM and VLM$\times$Backbone blocks are high (models within a family give similar answers); the two near-white columns in SA-LLM correspond to Mistral-7B, whose verbose outputs yield near-zero pairwise SBERT with all other subjects.}
+\label{fig:subject_corr_matrix}
+\end{figure}
+
+\subsection{Human--Model Alignment: Family-Level Tests}
+\label{app:degradation}
+\label{app:family_alignment_tests}
+
+\input{tables/matched_family_alignment_tests}
+
 \subsection{SBERT Length-Normalization Robustness}
 \label{app:chrf_human}
-
-Raw vs.\ 5-word-truncated HM SBERT per model (variant C). \textbf{(a)} Abstention-filtered. \textbf{(b)} Abstentions included.
 
 \begin{figure*}[t]
 \centering
@@ -368,7 +415,7 @@ Raw vs.\ 5-word-truncated HM SBERT per model (variant C). \textbf{(a)} Abstentio
 \includegraphics[width=\linewidth]{figures/appQ_sbert_robustness/sbert_truncation_scatter_vc_with_abst}
 \caption{With abstentions}
 \end{subfigure}
-\caption{Raw vs.\ 5-word-truncated HM SBERT per model (variant C, instruction-blind). Each point is one model; colors indicate model group; dashed line = $y{=}x$. \textbf{(a)} After abstention filtering, all groups cluster tightly on the diagonal. \textbf{(b)} Including abstentions, think models shift above the diagonal as truncation removes verbose reasoning traces---motivating filtered scores as the primary metric.}
+\caption{Raw vs.\ 5-word-truncated HM SBERT per model (original variant, instruction-blind). Each point is one model; colors indicate model group; dashed line = $y{=}x$. \textbf{(a)} After abstention filtering, all groups cluster tightly on the diagonal. \textbf{(b)} Including abstentions, think models shift above the diagonal as truncation removes verbose reasoning traces---motivating filtered scores as the primary metric.}
 \label{fig:sbert_truncation_scatter}
 \end{figure*}
 
@@ -376,9 +423,18 @@ Human--human agreement by operation and entity type across four metrics (SBERT, 
 
 \input{tables/hh_metric_robustness}
 
-\subsection{Accuracy Degradation and Human--Model Correlation}
+\subsection{Per-Model Agreement Across Metrics}
 
-Accuracy-based views complementing the SBERT results in \S\ref{sec:alignment_main}.
+\input{tables/comprehensive_inst_blind_table}
+
+\subsection{Accuracy Degradation and Human--Model Correlation}
+\label{app:accuracy_robustness}
+
+The operation-type structure found in SBERT alignment also holds under blind VQA accuracy, confirming it is not an artefact of the semantic metric.
+% Blind VQA accuracy and HM SBERT capture related but dissociable aspects of model behavior.
+% Backbone decoders score higher than their paired full VLMs on both accuracy and SBERT for most families, consistent with the vision encoder suppressing the language prior on uninformative input.
+% However, scaling within a family increases blind accuracy without reliably improving SBERT (e.g., Qwen3-VL 2B$\to$8B: accuracy rises monotonically while backbone SBERT peaks at 4B), indicating that stronger benchmark performance does not imply a more human-like prior distribution.
+% InternVL is the notable exception: its full VLM leads its backbone decoder on SBERT (0.569 vs.\ 0.518, variant A) while remaining comparable on accuracy (both 0.197).
 
 \begin{figure*}[t]
 \centering
@@ -397,11 +453,6 @@ Bold lines show group means; thin lines show individual models.}
 \caption{Human vs.\ model blind accuracy grouped by operation type (left) and entity type (right), abstention-filtered. Each panel reports Pearson $r$ and $p$ over the grouped means. The same family ordering appears under accuracy, but operation grouping remains the more separating structural axis.}
 \label{fig:scatter_accuracy}
 \end{figure*}
-
-\subsection{Per-Model Agreement Across Metrics}
-
-Per-model agreement across all metrics and variants (instruction-blind; chrF via \texttt{sacrebleu}; 32B excluded).
-\input{tables/comprehensive_inst_blind_table}
 
 \clearpage
 \section{Image-Condition Ablation}
@@ -523,7 +574,7 @@ their paired VLMs within each family, with the gap widest for InternVL
 ordering (0.6B at bottom, 4--8B at top), while Mistral-7B is
 a persistent outlier with the lowest agreement of any model ($\sim$0.18--0.25),
 consistent with its high verbosity (mean 29.7 words per answer).
-Mistral-7B achieves 0\% VQA accuracy across all 339 question--variant
+Mistral-7B achieves 0\% VQA accuracy across all $N{=}339$
 responses, yet this is partly a scoring artifact of its verbosity rather
 than a complete failure to exploit priors.
 Although approximately 48\% of its responses contain plausible

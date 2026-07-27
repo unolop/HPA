@@ -3,32 +3,35 @@
 \small
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{0.93}
-\caption{Blind abstention rate (\%) by question type, pooled across all three control variants, with instruction effect $\Delta$ in brackets (\textcolor{teal}{teal} = instruction reduces abstention, \textcolor{red}{red} = increases). Abstention is classified as any non-substantive response (hard refusals or soft hedges). Yes/No and Count questions use $N{=}78$ (26 questions $\times$ 3 variants); Free Text uses $N{=}183$ (61 questions $\times$ 3 variants). Standalone LLMs drive nearly all abstention; VLMs and backbone decoders remain near zero except for InternVL backbone on count questions. Instruction consistently reduces abstention for Mistral (up to $-$17\,pp on free text) and Qwen3-family models, while increasing it modestly for some VLMs on free-text questions. \textbf{Bold}: highest per column; \underline{underline}: second highest.}
+\caption{Blind abstention rate (\%) by question type, pooled across all three control variants, with instruction effect $\Delta$ in parentheses (\textcolor{teal}{teal} = instruction reduces abstention, \textcolor{red}{red} = increases). Abstention is classified as any non-substantive response (hard refusals or soft hedges). Yes/No and Count use $N{=}78$; Free Text uses $N{=}183$. Standalone LLMs drive nearly all abstention; VLMs and backbone decoders remain near zero except for InternVL backbone on count questions. Instruction consistently reduces abstention for Mistral (up to $-$17\,pp on free text) and Qwen3-family models, while increasing it modestly for some VLMs on free-text questions. \textbf{Bold}: highest per column; \underline{underline}: second highest.}
 \label{tab:abstention_by_qtype}
-\begin{tabular}{l@{\hspace{2pt}}r@{\hspace{2pt}}r@{\hspace{2pt}}r}
+\begin{tabular}{lrrr}
 \toprule
-\textbf{Model} & \textbf{Yes/No} & \textbf{Count} & \textbf{Free Text} \\
+\textbf{Model}
+  & \makecell[r]{\textbf{Yes/No} \\ \textbf{($N{=}78$)}}
+  & \makecell[r]{\textbf{Count} \\ \textbf{($N{=}78$)}}
+  & \makecell[r]{\textbf{Free Text} \\ \textbf{($N{=}183$)}} \\
 \midrule
 \multicolumn{4}{l}{\textit{VLM}} \\
-\quad InternVL       & 0.0 & 0.0 & 0.0 {\scriptsize[\textcolor{red}{$+$3.3}]} \\
-\quad Qwen3-VL       & 0.0 & 1.3 & 9.3 {\scriptsize[\textcolor{teal}{$-$2.7}]} \\
-\quad LLaVA-1.5      & 0.0 & 0.0 & 5.5 {\scriptsize[\textcolor{red}{$+$1.1}]} \\
-\quad LLaVA-Mistral  & 0.0 & 0.0 & 4.9 {\scriptsize[\textcolor{teal}{$-$1.6}]} \\
-\quad LLaVA-Vicuna   & 0.0 & 0.0 & 5.0 {\scriptsize[\textcolor{teal}{$-$3.4}]} \\
+\quad InternVL       & 0.0 & 0.0 & 0.0 {\scriptsize(\textcolor{red}{$+$3.3})} \\
+\quad Qwen3-VL       & 0.0 & 1.3 & 9.3 {\scriptsize(\textcolor{teal}{$-$2.7})} \\
+\quad LLaVA-1.5      & 0.0 & 0.0 & 5.5 {\scriptsize(\textcolor{red}{$+$1.1})} \\
+\quad LLaVA-Mistral  & 0.0 & 0.0 & 4.9 {\scriptsize(\textcolor{teal}{$-$1.6})} \\
+\quad LLaVA-Vicuna   & 0.0 & 0.0 & 5.0 {\scriptsize(\textcolor{teal}{$-$3.4})} \\
 \midrule
 \multicolumn{4}{l}{\textit{Backbone Decoder}} \\
-\quad InternVL       & 0.0 & \underline{29.5} {\scriptsize[\textcolor{teal}{$-$9.0}]} &  8.2 {\scriptsize[\textcolor{teal}{$-$3.8}]} \\
-\quad Qwen3-VL       & 0.0 & 5.1 {\scriptsize[\textcolor{teal}{$-$2.5}]} &  7.7 {\scriptsize[\textcolor{teal}{$-$2.8}]} \\
-\quad LLaVA-1.5      & 0.0 & 0.0 &  0.0 {\scriptsize[\textcolor{red}{$+$1.1}]} \\
-\quad LLaVA-Mistral  & 0.0 & 0.0 &  0.5 {\scriptsize[\textcolor{red}{$+$3.3}]} \\
-\quad LLaVA-Vicuna   & 0.0 & 0.0 &  0.5 {\scriptsize[\textcolor{red}{$+$0.6}]} \\
+\quad InternVL       & 0.0 & \underline{29.5} {\scriptsize(\textcolor{teal}{$-$9.0})} &  8.2 {\scriptsize(\textcolor{teal}{$-$3.8})} \\
+\quad Qwen3-VL       & 0.0 & 5.1 {\scriptsize(\textcolor{teal}{$-$2.5})} &  7.7 {\scriptsize(\textcolor{teal}{$-$2.8})} \\
+\quad LLaVA-1.5      & 0.0 & 0.0 &  0.0 {\scriptsize(\textcolor{red}{$+$1.1})} \\
+\quad LLaVA-Mistral  & 0.0 & 0.0 &  0.5 {\scriptsize(\textcolor{red}{$+$3.3})} \\
+\quad LLaVA-Vicuna   & 0.0 & 0.0 &  0.5 {\scriptsize(\textcolor{red}{$+$0.6})} \\
 \midrule
 \multicolumn{4}{l}{\textit{Standalone LLM}} \\
-\quad Qwen2.5        & 2.6 {\scriptsize[\textcolor{teal}{$-$2.6}]} & 11.5 {\scriptsize[\textcolor{red}{$+$2.6}]} &  9.3 {\scriptsize[\textcolor{teal}{$-$3.3}]} \\
-\quad Qwen3          & \underline{5.1} {\scriptsize[\textcolor{teal}{$-$5.1}]} & \underline{23.1} {\scriptsize[\textcolor{teal}{$-$16.7}]} & \underline{11.0} {\scriptsize[\textcolor{teal}{$-$5.0}]} \\
-\quad Qwen3 (think)  & \underline{5.1} {\scriptsize[\textcolor{teal}{$-$2.5}]} & \underline{23.1} {\scriptsize[\textcolor{teal}{$-$20.5}]} & \underline{11.0} {\scriptsize[\textcolor{teal}{$-$6.1}]} \\
-\quad Mistral        & \textbf{47.4} {\scriptsize[\textcolor{teal}{$-$7.7}]} & \textbf{43.6} {\scriptsize[\textcolor{teal}{$-$9.0}]} & \textbf{32.2} {\scriptsize[\textcolor{teal}{$-$17.4}]} \\
-\quad Vicuna         & 0.0 & 3.8 {\scriptsize[\textcolor{teal}{$-$3.8}]} &  0.0 {\scriptsize[\textcolor{red}{$+$1.7}]} \\
+\quad Qwen2.5-Instruct        & 2.6 {\scriptsize(\textcolor{teal}{$-$2.6})} & 11.5 {\scriptsize(\textcolor{red}{$+$2.6})} &  9.3 {\scriptsize(\textcolor{teal}{$-$3.3})} \\
+\quad Qwen3          & \underline{5.1} {\scriptsize(\textcolor{teal}{$-$5.1})} & \underline{23.1} {\scriptsize(\textcolor{teal}{$-$16.7})} & \underline{11.0} {\scriptsize(\textcolor{teal}{$-$5.0})} \\
+\quad Qwen3 (think)  & \underline{5.1} {\scriptsize(\textcolor{teal}{$-$2.5})} & \underline{23.1} {\scriptsize(\textcolor{teal}{$-$20.5})} & \underline{11.0} {\scriptsize(\textcolor{teal}{$-$6.1})} \\
+\quad Mistral        & \textbf{47.4} {\scriptsize(\textcolor{teal}{$-$7.7})} & \textbf{43.6} {\scriptsize(\textcolor{teal}{$-$9.0})} & \textbf{32.2} {\scriptsize(\textcolor{teal}{$-$17.4})} \\
+\quad Vicuna         & 0.0 & 3.8 {\scriptsize(\textcolor{teal}{$-$3.8})} &  0.0 {\scriptsize(\textcolor{red}{$+$1.7})} \\
 \bottomrule
 \end{tabular}
 \end{table}

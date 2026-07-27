@@ -289,8 +289,8 @@ def draw_boxplot(
     ax.set_title("")
     ax.grid(axis="y", alpha=0.25)
     ax.spines[["top", "right"]].set_visible(False)
-    ax.set_xticklabels(order, rotation=0, fontsize=12.5)
-    ax.tick_params(axis="y", labelsize=11)
+    ax.set_xticklabels(order, rotation=0, fontsize=8)
+    ax.tick_params(axis="y", labelsize=8)
     leg = ax.get_legend()
     if not show_legend:
         if leg is not None:
@@ -347,7 +347,7 @@ def _annotate_boxplot_significance(ax: plt.Axes, long_df: pd.DataFrame, x_col: s
         return
 
     sig_color = "black"
-    base = 0.90
+    base = 1.04
     step = 0.055
     half_width = 0.21
 
@@ -355,7 +355,7 @@ def _annotate_boxplot_significance(ax: plt.Axes, long_df: pd.DataFrame, x_col: s
         idx = order.index(label)
         x0 = idx - half_width
         x1 = idx + half_width
-        y = base
+        y = base + i * step
         txt = _sig_text(p)
         ax.plot(
             [x0, x0, x1, x1],
@@ -373,10 +373,8 @@ def _annotate_boxplot_significance(ax: plt.Axes, long_df: pd.DataFrame, x_col: s
             fontsize=10.5,
             fontweight="bold",
             color=sig_color,
+            clip_on=False,
         )
-
-    cur_lo, cur_hi = ax.get_ylim()
-    ax.set_ylim(cur_lo, max(cur_hi, base + 0.07))
 
 
 def export_metric_bar_figure(entity_summary: pd.DataFrame, op_summary: pd.DataFrame, q_tag: str, metric_label: str, stem: str) -> None:
@@ -410,36 +408,35 @@ def export_hh_boxplots(long_df: pd.DataFrame, q_tag: str) -> None:
         .index.tolist()
     )
 
-    # ── Separate op-only figure (legend on top) ──────────────────────────────
-    fig_op, ax_op = plt.subplots(figsize=(7.3, 3.6))
+    # ── Separate op-only figure ───────────────────────────────────────────────
+    fig_op, ax_op = plt.subplots(figsize=(5.0, 1.9))
     draw_boxplot(ax_op, op_df, "op_label", op_order, op_counts, "By operation type", show_legend=False)
     _annotate_boxplot_significance(ax_op, op_df, "op_label", op_order)
     ax_op.set_ylim(None, 1.0)
-    ax_op.set_ylabel("HH SBERT", fontsize=11)
-    ax_op.tick_params(axis='x', labelsize=9)
+    ax_op.set_ylabel("")
+    ax_op.tick_params(axis='x', labelsize=10)
+    ax_op.tick_params(axis='y', labelsize=8)
     plt.setp(ax_op.get_xticklabels(), rotation=20, ha='right')
-    handles, labels = ax_op.get_legend_handles_labels()
-    if handles:
-        fig_op.legend(
-            handles, labels, title=None, ncol=3,
-            loc="upper center", bbox_to_anchor=(0.5, 1.02),
-            frameon=False, fontsize=10.5,
-            columnspacing=1.2, handletextpad=0.5,
-        )
-    fig_op.tight_layout(rect=[0, 0, 1, 0.91])
+    leg = ax_op.get_legend()
+    if leg is not None:
+        leg.remove()
+    fig_op.subplots_adjust(left=0.08, right=0.98, top=0.97, bottom=0.30)
     save_both(fig_op, f"sbert_by_op_variant_box_{q_tag}.png")
     plt.close(fig_op)
 
-    # ── Separate ent-only figure (no legend — shared with op figure above) ───
-    fig_ent, ax_ent = plt.subplots(figsize=(6.5, 2.1))
+    # ── Separate ent-only figure ──────────────────────────────────────────────
+    fig_ent, ax_ent = plt.subplots(figsize=(5.0, 1.9))
     draw_boxplot(ax_ent, ent_df, "ent_label", ent_order, ent_counts, "By entity type", show_legend=False)
     _annotate_boxplot_significance(ax_ent, ent_df, "ent_label", ent_order)
     ax_ent.set_ylim(None, 1.0)
-    ax_ent.set_ylabel("HH SBERT", fontsize=11)
-    ax_ent.tick_params(axis='x', labelsize=9)
+    ax_ent.set_ylabel("")
+    ax_ent.tick_params(axis='x', labelsize=10)
+    ax_ent.tick_params(axis='y', labelsize=8)
     plt.setp(ax_ent.get_xticklabels(), rotation=20, ha='right')
-    ax_ent.get_legend() and ax_ent.get_legend().remove()
-    fig_ent.tight_layout(rect=[0, 0, 1, 1])
+    leg = ax_ent.get_legend()
+    if leg is not None:
+        leg.remove()
+    fig_ent.subplots_adjust(left=0.08, right=0.98, top=0.97, bottom=0.30)
     save_both(fig_ent, f"sbert_by_entity_variant_box_{q_tag}.png")
     plt.close(fig_ent)
 

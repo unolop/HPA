@@ -2,7 +2,7 @@
 \centering\small
 \setlength{\tabcolsep}{4pt}
 
-\caption{Scale trajectory for Qwen3-VL and LLaVA-Vicuna under the blind condition (variant C, original questions). \textbf{Acc}: VQA accuracy against ground-truth labels. \textbf{SBERT}: mean HM semantic similarity to human answers. LM backbone strips the vision encoder; VLM receives a blank image. In both families, LM backbone SBERT exceeds the paired VLM at every size, while VQA accuracy does not track SBERT monotonically. \textbf{Bold}: best per column across both families.}
+\caption{Scale trajectory for Qwen3-VL and LLaVA-Vicuna (original questions, $N{=}113$). \textbf{Acc}: VQA accuracy against ground-truth labels. \textbf{SBERT}: mean HM semantic similarity to human answers. LM backbone strips the vision encoder; VLM receives a blank image. In both families, LM backbone SBERT exceeds the paired VLM at every size, while VQA accuracy does not track SBERT monotonically. \textbf{Bold}: best per column across both families.}
 \label{tab:scale_trajectory_qwen3vl}
 \begin{tabular}{llcccc}
 \toprule
@@ -11,12 +11,12 @@
 \cmidrule(lr){3-4}\cmidrule(lr){5-6}
 & & \textbf{Acc}$\uparrow$ & \textbf{SBERT}$\uparrow$ & \textbf{Acc}$\uparrow$ & \textbf{SBERT}$\uparrow$ \\
 \midrule
-\multirow{3}{*}{Qwen3-VL} & 2B & 0.443 & \textbf{0.471} & 0.386 & 0.494 \\
- & 4B & 0.451 & 0.454 & 0.413 & \textbf{0.514} \\
- & 8B & 0.478 & 0.460 & 0.375 & 0.492 \\
+\multirow{3}{*}{Qwen3-VL} & 2B & 0.476 & 0.561 & 0.392 & 0.588 \\
+ & 4B & 0.501 & 0.571 & 0.407 & \textbf{0.598} \\
+ & 8B & 0.473 & \textbf{0.572} & 0.422 & 0.592 \\
 \midrule
-\multirow{2}{*}{LLaVA-Vicuna} & 7B & \textbf{0.549} & 0.450 & 0.404 & 0.504 \\
- & 13B & 0.504 & 0.436 & \textbf{0.531} & 0.488 \\
+\multirow{2}{*}{LLaVA-Vicuna} & 7B  & \textbf{0.516} & 0.545 & 0.445 & 0.594 \\
+ & 13B & 0.524 & 0.572 & \textbf{0.472} & 0.591 \\
 \bottomrule
 \end{tabular}
 \end{table}

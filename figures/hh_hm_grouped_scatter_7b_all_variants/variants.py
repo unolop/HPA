@@ -127,7 +127,7 @@ def make_scatter(pc: pd.DataFrame, suffix: str = "", title_extra: str = ""):
 
     # Operations legend (top right)
     op_handles = [Line2D([0], [0], marker="o", color=op_colors[g],
-                         linestyle="None", markersize=5, label=g) for g in op_groups]
+                         linestyle="None", markersize=8, label=g) for g in op_groups]
     op_leg = fig.legend(
         handles=op_handles, loc="upper right",
         bbox_to_anchor=(0.995, 0.97), title="Operations", title_fontsize=9,
@@ -137,7 +137,7 @@ def make_scatter(pc: pd.DataFrame, suffix: str = "", title_extra: str = ""):
 
     # Entity legend (bottom right)
     ent_handles = [Line2D([0], [0], marker="o", color=ent_colors[g],
-                          linestyle="None", markersize=5, label=g) for g in ent_groups]
+                          linestyle="None", markersize=8, label=g) for g in ent_groups]
     fig.legend(
         handles=ent_handles, loc="lower right",
         bbox_to_anchor=(0.995, 0.03), title="Entity", title_fontsize=9,
@@ -273,13 +273,13 @@ def make_scatter_all_scales(pc: pd.DataFrame, suffix: str = ""):
     legend_kw = dict(fontsize=9, framealpha=0.9, handletextpad=0.2,
                      borderpad=0.3, labelspacing=0.25, handlelength=1.2)
     op_handles = [Line2D([0],[0], marker="o", color=op_colors[g],
-                         linestyle="None", markersize=5, label=g) for g in op_groups]
+                         linestyle="None", markersize=8, label=g) for g in op_groups]
     op_leg = fig.legend(handles=op_handles, loc="upper right",
         bbox_to_anchor=(0.995, 0.97), title="Operations", title_fontsize=9, **legend_kw)
     fig.add_artist(op_leg)
 
     ent_handles = [Line2D([0],[0], marker="o", color=ent_colors[g],
-                          linestyle="None", markersize=5, label=g) for g in ent_groups]
+                          linestyle="None", markersize=8, label=g) for g in ent_groups]
     fig.legend(handles=ent_handles, loc="lower right",
         bbox_to_anchor=(0.995, 0.03), title="Entity", title_fontsize=9, **legend_kw)
 
@@ -369,13 +369,13 @@ def make_scatter_all_scales_transposed(pc: pd.DataFrame, suffix: str = ""):
     legend_kw = dict(fontsize=9, framealpha=0.9, handletextpad=0.2,
                      borderpad=0.3, labelspacing=0.25, handlelength=1.2)
     op_handles = [Line2D([0], [0], marker="o", color=op_colors[g],
-                         linestyle="None", markersize=5, label=g) for g in op_groups]
+                         linestyle="None", markersize=8, label=g) for g in op_groups]
     op_leg = fig.legend(handles=op_handles, loc="upper right",
         bbox_to_anchor=(0.995, 0.97), title="Operations", title_fontsize=9, **legend_kw)
     fig.add_artist(op_leg)
 
     ent_handles = [Line2D([0], [0], marker="o", color=ent_colors[g],
-                          linestyle="None", markersize=5, label=g) for g in ent_groups]
+                          linestyle="None", markersize=8, label=g) for g in ent_groups]
     fig.legend(handles=ent_handles, loc="lower right",
         bbox_to_anchor=(0.995, 0.03), title="Entity", title_fontsize=9, **legend_kw)
 
@@ -443,7 +443,7 @@ def make_scatter_compact(pc: pd.DataFrame, suffix: str = ""):
 
     # Operation legend centered below plots
     op_handles = [Line2D([0], [0], marker="o", color=op_colors_compact[g],
-                         linestyle="None", markersize=5, label=g) for g in op_groups]
+                         linestyle="None", markersize=8, label=g) for g in op_groups]
     fig.legend(handles=op_handles, loc="lower center",
                bbox_to_anchor=(0.57, 0.0), title="Operation", title_fontsize=7,
                ncol=3, fontsize=6.5, frameon=False,

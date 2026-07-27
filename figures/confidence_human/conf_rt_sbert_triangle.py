@@ -31,17 +31,16 @@ LATEX_DIR  = ROOT / "latex" / "AAAI2026" / "LaTeX" / "figures" / "confidence"
 LATEX_DIR.mkdir(parents=True, exist_ok=True)
 
 VARIANT_LABELS = {"C": "Original", "B": "Weaker", "A": "Pronominalized"}
+VARIANT_SHORT  = {"C": "Orig", "B": "Weak", "A": "Pron"}
 
 # ── style ────────────────────────────────────────────────────────────────────
 plt.rcParams.update({
-    "font.family": "serif",
-    "font.serif":  ["Times New Roman", "Times", "DejaVu Serif"],
     "font.size":        9,
     "axes.titlesize":   9,
     "axes.labelsize":   9,
-    "xtick.labelsize":  8,
-    "ytick.labelsize":  8,
-    "legend.fontsize":  8,
+    "xtick.labelsize":  9,
+    "ytick.labelsize":  9,
+    "legend.fontsize":  9,
     "axes.linewidth":   0.8,
     "axes.spines.top":  False,
     "axes.spines.right": False,
@@ -106,7 +105,7 @@ def variant_r_text(df: pd.DataFrame, xcol: str) -> str:
         x, y = x[mask], y[mask]
         if len(x) >= 3:
             r_val, p_val = stats.pearsonr(x, y)
-            lines.append(f"{variant}: r={r_val:.2f}{sig_stars(p_val)}")
+            lines.append(f"r({VARIANT_SHORT[variant]})={r_val:.2f}{sig_stars(p_val)}")
     return "\n".join(lines)
 
 # ── figure ────────────────────────────────────────────────────────────────────
@@ -148,13 +147,13 @@ ax_rt.set_ylabel("")
 ax_conf.text(
     0.03, 0.08, variant_r_text(merged, "mean_conf"),
     transform=ax_conf.transAxes,
-    ha="left", va="bottom", fontsize=7.0,
+    ha="left", va="bottom", fontsize=9,
     bbox=dict(boxstyle="round,pad=0.25", facecolor="white", alpha=0.86, linewidth=0.0),
 )
 ax_rt.text(
     0.03, 0.08, variant_r_text(merged, "mean_rt"),
     transform=ax_rt.transAxes,
-    ha="left", va="bottom", fontsize=7.0,
+    ha="left", va="bottom", fontsize=9,
     bbox=dict(boxstyle="round,pad=0.25", facecolor="white", alpha=0.86, linewidth=0.0),
 )
 
@@ -166,6 +165,7 @@ fig.legend(
     ncol=3,
     frameon=False,
     bbox_to_anchor=(0.50, 1.03),
+    markerscale=2.0,
 )
 
 plt.tight_layout(rect=[0, 0, 1, 0.93])

@@ -1,4 +1,4 @@
-\begin{thebibliography}{38}
+\begin{thebibliography}{40}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Agrawal et~al.(2018)Agrawal, Batra, Parikh, and
@@ -76,6 +76,13 @@ Ji, Z.; Lee, N.; Frieske, R.; Yu, T.; Su, D.; Xu, Y.; Ishii, E.; Bang, Y.~J.;
   Madotto, A.; and Fung, P. 2023.
 \newblock Survey of hallucination in natural language generation.
 \newblock \emph{ACM Computing Surveys}, 55(12): 1--38.
+
+\bibitem[{Jiang et~al.(2023)Jiang, Sablayrolles, Mensch, Bamford, Chaplot,
+  de~las Casas~Bressand, Lengyel, Lample, Saulnier et~al.}]{jiang2023mistral}
+Jiang, A.~Q.; Sablayrolles, A.; Mensch, A.; Bamford, C.; Chaplot, D.~S.; de~las
+  Casas~Bressand, D.; Lengyel, G.; Lample, G.; Saulnier, L.; et~al. 2023.
+\newblock Mistral {7B}.
+\newblock \emph{arXiv preprint arXiv:2310.06825}.
 
 \bibitem[{Kahneman(2011)}]{kahneman2011thinking}
 Kahneman, D. 2011.
@@ -256,6 +263,13 @@ Zhang, P.; Goyal, Y.; Summers-Stay, D.; Batra, D.; and Parikh, D. 2016.
 Zhang, Z.; Zhang, A.; Li, M.; Zhao, H.; Karypis, G.; and Smola, A. 2023.
 \newblock Multimodal Chain-of-Thought Reasoning in Language Models.
 \newblock \emph{Transactions on Machine Learning Research}.
+
+\bibitem[{Zheng et~al.(2023)Zheng, Chiang, Sheng, Zhuang, Wu, Zhuang, Lin, Li,
+  Li, Xing et~al.}]{zheng2023vicuna}
+Zheng, L.; Chiang, W.-L.; Sheng, Y.; Zhuang, S.; Wu, Z.; Zhuang, Y.; Lin, Z.;
+  Li, Z.; Li, D.; Xing, E.; et~al. 2023.
+\newblock Judging {LLM}-as-a-judge with {MT-Bench} and chatbot arena.
+\newblock \emph{arXiv preprint abs/2306.05685}.
 
 \bibitem[{Zhu et~al.(2025)Zhu, Liu, Chen, Liu, Ye, Gu, Tian, Duan, Su, Shao
   et~al.}]{zhu2025internvl3}

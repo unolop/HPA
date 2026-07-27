@@ -2,7 +2,7 @@
 \centering\small
 \setlength{\tabcolsep}{3pt}
 
-\caption{JS divergence to human answer distribution on original questions (variant~C). $N_q$ = number of non-abstained questions used. Values show JS w/o instruction; $\Delta$ = JS(w/ inst) $-$ JS(w/o inst) in parentheses. \textcolor{teal}{Teal\,$\downarrow$} = instruction reduces JS (improves alignment), \textcolor{red}{red\,$\uparrow$} = worsens. Bold = best (lowest) JS; underline = second-best per column.}
+\caption{JS divergence to human answer distribution on original questions ($N{=}113$). $N_q$ = number of non-abstained questions used. Values show JS w/o instruction; $\Delta$ = JS(w/ inst) $-$ JS(w/o inst) in parentheses. \textcolor{teal}{Teal\,$\downarrow$} = instruction reduces JS (improves alignment), \textcolor{red}{red\,$\uparrow$} = worsens. Bold = best (lowest) JS; underline = second-best per column.}
 \label{tab:js_instruction_effect}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lrrrrr}
@@ -27,7 +27,7 @@ LLaVA-Vicuna & 26 & 26 & .057 (\textcolor{teal}{-.034\,$\downarrow$}) & .460 (\t
 Qwen3-VL & 26 & 26 & .028 (\textcolor{teal}{-.004\,$\downarrow$}) & .598 (\textcolor{red}{+.031\,$\uparrow$}) \\
 \multicolumn{5}{c}{\textit{Standalone LLMs}} \\
 \midrule
-Qwen2.5 & 25 & 23 & .176 (\textcolor{teal}{-.048\,$\downarrow$}) & .521 (\textcolor{teal}{-.030\,$\downarrow$}) \\
+Qwen2.5-Instruct & 25 & 23 & .176 (\textcolor{teal}{-.048\,$\downarrow$}) & .521 (\textcolor{teal}{-.030\,$\downarrow$}) \\
 Qwen3 & 25 & 22 & .224 (\textcolor{red}{+.030\,$\uparrow$}) & .692 (\textcolor{teal}{-.086\,$\downarrow$}) \\
 Vicuna & 26 & 24 & .177 (\textcolor{teal}{-.042\,$\downarrow$}) & .829 (\textcolor{teal}{-.124\,$\downarrow$}) \\
 \multicolumn{5}{c}{\textit{Think models}} \\

@@ -3,18 +3,18 @@
 \small
 \setlength{\tabcolsep}{4pt}
 
-\caption{Matched-family hypothesis tests for abstention-filtered HM SBERT on the pooled control set (original + weaker + pronominalized). Each row shows the backbone decoder score alongside its paired full VLM and matched standalone LLM. SA-LLM pairings: InternVL--Qwen3-8B; LLaVA-1.5--Vicuna-7B; Qwen3-VL--Qwen3-8B; LLaVA-Mistral--Mistral-7B; LLaVA-Vicuna--Vicuna-7B. $\Delta$ (in parentheses) is decoder minus comparator; tests are two-sided Wilcoxon signed-rank with Holm correction. $^{*}p_{\mathrm{Holm}}<.05$, $^{**}p_{\mathrm{Holm}}<.01$.}
+\caption{Matched-family hypothesis tests for abstention-filtered HM SBERT ($N{=}339$). Each row shows the backbone decoder score alongside its paired full VLM and matched standalone LLM (see Table~\ref{tab:model_inventory}). $\Delta$ (in parentheses) is decoder minus comparator; tests are two-sided Wilcoxon signed-rank with Holm correction. $^{*}p_{\mathrm{Holm}}<.05$, $^{**}p_{\mathrm{Holm}}<.01$.}
 \label{tab:matched_family_alignment_tests}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Family} & \textbf{Decoder} & \textbf{vs.\ Full VLM} & \textbf{vs.\ SA-LLM} \\
 \midrule
 \multicolumn{4}{l}{\textit{VLMs}} \\
-InternVL & 0.580 & 0.601 {\scriptsize ($-0.021^{**}$)} & 0.477 {\scriptsize ($+0.103^{**}$)} \\
-Qwen3-VL & 0.569 & 0.552 {\scriptsize ($+0.017^{**}$)} & 0.481 {\scriptsize ($+0.087^{**}$)} \\
-LLaVA-1.5 & 0.574 & 0.505 {\scriptsize ($+0.069^{**}$)} & 0.407 {\scriptsize ($+0.167^{**}$)} \\
-LLaVA-Mistral & 0.577 & 0.535 {\scriptsize ($+0.041^{**}$)} & 0.210 {\scriptsize ($+0.337^{**}$)} \\
-LLaVA-Vicuna & 0.574 & 0.526 {\scriptsize ($+0.049^{**}$)} & 0.407 {\scriptsize ($+0.171^{**}$)} \\
+InternVL & 0.580 & 0.601 {\scriptsize (\textcolor{red}{$-0.021^{**}$})} & 0.477 {\scriptsize (\textcolor{teal}{$+0.103^{**}$})} \\
+Qwen3-VL & 0.569 & 0.552 {\scriptsize (\textcolor{teal}{$+0.017^{**}$})} & 0.481 {\scriptsize (\textcolor{teal}{$+0.087^{**}$})} \\
+LLaVA-1.5 & 0.574 & 0.505 {\scriptsize (\textcolor{teal}{$+0.069^{**}$})} & 0.407 {\scriptsize (\textcolor{teal}{$+0.167^{**}$})} \\
+LLaVA-Mistral & 0.577 & 0.535 {\scriptsize (\textcolor{teal}{$+0.041^{**}$})} & 0.210 {\scriptsize (\textcolor{teal}{$+0.337^{**}$})} \\
+LLaVA-Vicuna & 0.574 & 0.526 {\scriptsize (\textcolor{teal}{$+0.049^{**}$})} & 0.407 {\scriptsize (\textcolor{teal}{$+0.171^{**}$})} \\
 \bottomrule
 \end{tabular}
 \end{table}

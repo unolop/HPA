@@ -20,8 +20,6 @@ OUT_DIR = Path(__file__).parent
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 plt.rcParams.update({
-    "font.family": "serif",
-    "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
     "font.size": 9,
     "axes.titlesize": 9,
     "axes.labelsize": 8,

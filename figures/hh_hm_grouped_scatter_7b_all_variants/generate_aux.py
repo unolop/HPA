@@ -288,8 +288,8 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
         lims = [0.0, 1.0]
         metric_col = "accuracy"
     elif metric == "sbert":
-        xlab = "HH SBERT"
-        ylab = "HM SBERT"
+        xlab = "Human\u2013Human SBERT"
+        ylab = "Human\u2013Model SBERT"
         lims = [0.15, 0.75]
         metric_col = "sbert"
     else:
@@ -306,10 +306,12 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
 
     # 2 rows (op / ent) × 3 cols (VLM / Backbone / SA-LLM)
     fig, axes = plt.subplots(
-        2, 3, figsize=(7.5, 3.6), sharex=True, sharey=True,
+        2, 3, figsize=(8.5, 3.8), sharex=True, sharey=True,
         gridspec_kw={"hspace": 0.14, "wspace": 0.10,
-                     "left": 0.09, "right": 0.72, "top": 0.91, "bottom": 0.15},
+                     "left": 0.07, "right": 0.66, "top": 0.88, "bottom": 0.14},
     )
+    fig.supylabel(ylab, fontsize=8.5, x=0.02)
+    fig.supxlabel(xlab, fontsize=8.5, y=0.05, x=0.32)
 
     for row_idx, (group_type, df, row_label, _, _) in enumerate(specs):
         groups_sorted, color_map = color_maps[group_type]
@@ -350,10 +352,14 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
                 r_val, p_val = stats.pearsonr(mean_df["human_value"], mean_df["model_mean"])
                 stars = sig_stars(p_val)
                 stat_text = f"r={r_val:.2f}{stars}"
+                stat_x = 0.03
+                stat_y = 0.97
+                stat_ha = "left"
+                stat_va = "top"
                 ax.text(
-                    0.03, 0.97, stat_text,
+                    stat_x, stat_y, stat_text,
                     transform=ax.transAxes,
-                    ha="left", va="top", fontsize=7.4,
+                    ha=stat_ha, va=stat_va, fontsize=8.0, fontweight="bold",
                     bbox=dict(boxstyle="round,pad=0.22", facecolor="white", alpha=0.82, linewidth=0.0),
                 )
 
@@ -363,46 +369,41 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
             ax.set_facecolor("#f7f7f7")
             ax.grid(True, color="#d9d9d9", linewidth=0.7, alpha=0.8)
             ax.set_axisbelow(True)
-            ax.tick_params(labelsize=8.5)
+            ax.tick_params(labelsize=8.0)
 
             # column headers on top row
             if row_idx == 0:
                 ax.set_title(ROW_LABELS[col_title], fontsize=9.5, fontweight="bold")
-            # row labels on left column
-            if col_idx == 0:
-                ax.set_ylabel(f"$\\bf{{{row_label}}}$\n{ylab}", fontsize=8.5)
-            # x-axis label on bottom row
-            if row_idx == len(specs) - 1:
-                ax.set_xlabel(xlab, fontsize=8.5)
+            pass  # row labels removed (shown by legend titles instead)
 
     op_groups, op_color_map = color_maps["op"]
     ent_groups, ent_color_map = color_maps["ent"]
 
-    # Family handles — bottom center
+    # Family handles — one row, just above the plots
     fig.legend(
-        handles=family_handles(), loc="lower center",
-        bbox_to_anchor=(0.40, -0.07), ncol=4,
-        fontsize=7.5, frameon=False,
-        handletextpad=0.25, borderpad=0.32, labelspacing=0.20, columnspacing=0.9,
+        handles=family_handles(), loc="upper center",
+        bbox_to_anchor=(0.40, 1.02), ncol=7,
+        fontsize=8.0, frameon=False,
+        handletextpad=0.25, borderpad=0.32, labelspacing=0.20, columnspacing=0.6,
     )
 
-    # Operation legend — right side, slightly below top
+    # Operation legend — right side, upper half
     op_leg = fig.legend(
         handles=qgroup_handles(op_groups, op_color_map),
-        loc="upper left", bbox_to_anchor=(0.73, 0.93),
-        ncol=1, title="Operation", title_fontsize=8.0,
-        fontsize=7.2, frameon=True, framealpha=0.9,
+        loc="upper left", bbox_to_anchor=(0.65, 0.93),
+        ncol=1, title="Operation", title_fontsize=8.5,
+        fontsize=8.0, frameon=False,
         handletextpad=0.25, borderpad=0.35, labelspacing=0.20,
     )
     op_leg.get_title().set_fontweight("bold")
     fig.add_artist(op_leg)
 
-    # Entity legend — right side, below Operation
+    # Entity legend — right side, lower half (close to Operation)
     ent_leg = fig.legend(
         handles=qgroup_handles(ent_groups, ent_color_map),
-        loc="upper left", bbox_to_anchor=(0.73, 0.48),
-        ncol=1, title="Entity", title_fontsize=8.0,
-        fontsize=7.2, frameon=True, framealpha=0.9,
+        loc="upper left", bbox_to_anchor=(0.65, 0.48),
+        ncol=1, title="Entity", title_fontsize=8.5,
+        fontsize=8.0, frameon=False,
         handletextpad=0.25, borderpad=0.35, labelspacing=0.20,
     )
     ent_leg.get_title().set_fontweight("bold")

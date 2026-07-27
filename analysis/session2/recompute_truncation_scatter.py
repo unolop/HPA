@@ -63,7 +63,21 @@ def model_family(name: str) -> str:
     return "Qwen"
 
 
+_SIZE_OVERRIDE = {
+    "Phi-3.5-mini":         3.5,
+    "LLaVA-1.5-7B":         7.0,
+    "LLaVA-Mistral":        7.0,
+    "LLaVA-Vicuna":         7.0,
+    "LLaVA-1.5 (LM)":       7.0,
+    "LLaVA-Mistral (LM)":   7.0,
+    "LLaVA-Vicuna (LM)":    7.0,
+    "Mistral-7B":           7.0,
+    "Vicuna-7B":            7.0,
+}
+
 def model_size_b(name: str) -> float:
+    if name in _SIZE_OVERRIDE:
+        return _SIZE_OVERRIDE[name]
     m = re.search(r"(\d+(?:\.\d+)?)\s*[Bb]", name)
     return float(m.group(1)) if m else 7.0
 
@@ -82,7 +96,9 @@ def per_model_scores(base_df, w5_df, filter_abst: bool) -> pd.DataFrame:
     trunc_s = hm_w5.groupby(["subject_group_2", "subject_2"])["sbert_score"].mean()
     df = pd.DataFrame({"raw": raw_s, "trunc": trunc_s}).reset_index()
     df.columns = ["group", "model", "raw", "trunc"]
-    return df[df["group"].isin(GROUP_ORDER)].copy()
+    df = df[df["group"].isin(GROUP_ORDER)].copy()
+    df = df[~df["model"].str.contains("32B", case=False)].copy()
+    return df
 
 
 def make_scatter(df: pd.DataFrame, out_path: Path) -> None:

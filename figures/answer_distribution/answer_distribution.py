@@ -138,7 +138,7 @@ def build_stack(df: pd.DataFrame, value_col: str, source_order: list[str]) -> pd
 
 def plot_yn(stack_df: pd.DataFrame):
     cats = [c for c in ["yes", "no", "others"] if c in stack_df.columns]
-    fig, ax = plt.subplots(figsize=(7.8, 0.58 * stack_df.shape[0] + 0.8))
+    fig, ax = plt.subplots(figsize=(5.6, 0.36 * stack_df.shape[0] + 0.4))
     stack_df[cats].plot(
         kind="barh",
         stacked=True,
@@ -150,6 +150,8 @@ def plot_yn(stack_df: pd.DataFrame):
     ax.set_xlim(0, 1)
     ax.set_ylabel("")
     ax.grid(False)
+    ax.tick_params(axis="x", labelsize=11)
+    ax.tick_params(axis="y", labelsize=12)
     for spine in ["top", "right", "left"]:
         ax.spines[spine].set_visible(False)
     for i, src in enumerate(stack_df.index):
@@ -164,11 +166,17 @@ def plot_yn(stack_df: pd.DataFrame):
                     ha="center",
                     va="center",
                     color="white",
-                    fontsize=10,
+                    fontsize=12,
                     fontweight="bold",
                 )
             cum += val
-    ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.26), ncol=3, frameon=False)
+    ax.legend(
+        loc="lower center",
+        bbox_to_anchor=(0.5, 0.89),
+        ncol=3,
+        frameon=False,
+        fontsize=11,
+    )
     plt.tight_layout()
     return fig
 
@@ -187,6 +195,8 @@ def plot_num(stack_df: pd.DataFrame):
     ax.set_xlim(0, 1)
     ax.set_ylabel("")
     ax.grid(False)
+    ax.tick_params(axis="x", labelsize=11)
+    ax.tick_params(axis="y", labelsize=12)
     for spine in ["top", "right", "left"]:
         ax.spines[spine].set_visible(False)
     for i, src in enumerate(stack_df.index):
@@ -201,7 +211,7 @@ def plot_num(stack_df: pd.DataFrame):
                     ha="center",
                     va="center",
                     color="white",
-                    fontsize=10,
+                    fontsize=12,
                     fontweight="bold",
                 )
             cum += val
@@ -210,7 +220,7 @@ def plot_num(stack_df: pd.DataFrame):
         loc="upper center",
         ncol=len(order),
         frameon=False,
-        fontsize=10,
+        fontsize=11,
     )
     plt.tight_layout()
     return fig
