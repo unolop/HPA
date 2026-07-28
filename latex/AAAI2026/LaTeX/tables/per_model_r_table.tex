@@ -1,0 +1,29 @@
+\begin{table}[ht]
+\small\centering
+\setlength{\tabcolsep}{5pt}
+\caption{Per-model Spearman $\rho$ between HH and HM SBERT over group$\times$variant means ($n{=}36$ op; $n{=}27$ ent), measuring how closely each model tracks the human group-level response pattern across all variants. Holm-corrected $p$-values: *** $p{<}.001$, ** $p{<}.01$, * $p{<}.05$.}
+\label{tab:per_model_r}
+\begin{tabular}{llrr}
+\toprule
+\textbf{Model} & \textbf{Class} & \textbf{Op} $\rho$ & \textbf{Ent} $\rho$ \\
+\midrule
+InternVL-8B         & VLM      & 0.956\textsuperscript{***} & 0.896\textsuperscript{***} \\
+LLaVA-1.5-7B        & VLM      & 0.935\textsuperscript{***} & 0.540\textsuperscript{**}  \\
+LLaVA-Mistral       & VLM      & 0.937\textsuperscript{***} & 0.652\textsuperscript{**}  \\
+LLaVA-Vicuna        & VLM      & 0.927\textsuperscript{***} & 0.609\textsuperscript{**}  \\
+Qwen3-VL-8B         & VLM      & 0.929\textsuperscript{***} & 0.828\textsuperscript{***} \\
+\midrule
+InternVL-8B (LM)    & Backbone & 0.855\textsuperscript{***} & 0.797\textsuperscript{***} \\
+LLaVA-1.5 (LM)      & Backbone & 0.947\textsuperscript{***} & 0.753\textsuperscript{***} \\
+LLaVA-Mistral (LM)  & Backbone & 0.962\textsuperscript{***} & 0.712\textsuperscript{***} \\
+LLaVA-Vicuna (LM)   & Backbone & 0.957\textsuperscript{***} & 0.748\textsuperscript{***} \\
+Qwen3-VL-8B (LM)    & Backbone & 0.909\textsuperscript{***} & 0.816\textsuperscript{***} \\
+\midrule
+Mistral-7B           & SA-LLM  & $-$0.591\textsuperscript{**}  & 0.429\textsuperscript{*}   \\
+Qwen2.5-7B-Instruct  & SA-LLM  & 0.860\textsuperscript{***} & 0.743\textsuperscript{***} \\
+Qwen3-8B             & SA-LLM  & 0.849\textsuperscript{***} & 0.844\textsuperscript{***} \\
+Qwen3-8B (think)     & SA-LLM  & 0.849\textsuperscript{***} & 0.844\textsuperscript{***} \\
+Vicuna-7B            & SA-LLM  & 0.712\textsuperscript{***} & 0.590\textsuperscript{**}  \\
+\bottomrule
+\end{tabular}
+\end{table}

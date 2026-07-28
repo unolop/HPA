@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.lines import Line2D
 from scipy import stats
+from statsmodels.stats.multitest import multipletests
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "figures"))
@@ -313,11 +314,51 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
     fig.supylabel(ylab, fontsize=8.5, x=0.02)
     fig.supxlabel(xlab, fontsize=8.5, y=0.05, x=0.32)
 
+    # ── Pass 1: collect subplot data + raw Spearman ρ/p ─────────────────────
+    subplot_data = {}
+    for row_idx, (group_type, df, row_label, _, _) in enumerate(specs):
+        groups_sorted, color_map = color_maps[group_type]
+        for col_idx, col_title in enumerate(ROW_ORDER):
+            sub = df[df["model_class"] == col_title]
+            mean_df = (
+                sub.groupby(group_type)
+                .agg(
+                    human_value=("human_value", "mean"),
+                    model_mean=(metric_col, "mean"),
+                    model_ci=(metric_col, lambda x: 1.96 * np.std(x, ddof=1) / np.sqrt(len(x)) if len(x) > 1 else 0.0),
+                )
+                .reset_index()
+            )
+            rho, p = (stats.spearmanr(mean_df["human_value"], mean_df["model_mean"])
+                      if len(mean_df) >= 3 else (np.nan, np.nan))
+            subplot_data[(row_idx, col_idx)] = {
+                "group_type": group_type, "col_title": col_title,
+                "sub": sub, "mean_df": mean_df, "rho": rho, "p_raw": p,
+            }
+
+    # ── Holm-Bonferroni correction across all 6 subplots ─────────────────────
+    keys = sorted(subplot_data)
+    raw_ps = [subplot_data[k]["p_raw"] for k in keys]
+    valid_mask = [not np.isnan(p) for p in raw_ps]
+    valid_ps = [p for p, v in zip(raw_ps, valid_mask) if v]
+    if valid_ps:
+        _, p_corr_vals, _, _ = multipletests(valid_ps, method="holm")
+        p_corr_iter = iter(p_corr_vals)
+        for k in keys:
+            subplot_data[k]["p_corr"] = next(p_corr_iter) if valid_mask[keys.index(k)] else np.nan
+    else:
+        for k in keys:
+            subplot_data[k]["p_corr"] = np.nan
+
+    # ── Pass 2: draw ─────────────────────────────────────────────────────────
     for row_idx, (group_type, df, row_label, _, _) in enumerate(specs):
         groups_sorted, color_map = color_maps[group_type]
         for col_idx, col_title in enumerate(ROW_ORDER):
             ax = axes[row_idx, col_idx]
-            sub = df[df["model_class"] == col_title]
+            sd = subplot_data[(row_idx, col_idx)]
+            sub = sd["sub"]
+            mean_df = sd["mean_df"]
+
             for model, msub in sub.groupby("model"):
                 marker = MODEL_STYLE.get(model, "o")
                 for _, row in msub.iterrows():
@@ -328,19 +369,10 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
                         edgecolors="white", linewidth=0.45, zorder=3,
                     )
 
-            mean_df = (
-                sub.groupby(group_type)
-                .agg(
-                    human_value=("human_value", "mean"),
-                    model_mean=(metric_col, "mean"),
-                    model_sem=(metric_col, lambda x: np.std(x, ddof=1) / np.sqrt(len(x)) if len(x) > 1 else 0.0),
-                )
-                .reset_index()
-            )
             for _, row in mean_df.iterrows():
                 c = color_map[row[group_type]]
                 ax.errorbar(
-                    row["human_value"], row["model_mean"], yerr=row["model_sem"],
+                    row["human_value"], row["model_mean"], yerr=row["model_ci"],
                     fmt="none", ecolor=c, elinewidth=1.0, capsize=2, zorder=3, alpha=0.95,
                 )
                 ax.scatter(
@@ -348,18 +380,13 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
                     s=44, alpha=0.95, color=c, edgecolors="black", linewidth=0.45, zorder=4,
                 )
 
-            if len(mean_df) >= 3:
-                r_val, p_val = stats.pearsonr(mean_df["human_value"], mean_df["model_mean"])
-                stars = sig_stars(p_val)
-                stat_text = f"r={r_val:.2f}{stars}"
-                stat_x = 0.03
-                stat_y = 0.97
-                stat_ha = "left"
-                stat_va = "top"
+            rho, p_corr = sd["rho"], sd["p_corr"]
+            if not np.isnan(rho):
+                stars = "***" if p_corr < 0.001 else "**" if p_corr < 0.01 else "*" if p_corr < 0.05 else ""
                 ax.text(
-                    stat_x, stat_y, stat_text,
+                    0.03, 0.97, f"$\\rho$={rho:.2f}{stars}",
                     transform=ax.transAxes,
-                    ha=stat_ha, va=stat_va, fontsize=8.0, fontweight="bold",
+                    ha="left", va="top", fontsize=8.0, fontweight="bold",
                     bbox=dict(boxstyle="round,pad=0.22", facecolor="white", alpha=0.82, linewidth=0.0),
                 )
 
@@ -371,10 +398,8 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
             ax.set_axisbelow(True)
             ax.tick_params(labelsize=8.0)
 
-            # column headers on top row
             if row_idx == 0:
                 ax.set_title(ROW_LABELS[col_title], fontsize=9.5, fontweight="bold")
-            pass  # row labels removed (shown by legend titles instead)
 
     op_groups, op_color_map = color_maps["op"]
     ent_groups, ent_color_map = color_maps["ent"]

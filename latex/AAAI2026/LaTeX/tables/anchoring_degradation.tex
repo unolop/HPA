@@ -1,0 +1,39 @@
+\begin{table*}[ht]
+\small\centering
+\setlength{\tabcolsep}{4pt}
+\caption{Anchoring effect: mean HH and HM SBERT at Original (C) and Pronominalized (A) variants, with delta $\Delta{=}A{-}C$ (negative = degradation under anchor removal). Italics mark $|\Delta|{>}0.05$. VLM and Backbone columns are means over 5 models each.}
+\label{tab:anchoring_degradation}
+\begin{tabular}{lrrr rrr rrr}
+\toprule
+ & \multicolumn{3}{c}{\textbf{Human--Human}} & \multicolumn{3}{c}{\textbf{VLM}} & \multicolumn{3}{c}{\textbf{Backbone}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+\textbf{Group} & C & A & $\Delta$ & C & A & $\Delta$ & C & A & $\Delta$ \\
+\midrule
+\multicolumn{10}{c}{\textit{Operation}} \\
+\midrule
+Action & 0.725 & 0.711 & -0.015 & 0.713 & 0.679 & -0.034 & 0.770 & 0.741 & -0.028 \\
+Attribute & 0.593 & 0.558 & -0.035 & 0.571 & 0.544 & -0.027 & 0.606 & 0.584 & -0.023 \\
+Causality & 0.397 & 0.342 & \textit{-0.056} & 0.281 & 0.349 & +0.068 & 0.454 & 0.424 & -0.030 \\
+Comparison & 0.350 & 0.333 & -0.016 & 0.331 & 0.321 & -0.010 & 0.344 & 0.329 & -0.016 \\
+Count & 0.662 & 0.673 & +0.010 & 0.578 & 0.578 & +0.000 & 0.610 & 0.580 & -0.031 \\
+Existence & 0.872 & 0.856 & -0.016 & 0.826 & 0.850 & +0.024 & 0.866 & 0.861 & -0.006 \\
+Identity & 0.536 & 0.343 & \textit{-0.193} & 0.473 & 0.253 & \textit{-0.220} & 0.525 & 0.334 & \textit{-0.192} \\
+Spatial & 0.401 & 0.362 & -0.039 & 0.433 & 0.319 & \textit{-0.115} & 0.422 & 0.338 & \textit{-0.084} \\
+Temporal & 0.496 & 0.513 & +0.018 & 0.459 & 0.478 & +0.019 & 0.503 & 0.525 & +0.022 \\
+Text Reading & 0.401 & 0.442 & +0.041 & 0.413 & 0.424 & +0.011 & 0.441 & 0.520 & +0.079 \\
+World Know. & 0.755 & 0.677 & \textit{-0.079} & 0.768 & 0.653 & \textit{-0.115} & 0.708 & 0.656 & \textit{-0.052} \\
+\midrule
+\multicolumn{10}{c}{\textit{Entity}} \\
+\midrule
+Animal & 0.630 & 0.581 & -0.049 & 0.593 & 0.559 & -0.034 & 0.629 & 0.580 & -0.049 \\
+Food & 0.662 & 0.602 & \textit{-0.060} & 0.630 & 0.532 & \textit{-0.099} & 0.672 & 0.607 & \textit{-0.065} \\
+Object & 0.593 & 0.553 & -0.040 & 0.555 & 0.511 & -0.044 & 0.587 & 0.549 & -0.038 \\
+Other & 0.546 & 0.569 & +0.024 & 0.521 & 0.532 & +0.010 & 0.546 & 0.567 & +0.021 \\
+Person & 0.577 & 0.556 & -0.021 & 0.545 & 0.518 & -0.028 & 0.575 & 0.546 & -0.029 \\
+Place & 0.620 & 0.586 & -0.034 & 0.631 & 0.591 & -0.040 & 0.655 & 0.600 & \textit{-0.055} \\
+Product & 0.591 & 0.513 & \textit{-0.078} & 0.544 & 0.440 & \textit{-0.104} & 0.559 & 0.430 & \textit{-0.129} \\
+Text & 0.451 & 0.507 & +0.056 & 0.446 & 0.507 & +0.061 & 0.462 & 0.571 & +0.110 \\
+Vehicle & 0.562 & 0.522 & -0.041 & 0.575 & 0.470 & \textit{-0.106} & 0.564 & 0.451 & \textit{-0.113} \\
+\bottomrule
+\end{tabular}
+\end{table*}

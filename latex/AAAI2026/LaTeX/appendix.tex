@@ -64,7 +64,7 @@ Text        & 4  & Visible written content such as signs, labels, or logos. \\
 \bottomrule
 \end{tabularx}
 }
-\caption{Question taxonomy used for group-level analysis.}
+\caption{Question taxonomy used for group-level analysis. For anchoring concordance analysis (main paper), low-frequency operation groups (Causality, Comparison, Temporal, Text Reading, World Knowledge; each $n{\leq}5$) are excluded, and entity groups Place, Product, Vehicle, and Text are merged into Other, yielding 7 operation and 5 entity groups with balanced counts.}
 \label{tab:taxonomy}
 \end{table}
 
@@ -158,7 +158,7 @@ Return ONLY a JSON object \texttt{\{"results":[...]\}} matching the schema exact
 6) If \texttt{w=where} and \texttt{op} not in \{\texttt{text,know}\} $\Rightarrow$ \texttt{op=spat}, \texttt{attr=loc}, \texttt{ans=loc}, \texttt{space=cat}.
 \end{quote}
 
-\subsection{Human Study Protocol and Preprocessing}
+\subsection{Human Study Protocol and Statistics}
 \label{app:human}
 
 A total of 40 participants were included. Participants were recruited via
@@ -168,6 +168,37 @@ Informed consent was obtained prior to participation.
 
 Participants answered text-only blind-instruction questions across the original, weaker-object, and pronominalized formulations in shuffled order ($N{=}339$ per participant).
 Participants were compensated at 10,000~KRW per hour.
+
+Summary statistics are reported in Section~\ref{sec:human_data}.
+Figure~\ref{fig:human_stats} shows the full
+response-time, answer-length, abstention, and confidence distributions.
+Per-participant median RTs range from 2.6~s to 7.5~s with no extreme outliers.
+Confidence ranges from 1.5 to 4.7 per participant (mean 3.07), with
+per-variant distributions nearly identical---suggesting question surface form
+does not systematically inflate or suppress self-reported certainty.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{human_study_statistics}
+\caption{Participant response statistics across 40 participants and 15,336 responses.
+\textbf{A--B}: Response time distribution and per-participant medians (capped at 99th pct = 35.8~s).
+\textbf{C}: Answer length---92.6\% are single-word responses.
+\textbf{D}: Confidence rating distribution by variant (nearly uniform across variants).
+\textbf{E}: Soft abstention rate ($<$0.04\% per variant) confirms engaged responding.
+\textbf{F}: Per-participant mean confidence, sorted---full range used with no ceiling/floor effect.}
+\label{fig:human_stats}
+\label{fig:human_stats_conf}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{confidence/human_ecdf}
+\caption{ECDF of human self-reported confidence (normalised to $[0,1]$) by question
+variant. The three curves are nearly identical, with only a modest downward shift
+under pronominalization, confirming that human confidence is robust to lexical-anchor
+removal and more stable across variants than model token confidence.}
+\label{fig:human_ecdf}
+\end{figure}
 
 \subsection{Answer Preprocessing Pipeline}
 \label{app:preprocessing}
@@ -195,44 +226,6 @@ This cascade is applied uniformly to all model outputs before the normalization 
 \textbf{(3) Abstention cleaning.}
 The shared abstention classifier (Appendix~\ref{app:abstention_classifier}) is applied uniformly to both model and human answers to flag non-substantive responses for exclusion from alignment metrics.
 Human abstention after normalization is negligible ($<$0.01\% overall; effectively absent), so HH pairs are minimally affected; filtering primarily removes model-abstaining HM pairs.
-
-\subsection{Participant Response Statistics}
-\label{app:human_stats}
-
-Summary statistics are reported in Section~\ref{sec:human_data}.
-Figure~\ref{fig:human_stats} shows the full
-response-time, answer-length, abstention, and confidence distributions.
-Per-participant median RTs range from 2.6~s to 7.5~s with no extreme outliers.
-Confidence ranges from 1.5 to 4.7 per participant (mean 3.07), with
-per-variant distributions nearly identical---suggesting question surface form
-does not systematically inflate or suppress self-reported certainty.
-% The RT--confidence correlation is consistent across variants
-% ($r_C = -0.082$, $r_B = -0.089$, $r_A = -0.116$, all $p{<}.001$), with
-% mean RT decreasing monotonically from 6.2~s at confidence level~1 to 4.8~s
-% at level~5.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{human_study_statistics}
-\caption{Participant response statistics across 40 participants and 15,336 responses.
-\textbf{A--B}: Response time distribution and per-participant medians (capped at 99th pct = 35.8~s).
-\textbf{C}: Answer length---92.6\% are single-word responses.
-\textbf{D}: Confidence rating distribution by variant (nearly uniform across variants).
-\textbf{E}: Soft abstention rate ($<$0.04\% per variant) confirms engaged responding.
-\textbf{F}: Per-participant mean confidence, sorted---full range used with no ceiling/floor effect.}
-\label{fig:human_stats}
-\label{fig:human_stats_conf}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{confidence/human_ecdf}
-\caption{ECDF of human self-reported confidence (normalised to $[0,1]$) by question
-variant. The three curves are nearly identical, with only a modest downward shift
-under pronominalization, confirming that human confidence is robust to lexical-anchor
-removal and more stable across variants than model token confidence.}
-\label{fig:human_ecdf}
-\end{figure}
 
 \subsection{Question Embedding Coverage}
 \label{app:tsne}
@@ -282,15 +275,13 @@ LLaVA-1.6-Vicuna   & 13B  & Vicuna-13B v1.5    & CLIP ViT-L/14@336   & Larger Vi
 Qwen3-VL           & 2B   & Qwen3-2B           & Qwen3-ViT           & Native dynamic-resolution vision encoder; trained on large-scale multimodal web data with long-context support \citep{bai2025qwen3vl}. \\
 Qwen3-VL           & 4B   & Qwen3-4B           & Qwen3-ViT           & Same architecture as Qwen3-VL-2B; stronger instruction following at 4B scale \citep{bai2025qwen3vl}. \\
 Qwen3-VL           & 8B   & Qwen3-8B           & Qwen3-ViT           & Primary Qwen3-VL model in our analysis; competitive with much larger models on standard benchmarks \citep{bai2025qwen3vl}. \\
-Qwen3-VL$^\dagger$ & 32B  & Qwen3-32B          & Qwen3-ViT           & Largest Qwen3-VL; excluded due to incomplete inference on the 113-question subset \citep{bai2025qwen3vl}. \\
 \midrule
 \multicolumn{5}{c}{\textit{Standalone LLMs (Qwen3 also evaluated with thinking traces enabled; same weights)}} \\
 \midrule
 Mistral-7B          & 7B   & \multicolumn{2}{l}{—} & Sliding-window attention with grouped-query attention; instruction-tuned on proprietary data \citep{jiang2023mistral}. \\
-Phi-3.5-mini        & 3.8B & \multicolumn{2}{l}{—} & Compact dense transformer trained on high-quality filtered web and synthetic data for efficiency. \\
+% Phi-3.5-mini removed: 100% verbose outputs, not paired with any VLM backbone, outside the 7-8B matched scale
 Qwen2.5-Instruct    & 7B   & \multicolumn{2}{l}{—} & Instruction-tuned on 18T tokens with RLHF; strong general-purpose baseline from the Qwen2.5 family. \\
-Qwen3               & 0.6B--8B & \multicolumn{2}{l}{—} & Dense models supporting both thinking and non-thinking decoding modes via the same checkpoint; trained with reinforcement learning for reasoning \citep{yang2025qwen3}. \\
-Qwen3$^\dagger$     & 32B  & \multicolumn{2}{l}{—} & Largest dense Qwen3; excluded from main analysis due to incomplete inference \citep{yang2025qwen3}. \\
+Qwen3               & 0.6B, 1.7B, 4B, 8B & \multicolumn{2}{l}{—} & Dense models supporting both thinking and non-thinking decoding modes via the same checkpoint; trained with reinforcement learning for reasoning \citep{yang2025qwen3}. \\
 Vicuna              & 7B, 13B & \multicolumn{2}{l}{—} & LLaMA fine-tuned on ShareGPT conversations; widely used as VLM language backbone \citep{zheng2023vicuna}. \\
 \bottomrule
 \end{tabularx}
@@ -316,7 +307,7 @@ Per-model abstention rates by question type and condition (see \S\ref{sec:setup}
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{confidence/abstention_vs_confidence_hist_inst_blind}
-\caption{Token confidence (mean token probability) pooled across all model groups and scales (VLMs, backbone decoders, standalone LLMs, and thinking models; 0.6B--32B), instruction-blind condition ($N{=}339$ question--variant pairs). \textbf{Top:} committed vs.\ abstained answers. Abstained answers are markedly lower in confidence, confirming abstentions reflect genuine uncertainty rather than high-confidence refusals. \textbf{Bottom:} soft vs.\ hard abstention split. Soft abstentions show higher confidence than hard abstentions, consistent with partial commitment rather than complete uncertainty.}
+\caption{Token confidence (mean token probability) pooled across all model groups and scales (VLMs, backbone decoders, standalone LLMs, and thinking models; 0.6B--13B), instruction-blind condition ($N{=}339$ question--variant pairs). \textbf{Top:} committed vs.\ abstained answers. Abstained answers are markedly lower in confidence, confirming abstentions reflect genuine uncertainty rather than high-confidence refusals. \textbf{Bottom:} soft vs.\ hard abstention split. Soft abstentions show higher confidence than hard abstentions, consistent with partial commitment rather than complete uncertainty.}
 \label{fig:abstention_confidence_hist}
 \end{figure}
 
@@ -401,6 +392,46 @@ Figure~\ref{fig:count_transition_all} extends the InternVL-8B count-distribution
 
 \input{tables/matched_family_alignment_tests}
 
+\subsection{Anchoring Degradation by Group}
+\label{app:anchoring_degradation}
+
+\input{tables/anchoring_degradation}
+
+\subsection{InternVL-8B: Per-Group Anchoring Excess}
+\label{app:internvl_anchoring}
+
+Table~\ref{tab:internvl_anchoring} shows per-group anchoring excess for InternVL-8B (VLM vs.\ backbone decoder).
+The VLM has positive excess (under-degrades relative to humans) on visual entity groups---\textit{Place} ($+0.104$), \textit{Vehicle} ($+0.060$), \textit{Animal} ($+0.023$)---while the backbone over-degrades on the same groups.
+This reveals that InternVL's encoder selectively enriches \emph{visual} entity priors, making the VLM less anchor-dependent than its backbone on those specific groups.
+In contrast, both VLM and backbone over-degrade on \textit{Identity} and \textit{Spatial} operations, where the referent anchor is irreplaceable.
+
+\input{tables/internvl_anchoring}
+
+\subsection{Anchoring Degradation by Group and Architecture Class}
+\label{app:delta_bar}
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/hh_hm_grouped_scatter_7b_all_variants/7b_sbert_delta_bar_abstfiltered}
+\caption{Orig.$\to$Pron.\ degradation by operation type (top row) and entity type (bottom row) for SBERT (left column) and exact-match accuracy (right column).
+Low-frequency operation groups (Causality, Comparison, Temporal, Text Reading, World Knowledge; $n{\leq}5$) and entity groups (Place, Product, Vehicle, Text) are merged into \textit{Other}, matching the main-paper grouping.
+\textbf{Bars} = per-architecture-class mean $\Delta$ (VLM = blue; Backbone = green; SA-LLM = red); \textbf{markers} = individual model $\Delta$ (shape encodes model family; see top legend); \textbf{error bars} = 95\% CI across models within class.
+\textbf{Black diamonds} = human (HH) $\Delta$; groups ordered by human SBERT $\Delta$ ascending (left-most = most anchor-sensitive), with order held constant across both metric columns.
+Bars falling below the human diamond indicate model over-degradation relative to the human baseline.
+Accuracy and SBERT patterns are broadly consistent, confirming that the anchoring effects observed under SBERT are not metric-specific.
+\textit{Note:} Spearman $\rho$ values in Figure~\ref{fig:variants} are computed over all unmerged groups (12 op / 9 ent) for maximum statistical power; the merged grouping here serves visual clarity only.}
+\label{fig:delta_bar}
+\end{figure*}
+
+\subsection{Per-Model Alignment Statistics}
+\label{app:per_model_r}
+
+Table~\ref{tab:per_model_r} reports Spearman $\rho$ between HH and HM SBERT over group$\times$variant means ($n{=}36$ op; $n{=}27$ ent) for each model, measuring how closely models track the human group-level response pattern across all three variants.
+Operation $\rho$ is high across most VLMs and backbone decoders (0.85--0.96), with Mistral-7B as the sole negative outlier ($\rho{=}{-}0.591$) due to verbose refusals.
+Entity $\rho$ is more variable: backbone decoders are generally consistent (0.71--0.82), while some VLMs show weaker entity-level concordance (LLaVA-1.5: 0.540).
+
+\input{tables/per_model_r_table}
+
 \subsection{SBERT Length-Normalization Robustness}
 \label{app:chrf_human}
 
@@ -440,7 +471,7 @@ The operation-type structure found in SBERT alignment also holds under blind VQA
 \centering
 \includegraphics[width=\textwidth]{degradation_by_ent_op_7b_inst_blind/accuracy/combined}
 \caption{Matched 7/8B instruction-blind accuracy degradation profiles across control variants
-(Original$\to$Weaker$\to$Pronominalized). Top row: by operation type; bottom row: by entity type.
+(Orig.$\to$Weak.$\to$Pron.). Top row: by operation type; bottom row: by entity type.
 The operation-type pattern mirrors the SBERT result: identity and spatial questions collapse
 most under pronominalization, while count and action questions remain relatively robust.
 Bold lines show group means; thin lines show individual models.}
