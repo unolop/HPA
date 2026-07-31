@@ -80,11 +80,11 @@ def main():
     merged["delta"] = merged["inst"] - merged["blind"]
     merged = merged.rename(columns={"subject_2": "model"})
 
-    # Rankings over blind SBERT per variant (higher = better)
+    # Rankings over inst SBERT per variant (higher = better)
     rankings = {}
     for v in VARIANTS:
         sub = merged[merged["variant"] == v]
-        vals = sub["blind"].dropna().tolist()
+        vals = sub["inst"].dropna().tolist()
         uniq = sorted(set(vals), reverse=True)
         rankings[v] = (uniq[0] if uniq else float("nan"),
                        uniq[1] if len(uniq) > 1 else float("nan"))
@@ -104,7 +104,7 @@ def main():
         r"\toprule",
         rf"Model & {header_spans} \\",
         r"\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}",
-        rf"& \small blind ($\Delta$) & \small blind ($\Delta$) & \small blind ($\Delta$) \\",
+        rf"& \small w/ inst ($\Delta$) & \small w/ inst ($\Delta$) & \small w/ inst ($\Delta$) \\",
         r"\midrule",
     ]
 
@@ -126,9 +126,9 @@ def main():
                     cells.append("--")
                     continue
                 best, second = rankings[v]
-                bold = np.isclose(r["blind"], best)
-                under = (not np.isnan(second)) and np.isclose(r["blind"], second)
-                s = fmt(r["blind"], bold=bold, underline=under)
+                bold = np.isclose(r["inst"], best)
+                under = (not np.isnan(second)) and np.isclose(r["inst"], second)
+                s = fmt(r["inst"], bold=bold, underline=under)
                 cells.append(s + fmt_delta_inline(r["delta"]))
             lines.append(f"{display_name(model)} & {' & '.join(cells)} \\\\")
         lines.append(r"\midrule")
@@ -139,7 +139,7 @@ def main():
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
-        r"\caption{Per-model HM SBERT under the blind condition with instruction effect $\Delta$ in parentheses "
+        r"\caption{Per-model HM SBERT (with instruction) with $\Delta$ showing the change from the no-instruction baseline "
         r"(\textcolor{teal}{teal} = instruction improves alignment). "
         r"Pooled over all question--human pairs per variant. "
         r"\textbf{Bold}: best per column; \underline{underline}: second best.}",

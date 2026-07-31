@@ -132,8 +132,8 @@ def draw_bars(ax, groups_ordered, labels_map, hh_stats, hm_stats_by_cls, hm_mode
 
         model_delta = hm_model_delta[cls]
         for gi, g in enumerate(groups_ordered):
-            grp_vals = (model_delta.xs(g, level=0)
-                        if g in model_delta.index.get_level_values(0)
+            grp_vals = (model_delta.xs(g, level=1)
+                        if g in model_delta.index.get_level_values(1)
                         else pd.Series(dtype=float))
             for model_name, val in grp_vals.items():
                 mkr = MODEL_STYLE.get(model_name, "o")

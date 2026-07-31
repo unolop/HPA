@@ -6,13 +6,13 @@
 \setcounter{figure}{0}
 \setcounter{table}{0}
 
-\section{Dataset and Human Study Details}
+\section{Dataset Details}
 \label{app:data}
 
 \subsection{Question Taxonomy}
 \label{app:taxonomy}
 
-Table~\ref{tab:taxonomy} lists all operation and entity categories used for group-level analysis.
+% Table~\ref{tab:taxonomy} lists all operation and entity categories used for group-level analysis.
 
 \begin{table*}[ht]
 \centering
@@ -158,6 +158,28 @@ Return ONLY a JSON object \texttt{\{"results":[...]\}} matching the schema exact
 6) If \texttt{w=where} and \texttt{op} not in \{\texttt{text,know}\} $\Rightarrow$ \texttt{op=spat}, \texttt{attr=loc}, \texttt{ans=loc}, \texttt{space=cat}.
 \end{quote}
 
+\subsection{Question Embedding Coverage}
+\label{app:tsne}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{subset_tsne_entities}\\[0.4em]
+\includegraphics[width=\linewidth]{subset_tsne_operations}
+\caption{t-SNE of the 1{,}000-question pool (gray) with the 113-question
+human-study subset highlighted. \textbf{Top:} colored by entity type.
+\textbf{Bottom:} colored by operation type. Cluster centroids are marked;
+the nearest question to each centroid provides a representative example
+for the corresponding taxonomy category (Table~\ref{tab:taxonomy}).
+The subset spans the full embedding space without concentrating in any
+narrow semantic region.}
+\label{fig:tsne}
+\end{figure}
+
+
+\clearpage
+\section{Human Study Details}
+\label{app:human_study}
+
 \subsection{Human Study Protocol and Statistics}
 \label{app:human}
 
@@ -200,12 +222,20 @@ removal and more stable across variants than model token confidence.}
 \label{fig:human_ecdf}
 \end{figure}
 
+\subsection{Human--Human Agreement Across Metrics}
+\label{app:hh_metric_robustness}
+
+Human--human agreement by operation and entity type across four metrics (SBERT, chrF, ROUGE-1, Jaccard). Surface metrics (chrF, ROUGE-1, Jaccard) show a flat profile across groups, whereas SBERT captures the gradient reported in \S\ref{sec:human_patterns}, confirming that the operation-type structure is a semantic phenomenon not recoverable from lexical overlap alone.
+
+\input{tables/hh_metric_robustness}
+
 \subsection{Answer Preprocessing Pipeline}
 \label{app:preprocessing}
 
-All responses---human and model---go through the same three-step pipeline:
+Human and model responses are preprocessed through the following pipeline.
+Human responses (collected in Korean) go through all three steps; model responses (produced in English) skip step~1 and go through steps~2 and~3 only.
 
-\textbf{(1) Translation.}
+\textbf{(1) Translation (human responses only).}
 Korean responses are translated to English via GPT-4o-mini using the following prompt:
 \begin{quote}\small
 \textit{You are a precise translation assistant for VQA data.
@@ -227,24 +257,6 @@ This cascade is applied uniformly to all model outputs before the normalization 
 The shared abstention classifier (Appendix~\ref{app:abstention_classifier}) is applied uniformly to both model and human answers to flag non-substantive responses for exclusion from alignment metrics.
 Human abstention after normalization is negligible ($<$0.01\% overall; effectively absent), so HH pairs are minimally affected; filtering primarily removes model-abstaining HM pairs.
 
-\subsection{Question Embedding Coverage}
-\label{app:tsne}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{subset_tsne_entities}\\[0.4em]
-\includegraphics[width=\linewidth]{subset_tsne_operations}
-\caption{t-SNE of the 1{,}000-question pool (gray) with the 113-question
-human-study subset highlighted. \textbf{Top:} colored by entity type.
-\textbf{Bottom:} colored by operation type. Cluster centroids are marked;
-the nearest question to each centroid provides a representative example
-for the corresponding taxonomy category (Table~\ref{tab:taxonomy}).
-The subset spans the full embedding space without concentrating in any
-narrow semantic region.}
-\label{fig:tsne}
-\end{figure}
-
-
 \clearpage
 \section{Model Inventory}
 \label{app:model_inventory}
@@ -259,7 +271,7 @@ narrow semantic region.}
   (same weights; decoding mode differs only).
   $\dagger$~=~excluded from main analysis (incomplete inference data).}
 \label{tab:model_inventory}
-\begin{tabularx}{\textwidth}{@{}llllX@{}}
+\begin{tabularx}{\textwidth}{@{}lp{0.09\textwidth}llX@{}}
 \toprule
 \textbf{Model} & \textbf{Size} & \textbf{LLM Decoder} & \textbf{Vision Encoder} & \textbf{Notes} \\
 \midrule
@@ -280,7 +292,7 @@ Qwen3-VL           & 8B   & Qwen3-8B           & Qwen3-ViT           & Primary Q
 \midrule
 Mistral-7B          & 7B   & \multicolumn{2}{l}{—} & Sliding-window attention with grouped-query attention; instruction-tuned on proprietary data \citep{jiang2023mistral}. \\
 % Phi-3.5-mini removed: 100% verbose outputs, not paired with any VLM backbone, outside the 7-8B matched scale
-Qwen2.5-Instruct    & 7B   & \multicolumn{2}{l}{—} & Instruction-tuned on 18T tokens with RLHF; strong general-purpose baseline from the Qwen2.5 family. \\
+Qwen2.5-Instruct    & 7B   & \multicolumn{2}{l}{—} & Instruction-tuned on 18T tokens with RLHF; strong general-purpose baseline from the Qwen2.5 family \citep{qwen2025qwen25}. \\
 Qwen3               & 0.6B, 1.7B, 4B, 8B & \multicolumn{2}{l}{—} & Dense models supporting both thinking and non-thinking decoding modes via the same checkpoint; trained with reinforcement learning for reasoning \citep{yang2025qwen3}. \\
 Vicuna              & 7B, 13B & \multicolumn{2}{l}{—} & LLaMA fine-tuned on ShareGPT conversations; widely used as VLM language backbone \citep{zheng2023vicuna}. \\
 \bottomrule
@@ -295,12 +307,12 @@ Vicuna              & 7B, 13B & \multicolumn{2}{l}{—} & LLaMA fine-tuned on Sh
 
 \input{tables/abstention_keyword_table}
 
-Hard abstention = explicit refusal; soft abstention = non-substantive placeholders (\textit{``nothing''} and hedged yes/no excluded). Table~\ref{tab:abstention_keywords} lists all keyword categories.
+% Hard abstention = explicit refusal; soft abstention = non-substantive placeholders (\textit{``nothing''} and hedged yes/no excluded). Table~\ref{tab:abstention_keywords} lists all keyword categories.
 
 \subsection{Abstention by Question Type}
 \label{app:abstention_by_qtype}
 
-Per-model abstention rates by question type and condition (see \S\ref{sec:setup} for filtering criteria).
+% Per-model abstention rates by question type and condition (see \S\ref{sec:setup} for filtering criteria).
 
 \input{tables/abstention_by_qtype}
 
@@ -351,19 +363,15 @@ ECDF of mean token log-probability per answer for matched 7/8B models (instructi
 \label{app:abstention_full}
 \label{app:abstention_scale_full}
 
-Blind accuracy, HM SBERT, and abstention by group with instruction deltas (see \S\ref{sec:dist_alignment} for discussion; per-model abstention by question type in Appendix~\ref{app:abstention_by_qtype}).
-
-% js_instruction_effect table removed: Δ now shown inline in Table~\ref{tab:hm_grouped_distribution_7b_compact_filtered} in the main paper.
-
-\input{tables/inst_effect_combined}
+% Blind accuracy, HM SBERT, and abstention by group with instruction deltas (see \S\ref{sec:dist_alignment} for discussion; per-model abstention by question type in Appendix~\ref{app:abstention_by_qtype}).
 
 \label{app:yesno_dist}
-Table~\ref{tab:yesno_distribution_all} shows the full yes/no answer distribution for all models across all scales (see \S\ref{sec:dist_alignment} for discussion of the 7/8B matched subset).
+% Table~\ref{tab:yesno_distribution_all} shows the full yes/no answer distribution for all models across all scales (see \S\ref{sec:dist_alignment} for discussion of the 7/8B matched subset).
 
 \input{tables/yesno_distribution_all_models}
 
 \label{app:count_dist}
-Figure~\ref{fig:count_transition_all} extends the InternVL-8B count-distribution view to all 7/8B models (see \S\ref{sec:dist_alignment}).
+% Figure~\ref{fig:count_transition_all} extends the InternVL-8B count-distribution view to all 7/8B models (see \S\ref{sec:dist_alignment}).
 
 \begin{figure*}[ht]
 \centering
@@ -378,59 +386,6 @@ Figure~\ref{fig:count_transition_all} extends the InternVL-8B count-distribution
 \label{app:metrics}
 \label{app:scale_variant}
 \label{fig:scale}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{figures/subject_correlation_matrix}
-\caption{Pairwise mean SBERT matrix for all 77 subjects (40 humans + 37 models), original questions ($N{=}113$). Each cell is the mean SBERT score across all 113 questions for that subject pair; question--subject pairs where either participant abstained are excluded before computing scores. The Human$\times$Human block shows moderate within-group agreement; VLM$\times$VLM and VLM$\times$Backbone blocks are high (models within a family give similar answers); the two near-white columns in SA-LLM correspond to Mistral-7B, whose verbose outputs yield near-zero pairwise SBERT with all other subjects.}
-\label{fig:subject_corr_matrix}
-\end{figure}
-
-\subsection{Human--Model Alignment: Family-Level Tests}
-\label{app:degradation}
-\label{app:family_alignment_tests}
-
-\input{tables/matched_family_alignment_tests}
-
-\subsection{Anchoring Degradation by Group}
-\label{app:anchoring_degradation}
-
-\input{tables/anchoring_degradation}
-
-\subsection{InternVL-8B: Per-Group Anchoring Excess}
-\label{app:internvl_anchoring}
-
-Table~\ref{tab:internvl_anchoring} shows per-group anchoring excess for InternVL-8B (VLM vs.\ backbone decoder).
-The VLM has positive excess (under-degrades relative to humans) on visual entity groups---\textit{Place} ($+0.104$), \textit{Vehicle} ($+0.060$), \textit{Animal} ($+0.023$)---while the backbone over-degrades on the same groups.
-This reveals that InternVL's encoder selectively enriches \emph{visual} entity priors, making the VLM less anchor-dependent than its backbone on those specific groups.
-In contrast, both VLM and backbone over-degrade on \textit{Identity} and \textit{Spatial} operations, where the referent anchor is irreplaceable.
-
-\input{tables/internvl_anchoring}
-
-\subsection{Anchoring Degradation by Group and Architecture Class}
-\label{app:delta_bar}
-
-\begin{figure*}[ht]
-\centering
-\includegraphics[width=\textwidth]{figures/hh_hm_grouped_scatter_7b_all_variants/7b_sbert_delta_bar_abstfiltered}
-\caption{Orig.$\to$Pron.\ degradation by operation type (top row) and entity type (bottom row) for SBERT (left column) and exact-match accuracy (right column).
-Low-frequency operation groups (Causality, Comparison, Temporal, Text Reading, World Knowledge; $n{\leq}5$) and entity groups (Place, Product, Vehicle, Text) are merged into \textit{Other}, matching the main-paper grouping.
-\textbf{Bars} = per-architecture-class mean $\Delta$ (VLM = blue; Backbone = green; SA-LLM = red); \textbf{markers} = individual model $\Delta$ (shape encodes model family; see top legend); \textbf{error bars} = 95\% CI across models within class.
-\textbf{Black diamonds} = human (HH) $\Delta$; groups ordered by human SBERT $\Delta$ ascending (left-most = most anchor-sensitive), with order held constant across both metric columns.
-Bars falling below the human diamond indicate model over-degradation relative to the human baseline.
-Accuracy and SBERT patterns are broadly consistent, confirming that the anchoring effects observed under SBERT are not metric-specific.
-\textit{Note:} Spearman $\rho$ values in Figure~\ref{fig:variants} are computed over all unmerged groups (12 op / 9 ent) for maximum statistical power; the merged grouping here serves visual clarity only.}
-\label{fig:delta_bar}
-\end{figure*}
-
-\subsection{Per-Model Alignment Statistics}
-\label{app:per_model_r}
-
-Table~\ref{tab:per_model_r} reports Spearman $\rho$ between HH and HM SBERT over group$\times$variant means ($n{=}36$ op; $n{=}27$ ent) for each model, measuring how closely models track the human group-level response pattern across all three variants.
-Operation $\rho$ is high across most VLMs and backbone decoders (0.85--0.96), with Mistral-7B as the sole negative outlier ($\rho{=}{-}0.591$) due to verbose refusals.
-Entity $\rho$ is more variable: backbone decoders are generally consistent (0.71--0.82), while some VLMs show weaker entity-level concordance (LLaVA-1.5: 0.540).
-
-\input{tables/per_model_r_table}
 
 \subsection{SBERT Length-Normalization Robustness}
 \label{app:chrf_human}
@@ -450,18 +405,62 @@ Entity $\rho$ is more variable: backbone decoders are generally consistent (0.71
 \label{fig:sbert_truncation_scatter}
 \end{figure*}
 
-Human--human agreement by operation and entity type across four metrics (SBERT, chrF, ROUGE-1, Jaccard). Surface metrics show a flat profile vs.\ the SBERT gradient in \S\ref{sec:human_patterns}.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/subject_correlation_matrix}
+\caption{Pairwise mean SBERT matrix for all 77 subjects (40 humans + 37 models), original questions ($N{=}113$). Each cell is the mean SBERT score across all 113 questions for that subject pair; question--subject pairs where either participant abstained are excluded before computing scores. The Human$\times$Human block shows moderate within-group agreement; VLM$\times$VLM and VLM$\times$Backbone blocks are high (models within a family give similar answers); the two near-white columns in SA-LLM correspond to Mistral-7B, whose verbose outputs yield near-zero pairwise SBERT with all other subjects.}
+\label{fig:subject_corr_matrix}
+\end{figure}
 
-\input{tables/hh_metric_robustness}
+\subsection{Human--Model Alignment: Family-Level Tests}
+\label{app:degradation}
+\label{app:family_alignment_tests}
+
+\input{tables/matched_family_alignment_tests}
+
+% \subsection{Anchoring Degradation by Group}
+% \label{app:anchoring_degradation}
+% \input{tables/anchoring_degradation}
+
+% \subsection{InternVL-8B: Per-Group Anchoring Excess}
+% \label{app:internvl_anchoring}
+% Table~\ref{tab:internvl_anchoring} shows per-group anchoring excess for InternVL-8B (VLM vs.\ backbone decoder).
+% The VLM has positive excess (under-degrades relative to humans) on visual entity groups---\textit{Place} ($+0.104$), \textit{Vehicle} ($+0.060$), \textit{Animal} ($+0.023$)---while the backbone over-degrades on the same groups.
+% This reveals that InternVL's encoder selectively enriches \emph{visual} entity priors, making the VLM less anchor-dependent than its backbone on those specific groups.
+% In contrast, both VLM and backbone over-degrade on \textit{Identity} and \textit{Spatial} operations, where the referent anchor is irreplaceable.
+% \input{tables/internvl_anchoring}
+
+\subsection{Anchoring Degradation by Group and Architecture Class}
+\label{app:delta_bar}
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/hh_hm_grouped_scatter_7b_all_variants/7b_sbert_delta_bar_abstfiltered}
+\caption{Orig.$\to$Pron.\ degradation by operation type (top row) and entity type (bottom row) for SBERT (left column) and exact-match accuracy (right column).
+Low-frequency operation groups and entity groups are merged into \textit{Other}, matching the main-paper grouping.
+\textbf{Bars} = per-architecture-class mean $\Delta$ (VLM = blue; Backbone = green; SA-LLM = red); \textbf{markers} = individual model $\Delta$ (shape encodes model family); \textbf{error bars} = 95\% CI across models within class.
+\textbf{Black diamonds} = human (HH) $\Delta$; groups ordered by human SBERT $\Delta$ ascending.}
+\label{fig:delta_bar}
+\end{figure*}
+
+\subsection{Per-Model Alignment Statistics}
+\label{app:per_model_r}
+
+% Table~\ref{tab:per_model_r} reports Spearman $\rho$ between HH and HM SBERT over group$\times$variant means ($n{=}36$ op; $n{=}27$ ent) for each model, measuring how closely models track the human group-level response pattern across all three variants.
+% Operation $\rho$ is high across most VLMs and backbone decoders (0.85--0.96), with Mistral-7B as the sole negative outlier ($\rho{=}{-}0.591$) due to verbose refusals.
+% Entity $\rho$ is more variable: backbone decoders are generally consistent (0.71--0.82), while some VLMs show weaker entity-level concordance (LLaVA-1.5: 0.540).
+
+\input{tables/per_model_r_table}
 
 \subsection{Per-Model Agreement Across Metrics}
 
 \input{tables/comprehensive_inst_blind_table}
 
-\subsection{Accuracy Degradation and Human--Model Correlation}
+\clearpage
+\section{Accuracy Alignment}
 \label{app:accuracy_robustness}
 
-The operation-type structure found in SBERT alignment also holds under blind VQA accuracy, confirming it is not an artefact of the semantic metric.
+% The operation-type structure found in SBERT alignment also holds under blind VQA accuracy, confirming it is not an artefact of the semantic metric.
 % Blind VQA accuracy and HM SBERT capture related but dissociable aspects of model behavior.
 % Backbone decoders score higher than their paired full VLMs on both accuracy and SBERT for most families, consistent with the vision encoder suppressing the language prior on uninformative input.
 % However, scaling within a family increases blind accuracy without reliably improving SBERT (e.g., Qwen3-VL 2B$\to$8B: accuracy rises monotonically while backbone SBERT peaks at 4B), indicating that stronger benchmark performance does not imply a more human-like prior distribution.
@@ -489,7 +488,7 @@ Bold lines show group means; thin lines show individual models.}
 \section{Image-Condition Ablation}
 \label{app:ablation}
 
-Alignment metrics under four uninformative image conditions (see \S\ref{sec:ablation} for discussion).
+% Alignment metrics under four uninformative image conditions (see \S\ref{sec:ablation} for discussion).
 
 \begin{table}[h]
 \centering
@@ -536,17 +535,17 @@ Chg.\ = response change rate relative to the black image baseline.
 \label{fig:think_abs_vs_length}
 \end{figure*}
 
-Table~\ref{tab:thinking_wilcoxon} reports paired Wilcoxon tests comparing
-thinking and non-thinking HM SBERT at each matched Qwen3 size.
-The benefit of thinking is confined to 1.7B ($\Delta{=}{+}0.110$, $p{<}.001$),
-where the non-thinking model is substantially weaker; at 0.6B there is no
-significant difference ($p{=}.317$). The 4B and 8B configurations share
-the same checkpoint between thinking and non-thinking modes and are excluded.
-The pooled effect across testable sizes ($\Delta{=}{+}0.048$, $p{<}.001$)
-is driven largely by the 1.7B outlier.
-Longer reasoning traces correlate with higher final-answer token confidence
-($r{=}0.26$, $p{<}.001$, $n{=}93{,}021$ question--variant observations),
-consistent with overconfidence under extended reasoning budgets.
+% Table~\ref{tab:thinking_wilcoxon} reports paired Wilcoxon tests comparing
+% thinking and non-thinking HM SBERT at each matched Qwen3 size.
+% The benefit of thinking is confined to 1.7B ($\Delta{=}{+}0.110$, $p{<}.001$),
+% where the non-thinking model is substantially weaker; at 0.6B there is no
+% significant difference ($p{=}.317$). The 4B and 8B configurations share
+% the same checkpoint between thinking and non-thinking modes and are excluded.
+% The pooled effect across testable sizes ($\Delta{=}{+}0.048$, $p{<}.001$)
+% is driven largely by the 1.7B outlier.
+% Longer reasoning traces correlate with higher final-answer token confidence
+% ($r{=}0.26$, $p{<}.001$, $n{=}93{,}021$ question--variant observations),
+% consistent with overconfidence under extended reasoning budgets.
 
 \input{tables/thinking_wilcoxon}
 

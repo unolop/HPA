@@ -302,16 +302,12 @@ def _bootstrap_loo_ci(
 
 
 def _style_val_ci(val: float, metric: str, ci: tuple[float, float]) -> str:
-    """Bold if val is within (or better than) the human LOO 95% CI."""
+    """Bold if val falls within the human LOO 95% CI."""
     text = _fmt_js(val)
     if pd.isna(val) or any(np.isnan(c) for c in ci):
         return text
     lo, hi = ci
-    # JS: lower is better — bold if val <= hi (within or better than human range)
-    if metric in {"JS", "TV"} and val <= hi:
-        return rf"\textbf{{{text}}}"
-    # Mode: higher is better — bold if val >= lo (within or better than human range)
-    if metric == "Mode" and val >= lo:
+    if lo <= val <= hi:
         return rf"\textbf{{{text}}}"
     return text
 
@@ -504,50 +500,43 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
         r"\setlength{\tabcolsep}{2.2pt}",
         r"\renewcommand{\arraystretch}{0.95}",
         "",
-        r"\begin{tabular}{lccc@{\hspace{6pt}}ccc}",
+        r"\begin{tabular}{lcc@{\hspace{6pt}}cc}",
         r"\toprule",
         r"\multirow{2}{*}{\textbf{Model}} &",
-        rf"\multicolumn{{3}}{{c}}{{\textbf{{Yes/No}} ($N{{=}}{pooled_n['yes/no']}$)}} &",
-        rf"\multicolumn{{3}}{{c}}{{\textbf{{Count}} ($N{{=}}{pooled_n['number']}$)}} \\",
-        r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
-        r"& $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ & $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ \\",
+        rf"\multicolumn{{2}}{{c}}{{\textbf{{Yes/No}} ($N{{=}}{pooled_n['yes/no']}$)}} &",
+        rf"\multicolumn{{2}}{{c}}{{\textbf{{Count}} ($N{{=}}{pooled_n['number']}$)}} \\",
+        r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}",
+        r"& \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ \\",
         r"\midrule",
     ]
 
-    # Human LOO row (no delta) — annotate with 95% bootstrap CI
-    def _fmt_loo_cell(val: float, ci: tuple[float, float]) -> str:
-        lo, hi = ci
-        return rf"{_fmt_js(val)} {{\scriptsize [{_fmt_js(lo)},{_fmt_js(hi)}]}}"
-
-    loo_yn_js   = _fmt_loo_cell(float(human_row[("yes/no", "JS")]),   loo_ci[("yes/no", "JS")])
-    loo_yn_mode = _fmt_loo_cell(float(human_row[("yes/no", "Mode")]), loo_ci[("yes/no", "Mode")])
-    loo_ct_js   = _fmt_loo_cell(float(human_row[("number", "JS")]),   loo_ci[("number", "JS")])
-    loo_ct_mode = _fmt_loo_cell(float(human_row[("number", "Mode")]), loo_ci[("number", "Mode")])
+    loo_yn_js   = _fmt_js(float(human_row[("yes/no", "JS")]))
+    loo_yn_mode = _fmt_js(float(human_row[("yes/no", "Mode")]))
+    loo_ct_js   = _fmt_js(float(human_row[("number", "JS")]))
+    loo_ct_mode = _fmt_js(float(human_row[("number", "Mode")]))
     lines.append(
-        rf"\textbf{{Human LOO}} & {human_row[('yes/no','N')]} & {loo_yn_js} & {loo_yn_mode} "
-        rf"& {human_row[('number','N')]} & {loo_ct_js} & {loo_ct_mode} \\"
+        rf"\textbf{{Human LOO}} & {loo_yn_js} & {loo_yn_mode} & {loo_ct_js} & {loo_ct_mode} \\"
     )
     lines.append(r"\midrule")
 
     for grp in GROUP_ORDER:
-        lines.append(rf"\multicolumn{{7}}{{c}}{{\textbf{{{SECTION_TITLES[grp]}}}}} \\")
+        lines.append(rf"\multicolumn{{5}}{{c}}{{\textbf{{{SECTION_TITLES[grp]}}}}} \\")
         lines.append(r"\midrule")
         for model in MODEL_ORDER[grp]:
-            if model not in blind_metrics:
+            if model not in inst_metrics:
                 continue
-            bm = blind_metrics[model]
-            im = inst_metrics.get(model, {})
+            im = inst_metrics[model]
+            bm = blind_metrics.get(model, {})
             cells = []
             for atype in ("yes/no", "number"):
-                n    = bm.get((atype, "N"), 0)
-                js   = bm.get((atype, "JS"), float("nan"))
-                mode = bm.get((atype, "Mode"), float("nan"))
-                js_i = im.get((atype, "JS"), float("nan"))
-                delta = (js_i - js) if (not pd.isna(js_i) and not pd.isna(js)) else float("nan")
-                js_s   = _style_val(js,   "JS",   *rankings[(atype, "JS")])
-                mode_s = _style_val(mode, "Mode", *rankings[(atype, "Mode")])
+                js_inst  = im.get((atype, "JS"), float("nan"))
+                mode_inst = im.get((atype, "Mode"), float("nan"))
+                js_blind  = bm.get((atype, "JS"), float("nan"))
+                delta = (js_inst - js_blind) if (not pd.isna(js_inst) and not pd.isna(js_blind)) else float("nan")
+                js_s   = _style_val_ci(js_inst,   "JS",   loo_ci[(atype, "JS")])
+                mode_s = _style_val_ci(mode_inst, "Mode", loo_ci[(atype, "Mode")])
                 js_cell = js_s + _fmt_delta_inline(delta)
-                cells += [str(int(n)) if n else "--", js_cell, mode_s]
+                cells += [js_cell, mode_s]
             lines.append(f"{_display_name(model)} & {' & '.join(cells)} \\\\")
         lines.append(r"\midrule")
     if lines[-1] == r"\midrule":
@@ -555,13 +544,12 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
-        r"\caption{Per-question JS divergence and modal-answer match rate to the human answer distribution "
-        r"under the blind condition, pooled across all three control variants. "
-        r"$\Delta$ in parentheses shows the instruction effect (JS(w/ inst) $-$ JS(w/o inst)): "
-        r"\textcolor{teal}{teal} = reduces JS (improves alignment), "
-        r"\textcolor{red}{red} = worsens. "
-        r"Human LOO is a leave-one-out human baseline. "
-        r"\textbf{Bold}: best per column; \underline{underline}: second best.}",
+        r"\caption{JS divergence and modal-match rate to the human distribution, "
+        r"abstention-filtered and pooled across all three control variants. "
+        r"$\Delta$ in parentheses: difference with vs.\ without instruction "
+        r"(\textcolor{teal}{teal} = instruction reduces JS; \textcolor{red}{red} = increases). "
+        r"Human LOO is the leave-one-out human baseline. "
+        r"\textbf{Bold}: model value within human LOO 95\% bootstrap CI.}",
         r"\label{tab:hm_grouped_distribution_7b_compact_filtered}",
         r"\end{table}",
     ]

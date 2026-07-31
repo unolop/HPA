@@ -7,22 +7,23 @@ from dataset.paths import VQA_IMAGE_DIR, VQA_QUESTIONS, VQA_ANNOT, VQA_1K
 
 BATCH_SIZE = 50 
 
-def get_vqa_questions(dataset='VQA_1K'): 
+def get_vqa_questions(dataset='VQA_1K', input_path=None):
+    json_path = input_path or VQA_1K
     vqa1k = VQADataset_json(prompt='', \
                             image_dir_path=VQA_IMAGE_DIR, \
-                            json_path=VQA_1K) 
-    
-    dataset = VQADataset( image_dir_path=VQA_IMAGE_DIR, 
-                question_path=VQA_QUESTIONS, 
-                annotations_path=VQA_ANNOT, 
-                prompt='')  
-                
-    qids = [d['question_id'] for d in vqa1k]  # get the qids from subset 
-    questions = [q for q in dataset.questions if q['question_id'] in qids]  # get the original questions 
-    print(f"loaded {len(questions)} questions from VQA validation 1k \ne.g.")
-    print(questions[0]) 
+                            json_path=json_path)
 
-    return questions 
+    dataset = VQADataset( image_dir_path=VQA_IMAGE_DIR,
+                question_path=VQA_QUESTIONS,
+                annotations_path=VQA_ANNOT,
+                prompt='')
+
+    qids = [d['question_id'] for d in vqa1k]  # get the qids from subset
+    questions = [q for q in dataset.questions if q['question_id'] in qids]  # get the original questions
+    print(f"loaded {len(questions)} questions from VQA validation 1k \ne.g.")
+    print(questions[0])
+
+    return questions
 
 def process(questions, mode='CTL', output_path: str = "vqa_extracted.jsonl", batch_size: int = BATCH_SIZE):
     output = []
