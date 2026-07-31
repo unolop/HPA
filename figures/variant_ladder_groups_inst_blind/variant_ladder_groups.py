@@ -40,7 +40,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "analysis"))
 sys.path.insert(0, str(ROOT / "figures"))
 
-from config import MODELS_7B
+from config import MODELS_7B, COLLAPSED_VARIANT_QIDS
 from helpers import clear_output_plots, get_exports_dir, load_cleaned_pair_cache
 from utils.abstention import classify, is_abstained
 from utils.load_session import clean_answer
@@ -181,6 +181,11 @@ if not args.include_yesno:
     free_text_qids = sorted(pair_df[pair_df["pair_type"] == "HH"]["question_id"].unique())
     resp_df = resp_df[resp_df["question_id"].isin(free_text_qids)].copy()
     human_df = human_df[human_df["question_id"].isin(free_text_qids)].copy()
+
+# Exclude collapsed-variant questions from degradation analysis
+pair_df = pair_df[~pair_df["question_id"].isin(COLLAPSED_VARIANT_QIDS)].copy()
+resp_df = resp_df[~resp_df["question_id"].isin(COLLAPSED_VARIANT_QIDS)].copy()
+human_df = human_df[~human_df["question_id"].isin(COLLAPSED_VARIANT_QIDS)].copy()
 
 n_questions = pair_df[pair_df["pair_type"] == "HH"]["question_id"].nunique()
 n_humans = hh_participant_count(pair_df)

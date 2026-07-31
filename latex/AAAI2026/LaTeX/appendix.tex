@@ -14,59 +14,59 @@
 
 Table~\ref{tab:taxonomy} lists all operation and entity categories used for group-level analysis.
 
-\begin{table}[ht]
+\begin{table*}[ht]
 \centering
 {\fontsize{9}{10}\selectfont
 \renewcommand{\arraystretch}{0.95}
 \setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\columnwidth}{@{}p{0.24\columnwidth}cX@{}}
+\begin{tabularx}{\textwidth}{@{}p{0.16\textwidth}cXp{0.38\textwidth}@{}}
 \toprule
-\textbf{Category} & \textbf{\textit{N}} & \textbf{Description} \\
+\textbf{Category} & \textbf{\textit{N}} & \textbf{Description} & \textbf{Example} \\
 \midrule
 \rowcolor{gray!12}
-\multicolumn{3}{c}{\textbf{\textit{Operations}}} \\
+\multicolumn{4}{c}{\textbf{\textit{Operations}}} \\
 \midrule
 \rowcolor{gray!6}
-Attribute       & 41 & Color, material, type, age, name, or location. \\
-Count           & 22 & Quantity or number of entities. \\
+Attribute       & 41 & Color, material, type, age, name, or location. & \textit{What type of computer is the cat using?} \\
+Count           & 22 & Quantity or number of entities. & \textit{How many benches are in the background?} \\
 \rowcolor{gray!6}
-Spatial         & 12 & Relative position, direction, or location. \\
-Identity        & 9  & What or who a specific entity is. \\
+Spatial         & 12 & Relative position, direction, or location. & \textit{Which way is the arrow pointing?} \\
+Identity        & 9  & What or who a specific entity is. & \textit{What type of bear is this?} \\
 \rowcolor{gray!6}
-Action          & 7  & What an entity is doing or engaged in. \\
-Existence       & 7  & Whether an entity is present in the scene. \\
+Action          & 7  & What an entity is doing or engaged in. & \textit{What is the elephant eating?} \\
+Existence       & 7  & Whether an entity is present in the scene. & \textit{Is there a couch?} \\
 \rowcolor{gray!6}
-Text Reading    & 5  & Reading visible writing, signs, labels, or logos. \\
-World Knowledge & 4  & Factual or commonsense knowledge. \\
+Text Reading    & 5  & Reading visible writing, signs, labels, or logos. & \textit{What does the shirt say?} \\
+World Knowledge & 4  & Factual or commonsense knowledge. & \textit{What religion is this building associated with?} \\
 \rowcolor{gray!6}
-Temporal        & 3  & Duration, age, or temporal ordering of events. \\
-Comparison      & 2  & Comparative or superlative judgment. \\
+Temporal        & 3  & Duration, age, or temporal ordering of events. & \textit{How far do the girls have to run?} \\
+Comparison      & 2  & Comparative or superlative judgment. & \textit{What would these two do if the sun got too bright?} \\
 \rowcolor{gray!6}
-Causality       & 1  & Reason or causal explanation. \\
+Causality       & 1  & Reason or causal explanation. & \textit{Why is the man wearing protective gear?} \\
 \midrule
 \rowcolor{gray!12}
-\multicolumn{3}{c}{\textbf{\textit{Entities}}} \\
+\multicolumn{4}{c}{\textbf{\textit{Entities}}} \\
 \midrule
 \rowcolor{gray!6}
-Object      & 27 & General physical objects. \\
-Person      & 26 & Human subjects, including people, faces, and body parts. \\
+Object      & 27 & General physical objects. & \textit{Which way is the arrow pointing?} \\
+Person      & 26 & Human subjects, including people, faces, and body parts. & \textit{Which hand is holding the thing?} \\
 \rowcolor{gray!6}
-Animal      & 17 & Non-human living creatures. \\
-Food        & 16 & Food and drink items, including prepared dishes. \\
+Animal      & 17 & Non-human living creatures. & \textit{What color is this horse's head and tail hair?} \\
+Food        & 16 & Food and drink items, including prepared dishes. & \textit{What vegetable is in the bowl?} \\
 \rowcolor{gray!6}
-Other       & 9  & Questions that do not fit any other entity category. \\
-Place       & 5  & Locations, scenes, settings, or environments. \\
+Other       & 9  & Questions that do not fit any other entity category. & \textit{What kind of information does the book contain?} \\
+Place       & 5  & Locations, scenes, settings, or environments. & \textit{What is the name of the store closest to the van?} \\
 \rowcolor{gray!6}
-Product     & 5  & Manufactured objects such as furniture, tools, or appliances. \\
-Vehicle     & 4  & Cars, buses, bicycles, aircraft, or watercraft. \\
+Product     & 5  & Manufactured objects such as furniture, tools, or appliances. & \textit{What type of computer is the cat using?} \\
+Vehicle     & 4  & Cars, buses, bicycles, aircraft, or watercraft. & \textit{What formation are the aircraft in?} \\
 \rowcolor{gray!6}
-Text        & 4  & Visible written content such as signs, labels, or logos. \\
+Text        & 4  & Visible written content such as signs, labels, or logos. & \textit{What language is the writing at the top of the bus in?} \\
 \bottomrule
 \end{tabularx}
 }
 \caption{Question taxonomy used for group-level analysis. For anchoring concordance analysis (main paper), low-frequency operation groups (Causality, Comparison, Temporal, Text Reading, World Knowledge; each $n{\leq}5$) are excluded, and entity groups Place, Product, Vehicle, and Text are merged into Other, yielding 7 operation and 5 entity groups with balanced counts.}
 \label{tab:taxonomy}
-\end{table}
+\end{table*}
 
 \subsection{Human-Study Subset Composition}
 \label{app:sample_composition}

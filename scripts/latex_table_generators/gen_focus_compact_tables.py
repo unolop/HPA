@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -252,6 +253,69 @@ def _style_val(val: float, metric: str, best: float, second: float) -> str:
     return text
 
 
+def _bootstrap_loo_ci(
+    human_sub: pd.DataFrame,
+    category_order: list,
+    n_boot: int = 1000,
+    seed: int = 42,
+) -> tuple[tuple[float, float], tuple[float, float]]:
+    """Bootstrap 95% CI for human LOO JS and Mode by resampling (question_id, variant) pairs."""
+    rng = np.random.default_rng(seed)
+    qv_js: dict = {}
+    qv_mode: dict = {}
+    for (qid, variant), hq in human_sub.groupby(["question_id", "variant"]):
+        js_list, mode_list = [], []
+        for idx, row_h in hq.iterrows():
+            answer = row_h["category"]
+            rest = hq.drop(index=idx)
+            if rest.empty:
+                continue
+            human_counts = rest["category"].value_counts().reindex(category_order, fill_value=0)
+            loo_counts = pd.Series(0.0, index=category_order)
+            if answer in loo_counts.index:
+                loo_counts.loc[answer] = 1.0
+            if human_counts.sum() == 0 or loo_counts.sum() == 0:
+                continue
+            _, _, js, _, _ = _distribution_stats_from_counts(human_counts, loo_counts)
+            js_list.append(js)
+            max_count = human_counts.max()
+            modal_cats = set(human_counts[human_counts == max_count].index.tolist())
+            mode_list.append(float(answer in modal_cats))
+        if js_list:
+            qv_js[(qid, variant)] = float(np.mean(js_list))
+            qv_mode[(qid, variant)] = float(np.mean(mode_list))
+
+    qv_keys = list(qv_js.keys())
+    if not qv_keys:
+        nan2 = (float("nan"), float("nan"))
+        return nan2, nan2
+
+    boot_js, boot_mode = [], []
+    for _ in range(n_boot):
+        idx = rng.integers(0, len(qv_keys), size=len(qv_keys))
+        boot_js.append(float(np.mean([qv_js[qv_keys[i]] for i in idx])))
+        boot_mode.append(float(np.mean([qv_mode[qv_keys[i]] for i in idx])))
+
+    js_ci = (float(np.percentile(boot_js, 2.5)), float(np.percentile(boot_js, 97.5)))
+    mode_ci = (float(np.percentile(boot_mode, 2.5)), float(np.percentile(boot_mode, 97.5)))
+    return js_ci, mode_ci
+
+
+def _style_val_ci(val: float, metric: str, ci: tuple[float, float]) -> str:
+    """Bold if val is within (or better than) the human LOO 95% CI."""
+    text = _fmt_js(val)
+    if pd.isna(val) or any(np.isnan(c) for c in ci):
+        return text
+    lo, hi = ci
+    # JS: lower is better — bold if val <= hi (within or better than human range)
+    if metric in {"JS", "TV"} and val <= hi:
+        return rf"\textbf{{{text}}}"
+    # Mode: higher is better — bold if val >= lo (within or better than human range)
+    if metric == "Mode" and val >= lo:
+        return rf"\textbf{{{text}}}"
+    return text
+
+
 def build_dist_inst_effect_js_summary() -> str:
     human_all, model_all = _distribution_base_table_variants_with_models(
         condition="inst_blind",
@@ -378,9 +442,13 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
 
     # Human LOO baseline (from human data, no instruction delta)
     human_row = {"Model": "Human LOO"}
+    _loo_human_sub: dict = {}
+    _loo_category_order: dict = {}
     for answer_type in ("yes/no", "number"):
         human_sub = _answer_type_subset(human_all.copy(), answer_type)
         _, human_sub, category_order = _prepare_distribution_category(human_all.copy(), human_sub.copy(), answer_type)
+        _loo_human_sub[answer_type] = human_sub
+        _loo_category_order[answer_type] = category_order
         js_vals, mode_hits, qv_seen = [], [], set()
         for (qid, variant), hq in human_sub.groupby(["question_id", "variant"]):
             if hq.empty:
@@ -405,6 +473,15 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
         human_row[(answer_type, "N")]    = len(qv_seen)
         human_row[(answer_type, "JS")]   = float(pd.Series(js_vals).mean()) if js_vals else float("nan")
         human_row[(answer_type, "Mode")] = float(pd.Series(mode_hits).mean()) if mode_hits else float("nan")
+
+    # Bootstrap 95% CI for human LOO JS and Mode (resample question×variant pairs)
+    loo_ci: dict = {}
+    for answer_type in ("yes/no", "number"):
+        js_ci, mode_ci = _bootstrap_loo_ci(
+            _loo_human_sub[answer_type], _loo_category_order[answer_type]
+        )
+        loo_ci[(answer_type, "JS")]   = js_ci
+        loo_ci[(answer_type, "Mode")] = mode_ci
 
     blind_metrics = _compute_js_mode_per_model(human_all, model_blind)
     inst_metrics  = _compute_js_mode_per_model(human_all, model_inst)
@@ -437,11 +514,15 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
         r"\midrule",
     ]
 
-    # Human LOO row (no delta)
-    loo_yn_js   = _fmt_js(float(human_row[("yes/no", "JS")]))
-    loo_yn_mode = _fmt_js(float(human_row[("yes/no", "Mode")]))
-    loo_ct_js   = _fmt_js(float(human_row[("number", "JS")]))
-    loo_ct_mode = _fmt_js(float(human_row[("number", "Mode")]))
+    # Human LOO row (no delta) — annotate with 95% bootstrap CI
+    def _fmt_loo_cell(val: float, ci: tuple[float, float]) -> str:
+        lo, hi = ci
+        return rf"{_fmt_js(val)} {{\scriptsize [{_fmt_js(lo)},{_fmt_js(hi)}]}}"
+
+    loo_yn_js   = _fmt_loo_cell(float(human_row[("yes/no", "JS")]),   loo_ci[("yes/no", "JS")])
+    loo_yn_mode = _fmt_loo_cell(float(human_row[("yes/no", "Mode")]), loo_ci[("yes/no", "Mode")])
+    loo_ct_js   = _fmt_loo_cell(float(human_row[("number", "JS")]),   loo_ci[("number", "JS")])
+    loo_ct_mode = _fmt_loo_cell(float(human_row[("number", "Mode")]), loo_ci[("number", "Mode")])
     lines.append(
         rf"\textbf{{Human LOO}} & {human_row[('yes/no','N')]} & {loo_yn_js} & {loo_yn_mode} "
         rf"& {human_row[('number','N')]} & {loo_ct_js} & {loo_ct_mode} \\"

@@ -4,7 +4,7 @@
 \setlength{\tabcolsep}{5pt}
 \renewcommand{\arraystretch}{0.95}
 
-\caption{JS divergence and modal-match rate to the human distribution, abstention-filtered and pooled across variants. $\Delta$ = change from blind condition ($-$ JS improves, $+$ worsens). LOO = human leave-one-out baseline. \textbf{Bold}: best; \underline{underline}: second best within each group.}
+\caption{JS divergence and modal-match rate to the human distribution, abstention-filtered and pooled across variants. $\Delta$ = change from blind condition ($-$ improves, $+$ worsens). \textbf{Bold}: within or better than human LOOCV range for both answer types.}
 \label{tab:hm_grouped_distribution_7b_compact_filtered}
 \begin{tabular}{lcc@{\hspace{10pt}}cc}
 \toprule
@@ -14,31 +14,31 @@
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ \\
 \midrule
-\textbf{Human LOO} & .271 & .653 & .524 & .485 \\
+\textbf{Human LOO} & .272 {\scriptsize $\pm$.014} & .653 & .732 {\scriptsize $\pm$.022} & .485 \\
 \midrule
 \multicolumn{5}{c}{\textbf{VLMs}} \\
 \midrule
-Qwen3-VL     & \underline{.277} {\scriptsize (\textcolor{teal}{-.041})} & \underline{.654} & .788 {\scriptsize (\textcolor{red}{+.015})} & .093 \\
+Qwen3-VL     & \textbf{.277} {\scriptsize (\textcolor{teal}{-.041})} & .654 & \textbf{.788} {\scriptsize (\textcolor{red}{+.015})} & \textbf{.093} \\
 InternVL     & \textbf{.230} {\scriptsize (\textcolor{teal}{-.024})} & \textbf{.782} & \textbf{.586} {\scriptsize (\textcolor{red}{+.027})} & \textbf{.385} \\
-LLaVA-1.5    & .421 {\scriptsize (\textcolor{red}{+.029})} & .321 & .824 {\scriptsize (\textcolor{red}{+.013})} & .038 \\
-LLaVA-Mistral & .357 {\scriptsize (\textcolor{teal}{-.022})} & .449 & \underline{.787} {\scriptsize (\textcolor{teal}{-.048})} & \underline{.103} \\
-LLaVA-Vicuna & .385 {\scriptsize (\textcolor{red}{+.033})} & .397 & .837 {\scriptsize (\textcolor{red}{+.007})} & .051 \\
+LLaVA-1.5    & .421 {\scriptsize (\textcolor{red}{+.029})} & .321 & \textbf{.824} {\scriptsize (\textcolor{red}{+.013})} & \textbf{.038} \\
+LLaVA-Mistral & \textbf{.357} {\scriptsize (\textcolor{teal}{-.022})} & .449 & \textbf{.787} {\scriptsize (\textcolor{teal}{-.048})} & \textbf{.103} \\
+LLaVA-Vicuna & .385 {\scriptsize (\textcolor{red}{+.033})} & .397 & \textbf{.837} {\scriptsize (\textcolor{red}{+.007})} & \textbf{.051} \\
 \midrule
 \multicolumn{5}{c}{\textbf{Backbone Decoders}} \\
 \midrule
-Qwen3-VL     & .230 {\scriptsize (\textcolor{teal}{-.001})} & \underline{.821} & .745 {\scriptsize (\textcolor{teal}{-.004})} & .158 \\
+Qwen3-VL     & \textbf{.230} {\scriptsize (\textcolor{teal}{-.001})} & .821 & \textbf{.745} {\scriptsize (\textcolor{teal}{-.004})} & \textbf{.158} \\
 InternVL     & \textbf{.209} {\scriptsize (\textcolor{red}{+.006})} & \textbf{.872} & \textbf{.599} {\scriptsize (\textcolor{teal}{-.185})} & \textbf{.371} \\
-LLaVA-1.5    & .241 {\scriptsize (+.000)} & .731 & \underline{.663} {\scriptsize (\textcolor{red}{+.008})} & .192 \\
-LLaVA-Mistral & .275 {\scriptsize (\textcolor{teal}{-.021})} & .654 & .671 {\scriptsize (\textcolor{teal}{-.002})} & \underline{.205} \\
-LLaVA-Vicuna & \underline{.223} {\scriptsize (\textcolor{red}{+.003})} & .808 & .693 {\scriptsize (\textcolor{red}{+.030})} & .141 \\
+LLaVA-1.5    & \textbf{.241} {\scriptsize (+.000)} & .731 & \textbf{.663} {\scriptsize (\textcolor{red}{+.008})} & \textbf{.192} \\
+LLaVA-Mistral & \textbf{.275} {\scriptsize (\textcolor{teal}{-.021})} & .654 & \textbf{.671} {\scriptsize (\textcolor{teal}{-.002})} & \textbf{.205} \\
+LLaVA-Vicuna & \textbf{.223} {\scriptsize (\textcolor{red}{+.003})} & .808 & \textbf{.693} {\scriptsize (\textcolor{red}{+.030})} & \textbf{.141} \\
 \midrule
 \multicolumn{5}{c}{\textbf{Standalone LLMs}} \\
 \midrule
-Qwen2.5-Instruct & .440 {\scriptsize (\textcolor{teal}{-.006})} & .436 & \underline{.688} {\scriptsize (\textcolor{red}{+.024})} & \underline{.224} \\
-Qwen3            & .531 {\scriptsize (\textcolor{red}{+.063})} & .513 & .721 {\scriptsize (\textcolor{teal}{-.035})} & .233 \\
-Qwen3 (think)    & \underline{.397} {\scriptsize (\textcolor{teal}{-.071})} & \underline{.684} & \textbf{.610} {\scriptsize (\textcolor{teal}{-.146})} & \textbf{.355} \\
+Qwen2.5-Instruct & .440 {\scriptsize (\textcolor{teal}{-.006})} & .436 & \textbf{.688} {\scriptsize (\textcolor{red}{+.024})} & \textbf{.224} \\
+Qwen3            & .531 {\scriptsize (\textcolor{red}{+.063})} & .513 & \textbf{.721} {\scriptsize (\textcolor{teal}{-.035})} & \textbf{.233} \\
+Qwen3 (think)    & .397 {\scriptsize (\textcolor{teal}{-.071})} & .684 & \textbf{.610} {\scriptsize (\textcolor{teal}{-.146})} & \textbf{.355} \\
 Mistral          & .848 {\scriptsize (\textcolor{red}{+.044})} & .170 & .901 {\scriptsize (\textcolor{teal}{-.020})} & .059 \\
-Vicuna           & \textbf{.225} {\scriptsize (\textcolor{teal}{-.017})} & \textbf{.821} & .788 {\scriptsize (\textcolor{red}{+.001})} & .051 \\
+Vicuna           & \textbf{.225} {\scriptsize (\textcolor{teal}{-.017})} & \textbf{.821} & \textbf{.788} {\scriptsize (\textcolor{red}{+.001})} & \textbf{.051} \\
 \bottomrule
 \end{tabular}
 \end{table}

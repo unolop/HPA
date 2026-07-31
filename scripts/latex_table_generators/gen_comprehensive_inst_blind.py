@@ -118,6 +118,17 @@ VARIANT_LABELS = {
     'A': 'Pronominalized',
 }
 
+# Human LOOCV p5–p95 ranges (percent units) for within-human highlighting.
+# Computed via leave-one-participant-out: per-participant mean score vs all others.
+HUMAN_LOOCV_RANGES = {
+    # (metric_label, variant) → (p5, p95)  [in % units]
+    ('Acc',   'C'): (19.2, 33.7), ('Acc',   'B'): (17.1, 29.0), ('Acc',   'A'): (16.2, 28.9),
+    ('SBERT', 'C'): (54.9, 63.8), ('SBERT', 'B'): (53.2, 62.4), ('SBERT', 'A'): (52.4, 61.2),
+    ('chrF',  'C'): (23.1, 32.5), ('chrF',  'B'): (21.5, 32.8), ('chrF',  'A'): (19.8, 30.3),
+    ('R-1',   'C'): (18.8, 30.6), ('R-1',   'B'): (18.1, 30.4), ('R-1',   'A'): (16.0, 27.8),
+    ('Exact', 'C'): (17.5, 27.8), ('Exact', 'B'): (16.7, 28.7), ('Exact', 'A'): (15.8, 26.7),
+}
+
 
 def get_vals(model, group, variants):
     result = {}
@@ -238,25 +249,40 @@ def section_column_rankings(models, group, variants):
     return rankings
 
 
-def format_highlighted_cell(value, metric_label, best_value, second_value):
+def _in_human_range(value, metric_label, variant):
+    """True if value (in [0,1] scale) falls within the human LOOCV p5–p95 range."""
+    if metric_label == 'Len' or np.isnan(value):
+        return False
+    key = (metric_label, variant)
+    if key not in HUMAN_LOOCV_RANGES:
+        return False
+    p5, p95 = HUMAN_LOOCV_RANGES[key]
+    return p5 <= value * 100 <= p95
+
+
+def format_highlighted_cell(value, metric_label, best_value, variant=None):
     text = fmt_len(value) if metric_label == 'Len' else fmt(value)
     if text == "--" or np.isnan(value):
         return text
-    if not np.isnan(best_value) and np.isclose(value, best_value, equal_nan=False):
+    in_range = _in_human_range(value, metric_label, variant)
+    is_best = not np.isnan(best_value) and np.isclose(value, best_value, equal_nan=False)
+    if is_best and in_range:
+        return rf"\cellcolor{{gray!15}}\textbf{{{text}}}"
+    if is_best:
         return rf"\textbf{{{text}}}"
-    if not np.isnan(second_value) and np.isclose(value, second_value, equal_nan=False):
-        return rf"\underline{{{text}}}"
+    if in_range:
+        return rf"\cellcolor{{gray!15}}{text}"
     return text
 
 
-def highlighted_row_cells(vals, rankings):
+def highlighted_row_cells(vals, rankings, variants):
     cells = []
     flat_idx = 0
-    for variant_idx in range(len(vals['Acc'])):
+    for variant_idx, variant in enumerate(variants):
         for metric_label, _col, _src in METRIC_KEYS:
             value = vals[metric_label][variant_idx]
-            best_value, second_value = rankings[flat_idx]
-            cells.append(format_highlighted_cell(value, metric_label, best_value, second_value))
+            best_value, _second = rankings[flat_idx]
+            cells.append(format_highlighted_cell(value, metric_label, best_value, variant=variant))
             flat_idx += 1
     return cells
 
@@ -359,7 +385,7 @@ def build_table(variants=VARIANTS, label="tab:comprehensive_inst_blind"):
             vals = get_vals(model, group, variants)
             name = row_name(model, group)
             size = SIZE_LABEL.get(model, '?')
-            cols = highlighted_row_cells(vals, rankings)
+            cols = highlighted_row_cells(vals, rankings, variants)
             rows.append({"name": name, "size": size, "cols": cols})
         emit_rows_with_multirow(lines, rows)
 

@@ -121,8 +121,7 @@ def make_bar_figure(csv_path: Path, answer_types: list[str], fname: str, title: 
             ax.barh(y_pos, val, color=color, height=0.62, alpha=0.85, zorder=2)
 
         # Human LOO reference line
-        ax.axvline(human_val, color="#424242", lw=1.2, ls="--", zorder=3,
-                   label=f"Human LOO ({human_val:.3f})")
+        ax.axvline(human_val, color="#424242", lw=1.2, ls="--", zorder=3)
 
         # Group separator lines
         prev = 0
@@ -170,8 +169,6 @@ def make_bar_figure(csv_path: Path, answer_types: list[str], fname: str, title: 
 
     # Legend
     legend_handles = [
-        mlines.Line2D([], [], color="#424242", lw=1.2, ls="--", label="Human LOO"),
-    ] + [
         plt.Rectangle((0, 0), 1, 1, color=GROUP_COLORS[g], alpha=0.85,
                        label=GROUP_LABELS[g])
         for g in GROUP_ORDER

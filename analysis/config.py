@@ -12,6 +12,22 @@ utils/constants.py (MODEL_FAMILY, MODEL_SIZE_B, GROUP_MARKER, etc.).
 # ── Default participant-qualification threshold ───────────────────────────────
 MIN_ANSWERS_DEFAULT = 348
 
+# ── Questions excluded from degradation analysis only ────────────────────────
+# These questions have at least one pair of identical variants (A=C or A=B),
+# meaning the abstraction gradient is collapsed by construction rather than
+# by model behaviour. Excluding them prevents artificially suppressing
+# degradation estimates. They are retained in all other analyses (human accuracy,
+# alignment correlations, etc.).
+#   153283009  "Does it rain here a lot?"          A=C (impersonal)
+#   144162001  "Is this a restaurant?"             A=C (demonstrative "this")
+#    31024002  "Are there any Roman numerals?"     A=B (no weakening possible)
+#   289943009  "Are the letters all capitals?"     A=B (no weakening possible)
+#   436162001  "Does the vehicle have a flat tire?" A=B (vehicle already generic)
+#   102872002  "What does the cake represent?"     A=B (no weakening possible)
+COLLAPSED_VARIANT_QIDS: frozenset[int] = frozenset({
+    153283009, 144162001, 31024002, 289943009, 436162001, 102872002,
+})
+
 # ── All models present in the main analysis (inst_blind / blind exports) ──────
 MODELS_ALL = [
     # VLM

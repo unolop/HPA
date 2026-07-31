@@ -18,6 +18,7 @@ sys.path.insert(0, str(ROOT / "figures"))
 import plot_style  # noqa: F401
 from helpers import filter_abstained_pairs
 from analysis.utils.abstention import classify, is_abstained
+from analysis.utils.vqa import VQAAnswerMapper
 
 OUTDIR = Path(__file__).resolve().parent
 OUTDIR.mkdir(parents=True, exist_ok=True)
@@ -246,6 +247,13 @@ def build_group_metric_frames(metric: str, *, abstfiltered: bool = False):
         pc = pd.read_parquet(EXPORTS / "pair_cache_cleaned.parquet")
         if abstfiltered:
             pc = filter_abstained_pairs(pc)
+        # Filter to free-form (answer_type == "other") questions only
+        mapper = VQAAnswerMapper()
+        mapper._load()
+        qid2atype = {int(qid): ann.get("answer_type", "other")
+                     for qid, ann in mapper.annotations.items()}
+        text_qids = {qid for qid, atype in qid2atype.items() if atype == "other"}
+        pc = pc[pc["question_id"].astype(int).isin(text_qids)].copy()
         hh = pc[pc["pair_type"] == "HH"].copy()
         hm = pc[pc["pair_type"] == "HM"].copy()
         keep_models = {m for ms in MODEL_GROUPS.values() for m in ms}
@@ -277,6 +285,30 @@ def build_group_metric_frames(metric: str, *, abstfiltered: bool = False):
     return op, ent
 
 
+def compute_text_loocv(hh: pd.DataFrame) -> dict:
+    """For text-answer-type questions only, compute per-group LOOCV (p5, p95)
+    across participants' mean SBERT. Returns {(dim, grp): (p5, p95)}."""
+    mapper = VQAAnswerMapper()
+    mapper._load()
+    qid2atype = {int(qid): ann.get("answer_type", "other")
+                 for qid, ann in mapper.annotations.items()}
+    hh = hh.copy()
+    hh["answer_type"] = hh["question_id"].astype(int).map(qid2atype).fillna("other")
+    text_hh = hh[hh["answer_type"] == "other"].copy()  # VQA "other" = free-form text
+
+    result = {}
+    for dim in ("op", "ent"):
+        for grp, grp_df in text_hh.groupby(dim):
+            per_part = [pdata["sbert_score"].mean()
+                        for _, pdata in grp_df.groupby("subject_1")
+                        if len(pdata) >= 2]
+            if len(per_part) >= 5:
+                arr = np.array(per_part)
+                result[(dim, grp)] = (float(np.percentile(arr, 5)),
+                                      float(np.percentile(arr, 95)))
+    return result
+
+
 def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
     op_df, ent_df = build_group_metric_frames(metric, abstfiltered=abstfiltered)
     op_df["op"] = op_df["op"].map(OP_FULL_NAMES).fillna(op_df["op"])
@@ -291,7 +323,7 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
     elif metric == "sbert":
         xlab = "Human\u2013Human SBERT"
         ylab = "Human\u2013Model SBERT"
-        lims = [0.15, 0.75]
+        lims = [0.28, 0.65]
         metric_col = "sbert"
     else:
         xlab = "Human conf."
@@ -313,6 +345,15 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
     )
     fig.supylabel(ylab, fontsize=8.5, x=0.02)
     fig.supxlabel(xlab, fontsize=8.5, y=0.05, x=0.32)
+
+    # ── Pre-compute human LOOCV bands (text answer type only) ────────────────
+    text_loocv = {}  # (dim, grp) → (p5, p95) — only for free-form groups
+    if metric == "sbert":
+        pc_raw = pd.read_parquet(EXPORTS / "pair_cache_cleaned.parquet")
+        if abstfiltered:
+            pc_raw = filter_abstained_pairs(pc_raw)
+        hh_raw = pc_raw[pc_raw["pair_type"] == "HH"].copy()
+        text_loocv = compute_text_loocv(hh_raw)
 
     # ── Pass 1: collect subplot data + raw Spearman ρ/p ─────────────────────
     subplot_data = {}
@@ -358,6 +399,25 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
             sd = subplot_data[(row_idx, col_idx)]
             sub = sd["sub"]
             mean_df = sd["mean_df"]
+
+            # ── Human LOOCV bands for free-text groups ───────────────────
+            dim_key = "op" if group_type == "op" else "ent"
+            band_hw = 0.012
+            for _, mrow in mean_df.iterrows():
+                grp_raw = mrow[group_type]  # full name (already mapped)
+                # reverse-map to original code for loocv lookup
+                rev_op = {v: k for k, v in OP_FULL_NAMES.items()}
+                rev_ent = {v: k for k, v in ENT_FULL_NAMES.items()}
+                rev_map = rev_op if dim_key == "op" else rev_ent
+                grp_code = rev_map.get(grp_raw, grp_raw)
+                key = (dim_key, grp_code)
+                if key in text_loocv:
+                    p5, p95 = text_loocv[key]
+                    x = mrow["human_value"]
+                    ax.fill_between(
+                        [x - band_hw, x + band_hw], p5, p95,
+                        alpha=0.18, color="#424242", linewidth=0, zorder=0,
+                    )
 
             for model, msub in sub.groupby("model"):
                 marker = MODEL_STYLE.get(model, "o")
@@ -405,9 +465,12 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
     ent_groups, ent_color_map = color_maps["ent"]
 
     # Family handles — one row, just above the plots
+    from matplotlib.patches import Patch
+    human_band_handle = Patch(facecolor="#424242", alpha=0.25, linewidth=0,
+                              label="Human range (LOOCV p5–p95)")
     fig.legend(
-        handles=family_handles(), loc="upper center",
-        bbox_to_anchor=(0.40, 1.02), ncol=7,
+        handles=family_handles() + [human_band_handle], loc="upper center",
+        bbox_to_anchor=(0.40, 1.02), ncol=8,
         fontsize=8.0, frameon=False,
         handletextpad=0.25, borderpad=0.32, labelspacing=0.20, columnspacing=0.6,
     )
@@ -442,8 +505,7 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
         out_name = f"7b_confidence_op_ent{suffix}.png"
     save(fig, out_name)
 if __name__ == "__main__":
-    plot_metric_combined("sbert", abstfiltered=False)
-    plot_metric_combined("sbert", abstfiltered=True)
+    # sbert scatter now generated by generate_variant_scatter.py
     plot_metric_combined("accuracy", abstfiltered=False)
     plot_metric_combined("accuracy", abstfiltered=True)
     plot_metric_combined("confidence", abstfiltered=False)

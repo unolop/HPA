@@ -133,6 +133,34 @@ def _qid_to_answer_type() -> dict[int, str]:
     return {int(qid): ann.get("answer_type", "other") for qid, ann in mapper.annotations.items()}
 
 
+def compute_human_loocv(filter_abstention: bool) -> dict[str, tuple[float, float]]:
+    """Return {answer_type: (min_js, max_js)} across participants (LOOCV)."""
+    qid2atype = _qid_to_answer_type()
+    human = load_human_responses().copy()
+    human = human[human["variant"].isin({"C", "B", "A"})].copy()
+    human["answer_type"] = human["question_id"].astype(int).map(qid2atype).fillna("other")
+    human["clean_response"] = _clean_answer_series(human["response"])
+    human = _mark_abstentions(human)
+
+    result = {}
+    for answer_type in ("yes/no", "number"):
+        sub = _answer_type_subset(human, answer_type).copy()
+        if filter_abstention:
+            sub = sub[~sub["is_abstained"]].copy()
+        participant_js = []
+        for participant, held_out in sub.groupby("participant"):
+            others = sub[sub["participant"] != participant]
+            other_counts = others["clean_response"].value_counts()
+            held_counts = held_out["clean_response"].value_counts()
+            if other_counts.empty or held_counts.empty:
+                continue
+            _, _, js, _, _ = _distribution_stats_from_counts(other_counts, held_counts)
+            participant_js.append(float(js))
+        if participant_js:
+            result[answer_type] = (float(np.min(participant_js)), float(np.max(participant_js)))
+    return result
+
+
 def build_pooled_block(filter_abstention: bool, *, matched_only: bool) -> pd.DataFrame:
     qid2atype = _qid_to_answer_type()
     human = load_human_responses().copy()
@@ -267,15 +295,16 @@ def render_table(df: pd.DataFrame, caption: str, label: str, *, include_size: bo
     return "\n".join(lines) + "\n"
 
 
-def render_pooled_table(df: pd.DataFrame, caption: str, label: str, *, include_size: bool) -> str:
+def render_pooled_table(df: pd.DataFrame, caption: str, label: str, *,
+                        include_size: bool,
+                        loocv_ranges=None) -> str:
+    # loocv_ranges: {"yes/no": (lo, hi), "number": (lo, hi)}
+    col_to_atype = {"Yes/No": "yes/no", "Count": "number"}
     metric_cols = ["Yes/No", "Count"]
     styled = {}
-    model_rows = df.copy()
     for col in metric_cols:
-        vals = model_rows[col].dropna().astype(float)
-        uniq = sorted(vals.unique().tolist())
-        best = uniq[0] if uniq else np.nan
-        second = uniq[1] if len(uniq) > 1 else np.nan
+        atype = col_to_atype[col]
+        lo, hi = (loocv_ranges[atype] if loocv_ranges and atype in loocv_ranges else (None, None))
         for idx, row in df.iterrows():
             v = row[col]
             if pd.isna(v):
@@ -288,11 +317,8 @@ def render_pooled_table(df: pd.DataFrame, caption: str, label: str, *, include_s
                     text = "-" + s[2:]
                 else:
                     text = s
-            if not pd.isna(v):
-                if np.isclose(v, best):
-                    text = rf"\textbf{{{text}}}"
-                elif not np.isnan(second) and np.isclose(v, second):
-                    text = rf"\underline{{{text}}}"
+            if not pd.isna(v) and lo is not None and lo <= v <= hi:
+                text = rf"\textbf{{{text}}}"
             styled[(idx, col)] = text
 
     lines = []
@@ -340,15 +366,24 @@ def write_one(filter_abstention: bool, *, matched_only: bool, include_size: bool
         label = "tab:hm_grouped_distribution_7b_compact"
         pooled = build_pooled_block(filter_abstention, matched_only=True)
         pooled.loc[pooled["Group"] == "Think", "Group"] = "Standalone LLM"
+        loocv = compute_human_loocv(filter_abstention)
+        yn_lo, yn_hi = loocv.get("yes/no", (None, None))
+        ct_lo, ct_hi = loocv.get("number", (None, None))
+        def _fv(v): return f"{v:.3f}".lstrip("0") if v is not None else "?"
+        loocv_note = (
+            f"Human LOOCV range: Yes/No [{_fv(yn_lo)}, {_fv(yn_hi)}], "
+            f"Count [{_fv(ct_lo)}, {_fv(ct_hi)}]. "
+            "Bold = within human LOOCV range."
+        )
         caption = (
             f"{title} blind-VQA answer-distribution JS divergence to human answers across all control variants "
             + ("after abstention filtering. " if filter_abstention else "(inclusive version). ")
-            + "Lower is better. Bold = best; underline = second-best."
+            + "Lower is better. " + loocv_note
         )
         out = OUT_DIR / f"{stem}{'_filtered' if filter_abstention else ''}.tex"
         if filter_abstention:
             label += "_filtered"
-        out.write_text(render_pooled_table(pooled, caption, label, include_size=False))
+        out.write_text(render_pooled_table(pooled, caption, label, include_size=False, loocv_ranges=loocv))
         print(out)
 
         full = build_block(filter_abstention, matched_only=True)

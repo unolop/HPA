@@ -33,6 +33,18 @@ INTERNVL_MODELS = [
     "Qwen3-8B",
     "Qwen3-8B (think)",
 ]
+LLAVA_MODELS = [
+    "LLaVA-Mistral",
+    "LLaVA-Mistral (LM)",
+    "Qwen3-8B",
+    "Qwen3-8B (think)",
+]
+QWEN_VL_MODELS = [
+    "Qwen3-VL-8B",
+    "Qwen3-VL-8B (LM)",
+    "Qwen3-8B",
+    "Qwen3-8B (think)",
+]
 ALL_MODELS = [
     "Qwen3-VL-8B",
     "LLaVA-1.5-7B",
@@ -292,11 +304,10 @@ def draw_condition_errorbars(
     markersize: float,
     zorder: float,
 ) -> None:
-    yerr = np.vstack([center - lo, hi - center])
     ax.errorbar(
         x,
         center,
-        yerr=yerr,
+        yerr=None,
         color=color,
         linewidth=linewidth,
         linestyle=linestyle,
@@ -305,9 +316,6 @@ def draw_condition_errorbars(
         markerfacecolor=(color if filled else "white"),
         markeredgecolor=color,
         markeredgewidth=(1.3 if not filled else 1.0),
-        elinewidth=0.9,
-        capsize=2.0,
-        capthick=0.9,
         zorder=zorder,
         alpha=0.95,
     )
@@ -331,45 +339,10 @@ def add_compact_legends(ax: plt.Axes, include_human: bool = True) -> None:
                 label=group_name,
             )
         )
-    instruction_handles = [
-        Line2D(
-            [0],
-            [0],
-            color="#666666",
-            linewidth=1.8,
-            marker="o",
-            markersize=5.0,
-            markerfacecolor="#666666",
-            label="w/ instruction",
-        ),
-        Line2D(
-            [0],
-            [0],
-            color="#666666",
-            linewidth=1.8,
-            marker="o",
-            markersize=5.0,
-            markerfacecolor="white",
-            markeredgewidth=1.4,
-            label="w/o instruction",
-        ),
-    ]
-    group_legend = ax.legend(
+    ax.legend(
         handles=group_handles,
         loc="upper right",
         bbox_to_anchor=(1.0, 1.0),
-        frameon=True,
-        fontsize=8,
-        ncol=1,
-        handlelength=1.6,
-        columnspacing=0.8,
-        labelspacing=0.3,
-    )
-    ax.add_artist(group_legend)
-    ax.legend(
-        handles=instruction_handles,
-        loc="upper right",
-        bbox_to_anchor=(1.0, 0.68 if include_human else 0.58),
         frameon=True,
         fontsize=8,
         ncol=1,
@@ -521,11 +494,11 @@ def build_integer_plot_all_models(
     out_name: str = "vC_all_models.png",
 ) -> Path:
     x = list(range(len(X_LABELS)))
-    human_y = bin_distribution(human).to_numpy(dtype=float)
+    human_center, human_lo, human_hi = bootstrap_bin_ci(human)
     nrows = len(ALL_MODEL_ROWS)
     ncols = max(len(row) for row in ALL_MODEL_ROWS)
     fig, axes = plt.subplots(nrows, ncols, figsize=(10.8, 5.8), sharex=True, sharey=True)
-    ymax = human_y.max()
+    ymax = float(human_hi.max())
 
     for r, row_models in enumerate(ALL_MODEL_ROWS):
         for c in range(ncols):
@@ -538,7 +511,8 @@ def build_integer_plot_all_models(
             blind_y = bin_distribution(blind[blind["model"] == model]).to_numpy(dtype=float)
             inst_y = bin_distribution(inst[inst["model"] == model]).to_numpy(dtype=float)
             ymax = max(ymax, blind_y.max(), inst_y.max())
-            ax.plot(x, human_y, color="#444444", linewidth=1.9, marker="D", markersize=4.2)
+            ax.fill_between(x, human_lo, human_hi, color="#444444", alpha=0.12, zorder=1)
+            ax.plot(x, human_center, color="#444444", linewidth=1.9, marker="D", markersize=4.2)
             draw_condition_line(ax, x, blind_y, color=GROUP_COLORS[group_name], marker=GROUP_MARKERS[group_name], filled=False, linewidth=1.6, linestyle=":")
             draw_condition_line(ax, x, inst_y, color=GROUP_COLORS[group_name], marker=GROUP_MARKERS[group_name], filled=True, linewidth=1.9, linestyle="-")
             ax.set_title(MODEL_SHORT[model], fontsize=10)
@@ -633,37 +607,33 @@ def build_integer_plot_ci_errorbars(
     fig, ax = plt.subplots(figsize=(4.8, 3.0))
 
     human_center, human_lo, human_hi = bootstrap_bin_ci(human)
+    ax.fill_between(x, human_lo, human_hi, color="#444444", alpha=0.12, zorder=1, label="_nolegend_")
     draw_condition_errorbars(
         ax, x, human_center, human_lo, human_hi,
         color="#444444", marker="D", filled=True,
         linewidth=2.0, linestyle="-", markersize=4.6, zorder=4,
     )
 
-    ymax = float(human_hi.max())
+    ymax = float(human_center.max())
     for model in model_list:
         group_name = MODEL_TO_GROUP[model]
-        blind_center, blind_lo, blind_hi = bootstrap_bin_ci(blind_qwen[blind_qwen["model"] == model])
         inst_center, inst_lo, inst_hi = bootstrap_bin_ci(inst_qwen[inst_qwen["model"] == model])
-        ymax = max(ymax, float(blind_hi.max()), float(inst_hi.max()))
+        ymax = max(ymax, float(inst_center.max()))
         draw_condition_errorbars(
             ax, x, inst_center, inst_lo, inst_hi,
             color=GROUP_COLORS[group_name], marker=GROUP_MARKERS[group_name], filled=True,
             linewidth=1.7, linestyle="-", markersize=3.9, zorder=3,
-        )
-        draw_condition_errorbars(
-            ax, x, blind_center, blind_lo, blind_hi,
-            color=GROUP_COLORS[group_name], marker=GROUP_MARKERS[group_name], filled=False,
-            linewidth=1.4, linestyle=":", markersize=4.6, zorder=5,
         )
 
     ax.set_xticks(x)
     ax.set_xticklabels(X_LABELS, fontsize=9)
     ax.set_xlabel("Count answer", fontsize=10)
     ax.set_ylabel("Proportion", fontsize=10)
-    ax.set_ylim(0, max(0.9, ymax * 1.08))
     ax.grid(True, alpha=0.22)
     add_compact_legends(ax, include_human=True)
     fig.tight_layout()
+    ax.set_ylim(bottom=0, top=ymax * 1.12)
+    fig.canvas.draw()
 
     out = OUT_DIR / out_name
     fig.savefig(out, dpi=220, bbox_inches="tight")
@@ -681,6 +651,7 @@ def build_integer_plot_grouped_ci_errorbars(
     fig, ax = plt.subplots(figsize=(6.3, 3.9))
 
     human_center, human_lo, human_hi = bootstrap_bin_ci(human)
+    ax.fill_between(x, human_lo, human_hi, color="#444444", alpha=0.12, zorder=1, label="_nolegend_")
     draw_condition_errorbars(
         ax, x, human_center, human_lo, human_hi,
         color="#444444", marker="D", filled=True,
@@ -832,6 +803,7 @@ def build_family_panels(
 
     for idx, (family_name, model_list) in enumerate(FAMILY_PANELS):
         ax = axes_flat[idx]
+        ax.fill_between(x, human_lo, human_hi, color="#444444", alpha=0.12, zorder=1, label="_nolegend_")
         draw_condition_errorbars(
             ax, x, human_center, human_lo, human_hi,
             color="#444444", marker="D", filled=True,
@@ -916,6 +888,8 @@ def main() -> None:
         build_integer_plot_ci_errorbars(blind, inst, human, out_name="vC_qwen_integer_err_b400.png"),
         build_integer_plot_ci_errorbars(blind_vabc, inst_vabc, human_vabc, out_name="vABC_qwen_integer_err_b400.png"),
         build_integer_plot_ci_errorbars(blind_vabc, inst_vabc, human_vabc, out_name="vABC_internvl_integer_err_b400.png", model_list=INTERNVL_MODELS),
+        build_integer_plot_ci_errorbars(blind_vabc, inst_vabc, human_vabc, out_name="vABC_llava_integer_err_b400.png", model_list=LLAVA_MODELS),
+        build_integer_plot_ci_errorbars(blind_vabc, inst_vabc, human_vabc, out_name="vABC_qwen_vl_integer_err_b400.png", model_list=QWEN_VL_MODELS),
         build_family_panels(blind_vabc, inst_vabc, human_vabc, out_name="vABC_family_panels_err_b400.png"),
         build_integer_plot_all_models(blind, inst, human, out_name="vC_all_models.png"),
         build_integer_plot_all_models(blind_vabc, inst_vabc, human_vabc, out_name="vABC_all_models.png"),

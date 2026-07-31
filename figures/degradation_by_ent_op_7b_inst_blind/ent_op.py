@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "analysis"))
 sys.path.insert(0, str(ROOT / "figures"))
 
-from config import MIN_ANSWERS_DEFAULT, MODELS_7B, MODEL_GROUP
+from config import MIN_ANSWERS_DEFAULT, MODELS_7B, MODEL_GROUP, COLLAPSED_VARIANT_QIDS
 from helpers import load_cleaned_pair_cache, load_human_subset, read_export
 from utils.constants import MODEL_SIZE_B
 
@@ -1280,8 +1280,15 @@ def main() -> None:
         else:
             common_qids_cond = common_qids
 
+        # Exclude questions with collapsed variant hierarchy from degradation analysis
+        deg_qids = [q for q in common_qids_cond if q not in COLLAPSED_VARIANT_QIDS]
+        pair_cache_deg = pair_cache_h[~pair_cache_h["question_id"].isin(COLLAPSED_VARIANT_QIDS)].copy()
+        raw_acc_deg = raw_acc_h[~raw_acc_h["question_id"].isin(COLLAPSED_VARIANT_QIDS)].copy()
+        print(f"  Degradation analysis: {len(deg_qids)}/{len(common_qids_cond)} questions "
+              f"(excluded {len(COLLAPSED_VARIANT_QIDS)} collapsed-variant questions)")
+
         qid_meta = (
-            pair_cache_h[pair_cache_h["pair_type"] == "HH"][["question_id", "ent", "op"]]
+            pair_cache_deg[pair_cache_deg["pair_type"] == "HH"][["question_id", "ent", "op"]]
             .drop_duplicates("question_id")
             .set_index("question_id")
         )
@@ -1291,19 +1298,19 @@ def main() -> None:
         for metric, metric_label in [("sbert", "Mean HM SBERT"), ("accuracy", "Mean accuracy"), ("confidence", "Mean confidence")]:
             print(f"\n-- {metric_label} [{cond}] --")
             df_ent_grouped = compute_ladder_df(
-                pair_cache_h, raw_acc_h, human_df_full, common_qids_cond, qid_meta, ent_groups_mapped, "ent", models, metric=metric,
+                pair_cache_deg, raw_acc_deg, human_df_full, deg_qids, qid_meta, ent_groups_mapped, "ent", models, metric=metric,
                 human_conf_h=human_conf_h, model_conf_h=model_conf_h,
             )
             df_op_grouped = compute_ladder_df(
-                pair_cache_h, raw_acc_h, human_df_full, common_qids_cond, qid_meta, op_groups_mapped, "op", models, metric=metric,
+                pair_cache_deg, raw_acc_deg, human_df_full, deg_qids, qid_meta, op_groups_mapped, "op", models, metric=metric,
                 human_conf_h=human_conf_h, model_conf_h=model_conf_h,
             )
             rdf_ent_grouped = compute_r_ladder_df(
-                pair_cache_h, raw_acc_h, human_df_full, common_qids_cond, qid_meta, ent_groups_mapped, "ent", models, metric=metric,
+                pair_cache_deg, raw_acc_deg, human_df_full, deg_qids, qid_meta, ent_groups_mapped, "ent", models, metric=metric,
                 human_conf_h=human_conf_h, model_conf_h=model_conf_h,
             )
             rdf_op_grouped = compute_r_ladder_df(
-                pair_cache_h, raw_acc_h, human_df_full, common_qids_cond, qid_meta, op_groups_mapped, "op", models, metric=metric,
+                pair_cache_deg, raw_acc_deg, human_df_full, deg_qids, qid_meta, op_groups_mapped, "op", models, metric=metric,
                 human_conf_h=human_conf_h, model_conf_h=model_conf_h,
             )
 
