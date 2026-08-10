@@ -1,0 +1,12 @@
+% ---- Shared notation macros ----
+% Optional arg merges into one subscript: \sHM → S_{HM}, \sHM[m,q,v] → S_{HM,m,q,v}
+\newcommand{\sHM}[1][]{S_{\mathrm{HM}\ifx&#1&\else,#1\fi}}   % human-model SBERT
+\newcommand{\sHH}[1][]{S_{\mathrm{HH}\ifx&#1&\else,#1\fi}}   % human-human SBERT
+\newcommand{\dsHM}{\Delta S_{\mathrm{HM}}}                    % SBERT degradation
+\newcommand{\djs}[1][]{D_{\mathrm{JS}\ifx&#1&\else,#1\fi}}   % JS divergence
+\newcommand{\pr}{r}                                    % Pearson correlation coefficient
+\newcommand{\dinst}{\delta_{\mathrm{inst}}}           % instruction effect: (w/inst) - (w/o inst)
+\newcommand{\vOrig}{\mathrm{orig}}  % original (unmodified) variant
+\newcommand{\vW}{\mathrm{weak}}     % weaker (category-generalized) variant
+\newcommand{\vPron}{\mathrm{pron}}  % pronominalized variant
+% --------------------------------

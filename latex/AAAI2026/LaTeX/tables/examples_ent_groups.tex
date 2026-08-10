@@ -1,0 +1,31 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{Representative questions for each entity group with human answer distributions (top 3, sorted by frequency) and the most common responses per architecture class. Same format as Table~\ref{tab:examples_op_groups}.}
+\label{tab:examples_ent_groups}
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.0cm}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.2cm}}
+\toprule
+\textbf{Group} & \textbf{Question} & \textbf{Human answers} & \textbf{VLM} & \textbf{Backbone} & \textbf{SA-LLM} \\
+\midrule
+\textit{Product} & What's the brand of bike second from the left? & \makecell[l]{\textit{samchully} (25\%) \\ \textit{samchuly bicycle} (12\%) \\ \textit{unknown} (8\%)} & \makecell[l]{\textit{schwinn} \\ \textit{trek}} & \makecell[l]{\textit{schwinn} \\ \textit{trek}} & \makecell[l]{\textit{trek} \\ \textit{toyota}} \\
+\midrule
+\textit{Animal} & What is the zebra standing in? & \makecell[l]{\textit{thicket} (12\%) \\ \textit{savanna} (8\%) \\ \textit{grass} (8\%)} & \makecell[l]{\textit{water} \\ \textit{grass}} & \makecell[l]{\textit{grass} \\ \textit{water}} & \makecell[l]{\textit{grass} \\ \textit{zoo enclosure}} \\
+\midrule
+\textit{Food} & Where is the salad? & \makecell[l]{\textit{on the table} (22\%) \\ \textit{refrigerator} (10\%) \\ \textit{on the plate} (5\%)} & \makecell[l]{\textit{nowhere} \\ \textit{on table}} & \makecell[l]{\textit{on plate} \\ \textit{on table}} & \makecell[l]{\textit{dining area} \\ \textit{on table}} \\
+\midrule
+\textit{Object} & What does the shirt say? & \makecell[l]{\textit{brand name} (8\%) \\ \textit{number} (5\%) \\ \textit{english} (5\%)} & \makecell[l]{\textit{nothing} \\ \textit{i love you}} & \makecell[l]{\textit{nothing} \\ \textit{i don't know}} & \makecell[l]{\textit{keep calm and carry on} \\ \textit{shirt says i'm pc and i vote}} \\
+\midrule
+\textit{Place} & What is the name of the store closest to the van? & \makecell[l]{\textit{starbucks} (8\%) \\ \textit{happy coffee} (2\%) \\ \textit{social department store} (2\%)} & \makecell[l]{\textit{walmart} \\ \textit{store closest to van is calle…}} & \makecell[l]{\textit{walmart} \\ \textit{store closest to van is calle…}} & \makecell[l]{\textit{gas station} \\ \textit{can't determine without conte…}} \\
+\midrule
+\textit{Person} & What does the man's gesture mean? & \makecell[l]{\textit{stop} (5\%) \\ \textit{good} (5\%) \\ \textit{anger} (5\%)} & \makecell[l]{\textit{thank you} \\ \textit{no gesture}} & \makecell[l]{\textit{greeting} \\ \textit{peace}} & \makecell[l]{\textit{ok} \\ \textit{thumbs up}} \\
+\midrule
+\textit{Vehicle} & What formation are the aircraft in? & \makecell[l]{\textit{in a line} (12\%) \\ \textit{line formation} (10\%) \\ \textit{hakikjin} (10\%)} & \makecell[l]{\textit{v formation} \\ \textit{0}} & \makecell[l]{\textit{v formation} \\ \textit{line}} & \makecell[l]{\textit{formation flight} \\ \textit{v formation}} \\
+\midrule
+\textit{Other} & What kind of information does the yellow and white book look like it contains? & \makecell[l]{\textit{cooking} (5\%) \\ \textit{environment} (2\%) \\ \textit{recipe} (2\%)} & \makecell[l]{\textit{text} \\ \textit{science}} & \makecell[l]{\textit{recipes} \\ \textit{dictionary}} & \makecell[l]{\textit{textbook} \\ \textit{phone directory}} \\
+\midrule
+\textit{Text} & What language is the writing at the top of the bus in? & \makecell[l]{\textit{korean} (45\%) \\ \textit{english} (20\%) \\ \textit{number} (8\%)} & \makecell[l]{\textit{english} \\ \textit{japanese}} & \makecell[l]{\textit{english}} & \makecell[l]{\textit{english} \\ \textit{chinese}} \\
+\bottomrule
+\end{tabular}
+\end{table*}

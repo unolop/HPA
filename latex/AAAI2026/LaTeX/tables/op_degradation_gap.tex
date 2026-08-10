@@ -1,0 +1,22 @@
+\begin{table}[t]
+\small\centering
+\setlength{\tabcolsep}{4pt}
+\caption{Original-to-pronominalized SBERT degradation by free-text operation group for humans and each model class, with model-minus-human gaps. Positive gaps indicate greater model degradation than human degradation.}
+\label{tab:op_degradation_gap}
+\begin{tabular}{lc|cc|cc|cc}
+\toprule
+ & \textbf{Human} & \multicolumn{2}{c|}{\textbf{VLM}} & \multicolumn{2}{c|}{\textbf{Backbone}} & \multicolumn{2}{c}{\textbf{SA-LLM}} \\
+\textbf{Operation} & $\Delta$ & $\Delta$ & Gap & $\Delta$ & Gap & $\Delta$ & Gap \\
+\midrule
+World Know. & .146 & .273 & \textcolor{red}{+.127} & .164 & \textcolor{red}{+.019} & .065 & \textcolor{teal}{$-$.081} \\
+Spatial     & .039 & .115 & \textcolor{red}{+.075} & .084 & \textcolor{red}{+.045} & .086 & \textcolor{red}{+.047} \\
+Text Reading & $-$.032 & $-$.001 & \textcolor{red}{+.031} & $-$.160 & \textcolor{teal}{$-$.128} & $-$.134 & \textcolor{teal}{$-$.102} \\
+Identity    & .193 & .220 & \textcolor{red}{+.027} & .192 & \textcolor{teal}{$-$.001} & .252 & \textcolor{red}{+.060} \\
+Temporal    & $-$.009 & .005 & \textcolor{red}{+.014} & .033 & \textcolor{red}{+.042} & .027 & \textcolor{red}{+.036} \\
+Attribute   & .050 & .044 & \textcolor{teal}{$-$.006} & .039 & \textcolor{teal}{$-$.010} & .065 & \textcolor{red}{+.015} \\
+Comparison  & .016 & .010 & \textcolor{teal}{$-$.006} & .016 & \textcolor{teal}{$-$.001} & $-$.041 & \textcolor{teal}{$-$.057} \\
+Action      & .074 & .031 & \textcolor{teal}{$-$.043} & .120 & \textcolor{red}{+.046} & .011 & \textcolor{teal}{$-$.063} \\
+Causality   & .056 & $-$.068 & \textcolor{teal}{$-$.124} & .030 & \textcolor{teal}{$-$.025} & $-$.100 & \textcolor{teal}{$-$.156} \\
+\bottomrule
+\end{tabular}
+\end{table}

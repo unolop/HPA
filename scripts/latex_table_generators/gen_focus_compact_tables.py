@@ -22,12 +22,16 @@ from notebooks.helpers import (
 from analysis.utils.vqa import VQAAnswerMapper
 from analysis.utils.vqa import preprocess_answer
 
+# Import LOO min-max range (same definition used in grouped_compact tables and paper text)
+sys.path.insert(0, str(Path(__file__).parent))
+from gen_grouped_distribution_compact import compute_human_loocv as _compute_loocv_minmax
+
 
 GROUP_ORDER = ["VLM", "Backbone Decoder", "Standalone LLM"]
 MODEL_ORDER = {
-    "VLM": ["Qwen3-VL-8B", "InternVL-8B", "LLaVA-1.5-7B", "LLaVA-Mistral", "LLaVA-Vicuna"],
-    "Backbone Decoder": ["Qwen3-VL-8B (LM)", "InternVL-8B (LM)", "LLaVA-1.5 (LM)", "LLaVA-Mistral (LM)", "LLaVA-Vicuna (LM)"],
-    "Standalone LLM": ["Qwen2.5-7B-Instruct", "Qwen3-8B", "Qwen3-8B (think)", "Mistral-7B", "Vicuna-7B"],
+    "VLM": ["InternVL-8B", "LLaVA-1.5-7B", "LLaVA-Mistral", "LLaVA-Vicuna", "Qwen3-VL-8B"],
+    "Backbone Decoder": ["InternVL-8B (LM)", "LLaVA-1.5 (LM)", "LLaVA-Mistral (LM)", "LLaVA-Vicuna (LM)", "Qwen3-VL-8B (LM)"],
+    "Standalone LLM": ["Qwen2.5-7B-Instruct", "Qwen3-8B", "Qwen3-8B (think)", "Vicuna-7B"],
 }
 SECTION_TITLES = {
     "VLM": "VLMs",
@@ -222,7 +226,7 @@ def build_zero_bias_count() -> str:
 
 def _fmt_delta(a: float, b: float) -> str:
     d = b - a
-    color = "teal" if d < 0 else "red"
+    color = "cyan!50!black" if d < 0 else "red!70!black"
     sign = "+" if d >= 0 else ""
     return f"{b:.3f} (\\textcolor{{{color}}}{{{sign}{d:.3f}}})"
 
@@ -301,14 +305,16 @@ def _bootstrap_loo_ci(
     return js_ci, mode_ci
 
 
-def _style_val_ci(val: float, metric: str, ci: tuple[float, float]) -> str:
-    """Bold if val falls within the human LOO 95% CI."""
+def _style_val_ci(val: float, metric: str, ci: tuple[float, float], is_median_winner: bool = False) -> str:
+    """Bold if val falls within the human LOO 95% CI; underline if closest to human median."""
     text = _fmt_js(val)
     if pd.isna(val) or any(np.isnan(c) for c in ci):
-        return text
+        return rf"\underline{{{text}}}" if is_median_winner else text
     lo, hi = ci
     if lo <= val <= hi:
-        return rf"\textbf{{{text}}}"
+        text = rf"\textbf{{{text}}}"
+    if is_median_winner:
+        text = rf"\underline{{{text}}}"
     return text
 
 
@@ -470,7 +476,7 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
         human_row[(answer_type, "JS")]   = float(pd.Series(js_vals).mean()) if js_vals else float("nan")
         human_row[(answer_type, "Mode")] = float(pd.Series(mode_hits).mean()) if mode_hits else float("nan")
 
-    # Bootstrap 95% CI for human LOO JS and Mode (resample question×variant pairs)
+    # Bootstrap 95% CI for both JS and Mode
     loo_ci: dict = {}
     for answer_type in ("yes/no", "number"):
         js_ci, mode_ci = _bootstrap_loo_ci(
@@ -482,16 +488,48 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
     blind_metrics = _compute_js_mode_per_model(human_all, model_blind)
     inst_metrics  = _compute_js_mode_per_model(human_all, model_inst)
 
-    # Rankings over blind JS and Mode (models only, no LOO)
-    rankings = {}
+    # Compute count abstention rates for both blind and inst_blind (for ΔAbs)
+    qid2atype = _qid_to_answer_type()
+    model_inst_raw = _read_export("responses_model_inst_blind.csv").copy()
+    model_blind_raw = _read_export("responses_model_blind.csv").copy()
+    for df in (model_inst_raw, model_blind_raw):
+        df["clean_response"] = _clean_answer_series(df["response"])
+        _mark_abstentions(df)
+        df["answer_type"] = df["question_id"].astype(int).map(qid2atype).fillna("other")
+    model_inst_raw  = _mark_abstentions(model_inst_raw)
+    model_blind_raw = _mark_abstentions(model_blind_raw)
+    model_inst_raw["answer_type"]  = model_inst_raw["question_id"].astype(int).map(qid2atype).fillna("other")
+    model_blind_raw["answer_type"] = model_blind_raw["question_id"].astype(int).map(qid2atype).fillna("other")
+
+    abs_rates_inst:  dict[str, float] = {}
+    abs_rates_blind: dict[str, float] = {}
+    for model_name, grp in model_inst_raw[model_inst_raw["answer_type"] == "number"].groupby("model"):
+        abs_rates_inst[model_name] = float(grp["is_abstained"].mean() * 100)
+    for model_name, grp in model_blind_raw[model_blind_raw["answer_type"] == "number"].groupby("model"):
+        abs_rates_blind[model_name] = float(grp["is_abstained"].mean() * 100)
+
+    # Find closest-to-mean models per column (human LOO mean as target)
     model_set = {m for grp in MODEL_ORDER.values() for m in grp}
+    median_winners: dict[str, str] = {}       # JS column winner per atype
+    median_winners_mode: dict[str, str] = {}  # Mode column winner per atype
     for atype in ("yes/no", "number"):
-        for metric, rev in [("JS", False), ("Mode", True)]:
-            vals = [blind_metrics[m][(atype, metric)] for m in model_set
-                    if m in blind_metrics and not pd.isna(blind_metrics[m].get((atype, metric), float("nan")))]
-            uniq = sorted(set(vals), reverse=rev)
-            rankings[(atype, metric)] = (uniq[0] if uniq else float("nan"),
-                                         uniq[1] if len(uniq) > 1 else float("nan"))
+        target_js = human_row[(atype, "JS")]
+        candidates_js = [
+            (m, abs(inst_metrics[m].get((atype, "JS"), float("inf")) - target_js))
+            for m in model_set
+            if m in inst_metrics and not pd.isna(inst_metrics[m].get((atype, "JS"), float("nan")))
+        ]
+        if candidates_js:
+            median_winners[atype] = min(candidates_js, key=lambda x: x[1])[0]
+
+        target_mode = human_row[(atype, "Mode")]
+        candidates_mode = [
+            (m, abs(inst_metrics[m].get((atype, "Mode"), float("inf")) - target_mode))
+            for m in model_set
+            if m in inst_metrics and not pd.isna(inst_metrics[m].get((atype, "Mode"), float("nan")))
+        ]
+        if candidates_mode:
+            median_winners_mode[atype] = min(candidates_mode, key=lambda x: x[1])[0]
 
     lines = [
         r"\begin{table}[t]",
@@ -506,16 +544,21 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
         rf"\multicolumn{{2}}{{c}}{{\textbf{{Yes/No}} ($N{{=}}{pooled_n['yes/no']}$)}} &",
         rf"\multicolumn{{2}}{{c}}{{\textbf{{Count}} ($N{{=}}{pooled_n['number']}$)}} \\",
         r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}",
-        r"& \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ \\",
+        r"& \textbf{$D_{\mathrm{JS}}$} & \textbf{Mode} & \textbf{$D_{\mathrm{JS}}$} & \textbf{Abs(\%)} \\",
         r"\midrule",
     ]
 
-    loo_yn_js   = _fmt_js(float(human_row[("yes/no", "JS")]))
-    loo_yn_mode = _fmt_js(float(human_row[("yes/no", "Mode")]))
-    loo_ct_js   = _fmt_js(float(human_row[("number", "JS")]))
-    loo_ct_mode = _fmt_js(float(human_row[("number", "Mode")]))
+    def _fmt_ci_cell(mean_val: float, lo: float, hi: float) -> str:
+        v = _fmt_js(mean_val)
+        ci = rf"{{\scriptsize [{_fmt_js(lo)}, {_fmt_js(hi)}]}}"
+        return rf"\makecell[c]{{{v} \\ {ci}}}"
+
+    loo_yn_js   = _fmt_ci_cell(float(human_row[("yes/no", "JS")]),   *loo_ci[("yes/no", "JS")])
+    loo_yn_mode = _fmt_ci_cell(float(human_row[("yes/no", "Mode")]), *loo_ci[("yes/no", "Mode")])
+    loo_ct_js   = _fmt_ci_cell(float(human_row[("number", "JS")]),   *loo_ci[("number", "JS")])
+    loo_ct_mode = _fmt_ci_cell(float(human_row[("number", "Mode")]), *loo_ci[("number", "Mode")])
     lines.append(
-        rf"\textbf{{Human LOO}} & {loo_yn_js} & {loo_yn_mode} & {loo_ct_js} & {loo_ct_mode} \\"
+        rf"\textbf{{Human LOO}} & {loo_yn_js} & {loo_yn_mode} & {loo_ct_js} & --- \\"
     )
     lines.append(r"\midrule")
 
@@ -526,17 +569,30 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
             if model not in inst_metrics:
                 continue
             im = inst_metrics[model]
-            bm = blind_metrics.get(model, {})
             cells = []
             for atype in ("yes/no", "number"):
-                js_inst  = im.get((atype, "JS"), float("nan"))
+                js_inst   = im.get((atype, "JS"), float("nan"))
                 mode_inst = im.get((atype, "Mode"), float("nan"))
-                js_blind  = bm.get((atype, "JS"), float("nan"))
-                delta = (js_inst - js_blind) if (not pd.isna(js_inst) and not pd.isna(js_blind)) else float("nan")
-                js_s   = _style_val_ci(js_inst,   "JS",   loo_ci[(atype, "JS")])
-                mode_s = _style_val_ci(mode_inst, "Mode", loo_ci[(atype, "Mode")])
-                js_cell = js_s + _fmt_delta_inline(delta)
-                cells += [js_cell, mode_s]
+                is_winner      = (median_winners.get(atype) == model)
+                is_mode_winner = (median_winners_mode.get(atype) == model)
+                js_s   = _style_val_ci(js_inst,   "JS",   loo_ci[(atype, "JS")],   is_winner)
+                mode_s = _style_val_ci(mode_inst, "Mode", loo_ci[(atype, "Mode")], is_mode_winner)
+                if atype == "number":
+                    abs_inst  = abs_rates_inst.get(model, float("nan"))
+                    abs_blind = abs_rates_blind.get(model, float("nan"))
+                    if not pd.isna(abs_inst) and not pd.isna(abs_blind):
+                        d = abs_inst - abs_blind
+                        if abs(d) < 0.05:
+                            abs_s = f"{abs_inst:.1f}"
+                        else:
+                            sign = "+" if d >= 0 else ""
+                            color = "cyan!50!black" if d < 0 else "red!70!black"
+                            abs_s = rf"{abs_inst:.1f} {{\scriptsize (\textcolor{{{color}}}{{{sign}{d:.1f}}})}}"
+                    else:
+                        abs_s = f"{abs_inst:.1f}" if not pd.isna(abs_inst) else "---"
+                    cells += [js_s, abs_s]
+                else:
+                    cells += [js_s, mode_s]
             lines.append(f"{_display_name(model)} & {' & '.join(cells)} \\\\")
         lines.append(r"\midrule")
     if lines[-1] == r"\midrule":
@@ -544,12 +600,14 @@ def build_hm_grouped_distribution_7b_compact_filtered() -> str:
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
-        r"\caption{JS divergence and modal-match rate to the human distribution, "
-        r"abstention-filtered and pooled across all three control variants. "
-        r"$\Delta$ in parentheses: difference with vs.\ without instruction "
-        r"(\textcolor{teal}{teal} = instruction reduces JS; \textcolor{red}{red} = increases). "
-        r"Human LOO is the leave-one-out human baseline. "
-        r"\textbf{Bold}: model value within human LOO 95\% bootstrap CI.}",
+        r"\caption{$\djs$ divergence and modal-match rate vs.\ the human distribution. "
+        r"Human LOO reports the leave-one-out \emph{mean}; human CI (LOO 95\% bootstrap): Y/N $\djs$ [.260, .282]; "
+        r"Y/N Mode [.610, .692]; Count $\djs$ [.493, .554]; Count Mode [.451, .522]. "
+        r"Abs = abstention rate; parenthetical values are with-instruction minus blind abstention "
+        r"(\textcolor{cyan!50!black}{teal}: reduced abstention under instruction; \textcolor{red!70!black}{dark red}: increased abstention under instruction). "
+        r"\colorbox{green!20}{Green}: within human CI. "
+        r"\colorbox{orange!30}{Orange}: over-concentrated ($\djs$ below CI; Mode above CI). "
+        r"\textbf{Bold}: closest to LOO mean per column; \underline{underline}: second-closest.}",
         r"\label{tab:hm_grouped_distribution_7b_compact_filtered}",
         r"\end{table}",
     ]
@@ -596,7 +654,7 @@ def _compute_js_mode_per_model(human_all: pd.DataFrame, model_all: pd.DataFrame)
 
 
 def _fmt_delta_inline(delta: float) -> str:
-    """Render Δ as small colored text with arrow for inline display in JS cell."""
+    """Render Δ as small plain text for inline display in JS cell."""
     if pd.isna(delta):
         return ""
     s = f"{delta:+.3f}"
@@ -604,58 +662,34 @@ def _fmt_delta_inline(delta: float) -> str:
         s = "+" + s[2:]
     elif s.startswith("-0."):
         s = "-" + s[2:]
-    if abs(delta) < 0.0005:
-        return rf" {{\scriptsize ({s})}}"
-    color = "teal" if delta < 0 else "red"
-    return rf" {{\scriptsize (\textcolor{{{color}}}{{{s}}})}}"
+    return rf" {{\scriptsize ({s})}}"
 
 
-def build_hm_dist_blind_inst_effect() -> str:
-    """Main distribution table: blind JS + inline inst-effect Δ, no TV column."""
+def build_hm_distribution_blind_vs_inst() -> str:
+    """Appendix table: blind vs instruction DJS (count + yes/no) with delta."""
     variants = ("C", "B", "A")
-
-    human_blind, model_blind = _distribution_base_table_variants_with_models("blind", variants)
-    human_inst,  model_inst  = _distribution_base_table_variants_with_models("inst_blind", variants)
-    human_blind = _mark_abstentions(human_blind)
+    human_all, model_blind = _distribution_base_table_variants_with_models("blind", variants)
+    _, model_inst = _distribution_base_table_variants_with_models("inst_blind", variants)
+    human_all   = _mark_abstentions(human_all)
     model_blind = _mark_abstentions(model_blind)
-    human_inst  = _mark_abstentions(human_inst)
     model_inst  = _mark_abstentions(model_inst)
 
-    blind_metrics = _compute_js_mode_per_model(human_blind, model_blind)
-    inst_metrics  = _compute_js_mode_per_model(human_inst,  model_inst)
-
-    # pooled N from human side (blind)
-    pooled_n = {}
-    qid2atype = _qid_to_answer_type()
-    human_blind["answer_type"] = human_blind["question_id"].astype(int).map(qid2atype).fillna("other")
-    for atype, label in (("yes/no", "yes/no"), ("number", "number")):
-        sub = human_blind[human_blind["answer_type"] == atype]
-        pooled_n[atype] = len(set(zip(sub["question_id"].astype(int), sub["variant"].astype(str))))
-
-    # rankings over blind JS and Mode (exclude Human LOO)
-    rankings = {}
-    for atype in ("yes/no", "number"):
-        js_vals  = [v[(atype, "JS")]   for m, v in blind_metrics.items() if m in {mm for grp in MODEL_ORDER.values() for mm in grp}]
-        mode_vals= [v[(atype, "Mode")] for m, v in blind_metrics.items() if m in {mm for grp in MODEL_ORDER.values() for mm in grp}]
-        for metric, vals, rev in [("JS", js_vals, False), ("Mode", mode_vals, True)]:
-            uniq = sorted(set(v for v in vals if not pd.isna(v)), reverse=rev)
-            rankings[(atype, metric)] = (uniq[0] if uniq else float("nan"),
-                                         uniq[1] if len(uniq) > 1 else float("nan"))
+    bm = _compute_js_mode_per_model(human_all, model_blind)
+    im = _compute_js_mode_per_model(human_all, model_inst)
 
     lines = [
         r"\begin{table}[t]",
         r"\centering",
         r"\small",
-        r"\setlength{\tabcolsep}{2.2pt}",
+        r"\setlength{\tabcolsep}{3pt}",
         r"\renewcommand{\arraystretch}{0.95}",
-        "",
-        r"\begin{tabular}{lcccc@{\hspace{6pt}}cccc}",  # keep same col count: Nq JS Mode × 2 = 6 + model = 7 but header spans
+        r"\begin{tabular}{lcc@{\hspace{4pt}}cc@{\hspace{4pt}}cc}",
         r"\toprule",
         r"\multirow{2}{*}{\textbf{Model}} &",
-        rf"\multicolumn{{3}}{{c}}{{\textbf{{Yes/No}} ($N{{=}}{pooled_n['yes/no']}$)}} &",
-        rf"\multicolumn{{3}}{{c}}{{\textbf{{Count}} ($N{{=}}{pooled_n['number']}$)}} \\",
+        r"\multicolumn{3}{c}{\textbf{Yes/No}} &",
+        r"\multicolumn{3}{c}{\textbf{Count}} \\",
         r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
-        r"& $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ & $\mathbf{N_q}$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ \\",
+        r"& \textbf{Blind} & \textbf{+Inst} & $\mathbf{\Delta}$ & \textbf{Blind} & \textbf{+Inst} & $\mathbf{\Delta}$ \\",
         r"\midrule",
     ]
 
@@ -663,35 +697,29 @@ def build_hm_dist_blind_inst_effect() -> str:
         lines.append(rf"\multicolumn{{7}}{{c}}{{\textbf{{{SECTION_TITLES[grp]}}}}} \\")
         lines.append(r"\midrule")
         for model in MODEL_ORDER[grp]:
-            if model not in blind_metrics:
+            if model not in bm or model not in im:
                 continue
-            bm = blind_metrics[model]
-            im = inst_metrics.get(model, {})
-            cells = []
+            row_parts = []
             for atype in ("yes/no", "number"):
-                n   = bm.get((atype, "N"), 0)
-                js  = bm.get((atype, "JS"), float("nan"))
-                mode= bm.get((atype, "Mode"), float("nan"))
-                js_i= im.get((atype, "JS"), float("nan"))
-                delta = (js_i - js) if (not pd.isna(js_i) and not pd.isna(js)) else float("nan")
-                js_s  = _style_val(js,   "JS",   *rankings[(atype, "JS")])
-                mode_s= _style_val(mode, "Mode", *rankings[(atype, "Mode")])
-                js_cell = js_s + _fmt_delta_inline(delta)
-                cells += [str(int(n)) if n else "--", js_cell, mode_s]
-            lines.append(f"{_display_name(model)} & {' & '.join(cells)} \\\\")
+                b = bm[model].get((atype, "JS"), float("nan"))
+                i = im[model].get((atype, "JS"), float("nan"))
+                d = i - b
+                color = "cyan!50!black" if d < -0.001 else ("red!70!black" if d > 0.001 else "black")
+                sign = "+" if d >= 0 else ""
+                d_s = rf"\textcolor{{{color}}}{{{sign}{_fmt_js(d)}}}"
+                row_parts += [_fmt_js(b), _fmt_js(i), d_s]
+            lines.append(f"{_display_name(model)} & {' & '.join(row_parts)} \\\\")
         lines.append(r"\midrule")
     if lines[-1] == r"\midrule":
         lines.pop()
+
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
-        r"\caption{Per-question JS divergence and modal-answer match rate between model and human answer distributions, "
-        r"under the blind condition (pooled across all three control variants). "
-        r"$\Delta$ in parentheses shows the instruction effect: "
-        r"\textcolor{teal}{teal\,$\downarrow$} = instruction reduces JS (improves alignment), "
-        r"\textcolor{red}{red\,$\uparrow$} = worsens. "
-        r"\textbf{Bold}: best per column; \underline{underline}: second best.}",
-        r"\label{tab:hm_dist_blind_inst_effect}",
+        r"\caption{$\djs$ divergence to the human distribution under blind and blind+instruction conditions, "
+        r"with $\Delta = \text{inst} - \text{blind}$ (\textcolor{cyan!50!black}{teal}: improvement; \textcolor{red!70!black}{dark red}: worsening). "
+        r"Values computed on the shared non-abstaining subset per condition.}",
+        r"\label{tab:hm_distribution_blind_vs_inst}",
         r"\end{table}",
     ]
     return "\n".join(lines) + "\n"
@@ -699,4 +727,4 @@ def build_hm_dist_blind_inst_effect() -> str:
 
 if __name__ == "__main__":
     _write(OUT_DIR / "hm_grouped_distribution_7b_compact_filtered.tex", build_hm_grouped_distribution_7b_compact_filtered())
-    _write(OUT_DIR / "hm_dist_blind_inst_effect.tex", build_hm_dist_blind_inst_effect())
+    _write(OUT_DIR / "hm_distribution_blind_vs_inst.tex", build_hm_distribution_blind_vs_inst())

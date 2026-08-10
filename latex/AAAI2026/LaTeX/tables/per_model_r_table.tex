@@ -1,32 +1,32 @@
 \begin{table}[ht]
 \small\centering
 \setlength{\tabcolsep}{5pt}
-\caption{Per-model Spearman $\rho$ between HH and HM SBERT over group$\times$variant means ($n{=}36$ op; $n{=}27$ ent), measuring how closely each model tracks the human group-level response pattern across all variants. All correlations are significant ($p_{\mathrm{Holm}}{<}.05$) except Mistral-7B Op~$\rho$. \textbf{Bold} = highest; \underline{underline} = second highest per column.}
+\caption{Per-model Spearman $\rho$ between human HH $\Delta$ and model HM $\Delta$ across operation and entity groups ($\Delta$ = Pronominalized $-$ Original SBERT, free-text questions only). This measures concordance on \emph{degradation patterns}: whether models lose alignment on the same groups that humans do. $\dagger$ = not significant ($p{>}.05$). \textbf{Bold}: highest; \underline{underline}: second highest per column.}
 \label{tab:per_model_r}
 \begin{tabular}{lrr}
 \toprule
 \textbf{Model} & \textbf{Op} $\rho$ & \textbf{Ent} $\rho$ \\
 \midrule
 \multicolumn{3}{l}{\textit{VLMs}} \\
-InternVL-8B         & 0.956 & \textbf{.896} \\
-LLaVA-1.5-7B        & 0.935 & 0.540 \\
-LLaVA-Mistral       & 0.937 & 0.652 \\
-LLaVA-Vicuna        & 0.927 & 0.609 \\
-Qwen3-VL-8B         & 0.929 & 0.828 \\
+InternVL3.5 & .467$^{\dagger}$ & .800 \\
+LLaVA-1.5 & .683 & .550$^{\dagger}$ \\
+LLaVA-Mistral & .433$^{\dagger}$ & \textbf{.950} \\
+LLaVA-Vicuna & .833 & .750 \\
+Qwen3-VL & .567$^{\dagger}$ & .667 \\
 \midrule
 \multicolumn{3}{l}{\textit{Backbone Decoders}} \\
-InternVL-8B         & 0.855 & 0.797 \\
-LLaVA-1.5           & 0.947 & 0.753 \\
-LLaVA-Mistral       & \textbf{.962} & 0.712 \\
-LLaVA-Vicuna        & \underline{.957} & 0.748 \\
-Qwen3-VL-8B         & 0.909 & 0.816 \\
+InternVL3.5 & $-$.017$^{\dagger}$ & .867 \\
+LLaVA-1.5 & \underline{.867} & .750 \\
+LLaVA-Mistral & .733 & \textbf{.950} \\
+LLaVA-Vicuna & \textbf{.933} & .783 \\
+Qwen3-VL & .483$^{\dagger}$ & .633$^{\dagger}$ \\
 \midrule
 \multicolumn{3}{l}{\textit{Standalone LLMs}} \\
-Mistral-7B           & $-$0.591 & 0.429 \\
-Qwen2.5-7B-Instruct  & 0.860   & 0.743 \\
-Qwen3-8B             & 0.849   & \underline{.844} \\
-Qwen3-8B (think)     & 0.849   & \underline{.844} \\
-Vicuna-7B            & 0.712   & 0.590 \\
+Mistral & $-$.190$^{\dagger}$ & $-$.024$^{\dagger}$ \\
+Qwen2.5 & .583$^{\dagger}$ & .550$^{\dagger}$ \\
+Qwen3 & .317$^{\dagger}$ & .467$^{\dagger}$ \\
+Qwen3 (think) & .833 & .767 \\
+Vicuna & .283$^{\dagger}$ & .833 \\
 \bottomrule
 \end{tabular}
 \end{table}

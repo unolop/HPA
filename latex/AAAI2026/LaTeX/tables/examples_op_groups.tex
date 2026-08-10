@@ -1,0 +1,31 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{Representative questions for each operation group with human answer distributions (top 3, sorted by frequency) and the most common responses per architecture class (VLM / Backbone decoder / SA-LLM). Human answers reflect the \emph{original} (non-pronominalized) variant; model answers are from the same variant under the instruction-blind condition.}
+\label{tab:examples_op_groups}
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.0cm}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.2cm}}
+\toprule
+\textbf{Group} & \textbf{Question} & \textbf{Human answers} & \textbf{VLM} & \textbf{Backbone} & \textbf{SA-LLM} \\
+\midrule
+\textit{Identity} & What type of bear is this? & \makecell[l]{\textit{brown bear} (28\%) \\ \textit{polar bear} (22\%) \\ \textit{asian black bear} (20\%)} & \makecell[l]{\textit{black} \\ \textit{grizzly bear}} & \makecell[l]{\textit{grizzly bear} \\ \textit{brown}} & \makecell[l]{\textit{brown bear} \\ \textit{grizzly bear}} \\
+\midrule
+\textit{Attribute} & What is the color of the dog's collar? & \makecell[l]{\textit{red} (38\%) \\ \textit{black} (22\%) \\ \textit{white} (12\%)} & \makecell[l]{\textit{black} \\ \textit{red}} & \makecell[l]{\textit{black} \\ \textit{red}} & \makecell[l]{\textit{black} \\ \textit{blue}} \\
+\midrule
+\textit{World K.} & What religion is this building associated with? & \makecell[l]{\textit{christian} (38\%) \\ \textit{buddhist} (25\%) \\ \textit{catholic} (20\%)} & \makecell[l]{\textit{christianity} \\ \textit{church}} & \makecell[l]{\textit{christianity} \\ \textit{christian}} & \makecell[l]{\textit{christianity} \\ \textit{hinduism}} \\
+\midrule
+\textit{Spatial} & What are the flowers in? & \makecell[l]{\textit{vase} (62\%) \\ \textit{pot} (18\%) \\ \textit{glass} (5\%)} & \makecell[l]{\textit{vase}} & \makecell[l]{\textit{vase} \\ \textit{bushes}} & \makecell[l]{\textit{vase} \\ \textit{petals}} \\
+\midrule
+\textit{Action} & What is the elephant eating? & \makecell[l]{\textit{grass} (45\%) \\ \textit{banana} (8\%) \\ \textit{carrot} (5\%)} & \makecell[l]{\textit{nothing} \\ \textit{elephant is eating grass}} & \makecell[l]{\textit{grass}} & \makecell[l]{\textit{grass} \\ \textit{trunk}} \\
+\midrule
+\textit{Causality} & Why is the man wearing protective gear? & \makecell[l]{\textit{because it's dangerous.} (10\%) \\ \textit{for safety.} (5\%) \\ \textit{to avoid injury.} (5\%)} & \makecell[l]{\textit{safety} \\ \textit{to stay warm in cold weather}} & \makecell[l]{\textit{safety} \\ \textit{to protect himself from poten…}} & \makecell[l]{\textit{construction} \\ \textit{safety precautions}} \\
+\midrule
+\textit{Comparison} & What might a milkman have in common with the man with the backpack? & \makecell[l]{\textit{gender} (8\%) \\ \textit{carrying luggage} (5\%) \\ \textit{they are both men.} (5\%)} & \makecell[l]{\textit{delivery} \\ \textit{occupation}} & \makecell[l]{\textit{both might be delivering goods} \\ \textit{both might be delivering some…}} & \makecell[l]{\textit{occupation} \\ \textit{both might be seen carrying i…}} \\
+\midrule
+\textit{Temporal} & What year was this picture taken? & \makecell[l]{\textit{2002} (12\%) \\ \textit{2000} (12\%) \\ \textit{2025} (10\%)} & \makecell[l]{\textit{2016} \\ \textit{2023}} & \makecell[l]{\textit{2016} \\ \textit{2023}} & \makecell[l]{\textit{1945} \\ \textit{1969}} \\
+\midrule
+\textit{Text R.} & What language is the writing at the top of the bus in? & \makecell[l]{\textit{korean} (45\%) \\ \textit{english} (20\%) \\ \textit{number} (8\%)} & \makecell[l]{\textit{english} \\ \textit{japanese}} & \makecell[l]{\textit{english}} & \makecell[l]{\textit{english} \\ \textit{chinese}} \\
+\bottomrule
+\end{tabular}
+\end{table*}

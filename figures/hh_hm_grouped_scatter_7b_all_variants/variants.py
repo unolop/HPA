@@ -44,10 +44,10 @@ for marker, vlm, dec, llm, label in MODEL_FAMILIES:
 
 # Column model lists
 MODEL_GROUPS = {
-    "VLM": ["InternVL-8B", "Qwen3-VL-8B", "LLaVA-1.5-7B", "LLaVA-Mistral", "LLaVA-Vicuna"],
-    "Backbone Decoder": ["InternVL-8B (LM)", "Qwen3-VL-8B (LM)", "LLaVA-1.5 (LM)",
-                         "LLaVA-Mistral (LM)", "LLaVA-Vicuna (LM)"],
-    "Standalone LLM": ["Qwen3-8B", "Qwen3-8B (think)", "Qwen2.5-7B-Instruct",
+    "VLM": ["InternVL-8B", "LLaVA-1.5-7B", "LLaVA-Mistral", "LLaVA-Vicuna", "Qwen3-VL-8B"],
+    "Backbone Decoder": ["InternVL-8B (LM)", "LLaVA-1.5 (LM)", "LLaVA-Mistral (LM)",
+                         "LLaVA-Vicuna (LM)", "Qwen3-VL-8B (LM)"],
+    "Standalone LLM": ["Qwen2.5-7B-Instruct", "Qwen3-8B", "Qwen3-8B (think)",
                         "Vicuna-7B", "Mistral-7B"],
 }
 

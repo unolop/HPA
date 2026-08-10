@@ -36,7 +36,11 @@ from .vqa import vqa_accuracy
 _HARD_RE = re.compile(
     r'cannot|can\'t|don\'t see|no image|unable|not visible'
     r'|i cannot|i don\'t|can not|no visual|cannot see'
-    r'|i\'m not able|i am not able|\bblank\b',
+    r'|i\'m not able|i am not able|\bblank\b'
+    # verbose refusal patterns (e.g. Mistral-style hedges)
+    r'|impossible to|does not provide|without more|without additional'
+    r'|not enough|hard to say|hard to determine'
+    r'|would need|not possible to|\bunclear\b',
     re.IGNORECASE,
 )
 

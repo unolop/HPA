@@ -1,0 +1,32 @@
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3.5pt}
+\caption{Over-degradation gap (variant~A $-$ variant~C, relative to human $\Delta_{\text{HH}}$) per model and operation group. \colorbox{blue!20}{Blue}: model--human gap narrows (models converge faster than humans scatter). \colorbox{red!20}{Red}: gap widens (models degrade more than humans). \colorbox{gray!10}{Gray}: near zero ($<0.02$). Darker shading = larger magnitude.}
+\label{tab:op_overdeg_per_model}
+\begin{tabular}{lrrrrrrr}
+\toprule
+\textbf{Model} & \textbf{Caus.} & \textbf{Spat.} & \textbf{Count} & \textbf{Know.} & \textbf{Ident.} & \textbf{Text} & \textbf{Act.} \\
+\midrule
+\multicolumn{8}{l}{\textit{VLMs}} \\
+InternVL & \cellcolor{blue!13}+0.10 & \cellcolor{red!10}-0.08 & \cellcolor{red!10}-0.03 & \cellcolor{blue!10}+0.03 & \cellcolor{red!10}-0.06 & \cellcolor{red!12}-0.10 & \cellcolor{blue!10}+0.02 \\
+Qwen3-VL & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.06 & \cellcolor{gray!10}+0.01 & \cellcolor{red!10}-0.05 & \cellcolor{red!10}-0.02 & \cellcolor{red!10}-0.08 & \cellcolor{blue!10}+0.02 \\
+LLaVA-1.5 & \cellcolor{blue!10}+0.06 & \cellcolor{red!10}-0.07 & \cellcolor{gray!10}+0.01 & \cellcolor{red!18}-0.14 & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.02 & \cellcolor{red!10}-0.04 \\
+LLaVA-Mist. & \cellcolor{blue!40}+0.42 & \cellcolor{red!10}-0.07 & \cellcolor{red!10}-0.03 & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.04 & \cellcolor{red!10}-0.02 & \cellcolor{red!11}-0.08 \\
+LLaVA-Vic. & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.04 & \cellcolor{gray!10}-0.01 & \cellcolor{red!11}-0.09 & \cellcolor{gray!10}-0.01 & \cellcolor{gray!10}-0.02 & \cellcolor{gray!10}-0.02 \\
+\midrule
+\multicolumn{8}{l}{\textit{Backbone Decoders}} \\
+InternVL & \cellcolor{gray!10}-0.00 & \cellcolor{red!10}-0.02 & \cellcolor{red!40}-0.34 & \cellcolor{blue!10}+0.03 & \cellcolor{red!10}-0.06 & \cellcolor{red!10}-0.08 & \cellcolor{red!10}-0.04 \\
+Qwen3-VL & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.07 & \cellcolor{red!10}-0.04 & \cellcolor{blue!25}+0.19 & \cellcolor{red!10}-0.03 & \cellcolor{gray!10}-0.01 & \cellcolor{gray!10}-0.00 \\
+LLaVA-1.5 & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.04 & \cellcolor{gray!10}-0.02 & \cellcolor{gray!10}+0.00 & \cellcolor{blue!10}+0.06 & \cellcolor{red!10}-0.06 & \cellcolor{blue!10}+0.02 \\
+LLaVA-Mist. & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.08 & \cellcolor{gray!10}-0.01 & \cellcolor{blue!10}+0.06 & \cellcolor{gray!10}-0.00 & \cellcolor{gray!10}-0.01 & \cellcolor{red!10}-0.06 \\
+LLaVA-Vic. & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.03 & \cellcolor{red!10}-0.02 & \cellcolor{red!14}-0.11 & \cellcolor{gray!10}+0.01 & \cellcolor{red!11}-0.09 & \cellcolor{gray!10}+0.00 \\
+\midrule
+\multicolumn{8}{l}{\textit{Standalone LLMs}} \\
+Qwen3 & \cellcolor{blue!10}+0.03 & \cellcolor{red!14}-0.11 & \cellcolor{red!20}-0.16 & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.05 & \cellcolor{red!10}-0.07 & \cellcolor{blue!10}+0.04 \\
+Qwen3 (think) & \cellcolor{blue!10}+0.05 & \cellcolor{red!10}-0.04 & \cellcolor{gray!10}+0.02 & \cellcolor{blue!10}+0.04 & \cellcolor{red!10}-0.04 & \cellcolor{gray!10}+0.02 & \cellcolor{blue!10}+0.05 \\
+Qwen2.5 & \cellcolor{blue!10}+0.07 & \cellcolor{red!13}-0.10 & \cellcolor{red!28}-0.21 & \cellcolor{blue!26}+0.20 & \cellcolor{red!10}-0.06 & \cellcolor{blue!11}+0.08 & \cellcolor{gray!10}-0.01 \\
+Vicuna & \cellcolor{blue!40}+0.54 & \cellcolor{gray!10}+0.00 & \cellcolor{red!10}-0.03 & \cellcolor{blue!11}+0.09 & \cellcolor{red!13}-0.10 & \cellcolor{red!10}-0.06 & \cellcolor{blue!10}+0.02 \\
+\bottomrule
+\end{tabular}
+\end{table*}

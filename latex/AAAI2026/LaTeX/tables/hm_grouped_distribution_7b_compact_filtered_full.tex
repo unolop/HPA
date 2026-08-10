@@ -1,0 +1,43 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{2.2pt}
+\renewcommand{\arraystretch}{0.95}
+
+\begin{tabular}{lcc@{\hspace{6pt}}ccc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} &
+\multicolumn{2}{c}{\textbf{Yes/No} ($N{=}78$)} &
+\multicolumn{3}{c}{\textbf{Count} ($N{=}78$)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-6}
+& \textbf{$D_{\mathrm{JS}}$} & \textbf{Mode} & \textbf{$D_{\mathrm{JS}}$} & \textbf{Mode} & \textbf{Abs(\%)} \\
+\midrule
+\textbf{Human LOO} & \makecell[c]{.271 \\ {\scriptsize [.260, .282]}} & \makecell[c]{.653 \\ {\scriptsize [.610, .692]}} & \makecell[c]{.524 \\ {\scriptsize [.493, .554]}} & \makecell[c]{.485 \\ {\scriptsize [.451, .522]}} & --- \\
+\midrule
+\multicolumn{6}{c}{\textbf{VLMs}} \\
+\midrule
+Qwen3-VL & \textbf{.277} & \textbf{.654} & .788 & .093 & 1.3 \\
+InternVL3.5 & .230 & .782 & .586 & .385 & 0.0 \\
+LLaVA-1.5 & .421 & .321 & .824 & .038 & 0.0 \\
+LLaVA-Mistral & .357 & .449 & .787 & .103 & 0.0 \\
+LLaVA-Vicuna & .385 & .397 & .837 & .051 & 0.0 \\
+\midrule
+\multicolumn{6}{c}{\textbf{Backbone Decoders}} \\
+\midrule
+Qwen3-VL & .230 & .821 & .745 & .158 & 2.6 {\scriptsize (\textcolor{teal}{-2.6})} \\
+InternVL3.5 & .209 & .872 & \underline{.575} & \underline{.404} & 26.9 {\scriptsize (\textcolor{teal}{-19.2})} \\
+LLaVA-1.5 & .241 & .731 & .663 & .192 & 0.0 \\
+LLaVA-Mistral & \underline{\textbf{.275}} & \underline{\textbf{.654}} & .671 & .205 & 0.0 \\
+LLaVA-Vicuna & .223 & .808 & .693 & .141 & 0.0 \\
+\midrule
+\multicolumn{6}{c}{\textbf{Standalone LLMs}} \\
+\midrule
+Qwen2.5 & .440 & .436 & .688 & .224 & 14.1 {\scriptsize (\textcolor{red}{+2.6})} \\
+Qwen3 & .531 & .513 & .721 & .233 & 6.4 {\scriptsize (\textcolor{teal}{-16.7})} \\
+Qwen3 (think) & .397 & \textbf{.684} & .610 & .355 & 2.6 {\scriptsize (\textcolor{teal}{-20.5})} \\
+Vicuna & .225 & .821 & .788 & .051 & 0.0 {\scriptsize (\textcolor{teal}{-5.1})} \\
+\bottomrule
+\end{tabular}
+\caption{Full version of Table~\ref{tab:hm_grouped_distribution_7b_compact_filtered} including yes/no modal-match rate. $\djs$ divergence and modal-match rate to the human distribution. Abs = abstention rate; $\Delta$ = w/ $-$ w/o inst (\textcolor{teal}{teal}: $\Delta{<}0$; \textcolor{red}{red}: $\Delta{>}0$). Human LOO: leave-one-out mean with bootstrap 95\% CI. \textbf{Bold}: within CI; \underline{underline}: closest to LOO mean per column.}
+\label{tab:hm_grouped_distribution_7b_compact_filtered_full}
+\end{table}

@@ -10,35 +10,35 @@
 \multicolumn{2}{c}{\textbf{Yes/No} ($N{=}78$)} &
 \multicolumn{2}{c}{\textbf{Count} ($N{=}78$)} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
-& \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ & \textbf{JS}$\downarrow$ ($\Delta$) & \textbf{Mode}$\uparrow$ \\
+& \textbf{$D_{\mathrm{JS}}$} & \textbf{Mode} & \textbf{$D_{\mathrm{JS}}$} & \textbf{Abs(\%)} \\
 \midrule
-\textbf{Human LOO} & .271 & .653 & .524 & .485 \\
+\textbf{Human LOO} & \makecell[c]{.271 \\ {\scriptsize [.260, .282]}} & \makecell[c]{.653 \\ {\scriptsize [.610, .692]}} & \makecell[c]{.524 \\ {\scriptsize [.493, .554]}} & --- \\
 \midrule
 \multicolumn{5}{c}{\textbf{VLMs}} \\
 \midrule
-Qwen3-VL & \textbf{.277} {\scriptsize (\textcolor{teal}{-.041})} & \textbf{.654} & .788 {\scriptsize (\textcolor{red}{+.015})} & .093 \\
-InternVL & .230 {\scriptsize (\textcolor{teal}{-.024})} & .782 & .586 {\scriptsize (\textcolor{red}{+.027})} & .385 \\
-LLaVA-1.5 & .421 {\scriptsize (\textcolor{red}{+.029})} & .321 & .824 {\scriptsize (\textcolor{red}{+.013})} & .038 \\
-LLaVA-Mistral & .357 {\scriptsize (\textcolor{teal}{-.022})} & .449 & .787 {\scriptsize (\textcolor{teal}{-.048})} & .103 \\
-LLaVA-Vicuna & .385 {\scriptsize (\textcolor{red}{+.033})} & .397 & .837 {\scriptsize (\textcolor{red}{+.007})} & .051 \\
+InternVL & \cellcolor{orange!30}.230 & \cellcolor{orange!30}.782 & \underline{.586} & 0.0 \\
+LLaVA-1.5 & .421 & .321 & .824 & 0.0 \\
+LLaVA-Mistral & .357 & .449 & .787 & 0.0 \\
+LLaVA-Vicuna & .385 & .397 & .837 & 0.0 \\
+Qwen3-VL & \cellcolor{green!20}\underline{.277} & \cellcolor{green!20}\textbf{.654} & .788 & 1.3 \\
 \midrule
 \multicolumn{5}{c}{\textbf{Backbone Decoders}} \\
 \midrule
-Qwen3-VL & .230 {\scriptsize (\textcolor{teal}{-.001})} & .821 & .745 {\scriptsize (\textcolor{teal}{-.004})} & .158 \\
-InternVL & .209 {\scriptsize (\textcolor{red}{+.006})} & .872 & .599 {\scriptsize (\textcolor{teal}{-.185})} & .371 \\
-LLaVA-1.5 & .241 {\scriptsize (+.000)} & .731 & .663 {\scriptsize (\textcolor{red}{+.008})} & .192 \\
-LLaVA-Mistral & \textbf{.275} {\scriptsize (\textcolor{teal}{-.021})} & \textbf{.654} & .671 {\scriptsize (\textcolor{teal}{-.002})} & .205 \\
-LLaVA-Vicuna & .223 {\scriptsize (\textcolor{red}{+.003})} & .808 & .693 {\scriptsize (\textcolor{red}{+.030})} & .141 \\
+InternVL & \cellcolor{orange!30}.209 & \cellcolor{orange!30}.872 & \textbf{.575} & 26.9 {\scriptsize (\textcolor{cyan!50!black}{-19.2})} \\
+LLaVA-1.5 & \cellcolor{orange!30}.241 & \cellcolor{orange!30}.731 & .663 & 0.0 \\
+LLaVA-Mistral & \cellcolor{green!20}\textbf{.275} & \cellcolor{green!20}\textbf{.654} & .671 & 0.0 \\
+LLaVA-Vicuna & \cellcolor{orange!30}.223 & \cellcolor{orange!30}.808 & .693 & 0.0 \\
+Qwen3-VL & \cellcolor{orange!30}.230 & \cellcolor{orange!30}.821 & .745 & 2.6 {\scriptsize (\textcolor{cyan!50!black}{-2.6})} \\
 \midrule
 \multicolumn{5}{c}{\textbf{Standalone LLMs}} \\
 \midrule
-Qwen2.5 & .440 {\scriptsize (\textcolor{teal}{-.006})} & .436 & .688 {\scriptsize (\textcolor{red}{+.024})} & .224 \\
-Qwen3 & .531 {\scriptsize (\textcolor{red}{+.063})} & .513 & .721 {\scriptsize (\textcolor{teal}{-.035})} & .233 \\
-Qwen3 (think) & .397 {\scriptsize (\textcolor{teal}{-.071})} & \textbf{.684} & .610 {\scriptsize (\textcolor{teal}{-.146})} & .355 \\
-Mistral & .848 {\scriptsize (\textcolor{red}{+.044})} & .170 & .901 {\scriptsize (\textcolor{teal}{-.020})} & .059 \\
-Vicuna & .225 {\scriptsize (\textcolor{teal}{-.017})} & .821 & .788 {\scriptsize (\textcolor{red}{+.001})} & .051 \\
+Qwen2.5 & .440 & .436 & .688 & 14.1 {\scriptsize (\textcolor{red!70!black}{+2.6})} \\
+Qwen3 & .531 & .513 & .721 & 6.4 {\scriptsize (\textcolor{cyan!50!black}{-16.7})} \\
+Qwen3 (think) & .397 & \cellcolor{green!20}\underline{.684} & .610 & 2.6 {\scriptsize (\textcolor{cyan!50!black}{-20.5})} \\
+Vicuna & \cellcolor{orange!30}.225 & \cellcolor{orange!30}.821 & .788 & 0.0 {\scriptsize (\textcolor{cyan!50!black}{-5.1})} \\
 \bottomrule
 \end{tabular}
-\caption{JS divergence and modal-match rate to the human distribution, abstention-filtered and pooled across all three control variants. $\Delta$ in parentheses: difference with vs.\ without instruction (\textcolor{teal}{teal} = instruction reduces JS; \textcolor{red}{red} = increases). Human LOO is the leave-one-out human baseline. \textbf{Bold}: model value within human LOO 95\% bootstrap CI.}
+\caption{$\djs$ divergence and modal-match rate vs.\ the human distribution. Human LOO reports the leave-one-out \emph{mean}; human CI (LOO 95\% bootstrap). Abs = abstention rate (\%) ($\dinst$ = instruction effect; w/\,inst $-$ w/o): \textcolor{cyan!50!black}{teal} = reduced abstention under instruction; \textcolor{red!70!black}{red} = increased. \colorbox{green!20}{Green}: within human CI. \colorbox{orange!30}{Orange}: over-concentrated ($\djs$ below CI; Mode above CI). \textbf{Bold}: closest to LOO mean per column; \underline{underline}: second-closest.}
 \label{tab:hm_grouped_distribution_7b_compact_filtered}
 \end{table}
+%: Y/N $\djs$ [.260, .282]; Y/N Mode [.610, .692]; Count $\djs$ [.493, .554]; Count Mode [.451, .522]

@@ -57,8 +57,13 @@ ROW_ORDER = ["VLM", "Backbone Decoder", "Standalone LLM"]
 ROW_LABELS = {"VLM": "VLM", "Backbone Decoder": "Backbone", "Standalone LLM": "SA-LLM"}
 
 _tab20 = plt.colormaps["tab20"]
-OP_PALETTE = [_tab20(i) for i in range(0, 22, 2)][:11]
-ENT_PALETTE = [_tab20(i) for i in range(1, 19, 2)][:9]
+_tab10 = plt.colormaps["tab10"]
+
+# Use a colorblind-safe base palette (Matplotlib's Tableau colors) and extend it
+# only where needed for the larger operation inventory.
+_CB10 = [_tab10(i) for i in range(10)]
+OP_PALETTE = _CB10 + [_tab20(18)]
+ENT_PALETTE = _CB10[:9]
 
 OP_FULL_NAMES = {
     "act": "Action", "attr": "Attribute", "cause": "Causality",
@@ -370,7 +375,7 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
                 )
                 .reset_index()
             )
-            rho, p = (stats.spearmanr(mean_df["human_value"], mean_df["model_mean"])
+            rho, p = (stats.pearsonr(mean_df["human_value"], mean_df["model_mean"])
                       if len(mean_df) >= 3 else (np.nan, np.nan))
             subplot_data[(row_idx, col_idx)] = {
                 "group_type": group_type, "col_title": col_title,
@@ -444,9 +449,9 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
             if not np.isnan(rho):
                 stars = "***" if p_corr < 0.001 else "**" if p_corr < 0.01 else "*" if p_corr < 0.05 else ""
                 ax.text(
-                    0.03, 0.97, f"$\\rho$={rho:.2f}{stars}",
+                    0.03, 0.97, f"$r$={rho:.2f}{stars}",
                     transform=ax.transAxes,
-                    ha="left", va="top", fontsize=8.0, fontweight="bold",
+                    ha="left", va="top", fontsize=9.0, fontweight="bold",
                     bbox=dict(boxstyle="round,pad=0.22", facecolor="white", alpha=0.82, linewidth=0.0),
                 )
 
@@ -465,15 +470,13 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
     ent_groups, ent_color_map = color_maps["ent"]
 
     # Family handles — one row, just above the plots
-    from matplotlib.patches import Patch
-    human_band_handle = Patch(facecolor="#424242", alpha=0.25, linewidth=0,
-                              label="Human range (LOOCV p5–p95)")
-    fig.legend(
-        handles=family_handles() + [human_band_handle], loc="upper center",
-        bbox_to_anchor=(0.40, 1.02), ncol=8,
-        fontsize=8.0, frameon=False,
+    leg = fig.legend(
+        handles=family_handles(), loc="upper center",
+        bbox_to_anchor=(0.40, 1.02), ncol=7,
+        fontsize=8.0, frameon=True, edgecolor="none", fancybox=False,
         handletextpad=0.25, borderpad=0.32, labelspacing=0.20, columnspacing=0.6,
     )
+    leg.get_frame().set_facecolor("#f4f4f4")
 
     # Operation legend — right side, upper half
     op_leg = fig.legend(
@@ -489,7 +492,7 @@ def plot_metric_combined(metric: str, *, abstfiltered: bool = False):
     # Entity legend — right side, lower half (close to Operation)
     ent_leg = fig.legend(
         handles=qgroup_handles(ent_groups, ent_color_map),
-        loc="upper left", bbox_to_anchor=(0.65, 0.48),
+        loc="upper left", bbox_to_anchor=(0.65, 0.46),
         ncol=1, title="Entity", title_fontsize=8.5,
         fontsize=8.0, frameon=False,
         handletextpad=0.25, borderpad=0.35, labelspacing=0.20,

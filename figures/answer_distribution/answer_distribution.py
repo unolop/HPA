@@ -43,7 +43,7 @@ TRIPLETS = [
     {"slug": "llava_vicuna_7b", "vlm": "LLaVA-Vicuna", "decoder": "LLaVA-Vicuna (LM)", "llm": "Vicuna-7B"},
 ]
 
-YN_COLORS = {"yes": "#6BA292", "no": "#C97A6A", "others": "#B5B5B5"}
+YN_COLORS = {"yes": "#0072B2", "no": "#CC7A00", "others": "#999999"}
 NUM_COLORS = {
     "0": "#DADADA",
     "1": "#BFD7EA",

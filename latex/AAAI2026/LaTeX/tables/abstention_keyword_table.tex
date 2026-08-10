@@ -3,7 +3,7 @@
 \small
 \setlength{\tabcolsep}{4pt}
 
-\caption{Keywords used by the abstention classifier. In the main alignment analyses, only abstentions (hard and soft) are excluded; hedged but contentful answers are retained and counted under the \textit{other} answer category rather than filtered out.}
+\caption{Keyword rules used by the abstention classifier. Main alignment analyses exclude only hard and soft abstentions; uncertain but contentful answers are retained.}
 \label{tab:abstention_keywords}
 \begin{tabular}{@{}p{0.22\columnwidth}p{0.70\columnwidth}@{}}
 \toprule
@@ -13,18 +13,22 @@
 \textit{cannot}, \textit{can't}, \textit{don't see}, \textit{no image},
 \textit{unable}, \textit{not visible}, \textit{no visual},
 \textit{cannot see}, \textit{i'm not able}, \textit{i am not able},
-\textit{blank} \\
+\textit{blank};
+verbose-refusal phrases: \textit{impossible to}, \textit{does not provide},
+\textit{without more}, \textit{without additional}, \textit{not enough},
+\textit{hard to say}, \textit{hard to determine}, \textit{would need},
+\textit{not possible to}, \textit{unclear} \\
 \midrule
 \textbf{Soft} &
-\textit{unknown}, \textit{unanswerable}, \textit{unclear},
-\textit{nowhere}, \textit{n/a}, \textit{na}, \textit{indeterminate},
-\textit{unidentifiable}, \textit{no sign}, \textit{can't tell},
-\textit{cannot tell}, \textit{not clear}, \textit{not visible} \\
-\midrule
-\textbf{Hedged but retained} &
-\textit{maybe}, \textit{possibly}, \textit{perhaps}, \textit{uncertain},
-\textit{unsure}; contentful negatives such as \textit{nothing}, \textit{none},
-or numeric \textit{0} for count questions \\
+\textit{unknown}, \textit{unanswerable}, \textit{nowhere}, \textit{n/a},
+\textit{na}, \textit{indeterminate}, \textit{unidentifiable}, \textit{no sign},
+\textit{can't tell}, \textit{cannot tell}, \textit{not clear},
+\textit{not visible} \\
+% \midrule
+% \textbf{Retained in other} &
+% \textit{maybe}, \textit{possibly}, \textit{perhaps}, \textit{uncertain},
+% \textit{unsure}; contentful negatives such as \textit{nothing}, \textit{none},
+% or numeric \textit{0} for count questions \\
 \bottomrule
 \end{tabular}
 \end{table}
