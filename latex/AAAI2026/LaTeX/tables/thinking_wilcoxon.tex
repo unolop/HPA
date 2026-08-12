@@ -1,19 +1,21 @@
 \begin{table}[ht]
 \centering
 \small
-\setlength{\tabcolsep}{5pt}
-\caption{Paired Wilcoxon signed-rank tests for thinking vs.\ non-thinking HM SBERT in the blind+instruction condition. Scores are abstention-filtered per-question means averaged over human raters and all three control variants.}
+\setlength{\tabcolsep}{4pt}
+\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs. \textit{Left}: Paired Wilcoxon signed-rank tests on HM SBERT ($\sHM$) in the blind+instruction condition (abstention-filtered per-question means, all three control variants). \textit{Right}: Pearson $\pr$ from Table~\ref{tab:scale_alignment_full} (original variant); Wilcoxon not applicable to scalar $\pr$. {\scriptsize ---}\,=\,no think variant available at that size.}
 \label{tab:thinking_wilcoxon}
-\begin{tabular}{lcccc}
+\begin{tabular}{lcccc|ccc}
 \toprule
-\textbf{Size} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} & \textbf{$p$} \\
+ & \multicolumn{4}{c|}{$\sHM$ (Wilcoxon)} & \multicolumn{3}{c}{$\pr$} \\
+\cmidrule(lr){2-5}\cmidrule(l){6-8}
+\textbf{Size} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} & \textbf{$p$} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} \\
 \midrule
-0.6B  & .330 & .330 & $+0.000$ & $.317$ \\
-1.7B  & .449 & .559 & $+0.110$ & $< .001^{***}$ \\
-8B    & .426 & .438 & $+0.012$ & $.049^{*}$ \\
-% 32B excluded
+0.6B  & .330 & .330 & $+0.000$ & $.317$           & $-0.174$ & {\scriptsize ---} & {\scriptsize ---} \\
+1.7B  & .449 & .559 & $+0.110$ & $<.001^{***}$    & $0.650$  & $0.745$           & $+0.095$ \\
+8B    & .426 & .438 & $+0.012$ & $.049^{*}$        & $0.608$  & $0.832$           & $+0.224$ \\
+32B   & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & $0.762$ & $0.620$ & $-0.142$ \\
 \midrule
-Pooled & .382 & .430 & $+0.048$ & $< .001^{***}$ \\
+Pooled & .382 & .430 & $+0.048$ & $<.001^{***}$   & \multicolumn{3}{c}{{\scriptsize ---}} \\
 \bottomrule
 \end{tabular}
 \end{table}

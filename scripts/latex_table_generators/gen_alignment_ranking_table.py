@@ -57,23 +57,23 @@ TABLE_DISPLAY = {
 #   inst_pct  : abstention when instruction says no image present
 #               (positive alignment signal — model correctly declines)
 ABS_COMPUTED: dict[str, tuple[float, float]] = {
-    # VLMs
-    "InternVL-8B":        ( 0.00,  0.00),
-    "LLaVA-1.5-7B":       ( 3.79,  3.54),
-    "LLaVA-Mistral":      ( 3.41,  1.48),
-    "Qwen3-VL-8B":        ( 6.84,  3.58),
-    "LLaVA-Vicuna":       ( 3.45,  0.89),
+    # VLMs  (blind_pct, inst_pct) — computed via soft_abst on responses_model_{blind,inst_blind}.csv
+    "InternVL-8B":        ( 0.00,  2.07),
+    "LLaVA-1.5-7B":       ( 2.95,  3.54),
+    "LLaVA-Mistral":      ( 2.65,  1.77),
+    "Qwen3-VL-8B":        ( 5.33,  3.87),
+    "LLaVA-Vicuna":       ( 2.68,  0.89),
     # Backbone Decoders
-    "InternVL-8B (LM)":   ( 0.00,  0.66),
-    "LLaVA-1.5 (LM)":     ( 0.00,  0.00),
-    "LLaVA-Mistral (LM)": ( 0.38,  2.07),
-    "Qwen3-VL-8B (LM)":   ( 6.49,  2.10),
-    "LLaVA-Vicuna (LM)":  ( 0.38,  0.00),
+    "InternVL-8B (LM)":   (17.11,  9.47),
+    "LLaVA-1.5 (LM)":     ( 0.00,  0.59),
+    "LLaVA-Mistral (LM)": ( 0.30,  2.07),
+    "Qwen3-VL-8B (LM)":   ( 5.33,  3.25),
+    "LLaVA-Vicuna (LM)":  ( 0.30,  0.59),
     # Standalone LLMs
-    "Qwen2.5-7B-Instruct": (10.67,  5.97),
-    "Qwen3-8B":            (14.45,  4.72),
-    "Qwen3-8B (think)":    (14.45,  3.07),
-    "Vicuna-7B":           ( 0.00,  0.30),
+    "Qwen2.5-7B-Instruct": ( 9.14,  6.51),
+    "Qwen3-8B":            (12.72,  4.72),
+    "Qwen3-8B (think)":    (12.72,  4.72),
+    "Vicuna-7B":           ( 1.18,  1.49),
 }
 
 # ── Human reference CIs and medians ──────────────────────────────────────────
@@ -104,8 +104,8 @@ METRIC_CFG = [
     ("count_js",   r"Cnt $\djs$",  True,  True,  ".3f"),
     ("ft_sbert",   r"$\sHM$",      True,  False, ".3f"),
     ("pearson_r",  r"$r$",         True,  False, ".3f"),
-    ("abs_blind",  r"Blind Abs\%", False, True,  ".1f"),
-    ("abs_inst",   r"Inst Abs\%",  False, False, ".1f"),
+    ("abs_blind",  r"Blind Abs\%", False, False, ".1f"),
+    ("abs_inst",   r"Inst Abs\%",  False, True,  ".1f"),
 ]
 
 
@@ -249,12 +249,13 @@ def build_table(metrics: dict, human_refs: dict) -> str:
     lines.append(
         r"\caption{Per-model alignment ranks across all criteria (all questions $\times$ variants pooled; "
         r"abstention classifier applied). "
-        r"Cells show rank (1\,=\,best). "
+        r"Cells show rank (1\,=\,best for all metrics). "
         r"\colorbox{green!20}{Green} = within human LOO 95\,\% CI. "
         r"\colorbox{orange!30}{Orange} = over-concentrated ($<$CI for $\djs$; $>$CI for $\sHM$/$\pr$). "
         r"\colorbox{gray!15}{Gray} = outside CI in the wrong direction; darker = closer to human range. "
-        r"w/o$\downarrow$: unsolicited abstention rate (lower = answers without detecting image absence). "
-        r"w/$\uparrow$: abstention under no-image instruction (higher = correctly declines). "
+        r"Abst: abstention rate. "
+        r"w/o (blind): rank 1\,=\,highest abstention (model spontaneously detects missing image). "
+        r"w/ (inst): rank 1\,=\,lowest abstention (model follows the instruction to answer). "
         r"Avg = mean rank across all six metrics.}"
     )
     lines.append(r"\label{tab:alignment_ranking_7b}")
@@ -272,7 +273,7 @@ def build_table(metrics: dict, human_refs: dict) -> str:
         r"& \multirow{2}{*}{\textbf{Avg}} \\"
     )
     lines.append(r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}")
-    lines.append(r" & Y/N & Count & $\sHM$ & $r$ & w/o$\downarrow$ & w/$\uparrow$ & \\")
+    lines.append(r" & Y/N & Count & $\sHM$ & $r$ & w/o & w/ & \\")
 
     for grp, ms in MODEL_ORDER_7B.items():
         lines.append(r"\midrule")
@@ -289,9 +290,9 @@ def build_table(metrics: dict, human_refs: dict) -> str:
                 bounds = ci.get(key)
 
                 rs = rank_str(rank)
-                if rank == 1.0:
+                if rank <= 1.5:
                     rs = rf"\textbf{{{rs}}}"
-                elif rank == 2.0:
+                elif rank <= 2.5:
                     rs = rf"\underline{{{rs}}}"
 
                 if bounds is not None:

@@ -67,11 +67,13 @@ Text        & 4  & Visible written content such as signs, labels, or logos. & \t
 \label{tab:taxonomy}
 \end{table*}
 
+\iffalse % not referenced from main text
 \subsection{Representative Question Examples}
 \label{app:question_examples}
 
 \input{tables/examples_op_groups}
 \input{tables/examples_ent_groups}
+\fi
 
 \subsection{Human-Study Subset Composition}
 \label{app:sample_composition}
@@ -125,6 +127,7 @@ Use ``it''/``they''/``them''---never ``the object''.
 \end{quote}
 
 
+\iffalse % not referenced from main text
 \subsection{Question Taxonomy Extraction}
 \label{app:sem_extraction}
 
@@ -162,6 +165,7 @@ Return ONLY a JSON object \texttt{\{"results":[...]\}} matching the schema exact
 
 6) If \texttt{w=where} and \texttt{op} not in \{\texttt{text,know}\} $\Rightarrow$ \texttt{op=spat}, \texttt{attr=loc}, \texttt{ans=loc}, \texttt{space=cat}.
 \end{quote}
+\fi % end sem_extraction
 
 \subsection{Question Embedding Coverage}
 \label{app:tsne}
@@ -226,12 +230,14 @@ removal and more stable across variants than model token confidence.}
 \label{fig:human_ecdf}
 \end{figure}
 
+\iffalse % not referenced from main text
 \subsection{Human--Human Agreement Across Metrics}
 \label{app:hh_metric_robustness}
 
 Human--human agreement by operation and entity type across four metrics (SBERT, chrF, ROUGE-1, Jaccard). Surface metrics (chrF, ROUGE-1, Jaccard) show a flat profile across groups, whereas SBERT captures the gradient reported in \S\ref{sec:human_patterns}, confirming that the operation-type structure is a semantic phenomenon not recoverable from lexical overlap alone.
 
 \input{tables/hh_metric_robustness}
+\fi % end hh_metric_robustness
 
 \subsection{Answer Preprocessing Pipeline}
 \label{app:preprocessing}
@@ -311,6 +317,11 @@ Vicuna              & 7B, 13B & \multicolumn{2}{l}{—} & LLaMA fine-tuned on Sh
 
 \input{tables/abstention_keyword_table}
 
+The classifier was applied uniformly to both model and human responses.
+Human participants were instructed to provide an answer in all cases; the resulting human abstention rate is $<\!0.4\%$ (49 of 13,560 responses), confirming near-complete compliance.
+The majority of flagged human responses are standalone \textit{``unknown''} or \textit{``I don't know''} answers concentrated in pronominalized variants (A), where the subject referent has been removed and participants lacked sufficient context to commit to a specific answer.
+A small number of false positives occur where \textit{unknown} appears as an adjective within a substantive answer (e.g., \textit{``a sauce of unknown origin''}); these are retained in practice because the overall human abstention rate is negligible.
+
 % Hard abstention = explicit refusal; soft abstention = non-substantive placeholders (\textit{``nothing''} and uncertain yes/no attempts excluded). Table~\ref{tab:abstention_keywords} lists all keyword categories.
 
 \subsection{Abstention by Question Type}
@@ -344,6 +355,7 @@ Human--model confidence correlation (Pearson $r$ between mean human self-reporte
 \end{figure*}
 \fi % end confidence alignment block
 
+\iffalse % not referenced from main text
 \subsection{Model Token Confidence Distribution}
 \label{app:confidence_ecdf}
 
@@ -355,7 +367,7 @@ ECDF of mean token log-probability per answer for matched 7/8B models (instructi
 \caption{ECDF of mean token log-probability per answer. Rows = model group; columns = individual 7B/8B models (backbone decoder titles omit ``(LM)'').}
 \label{fig:ecdf_confidence_7b}
 \end{figure*}
-
+\fi % end confidence_ecdf
 
 \section{Instruction Effects}
 \label{app:inst}
@@ -387,6 +399,14 @@ ECDF of mean token log-probability per answer for matched 7/8B models (instructi
 \section{Alignment}
 \label{app:model_diagnostics}
 \label{app:scale_variant}
+
+\subsection{Full-Scale Alignment Metrics}
+\label{app:scale_full_table}
+
+Table~\ref{tab:scale_alignment_full} reports $\sHM$, pronominalization degradation ($\Delta$), and per-question Pearson $r$ for all models at all evaluated scales.
+One notable finding not discussed in the main text: at 32B scale, think mode \emph{reduces} difficulty concordance ($r{=}0.620$) relative to no-think ($r{=}0.762$)---the opposite of the 8B pattern---suggesting the reasoning benefit reverses at larger model sizes.
+
+\input{tables/scale_alignment_full_table}
 
 \subsection{Per-Question Difficulty Concordance}
 \label{app:alignment_r}
@@ -448,6 +468,7 @@ ECDF of mean token log-probability per answer for matched 7/8B models (instructi
 % In contrast, both VLM and backbone over-degrade on \textit{Identity} and \textit{Spatial} operations, where the referent anchor is irreplaceable.
 % \input{tables/internvl_anchoring}
 
+\iffalse % not referenced from main text
 \subsection{Anchoring Degradation by Group and Architecture Class}
 \label{app:delta_bar}
 
@@ -467,6 +488,7 @@ Low-frequency operation groups and entity groups are merged into \textit{Other},
 % \caption{Same as Figure~\ref{fig:scatter_sbert} but including \emph{all} question types (yes/no, count, and free-form). Color still encodes $\Delta\sHH = \sHH(\vOrig)-\sHH(\vPron)$. The substantially higher Pearson $\pr$ values ($r{\approx}0.96$--$0.98$) relative to the free-form-only version reflect the artificial inflation of SBERT scores for constrained yes/no and count answers, which cluster at high values and dominate the group means; the free-form-only figure (Figure~\ref{fig:scatter_sbert}) is therefore the more interpretable comparison.}
 % \label{fig:scatter_sbert_allq}
 % \end{figure*}
+\fi % end delta_bar
 
 \subsection{Over-Degradation Gap by Operation Type}
 \label{app:op_degradation_gap}
@@ -488,6 +510,7 @@ Low-frequency operation groups and entity groups are merged into \textit{Other},
 
 % \input{tables/op_overdeg_per_model}
 
+\iffalse % not referenced from main text
 \subsection{InternVL Entity-Level VLM vs.\ Backbone Alignment}
 \label{app:internvl_entity}
 
@@ -497,6 +520,7 @@ Low-frequency operation groups and entity groups are merged into \textit{Other},
 \caption{Per-entity mean $\sHM$ for InternVL-8B (VLM) and InternVL-8B (LM), free-text questions, abstention-filtered (left), and their difference LM$-$VLM (right). Entities are sorted by the difference. Orange-red bars indicate the VLM outperforms the backbone; teal bars indicate the backbone outperforms the VLM. \textit{Vehicle} shows the largest degradation without visual input ($\Delta{=}{-}0.114$), driven by image-contingent spatial questions (\textit{formation, direction, origin}); \textit{Animal} and \textit{Text} improve slightly, where corpus priors alone suffice.}
 \label{fig:internvl_entity}
 \end{figure}
+\fi % end internvl_entity
 
 % \subsection{Per-Model Alignment Statistics}
 % \label{app:per_model_r}
@@ -508,15 +532,9 @@ Low-frequency operation groups and entity groups are merged into \textit{Other},
 
 \input{tables/comprehensive_inst_blind_table}
 
+\iffalse % not referenced from main text
 \section{Accuracy Alignment}
 \label{app:accuracy_robustness}
-
-% The operation-type structure found in SBERT alignment also holds under blind VQA accuracy, confirming it is not an artefact of the semantic metric.
-% Blind VQA accuracy and HM SBERT capture related but dissociable aspects of model behavior.
-% Backbone decoders score higher than their paired full VLMs on both accuracy and SBERT for most families, consistent with the vision encoder suppressing the language prior on uninformative input.
-% However, scaling within a family increases blind accuracy without reliably improving SBERT (e.g., Qwen3-VL 2B$\to$8B: accuracy rises monotonically while backbone SBERT peaks at 4B), indicating that stronger benchmark performance does not imply a more human-like prior distribution.
-% InternVL is the notable exception: its full VLM leads its backbone decoder on SBERT (0.569 vs.\ 0.518, variant A) while remaining comparable on accuracy (both 0.197).
-
 
 \begin{figure*}[t]
 \centering
@@ -531,6 +549,7 @@ Low-frequency operation groups and entity groups are merged into \textit{Other},
 \caption{Matched 7/8B instruction-blind accuracy degradation profiles across control variants (Orig.$\to$Weak.$\to$Pron.). Top row: by operation type; bottom row: by entity type. The operation-type pattern mirrors the SBERT result: \textit{Identity} and \textit{Spatial} questions collapse most under pronominalization, while \textit{Count} and \textit{Action} remain relatively robust. Bold lines show group means; thin lines show individual models.}
 \label{fig:combined_accuracy}
 \end{figure*}
+\fi % end accuracy_robustness
 
 \section{Image-Condition Ablation}
 \label{app:ablation}
