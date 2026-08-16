@@ -1,0 +1,58 @@
+\section{Introduction}
+
+Vision-Language Models (VLMs) couple a vision encoder with a large language
+model (LLM) backbone, jointly trained on massive paired image--text corpora to
+perform cross-modal reasoning tasks \citep{liu2023visual,zhang2023multimodal}.
+Visual question answering (VQA)---answering natural-language questions about
+image content---has become the canonical benchmark for measuring how well these
+models integrate visual features with language understanding, and modern VLMs have achieved near-human accuracy on standard splits \citep{antol2015vqa,goyal2016making}.
+
+A blindspot of this success is that VLMs encode strong question--answer
+co-occurrence statistics during training \citep{mccoy2024embers}: because VQA
+benchmarks are drawn from naturalistic images \citep{torralba2011unbiased},
+text-only baselines exploiting these regularities achieve non-trivial
+accuracy even without any image \citep{jabri2016revisiting,zhang2016yin,agrawal2018dont},
+and benchmark audits confirm that language-only signals remain exploitable
+even in vision-critical evaluations: \citet{chen2024are} shows that a substantial
+fraction of VQA benchmark questions can be answered correctly
+without any image, motivating the MMStar benchmark filtered for visual
+indispensability \citep{chen2024are,lee2024vlind}.
+This is analogous to hypothesis-only baselines in natural language inference
+\citep{poliak2018hypothesis}, where models predict entailment from the
+hypothesis alone---here, VLMs produce answers from question-side priors without grounding them in the image.
+This raises a question beyond benchmark accuracy: when visual grounding is
+unavailable, what priors drive model answers, and are those priors shared
+with human linguistic expectations?
+% Characterizing what models rely on is itself a safety and monitoring concern.
+% Understanding LLM behavior across diverse settings is critical for reliable monitoring, finding that models produce characteristic default outputs shaped by training even under minimal prompting---priors that are persistent yet invisible to benchmark scores \citet{kwon2025whatllms}.
+% Systematic reviews of LLM safety evaluation similarly show that identifying such persistent behavioral biases requires going beyond standard performance metrics \citep{rottger2025safetyprompts}.
+% Understanding the structure of these priors matters beyond the blind setting itself.or
+VLMs integrate visual evidence with learned priors, and when those priors diverge
+from human expectations, they can override rather than defer to visual input---a
+mechanism well-documented as a source of hallucination in grounded settings
+\citep{ji2023survey,rohrbach2018object}.
+Comparing model and human blind responses therefore reveals the prior structure
+that visual input will interact with in grounded settings---reinforcing alignment
+where priors are shared, and contending with it where they diverge.
+
+In this work, to study human and model priors in visual questions, we construct progressively weaker variants of VQA questions that degrade object-denoting lexical
+anchors. We collect blind responses from 40 participants under the same no-image condition as the models, establishing a human reference for linguistically grounded priors and revealing which lexical elements drive model priors and where those priors begin to diverge from human intuition.
+% We use distributional alignment ($\djs$ divergence, modal-match rate) alongside semantic agreement (SBERT) to compare model and human answer distributions at the question-type level.
+% Original contributions paragraph (kept for reference):
+% Our experiment is centered around the response data from 40 participants to answer VQA questions under the same blind condition as the models.
+% Second, we introduce a new taxonomy in VQA benchmark that that categorizes
+% each question along two orthogonal dimensions---reasoning \textit{operation} and \textit{entity }type. The entity groups of questions categorizes the subject that which our progressively removed question variants anchors for tracking which categories of anchors carry prior information and how fragile they are under weakening.
+% Third, we construct progressively weaker question reformulations that strip
+% content-noun anchors from the original text, creating a controlled
+% degradation axis that isolates which lexical elements carry prior information.
+% Fourth, we use distributional alignment analysis ($\djs$ divergence, modal-match rate) to compare model and human answer distributions at the question-type level.
+% We introduce a two-axis taxonomy---reasoning \textit{operation} and \textit{entity type}---where entity type directly links to the degradation variants, tracking which anchor categories carry prior information and how fragile they are under weakening.
+We find that human--model misalignment is structured by reasoning operation:
+for open-ended question types, \textit{Identity} and \textit{Spatial} show the widest gaps---both humans and models lose consistency as anchors are removed, but models fall further.
+\textit{Count} questions reveal a qualitatively distinct pattern: models converge on a
+zero-default that humans do not share, regardless of anchor presence.
+Importantly, backbone decoders---the language component of a VLM with its vision
+encoder bypassed---align more closely with human priors than either full VLMs or
+standalone LLMs, suggesting that vision encoder processing actively disrupts rather than
+preserves the language prior.
+% Extended reasoning traces partially shift model priors toward more human-like responses, but inconsistently across model sizes.

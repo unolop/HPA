@@ -1,7 +1,7 @@
 """
 Compute image-condition ablation table for Qwen3-VL-8B, LLaVA-Mistral-7B, InternVL-8B.
 Metrics: Acc, SBERT, Abstention%, Response-change% vs blank.
-Replaces chrF with response change rate.
+Shows blind and inst_blind side-by-side per image condition.
 """
 from __future__ import annotations
 
@@ -23,36 +23,25 @@ from analysis.utils.load_session import clean_answer
 ANNOT_PATH = ROOT / 'dataset/vqa/v2_mscoco_val2014_annotations.json'
 VARIANT_KEY = 'question'
 
+IMAGE_CONDITIONS = [
+    ('Black', 'vqa_1k_control_blind.jsonl',       'vqa_1k_control_inst_blind.jsonl'),
+    ('Gray',  'vqa_1k_control_blind_gray.jsonl',   'vqa_1k_control_inst_blind_gray.jsonl'),
+    ('Noise', 'vqa_1k_control_blind_noise.jsonl',  'vqa_1k_control_inst_blind_noise.jsonl'),
+    ('White', 'vqa_1k_control_blind_white.jsonl',  'vqa_1k_control_inst_blind_white.jsonl'),
+]
+
 MODELS = [
     {
         'label': 'Qwen3-VL',
         'dir': ROOT / 'evaluation/logits/vlm/pretrained/Qwen3-VL-8B-Instruct',
-        'conditions': [
-            ('Black', 'vqa_1k_control_blind.jsonl'),
-            ('Gray',  'vqa_1k_control_blind_gray.jsonl'),
-            ('Noise', 'vqa_1k_control_blind_noise.jsonl'),
-            ('White', 'vqa_1k_control_blind_white.jsonl'),
-        ],
     },
     {
         'label': 'LLaVA-Mistral',
         'dir': ROOT / 'evaluation/logits/vlm/pretrained/llava-v1.6-mistral-7b-hf',
-        'conditions': [
-            ('Black', 'vqa_1k_control_blind.jsonl'),
-            ('Gray',  'vqa_1k_control_blind_gray.jsonl'),
-            ('Noise', 'vqa_1k_control_blind_noise.jsonl'),
-            ('White', 'vqa_1k_control_blind_white.jsonl'),
-        ],
     },
     {
         'label': 'InternVL-8B',
         'dir': ROOT / 'evaluation/logits/vlm/pretrained/InternVL3_5-8B',
-        'conditions': [
-            ('Black', 'vqa_1k_control_blind.jsonl'),
-            ('Gray',  'vqa_1k_control_blind_gray.jsonl'),
-            ('Noise', 'vqa_1k_control_blind_noise.jsonl'),
-            ('White', 'vqa_1k_control_blind_white.jsonl'),
-        ],
     },
 ]
 
@@ -99,12 +88,21 @@ def compute_sbert_scores(resps: list[str], gts: list[str], model) -> list[float]
     return (r_embs * g_embs).sum(axis=1).tolist()
 
 
-def bold(val: str, is_best: bool) -> str:
-    return rf'\textbf{{{val}}}' if is_best else val
-
-
-def underline(val: str, is_second: bool) -> str:
-    return rf'\underline{{{val}}}' if is_second else val
+def compute_metrics(data: dict[int, dict], qids: list[int], ann: dict, sbert_model,
+                    baseline_resps: dict[int, str] | None) -> tuple:
+    resps, gts, accs, absts, changes = [], [], [], [], []
+    for qid in qids:
+        resp = clean_answer(str(data[qid]['generated_answers'].get(VARIANT_KEY, '')))
+        gt = ann.get(qid, [])
+        resps.append(resp)
+        gts.append(gt[0] if gt else '')
+        accs.append(vqa_accuracy(resp, gt))
+        absts.append(float(is_abstained(resp)))
+        if baseline_resps is not None:
+            changes.append(float(resp != baseline_resps[qid]))
+    scores = compute_sbert_scores(resps, gts, sbert_model)
+    chg = np.mean(changes) * 100 if baseline_resps is not None else None
+    return np.mean(accs), np.mean(scores), np.mean(absts) * 100, chg, {qid: resps[i] for i, qid in enumerate(qids)}
 
 
 def main():
@@ -114,98 +112,111 @@ def main():
     print("Loading SBERT model (all-mpnet-base-v2)...")
     sbert = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
 
-    all_results = []  # list of (model_label, condition, acc, sbert, abst, chg)
+    # all_results[model_label][img_cond] = {blind: (acc,sbt,abst,chg), inst: (acc,sbt,abst,chg)}
+    all_results: dict[str, dict] = {}
 
     for mconf in MODELS:
         label = mconf['label']
         mdir = mconf['dir']
-        conditions = mconf['conditions']
-
         print(f"\n--- {label} ---")
-        cond_data: dict[str, dict[int, dict]] = {}
-        for cname, fname in conditions:
-            path = mdir / fname
-            cond_data[cname] = load_jsonl(path)
-            print(f"  {cname}: {len(cond_data[cname])} questions")
 
-        common = set(cond_data['Black'].keys())
-        for c in cond_data.values():
-            common &= set(c.keys())
+        # Load all files
+        blind_data, inst_data = {}, {}
+        for cname, blind_file, inst_file in IMAGE_CONDITIONS:
+            blind_data[cname] = load_jsonl(mdir / blind_file)
+            inst_data[cname]  = load_jsonl(mdir / inst_file)
+            print(f"  {cname}: blind={len(blind_data[cname])} inst={len(inst_data[cname])}")
+
+        # Common question IDs across all conditions
+        common = set(blind_data['Black'].keys())
+        for d in list(blind_data.values()) + list(inst_data.values()):
+            common &= set(d.keys())
         common &= set(ann.keys())
         qids = sorted(common)
         print(f"  Common: {len(qids)}")
 
-        blank_resps = {
-            qid: clean_answer(str(cond_data['Black'][qid]['generated_answers'].get(VARIANT_KEY, '')))
+        # Black baselines for change rate
+        blind_black_resps = {
+            qid: clean_answer(str(blind_data['Black'][qid]['generated_answers'].get(VARIANT_KEY, '')))
+            for qid in qids
+        }
+        inst_black_resps = {
+            qid: clean_answer(str(inst_data['Black'][qid]['generated_answers'].get(VARIANT_KEY, '')))
             for qid in qids
         }
 
-        for cname, _ in conditions:
-            data = cond_data[cname]
-            resps, gts = [], []
-            accs, absts, changes = [], [], []
+        all_results[label] = {}
+        for cname, _, _ in IMAGE_CONDITIONS:
+            baseline_b = None if cname == 'Black' else blind_black_resps
+            baseline_i = None if cname == 'Black' else inst_black_resps
+            acc_b, sbt_b, abst_b, chg_b, _ = compute_metrics(blind_data[cname], qids, ann, sbert, baseline_b)
+            acc_i, sbt_i, abst_i, chg_i, _ = compute_metrics(inst_data[cname],  qids, ann, sbert, baseline_i)
+            all_results[label][cname] = {
+                'blind': (acc_b, sbt_b, abst_b, chg_b),
+                'inst':  (acc_i, sbt_i, abst_i, chg_i),
+            }
+            print(f"  {cname} blind: Acc={acc_b:.3f} SBERT={sbt_b:.3f} Abst={abst_b:.1f}% Chg={chg_b}")
+            print(f"  {cname} inst:  Acc={acc_i:.3f} SBERT={sbt_i:.3f} Abst={abst_i:.1f}% Chg={chg_i}")
 
-            for qid in qids:
-                resp = clean_answer(str(data[qid]['generated_answers'].get(VARIANT_KEY, '')))
-                gt = ann.get(qid, [])
-                resps.append(resp)
-                gts.append(gt[0] if gt else '')
-                accs.append(vqa_accuracy(resp, gt))
-                absts.append(float(is_abstained(resp)))
-                changes.append(float(resp != blank_resps[qid]))
-
-            scores = compute_sbert_scores(resps, gts, sbert)
-            row = (label, cname, np.mean(accs), np.mean(scores), np.mean(absts)*100, np.mean(changes)*100)
-            all_results.append(row)
-            print(f"  {cname}: Acc={row[2]:.3f} SBERT={row[3]:.3f} Abst={row[4]:.1f}% Chg={row[5]:.1f}%")
-
-    # Print summary table
-    print("\n" + "="*70)
-    print(f"{'Model':<16} {'Cond':<8} {'Acc':>6} {'SBERT':>6} {'Abst%':>6} {'Chg%':>6}")
-    print("-"*50)
-    for r in all_results:
-        print(f"{r[0]:<16} {r[1]:<8} {r[2]:6.3f} {r[3]:6.3f} {r[4]:6.1f} {r[5]:6.1f}")
-
-    # Generate LaTeX table
+    # ── LaTeX table ──────────────────────────────────────────────────────────
     print("\n% ===== UPDATED LATEX TABLE =====")
-    print(r"""\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{llcccc}
-\toprule
-\textbf{Model} & \textbf{Image} & \textbf{Acc.} & \textbf{SBERT} & \textbf{Abst.} & \textbf{Chg.} \\
-\midrule""")
+    lines = []
+    lines.append(r'\begin{table*}[t]')
+    lines.append(r'\centering')
+    lines.append(r'\small')
+    lines.append(r'\setlength{\tabcolsep}{4pt}')
+    lines.append(r'\begin{tabular}{ll cccc cccc}')
+    lines.append(r'\toprule')
+    lines.append(r' & & \multicolumn{4}{c}{\textbf{Blind}} & \multicolumn{4}{c}{\textbf{Blind+Instruction}} \\')
+    lines.append(r'\cmidrule(lr){3-6}\cmidrule(lr){7-10}')
+    lines.append(r'\textbf{Model} & \textbf{Image} & Acc. & SBERT & Abst. & Chg. & Acc. & SBERT & Abst. & Chg. \\')
+    lines.append(r'\midrule')
 
     for mconf in MODELS:
         label = mconf['label']
-        rows = [r for r in all_results if r[0] == label]
-        # find best/second by SBERT
-        sbts = [r[3] for r in rows]
-        best_idx = int(np.argmax(sbts))
-        second_idx = sorted(range(len(sbts)), key=lambda i: sbts[i])[-2]
+        res = all_results[label]
 
-        print(rf'\multirow{{4}}{{*}}{{{label}}}')
-        for i, (_, cname, acc, sbt, abst, chg) in enumerate(rows):
-            acc_s = f'{acc:.3f}'
-            sbt_s = f'{sbt:.3f}'
-            abst_s = f'{abst:.1f}\\%'
-            chg_s = f'---' if cname == 'Black' else f'{chg:.1f}\\%'
-            if i == best_idx:
-                sbt_s = rf'\textbf{{{sbt_s}}}'
-                acc_s = rf'\textbf{{{acc_s}}}'
-            elif i == second_idx:
-                sbt_s = rf'\underline{{{sbt_s}}}'
-                acc_s = rf'\underline{{{acc_s}}}'
-            print(f' & {cname} & {acc_s} & {sbt_s} & {abst_s} & {chg_s} \\\\')
-        print(r'\midrule')
+        # Find best SBERT per condition for bold/underline (across blind and inst separately)
+        blind_sbts = [res[c]['blind'][1] for c, _, _ in IMAGE_CONDITIONS]
+        inst_sbts  = [res[c]['inst'][1]  for c, _, _ in IMAGE_CONDITIONS]
+        b_best = int(np.argmax(blind_sbts))
+        b_2nd  = sorted(range(4), key=lambda i: blind_sbts[i])[-2]
+        i_best = int(np.argmax(inst_sbts))
+        i_2nd  = sorted(range(4), key=lambda i: inst_sbts[i])[-2]
 
-    print(r"""\end{tabular}
-\caption{Image-condition ablation (original question variant). Chg.\ = response
-change rate relative to the black image baseline; ``---'' for the baseline itself.
-\textbf{Bold}: best SBERT/Acc within model; \underline{underline}: second best.}
-\label{tab:image_ablation_main}
-\end{table}""")
+        lines.append(rf'\multirow{{4}}{{*}}{{{label}}}')
+        for idx, (cname, _, _) in enumerate(IMAGE_CONDITIONS):
+            acc_b, sbt_b, abst_b, chg_b = res[cname]['blind']
+            acc_i, sbt_i, abst_i, chg_i = res[cname]['inst']
+
+            def fmt_sbt(v, best, second):
+                s = f'{v:.3f}'
+                if best: return rf'\textbf{{{s}}}'
+                if second: return rf'\underline{{{s}}}'
+                return s
+
+            chg_b_s = '---' if chg_b is None else f'{chg_b:.1f}\\%'
+            chg_i_s = '---' if chg_i is None else f'{chg_i:.1f}\\%'
+
+            sbt_b_s = fmt_sbt(sbt_b, idx == b_best, idx == b_2nd)
+            sbt_i_s = fmt_sbt(sbt_i, idx == i_best, idx == i_2nd)
+
+            lines.append(
+                f' & {cname}'
+                f' & {acc_b:.3f} & {sbt_b_s} & {abst_b:.1f}\\% & {chg_b_s}'
+                f' & {acc_i:.3f} & {sbt_i_s} & {abst_i:.1f}\\% & {chg_i_s} \\\\'
+            )
+        lines.append(r'\midrule')
+
+    lines.append(r'\end{tabular}')
+    lines.append(
+        r'\caption{Image-condition ablation (original question variant) under blind and blind+instruction conditions. '
+        r'Chg.\ = response change rate relative to the black image baseline of the same condition; ``---'' for the baseline itself. '
+        r'\textbf{Bold}: best SBERT within model and condition; \underline{underline}: second best.}'
+    )
+    lines.append(r'\label{tab:image_ablation_main}')
+    lines.append(r'\end{table*}')
+    print('\n'.join(lines))
 
 
 if __name__ == '__main__':

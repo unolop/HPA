@@ -1,0 +1,137 @@
+
+\section{Methodology}
+\label{sec:setup}
+
+\subsection{Dataset and Control Variants}
+\label{sec:dataset}
+
+\paragraph{Question pool, taxonomy, and selection.}
+We begin with 1{,}000 questions randomly sampled from the VQA v2.0 validation split
+\citep{goyal2016making}, spanning \textit{yes/no}, numerical, and open-ended answer types.
+% The original VQA metadata question types are grouped by their surface question form (e.g., \textit{how many}, \textit{what color}), 
+We annotate each question along two orthogonal dimensions: \emph{operation} and \emph{entity} type (full taxonomy in Appendix~\ref{app:taxonomy}). 
+We then diversity-select 113 questions spanning all 11 operation types and 9 entity types (full composition in Table~\ref{tab:q113_sample_composition}). % ; question space coverage in Appendix~\ref{app:tsne} Appendix~\ref{app:sample_composition},  
+For group-level anchoring analyses, operation and entity types with $n \leq 5$ questions are collapsed into an \emph{Other} category (\S\ref{sec:human_patterns}). % (\textit{operations}: World Knowledge, Text Reading, Temporal, Comparison, Causality; \textit{entities}: Text, Vehicle, Place, Product); 
+All groups are retained in semantic alignment analysis (\S\ref{sec:alignment_main}). %  at full granularity 
+% Yes/no questions were intentionally included to capture presence-bias and count-default behaviors, but they are not evenly distributed across operation groups---\textit{Existence} is 100\% yes/no, \textit{Action} 72\%, and \textit{World Knowledge} 50\%---so SBERT-based anchor sensitivity is only interpretable for predominantly open-ended groups (\textit{Identity}, \textit{Spatial}, \textit{Attribute}, \textit{Causality}); yes/no groups are analyzed distributional in \S\ref{sec:dist_alignment}.
+
+\paragraph{Control question variants.}
+\label{sec:control}
+To test how strongly blind answers depend on entity-denoting lexical anchors,
+we generate three progressively abstracted variants of each question,
+indexed by $v\!\in\!\{\vOrig,\vW,\vPron\}$ (referred to as \emph{variants} throughout):
+\textbf{Original} — the unmodified question;
+\textbf{Weaker} — object nouns generalized to a higher-level category (e.g., \emph{dog} $\rightarrow$ \emph{animal});
+\textbf{Pronominalized} — content noun phrases replaced with minimal pronouns (e.g., \emph{dog} $\rightarrow$ \emph{it}) while retaining grammatical structure.
+The full four-step generation schema and transformation rules are in Appendix~\ref{app:ctl}.
+% When an anchor is present the referent is unambiguous and answers tend to converge; removing it widens the plausible referent space, causing answer dispersion.
+% A drop in $\sHH$ similarity across variants therefore reflects this increased dispersion rather than a change in question difficulty per se.
+
+% These variants define a controlled abstraction hierarchy that progressively
+% reduces entity-specific information while preserving the operation required to
+% answer the question. This allows us to test whether human and model responses
+% depend primarily on lexical cues or on broader semantic and commonsense priors.
+% The same ladder also functions as a pronominalization test for anchor
+% dependence: if blind behavior degrades sharply when content-noun anchors are
+% weakened or replaced by pronouns, then the model is relying on surface lexical
+% anchors rather than stable, human-like scene priors.
+
+\subsection{Experimental Setup}
+\label{sec:exp_setup}
+
+\paragraph{Models and Inference.}
+
+We evaluate 20 checkpoints spanning scales of 0.6B--32B across three groups of models: \textbf{VLMs}, \textbf{backbone decoders (LM)}, and \textbf{standalone LLMs (LLM)}. 
+Qwen3 LLM is evaluated both with and without Chain-of-Thought reasoning traces (as \textit{Think} model). 
+SA-LLMs are text-only; several share a family with our VLMs in use. 
+Appendix Table~\ref{tab:model_inventory} lists out all models we used for the analysis.
+
+All evaluations are zero-shot at temperature~0 with a maximum of 512 output tokens, run on NVIDIA TITAN RTX GPU. 
+For VLMs, they require inputs of images so we provide a blank 224$\times$224 image, where backbone decoders run the same weights text-only with image-encoder bypassed.  %  (Qwen3 \citep{yang2025qwen3}, Qwen2.5-Instruct, Vicuna)
+
+We use 7-8B scale models for the main-text alignment tests. Two LLMs -- Phi-3.5-mini (3.8B) and Mistral-7B -- were excluded from our analysis due to extreme verbose answers (Phi: 14--16, Mistral: 28--30 on average). % (Appendix Table~\ref{tab:comprehensive_inst_blind}; Table~\ref{tab:abstention_by_qtype} , Humans: 1.1 words 
+
+%Main-text alignment tests use the matched 7--8B subset; full-scale results are in Appendix~\ref{app:scale_variant}.
+%  (Qwen3-VL \citep{bai2025qwen3vl}, LLaVA \citep{liu2023visual,liu2024llavanext}, InternVL3.5 \citep{wang2025internvl35})
+
+\paragraph{Human Data Collection.}\label{sec:human_data}
+
+40 participants (online university forums, IRB-approved) answered 339 (=113 original questions $\times$ 3 variants) questions across all three control variants. %  under the same blind-awareness instruction as the models 
+Full protocol details and statistics are in Appendix~\ref{app:human_study}. % ---\textit{``No image provided---imagine a typical scene and answer accordingly''}. % ---yielding 13,560 total responses (339 questions $\times$ 40 humans).
+
+\paragraph{Scenario Instruction}
+For both models and humans, we prompt \textit{``No image provided---imagine a typical scene and answer accordingly,''}. 
+% ; we report instruction effect on abstention as $\dinst \equiv \mathrm{Abst}(\text{w/}) - \mathrm{Abst}(\text{w/o})$ 
+Instruction effects on abstention and alignment are reported in Appendix~\ref{app:abstention}. % This generally reduces refusals (full analysis in Appendix~\ref{app:abstention}).  
+% Unless otherwise stated, all reported values use the with-instruction condition.%; the no-instruction baseline appears as $\Delta$ where shown.
+
+\subsection{Metrics and Evaluation Protocols}
+\label{sec:eval_protocols}
+
+\textbf{Preprocessing.} Before scoring, all answers are normalized with the standard VQA pipeline
+\citep{antol2015vqa}, and stripped of generic wrappers so human and model
+responses are compared on the same cleaned answer string.
+We then use regex classifier to detect abstention responses and exclude them for model-human alignment analysis. Details are in Appendix~\ref{app:preprocessing}. %  (see Appendix~\ref{app:abstention_classifier} for exclusion criteria)
+%  before all distributional and semantic alignment metrics  % ; uncertain but still committed answers (e.g., \textit{``maybe''}, \textit{``perhaps''}, \textit{``unsure''}) are retained 
+% We additionally report abstention ($\mathrm{Abst}(\%)$) as a human-alignment signal.
+In our study, participants were instructed to provide an answer in all cases, yielding a near-zero human abstention rate ($<\!0.4\%$). % ; we assume that without such instruction, humans would naturally abstain on most questions when no image is available.
+% We therefore treat blind-condition abstention (w/o) as alignment with this hypothetical uninstructed human behavior---higher is better---and instruction-condition abstention (w/) as alignment with observed human behavior---lower is better, approaching the human near-zero rate.
+We report the abstention rate of models in Appendix~\ref{app:abstention}. % and instruction-effect and~\ref{app:inst}  Table~\ref{tab:alignment_ranking_7b_ticks} and 
+
+\textbf{Distributional alignment.} For categorical (\textit{yes/no} and \textit{count}) questions that are naturally narrow in answer space, we measure alignment using Jensen--Shannon divergence ($\djs$) and a modal-match rate (\textit{Mode}).
+
+Let $\hat{P}_{H}^{s}$ and $\hat{P}_{M}^{s}$ denote the empirical answer distributions of humans and model $M$, pooled over all questions $q\!\in\!\mathcal{Q}_{s}$ and control variants within answer-type subgroup $s\!\in\!S=\{\text{yes/no},\,\text{count}\}$; these estimate the subgroup-averaged priors $\mathbb{E}_{q}[P_{H}(a\mid q)]$ and $\mathbb{E}_{q}[P_{M}(a\mid q)]$ (or $\mathbb{E}_{q}[P_{M}(a\mid q,v_{0})]$ for VLMs).
+Divergence per subgroup is
+\begin{equation}
+  \djs[M,s] = \djs\!\bigl(\hat{P}_{H}^{s} \,\|\, \hat{P}_{M}^{s}\bigr),
+  \label{eq:js}
+\end{equation}
+averaged over answer-type subgroups $s$, where $\mathcal{Q}_s$ is the set of questions of type $s$.
+% This captures group-level biases rather than per-question agreement, for which modal-match rate is the more direct measure.
+
+Mode complements JS by revealing per-question majority alignment. 
+For each (question, variant) pair, Mode checks whether the model's answer matches the human majority answer for that specific question, then averages over all pairs under the same sub-group.
+% Unlike yes-rate---the aggregate proportion of yes answers---Mode is sensitive to \textit{which} questions the model gets right: a model with a matching aggregate yes-rate can still score low on Mode if it answers yes on the questions where humans predominantly say no, and vice versa.
+% Mode thus captures per-question majority alignment rather than aggregate distributional tendency. % : a model can match the aggregate yes-rate while scoring poorly on Mode if it answers yes on the wrong questions ; conversely, a no-biased model can achieve high Mode by correctly identifying which specific questions humans predominantly answer no to. 
+
+As a calibration reference, we report a leave-one-out (LOO) baseline: each participant's pooled distribution within $s$ is compared against the remaining participants', then averaged over participants. The resulting 95\% bootstrap CI serves as a target range---a model within this range matches human distributional behaviour.
+We refer to this interval as the \textit{human range} throughout.
+For $\djs$, a model below the lower bound is closer to the pooled human distribution than our human set are, indicating an majority-biased response pattern rather than stronger human-likeness.% ; above the upper bound indicates weaker alignment to the pooled human distribution.
+
+\textbf{Semantic alignment.} For open-ended questions we compute pairwise Sentence-BERT (\citealt{reimers2019sentence}) cosine similarity using the \texttt{all-mpnet-base-v2} encoder \citep{song2020mpnet}, denoted as SBERT ($S$).
+
+Let $\phi(\cdot)$ denote the encoder and $H$ the set of participants.
+Here, $q$ indexes a single question instance, i.e., one original question under one specific control variant.
+For model $m$ and question instance $q$:
+\begin{equation}
+  \sHM[m,q] = \frac{1}{|H|}\sum_{h\in H}\cos\!\bigl(\phi(\hat{a}_{m}(q)),\,\phi(a_{h}(q))\bigr),
+  \label{eq:sbert}
+\end{equation}
+where $\hat{a}_{m}(q)$ is the model's answer and $a_{h}(q)$ is participant $h$'s answer.
+The human--human (HH) analogue $\sHH[q]$ is the mean pairwise cosine similarity across all participant pairs for the same instance, serving as a per-question \emph{difficulty} measure (low $\sHH$ = high human disagreement).
+
+\textbf{Anchoring sensitivity.} We use two complementary views of anchor dependence. First, $\Delta S \equiv S_{\vOrig} - S_{\vPron}$ measures the drop induced by pronominalization per operation or entity subgroup. Larger values indicate that responses are more tightly bound to the specific referent. % The \emph{over-degradation gap} $\Delta S_m - \Delta S_{\text{human}}$ then measures how much more (or less) a model degrades relative to humans on the same subgroup. % ; positive values indicate the model loses alignment faster than human agreement drops when the visual anchor is removed. % ( \S\ref{sec:alignment_main}; Appendix Tables~\ref{tab:op_degradation_per_model}--\ref{tab:ent_degradation_per_model};
+
+% \textbf{Difficulty tracking.}  
+Secondly, for each model $m$, we also compute Spearman $\rho$ between its per-question scores $\sHM[m,q]$ and the pooled human reference $\sHH[q]$ across all question instances. %  ($N{=}183$ 
+% We use Spearman $\rho$ rather than Pearson $r$ because the relationship between $\sHM$ and $\sHH$ is monotone but not necessarily linear, and $\rho$ is robust to skewed score distributions.
+A strong correlation indicates that the model's difficulty profile co-moves with the human semantic scoring on the questions. % ; a low $\pr$ indicates the model fails on structurally different questions than humans do.
+% The human LOO reference is the median $\rho$ obtained by correlating each participant's leave-one-out scores against the remaining participants' pooled reference.
+
+\textbf{Auxiliary robustness metrics.} 
+Embedding-based agreement can be sensitive to answer length and response format; we therefore report a truncated robustness analysis in Appendix Figure~\ref{fig:sbert_truncation_scatter}. % the appendix (Appendix~\ref{app:model_diagnostics},  
+We also report blind VQA accuracy and lexical-overlap metrics such as chrF and ROUGE-1 as supplementary diagnostics in Appendix Table~\ref{tab:comprehensive_inst_blind}.
+% We therefore report lexical-overlap robustness checks (chrF, ROUGE-1) in .
+
+\begin{figure}[!tb]
+\centering
+\includegraphics[width=\columnwidth]{confidence/conf_rt_sbert_triangle}
+\caption{Per-question human confidence and response time (RT) vs.\ human--human SBERT ($\sHH$), shown for each control variant.
+Inset: Pearson $r$ between $\sHH$ and each measure, computed separately per variant.}
+\label{fig:conf_rt_sbert_triangle}
+\end{figure}
+% \textbf{Confidence alignment.} We also analyze token-level confidence as an
+% auxiliary diagnostic of whether models express uncertainty in a human-like way.
+% These analyses are not a primary selection metric in the main paper, but they
+% provide a complementary view of calibration and question-level difficulty
+% tracking (Appendix~\ref{app:uncertainty_appendix}).

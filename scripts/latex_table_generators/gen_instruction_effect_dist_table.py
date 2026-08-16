@@ -181,9 +181,9 @@ def render(df: pd.DataFrame) -> str:
             return "--"
         if not pd.isna(d_v):
             if d_v < -0.0005:
-                d_str = rf"\textcolor{{teal}}{{{d_str}\,$\downarrow$}}"
+                d_str = rf"\textcolor[HTML]{{0072B2}}{{{d_str}\,$\downarrow$}}"
             elif d_v > 0.0005:
-                d_str = rf"\textcolor{{red}}{{{d_str}\,$\uparrow$}}"
+                d_str = rf"\textcolor[HTML]{{CC7A00}}{{{d_str}\,$\uparrow$}}"
         return f"{js_str} ({d_str})"
 
     lines = [
@@ -193,8 +193,8 @@ def render(df: pd.DataFrame) -> str:
         r"\caption{JS divergence to human answer distribution on original questions (variant~C). "
         r"$N_q$ = number of non-abstained questions used. "
         r"Values show JS w/o instruction; $\Delta$ = JS(w/ inst) $-$ JS(w/o inst) in parentheses. "
-        r"\textcolor{teal}{Teal\,$\downarrow$} = instruction reduces JS (improves alignment), "
-        r"\textcolor{red}{red\,$\uparrow$} = worsens. "
+        r"\textcolor[HTML]{0072B2}{Blue\,$\downarrow$} = instruction reduces JS (improves alignment), "
+        r"\textcolor[HTML]{CC7A00}{orange\,$\uparrow$} = worsens. "
         r"Bold = best (lowest) JS; underline = second-best per column.}",
         r"\label{tab:js_instruction_effect}",
         r"\resizebox{\columnwidth}{!}{%",

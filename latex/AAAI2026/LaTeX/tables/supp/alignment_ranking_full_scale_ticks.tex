@@ -1,0 +1,72 @@
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.96}
+\caption{Full-scale alignment ranking across all evaluated model sizes. All questions $\times$ variants pooled; abstention classifier applied. $\djs$ columns show actual divergence values (lower = closer to human). \colorbox[HTML]{D9EAF3}{Blue}\,$\checkmark$ = within human LOO-CV 95\,\% CI; \colorbox[HTML]{F7EBD9}{orange}\,$\triangledown$ = over-aligned (below CI lower bound for $\djs$, above upper bound for $\sHM$/$\rho$). $\sHM$ and $\rho$ show actual values; $\rho$ = Spearman correlation between per-question model and human difficulty. Abst(\%) = spontaneous (w/o, $\uparrow$) and instructed (w/, $\downarrow$) abstention rates (gray = better). Human LOO-CV row: median [5th, 95th percentile] across leave-one-out human raters.}
+\label{tab:alignment_ranking_full_scale_ticks}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.2cm}cccccccccc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Sz}} & \multicolumn{2}{c}{$\djs$} & \multicolumn{1}{c}{Other ($N{\leq}183$)} & \multicolumn{2}{c}{$\rho$} & \multicolumn{2}{c}{Abst\,(\%), Study} & \multicolumn{2}{c}{Abst\,(\%), Full 1k} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}\cmidrule(lr){10-11}
+ & & Y/N & Cnt & $\sHM$ & $N{\leq}183$ & $N{\leq}339$ & w/o $\uparrow$ & w/ $\downarrow$ & w/o $\uparrow$ & w/ $\downarrow$ \\
+\midrule
+\textit{Human LOO-CV} & --- & .271\,{\scriptsize[.260,.282]} & .524\,{\scriptsize[.493,.554]} & .427\,{\scriptsize[.389,.474]} & .780\,{\scriptsize[.655,.843]} & .899\,{\scriptsize[.827,.932]} & --- & --- & --- & --- \\
+\midrule
+\multicolumn{11}{c}{\textit{VLMs}}\\ 
+\midrule
+InternVL3.5 & 1B & .315 & .815 & \cellcolor[HTML]{D9EAF3}.420\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}\underline{.795}\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.905\,$\checkmark$ & 0.0 & \cellcolor{gray!20}0.6 & 0.1 & \cellcolor{gray!20}0.3 \\
+ & 2B & .375 & .758 & \cellcolor[HTML]{D9EAF3}.411\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}\textbf{.765}\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.890\,$\checkmark$ & 0.0 & \cellcolor{gray!20}0.0 & 0.1 & \cellcolor{gray!20}0.7 \\
+ & 8B & \cellcolor[HTML]{F7EBD9}.230\,$\triangledown$ & .586 & \cellcolor[HTML]{D9EAF3}.449\,$\checkmark$ & \cellcolor[HTML]{F7EBD9}.856\,$\triangledown$ & \cellcolor[HTML]{F7EBD9}.936\,$\triangledown$ & 0.0 & \cellcolor{gray!20}2.1 & 0.1 & \cellcolor{gray!20}1.1 \\
+\addlinespace[1pt]
+Qwen3-VL & 2B & .403 & .757 & \cellcolor[HTML]{D9EAF3}.433\,$\checkmark$ & \cellcolor[HTML]{F7EBD9}.844\,$\triangledown$ & \cellcolor[HTML]{D9EAF3}.887\,$\checkmark$ & 3.3 & \cellcolor{gray!20}3.6 & 2.1 & \cellcolor{gray!20}2.9 \\
+ & 4B & .322 & .772 & \cellcolor[HTML]{D9EAF3}.437\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.812\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.886\,$\checkmark$ & 4.7 & \cellcolor{gray!20}3.8 & 2.8 & \cellcolor{gray!20}2.1 \\
+ & 8B & \cellcolor[HTML]{D9EAF3}.277\,$\checkmark$ & .788 & \cellcolor[HTML]{D9EAF3}.424\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.798\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.901\,$\checkmark$ & 5.3 & \cellcolor{gray!20}3.9 & 4.7 & \cellcolor{gray!20}3.3 \\
+ & 32B & .348 & .637 & .374 & \cellcolor[HTML]{D9EAF3}.731\,$\checkmark$ & .779 & \cellcolor{gray!20}89.3 & \cellcolor{gray!15}19.8 & \cellcolor{gray!10}43.0 & \cellcolor{gray!15}18.0 \\
+\addlinespace[1pt]
+LLaVA-1.5 & 7B & .421 & .824 & .356 & .467 & \cellcolor[HTML]{D9EAF3}.851\,$\checkmark$ & 2.9 & \cellcolor{gray!20}3.5 & 2.1 & \cellcolor{gray!20}2.3 \\
+\addlinespace[1pt]
+LLaVA-Mistral & 7B & .357 & .787 & \cellcolor[HTML]{D9EAF3}.399\,$\checkmark$ & .643 & \cellcolor[HTML]{D9EAF3}.871\,$\checkmark$ & 2.7 & \cellcolor{gray!20}1.8 & 2.6 & \cellcolor{gray!20}1.9 \\
+\addlinespace[1pt]
+LLaVA-Vicuna & 7B & .385 & .837 & \cellcolor[HTML]{D9EAF3}.390\,$\checkmark$ & .613 & \cellcolor[HTML]{D9EAF3}.874\,$\checkmark$ & 2.7 & \cellcolor{gray!20}0.9 & 2.3 & \cellcolor{gray!20}1.4 \\
+ & 13B & .314 & .761 & \cellcolor[HTML]{D9EAF3}.401\,$\checkmark$ & .623 & \cellcolor[HTML]{D9EAF3}.875\,$\checkmark$ & 2.4 & \cellcolor{gray!20}0.6 & 1.2 & \cellcolor{gray!20}0.4 \\
+\addlinespace[1pt]
+\midrule
+\multicolumn{11}{c}{\textit{Backbone Decoders}}\\ 
+\midrule
+InternVL3.5 & 1B & \cellcolor[HTML]{F7EBD9}.206\,$\triangledown$ & .666 & \cellcolor[HTML]{D9EAF3}.432\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.835\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.911\,$\checkmark$ & 0.0 & \cellcolor{gray!20}0.3 & 0.2 & \cellcolor{gray!20}0.4 \\
+ & 2B & \cellcolor[HTML]{F7EBD9}.224\,$\triangledown$ & \cellcolor[HTML]{D9EAF3}\textbf{.521}\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.395\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.706\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}\underline{.900}\,$\checkmark$ & 3.3 & \cellcolor{gray!20}5.6 & 3.0 & \cellcolor{gray!20}5.6 \\
+ & 8B & \cellcolor[HTML]{F7EBD9}.209\,$\triangledown$ & \underline{.575} & \cellcolor[HTML]{D9EAF3}.432\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.813\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}\textbf{.900}\,$\checkmark$ & \cellcolor{gray!5}17.1 & \cellcolor{gray!20}9.5 & \cellcolor{gray!5}10.4 & \cellcolor{gray!20}5.8 \\
+\addlinespace[1pt]
+Qwen3-VL & 2B & \cellcolor[HTML]{F7EBD9}.226\,$\triangledown$ & .627 & \cellcolor[HTML]{D9EAF3}.431\,$\checkmark$ & \cellcolor[HTML]{F7EBD9}.850\,$\triangledown$ & \cellcolor[HTML]{D9EAF3}.919\,$\checkmark$ & 1.5 & \cellcolor{gray!20}2.4 & 0.8 & \cellcolor{gray!20}1.2 \\
+ & 4B & \cellcolor[HTML]{F7EBD9}.213\,$\triangledown$ & .639 & \cellcolor[HTML]{D9EAF3}.443\,$\checkmark$ & \cellcolor[HTML]{F7EBD9}.843\,$\triangledown$ & \cellcolor[HTML]{D9EAF3}.921\,$\checkmark$ & 2.1 & \cellcolor{gray!20}2.7 & 0.7 & \cellcolor{gray!20}1.2 \\
+ & 8B & \cellcolor[HTML]{F7EBD9}.230\,$\triangledown$ & .745 & \cellcolor[HTML]{D9EAF3}.446\,$\checkmark$ & \cellcolor[HTML]{F7EBD9}.853\,$\triangledown$ & \cellcolor[HTML]{D9EAF3}.894\,$\checkmark$ & 5.3 & \cellcolor{gray!20}3.3 & 3.0 & \cellcolor{gray!20}1.7 \\
+ & 32B & \cellcolor[HTML]{F7EBD9}.241\,$\triangledown$ & .699 & \cellcolor[HTML]{D9EAF3}.444\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.840\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.913\,$\checkmark$ & 5.9 & \cellcolor{gray!20}1.5 & 3.3 & \cellcolor{gray!20}0.9 \\
+\addlinespace[1pt]
+LLaVA-1.5 & 7B & \cellcolor[HTML]{F7EBD9}.241\,$\triangledown$ & .663 & \cellcolor[HTML]{D9EAF3}.430\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.815\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.915\,$\checkmark$ & 0.0 & \cellcolor{gray!20}0.6 & 0.8 & \cellcolor{gray!20}0.4 \\
+\addlinespace[1pt]
+LLaVA-Mistral & 7B & \cellcolor[HTML]{D9EAF3}\underline{.275}\,$\checkmark$ & .671 & \cellcolor[HTML]{D9EAF3}.445\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.833\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.922\,$\checkmark$ & 0.3 & \cellcolor{gray!20}2.1 & 1.1 & \cellcolor{gray!20}1.6 \\
+\addlinespace[1pt]
+LLaVA-Vicuna & 7B & \cellcolor[HTML]{F7EBD9}.223\,$\triangledown$ & .693 & \cellcolor[HTML]{D9EAF3}.439\,$\checkmark$ & \cellcolor[HTML]{F7EBD9}.845\,$\triangledown$ & \cellcolor[HTML]{D9EAF3}.916\,$\checkmark$ & 0.3 & \cellcolor{gray!20}0.6 & 1.1 & \cellcolor{gray!20}0.6 \\
+\addlinespace[1pt]
+\midrule
+\multicolumn{11}{c}{\textit{SA-LLMs}}\\ 
+\midrule
+Qwen3 & 0.6B & .967 & .848 & .377 & \cellcolor[HTML]{D9EAF3}.679\,$\checkmark$ & -0.310 & 0.0 & \cellcolor{gray!20}0.0 & 0.0 & \cellcolor{gray!20}0.0 \\
+ & 1.7B & .425 & .656 & .324 & .585 & .523 & \cellcolor{gray!5}15.7 & \cellcolor{gray!20}9.1 & \cellcolor{gray!5}18.0 & \cellcolor{gray!20}8.4 \\
+ & 4B & \cellcolor[HTML]{D9EAF3}\textbf{.268}\,$\checkmark$ & .755 & \cellcolor[HTML]{D9EAF3}.415\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.740\,$\checkmark$ & .702 & 1.5 & \cellcolor{gray!20}0.0 & 0.6 & \cellcolor{gray!20}0.1 \\
+ & 8B & .531 & .721 & \cellcolor[HTML]{D9EAF3}\underline{.425}\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.836\,$\checkmark$ & .525 & \cellcolor{gray!5}12.4 & \cellcolor{gray!20}4.7 & \cellcolor{gray!5}14.7 & \cellcolor{gray!20}4.8 \\
+ & 32B & .334 & .730 & \cellcolor[HTML]{D9EAF3}.406\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.797\,$\checkmark$ & .688 & 5.3 & \cellcolor{gray!20}6.5 & 3.8 & \cellcolor{gray!20}3.1 \\
+Qwen2.5 & 7B & .440 & .688 & \cellcolor[HTML]{D9EAF3}.416\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.815\,$\checkmark$ & .685 & 9.1 & \cellcolor{gray!20}6.5 & 7.0 & \cellcolor{gray!20}4.1 \\
+Vicuna & 7B & \cellcolor[HTML]{F7EBD9}.225\,$\triangledown$ & .788 & .279 & .466 & .613 & 1.2 & \cellcolor{gray!20}1.5 & 1.1 & \cellcolor{gray!20}0.9 \\
+ & 13B & \cellcolor[HTML]{F7EBD9}.258\,$\triangledown$ & .653 & \cellcolor[HTML]{D9EAF3}.398\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.802\,$\checkmark$ & .379 & 3.0 & \cellcolor{gray!20}2.4 & 5.7 & \cellcolor{gray!20}5.8 \\
+Mistral & 7B & .552 & .706 & .258 & .446 & -0.118 & \cellcolor{gray!15}78.2 & 77.3 & \cellcolor{gray!20}77.0 & 73.0 \\
+\midrule
+\multicolumn{11}{c}{\textit{Thinking Models}}\\ 
+\midrule
+Qwen3 & 1.7B & .586 & .784 & \cellcolor[HTML]{D9EAF3}.430\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.810\,$\checkmark$ & .726 & \cellcolor{gray!5}15.7 & \cellcolor{gray!10}46.2 & \cellcolor{gray!5}18.0 & \cellcolor{gray!5}46.5 \\
+ & 8B & .397 & .610 & \cellcolor[HTML]{D9EAF3}\textbf{.427}\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.796\,$\checkmark$ & .663 & \cellcolor{gray!5}12.4 & \cellcolor{gray!20}4.7 & \cellcolor{gray!5}14.7 & \cellcolor{gray!20}5.3 \\
+ & 32B & .616 & .872 & \cellcolor[HTML]{D9EAF3}.436\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.733\,$\checkmark$ & .680 & 8.3 & \cellcolor{gray!10}46.7 & 4.6 & \cellcolor{gray!10}38.2 \\
+\bottomrule
+\end{tabular}
+\end{table*}

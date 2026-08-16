@@ -21,7 +21,7 @@ from utils.model_registry import default_all_models, MODEL_TYPE
 
 OUT_DIR   = Path(__file__).parent / "ecdf_confidence"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-LATEX_OUT = ROOT / "latex" / "AAAI2026" / "LaTeX" / "figures" / "confidence"
+LATEX_OUT = ROOT / "latex" / "AAAI2026" / "LaTeX" / "figures_supp" / "confidence"
 LATEX_OUT.mkdir(parents=True, exist_ok=True)
 
 HUMAN_DIR        = ROOT / "evaluation" / "humans" / "by_participant"

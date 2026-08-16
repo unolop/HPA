@@ -23,8 +23,9 @@ sys.path.insert(0, str(ROOT / "scripts/latex_table_generators"))
 from figures.alignment_profile.alignment_profile_barplot_7b import (
     load_metrics, MODEL_ORDER_7B,
 )
+from gen_focus_compact_tables import _compute_sbert_pearsonr_7b
 
-OUT = ROOT / "latex/AAAI2026/LaTeX/tables/alignment_ranking_7b.tex"
+OUT = ROOT / "latex/AAAI2026/LaTeX/tables/paper/alignment_ranking_7b.tex"
 
 GROUP_LABELS = {
     "VLM":              "VLMs",
@@ -79,20 +80,22 @@ ABS_COMPUTED: dict[str, tuple[float, float]] = {
 # ── Human reference CIs and medians ──────────────────────────────────────────
 # CI bounds from paper tables/captions (static); medians and r/SBERT CIs from load_metrics
 STATIC_CI: dict[str, tuple[float, float] | None] = {
-    "yesno_js":  (0.260, 0.282),
-    "count_js":  (0.493, 0.554),
-    "ft_sbert":  None,   # filled from human_refs at runtime
-    "pearson_r": None,   # filled from human_refs at runtime
-    "abs_blind": None,
-    "abs_inst":  None,
+    "yesno_js":   (0.260, 0.282),
+    "count_js":   (0.493, 0.554),
+    "ft_sbert":   None,   # filled from human_refs at runtime
+    "pearson_r":  None,   # filled from human_refs at runtime
+    "spearman_r": None,   # no CI coloring — ranked by raw value
+    "abs_blind":  None,
+    "abs_inst":   None,
 }
 STATIC_MED: dict[str, float | None] = {
-    "yesno_js":  0.271,   # LOO median from hm_grouped_distribution table
-    "count_js":  0.524,
-    "ft_sbert":  None,
-    "pearson_r": None,
-    "abs_blind": None,
-    "abs_inst":  None,
+    "yesno_js":   0.271,   # LOO median from hm_grouped_distribution table
+    "count_js":   0.524,
+    "ft_sbert":   None,
+    "pearson_r":  None,
+    "spearman_r": None,
+    "abs_blind":  None,
+    "abs_inst":   None,
 }
 
 # ── Metric configuration: (key, header, rank_by_median, lower_is_better, format)
@@ -103,7 +106,7 @@ METRIC_CFG = [
     ("yesno_js",   r"Y/N $\djs$",  True,  True,  ".3f"),
     ("count_js",   r"Cnt $\djs$",  True,  True,  ".3f"),
     ("ft_sbert",   r"$\sHM$",      True,  False, ".3f"),
-    ("pearson_r",  r"$r$",         True,  False, ".3f"),
+    ("spearman_r", r"$\rho$",      False, False, ".3f"),
     ("abs_blind",  r"Blind Abs\%", False, False, ".1f"),
     ("abs_inst",   r"Inst Abs\%",  False, True,  ".1f"),
 ]
@@ -213,6 +216,12 @@ def build_table(metrics: dict, human_refs: dict) -> str:
         metrics[m]["abs_blind"] = blind
         metrics[m]["abs_inst"]  = inst
 
+    # Inject Spearman ρ from sbert/pearsonr cache
+    sbert_cache = _compute_sbert_pearsonr_7b()
+    loo_rho = sbert_cache.get("Human LOO", {})
+    for m in all_models:
+        metrics[m]["spearman_r"] = sbert_cache.get(m, {}).get("spearman_r", np.nan)
+
     # Fill dynamic CI/median from loaded human_refs
     ci = dict(STATIC_CI)
     med = dict(STATIC_MED)
@@ -222,6 +231,7 @@ def build_table(metrics: dict, human_refs: dict) -> str:
     if "r_p5" in human_refs:
         ci["pearson_r"]  = (human_refs["r_p5"], human_refs["r_p95"])
         med["pearson_r"] = human_refs["r_median"]
+    # spearman_r: no CI coloring, rank by raw value only
 
     # Per-metric global ranks
     all_ranks: dict[str, dict[str, float]] = {}
@@ -251,11 +261,12 @@ def build_table(metrics: dict, human_refs: dict) -> str:
         r"abstention classifier applied). "
         r"Cells show rank (1\,=\,best for all metrics). "
         r"\colorbox{green!20}{Green} = within human LOO 95\,\% CI. "
-        r"\colorbox{orange!30}{Orange} = over-concentrated ($<$CI for $\djs$; $>$CI for $\sHM$/$\pr$). "
+        r"\colorbox{orange!30}{Orange} = over-concentrated ($<$CI for $\djs$; $>$CI for $\sHM$/$\rho$). "
         r"\colorbox{gray!15}{Gray} = outside CI in the wrong direction; darker = closer to human range. "
         r"Abst: abstention rate. "
         r"w/o (blind): rank 1\,=\,highest abstention (model spontaneously detects missing image). "
         r"w/ (inst): rank 1\,=\,lowest abstention (model follows the instruction to answer). "
+        r"$\rho$: Spearman correlation between per-question model and human difficulty (raw value; higher\,=\,better). "
         r"Avg = mean rank across all six metrics.}"
     )
     lines.append(r"\label{tab:alignment_ranking_7b}")
@@ -268,12 +279,12 @@ def build_table(metrics: dict, human_refs: dict) -> str:
     lines.append(
         r"\multirow{2}{*}{\textbf{Model}} "
         r"& \multicolumn{2}{c}{$\djs$} "
-        r"& \multicolumn{2}{c}{SBERT} "
+        r"& \multicolumn{2}{c}{Free text} "
         r"& \multicolumn{2}{c}{Abst(\%)} "
         r"& \multirow{2}{*}{\textbf{Avg}} \\"
     )
     lines.append(r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}")
-    lines.append(r" & Y/N & Count & $\sHM$ & $r$ & w/o & w/ & \\")
+    lines.append(r" & Y/N & Count & $\sHM$ & $\rho$ & w/o & w/ & \\")
 
     for grp, ms in MODEL_ORDER_7B.items():
         lines.append(r"\midrule")
@@ -288,6 +299,15 @@ def build_table(metrics: dict, human_refs: dict) -> str:
                 val  = metrics[m].get(key, np.nan)
                 rank = all_ranks[key].get(m, np.nan)
                 bounds = ci.get(key)
+
+                # spearman_r: show raw value, rank-based gray intensity
+                if key == "spearman_r":
+                    vs = format(val, spec).lstrip("0") or "0" if np.isfinite(val) else "---"
+                    n_finite = sum(1 for mm in all_models
+                                   if np.isfinite(metrics[mm].get(key, np.nan)))
+                    intens = rank_gray(rank, n_finite)
+                    cells.append(rf"\cellcolor{{gray!{intens}}}{vs}" if intens > 0 else vs)
+                    continue
 
                 rs = rank_str(rank)
                 if rank <= 1.5:

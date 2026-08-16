@@ -1,0 +1,67 @@
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.96}
+\caption{Full-scale alignment ranking table covering all evaluated model sizes (VLMs, Backbone Decoders, and SA-LLMs). All questions $\times$ variants pooled; abstention classifier applied. Cells show rank (1\,=\,best for all metrics). \colorbox{green!20}{Green} = within human LOO 95\,\% CI. \colorbox{orange!30}{Orange} = over-concentrated ($<$CI for $\djs$; $>$CI for $\sHM$). \colorbox{gray!15}{Gray} = outside CI in the wrong direction; darker = closer. Blind Abs\%: abstention without instruction (higher = model spontaneously detects missing image). Inst Abs\%: abstention with instruction (lower = model follows the instruction to answer). Avg = mean rank across all five metrics.}
+\label{tab:alignment_ranking_full_scale}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.2cm}ccccccc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Sz}} & \multicolumn{2}{c}{$\djs$} & \multirow{2}{*}{$\sHM$} & \multicolumn{2}{c}{Abst(\%)} & \multirow{2}{*}{\textbf{Avg}} \\
+\cmidrule(lr){3-4}\cmidrule(lr){6-7}
+ & & Y/N & Count & & w/o & w/ & \\
+\midrule
+\multicolumn{8}{c}{\textit{VLMs}}\\ 
+\midrule
+\multirow{3}{*}{InternVL3.5} & 1B & \cellcolor{gray!20}10 & \cellcolor{gray!5}29 & \cellcolor{green!20}10 & 30.5 & \cellcolor{gray!15}7.5 & \cellcolor{gray!10}17.4 \\
+ & 2B & \cellcolor{gray!15}22 & \cellcolor{gray!5}22 & \cellcolor{green!20}17 & 30.5 & \cellcolor{gray!20}\underline{2} & \cellcolor{gray!5}18.7 \\
+ & 8B & \cellcolor{orange!30}8 & \cellcolor{gray!20}3 & \cellcolor{green!20}22 & 30.5 & \cellcolor{gray!10}13.5 & \cellcolor{gray!10}15.4 \\
+\addlinespace[1pt]
+\multirow{4}{*}{Qwen3-VL} & 2B & \cellcolor{gray!15}25 & \cellcolor{gray!5}21 & \cellcolor{green!20}9 & \cellcolor{gray!10}15 & \cellcolor{gray!10}20 & \cellcolor{gray!5}18.0 \\
+ & 4B & \cellcolor{gray!20}15 & \cellcolor{gray!5}24 & \cellcolor{green!20}12 & \cellcolor{gray!10}14 & \cellcolor{gray!10}21 & \cellcolor{gray!10}17.2 \\
+ & 8B & \cellcolor{green!20}3 & \cellcolor{gray!5}27 & \cellcolor{green!20}5 & \cellcolor{gray!15}11.5 & \cellcolor{gray!5}22 & \cellcolor{gray!15}13.7 \\
+ & 32B & \cellcolor{gray!20}20 & \cellcolor{gray!15}6 & \cellcolor{gray!20}29 & \cellcolor{gray!20}\textbf{1} & 30 & \cellcolor{gray!10}17.2 \\
+\addlinespace[1pt]
+\multirow{1}{*}{LLaVA-1.5} & 7B & \cellcolor{gray!15}26 & \cellcolor{gray!5}30 & \cellcolor{gray!15}30 & \cellcolor{gray!10}18 & \cellcolor{gray!10}19 & 24.6 \\
+\addlinespace[1pt]
+\multirow{1}{*}{LLaVA-Mistral} & 7B & \cellcolor{gray!20}21 & \cellcolor{gray!5}26 & \cellcolor{green!20}24 & \cellcolor{gray!10}20 & \cellcolor{gray!15}12 & \cellcolor{gray!5}20.6 \\
+\addlinespace[1pt]
+\multirow{2}{*}{LLaVA-Vicuna} & 7B & \cellcolor{gray!15}23 & 31 & \cellcolor{green!20}27 & \cellcolor{gray!10}19 & \cellcolor{gray!15}9 & 21.8 \\
+ & 13B & \cellcolor{gray!20}9 & \cellcolor{gray!5}23 & \cellcolor{green!20}23 & \cellcolor{gray!10}21 & \cellcolor{gray!15}7.5 & \cellcolor{gray!10}16.7 \\
+\addlinespace[1pt]
+\midrule
+\multicolumn{8}{c}{\textit{Backbone Decoders}}\\ 
+\midrule
+\multirow{3}{*}{InternVL3.5} & 1B & \cellcolor{orange!30}19 & \cellcolor{gray!15}11 & \cellcolor{green!20}7 & 30.5 & \cellcolor{gray!20}4 & \cellcolor{gray!15}14.3 \\
+ & 2B & \cellcolor{orange!30}13 & \cellcolor{green!20}\textbf{1} & \cellcolor{green!20}26 & \cellcolor{gray!10}16 & \cellcolor{gray!5}25 & \cellcolor{gray!10}16.2 \\
+ & 8B & \cellcolor{orange!30}17 & \cellcolor{gray!20}\underline{2} & \cellcolor{green!20}8 & \cellcolor{gray!20}3 & 29 & \cellcolor{gray!20}11.8 \\
+\addlinespace[1pt]
+\multirow{4}{*}{Qwen3-VL} & 2B & \cellcolor{orange!30}11 & \cellcolor{gray!15}5 & \cellcolor{green!20}6 & \cellcolor{gray!5}23 & \cellcolor{gray!10}15.5 & \cellcolor{gray!20}12.1 \\
+ & 4B & \cellcolor{orange!30}16 & \cellcolor{gray!15}7 & \cellcolor{green!20}16 & \cellcolor{gray!5}22 & \cellcolor{gray!10}17 & \cellcolor{gray!10}15.6 \\
+ & 8B & \cellcolor{orange!30}7 & \cellcolor{gray!10}19 & \cellcolor{green!20}20 & \cellcolor{gray!15}11.5 & \cellcolor{gray!10}18 & \cellcolor{gray!15}15.1 \\
+ & 32B & \cellcolor{orange!30}5 & \cellcolor{gray!10}15 & \cellcolor{green!20}18 & \cellcolor{gray!15}10 & \cellcolor{gray!15}10 & \cellcolor{gray!20}\underline{11.6} \\
+\addlinespace[1pt]
+\multirow{1}{*}{LLaVA-1.5} & 7B & \cellcolor{orange!30}6 & \cellcolor{gray!15}10 & \cellcolor{green!20}4 & 30.5 & \cellcolor{gray!15}5.5 & \cellcolor{gray!20}\textbf{11.2} \\
+\addlinespace[1pt]
+\multirow{1}{*}{LLaVA-Mistral} & 7B & \cellcolor{green!20}\underline{2} & \cellcolor{gray!15}12 & \cellcolor{green!20}19 & \cellcolor{gray!5}26.5 & \cellcolor{gray!10}13.5 & \cellcolor{gray!15}14.6 \\
+\addlinespace[1pt]
+\multirow{1}{*}{LLaVA-Vicuna} & 7B & \cellcolor{orange!30}14 & \cellcolor{gray!10}14 & \cellcolor{green!20}14 & \cellcolor{gray!5}26.5 & \cellcolor{gray!15}5.5 & \cellcolor{gray!15}14.8 \\
+\addlinespace[1pt]
+\midrule
+\multicolumn{8}{c}{\textit{SA-LLMs}}\\ 
+\midrule
+\multirow{8}{*}{Qwen3} & 0.6B & 33 & 32 & \cellcolor{gray!20}28 & 30.5 & \cellcolor{gray!20}\underline{2} & 25.1 \\
+ & 1.7B & \cellcolor{gray!15}27 & \cellcolor{gray!15}9 & \cellcolor{gray!10}31 & \cellcolor{gray!20}4.5 & \cellcolor{gray!5}28 & \cellcolor{gray!5}19.9 \\
+ & 1.7B (think) & \cellcolor{gray!10}31 & \cellcolor{gray!5}25 & \cellcolor{green!20}3 & \cellcolor{gray!20}4.5 & 31 & \cellcolor{gray!5}18.9 \\
+ & 4B & \cellcolor{green!20}\textbf{1} & \cellcolor{gray!5}20 & \cellcolor{green!20}15 & \cellcolor{gray!5}24 & \cellcolor{gray!20}\underline{2} & \cellcolor{gray!15}12.4 \\
+ & 8B & \cellcolor{gray!15}29 & \cellcolor{gray!10}17 & \cellcolor{green!20}\underline{2} & \cellcolor{gray!15}6.5 & \cellcolor{gray!5}23.5 & \cellcolor{gray!10}15.6 \\
+ & 8B (think) & \cellcolor{gray!15}24 & \cellcolor{gray!15}4 & \cellcolor{green!20}\textbf{1} & \cellcolor{gray!15}6.5 & \cellcolor{gray!5}23.5 & \cellcolor{gray!20}11.8 \\
+ & 32B & \cellcolor{gray!20}18 & \cellcolor{gray!10}18 & \cellcolor{green!20}21 & \cellcolor{gray!10}13 & \cellcolor{gray!5}26 & \cellcolor{gray!5}19.2 \\
+ & 32B (think) & \cellcolor{gray!10}32 & 33 & \cellcolor{green!20}11 & \cellcolor{gray!15}9 & 32 & 23.4 \\
+\multirow{1}{*}{Qwen2.5} & 7B & \cellcolor{gray!15}28 & \cellcolor{gray!10}13 & \cellcolor{green!20}13 & \cellcolor{gray!15}8 & \cellcolor{gray!5}27 & \cellcolor{gray!10}17.8 \\
+\multirow{2}{*}{Vicuna} & 7B & \cellcolor{orange!30}12 & \cellcolor{gray!5}28 & \cellcolor{gray!5}32 & \cellcolor{gray!5}25 & \cellcolor{gray!15}11 & \cellcolor{gray!5}21.6 \\
+ & 13B & \cellcolor{orange!30}4 & \cellcolor{gray!15}8 & \cellcolor{green!20}25 & \cellcolor{gray!10}17 & \cellcolor{gray!10}15.5 & \cellcolor{gray!15}13.9 \\
+\multirow{1}{*}{Mistral} & 7B & \cellcolor{gray!10}30 & \cellcolor{gray!10}16 & 33 & \cellcolor{gray!20}\underline{2} & 33 & 22.8 \\
+\bottomrule
+\end{tabular}
+\end{table*}

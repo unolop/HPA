@@ -25,7 +25,7 @@ import numpy as np
 import pandas as pd
 
 OUT_DIR    = Path(__file__).parent
-LATEX_OUT  = Path(__file__).resolve().parents[2] / "latex/AAAI2026/LaTeX/figures/think_eda"
+LATEX_OUT  = Path(__file__).resolve().parents[2] / "latex/AAAI2026/LaTeX/figures_supp/think_eda"
 LATEX_OUT.mkdir(parents=True, exist_ok=True)
 CSV        = OUT_DIR / "think_delta_vs_length_with_blind.csv"
 
@@ -182,6 +182,38 @@ fig.savefig(horiz_out, dpi=200, bbox_inches="tight")
 shutil.copy(horiz_out, LATEX_OUT / "think_abs_sbert_accuracy_horiz.png")
 plt.close(fig)
 print(f"Saved: {horiz_out}")
+
+# Vertical variant: 3 panels stacked, for appendix
+fig, (ax_sbert, ax_acc, ax_conf) = plt.subplots(
+    3, 1,
+    figsize=(4.35, 6.0),
+    sharex=True,
+    gridspec_kw={"hspace": 0.08},
+)
+plot_metric_panel(ax_sbert, "think_hm_sbert",   "HM SBERT",          HH_SBERT)
+plot_metric_panel(ax_acc,   "think_accuracy",    "Accuracy",          HH_ACCURACY)
+plot_metric_panel(ax_conf,  "think_confidence",  "Mean answer logprob", None)
+ax_conf.set_xlabel("Mean think words")
+for ax, label in zip([ax_sbert, ax_acc, ax_conf], ["(a)", "(b)", "(c)"]):
+    ax.text(0.03, 0.97, label, transform=ax.transAxes, fontsize=9, fontweight="bold", va="top", ha="left")
+
+fig.legend(
+        handles=variant_handles,
+        loc="lower center",
+        bbox_to_anchor=(0.5, -0.01),
+        ncol=3,
+        frameon=False,
+        fontsize=7.5,
+        handletextpad=0.4,
+        columnspacing=0.9,
+)
+fig.tight_layout(rect=[0.06, 0.04, 1, 0.98])
+
+vert_out = OUT_DIR / "think_abs_sbert_accuracy_vert.png"
+fig.savefig(vert_out, dpi=200, bbox_inches="tight")
+shutil.copy(vert_out, LATEX_OUT / "think_abs_sbert_accuracy_vert.png")
+plt.close(fig)
+print(f"Saved: {vert_out}")
 
 for metric, ylabel, fname, hh_vals in PANEL_SPECS:
     fig, ax = plt.subplots(1, 1, figsize=(4.1, 2.7))

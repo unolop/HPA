@@ -11,7 +11,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-OUT_DIR = ROOT / "latex" / "AAAI2026" / "LaTeX" / "tables"
+OUT_DIR = ROOT / "latex" / "AAAI2026" / "LaTeX" / "tables" / "supp"
 
 PARQUET = ROOT / "analysis/session2/exports/pair_cache_cleaned.parquet"
 MODEL_BASE  = "Qwen3-8B"

@@ -16,7 +16,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-OUT_DIR = ROOT / "latex" / "AAAI2026" / "LaTeX" / "tables"
+OUT_DIR = ROOT / "latex" / "AAAI2026" / "LaTeX" / "tables" / "supp"
 
 # Families: list of (size_label, vlm_id, lm_id)
 FAMILIES = {

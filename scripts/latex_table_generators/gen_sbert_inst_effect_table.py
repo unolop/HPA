@@ -7,7 +7,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-OUT_DIR = ROOT / "latex" / "AAAI2026" / "LaTeX" / "tables"
+OUT_DIR = ROOT / "latex" / "AAAI2026" / "LaTeX" / "tables" / "supp"
 
 MATCHED_MODELS = [
     "InternVL-8B", "Qwen3-VL-8B", "LLaVA-1.5-7B", "LLaVA-Mistral", "LLaVA-Vicuna",
@@ -65,8 +65,8 @@ def fmt_delta_inline(delta: float) -> str:
         s = "+" + s[2:]
     elif s.startswith("-0."):
         s = "-" + s[2:]
-    color = "teal" if delta > 0 else "red"
-    return rf" {{\scriptsize (\textcolor{{{color}}}{{{s}}})}}"
+    color = "[HTML]{0072B2}" if delta > 0 else "[HTML]{CC7A00}"
+    return rf" {{\scriptsize (\textcolor{color}{{{s}}})}}"
 
 
 def main():
@@ -140,7 +140,7 @@ def main():
         r"\bottomrule",
         r"\end{tabular}",
         r"\caption{Per-model HM SBERT (with instruction) with $\Delta$ showing the change from the no-instruction baseline "
-        r"(\textcolor{teal}{teal} = instruction improves alignment). "
+        r"(\textcolor[HTML]{0072B2}{blue} = instruction improves alignment). "
         r"Pooled over all question--human pairs per variant. "
         r"\textbf{Bold}: best per column; \underline{underline}: second best.}",
         r"\label{tab:sbert_inst_effect}",

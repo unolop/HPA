@@ -1,0 +1,49 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.05}
+\caption{Full-scale alignment metrics for all models (abstention-filtered; instruction-blind condition). $\sHM$(Orig) and $\sHM$(Pron): mean HM SBERT for Original (C) and Pronominalized (A) variants. $\Delta = \sHM(\text{Orig})-\sHM(\text{Pron})$: positive = worse under pronominalization. Human LOO reference: $\sHH$(Orig)\,$=$\,0.596\ [0.594, 0.598]; $\sHH$(Pron)\,$=$\,0.563\ [0.561, 0.565]. \colorbox{green!20}{Green} = within human LOO 95\,\% CI. \textbf{Bold} = closest to LOO mean; \underline{underline} = second-closest. Backbone Decoder column: LM counterpart at same size ({\scriptsize ---} = not available). Think variants shown only where confirmed distinct from no-think.}
+\label{tab:scale_alignment_full}
+\begin{tabular}{llccc|ccc}
+\toprule
+\multirow{2}{*}{\textbf{Family}} & \multirow{2}{*}{\textbf{Size}} & \multicolumn{3}{c|}{\textbf{VLM}} & \multicolumn{3}{c}{\textbf{Backbone Decoder}} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}
+ & & $\sHM$(Orig) & $\sHM$(Pron) & $\Delta$ & $\sHM$(Orig) & $\sHM$(Pron) & $\Delta$ \\
+\midrule
+\multirow{3}{*}{InternVL3.5} & 1B & 0.578 & 0.537 & +0.041 & 0.601 & 0.555 & +0.046 \\
+ & 2B & 0.553 & 0.529 & +0.024 & 0.574 & \cellcolor{green!20}\textbf{0.564} & +0.010 \\
+ & 8B & 0.620 & 0.571 & +0.049 & 0.609 & 0.526 & +0.084 \\
+\midrule
+\multirow{4}{*}{Qwen3-VL} & 2B & 0.573 & 0.547 & +0.026 & 0.593 & 0.550 & +0.043 \\
+ & 4B & 0.575 & 0.545 & +0.030 & 0.607 & 0.570 & +0.037 \\
+ & 8B & 0.572 & 0.539 & +0.033 & 0.593 & 0.561 & +0.032 \\
+ & 32B & 0.564 & 0.507 & +0.057 & \cellcolor{green!20}0.598 & 0.558 & +0.040 \\
+\midrule
+\multirow{1}{*}{LLaVA-1.5} & 7B & 0.527 & 0.491 & +0.036 & 0.589 & \cellcolor{green!20}\underline{0.565} & +0.024 \\
+\midrule
+\multirow{1}{*}{LLaVA-Mistral} & 7B & 0.562 & 0.508 & +0.053 & \cellcolor{green!20}\textbf{0.595} & 0.581 & +0.015 \\
+\midrule
+\multirow{2}{*}{LLaVA-Vicuna} & 7B & 0.548 & 0.509 & +0.039 & \cellcolor{green!20}\underline{0.595} & 0.560 & +0.035 \\
+ & 13B & 0.573 & 0.519 & +0.053 & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\begin{tabular}{llccc|ccc}
+\toprule
+\multirow{2}{*}{\textbf{Family}} & \multirow{2}{*}{\textbf{Size}} & \multicolumn{3}{c|}{\textbf{SA-LLM (no think)}} & \multicolumn{3}{c}{\textbf{SA-LLM (think)}} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}
+ & & $\sHM$(Orig) & $\sHM$(Pron) & $\Delta$ & $\sHM$(Orig) & $\sHM$(Pron) & $\Delta$ \\
+\midrule
+Qwen3 & 0.6B & 0.315 & 0.357 & $-$0.043 & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} \\
+ & 1.7B & 0.453 & 0.423 & +0.030 & 0.586 & 0.486 & +0.100 \\
+ & 4B & 0.536 & 0.506 & +0.030 & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} \\
+ & 8B & 0.508 & 0.449 & +0.059 & 0.494 & 0.464 & +0.030 \\
+ & 32B & 0.554 & 0.471 & +0.083 & 0.573 & 0.507 & +0.066 \\
+Qwen2.5 & 7B & 0.558 & 0.477 & +0.081 & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} \\
+Vicuna & 7B & 0.430 & 0.392 & +0.038 & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} \\
+ & 13B & 0.511 & 0.438 & +0.073 & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} \\
+Mistral & 7B & 0.248 & 0.197 & +0.051 & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} \\
+\bottomrule
+\end{tabular}
+\end{table*}

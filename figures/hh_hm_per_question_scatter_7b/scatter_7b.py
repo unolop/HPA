@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "figures"))
 import plot_style  # noqa: F401 — sets 10pt Times New Roman
 
@@ -71,13 +71,13 @@ for idx, model in enumerate(models_7b):
         )
 
     # Correlations
-    r_all, p_all = stats.pearsonr(sub["hh_sbert"], sub["hm_sbert"])
-    corr_text = f"r={r_all:.3f} (p={p_all:.1e})\n"
+    rho_all, p_all = stats.spearmanr(sub["hh_sbert"], sub["hm_sbert"])
+    corr_text = f"ρ={rho_all:.3f} (p={p_all:.1e})\n"
     for v, short in [("C", "Orig"), ("B", "Weak"), ("A", "Pron")]:
         vs = sub[sub["variant"] == v]
         if len(vs) > 2:
-            r_v, _ = stats.pearsonr(vs["hh_sbert"], vs["hm_sbert"])
-            corr_text += f"{short}: r={r_v:.3f}\n"
+            rho_v, _ = stats.spearmanr(vs["hh_sbert"], vs["hm_sbert"])
+            corr_text += f"{short}: ρ={rho_v:.3f}\n"
 
     ax.set_title(model, fontsize=10, fontweight="bold")
     ax.text(
@@ -120,13 +120,13 @@ fig.savefig(out, dpi=200, bbox_inches="tight")
 print(f"saved {out}")
 
 # --- Print correlation summary ---
-print(f"\n{'Model':<25} {'All r':>7} {'All p':>10} {'Orig r':>8} {'Weak r':>8} {'Pron r':>8}")
+print(f"\n{'Model':<25} {'All ρ':>7} {'All p':>10} {'Orig ρ':>8} {'Weak ρ':>8} {'Pron ρ':>8}")
 for model in models_7b:
     sub = merged[merged["subject_2"] == model]
-    r_all, p_all = stats.pearsonr(sub["hh_sbert"], sub["hm_sbert"])
-    rs = {}
+    rho_all, p_all = stats.spearmanr(sub["hh_sbert"], sub["hm_sbert"])
+    rhos = {}
     for v in ["C", "B", "A"]:
         vs = sub[sub["variant"] == v]
         if len(vs) > 2:
-            rs[v], _ = stats.pearsonr(vs["hh_sbert"], vs["hm_sbert"])
-    print(f"{model:<25} {r_all:>7.3f} {p_all:>10.1e} {rs.get('C', float('nan')):>8.3f} {rs.get('B', float('nan')):>8.3f} {rs.get('A', float('nan')):>8.3f}")
+            rhos[v], _ = stats.spearmanr(vs["hh_sbert"], vs["hm_sbert"])
+    print(f"{model:<25} {rho_all:>7.3f} {p_all:>10.1e} {rhos.get('C', float('nan')):>8.3f} {rhos.get('B', float('nan')):>8.3f} {rhos.get('A', float('nan')):>8.3f}")

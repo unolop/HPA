@@ -1,0 +1,38 @@
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{0.96}
+\caption{Per-model alignment ranking. \colorbox[HTML]{D9EAF3}{Blue}\,$\checkmark$ = within human LOO 95\,\% CI; \colorbox[HTML]{F7EBD9}{orange}\,$\triangle$ = over-aligned. Abst(\%) = spontaneous (w/o\,$\uparrow$) and instructed (w/\,$\downarrow$) abstention rates (\textbf{bold} = best; \underline{underline} = second-best).}
+\label{tab:alignment_ranking_7b_ticks}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.6cm}cccccc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multicolumn{2}{c}{$\djs$} & \multicolumn{2}{c}{$\sHM$} & \multicolumn{2}{c}{Abst(\%)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+ & Yes/No & Count & Other & $\rho$ & w/o $\uparrow$ & w/ $\downarrow$ \\
+\midrule
+\multicolumn{7}{c}{\textit{VLMs}}\\
+\midrule
+InternVL3.5 & \cellcolor[HTML]{F7EBD9}$\triangle$ & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & \cellcolor[HTML]{F7EBD9}$\triangle$ & 0.0 & 2.1 \\
+LLaVA-1.5 & - & - & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & 3.0 & 3.5 \\
+LLaVA-Mistral & - & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & \cellcolor[HTML]{D9EAF3}$\checkmark$ & 2.6 & 1.8 \\
+LLaVA-Vicuna & - & - & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & 2.7 & \underline{0.9} \\
+Qwen3-VL & \cellcolor[HTML]{D9EAF3}$\checkmark$ & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & \cellcolor[HTML]{D9EAF3}$\checkmark$ & 5.3 & 3.9 \\
+\midrule
+\multicolumn{7}{c}{\textit{Backbone Decoders}}\\
+\midrule
+InternVL3.5 & \cellcolor[HTML]{F7EBD9}$\triangle$ & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & \cellcolor[HTML]{D9EAF3}$\checkmark$ & \textbf{17.1} & 9.5 \\
+LLaVA-1.5 & \cellcolor[HTML]{F7EBD9}$\triangle$ & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & \cellcolor[HTML]{D9EAF3}$\checkmark$ & 0.0 & \textbf{0.6} \\
+LLaVA-Mistral & \cellcolor[HTML]{D9EAF3}$\checkmark$ & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & \cellcolor[HTML]{D9EAF3}$\checkmark$ & 0.3 & 2.1 \\
+LLaVA-Vicuna & \cellcolor[HTML]{F7EBD9}$\triangle$ & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & \cellcolor[HTML]{D9EAF3}$\checkmark$ & 0.3 & \textbf{0.6} \\
+Qwen3-VL & \cellcolor[HTML]{F7EBD9}$\triangle$ & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & \cellcolor[HTML]{D9EAF3}$\checkmark$ & 5.3 & 3.2 \\
+\midrule
+\multicolumn{7}{c}{\textit{SA-LLMs}}\\
+\midrule
+Qwen2.5-Instruct & - & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & - & 9.1 & 6.5 \\
+Qwen3 & - & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & - & \underline{12.7} & 4.7 \\
+Qwen3 (think) & - & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & - & \underline{12.7} & 4.7 \\
+Vicuna & \cellcolor[HTML]{F7EBD9}$\triangle$ & - & - & - & 1.2 & 1.5 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,38 @@
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\caption{JS divergence to human answer distribution on original questions (variant~C). $N_q$ = number of non-abstained questions used. Values show JS w/o instruction; $\Delta$ = JS(w/ inst) $-$ JS(w/o inst) in parentheses. \textcolor[HTML]{0072B2}{Blue\,$\downarrow$} = instruction reduces JS (improves alignment), \textcolor[HTML]{CC7A00}{orange\,$\uparrow$} = worsens. Bold = best (lowest) JS; underline = second-best per column.}
+\label{tab:js_instruction_effect}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+& \multicolumn{2}{c}{$N_q$} & \multicolumn{2}{c}{JS (w/o inst.) \; ($\Delta$)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Model & Y/N & Cnt & Yes/No & Count \\
+\midrule
+\multicolumn{5}{c}{\textit{VLMs}} \\
+\midrule
+InternVL & 26 & 26 & .028 (\textcolor[HTML]{0072B2}{-.025\,$\downarrow$}) & \textbf{.237} (\textcolor[HTML]{CC7A00}{+.030\,$\uparrow$}) \\
+LLaVA-1.5 & 26 & 26 & .139 (\textcolor[HTML]{CC7A00}{+.063\,$\uparrow$}) & .774 (\textcolor[HTML]{0072B2}{-.018\,$\downarrow$}) \\
+LLaVA-Mistral & 26 & 26 & .113 (\textcolor[HTML]{0072B2}{-.022\,$\downarrow$}) & .797 (\textcolor[HTML]{0072B2}{-.151\,$\downarrow$}) \\
+LLaVA-Vicuna & 26 & 26 & .056 (\textcolor[HTML]{CC7A00}{+.058\,$\uparrow$}) & .848 (\textcolor[HTML]{0072B2}{-.055\,$\downarrow$}) \\
+Qwen3-VL & 26 & 26 & .113 (\textcolor[HTML]{0072B2}{\underline{-.058}\,$\downarrow$}) & .729 (\textcolor[HTML]{CC7A00}{+.041\,$\uparrow$}) \\
+\multicolumn{5}{c}{\textit{Backbone decoders}} \\
+\midrule
+InternVL & 26 & 9 & .023 (+.000) & .550 (\textcolor[HTML]{0072B2}{\underline{-.167}\,$\downarrow$}) \\
+LLaVA-1.5 & 26 & 26 & \textbf{.007} (\textcolor[HTML]{CC7A00}{+.006\,$\uparrow$}) & \underline{.449} (\textcolor[HTML]{0072B2}{-.026\,$\downarrow$}) \\
+LLaVA-Mistral & 26 & 26 & \underline{.020} (\textcolor[HTML]{CC7A00}{+.022\,$\uparrow$}) & .478 (\textcolor[HTML]{CC7A00}{+.015\,$\uparrow$}) \\
+LLaVA-Vicuna & 26 & 26 & .057 (\textcolor[HTML]{0072B2}{-.034\,$\downarrow$}) & .460 (\textcolor[HTML]{CC7A00}{+.033\,$\uparrow$}) \\
+Qwen3-VL & 26 & 26 & .028 (\textcolor[HTML]{0072B2}{-.004\,$\downarrow$}) & .598 (\textcolor[HTML]{CC7A00}{+.031\,$\uparrow$}) \\
+\multicolumn{5}{c}{\textit{Standalone LLMs}} \\
+\midrule
+Qwen2.5 & 25 & 23 & .176 (\textcolor[HTML]{0072B2}{-.048\,$\downarrow$}) & .521 (\textcolor[HTML]{0072B2}{-.030\,$\downarrow$}) \\
+Qwen3 & 25 & 22 & .224 (\textcolor[HTML]{CC7A00}{+.030\,$\uparrow$}) & .692 (\textcolor[HTML]{0072B2}{-.086\,$\downarrow$}) \\
+Vicuna & 26 & 24 & .177 (\textcolor[HTML]{0072B2}{-.042\,$\downarrow$}) & .829 (\textcolor[HTML]{0072B2}{-.124\,$\downarrow$}) \\
+\multicolumn{5}{c}{\textit{Think models}} \\
+\midrule
+Qwen3 (think) & 25 & 22 & .224 (\textcolor[HTML]{0072B2}{\textbf{-.093}\,$\downarrow$}) & .692 (\textcolor[HTML]{0072B2}{\textbf{-.245}\,$\downarrow$}) \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

@@ -1,0 +1,55 @@
+\begin{table}[t]
+\scriptsize
+\centering
+\setlength{\tabcolsep}{2pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lc|cc}
+\toprule
+\textbf{Model} & \textbf{Size} & \textbf{Soft (w/)} & \textbf{Hard (w/)} \\
+\midrule
+\multicolumn{4}{c}{\textit{Vision-Language Models}} \\
+\midrule
+InternVL & 1B & 0.0 & 0.9 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+ & 2B & 0.0 & 0.0 \\
+ & 8B & 0.0 & 0.9 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+LLaVA-1.5 & 7B & 3.5 \textcolor{[HTML]{0072B2}}{(+0.9)} & 0.0 \\
+LLaVA-1.6-Mistral & 7B & 0.9 \textcolor{[HTML]{CC7A00}}{(-1.8)} & 0.0 \\
+LLaVA-1.6-Vicuna & 7B & 0.9 \textcolor{[HTML]{CC7A00}}{(-0.9)} & 0.0 \\
+ & 13B & 0.0 \textcolor{[HTML]{CC7A00}}{(-2.7)} & 0.9 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+Qwen3-VL & 2B & 0.9 & 1.8 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+ & 4B & 0.0 \textcolor{[HTML]{CC7A00}}{(-3.5)} & 0.9 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+ & 8B & 0.0 \textcolor{[HTML]{CC7A00}}{(-3.5)} & 0.9 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+ & 32B & 0.0 \textcolor{[HTML]{CC7A00}}{(-4.9)} & 17.7 \textcolor{[HTML]{CC7A00}}{(-59.4)} \\
+\midrule
+\multicolumn{4}{c}{\textit{VLM Backbone Decoders}} \\
+\midrule
+InternVL & 1B & 0.0 & 0.9 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+ & 2B & 0.0 & 5.3 \textcolor{[HTML]{0072B2}}{(+1.8)} \\
+ & 8B & 0.0 & 3.5 \textcolor{[HTML]{CC7A00}}{(-16.8)} \\
+LLaVA-1.5 & 7B & 0.0 & 0.0 \\
+LLaVA-1.6-Mistral & 7B & 0.0 & 0.9 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+LLaVA-1.6-Vicuna & 7B & 0.0 & 0.0 \\
+ & 13B & 0.0 & 0.0 \\
+Qwen3-VL & 2B & 0.0 & 2.7 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+ & 4B & 0.0 & 1.8 \textcolor{[HTML]{0072B2}}{(+1.8)} \\
+ & 8B & 0.0 & 1.8 \textcolor{[HTML]{0072B2}}{(+0.9)} \\
+ & 32B & 0.0 \textcolor{[HTML]{CC7A00}}{(-1.8)} & 0.9 \textcolor{[HTML]{CC7A00}}{(-2.7)} \\
+\midrule
+\multicolumn{4}{c}{\textit{Standalone LLMs}} \\
+\midrule
+Mistral & 7B & 0.0 & 70.8 \textcolor{[HTML]{CC7A00}}{(-2.7)} \\
+Phi-3.5 & 3.8B & 0.0 & 8.0 \textcolor{[HTML]{0072B2}}{(+2.7)} \\
+Qwen2.5-Instruct & 7B & 1.8 \textcolor{[HTML]{CC7A00}}{(-1.8)} & 3.5 \textcolor{[HTML]{CC7A00}}{(-0.9)} \\
+Qwen3 & 0.6B & 0.0 & 0.0 \\
+ & 1.7B & 0.0 & 7.1 \textcolor{[HTML]{CC7A00}}{(-11.7)} \\
+ & 4B & 0.0 & 0.0 \textcolor{[HTML]{CC7A00}}{(-3.5)} \\
+ & 8B & 0.0 \textcolor{[HTML]{CC7A00}}{(-5.4)} & 0.0 \textcolor{[HTML]{CC7A00}}{(-0.9)} \\
+ & 32B & 3.5 \textcolor{[HTML]{0072B2}}{(+1.8)} & 0.0 \textcolor{[HTML]{CC7A00}}{(-2.7)} \\
+Vicuna & 7B & 0.0 & 0.9 \textcolor{[HTML]{CC7A00}}{(-0.9)} \\
+ & 13B & 0.9 \textcolor{[HTML]{CC7A00}}{(-0.9)} & 1.8 \textcolor{[HTML]{0072B2}}{(+1.8)} \\
+\bottomrule
+\end{tabular}
+}
+\caption{\small Per-model abstention on variant~C (113 questions) under the blind-awareness instruction. Values report the \textit{w/ instruction} rate only; colored parentheses show the change in percentage points relative to the blind-only (\textit{w/o}) condition.}
+\label{tab:abstention_inst_effect_vC_q113}
+\end{table}

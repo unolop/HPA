@@ -380,14 +380,14 @@ def write_one(filter_abstention: bool, *, matched_only: bool, include_size: bool
             + ("after abstention filtering. " if filter_abstention else "(inclusive version). ")
             + "Lower is better. " + loocv_note
         )
-        out = OUT_DIR / f"{stem}{'_filtered' if filter_abstention else ''}.tex"
         if filter_abstention:
             label += "_filtered"
+        out = OUT_DIR / "paper" / f"{stem}{'_filtered' if filter_abstention else ''}.tex"
         out.write_text(render_pooled_table(pooled, caption, label, include_size=False, loocv_ranges=loocv))
         print(out)
 
         full = build_block(filter_abstention, matched_only=True)
-        full_out = OUT_DIR / f"hm_grouped_distribution_7b_grouped_full{'_filtered' if filter_abstention else ''}.tex"
+        full_out = OUT_DIR / "supp" / f"hm_grouped_distribution_7b_grouped_full{'_filtered' if filter_abstention else ''}.tex"
         full_label = "tab:hm_grouped_distribution_7b_grouped_full"
         if filter_abstention:
             full_label += "_filtered"
@@ -405,7 +405,7 @@ def write_one(filter_abstention: bool, *, matched_only: bool, include_size: bool
         title = "All-scale"
         label = "tab:hm_grouped_distribution_all_scales_compact"
         suffix = "_filtered" if filter_abstention else ""
-        out = OUT_DIR / f"{stem}{suffix}.tex"
+        out = OUT_DIR / "supp" / f"{stem}{suffix}.tex"
         caption = (
             f"{title} grouped answer-distribution divergence to humans across all control variants "
             + ("after abstention filtering. " if filter_abstention else "(inclusive version). ")

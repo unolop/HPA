@@ -95,7 +95,7 @@ def row_name(model: str, group: str) -> str:
 def delta_text(delta: float) -> str:
     if abs(delta) < 0.05:
         return ""
-    color = "teal" if delta > 0 else "red"
+    color = "[HTML]{0072B2}" if delta > 0 else "[HTML]{CC7A00}"
     return rf" \textcolor{{{color}}}{{({delta:+.1f})}}"
 
 

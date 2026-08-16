@@ -1,0 +1,20 @@
+\begin{table}[ht]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Matched-family comparisons of abstention-filtered HM SBERT over 339 question--variant pairs. Each row shows a backbone decoder alongside its paired full VLM and matched standalone LLM; parenthetical deltas are decoder minus comparator. Tests are two-sided Wilcoxon signed-rank with Holm correction. $p$ shown after Holm correction; ***\,$p{<}0.001$, **\,$p{<}0.01$, *\,$p{<}0.05$.}
+\label{tab:matched_family_alignment_tests}
+\begin{tabular}{lcccc}
+\toprule
+\multirow{2}{*}{\textbf{Family}} & \multirow{2}{*}{\textbf{Decoder}} & \multicolumn{2}{c}{\textbf{vs.\ Full VLM}} & \multicolumn{2}{c}{\textbf{vs.\ SA-LLM}} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+ & & Score ($\Delta$) & $p$ & Score ($\Delta$) & $p$ \\
+\midrule
+InternVL3.5 & 0.582 & 0.602 {\scriptsize (\textcolor{red}{$-0.020^{*}$})} & $p{\!=\!}0.013$ & 0.507 {\scriptsize (\textcolor{teal}{$+0.082^{***}$})} & $p{\!=\!}7.4{\times}10^{-8}$ \\
+Qwen3-VL & 0.580 & 0.567 {\scriptsize (\textcolor{teal}{$+0.013^{**}$})} & $p{\!=\!}0.007$ & 0.498 {\scriptsize (\textcolor{teal}{$+0.085^{***}$})} & $p{\!=\!}1.5{\times}10^{-9}$ \\
+LLaVA-1.5 & 0.581 & 0.514 {\scriptsize (\textcolor{teal}{$+0.066^{***}$})} & $p{\!=\!}5.4{\times}10^{-18}$ & 0.408 {\scriptsize (\textcolor{teal}{$+0.171^{***}$})} & $p{\!=\!}2.6{\times}10^{-32}$ \\
+LLaVA-Mistral & 0.590 & 0.546 {\scriptsize (\textcolor{teal}{$+0.043^{***}$})} & $p{\!=\!}7.6{\times}10^{-12}$ & 0.219 {\scriptsize (\textcolor{teal}{$+0.310^{***}$})} & $p{\!=\!}3.0{\times}10^{-11}$ \\
+LLaVA-Vicuna & 0.576 & 0.528 {\scriptsize (\textcolor{teal}{$+0.048^{***}$})} & $p{\!=\!}5.2{\times}10^{-12}$ & 0.408 {\scriptsize (\textcolor{teal}{$+0.171^{***}$})} & $p{\!=\!}1.5{\times}10^{-34}$ \\
+\bottomrule
+\end{tabular}
+\end{table}

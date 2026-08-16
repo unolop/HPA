@@ -1,0 +1,41 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{0.92}
+\caption{Per-model original-to-pronominalized SBERT degradation ($\Delta = S_\mathrm{Orig} - S_\mathrm{Pron}$) by entity group (free-text questions only; columns sorted by human $\Delta$, descending). Avg = mean degradation across the shown entity groups. Group mean rows average the models within each architecture class; formal group-level significance tests are reported separately in Table~\ref{tab:degradation_wilcoxon}.}
+\label{tab:ent_degradation_per_model}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.1cm}rrrrrrrrrr}
+\toprule
+\textbf{Model} & \rotatebox{60}{\textbf{Product}} & \rotatebox{60}{\textbf{Animal}} & \rotatebox{60}{\textbf{Food}} & \rotatebox{60}{\textbf{Object}} & \rotatebox{60}{\textbf{Place}} & \rotatebox{60}{\textbf{Person}} & \rotatebox{60}{\textbf{Vehicle}} & \rotatebox{60}{\textbf{Other}} & \rotatebox{60}{\textbf{Text}} & \rotatebox{60}{\textbf{Avg}} \\
+\midrule
+\textbf{Human LOO} & +0.15 & +0.12 & +0.11 & +0.06 & +0.05 & +0.04 & +0.04 & -0.01 & -0.06 & +0.06 \\
+\midrule
+\multicolumn{11}{c}{\textit{VLMs}} \\
+\midrule
+InternVL & +0.19 & +0.12 & +0.21 & +0.11 & -0.08 & +0.06 & +0.03 & -0.01 & -0.20 & +0.05 \\
+Qwen3-VL & +0.39 & +0.13 & +0.16 & +0.02 & +0.14 & +0.07 & +0.26 & -0.00 & --- & +0.15 \\
+LLaVA-1.5 & +0.17 & +0.07 & +0.08 & +0.07 & +0.19 & +0.04 & +0.17 & +0.07 & -0.07 & +0.09 \\
+LLaVA-Mistral & +0.14 & +0.13 & +0.24 & +0.10 & +0.09 & +0.01 & +0.11 & -0.03 & -0.06 & +0.08 \\
+LLaVA-Vicuna & +0.09 & +0.04 & +0.20 & +0.08 & +0.09 & -0.01 & +0.27 & -0.01 & -0.30 & +0.05 \\
+\textit{Group mean} & +0.20 & +0.10 & +0.18 & +0.08 & +0.09 & +0.03 & +0.17 & +0.00 & -0.16 & +0.08 \\
+\midrule
+\multicolumn{11}{c}{\textit{Backbone Decoders}} \\
+\midrule
+InternVL & +0.26 & +0.17 & +0.13 & +0.05 & +0.11 & +0.11 & +0.03 & -0.00 & -0.33 & +0.06 \\
+Qwen3-VL & +0.33 & +0.14 & +0.18 & +0.03 & +0.12 & +0.06 & +0.07 & +0.05 & -0.30 & +0.08 \\
+LLaVA-1.5 & +0.14 & +0.07 & +0.08 & +0.05 & +0.05 & +0.03 & +0.23 & -0.03 & -0.30 & +0.04 \\
+LLaVA-Mistral & +0.08 & +0.14 & +0.10 & +0.05 & +0.06 & +0.04 & +0.03 & -0.07 & -0.29 & +0.02 \\
+LLaVA-Vicuna & +0.21 & +0.11 & +0.11 & +0.04 & +0.04 & +0.01 & +0.31 & +0.01 & -0.26 & +0.06 \\
+\textit{Group mean} & +0.20 & +0.13 & +0.12 & +0.04 & +0.08 & +0.05 & +0.13 & -0.01 & -0.30 & +0.05 \\
+\midrule
+\multicolumn{11}{c}{\textit{SA-LLMs}} \\
+\midrule
+Qwen3 & --- & +0.07 & +0.14 & +0.04 & +0.04 & +0.08 & +0.03 & +0.06 & -0.01 & +0.06 \\
+Qwen3 (think) & +0.09 & +0.15 & +0.07 & +0.08 & +0.09 & +0.03 & +0.01 & -0.05 & -0.06 & +0.05 \\
+Qwen2.5 & +0.28 & +0.19 & +0.14 & +0.03 & +0.23 & +0.00 & +0.13 & +0.10 & -0.30 & +0.09 \\
+Vicuna & +0.32 & +0.17 & +0.22 & +0.02 & +0.10 & +0.03 & -0.03 & +0.05 & -0.24 & +0.07 \\
+\textit{Group mean} & +0.23 & +0.15 & +0.14 & +0.04 & +0.11 & +0.04 & +0.04 & +0.04 & -0.15 & +0.07 \\
+\bottomrule
+\end{tabular}
+\end{table*}

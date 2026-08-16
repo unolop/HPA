@@ -27,7 +27,7 @@ from utils.constants import VARIANT_COLORS, VARIANT_ORDER
 HUMAN_DIR  = ROOT / "evaluation" / "humans" / "by_participant"
 EXPORTS    = ROOT / "analysis" / "session2" / "exports"
 OUT_DIR    = Path(__file__).parent
-LATEX_DIR  = ROOT / "latex" / "AAAI2026" / "LaTeX" / "figures" / "confidence"
+LATEX_DIR  = ROOT / "latex" / "AAAI2026" / "LaTeX" / "figures_paper" / "confidence"
 LATEX_DIR.mkdir(parents=True, exist_ok=True)
 
 VARIANT_LABELS = {"C": "Original", "B": "Weaker", "A": "Pronominalized"}

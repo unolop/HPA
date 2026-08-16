@@ -1,0 +1,42 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{0.95}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l@{\hspace{2pt}}cc@{\hspace{6pt}}cc@{\hspace{6pt}}cc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multicolumn{2}{c@{\hspace{6pt}}}{\textbf{Yes/No} ($N{=}78$)} & \multicolumn{2}{c@{\hspace{6pt}}}{\textbf{Count} ($N{=}78$)} & \multicolumn{2}{c}{\textbf{Free text}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+ & $\djs$ & Mode & $\djs$ & Mode & $\sHM$ & $\pr$ \\
+\midrule
+\textbf{Human LOO} & \makecell[c]{.271 \\ {\scriptsize [.260,\,.282]}} & \makecell[c]{.653 \\ {\scriptsize [.610,\,.692]}} & \makecell[c]{.524 \\ {\scriptsize [.493,\,.554]}} & \makecell[c]{.485 \\ {\scriptsize [.451,\,.522]}} & \makecell[c]{.425 \\ {\scriptsize [.387,\,.470]}} & \makecell[c]{.778 \\ {\scriptsize [.629,\,.846]}} \\
+\midrule
+\multicolumn{7}{c}{\textbf{VLMs}} \\
+\midrule
+InternVL & .230 {\scriptsize (\textcolor[HTML]{0072B2}{-.024})} & .782 {\scriptsize (\textcolor[HTML]{CC7A00}{+.051})} & .586 {\scriptsize (\textcolor[HTML]{CC7A00}{+.027})} & .385 {\scriptsize (\textcolor[HTML]{0072B2}{-.013})} & .447 {\scriptsize (\textcolor[HTML]{CC7A00}{+.031})} & .859 {\scriptsize (\textcolor[HTML]{CC7A00}{+.044})} \\
+LLaVA-1.5 & .421 {\scriptsize (\textcolor[HTML]{CC7A00}{+.029})} & .321 {\scriptsize (\textcolor[HTML]{0072B2}{-.064})} & .824 {\scriptsize (\textcolor[HTML]{CC7A00}{+.013})} & .038 {\scriptsize (\textcolor[HTML]{0072B2}{-.013})} & .350 {\scriptsize (\textcolor[HTML]{0072B2}{-.011})} & .450 {\scriptsize (\textcolor[HTML]{CC7A00}{+.048})} \\
+LLaVA-Mistral & .357 {\scriptsize (\textcolor[HTML]{0072B2}{-.022})} & .449 {\scriptsize (\textcolor[HTML]{CC7A00}{+.051})} & .787 {\scriptsize (\textcolor[HTML]{0072B2}{-.048})} & .103 {\scriptsize (\textcolor[HTML]{CC7A00}{+.064})} & .395 {\scriptsize (\textcolor[HTML]{CC7A00}{+.018})} & .628 {\scriptsize (\textcolor[HTML]{CC7A00}{+.074})} \\
+LLaVA-Vicuna & .385 {\scriptsize (\textcolor[HTML]{CC7A00}{+.033})} & .397 {\scriptsize (\textcolor[HTML]{0072B2}{-.051})} & .837 {\scriptsize (\textcolor[HTML]{CC7A00}{+.007})} & .051 & .387 {\scriptsize (\textcolor[HTML]{0072B2}{-.001})} & .612 {\scriptsize (\textcolor[HTML]{CC7A00}{+.013})} \\
+Qwen3-VL & .277 {\scriptsize (\textcolor[HTML]{0072B2}{-.041})} & .654 {\scriptsize (\textcolor[HTML]{CC7A00}{+.103})} & .788 {\scriptsize (\textcolor[HTML]{CC7A00}{+.015})} & .093 {\scriptsize (\textcolor[HTML]{0072B2}{-.024})} & .411 {\scriptsize (\textcolor[HTML]{CC7A00}{+.037})} & .724 {\scriptsize (\textcolor[HTML]{CC7A00}{+.195})} \\
+\midrule
+\multicolumn{7}{c}{\textbf{Backbone Decoders}} \\
+\midrule
+InternVL & .209 {\scriptsize (\textcolor[HTML]{CC7A00}{+.006})} & .872 {\scriptsize (\textcolor[HTML]{0072B2}{-.013})} & .575 {\scriptsize (\textcolor[HTML]{0072B2}{-.157})} & .404 {\scriptsize (\textcolor[HTML]{CC7A00}{+.165})} & .430 {\scriptsize (\textcolor[HTML]{CC7A00}{+.028})} & .816 {\scriptsize (\textcolor[HTML]{CC7A00}{+.104})} \\
+LLaVA-1.5 & .241 & .731 & .663 {\scriptsize (\textcolor[HTML]{CC7A00}{+.008})} & .192 & .429 {\scriptsize (\textcolor[HTML]{0072B2}{-.003})} & .820 {\scriptsize (\textcolor[HTML]{0072B2}{-.012})} \\
+LLaVA-Mistral & .275 {\scriptsize (\textcolor[HTML]{0072B2}{-.021})} & .654 {\scriptsize (\textcolor[HTML]{CC7A00}{+.038})} & .671 {\scriptsize (\textcolor[HTML]{0072B2}{-.002})} & .205 {\scriptsize (\textcolor[HTML]{CC7A00}{+.013})} & .434 {\scriptsize (\textcolor[HTML]{0072B2}{-.005})} & .850 {\scriptsize (\textcolor[HTML]{0072B2}{-.021})} \\
+LLaVA-Vicuna & .223 {\scriptsize (\textcolor[HTML]{CC7A00}{+.003})} & .808 {\scriptsize (\textcolor[HTML]{0072B2}{-.013})} & .693 {\scriptsize (\textcolor[HTML]{CC7A00}{+.030})} & .141 {\scriptsize (\textcolor[HTML]{0072B2}{-.026})} & .438 {\scriptsize (\textcolor[HTML]{CC7A00}{+.010})} & .849 {\scriptsize (\textcolor[HTML]{CC7A00}{+.031})} \\
+Qwen3-VL & .230 {\scriptsize (\textcolor[HTML]{0072B2}{-.001})} & .821 {\scriptsize (\textcolor[HTML]{0072B2}{-.013})} & .745 {\scriptsize (\textcolor[HTML]{0072B2}{-.004})} & .158 {\scriptsize (\textcolor[HTML]{CC7A00}{+.009})} & .438 {\scriptsize (\textcolor[HTML]{CC7A00}{+.022})} & .845 {\scriptsize (\textcolor[HTML]{CC7A00}{+.076})} \\
+\midrule
+\multicolumn{7}{c}{\textbf{Standalone LLMs}} \\
+\midrule
+Qwen2.5 & .440 {\scriptsize (\textcolor[HTML]{0072B2}{-.006})} & .436 {\scriptsize (\textcolor[HTML]{0072B2}{-.025})} & .688 {\scriptsize (\textcolor[HTML]{CC7A00}{+.024})} & .224 {\scriptsize (\textcolor[HTML]{0072B2}{-.109})} & .403 {\scriptsize (\textcolor[HTML]{CC7A00}{+.026})} & .799 {\scriptsize (\textcolor[HTML]{CC7A00}{+.085})} \\
+Qwen3 & .531 {\scriptsize (\textcolor[HTML]{CC7A00}{+.063})} & .513 {\scriptsize (\textcolor[HTML]{0072B2}{-.055})} & .721 {\scriptsize (\textcolor[HTML]{0072B2}{-.035})} & .233 {\scriptsize (\textcolor[HTML]{CC7A00}{+.083})} & .410 {\scriptsize (\textcolor[HTML]{CC7A00}{+.020})} & .807 {\scriptsize (\textcolor[HTML]{CC7A00}{+.030})} \\
+Qwen3 (think) & .397 {\scriptsize (\textcolor[HTML]{0072B2}{-.071})} & .684 {\scriptsize (\textcolor[HTML]{CC7A00}{+.117})} & .610 {\scriptsize (\textcolor[HTML]{0072B2}{-.146})} & .355 {\scriptsize (\textcolor[HTML]{CC7A00}{+.205})} & .419 {\scriptsize (\textcolor[HTML]{CC7A00}{+.029})} & .750 {\scriptsize (\textcolor[HTML]{0072B2}{-.027})} \\
+Vicuna & .225 {\scriptsize (\textcolor[HTML]{0072B2}{-.017})} & .821 {\scriptsize (\textcolor[HTML]{CC7A00}{+.064})} & .788 {\scriptsize (\textcolor[HTML]{CC7A00}{+.002})} & .051 {\scriptsize (\textcolor[HTML]{0072B2}{-.070})} & .278 {\scriptsize (\textcolor[HTML]{CC7A00}{+.017})} & .472 {\scriptsize (\textcolor[HTML]{0072B2}{-.074})} \\
+\bottomrule
+\end{tabular}%
+}
+\caption{Full distribution and semantic alignment table (7/8B models, all variants pooled, abstention-filtered). All values are shown for the blind+instruction condition; parenthetical values give the instruction effect $\Delta = \text{+Inst} - \text{Blind}$ (\textcolor[HTML]{0072B2}{blue}: $\Delta{<}0$, improved alignment or reduced divergence; \textcolor[HTML]{CC7A00}{orange}: $\Delta{>}0$, worsened). $\djs$: JS divergence to human distribution; Mode: modal-answer match rate. \textbf{Free text}: $\sHM$ = mean HM SBERT; $\pr$ = Spearman $\rho$ between model and human per-question difficulty. Human LOO: leave-one-out mean with 95\,\% bootstrap CI [lo,\,hi].}
+\label{tab:hm_grouped_distribution_7b_compact_filtered_full}
+\end{table*}
