@@ -1,8 +1,9 @@
 """
 Generator for the yes/no response distribution table (appendix).
 
-Layout: two rows per model (Blind / +Inst), columns: yes% | no% | Abst% | Oth%
-Separate top-level rows for each condition instead of Δ parentheticals.
+Layout: one row per model, columns: yes% | Oth%
+Blind value shown; instruction effect Δ in colored parentheses (teal=+, red=−).
+Abstention column removed.
 """
 from __future__ import annotations
 import json, re, sys
@@ -127,6 +128,15 @@ def color_yes(v: float) -> str:
     return ""
 
 
+def _delta_cell(blind_val: float, inst_val: float) -> str:
+    """Format blind_val with colored Δ parenthetical showing inst effect."""
+    delta = inst_val - blind_val
+    sign = "+" if delta >= 0 else ""
+    color = "teal" if delta >= 0 else "red"
+    delta_str = rf"{{\scriptsize (\textcolor{{{color}}}{{{sign}{delta:.1f}}})}}"
+    return rf"{_fmt(blind_val)}\,{delta_str}"
+
+
 def build_table(blind_dist: dict, inst_dist: dict) -> str:
     lines: list[str] = []
     lines.append(r"\begin{table*}[ht]")
@@ -137,34 +147,31 @@ def build_table(blind_dist: dict, inst_dist: dict) -> str:
     lines.append(
         r"\caption{Yes/no response distributions for all models on the 26 yes/no questions "
         r"(all 3 variants pooled, $N{\leq}78$). "
-        r"\textbf{Abst\%} = soft abstention (e.g.\ \textit{none, unanswerable}); "
-        r"\textbf{Oth\%} = non-yes/no outputs excluding abstentions. "
+        r"\textbf{Oth\%} = non-yes/no outputs (excluding soft abstentions). "
+        r"Values show the blind condition; "
+        r"{\scriptsize (\textcolor{teal}{$+\Delta$}/\textcolor{red}{$-\Delta$})} = instruction effect (Blind+Inst $-$ Blind). "
         r"\colorbox[HTML]{D9EAF3}{Blue} = yes-majority (${\geq}50\%$); "
         r"\colorbox[HTML]{F7EBD9}{Orange} = below GT yes rate (${\leq}35\%$). "
         r"Human and GT rows shown for reference.}"
     )
     lines.append(r"\label{tab:yesno_distribution_all}")
-    lines.append(r"\begin{tabular}{ll ccc ccc}")
+    lines.append(r"\begin{tabular}{ll cc}")
     lines.append(r"\toprule")
-    lines.append(r" & & \multicolumn{3}{c}{\textbf{Blind}} & \multicolumn{3}{c}{\textbf{Blind+Instruction}} \\")
-    lines.append(r"\cmidrule(lr){3-5}\cmidrule(lr){6-8}")
-    lines.append(r"\textbf{Model} & \textbf{Sz} & yes\% & Abst\% & Oth\% & yes\% & Abst\% & Oth\% \\")
+    lines.append(r"\textbf{Model} & \textbf{Sz} & \textbf{yes\%} & \textbf{Oth\%} \\")
     lines.append(r"\midrule")
 
     # Reference rows
     lines.append(
-        rf"\textbf{{Human}} & -- & \cellcolor[HTML]{{D9EAF3}}{_fmt(HUMAN_YES)} & "
-        rf"0.4 & 0.0 & \multicolumn{{3}}{{c}}{{---}} \\"
+        rf"\textbf{{Human}} & -- & \cellcolor[HTML]{{D9EAF3}}{_fmt(HUMAN_YES)} & 0.0 \\"
     )
     lines.append(
-        rf"\textbf{{GT}} & -- & \cellcolor[HTML]{{F7EBD9}}{_fmt(GT_YES)} & "
-        rf"--- & --- & \multicolumn{{3}}{{c}}{{---}} \\"
+        rf"\textbf{{GT}} & -- & \cellcolor[HTML]{{F7EBD9}}{_fmt(GT_YES)} & --- \\"
     )
 
     for grp, members in GROUPS.items():
         lines.append(r"\midrule")
         lines.append(
-            rf"\multicolumn{{8}}{{c}}{{\textit{{{GROUP_LABELS[grp]}}}}}\\"
+            rf"\multicolumn{{4}}{{c}}{{\textit{{{GROUP_LABELS[grp]}}}}}\\"
         )
         lines.append(r"\midrule")
 
@@ -178,16 +185,16 @@ def build_table(blind_dist: dict, inst_dist: dict) -> str:
             name_cell = disp if disp != prev_disp else ""
             prev_disp = disp
 
-            def cells(d: dict) -> str:
-                y  = d.get("yes",   0.0)
-                ab = d.get("abst",  0.0)
-                ot = d.get("other", 0.0)
-                col = color_yes(y)
-                return rf"{col}{_fmt(y)} & {_fmt(ab)} & {_fmt(ot)}"
+            b_yes = blind.get("yes",   0.0)
+            i_yes = inst.get("yes",    0.0)
+            b_oth = blind.get("other", 0.0)
+            i_oth = inst.get("other",  0.0)
 
-            lines.append(
-                rf"{name_cell} & {sz} & {cells(blind)} & {cells(inst)} \\"
-            )
+            col_yes = color_yes(b_yes)
+            yes_cell = rf"{col_yes}{_delta_cell(b_yes, i_yes)}"
+            oth_cell = _delta_cell(b_oth, i_oth)
+
+            lines.append(rf"{name_cell} & {sz} & {yes_cell} & {oth_cell} \\")
 
     lines.append(r"\bottomrule")
     lines.append(r"\end{tabular}")

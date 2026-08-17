@@ -41,10 +41,12 @@ The full four-step generation schema and transformation rules are in Appendix~\r
 
 \paragraph{Models and Inference.}
 
-We evaluate 20 checkpoints spanning scales of 0.6B--32B across three groups of models: \textbf{VLMs}, \textbf{backbone decoders (LM)}, and \textbf{standalone LLMs (LLM)}. 
-Qwen3 LLM is evaluated both with and without Chain-of-Thought reasoning traces (as \textit{Think} model). 
-SA-LLMs are text-only; several share a family with our VLMs in use. 
-Appendix Table~\ref{tab:model_inventory} lists out all models we used for the analysis.
+We evaluate 20 checkpoints spanning scales of 0.6B--32B across three groups:
+\textbf{VLMs} (InternVL3.5, Qwen3-VL, LLaVA-1.5, LLaVA-1.6-Mistral, and LLaVA-1.6-Vicuna);
+\textbf{backbone decoders (LM)}, the language components of the same VLMs with the vision encoder bypassed; and
+\textbf{standalone LLMs} (Qwen3, Qwen2.5-Instruct, and Vicuna).
+Qwen3 is additionally evaluated with chain-of-thought reasoning traces enabled (\textit{Think} mode).
+Appendix Table~\ref{tab:model_inventory} gives full details.
 
 All evaluations are zero-shot at temperature~0 with a maximum of 512 output tokens, run on NVIDIA TITAN RTX GPU. 
 For VLMs, they require inputs of images so we provide a blank 224$\times$224 image, where backbone decoders run the same weights text-only with image-encoder bypassed.  %  (Qwen3 \citep{yang2025qwen3}, Qwen2.5-Instruct, Vicuna)
@@ -101,19 +103,19 @@ For $\djs$, a model below the lower bound is closer to the pooled human distribu
 \textbf{Semantic alignment.} For open-ended questions we compute pairwise Sentence-BERT (\citealt{reimers2019sentence}) cosine similarity using the \texttt{all-mpnet-base-v2} encoder \citep{song2020mpnet}, denoted as SBERT ($S$).
 
 Let $\phi(\cdot)$ denote the encoder and $H$ the set of participants.
-Here, $q$ indexes a single question instance, i.e., one original question under one specific control variant.
-For model $m$ and question instance $q$:
+% Here, $q$ indexes a single question instance under one specific control variant.
+For model $m$ over question instances $Q$:
 \begin{equation}
-  \sHM[m,q] = \frac{1}{|H|}\sum_{h\in H}\cos\!\bigl(\phi(\hat{a}_{m}(q)),\,\phi(a_{h}(q))\bigr),
+  \sHM = \frac{1}{|Q|}\sum_{q\in Q}\frac{1}{|H|}\sum_{h\in H}\cos\!\bigl(\phi(\hat{a}_{m}(q)),\,\phi(a_{h}(q))\bigr),
   \label{eq:sbert}
 \end{equation}
-where $\hat{a}_{m}(q)$ is the model's answer and $a_{h}(q)$ is participant $h$'s answer.
-The human--human (HH) analogue $\sHH[q]$ is the mean pairwise cosine similarity across all participant pairs for the same instance, serving as a per-question \emph{difficulty} measure (low $\sHH$ = high human disagreement).
+where $\hat{a}_{m}(q)$ is the model's answer and $a_{h}(q)$ is participant $h$'s answer to question $q$.
+The human--human analogue $\sHH$ is computed by treating each participant as the model in turn---substituting $a_{h}(q)$ for $\hat{a}_{m}(q)$ and scoring against the remaining participants---then averaging over $h$; the 95\% CI is obtained via bootstrap over this leave-one-out set.
 
 \textbf{Anchoring sensitivity.} We use two complementary views of anchor dependence. First, $\Delta S \equiv S_{\vOrig} - S_{\vPron}$ measures the drop induced by pronominalization per operation or entity subgroup. Larger values indicate that responses are more tightly bound to the specific referent. % The \emph{over-degradation gap} $\Delta S_m - \Delta S_{\text{human}}$ then measures how much more (or less) a model degrades relative to humans on the same subgroup. % ; positive values indicate the model loses alignment faster than human agreement drops when the visual anchor is removed. % ( \S\ref{sec:alignment_main}; Appendix Tables~\ref{tab:op_degradation_per_model}--\ref{tab:ent_degradation_per_model};
 
 % \textbf{Difficulty tracking.}  
-Secondly, for each model $m$, we also compute Spearman $\rho$ between its per-question scores $\sHM[m,q]$ and the pooled human reference $\sHH[q]$ across all question instances. %  ($N{=}183$ 
+Secondly, for each model $m$, we also compute Spearman $\rho$ between its per-question scores $\sHM$ and the pooled human reference $\sHH$ across all question instances. %  ($N{=}183$ 
 % We use Spearman $\rho$ rather than Pearson $r$ because the relationship between $\sHM$ and $\sHH$ is monotone but not necessarily linear, and $\rho$ is robust to skewed score distributions.
 A strong correlation indicates that the model's difficulty profile co-moves with the human semantic scoring on the questions. % ; a low $\pr$ indicates the model fails on structurally different questions than humans do.
 % The human LOO reference is the median $\rho$ obtained by correlating each participant's leave-one-out scores against the remaining participants' pooled reference.

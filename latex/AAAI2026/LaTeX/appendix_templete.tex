@@ -1,0 +1,533 @@
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage[submission]{aaai2027}  % DO NOT CHANGE THIS
+% The serif, sans-serif, and monospaced fonts are loaded automatically by
+% aaai2027.sty (newtxtext, helvet, courier). DO NOT add \usepackage{times},
+% \usepackage{helvet}, \usepackage{courier}, or any other font package.
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\frenchspacing  % DO NOT CHANGE THIS
+%
+% These are recommended to typeset algorithms but not required. See the subsubsection on algorithms. Remove them if you don't have algorithms in your paper.
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{longtable}
+%
+% These are recommended to typeset listings but not required. See the subsubsection on listing. Remove this block if you don't have listings in your paper.
+\usepackage{newfloat}
+\usepackage{listings}
+\DeclareCaptionStyle{ruled}{labelfont=normalfont,labelsep=colon,strut=off} % DO NOT CHANGE THIS
+\lstset{%
+	basicstyle={\footnotesize\ttfamily},% footnotesize acceptable for monospace
+	numbers=left,numberstyle=\footnotesize,xleftmargin=2em,% show line numbers, remove this entire line if you don't want the numbers.
+	aboveskip=0pt,belowskip=0pt,%
+	showstringspaces=false,tabsize=2,breaklines=true}
+\floatstyle{ruled}
+\newfloat{listing}{tb}{lst}{}
+\floatname{listing}{Listing}
+
+%
+% Recommended for better-looking tables
+\usepackage{booktabs}
+
+%
+% Keep the \pdfinfo as shown here. There's no need
+% for you to add the /Title and /Author tags.
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+
+% DISALLOWED PACKAGES
+% \usepackage{authblk} -- This package is specifically forbidden
+% \usepackage{balance} -- This package is specifically forbidden
+% \usepackage{CJK} -- This package is specifically forbidden
+% \usepackage{float} -- This package is specifically forbidden
+% \usepackage{flushend} -- This package is specifically forbidden
+% \usepackage{fullpage} -- This package is specifically forbidden
+% \usepackage{geometry} -- This package is specifically forbidden
+% \usepackage{hyperref} -- This package is specifically forbidden
+% \usepackage{navigator} -- This package is specifically forbidden
+% (or any other package that embeds links such as navigator or hyperref)
+% \usepackage{indentfirst} -- This package is specifically forbidden
+% \usepackage{layout} -- This package is specifically forbidden
+% \usepackage{multicol} -- This package is specifically forbidden
+% \usepackage{nameref} -- This package is specifically forbidden
+% \usepackage{savetrees} -- This package is specifically forbidden
+% \usepackage{setspace} -- This package is specifically forbidden
+% \usepackage{stfloats} -- This package is specifically forbidden
+% \usepackage{tabu} -- This package is specifically forbidden
+% \usepackage{titlesec} -- This package is specifically forbidden
+% \usepackage{tocbibind} -- This package is specifically forbidden
+% \usepackage{ulem} -- This package is specifically forbidden
+% \usepackage{wrapfig} -- This package is specifically forbidden
+% DISALLOWED COMMANDS
+% \nocopyright -- Your paper will not be published if you use this command
+% \addtolength -- This command may not be used
+% \balance -- This command may not be used
+% \baselinestretch -- Your paper will not be published if you use this command
+% \clearpage -- No page breaks of any kind may be used for the final version of your paper
+% \columnsep -- This command may not be used
+% \newpage -- No page breaks of any kind may be used for the final version of your paper
+% \pagebreak -- No page breaks of any kind may be used for the final version of your paper
+% \pagestyle -- This command may not be used
+% \tiny -- This is not an acceptable font size.
+% \vspace{- -- No negative value may be used in proximity of a caption, figure, table, section, subsection, subsubsection, or reference
+% \vskip{- -- No negative value may be used to alter spacing above or below a caption, figure, table, section, subsection, subsubsection, or reference
+
+\setcounter{secnumdepth}{0} %May be changed to 1 or 2 if section numbers are desired.
+
+% The file aaai2027.sty is the style file for AAAI Press
+% proceedings, working notes, and technical reports.
+%
+
+\title{Technical Supplement:\\When Source-Free Adaptation Loses Its Direction: Polarity Anchoring for Cross-Cohort EEG Diagnosis}
+\author{Anonymous submission}
+\affiliations{Anonymous submission}
+
+\begin{document}
+\maketitle
+\appendix
+\setcounter{secnumdepth}{2}
+\section*{Overview}
+
+Sec.~\ref{app:impl} gives the implementation: the three cross-cohort AD datasets, each reduced to a resting-state two-class subset --- the label filtering that fixes the positive class and the sampling-rate rule that drops part of exceptions (Tables~\ref{tab:datasets}); the
+four backbones, each summarized, under one shared head and source fine-tuning recipe fixed a priori (Table~\ref{tab:training}); and the per-method adaptation configuration (Table~\ref{tab:tta_config}) and the compute.
+
+Sec.~\ref{app:results} presents the extended results. Sec.~\ref{app:mech} follows one transfer seed by seed --- the objective is blind to the sign, seeds split between the two orientations, and the anchor collapses them onto the theta-to-alpha band-power ratio (TAR) (Figures~\ref{fig:bimodal}--\ref{fig:loss}). Sec.~\ref{app:val} compares the adapted decision against a corrected source sign, the TAR (alone or shuffled), and the anchor's polarity, and tests significance (Tables~\ref{tab:taronly}--\ref{tab:wilcoxon}). Sec.~\ref{app:when} reports where the change is largest and where it is small or negative --- its dependence on the source's initial orientation (Figure~\ref{fig:srcgain}), full-target evaluation, and the single-feature biomarker landscape (Figure~\ref{fig:psd}).
+
+
+Sec.~\ref{app:gen} reports two experiments beyond the main text: an additional backbone (Table~\ref{tab:codebrain}), and the anchor combined with another baselines such as SHOT and PLUE (Table~\ref{tab:modular}).
+
+% =====================================================
+
+
+
+
+
+\section{Implementation Details}\label{app:impl}
+\subsection{Datasets}
+This section provides additional details on the three EEG cohorts used in our experiments.
+
+\paragraph{CAUEEG}
+CAUEEG~\cite{kim2023deep} is a single-site cohort collected at a Korean memory clinic. It is the largest cohort in our study and serves as the primary source domain. The full release contains $1{,}379$ recordings spanning cognitively normal controls, mild cognitive impairment (MCI), and all-cause dementia across several paradigms, including eyes-closed resting state, photic stimulation, and hyperventilation. Recordings were acquired at $200$\,Hz with a $60$\,Hz line frequency.
+
+We first exclude subjects with MCI. Within the dementia group, we further use the release metadata to identify late-onset AD, requiring both the \texttt{ad} and \texttt{load} flags to be set. This reduces the positive class from $311$ subjects with all-cause dementia to $189$ subjects with AD. The resulting cohort contains $648$ subjects ($459$ controls and $189$ AD) and $96{,}132$ windows.
+
+\paragraph{ADFTD}
+ADFTD~\cite{miltiadous2023dataset} is an eyes-closed resting-state EEG cohort collected at a Greek clinic and released through OpenNeuro as \texttt{ds004504}. Diagnoses are based on DSM criteria, and Mini-Mental State Examination (MMSE) scores are provided. Recordings were acquired at $500$\,Hz with a $50$\,Hz line frequency.
+
+The full cohort contains $88$ subjects ($36$ AD, $23$ frontotemporal dementia(FTD), and $29$ healthy controls). We exclude the FTD group, leaving $65$ subjects ($36$ AD and $29$ controls) and $10{,}735$ windows. ADFTD is the smallest and most class-balanced cohort in our study; consequently, its $14$-subject test set yields relatively discrete subject-level AUC values.
+
+\paragraph{P-ADIC}
+P-ADIC~\cite{shor2021eeg} is an Israeli clinical EEG cohort associated with the $p$-adic analysis. It includes five diagnostic groups: cognitively normal controls, AD, MCI, depression, and schizophrenia. Recordings consist of approximately $20$-min sessions, with longitudinal measurements available for AD (three sessions) and MCI (two sessions). The line frequency is $50$\,Hz.
+
+The native sampling rate is associated with class: all AD recordings were acquired at $500$\,Hz, whereas control recordings were acquired at either $200$ or $500$\,Hz. To prevent sampling rate from acting as a label proxy, we exclude the $26$ control subjects recorded at $200$\,Hz and retain the $70$ controls recorded at $500$\,Hz. All retained recordings are subsequently resampled to $200$\,Hz. We further exclude the MCI, depression, and schizophrenia groups, resulting in $113$ subjects ($70$ controls and $43$ AD) and $28{,}447$ windows.
+
+\paragraph{Preprocessing} The pipeline is identical across cohorts: (1) restrict to the $19$-channel 10--20 montage in the fixed order Fp1, Fp2, F7, F3, Fz, F4, F8, T7, C3, Cz, C4, T8, P7, P3, Pz, P4, P8, O1, O2, dropping any extra channels; (2) FIR band-pass $0.5$--$45$\,Hz with the upper edge capped at the raw Nyquist; (3) notch at the site line frequency ($60$\,Hz for CAUEEG, $50$\,Hz for ADFTD and P-ADIC); (4) resample to $200$\,Hz (5) cut into non-overlapping $5$\,s windows ($1000$ length) in $\mu$V. Per subject we then apply EA\cite{he2019transfer}, which is the whitening the source model is trained and adapted on. Only CAUEEG uses the release's canonical split; ADFTD and P-ADIC use a subject-stratified $6{:}2{:}2$ split. Hence, no subject appears in splits; adaptation and evaluation are ransductive on the target and use no target labels (Table~\ref{tab:datasets}).
+
+
+\begin{table}[t]\centering\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccc}
+\toprule
+Cohort & Train & Val & Test & Total \\
+\midrule
+CAUEEG & 77{,}941 (523) & 8{,}911 (60) & 9{,}280 (65) & 96{,}132 (648) \\
+ADFTD  &  6{,}417 (38)  & 2{,}097 (13) & 2{,}221 (14) & 10{,}735 (65)  \\
+P-ADIC & 17{,}105 (68)  & 6{,}033 (23) & 5{,}309 (22) & 28{,}447 (113) \\
+\bottomrule
+\end{tabular}
+\caption{Window (subject) counts per split; splits are subject-disjoint.}
+\label{tab:datasets}
+\end{table}
+
+
+
+\subsection{Models.}
+The main study uses four pre-trained EEG encoders---LaBraM, CBraMod, CSBrain, and LEAD. Each consumes the $19{\times}1000$ window ($5$\,s at $200$\,Hz); we keep its released architecture, remap only the channel axis onto our montage, mean-pool the encoder's token embeddings to a $200$-dimensional vector.
+
+\paragraph{LaBraM} 
+LaBraM~\cite{jiang2024large} learns discrete neural representations by partitioning EEG into fixed channel patches and training a vector-quantized tokenizer through neural spectrum prediction. A Transformer is then pre-trained to predict the codes of masked patches. The model is trained on approximately $2{,}500$\,h of EEG collected from about large public datasets.
+
+\paragraph{CBraMod} 
+CBraMod~\cite{wang2025cbramod} factorizes self-attention into parallel spatial (channel) and temporal branches, enabling efficient modeling of both dimensions. An asymmetric conditional positional encoding allows the model to accommodate heterogeneous channel configurations and recording lengths. The model is pre-trained by masked EEG reconstruction on the Temple University Hospital EEG Corpus.
+
+\paragraph{CSBrain}
+CSBrain~\cite{zhou2026csbrain} is designed to capture multi-scale spatiotemporal patterns in EEG. It alternates Cross-scale Spatiotemporal Tokenization, which aggregates local multi-scale information into scale-aware tokens, with Structured Sparse Attention, which models long-range dependencies across temporal windows and anatomical regions.
+
+\paragraph{LEAD}
+LEAD~\cite{wang2025lead} is designed specifically for EEG-based Alzheimer's disease detection. Its gated temporal--spatial Transformer accommodates recordings with arbitrary lengths, channel configurations, and sampling rates. The model is pre-trained by self-supervised contrastive learning on a corpus of $13$ datasets ($4$ AD and $9$ other neurological disorders). Because the pre-training corpus includes CAUEEG and P-ADIC, transfers to these targets are marked with a leakage flag ($\dagger$) in the main tables.
+
+
+\paragraph{Source fine-tuning.} Every backbone uses the same head\cite{lee2026test} and fine-tuning recipe (Table~\ref{tab:training}); the encoder is fully fine-tuned. The source seed is $41$, fixed across the ten adaptation seeds.
+
+\begin{table}[t]\centering\small
+\begin{tabular}{p{0.30\linewidth}p{0.62\linewidth}}
+\toprule
+\textbf{Component} & \textbf{Setting} \\
+\midrule
+Encoders & LaBraM, CBraMod, CSBrain, LEAD \\
+Trainin g & Fully fine-tuned \\
+Downstream head & LayerNorm($200$) $\rightarrow$ Linear($200,128$) $\rightarrow$ GELU
+$\rightarrow$ Dropout($0.5$) $\rightarrow$ Linear($128,2$) \\
+Channel Pooling & Mean pooling of token embeddings \\
+Loss & Cross-entropy \\
+Optimizer & AdamW \\
+Learning rate & $10^{-4}$ \\
+Weight decay & $10^{-4}$ \\
+Epochs & $10$ \\
+Batch size & $64$ \\
+Sampling & Subject-balanced (majority class undersampled to minority) \\
+Model selection & Best validation ROC-AUC \\
+Random seed & 1 fixed train seed \\
+\bottomrule
+\end{tabular}
+\caption{Shared downstream head and source fine-tuning configuration (identical across the five
+backbones and three cohorts).}
+\label{tab:training}
+\end{table}
+
+
+\subsection{Baseline} 
+All methods adapt the source model on the unlabeled target. Adaptation uses batch $64$ and ten seeds ($41$--$50$); the source seed ($41$) is fixed. Per-method updated component, optimizer, learning rate, and epochs are in Table~\ref{tab:tta_config}. Our anchor adds $\beta\,\mathcal{L}_{\mathrm{pol}}=-\beta\,\mathrm{corr}(s,b)$ to the NRC objective, with $\beta{=}1$ (not tuned), $s=\ell^{\mathrm{AD}}-\ell^{\mathrm{HC}}$, and $b=\theta/\alpha$
+($4$--$8$\,/\,$8$--$13$\,Hz) precomputed per window.
+
+
+\paragraph{Baseline objectives} We follow each method's original implementation, swapping only the
+network for the EEG backbone. Let $p_u=\mathrm{softmax}(h(g(x_u)))$ be the prediction of window $u$
+and $z_u=g(x_u)$ its representation ($K{=}2$); two terms recur,
+\begin{equation*}
+\mathcal{L}_{\mathrm{ent}}=-\tfrac{1}{N}\sum_{u}\sum_{k}p_{u,k}\log p_{u,k}
+\end{equation*}
+\begin{equation*}
+\mathcal{L}_{\mathrm{div}}=\sum_{k}\bar p_{k}\log\bar p_{k},\quad \bar p=\tfrac{1}{N}\sum_{u}p_u,
+\end{equation*}
+with $\mathcal{L}_{\mathrm{div}}$ the negative entropy of the class marginal.
+
+\paragraph{SHOT~\cite{liang2020we}.} Adapts $g$ with the classifier frozen:
+\begin{equation*}
+\mathcal{L}_{\mathrm{SHOT}}=\mathcal{L}_{\mathrm{ent}}+\mathcal{L}_{\mathrm{div}}
++\beta_{\mathrm{PL}}\,\mathcal{L}_{\mathrm{PL}}
+\end{equation*}
+where $\mathcal{L}_{\mathrm{PL}}=-\tfrac1N\sum_u\log p_{u,\hat y_u}$ is a cross-entropy to centroid
+pseudo-labels $\hat y_u$ (cosine distance to prediction-weighted class centroids, two refinement
+passes).
+
+\paragraph{NRC~\cite{yang2023trust}.} Adapts all parameters, maximizing prediction agreement with reciprocal neighbors in a memory bank of $(z_u,p_u)$ ($K{=}KK{=}5$):
+\begin{equation*}
+\mathcal{L}_{\mathrm{NN}}=-\tfrac{1}{N}\sum_{u}\Big[
+\sum_{v\in\mathcal{N}_K(u)}\!\! A_{uv}\,p_u^{\top}p_v
++\!\!\sum_{v\in\mathcal{N}_K(u)}\sum_{w\in\mathcal{E}_{KK}(v)}\!\! r\,p_u^{\top}p_w\Big],
+\end{equation*}
+\begin{equation*}
+\mathcal{L}_{\mathrm{NRC}}=\mathcal{L}_{\mathrm{NN}}+\mathcal{L}_{\mathrm{div}}
+\end{equation*}
+with affinity $A_{uv}{=}1$ for reciprocal neighbors and $r{=}0.1$ otherwise (the self-term is
+disabled, as released).
+
+\paragraph{PLUE~\cite{litrico2023guiding}} Adds uncertainty-weighted pseudo-labels on an AdaMoCo backbone (momentum encoder, memory queue, weak/strong augmentations). Its objective sums an InfoNCE contrastive term $\mathcal{L}_{\mathrm{ctr}}$, a soft-$k$NN pseudo-label cross-entropy weighted by
+$w_u\propto e^{-H(\tilde p_u)}$, and diversity:
+\begin{equation*}
+\mathcal{L}_{\mathrm{PLUE}}=\mathcal{L}_{\mathrm{ctr}}
++\tfrac{1}{N}\sum_{u} w_u\,\ell(p_u,\hat y_u)+\mathcal{L}_{\mathrm{div}}.
+\end{equation*}
+
+\begin{table*}[t]\centering\small
+\caption{Source-free adaptation configuration of the baselines and Ours. All adapt the source
+model on the unlabeled target once (offline) and are then frozen for inference.}
+\label{tab:tta_config}
+\begin{tabular}{lllp{0.40\linewidth}}
+\toprule
+\textbf{Method} & \textbf{Updated component} & \textbf{Optimizer} & \textbf{Key settings} \\
+\midrule
+Source & None (frozen inference) & --- & Unadapted source checkpoint \\
+SHOT & Feature modules only; classifier frozen & SGD & encoder lr $10^{-4}$, wd $10^{-3}$; $15$ epochs, $\beta_{\mathrm{PL}}=1$ \\NRC & All parameters (layer-wise lr) & SGD & encoder lr $10^{-4}$, head/classifier lr $10^{-3}$; $15$ epochs; $K{=}5$, $KK{=}5$ \\
+PLUE & All parameters (with momentum) & SGD & lr $10^{-4}$ (uniform), wd $5{\times}10^{-4}$; $10$ epochs; queue $16{,}384$, momentum $0.999$, $T{=}0.07$, soft-$k$NN neighbors $5$ \\
+% \textbf{Ours} & NRC components $+$ anchor term & SGD & NRC settings $+$ anchor $\beta{=}1$ \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+
+\subsection{Computational Cost}
+All experiments run on a single workstation --- one NVIDIA RTX~3090 (24\,GB), Intel i7-10700 (16 threads), 64\,GB RAM, PyTorch~2.8 / CUDA~12.8. Adaptation is cheap: the anchor is precomputed once per window, and a single run (one backbone, transfer, seed) takes $\approx$70\,s for LaBraM and $1$--$2$\,min for the heavier state-space backbones, peak GPU memory under $8$\,GB at batch $64$. The full study ($\approx$1{,}500 adaptation runs plus fifteen source models and the ablations) totals $\approx$40 GPU-hours; every number is reproducible on one consumer GPU.
+
+% ==========================================================================
+\section{Extended Results}\label{app:results}
+% ==========================================================================
+Across the twenty-four cross-cohort transfers the adapted models show a recurring pattern. A source
+model whose decision score increases with AD can, after adapting on the unlabeled target, settle
+into either of two states: one that keeps this orientation and a mirror image in which the score is
+reversed, so the same subjects receive the opposite labels. To the self-training objective the two
+states are interchangeable---their loss trajectories overlap---while in oracle AUC they sit
+symmetrically above and below chance. Which state a run reaches is fixed by the random seed: under
+the unmodified objective the ten seeds of a transfer divide between the two branches (eight of ten
+flip in the transfer examined below), and the division persists as training converges. Adding the
+anchor changes only which branch is reached---every seed converges to the orientation in which the
+decision score tracks the TAR, the correlation between the two rising from $0.315$ to $0.945$ over
+adaptation.
+
+The rest of this section examines this pattern. Sec.~\ref{app:mech} follows a single transfer seed
+by seed and iteration by iteration. Sec.~\ref{app:val} compares the adapted decision against a
+corrected source sign, the TAR (on its own or shuffled), and the anchor's polarity.
+Sec.~\ref{app:when} reports the transfers on which the change is largest and those on which it is
+small or negative.
+
+\subsection{Mechanism}\label{app:mech}
+The invariance of the objective to the class swap is a property of the objective, not the optimizer; that the optimizer settles on one branch or the other by seed is empirical. These figures examine one transfer (LaBraM CAUEEG$\to$ADFTD, ten seeds).
+
+\paragraph{Seeds split into a solution and its mirror.} The two orientations are numerically equal
+minima, as the objective's swap-invariance requires: on a converged run, exchanging the two classifier rows leaves
+the objective unchanged to machine precision ($|\Delta|<10^{-6}$) while the oracle AUC mirrors
+($0.688\to0.312$). The seed alone then decides which one a run reaches. Under NRC ($\beta{=}0$) the
+objective is indistinguishable between seeds that stay correct and seeds that flip, while the oracle
+AUC splits into an above- and a below-chance branch (Fig.~\ref{fig:bimodal}); with the anchor
+($\beta{=}1$) all ten seeds converge to the above-chance branch (Fig.~\ref{fig:anchorfix}).
+
+\begin{figure}[h]\centering
+\includegraphics[width=0.92\linewidth]{Appendix/fig_nrc_bimodal.png}
+\caption{NRC sign-flip ($\beta{=}0$; LaBraM CAUEEG$\to$ADFTD, 10 seeds). \emph{Left}: objective;
+\emph{right}: oracle AUC. Seeds that stay correct (red) and flip (blue) are indistinguishable by
+the objective but split above/below chance.}
+\label{fig:bimodal}
+\end{figure}
+
+\begin{figure}[h]\centering
+\includegraphics[width=0.92\linewidth]{Appendix/fig_nrc_anchor_fix.png}
+\caption{Per-seed oracle AUC over adaptation (LaBraM CAUEEG$\to$ADFTD, 10 seeds).
+\emph{Left} NRC ($\beta{=}0$): 8/10 seeds flip below chance (blue); \emph{right} Ours: all 10 stay correct.}
+\label{fig:anchorfix}
+\end{figure}
+
+\paragraph{Trajectories.} The branch is selected during adaptation, not at initialization
+(Fig.~\ref{fig:loss}): NRC is bimodal
+(AUC splits, loss overlaps), the anchor drives every seed to $0.921$, and SHOT---which freezes
+the classifier---is unimodal and inherits whatever orientation the source had.
+
+\begin{figure}[h]\centering
+\includegraphics[width=0.98\linewidth]{Appendix/fig_nrc_shot_loss_iter100.png}
+\caption{Adaptation trajectories (LaBraM CAUEEG$\to$ADFTD, 10 seeds); subject AUC (top row), total
+loss (bottom row). NRC ($\beta{=}0$) is bimodal, the anchor ($\beta{=}1$, Ours) converges all seeds
+to $0.921$, SHOT is unimodal but inherits the source orientation.}
+\label{fig:loss}
+\end{figure}
+
+\subsection{Method Validation}\label{app:val}
+Each control below removes one alternative source of the gain: a corrected source sign; the
+biomarker on its own or shuffled; or the anchor's polarity.
+
+\paragraph{Orientation controls.} Correcting the source orientation from outside does not reach the
+adapted score: neither an oracle sign nor a single post-hoc sign bit from the TAR moves far above
+Source, whereas the anchor---applied during adaptation---does (Table~\ref{tab:orient}).
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lc}
+\toprule
+method & subject AUC \\
+\midrule
+Source (unadapted)     & 0.619 \\
+Oracle source sign     & 0.656 \\
+Post-hoc TAR sign bit  & 0.617 \\
+Ours                   & 0.760 \\
+\bottomrule
+\end{tabular}
+\caption{Orientation controls, subject AUC averaged over the $24$ transfers. A corrected source
+sign (oracle, or one post-hoc bit from the TAR) stays near Source; the anchor does not.}
+\label{tab:orient}
+\end{table}
+
+\paragraph{Biomarker-only Control} The TAR alone (soft-vote, no model) gives subject AUC
+$0.94$ (ADFTD), $0.74$ (CAUEEG), $0.57$ (P-ADIC); Table~\ref{tab:taronly} sets this against Ours,
+averaged over the four backbones and the two source cohorts that map to each target (ten seeds each,
+$80$ runs). The biomarker is already near-ceiling on ADFTD, where Ours matches it, but weak on CAUEEG
+and P-ADIC, where Ours still edges above --- so the gain is not a read-out of the biomarker alone.
+Permuting the TAR across subjects (same marginal) collapses its own AUC to chance ($0.50\pm0.1$ over
+$500$ shuffles), confirming the signal is genuine per-subject structure.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lcc}
+\toprule
+target & TAR-only & Ours \\
+\midrule
+ADFTD  & 0.94 & 0.93 \\
+CAUEEG & 0.74 & 0.76 \\
+P-ADIC & 0.57 & 0.59 \\
+\bottomrule
+\end{tabular}
+\caption{Subject AUC of the TAR alone (soft-vote, no model) against Ours, by target.}
+\label{tab:taronly}
+\end{table}
+
+\paragraph{Adaptation Controls} The gain is the anchor's, not a matter of the adaptation objective:
+we do not sweep the anchor weight $\beta$ (tuning it by target performance would require target
+labels), fixing $\beta{=}1$ and varying only the anchor's sign, $\beta\in\{-1,0,1\}$
+(Table~\ref{tab:beta}, mean over four backbones and six pairs). At $\beta{=}0$ NRC is at chance
+(BAcc $0.556$, AUC $0.561$); at $\beta{=}{+}1$ it is $0.695$/$0.741$; at $\beta{=}{-}1$ it is
+$0.341$/$0.295$. The anchor combined with SHOT and PLUE is reported in Table~\ref{tab:modular}.
+
+\begin{table*}[!t]
+    \centering\scriptsize
+    \setlength{\tabcolsep}{1.2pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{ll cc cc cc cc cc cc}
+    \toprule
+    & & \multicolumn{2}{c}{C$\to$A} & \multicolumn{2}{c}{P$\to$A} & \multicolumn{2}{c}{A$\to$C} & \multicolumn{2}{c}{P$\to$C} & \multicolumn{2}{c}{C$\to$P} & \multicolumn{2}{c}{A$\to$P} \\
+    \cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}\cmidrule(lr){11-12}\cmidrule(lr){13-14}
+    Model & Method & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC \\
+    \midrule
+    LaBraM & Source & 0.613 & 0.711 & 0.548 & 0.548 & 0.602 & 0.677 & 0.596 & 0.619 & \textbf{0.610} & \textbf{0.675} & 0.492 & 0.444 \\
+     & NRC & 0.502{\scriptsize$\pm$.194} & 0.509{\scriptsize$\pm$.222} & 0.436{\scriptsize$\pm$.032} & 0.445{\scriptsize$\pm$.036} & 0.547{\scriptsize$\pm$.059} & 0.552{\scriptsize$\pm$.074} & 0.537{\scriptsize$\pm$.025} & 0.541{\scriptsize$\pm$.039} & 0.519{\scriptsize$\pm$.057} & 0.527{\scriptsize$\pm$.070} & 0.537{\scriptsize$\pm$.034} & 0.549{\scriptsize$\pm$.043} \\
+     & NRC ($\beta{=}1$) & \textbf{0.851}{\scriptsize$\pm$.020} & \textbf{0.936}{\scriptsize$\pm$.006} & \textbf{0.846}{\scriptsize$\pm$.026} & \textbf{0.933}{\scriptsize$\pm$.015} & \textbf{0.655}{\scriptsize$\pm$.006} & \textbf{0.706}{\scriptsize$\pm$.003} & \textbf{0.656}{\scriptsize$\pm$.011} & \textbf{0.705}{\scriptsize$\pm$.003} & 0.579{\scriptsize$\pm$.006} & 0.603{\scriptsize$\pm$.004} & \textbf{0.543}{\scriptsize$\pm$.004} & \textbf{0.564}{\scriptsize$\pm$.003} \\
+     & NRC ($\beta{=}{-}1$) & 0.145{\scriptsize$\pm$.021} & 0.075{\scriptsize$\pm$.021} & 0.155{\scriptsize$\pm$.027} & 0.086{\scriptsize$\pm$.038} & 0.334{\scriptsize$\pm$.011} & 0.296{\scriptsize$\pm$.012} & 0.346{\scriptsize$\pm$.014} & 0.303{\scriptsize$\pm$.012} & 0.463{\scriptsize$\pm$.023} & 0.447{\scriptsize$\pm$.027} & 0.448{\scriptsize$\pm$.012} & 0.441{\scriptsize$\pm$.026} \\
+    \midrule
+    CBraMod & Source & 0.645 & 0.842 & 0.542 & 0.599 & 0.601 & 0.623 & 0.568 & 0.647 & 0.539 & 0.538 & 0.518 & 0.560 \\
+     & NRC & 0.817{\scriptsize$\pm$.008} & 0.807{\scriptsize$\pm$.016} & 0.490{\scriptsize$\pm$.065} & 0.462{\scriptsize$\pm$.068} & 0.494{\scriptsize$\pm$.043} & 0.458{\scriptsize$\pm$.075} & 0.595{\scriptsize$\pm$.036} & 0.599{\scriptsize$\pm$.035} & \textbf{0.584}{\scriptsize$\pm$.012} & \textbf{0.601}{\scriptsize$\pm$.024} & 0.490{\scriptsize$\pm$.035} & 0.438{\scriptsize$\pm$.059} \\
+     & NRC ($\beta{=}1$) & \textbf{0.888}{\scriptsize$\pm$.029} & \textbf{0.928}{\scriptsize$\pm$.009} & \textbf{0.859}{\scriptsize$\pm$.004} & \textbf{0.880}{\scriptsize$\pm$.008} & \textbf{0.641}{\scriptsize$\pm$.015} & \textbf{0.680}{\scriptsize$\pm$.013} & \textbf{0.645}{\scriptsize$\pm$.007} & \textbf{0.700}{\scriptsize$\pm$.005} & 0.520{\scriptsize$\pm$.013} & 0.571{\scriptsize$\pm$.008} & \textbf{0.553}{\scriptsize$\pm$.005} & \textbf{0.590}{\scriptsize$\pm$.004} \\
+     & NRC ($\beta{=}{-}1$) & 0.159{\scriptsize$\pm$.045} & 0.097{\scriptsize$\pm$.074} & 0.196{\scriptsize$\pm$.011} & 0.179{\scriptsize$\pm$.009} & 0.482{\scriptsize$\pm$.053} & 0.285{\scriptsize$\pm$.013} & 0.319{\scriptsize$\pm$.015} & 0.324{\scriptsize$\pm$.018} & 0.457{\scriptsize$\pm$.023} & 0.422{\scriptsize$\pm$.029} & 0.461{\scriptsize$\pm$.023} & 0.403{\scriptsize$\pm$.024} \\
+    \midrule
+    CSBrain & Source & 0.629 & 0.595 & 0.501 & 0.561 & 0.635 & 0.674 & 0.575 & 0.579 & 0.516 & 0.536 & 0.428 & 0.405 \\
+     & NRC & 0.683{\scriptsize$\pm$.141} & 0.717{\scriptsize$\pm$.153} & 0.501{\scriptsize$\pm$.045} & 0.530{\scriptsize$\pm$.052} & \textbf{0.683}{\scriptsize$\pm$.038} & 0.637{\scriptsize$\pm$.059} & 0.533{\scriptsize$\pm$.081} & 0.521{\scriptsize$\pm$.072} & 0.501{\scriptsize$\pm$.095} & 0.520{\scriptsize$\pm$.129} & 0.485{\scriptsize$\pm$.049} & 0.514{\scriptsize$\pm$.061} \\
+     & NRC ($\beta{=}1$) & \textbf{0.861}{\scriptsize$\pm$.029} & \textbf{0.927}{\scriptsize$\pm$.021} & \textbf{0.861}{\scriptsize$\pm$.007} & \textbf{0.922}{\scriptsize$\pm$.011} & 0.634{\scriptsize$\pm$.016} & \textbf{0.691}{\scriptsize$\pm$.009} & \textbf{0.653}{\scriptsize$\pm$.053} & \textbf{0.739}{\scriptsize$\pm$.015} & \textbf{0.530}{\scriptsize$\pm$.018} & \textbf{0.544}{\scriptsize$\pm$.035} & \textbf{0.564}{\scriptsize$\pm$.013} & \textbf{0.606}{\scriptsize$\pm$.008} \\
+     & NRC ($\beta{=}{-}1$) & 0.162{\scriptsize$\pm$.052} & 0.122{\scriptsize$\pm$.088} & 0.271{\scriptsize$\pm$.187} & 0.076{\scriptsize$\pm$.017} & 0.335{\scriptsize$\pm$.059} & 0.311{\scriptsize$\pm$.030} & 0.358{\scriptsize$\pm$.094} & 0.286{\scriptsize$\pm$.008} & 0.407{\scriptsize$\pm$.012} & 0.392{\scriptsize$\pm$.015} & 0.404{\scriptsize$\pm$.021} & 0.403{\scriptsize$\pm$.022} \\
+    \midrule
+    LEAD$^\dagger$ & Source & 0.721 & 0.842 & 0.458 & 0.450 & 0.717 & 0.789 & 0.514 & 0.546 & 0.419 & 0.315 & 0.570 & 0.625 \\
+     & NRC & 0.744{\scriptsize$\pm$.014} & 0.830{\scriptsize$\pm$.003} & 0.567{\scriptsize$\pm$.011} & 0.574{\scriptsize$\pm$.021} & \textbf{0.766}{\scriptsize$\pm$.016} & \textbf{0.860}{\scriptsize$\pm$.013} & 0.407{\scriptsize$\pm$.040} & 0.374{\scriptsize$\pm$.054} & 0.297{\scriptsize$\pm$.009} & 0.261{\scriptsize$\pm$.010} & \textbf{0.623}{\scriptsize$\pm$.010} & \textbf{0.639}{\scriptsize$\pm$.005} \\
+     & NRC ($\beta{=}1$) & \textbf{0.879}{\scriptsize$\pm$.004} & \textbf{0.951}{\scriptsize$\pm$.001} & \textbf{0.878}{\scriptsize$\pm$.027} & \textbf{0.926}{\scriptsize$\pm$.001} & 0.718{\scriptsize$\pm$.003} & 0.746{\scriptsize$\pm$.004} & \textbf{0.753}{\scriptsize$\pm$.012} & \textbf{0.764}{\scriptsize$\pm$.006} & \textbf{0.503}{\scriptsize$\pm$.007} & \textbf{0.548}{\scriptsize$\pm$.007} & 0.610{\scriptsize$\pm$.004} & 0.623{\scriptsize$\pm$.005} \\
+     & NRC ($\beta{=}{-}1$) & 0.746{\scriptsize$\pm$.001} & 0.817{\scriptsize$\pm$.002} & 0.186{\scriptsize$\pm$.000} & 0.087{\scriptsize$\pm$.001} & 0.319{\scriptsize$\pm$.003} & 0.275{\scriptsize$\pm$.005} & 0.270{\scriptsize$\pm$.002} & 0.216{\scriptsize$\pm$.003} & 0.320{\scriptsize$\pm$.013} & 0.306{\scriptsize$\pm$.015} & 0.452{\scriptsize$\pm$.002} & 0.440{\scriptsize$\pm$.002} \\
+    \bottomrule\end{tabular}
+    \caption{Anchor-sign direction (window-level), six ordered cross-cohort pairs
+    (C=CAUEEG, A=ADFTD, P=P-ADIC), mean\,$\pm$\,std over ten seeds; \emph{Source}: unadapted.
+    $\dagger$: LEAD's pre-training data include CAUEEG and P-ADIC.}
+    \label{tab:beta}
+    \end{table*}
+
+\paragraph{Paired Wilcoxon analysis.} Over the $n{=}24$ paired transfers (one value per cell)
+Ours vs.\ each baseline is significant at $p<0.001$; NRC and PLUE are below Source ($p=0.042$,
+$p=0.003$); SHOT vs.\ Source is $p=0.076$.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lcccc}
+\toprule
+comparison & $n$ & median $\Delta$AUC & $p$ \\
+\midrule
+Source vs SHOT & 24 & $-0.027$ & $p=0.076$ (n.s.) \\
+Source vs NRC  & 24 & $-0.044$ & $p=0.042$ \\
+Source vs PLUE & 24 & $-0.072$ & $p=0.003$ \\
+Ours vs NRC    & 24 & $+0.149$ & $p<0.001$ \\
+\bottomrule
+\end{tabular}
+\caption{Wilcoxon signed-rank, subject AUC, one value per cell, $n{=}24$ transfers.}
+\label{tab:wilcoxon}
+\end{table}
+
+\subsection{Operating Regime}\label{app:when}
+This section reports where the anchor helps and where it is limited.
+
+\paragraph{Source Orientation} Across the 24 transfers the gain (Ours$-$Source)
+correlates $-0.49$ with the pre-adaptation Source AUC (max $+0.46$ at a below-chance source); 2/24
+already-aligned transfers show a small negative gain (Fig.~\ref{fig:srcgain}). Because adaptation and
+evaluation are transductive and label-free, the full target may be used: on all $65$ ADFTD subjects
+(not the $14$-subject test split) LaBraM gives Ours $\mathbf{0.844}$, Source $0.696$, NRC $0.627$.
+
+\begin{figure}[h]\centering
+\includegraphics[width=0.95\linewidth]{Appendix/fig_source_vs_gain.png}
+\caption{Gain (Ours$-$Source) vs.\ pre-adaptation Source AUC across the 24 transfers
+($\mathrm{corr}=-0.49$).}
+\label{fig:srcgain}
+\end{figure}
+
+\paragraph{Single-feature Biomarkers} As a single-feature subject classifier (oracle sign)
+the TAR gives AUC $0.737$ (CAUEEG), $0.938$ (ADFTD), above $\alpha$-band power
+($0.621$/$0.812$); on P-ADIC both are near chance (TAR $0.571$). Power spectra AD
+vs.\ HC are in Fig.~\ref{fig:psd}.
+
+\begin{figure*}[h]\centering
+\includegraphics[width=0.92\linewidth]{Appendix/fig_psd_ad_hc.png}
+\caption{Channel-mean power spectrum (2--30\,Hz) for AD vs.\ HC, per cohort.}
+\label{fig:psd}
+\end{figure*}
+
+
+\section{Additional Experiments}\label{app:gen}
+All additional experiments use the same six cohort pairs as the main table (C=CAUEEG, A=ADFTD, P=P-ADIC), reported at the window level. We report two further experiments: (1) a fifth backbone, CodeBrain (Table~\ref{tab:codebrain}); (2) combination with SHOT and PLUE (Table~\ref{tab:modular}).
+    
+    
+\paragraph{Additional backbone} On CodeBrain, Source/NRC/Ours give BAcc $0.570$/$0.600$/$0.698$
+and AUC $0.635$/$0.614$/$0.730$ (mean over six pairs; Table~\ref{tab:codebrain}). Subject-level mean
+AUC is $0.763$ (four-backbone mean $0.760$).
+
+\begin{table*}[!t]
+    \centering\scriptsize
+    \setlength{\tabcolsep}{1.2pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{ll cc cc cc cc cc cc}
+    \toprule
+    & & \multicolumn{2}{c}{C$\to$A} & \multicolumn{2}{c}{P$\to$A} & \multicolumn{2}{c}{A$\to$C} & \multicolumn{2}{c}{P$\to$C} & \multicolumn{2}{c}{C$\to$P} & \multicolumn{2}{c}{A$\to$P} \\
+    \cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}\cmidrule(lr){11-12}\cmidrule(lr){13-14}
+    Model & Method & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC \\
+    \midrule
+    CodeBrain & Source & 0.669 & 0.816 & 0.575 & 0.684 & 0.535 & 0.588 & 0.570 & 0.569 & 0.555 & 0.588 & 0.518 & 0.565 \\
+     & SHOT & 0.740{\scriptsize$\pm$.003} & 0.798{\scriptsize$\pm$.004} & 0.700{\scriptsize$\pm$.003} & 0.721{\scriptsize$\pm$.005} & 0.559{\scriptsize$\pm$.011} & 0.598{\scriptsize$\pm$.014} & 0.596{\scriptsize$\pm$.007} & 0.612{\scriptsize$\pm$.005} & 0.586{\scriptsize$\pm$.003} & 0.624{\scriptsize$\pm$.003} & 0.543{\scriptsize$\pm$.019} & 0.549{\scriptsize$\pm$.015} \\
+     & NRC & 0.792{\scriptsize$\pm$.016} & 0.858{\scriptsize$\pm$.012} & 0.669{\scriptsize$\pm$.019} & 0.674{\scriptsize$\pm$.031} & 0.481{\scriptsize$\pm$.050} & 0.495{\scriptsize$\pm$.060} & 0.553{\scriptsize$\pm$.014} & 0.547{\scriptsize$\pm$.018} & \textbf{0.595}{\scriptsize$\pm$.005} & \textbf{0.636}{\scriptsize$\pm$.004} & 0.509{\scriptsize$\pm$.049} & 0.476{\scriptsize$\pm$.057} \\
+     & PLUE & 0.715{\scriptsize$\pm$.017} & 0.812{\scriptsize$\pm$.008} & 0.629{\scriptsize$\pm$.008} & 0.639{\scriptsize$\pm$.005} & 0.550{\scriptsize$\pm$.019} & 0.561{\scriptsize$\pm$.029} & 0.506{\scriptsize$\pm$.019} & 0.468{\scriptsize$\pm$.016} & 0.563{\scriptsize$\pm$.015} & 0.594{\scriptsize$\pm$.007} & 0.563{\scriptsize$\pm$.017} & \textbf{0.619}{\scriptsize$\pm$.027} \\
+     & Ours & \textbf{0.904}{\scriptsize$\pm$.005} & \textbf{0.947}{\scriptsize$\pm$.001} & \textbf{0.812}{\scriptsize$\pm$.004} & \textbf{0.880}{\scriptsize$\pm$.006} & \textbf{0.675}{\scriptsize$\pm$.015} & \textbf{0.692}{\scriptsize$\pm$.013} & \textbf{0.650}{\scriptsize$\pm$.008} & \textbf{0.664}{\scriptsize$\pm$.015} & 0.569{\scriptsize$\pm$.005} & 0.630{\scriptsize$\pm$.005} & \textbf{0.577}{\scriptsize$\pm$.005} & 0.566{\scriptsize$\pm$.003} \\
+    \bottomrule\end{tabular}
+    \caption{Fifth backbone, CodeBrain (window-level), six ordered pairs,
+    mean\,$\pm$\,std over ten seeds; \emph{Source}: unadapted.}
+    \label{tab:codebrain}
+    \end{table*}
+    
+    
+    
+    
+\paragraph{Other baselines} Table~\ref{tab:modular} reports the anchor added to SHOT and PLUE (mean over four backbones and six pairs). With SHOT, BAcc $0.562{\to}0.696$ and AUC $0.577{\to}0.737$. With PLUE, AUC $0.523{\to}0.703$ and BAcc $0.519{\to}0.578$ ($9$ of $24$ BAcc cells at chance).
+
+\begin{table*}[!t]
+    \centering\scriptsize
+    \setlength{\tabcolsep}{1.2pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{ll cc cc cc cc cc cc}
+    \toprule
+    & & \multicolumn{2}{c}{C$\to$A} & \multicolumn{2}{c}{P$\to$A} & \multicolumn{2}{c}{A$\to$C} & \multicolumn{2}{c}{P$\to$C} & \multicolumn{2}{c}{C$\to$P} & \multicolumn{2}{c}{A$\to$P} \\
+    \cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}\cmidrule(lr){11-12}\cmidrule(lr){13-14}
+    Model & Method & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC & BAcc & AUC \\
+    \midrule
+    LaBraM & Source & 0.613 & 0.711 & 0.548 & 0.548 & 0.602 & 0.677 & 0.596 & 0.619 & 0.610 & 0.675 & 0.493 & 0.444 \\
+     & SHOT & 0.545{\scriptsize$\pm$.056} & 0.548{\scriptsize$\pm$.054} & 0.530{\scriptsize$\pm$.050} & 0.536{\scriptsize$\pm$.058} & 0.638{\scriptsize$\pm$.015} & 0.652{\scriptsize$\pm$.016} & 0.626{\scriptsize$\pm$.013} & 0.656{\scriptsize$\pm$.016} & 0.633{\scriptsize$\pm$.032} & 0.687{\scriptsize$\pm$.043} & 0.476{\scriptsize$\pm$.030} & 0.470{\scriptsize$\pm$.042} \\
+     & SHOT ($\beta{=}1$) & 0.878{\scriptsize$\pm$.009} & 0.940{\scriptsize$\pm$.005} & 0.836{\scriptsize$\pm$.028} & 0.920{\scriptsize$\pm$.016} & 0.663{\scriptsize$\pm$.006} & 0.714{\scriptsize$\pm$.003} & 0.675{\scriptsize$\pm$.008} & 0.713{\scriptsize$\pm$.004} & 0.578{\scriptsize$\pm$.004} & 0.605{\scriptsize$\pm$.003} & 0.552{\scriptsize$\pm$.004} & 0.574{\scriptsize$\pm$.004} \\
+     & PLUE & 0.506{\scriptsize$\pm$.010} & 0.637{\scriptsize$\pm$.153} & 0.500{\scriptsize$\pm$.000} & 0.518{\scriptsize$\pm$.072} & 0.500{\scriptsize$\pm$.000} & 0.574{\scriptsize$\pm$.079} & 0.500{\scriptsize$\pm$.000} & 0.496{\scriptsize$\pm$.055} & 0.500{\scriptsize$\pm$.000} & 0.544{\scriptsize$\pm$.043} & 0.500{\scriptsize$\pm$.000} & 0.503{\scriptsize$\pm$.015} \\
+     & PLUE ($\beta{=}1$) & 0.821{\scriptsize$\pm$.108} & 0.919{\scriptsize$\pm$.029} & 0.595{\scriptsize$\pm$.143} & 0.809{\scriptsize$\pm$.126} & 0.548{\scriptsize$\pm$.073} & 0.710{\scriptsize$\pm$.008} & 0.600{\scriptsize$\pm$.070} & 0.709{\scriptsize$\pm$.008} & 0.539{\scriptsize$\pm$.029} & 0.577{\scriptsize$\pm$.019} & 0.517{\scriptsize$\pm$.021} & 0.559{\scriptsize$\pm$.012} \\
+    \midrule
+    CBraMod & Source & 0.645 & 0.842 & 0.542 & 0.599 & 0.601 & 0.623 & 0.568 & 0.647 & 0.539 & 0.538 & 0.518 & 0.560 \\
+     & SHOT & 0.705{\scriptsize$\pm$.058} & 0.778{\scriptsize$\pm$.034} & 0.458{\scriptsize$\pm$.023} & 0.417{\scriptsize$\pm$.027} & 0.542{\scriptsize$\pm$.026} & 0.545{\scriptsize$\pm$.026} & 0.553{\scriptsize$\pm$.018} & 0.544{\scriptsize$\pm$.024} & 0.530{\scriptsize$\pm$.022} & 0.568{\scriptsize$\pm$.025} & 0.531{\scriptsize$\pm$.022} & 0.508{\scriptsize$\pm$.030} \\
+     & SHOT ($\beta{=}1$) & 0.914{\scriptsize$\pm$.006} & 0.919{\scriptsize$\pm$.003} & 0.860{\scriptsize$\pm$.003} & 0.870{\scriptsize$\pm$.005} & 0.658{\scriptsize$\pm$.007} & 0.690{\scriptsize$\pm$.011} & 0.637{\scriptsize$\pm$.006} & 0.684{\scriptsize$\pm$.006} & 0.531{\scriptsize$\pm$.008} & 0.580{\scriptsize$\pm$.004} & 0.559{\scriptsize$\pm$.006} & 0.595{\scriptsize$\pm$.005} \\
+     & PLUE & 0.502{\scriptsize$\pm$.008} & 0.472{\scriptsize$\pm$.095} & 0.504{\scriptsize$\pm$.013} & 0.358{\scriptsize$\pm$.062} & 0.517{\scriptsize$\pm$.035} & 0.435{\scriptsize$\pm$.146} & 0.499{\scriptsize$\pm$.004} & 0.401{\scriptsize$\pm$.112} & 0.506{\scriptsize$\pm$.012} & 0.530{\scriptsize$\pm$.030} & 0.509{\scriptsize$\pm$.018} & 0.518{\scriptsize$\pm$.031} \\
+     & PLUE ($\beta{=}1$) & 0.565{\scriptsize$\pm$.130} & 0.858{\scriptsize$\pm$.026} & 0.562{\scriptsize$\pm$.094} & 0.850{\scriptsize$\pm$.054} & 0.575{\scriptsize$\pm$.063} & 0.686{\scriptsize$\pm$.021} & 0.560{\scriptsize$\pm$.075} & 0.705{\scriptsize$\pm$.038} & 0.518{\scriptsize$\pm$.020} & 0.565{\scriptsize$\pm$.021} & 0.518{\scriptsize$\pm$.031} & 0.588{\scriptsize$\pm$.024} \\
+    \midrule
+    CSBrain & Source & 0.629 & 0.595 & 0.501 & 0.561 & 0.635 & 0.674 & 0.575 & 0.579 & 0.516 & 0.536 & 0.428 & 0.405 \\
+     & SHOT & 0.579{\scriptsize$\pm$.068} & 0.643{\scriptsize$\pm$.063} & 0.539{\scriptsize$\pm$.029} & 0.548{\scriptsize$\pm$.038} & 0.676{\scriptsize$\pm$.024} & 0.663{\scriptsize$\pm$.028} & 0.590{\scriptsize$\pm$.015} & 0.594{\scriptsize$\pm$.029} & 0.497{\scriptsize$\pm$.018} & 0.509{\scriptsize$\pm$.024} & 0.462{\scriptsize$\pm$.010} & 0.491{\scriptsize$\pm$.016} \\
+     & SHOT ($\beta{=}1$) & 0.874{\scriptsize$\pm$.015} & 0.881{\scriptsize$\pm$.030} & 0.842{\scriptsize$\pm$.115} & 0.927{\scriptsize$\pm$.008} & 0.685{\scriptsize$\pm$.007} & 0.739{\scriptsize$\pm$.010} & 0.681{\scriptsize$\pm$.010} & 0.731{\scriptsize$\pm$.012} & 0.500{\scriptsize$\pm$.014} & 0.537{\scriptsize$\pm$.018} & 0.520{\scriptsize$\pm$.011} & 0.559{\scriptsize$\pm$.014} \\
+     & PLUE & 0.507{\scriptsize$\pm$.027} & 0.539{\scriptsize$\pm$.095} & 0.502{\scriptsize$\pm$.005} & 0.471{\scriptsize$\pm$.153} & 0.500{\scriptsize$\pm$.000} & 0.584{\scriptsize$\pm$.139} & 0.502{\scriptsize$\pm$.006} & 0.442{\scriptsize$\pm$.179} & 0.507{\scriptsize$\pm$.009} & 0.524{\scriptsize$\pm$.062} & 0.500{\scriptsize$\pm$.000} & 0.500{\scriptsize$\pm$.018} \\
+     & PLUE ($\beta{=}1$) & 0.572{\scriptsize$\pm$.110} & 0.802{\scriptsize$\pm$.101} & 0.500{\scriptsize$\pm$.000} & 0.884{\scriptsize$\pm$.018} & 0.500{\scriptsize$\pm$.000} & 0.660{\scriptsize$\pm$.030} & 0.515{\scriptsize$\pm$.044} & 0.684{\scriptsize$\pm$.051} & 0.500{\scriptsize$\pm$.000} & 0.550{\scriptsize$\pm$.035} & 0.500{\scriptsize$\pm$.001} & 0.579{\scriptsize$\pm$.025} \\
+    \midrule
+    LEAD$^\dagger$ & Source & 0.721 & 0.842 & 0.458 & 0.450 & 0.717 & 0.789 & 0.514 & 0.546 & 0.419 & 0.315 & 0.570 & 0.625 \\
+     & SHOT & 0.771{\scriptsize$\pm$.002} & 0.854{\scriptsize$\pm$.001} & 0.566{\scriptsize$\pm$.006} & 0.570{\scriptsize$\pm$.009} & 0.766{\scriptsize$\pm$.003} & 0.854{\scriptsize$\pm$.002} & 0.389{\scriptsize$\pm$.014} & 0.342{\scriptsize$\pm$.019} & 0.304{\scriptsize$\pm$.004} & 0.257{\scriptsize$\pm$.002} & 0.585{\scriptsize$\pm$.001} & 0.605{\scriptsize$\pm$.001} \\
+     & SHOT ($\beta{=}1$) & 0.884{\scriptsize$\pm$.002} & 0.953{\scriptsize$\pm$.000} & 0.901{\scriptsize$\pm$.006} & 0.920{\scriptsize$\pm$.001} & 0.698{\scriptsize$\pm$.002} & 0.739{\scriptsize$\pm$.001} & 0.710{\scriptsize$\pm$.002} & 0.758{\scriptsize$\pm$.002} & 0.466{\scriptsize$\pm$.003} & 0.513{\scriptsize$\pm$.002} & 0.603{\scriptsize$\pm$.001} & 0.621{\scriptsize$\pm$.001} \\
+     & PLUE & 0.787{\scriptsize$\pm$.029} & 0.857{\scriptsize$\pm$.023} & 0.451{\scriptsize$\pm$.006} & 0.416{\scriptsize$\pm$.007} & 0.767{\scriptsize$\pm$.006} & 0.856{\scriptsize$\pm$.004} & 0.429{\scriptsize$\pm$.023} & 0.473{\scriptsize$\pm$.019} & 0.371{\scriptsize$\pm$.011} & 0.300{\scriptsize$\pm$.010} & 0.584{\scriptsize$\pm$.006} & 0.603{\scriptsize$\pm$.005} \\
+     & PLUE ($\beta{=}1$) & 0.851{\scriptsize$\pm$.021} & 0.876{\scriptsize$\pm$.020} & 0.590{\scriptsize$\pm$.016} & 0.639{\scriptsize$\pm$.015} & 0.757{\scriptsize$\pm$.006} & 0.843{\scriptsize$\pm$.004} & 0.656{\scriptsize$\pm$.004} & 0.730{\scriptsize$\pm$.003} & 0.451{\scriptsize$\pm$.004} & 0.473{\scriptsize$\pm$.008} & 0.567{\scriptsize$\pm$.009} & 0.605{\scriptsize$\pm$.010} \\
+    \bottomrule\end{tabular}
+    \caption{Anchor combined with SHOT and PLUE (window-level), six ordered pairs,
+    mean\,$\pm$\,std over ten seeds; \emph{Source}: unadapted.
+    $\dagger$: LEAD's pre-training data include CAUEEG and P-ADIC.}
+    \label{tab:modular}
+    \end{table*}
+
+
+
+\bibliography{aaai2027}
+
+\end{document}

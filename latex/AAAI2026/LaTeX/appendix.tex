@@ -93,7 +93,7 @@
 % proceedings, working notes, and technical reports.
 %
 
-\title{Technical Supplement:\\When Models Answer Without Seeing: Human-Calibrated Diagnosis of Linguistic Prior Exploitation in Vision-Language Models}
+\title{When You Can't See: VLM-Human Prior (Mis)Alignment When Imagining Responses to Visual Questions Without Images}
 \author{Anonymous submission}
 \affiliations{Anonymous submission}
 
@@ -115,80 +115,28 @@
 \setcounter{figure}{0}
 \setcounter{table}{0}
 
-\section{Dataset Details}
+\section*{Overview}
+
+Sec.~\ref{app:data} provides dataset details: the question taxonomy used for group-level analysis (Table~\ref{tab:taxonomy}), the human-study subset composition, and the GPT-4.1-mini control question extraction pipeline (\ref{app:ctl}) together with a t-SNE embedding coverage check of the 113-question subset.
+
+Sec.~\ref{app:human_study} details the human study protocol and statistics (Figure~\ref{fig:human_stats}), and the full answer preprocessing pipeline applied to both human and model responses (\ref{app:preprocessing}).
+
+Sec.~\ref{app:model_inventory} gives a complete inventory of all VLMs, backbone decoders, and standalone LLMs evaluated (Table~\ref{tab:model_inventory}).
+
+Sec.~\ref{app:abstention} describes the abstention classifier and reports abstention rates broken down by question type (Figure~\ref{fig:abstention_confidence_hist}).
+
+Sec.~\ref{app:inst} reports instruction effects: yes/no distributions, HM alignment at all scales, blind-vs-instruction distribution shifts, and count-answer transition plots across all model groups.
+
+Sec.~\ref{app:op_degradation_gap} presents the pronominalization degradation gap broken down by operation type and entity type, with per-model and class-level tables.
+
+Sec.~\ref{app:ablation} gives the image-condition ablation results across black, gray, noise, and white image baselines (Table~\ref{tab:image_ablation_main}).
+
+Sec.~\ref{app:scale_variant} covers all alignment analyses: per-model agreement across metrics (\ref{app:comprehensive_metrics}), full-scale alignment metrics and rankings (\ref{app:scale_full_table}, \ref{app:alignment_ranking_full}), per-question difficulty concordance (\ref{app:alignment_r}), SBERT length-normalization robustness (\ref{app:chrf_human}), and family-level Wilcoxon tests (\ref{app:degradation}).
+
+Sec.~\ref{app:thinking} examines whether extended chain-of-thought reasoning improves human-model alignment, with scale-level Wilcoxon results (Table~\ref{tab:thinking_wilcoxon}) and a reasoning-trace length analysis (Figure~\ref{fig:think_abs_vs_length}).
+
+\section{Dataset Preparation}
 \label{app:data}
-
-\subsection{Question Taxonomy}
-\label{app:taxonomy}
-
-% Table~\ref{tab:taxonomy} lists all operation and entity categories used for group-level analysis.
-
-\begin{table*}[ht]
-\centering
-{\fontsize{9}{10}\selectfont
-\renewcommand{\arraystretch}{0.95}
-\setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\textwidth}{@{}p{0.16\textwidth}cXp{0.38\textwidth}@{}}
-\toprule
-\textbf{Category} & \textbf{\textit{N}} & \textbf{Description} & \textbf{Example} \\
-\midrule
-\rowcolor{gray!12}
-\multicolumn{4}{c}{\textbf{\textit{Operations}}} \\
-\midrule
-\rowcolor{gray!6}
-Attribute       & 41 & Color, material, type, age, name, or location. & \textit{What type of computer is the cat using?} \\
-Count           & 22 & Quantity or number of entities. & \textit{How many benches are in the background?} \\
-\rowcolor{gray!6}
-Spatial         & 12 & Relative position, direction, or location. & \textit{Which way is the arrow pointing?} \\
-Identity        & 9  & What or who a specific entity is. & \textit{What type of bear is this?} \\
-\rowcolor{gray!6}
-Action          & 7  & What an entity is doing or engaged in. & \textit{What is the elephant eating?} \\
-Existence       & 7  & Whether an entity is present in the scene. & \textit{Is there a couch?} \\
-\rowcolor{gray!6}
-Text Reading    & 5  & Reading visible writing, signs, labels, or logos. & \textit{What does the shirt say?} \\
-World Knowledge & 4  & Factual or commonsense knowledge. & \textit{Where does the airplane hail from?} \\
-\rowcolor{gray!6}
-Temporal        & 3  & Duration, age, or temporal ordering of events. & \textit{How far do the girls have to run?} \\
-Comparison      & 2  & Comparative or superlative judgment. & \textit{What would these two do if the sun got too bright?} \\
-\rowcolor{gray!6}
-Causality       & 1  & Reason or causal explanation. & \textit{Why is the man wearing protective gear?} \\
-\midrule
-\rowcolor{gray!12}
-\multicolumn{4}{c}{\textbf{\textit{Entities}}} \\
-\midrule
-\rowcolor{gray!6}
-Object      & 27 & General physical objects. & \textit{Which way is the arrow pointing?} \\
-Person      & 26 & Human subjects, including people, faces, and body parts. & \textit{Which hand is holding the thing?} \\
-\rowcolor{gray!6}
-Animal      & 17 & Non-human living creatures. & \textit{What color is this horse's head and tail hair?} \\
-Food        & 16 & Food and drink items, including prepared dishes. & \textit{What vegetable is in the bowl?} \\
-\rowcolor{gray!6}
-Other       & 9  & Questions that do not fit any other entity category. & \textit{What kind of information does the book contain?} \\
-Place       & 5  & Locations, scenes, settings, or environments. & \textit{What is the name of the store closest to the van?} \\
-\rowcolor{gray!6}
-Product     & 5  & Manufactured objects such as furniture, tools, or appliances. & \textit{What type of computer is the cat using?} \\
-Vehicle     & 4  & Cars, buses, bicycles, aircraft, or watercraft. & \textit{What formation are the aircraft in?} \\
-\rowcolor{gray!6}
-Text        & 4  & Visible written content such as signs, labels, or logos. & \textit{What language is the writing at the top of the bus in?} \\
-\bottomrule
-\end{tabularx}
-}
-\caption{Question taxonomy used for group-level analysis. Some appendix plots merge low-support operation and entity labels for readability; the full labels and counts are shown here.}
-\label{tab:taxonomy}
-\end{table*}
-
-\iffalse % not referenced from main text
-\subsection{Representative Question Examples}
-\label{app:question_examples}
-
-\input{tables/supp/examples_op_groups}
-\input{tables/supp/examples_ent_groups}
-\fi
-
-\subsection{Human-Study Subset Composition}
-\label{app:sample_composition}
-
-\input{tables/supp/sample_q113_composition}
 
 \subsection{Control Question Extraction Pipeline}
 \label{app:ctl}
@@ -277,6 +225,68 @@ narrow semantic region.}
 \label{fig:tsne}
 \end{figure}
 
+\section{Dataset Composition}
+\label{app:sample_composition}
+\input{tables/supp/sample_q113_composition}
+
+\subsection{Question Taxonomy}
+\label{app:taxonomy}
+
+% Table~\ref{tab:taxonomy} lists all operation and entity categories used for group-level analysis.
+
+\begin{table*}[!t]
+\centering
+{\fontsize{9}{10}\selectfont
+\renewcommand{\arraystretch}{0.95}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}p{0.16\textwidth}cXp{0.38\textwidth}@{}}
+\toprule
+\textbf{Category} & \textbf{\textit{N}} & \textbf{Description} & \textbf{Example} \\
+\midrule
+\rowcolor{gray!12}
+\multicolumn{4}{c}{\textbf{\textit{Operations}}} \\
+\midrule
+\rowcolor{gray!6}
+Attribute       & 41 & Color, material, type, age, name, or location. & \textit{What type of computer is the cat using?} \\
+Count           & 22 & Quantity or number of entities. & \textit{How many benches are in the background?} \\
+\rowcolor{gray!6}
+Spatial         & 12 & Relative position, direction, or location. & \textit{Which way is the arrow pointing?} \\
+Identity        & 9  & What or who a specific entity is. & \textit{What type of bear is this?} \\
+\rowcolor{gray!6}
+Action          & 7  & What an entity is doing or engaged in. & \textit{What is the elephant eating?} \\
+Existence       & 7  & Whether an entity is present in the scene. & \textit{Is there a couch?} \\
+\rowcolor{gray!6}
+Text Reading    & 5  & Reading visible writing, signs, labels, or logos. & \textit{What does the shirt say?} \\
+World Knowledge & 4  & Factual or commonsense knowledge. & \textit{Where does the airplane hail from?} \\
+\rowcolor{gray!6}
+Temporal        & 3  & Duration, age, or temporal ordering of events. & \textit{How far do the girls have to run?} \\
+Comparison      & 2  & Comparative or superlative judgment. & \textit{What would these two do if the sun got too bright?} \\
+\rowcolor{gray!6}
+Causality       & 1  & Reason or causal explanation. & \textit{Why is the man wearing protective gear?} \\
+\midrule
+\rowcolor{gray!12}
+\multicolumn{4}{c}{\textbf{\textit{Entities}}} \\
+\midrule
+\rowcolor{gray!6}
+Object      & 27 & General physical objects. & \textit{Which way is the arrow pointing?} \\
+Person      & 26 & Human subjects, including people, faces, and body parts. & \textit{Which hand is holding the thing?} \\
+\rowcolor{gray!6}
+Animal      & 17 & Non-human living creatures. & \textit{What color is this horse's head and tail hair?} \\
+Food        & 16 & Food and drink items, including prepared dishes. & \textit{What vegetable is in the bowl?} \\
+\rowcolor{gray!6}
+Other       & 9  & Questions that do not fit any other entity category. & \textit{What kind of information does the book contain?} \\
+Place       & 5  & Locations, scenes, settings, or environments. & \textit{What is the name of the store closest to the van?} \\
+\rowcolor{gray!6}
+Product     & 5  & Manufactured objects such as furniture, tools, or appliances. & \textit{What type of computer is the cat using?} \\
+Vehicle     & 4  & Cars, buses, bicycles, aircraft, or watercraft. & \textit{What formation are the aircraft in?} \\
+\rowcolor{gray!6}
+Text        & 4  & Visible written content such as signs, labels, or logos. & \textit{What language is the writing at the top of the bus in?} \\
+\bottomrule
+\end{tabularx}
+}
+\caption{Question taxonomy used for group-level analysis. Some appendix plots merge low-support operation and entity labels for readability; the full labels and counts are shown here.}
+\label{tab:taxonomy}
+\end{table*}
 
 \section{Human Study Details}
 \label{app:human_study}
@@ -293,24 +303,34 @@ Participants answered text-only blind-instruction questions across the original,
 Participants were compensated at 10,000~KRW per hour.
 
 Summary statistics are reported in Section~\ref{sec:human_data}.
-Figure~\ref{fig:human_stats} shows the full
-response-time, answer-length, abstention, and confidence distributions.
-Per-participant median RTs range from 2.6~s to 7.5~s with no extreme outliers.
-Confidence ranges from 1.5 to 4.7 per participant (mean 3.07), with
+Per-participant median RTs range from 2.6~s to 7.5~s with no extreme outliers (Figure~\ref{fig:human_stats_a}).
+Answer length is predominantly single-word (92.6\%; Figure~\ref{fig:human_stats_c}).
+Soft abstention is negligible ($<$0.04\% per variant: C\,=\,0.039\%, B\,=\,0.020\%, A\,=\,0.039\%), confirming engaged responding throughout.
+Confidence ranges from 1.5 to 4.7 per participant (mean 3.07; Figure~\ref{fig:human_stats}), with
 per-variant distributions nearly identical---suggesting question surface form
 does not systematically inflate or suppress self-reported certainty.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{human_study_statistics}
-\caption{Participant response statistics across 40 participants and 15,336 responses.
-\textbf{A--B}: Response time distribution and per-participant medians (capped at 99th pct = 35.8~s).
-\textbf{C}: Answer length---92.6\% are single-word responses.
-\textbf{D}: Confidence rating distribution by variant (nearly uniform across variants).
-\textbf{E}: Soft abstention rate ($<$0.04\% per variant) confirms engaged responding.
-\textbf{F}: Per-participant mean confidence, sorted---full range used with no ceiling/floor effect.}
+\includegraphics[width=\columnwidth]{figures_supp/human_study_statistics_a}
+\caption{Response time distribution across 15,336 responses (capped at 99th pct = 35.8~s).}
+\label{fig:human_stats_a}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures_supp/human_study_statistics_c}
+\caption{Answer length distribution---92.6\% of responses are single-word.}
+\label{fig:human_stats_c}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures_supp/human_study_statistics_f}
+\caption{Per-participant mean confidence, sorted---full range used with no ceiling/floor effect.}
 \label{fig:human_stats}
 \label{fig:human_stats_conf}
+\label{fig:human_stats_f}
 \end{figure}
 
 \begin{figure}[t]
@@ -408,7 +428,7 @@ Vicuna              & 7B, 13B & \multicolumn{2}{l}{---} & LLaMA fine-tuned on Sh
 \subsection{Abstention Classifier Details}
 \label{app:abstention_classifier}
 
-\input{tables/supp/abstention_keyword_table}
+% \input{tables/supp/abstention_keyword_table} % not referenced from main text
 
 The classifier was applied uniformly to both model and human responses.
 Human participants were instructed to provide an answer in all cases; the resulting human abstention rate is $<\!0.4\%$ (49 of 13,560 responses), confirming near-complete compliance.
@@ -432,11 +452,11 @@ A small number of false positives occur where \textit{unknown} appears as an adj
 
 \input{tables/supp/yesno_distribution_all_models}
 
-\input{tables/supp/hm_grouped_distribution_7b_compact_filtered_full}
-
-\input{tables/supp/hm_all_scales_full}
+% \input{tables/supp/hm_all_scales_full} % not referenced from main text
 
 \input{tables/supp/hm_distribution_blind_vs_inst}
+
+% \input{tables/supp/sbert_inst_effect} % not referenced from main text
 
 \label{app:count_dist}
 
@@ -446,6 +466,55 @@ A small number of false positives occur where \textit{unknown} appears as an adj
 \caption{Count-answer distributions for all 7/8B models across all three variants (pooled). Row 1: full VLMs; Row 2: backbone decoders; Row 3: standalone LLMs and thinking models. Hollow = blind, filled = +instruction. The zero-default collapse in full VLMs is consistent across all families (LLaVA-Vicuna: 98\% zero, unchanged under instruction). Among standalone LLMs, Qwen3-8B is most responsive to instruction (zero-default drops from ${\sim}$49\% to ${\sim}$26\%); Mistral-7B remains near zero due to its high abstention rate. Backbone decoders show partial recovery, less than standalone LLMs but more than their paired VLMs.}
 \label{fig:count_transition_all}
 \end{figure*}
+
+\section{Pronominalization Degradation by Group}
+\label{app:op_degradation_gap}
+
+\subsubsection*{Operation-Level Breakdown}
+
+Table~\ref{tab:op_degradation_gap} reports the class-level degradation gaps and Table~\ref{tab:op_degradation_per_model} the per-model view.
+Two operation types dominate:
+
+\textit{Identity} ($\Delta_\mathrm{human}{=}{+}0.19$) triggers consistent over-degradation in SA-LLMs (gap $+0.06$) and modest over-degradation in VLMs (gap $+0.03$), while backbone decoders track the human signal almost exactly (gap $-0.00$).
+Figure~\ref{fig:r_combined_ident} shows the mechanism: under full pronominalization, VLMs collapse to a near-uniform answer across all Identity questions ($\sHM$ std drops from $0.146$ to $0.043$), eliminating the per-question variance needed to correlate with $\sHH$; backbone decoders maintain diversity (std $0.146{\to}0.155$), continuing to track which questions humans find harder.
+
+\textit{World Knowledge} ($\Delta_\mathrm{human}{=}{+}0.15$) is the sharpest VLM outlier: VLMs over-degrade by $+0.13$ (driven by strong LLaVA-1.5 and Qwen3-VL excesses; Table~\ref{tab:op_degradation_per_model}), whereas SA-LLMs actually \emph{under}-degrade ($-0.08$)---their corpus-based world-knowledge priors remain active regardless of anchor removal.
+
+\textit{Spatial} questions show uniform over-degradation across all model classes ($+0.045$--$+0.075$), consistent with the Wilcoxon results (Table~\ref{tab:degradation_wilcoxon}: $p{<}.01$ for VLMs and both decoder groups).
+\textit{Text Reading} is the clearest reversal: humans improve slightly ($-0.03$) under pronominalization, backbone decoders improve even more ($-0.13$), while VLMs are near neutral ($-0.00$)---reflecting that removing the text anchor hurts models less than humans because models never relied on the anchor to begin with.
+
+\input{tables/supp/op_degradation_gap}
+
+\input{tables/supp/op_degradation_per_model}
+
+% \input{tables/supp/op_overdeg_per_model} % not referenced from main text
+
+\subsubsection*{Entity-Level Breakdown}
+
+Table~\ref{tab:ent_degradation_per_model} and the entity rows. %  of Table~\ref{tab:degradation_wilcoxon} report the entity-level picture.
+
+\textit{Product} shows the steepest human degradation ($+0.15$), with consistent model over-degradation (most models orange in Table~\ref{tab:ent_degradation_per_model}), though the low question count ($N{=}5$) limits statistical power.
+\textit{Food} ($\Delta_\mathrm{human}{=}{+}0.11$) is the most statistically reliable entity finding: VLMs ($+0.095$, $p{<}.01$) and SA-LLMs ($+0.129$, $p{<}.01$) both significantly over-degrade, reflecting that food-object labels (``baguette'', ``sourdough'') carry strong corpus priors that amplify the anchor-removal effect.
+\textit{Animal} is significant for humans ($p{=}.045$) but not replicated in any model group ($p{>}.08$)---consistent with the main-text discussion in \S\ref{sec:degradation}: models maintain strong breed and species priors regardless of whether the referent anchor is present.
+
+\textit{Text} questions show the opposite pattern: humans improve under pronominalization ($-0.06$), and backbone decoders also improve substantially ($-0.27$--$-0.35$), while VLMs are mixed.
+This asymmetry is interpretable: text-reading questions depend on OCR of image content that models cannot access in the blind condition; removing the text anchor in the question changes little about a model that was already guessing, whereas human readers lose a cue they had been attending to.
+
+\input{tables/supp/ent_degradation_per_model}
+
+\input{tables/supp/degradation_wilcoxon}
+
+\iffalse % not referenced from main text
+\subsection{InternVL Entity-Level VLM vs.\ Backbone Alignment}
+\label{app:internvl_entity}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{internvl_entity_vlm_lm/internvl_entity_vlm_lm.png}
+\caption{Per-entity mean $\sHM$ for InternVL-8B (VLM) and InternVL-8B (LM), free-text questions, abstention-filtered (left), and their difference LM$-$VLM (right).}
+\label{fig:internvl_entity}
+\end{figure}
+\fi % end internvl_entity
 
 \section{Image-Condition Ablation}
 \label{app:ablation}
@@ -582,7 +651,7 @@ A high $\pr$ indicates the model ranks questions in the same relative difficulty
 \input{tables/supp/matched_family_alignment_tests}
 
 \iffalse % not referenced from main text
-\subsection{Anchoring Degradation} %  by Group and Architecture Class 
+\subsection{Anchoring Degradation} %  by Group and Architecture Class
 \label{app:delta_bar}
 
 \begin{figure*}[ht]
@@ -594,53 +663,6 @@ A high $\pr$ indicates the model ranks questions in the same relative difficulty
 \label{fig:delta_bar}
 \end{figure*}
 \fi % end delta_bar
-
-\section{Pronominalization Degradation by Group}
-\label{app:op_degradation_gap}
-
-\subsubsection*{Operation-Level Breakdown}
-
-Table~\ref{tab:op_degradation_gap} reports the class-level degradation gaps and Table~\ref{tab:op_degradation_per_model} the per-model view.
-Two operation types dominate:
-
-\textit{Identity} ($\Delta_\mathrm{human}{=}{+}0.19$) triggers consistent over-degradation in SA-LLMs (gap $+0.06$) and modest over-degradation in VLMs (gap $+0.03$), while backbone decoders track the human signal almost exactly (gap $-0.00$).
-Figure~\ref{fig:r_combined_ident} shows the mechanism: under full pronominalization, VLMs collapse to a near-uniform answer across all Identity questions ($\sHM$ std drops from $0.146$ to $0.043$), eliminating the per-question variance needed to correlate with $\sHH$; backbone decoders maintain diversity (std $0.146{\to}0.155$), continuing to track which questions humans find harder.
-
-\textit{World Knowledge} ($\Delta_\mathrm{human}{=}{+}0.15$) is the sharpest VLM outlier: VLMs over-degrade by $+0.13$ (driven by strong LLaVA-1.5 and Qwen3-VL excesses; Table~\ref{tab:op_degradation_per_model}), whereas SA-LLMs actually \emph{under}-degrade ($-0.08$)---their corpus-based world-knowledge priors remain active regardless of anchor removal.
-
-\textit{Spatial} questions show uniform over-degradation across all model classes ($+0.045$--$+0.075$), consistent with the Wilcoxon results (Table~\ref{tab:degradation_wilcoxon}: $p{<}.01$ for VLMs and both decoder groups).
-\textit{Text Reading} is the clearest reversal: humans improve slightly ($-0.03$) under pronominalization, backbone decoders improve even more ($-0.13$), while VLMs are near neutral ($-0.00$)---reflecting that removing the text anchor hurts models less than humans because models never relied on the anchor to begin with.
-
-\input{tables/supp/op_degradation_gap}
-
-\input{tables/supp/op_degradation_per_model}
-
-\subsubsection*{Entity-Level Breakdown}
-
-Table~\ref{tab:ent_degradation_per_model} and the entity rows. %  of Table~\ref{tab:degradation_wilcoxon} report the entity-level picture.
-
-\textit{Product} shows the steepest human degradation ($+0.15$), with consistent model over-degradation (most models orange in Table~\ref{tab:ent_degradation_per_model}), though the low question count ($N{=}5$) limits statistical power.
-\textit{Food} ($\Delta_\mathrm{human}{=}{+}0.11$) is the most statistically reliable entity finding: VLMs ($+0.095$, $p{<}.01$) and SA-LLMs ($+0.129$, $p{<}.01$) both significantly over-degrade, reflecting that food-object labels (``baguette'', ``sourdough'') carry strong corpus priors that amplify the anchor-removal effect.
-\textit{Animal} is significant for humans ($p{=}.045$) but not replicated in any model group ($p{>}.08$)---consistent with the main-text discussion in \S\ref{sec:degradation}: models maintain strong breed and species priors regardless of whether the referent anchor is present.
-
-\textit{Text} questions show the opposite pattern: humans improve under pronominalization ($-0.06$), and backbone decoders also improve substantially ($-0.27$--$-0.35$), while VLMs are mixed.
-This asymmetry is interpretable: text-reading questions depend on OCR of image content that models cannot access in the blind condition; removing the text anchor in the question changes little about a model that was already guessing, whereas human readers lose a cue they had been attending to.
-
-\input{tables/supp/ent_degradation_per_model}
-
-% \input{tables/supp/degradation_wilcoxon} --> integrate with the table above with average values checked 
-
-\iffalse % not referenced from main text
-\subsection{InternVL Entity-Level VLM vs.\ Backbone Alignment}
-\label{app:internvl_entity}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\linewidth]{internvl_entity_vlm_lm/internvl_entity_vlm_lm.png}
-\caption{Per-entity mean $\sHM$ for InternVL-8B (VLM) and InternVL-8B (LM), free-text questions, abstention-filtered (left), and their difference LM$-$VLM (right).}
-\label{fig:internvl_entity}
-\end{figure}
-\fi % end internvl_entity
 
 \iffalse % not referenced from main text
 \section{Accuracy Alignment}

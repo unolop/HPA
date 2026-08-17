@@ -61,6 +61,7 @@ MODEL_LOGIT_MAP: dict[str, tuple[str, str]] = {
     "LLaVA-1.5 (LM)":        ("lm_decoder", "llava-1.5-7b-hf"),
     "LLaVA-Mistral (LM)":    ("lm_decoder", "llava-v1.6-mistral-7b-hf"),
     "LLaVA-Vicuna (LM)":     ("lm_decoder", "llava-v1.6-vicuna-7b-hf"),
+    "LLaVA-Vicuna-13B (LM)": ("lm_decoder", "llava-v1.6-vicuna-13b-hf"),
     "Qwen3-0.6B":            ("backbone",   "Qwen3-0.6B"),
     "Qwen3-1.7B":            ("backbone",   "Qwen3-1.7B"),
     "Qwen3-4B":              ("backbone",   "Qwen3-4B"),
@@ -126,7 +127,7 @@ VLM_FAMILIES: list[tuple[str, list[tuple[str, str, str | None]]]] = [
     ]),
     ("LLaVA-Vicuna", [
         ("7B",  "LLaVA-Vicuna",      "LLaVA-Vicuna (LM)"),
-        ("13B", "LLaVA-Vicuna-13B",  None),
+        ("13B", "LLaVA-Vicuna-13B",  "LLaVA-Vicuna-13B (LM)"),
     ]),
 ]
 
@@ -165,10 +166,12 @@ METRIC_CFG = [
     ("abs_inst",       r"w/ $\downarrow$",  False, True,  ".1f"),
     ("abs_blind_1k",   r"w/o $\uparrow$",   False, False, ".1f"),
     ("abs_inst_1k",    r"w/ $\downarrow$",  False, True,  ".1f"),
+    ("abs_delta_1k",   r"$\Delta$",          False, False, "+.1f"),
 ]
 VALUE_KEYS = {"yesno_js", "count_js", "ft_sbert", "spearman_r_ft", "spearman_r_all",
               "abs_blind", "abs_inst", "abs_blind_1k", "abs_inst_1k"}
 ABS_KEYS   = {"abs_blind", "abs_inst", "abs_blind_1k", "abs_inst_1k"}
+DELTA_KEYS = {"abs_delta_1k"}
 
 
 # ── Ranking helpers ───────────────────────────────────────────────────────────
@@ -259,6 +262,19 @@ def fmt_value_cell(val, all_vals, higher_better, ci_bounds, fmt=".3f", rank=np.n
         if lo <= val <= hi:
             return _BG_BLUE + val_str + _SYM_IN
     return val_str
+
+
+def fmt_delta_cell(val, fmt="+.1f"):
+    """Delta abstention cell: colored brackets — blue for negative (good), orange for positive (bad)."""
+    if not np.isfinite(val):
+        return "---"
+    s = format(val, fmt)
+    if val < 0:
+        return rf"\textcolor[HTML]{{2166AC}}{{({s})}}"
+    elif val > 0:
+        return rf"\textcolor[HTML]{{D6610A}}{{({s})}}"
+    else:
+        return f"({s})"
 
 
 def fmt_abs_cell(val, all_vals, higher_better, fmt=".1f"):
@@ -548,7 +564,9 @@ def build_table(metrics, human_refs):
         for key, _, _, lower_better, fmt in METRIC_CFG:
             val  = metrics[m].get(key, np.nan)
             rank = all_ranks[key].get(m, np.nan)
-            if key in ABS_KEYS:
+            if key in DELTA_KEYS:
+                cells.append(fmt_delta_cell(val, fmt))
+            elif key in ABS_KEYS:
                 cells.append(fmt_abs_cell(
                     val, col_vals[key],
                     higher_better=not lower_better,
@@ -635,12 +653,12 @@ def build_table(metrics, human_refs):
         r"& \multicolumn{1}{c}{Other ($N{\leq}183$)} "
         r"& \multicolumn{2}{c}{$\rho$} "
         r"& \multicolumn{2}{c}{Abst\,(\%), Study} "
-        r"& \multicolumn{2}{c}{Abst\,(\%), Full 1k} \\"
+        r"& \multicolumn{3}{c}{Abst\,(\%), Full 1k} \\"
     )
-    lines.append(r"\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}\cmidrule(lr){10-11}")
+    lines.append(r"\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}\cmidrule(lr){10-12}")
     lines.append(
         r" & & Y/N & Cnt & $\sHM$ & $N{\leq}183$ & $N{\leq}339$"
-        r" & w/o $\uparrow$ & w/ $\downarrow$ & w/o $\uparrow$ & w/ $\downarrow$ \\"
+        r" & w/o $\uparrow$ & w/ $\downarrow$ & w/o $\uparrow$ & w/ $\downarrow$ & $\Delta$ \\"
     )
     lines.append(r"\midrule")
 
@@ -721,8 +739,9 @@ def main():
         metrics[m]["abs_blind"] = blind_pct
         metrics[m]["abs_inst"]  = inst_pct
         blind_1k, inst_1k = abs_data_1k.get(m, (np.nan, np.nan))
-        metrics[m]["abs_blind_1k"] = blind_1k
-        metrics[m]["abs_inst_1k"]  = inst_1k
+        metrics[m]["abs_blind_1k"]  = blind_1k
+        metrics[m]["abs_inst_1k"]   = inst_1k
+        metrics[m]["abs_delta_1k"]  = inst_1k - blind_1k
 
     human_refs["spearman_r_ft"]     = rho_refs_ft["spearman_r"]
     human_refs["spearman_r_ft_lo"]  = rho_refs_ft["spearman_r_lo"]

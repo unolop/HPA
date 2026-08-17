@@ -6,7 +6,8 @@
 
 \input{tables/paper/alignment_ranking_7b_ticks}
 \paragraph{Visual encoding.}
-The LM computes $P(a\mid q)$ from the question alone---a distribution shaped by VQA co-training that closely mirrors human linguistic priors. Our VLM computes $P(a\mid q,v_0)$, where $v_0$ is the vision encoder's output for an uninformative image; critically, $v_0\!\neq\!\mathbf{0}$, so the encoder acts as a nuisance variable that shifts the output away from $P(a\mid q)$ without adding information.
+Let $P(a\mid q)$ denote the model's answer distribution over answers $a$ conditioned on question $q$.
+The LM computes $P(a\mid q)$ from the question alone---shaped by VQA co-training to closely mirror human linguistic priors. The VLM computes $P(a\mid q,v_0)$, where $v_0$ is the vision encoder's output for a blank image; since $v_0\!\neq\!\mathbf{0}$, the encoder acts as a nuisance that shifts the distribution away from $P(a\mid q)$ without adding information.
 This is borne out empirically: in four of five matched families except for InternVL, removing the vision encoder \emph{improves} $\sHM$ (Table~\ref{tab:matched_family_alignment_tests}).
 Difficulty concordance (Spearman $\pr$) shows a consistent pattern in Table~\ref{tab:alignment_ranking_7b_ticks}: every backbone decoder reaches the human LOO CI ($\checkmark$), and so do the three LLaVA VLMs---though on free-text questions specifically the gap widens substantially ($\pr{=}0.450$--$0.628$ vs.\ $0.820$--$0.850$), where difficulty tracking is most meaningful and the encoder's disruption most visible.
 InternVL reverses this: its VLM exceeds the CI upper bound (highest $\pr$ across all models, no $\checkmark$ because it is \emph{above} the human range), while its LM falls comfortably within it---the encoder in this case sharpens rather than blurs the model's sensitivity to question difficulty. % by $+0.017$--$+0.069$ (LLaVA families: $+0.041$--$+0.069$; ---showing the encoder distorts both \emph{how well} a model answers and \emph{which} questions it finds easier
@@ -30,23 +31,25 @@ Both their LMS outperform the Qwen3-8B by $+0.087$ and $+0.103$ in $\sHM$ (Appen
 % Backbone decoders: goalkeeper/goalie across all families; SA-LLMs: Qwen3-8B=striker, Qwen3-think=striker, Qwen2.5=forward
 
 \paragraph{Extended reasoning.} % Qwen3 vs. Qwen3 (Think) with CoT
-At 8B, CoT yields small but consistent gains: $\sHM$ improves by $+0.02$--$+0.06$ across variants and accuracy by $+0.01$--$+0.04$; both stay within the human LOO range (Appendix Figure~\ref{fig:think_abs_sbert_accuracy_vert}).
-Difficulty tracking ($\rho$) regresses ($0.807{\to}0.750$): CoT restructures \emph{what} the model answers but degrades its sensitivity to \emph{which} questions humans find harder.
-Within 8B, longer reasoning chains correlate with lower answer confidence ($\rho{=}{-}0.56$, Appendix~\ref{app:thinking})---directionally human-like, as humans are also less certain on harder questions, though the mechanism differs.
-The benefit does not transfer cleanly to other sizes: 1.7B and 32B produce mostly empty reasoning traces (51--66\%) and show inverted instruction compliance---abstention rises \emph{with} instruction ($15.7\%{\to}46.2\%$ and $8.3\%{\to}46.7\%$, vs.\ $12.4\%{\to}4.7\%$ at 8B); full size-wise comparisons are in Appendix~\ref{app:thinking}.
+With chain-of-thought (CoT), Qwen3 gains small but consistent gains: $\sHM$ improves by $+0.02$--$+0.06$ and accuracy by $+0.01$--$+0.04$ across variants, with both entering the human LOO band; answer confidence also rises with longer chains (Figure~\ref{fig:think_abs_sbert_accuracy_vert}).
+However, the benefit is size-dependent and non-monotonic. 
+At 1.7B and 32B over 60\% of responses contain empty reasoning traces, while 4B generates longer chains but still fails to improve $\sHM$.
+32B shows a marginal $\sHM$ gain on the answering subset ($+0.030$) but $\rho$ decreases ($0.793{\to}0.734$) and accuracy collapses due to high abstention ($46.7\%$ with instruction, $8.3\%$ without).
+% At 4B, however, think \emph{hurts} $\sHM$ ($\Delta{=}{-}0.06$) with no accuracy gain, suggesting CoT is counterproductive at that scale.
+% At 32B, $\sHM$ improves marginally but accuracy collapses due to abstention; 1.7B and 32B also show inverted instruction compliance (abstention rises \emph{with} instruction: $15.7\%{\to}46.2\%$ and $8.3\%{\to}46.7\%$).
+% Difficulty tracking ($\rho$) regresses at 8B ($0.807{\to}0.750$) regardless.
+More details are shown in Appendix~\ref{app:thinking}.
 
 \paragraph{Scale.}
 % We test multiple sizes for three families: InternVL (1B, 2B, 8B), Qwen3-VL (2B, 4B, 8B, 32B), and Qwen3 SA-LLM (0.6B--32B), with Vicuna and LLaVA-Vicuna compared at 7B vs.\ 13B (Appendix~\ref{app:scale_variant}; Table~\ref{tab:scale_alignment_full}).
-The most salient scale effect is abstention: Qwen3-VL 32B abstains spontaneously on 89\% of responses (vs.\ 3--5\% at 2--8B), making alignment comparisons at that size unreliable (full scale breakdown in Table~\ref{tab:alignment_ranking_full_scale_ticks}).
-For VLMs and LMs, InternVL illustrates the general pattern: $\sHM$ peaks at 8B ($0.620$) but dips at 2B ($0.553$), with no consistent gain across sizes---these models already hold compact scene-plausibility priors from VQA co-training that scale does not substantially enrich.
+Across VLM and LM families, alignment peaks at 7--8B with no consistent improvement beyond that scale (Table~\ref{tab:alignment_ranking_full_scale_ticks}): InternVL peaks at 8B ($\sHM{=}0.620$) but dips at 2B ($0.553$), while Qwen3-VL LM is nearly flat across 2B--32B ($0.593$--$0.607$)---scale enriches neither family's scene-plausibility prior.
 For SA-LLMs, scale adds deliberative capacity but cannot substitute for that prior: Qwen3 rises from $\sHM{=}0.315$ at 0.6B to $0.554$ at 32B yet remains below InternVL LM 8B ($0.609$), and the trajectory is non-monotonic.
 An indirect scale effect is notable: InternVL~(LM) $\sHM$ on pronominalized questions \emph{decreases} from 1B to 8B ($0.555{\to}0.526$), driven by growing count abstention at 8B---which the vision encoder suppresses, partially explaining the reversed VLM--backbone ordering at that size.
+The most salient scale effect is abstention: Qwen3-VL 32B abstains spontaneously on 89\% of responses (vs.\ 3--5\% at 2--8B), with instruction reducing this only partially ($\Delta{=}{-}25.0\%$); full abstention rates across all sizes are reported in Table~\ref{tab:alignment_ranking_full_scale_ticks} and Appendix~\ref{app:abstention}.
 
 \paragraph{Instruction compliance.}
-When no instruction is given, humans would abstain from answering the vast majority of our questions---without any visual grounding, the epistemically correct response is to refuse.
-With instruction to imagine the scene, human abstention is $<\!0.4\%$ (49 of 13,560 responses), showing near-complete compliance.
-No model approximates this pattern.
-InternVL~(LM) shows the highest spontaneous abstention ($17.1\%$ blind), closest in spirit to the human baseline, but its refusal rate only partially yields to instruction ($9.47\%$), suggesting the abstention is stylistic rather than grounded in the image-absent context.
-VLMs and LMs show essentially zero abstention in both conditions---they produce confident answers regardless of whether an instruction acknowledges the missing image.
+When no instruction is given, humans would abstain and double check on the task. 
+With instruction to imagine the scene, human abstention to the questions is $<\!0.4\%$ (49 of 13,560 responses) with our classifier. We treat this unique behavior of humans and treat this extreme switch as an alignment dimension. 
+As seen in Table~\ref{tab:alignment_ranking_7b_ticks}, many of our models shows minimal abstention even without instruction -- some even 0\%, and those ones sometimes gain in abstention with instruction, which is a clear reversal of human behavior. 
+The most aligned model in this case is InternVL~(LM), showing the highest spontaneous abstention ($17.1\%$ without instruction) and reduction in abstention with instruction ($9.47\%$). Qwen3-VL VLM and LM also show this switch with small abstention reduction under instruction (VLM: $5.3\%{\to}3.9\%$; LM: $5.3\%{\to}3.3\%$), though at much lower absolute levels.
 In sum, while humans abstain freely without instruction and comply cleanly with it, no model achieves both: models that abstain do so inconsistently, and models that comply do so regardless of context.
-% SA-LLMs occupy a middle position---Qwen3 ranks second in blind detection ($12.7\%$) but near-last in instruction compliance---suggesting text-only pretraining instills more spontaneous sensitivity to image absence than VQA co-training, but without the ability to override it on command.

@@ -2,7 +2,7 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs. \textit{Left}: Paired Wilcoxon signed-rank tests on HM SBERT ($\sHM$) in the blind+instruction condition (abstention-filtered per-question means, all three control variants; 113-question human-study subset). \textit{Right}: Spearman $\rho$ between per-question model $\sHM$ and human difficulty $\sHH$ (free-text questions, grouped by question$\times$variant; human LOO range $[0.629, 0.846]$; Wilcoxon not applicable to scalar $\rho$). {\scriptsize ---}\,=\,no think variant at that size. Note: 4B think and no-think share the same checkpoint ($\Delta{=}0$) and are omitted.}
+\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs. \textit{Left}: Paired Wilcoxon signed-rank tests on HM SBERT ($\sHM$) in the blind+instruction condition (abstention-filtered per-question means, all three control variants; 113-question human-study subset). \textit{Right}: Spearman $\rho$ between per-question model $\sHM$ and human difficulty $\sHH$ (free-text questions, grouped by question$\times$variant; human LOO range $[0.629, 0.846]$; Wilcoxon not applicable to scalar $\rho$). {\scriptsize ---}\,=\,no think variant at that size. Note: 4B think and no-think share the same checkpoint ($\Delta{=}0$) and are omitted. \textbf{Bold} = best per column; \underline{underline} = second-best (Pooled row excluded from ranking).}
 \label{tab:thinking_wilcoxon}
 \begin{tabular}{lcccc|ccc}
 \toprule
@@ -10,10 +10,10 @@
 \cmidrule(lr){2-5}\cmidrule(l){6-8}
 \textbf{Size} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} & \textbf{$p$} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} \\
 \midrule
-0.6B  & .330 & .330 & $+0.000$ & $.317$           & $0.677$ & $0.682$          & $+0.005$ \\
-1.7B  & .449 & .559 & $+0.110$ & $<.001^{***}$    & $0.567$ & $0.818$           & $+0.251$ \\
-8B    & .426 & .438 & $+0.012$ & $.049^{*}$        & $0.807$ & $0.750$           & $-0.057$ \\
-32B   & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & $0.793$ & $0.734$ & $-0.059$ \\
+0.6B  & .330 & .330 & $+0.000$ & $.317$           & $0.677$ & $0.682$          & $\underline{+0.005}$ \\
+1.7B  & \textbf{.449} & \textbf{.559} & $\textbf{+0.110}$ & $<.001^{***}$    & $0.567$ & $\textbf{0.818}$           & $\textbf{+0.251}$ \\
+8B    & \underline{.426} & \underline{.438} & $\underline{+0.012}$ & $.049^{*}$        & $\textbf{0.807}$ & $\underline{0.750}$           & $-0.057$ \\
+32B   & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & $\underline{0.793}$ & $0.734$ & $-0.059$ \\
 \midrule
 Pooled & .382 & .430 & $+0.048$ & $<.001^{***}$   & \multicolumn{3}{c}{{\scriptsize ---}} \\
 \bottomrule

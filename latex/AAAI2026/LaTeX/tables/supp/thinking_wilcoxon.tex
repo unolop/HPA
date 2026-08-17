@@ -2,7 +2,7 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs. \textit{Left}: Paired Wilcoxon signed-rank tests on HM SBERT ($\sHM$) in the blind+instruction condition (abstention-filtered per-question means, all three control variants; 113-question human-study subset). \textit{Right}: Spearman $\rho$ between per-question model $\sHM$ and human difficulty $\sHH$ (free-text questions, grouped by question$\times$variant; human LOO range $[0.629, 0.846]$; Wilcoxon not applicable to scalar $\rho$). {\scriptsize ---}\,=\,no think variant at that size. Note: 4B think and no-think share the same checkpoint ($\Delta{=}0$) and are omitted.}
+\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs. \textit{Left}: Paired Wilcoxon signed-rank tests on HM SBERT ($\sHM$) in the blind+instruction condition (abstention-filtered per-question means, all three control variants; 113-question human-study subset). \textit{Right}: Spearman $\rho$ between per-question model $\sHM$ and human difficulty $\sHH$ (free-text questions, grouped by question$\times$variant; human LOO range $[0.629, 0.846]$; Wilcoxon not applicable to scalar $\rho$). {\scriptsize ---}\,=\,no think variant at that size. Note: 4B think and no-think share the same checkpoint ($\Delta{=}0$) and are omitted. \colorbox[HTML]{D9EAF3}{Blue}\,$\checkmark$ = within human LOO-CV 95\,\% CI; \colorbox[HTML]{F7EBD9}{orange}\,$\triangledown$ = over-aligned (above CI upper bound).}
 \label{tab:thinking_wilcoxon}
 \begin{tabular}{lcccc|ccc}
 \toprule
@@ -10,12 +10,12 @@
 \cmidrule(lr){2-5}\cmidrule(l){6-8}
 \textbf{Size} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} & \textbf{$p$} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} \\
 \midrule
-0.6B  & .330 & .330 & $+0.000$ & $.317$           & $0.677$ & $0.682$          & $+0.005$ \\
-1.7B  & .449 & .559 & $+0.110$ & $<.001^{***}$    & $0.567$ & $0.818$           & $+0.251$ \\
-8B    & .426 & .438 & $+0.012$ & $.049^{*}$        & $0.807$ & $0.750$           & $-0.057$ \\
-32B   & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & $0.793$ & $0.734$ & $-0.059$ \\
+0.6B  & .330 & .330 & $+0.000$ & $.317$ & \cellcolor[HTML]{D9EAF3}.677\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.682\,$\checkmark$ & $+0.005$ \\
+1.7B  & \cellcolor[HTML]{D9EAF3}.449\,$\checkmark$ & \cellcolor[HTML]{F7EBD9}.559\,$\triangledown$ & $+0.110$ & $<.001^{***}$ & .567 & \cellcolor[HTML]{D9EAF3}.818\,$\checkmark$ & $+0.251$ \\
+8B    & \cellcolor[HTML]{D9EAF3}.426\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.438\,$\checkmark$ & $+0.012$ & $.049^{*}$ & \cellcolor[HTML]{D9EAF3}.807\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.750\,$\checkmark$ & $-0.057$ \\
+32B   & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & \cellcolor[HTML]{D9EAF3}.793\,$\checkmark$ & \cellcolor[HTML]{D9EAF3}.734\,$\checkmark$ & $-0.059$ \\
 \midrule
-Pooled & .382 & .430 & $+0.048$ & $<.001^{***}$   & \multicolumn{3}{c}{{\scriptsize ---}} \\
+Pooled & .382 & \cellcolor[HTML]{D9EAF3}.430\,$\checkmark$ & $+0.048$ & $<.001^{***}$ & \multicolumn{3}{c}{{\scriptsize ---}} \\
 \bottomrule
 \end{tabular}
 \end{table}

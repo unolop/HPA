@@ -1,10 +1,11 @@
-\begin{table}[ht]
+\begin{table*}[ht]
 \centering
 \small
-\setlength{\tabcolsep}{4pt}
-\caption{Matched-family comparisons of abstention-filtered HM SBERT over 339 question--variant pairs. Each row shows a backbone decoder alongside its paired full VLM and matched standalone LLM; parenthetical deltas are decoder minus comparator. Tests are two-sided Wilcoxon signed-rank with Holm correction. $p$ shown after Holm correction; ***\,$p{<}0.001$, **\,$p{<}0.01$, *\,$p{<}0.05$.}
+\setlength{\tabcolsep}{5pt}
+\caption{%
+\textbf{Matched-family backbone decoder alignment.} Each row compares a VLM backbone decoder (the language-model component of the VLM, run text-only without its vision encoder) against two reference points: (i)~its paired full VLM (same weights, but with the vision encoder active and a blank image), and (ii)~a standalone LLM whose base weights match the backbone's language model. The \textbf{Decoder} column reports mean abstention-filtered HM SBERT across all 339 question--variant pairs; \textbf{Score} in each comparison column is the comparator's mean HM SBERT, with the parenthetical $\Delta$ = decoder $-$ comparator (\textcolor{teal}{teal} = decoder higher; \textcolor{red}{red} = decoder lower). Significance is assessed with a two-sided Wilcoxon signed-rank test on paired per-(question,~variant) mean SBERT values. Holm correction is applied across all 10 tests simultaneously (2 comparisons $\times$ 5 families) to control the family-wise error rate. $p$ values are Holm-corrected; $^{***}p{<}0.001$, $^{**}p{<}0.01$, $^{*}p{<}0.05$.}
 \label{tab:matched_family_alignment_tests}
-\begin{tabular}{lcccc}
+\begin{tabular}{l c cc cc}
 \toprule
 \multirow{2}{*}{\textbf{Family}} & \multirow{2}{*}{\textbf{Decoder}} & \multicolumn{2}{c}{\textbf{vs.\ Full VLM}} & \multicolumn{2}{c}{\textbf{vs.\ SA-LLM}} \\
 \cmidrule(lr){3-4}\cmidrule(lr){5-6}
@@ -17,4 +18,4 @@ LLaVA-Mistral & 0.590 & 0.546 {\scriptsize (\textcolor{teal}{$+0.043^{***}$})} &
 LLaVA-Vicuna & 0.576 & 0.528 {\scriptsize (\textcolor{teal}{$+0.048^{***}$})} & $p{\!=\!}5.2{\times}10^{-12}$ & 0.408 {\scriptsize (\textcolor{teal}{$+0.171^{***}$})} & $p{\!=\!}1.5{\times}10^{-34}$ \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}

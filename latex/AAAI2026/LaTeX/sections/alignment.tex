@@ -37,7 +37,7 @@ For example, \textit{``What type of bear is this?''} \emph{(Identity; Animal)} e
 However, some question groups are naturally narrow in answer space (distributional breakdown in Table~\ref{tab:yesno_distribution_all}). An extreme case is \textit{Existence} group, where they appear near-ceiling and stable across variants because they consist of only \textit{yes/no} answer expectations so $\sHH$ remains high regardless of actual agreement. % ---rather than a genuine prior,
 For alignment, we separately report for categorical questions in \S\ref{sec:dist_alignment}. % yes/no and count questions are analyzed distributionally via JS divergence , while free-text questions use SBERT-based semantic alignment (\S\ref{sec:alignment_main}); the per-question Spearman $\pr$ is computed across all types jointly.
 
-Within entity types, \textit{food} shows the steepest model degradation ($\Delta\sHM{=}{+}.095$, $p{<}.01$ for VLMs; ${+}.129$, $p{<}.01$ for SA-LLMs):
+Within entity types, \textit{Food} shows the steepest human degradation ($\Delta\sHH{=}{+}.064$, $p{=}.021$), followed by \textit{Animal} ($\Delta\sHH{=}{+}.052$, $p{=}.045$):
 \textit{``What type of bread does this appear to be?''} \emph{(Attribute; Food;} Weaker: \textit{``food''};
 Pronominalized: \textit{``it''}) sees humans converge on specific bread types
 (\textit{baguette}, \textit{sandwich bread}) under the original phrasing, but shift
@@ -103,13 +103,13 @@ SA-LLMs split: Vicuna-7B is yes-biased (57.7\%) while Qwen3-8B is no-biased (38.
 \paragraph{Zero-default on count questions.}
 On count questions, all VLMs except for InternVL collapse toward ``0'' (94--99\%; Figure~\ref{fig:count_transition_all}).
 InternVL instead spreads answer mass across small counts (0--3), similar to our human distribution (Figure~\ref{fig:count_transition}) and being the closest LM to the human count distribution ($\djs{=}.575$; Table~\ref{tab:hm_grouped_distribution_7b_compact_filtered}). % Qwen3~(Think) the closest SA-LLM ($\djs{=}.610$).
-However, InternVL~(LM)'s human-likeness comes at the expense of an unusually high count-question abstention rate (26.9\%), which is absent in its paired VLM and other question types (Table~\ref{tab:abstention_by_qtype}).
+However, InternVL~(LM)'s human-likeness comes at the expense of an unusually high count-question abstention rate (20.5\%), which is absent in its paired VLM and other question types (Table~\ref{tab:abstention_by_qtype}).
 % SA-LLMs show the same direction but at much lower rates (Qwen2.5: 10.5\%, Qwen3: 22\%, Qwen3\,(Think): 18\%, Vicuna: 5.1\%).
 % Across both \textit{yes/no} and \textit{count} questions, standalone LLMs show a different failure: they often exit the answer space entirely, replacing content answers with refusals, topic-noun extractions, or uncertain non-answers (Appendix~\ref{app:abstention_calibration}).
 
 \paragraph{Can instruction restore scene imagination?}
 In most models, instruction reduces refusals but does not resolve the underlying zero-default: for 4 of 5 VLMs, count $\djs$ actually worsens under instruction as abstentions are replaced by zero-answers (Appendix Table~\ref{tab:hm_distribution_blind_vs_inst}).
-The exception is the two models with high initial abstention: InternVL~(LM) and Qwen3~(Think) both reduce count abstention substantially (by 19.2 and 20.5~pp respectively) and show the largest count $\djs$ improvements ($\Delta_{\djs}{=}{-}.157$ and ${-}.146$).
+The exception is the two models with high initial abstention: InternVL~(LM) and Qwen3~(Think) both reduce count abstention substantially (by 9.0 and 20.5~pp respectively) and show the largest count $\djs$ improvements ($\Delta_{\djs}{=}{-}.157$ and ${-}.146$).
 This shift is visible in Figure~\ref{fig:dist_human_vs_model}, where the InternVL family's yes/no distribution under instruction moves closer to the human bar relative to the blind condition; the full blind-vs-instruction breakdown for all models is in Appendix Table~\ref{tab:hm_distribution_blind_vs_inst}. %; Appendix Table~\ref{tab:hm_distribution_blind_vs_inst}).
 
 \subsection{Semantic Alignment}
@@ -121,8 +121,8 @@ Meanwhile, entity groups span a narrower consensus range ($\sHH{=}0.45$--$0.66$)
 Vicuna falls consistently below the human range across nearly every group and is excluded from the comparisons that follow.
 
 \paragraph{Backbone decoders over-converge; standalone LLMs under-align.}
-LMs sit at or near the diagonal across all operation groups (gap: $\sHM{-}\sHH$=${-.005}$ to${+.005}$), while their paired VLMs fall below (${-.018}$ to ${-.067}$) except for InternVL, whose VLM outperforms its own decoder on both SBERT and difficulty tracking ($\pr{=}0.859$ vs.\ $0.816$).
-The three LLaVA VLMs cluster well below their backbone counterparts in $\pr$ ($0.450$--$0.628$ vs.\ $0.816$--$0.850$), and SA-LLMs are the weakest on SBERT alignment (${-.046}$ to ${-.089}$), though Qwen2.5 and Qwen3 reach $\pr{=}0.750$--$0.807$ on free-text questions.
+LMs sit at or near the diagonal across all operation groups (gap: $\sHM{-}\sHH$=${+.001}$ to${+.013}$), while their paired VLMs fall below (${-.003}$ to ${-.069}$) except for InternVL, whose VLM outperforms its own decoder on both SBERT and difficulty tracking ($\pr{=}0.856$ vs.\ $0.813$).
+The three LLaVA VLMs cluster well below their backbone counterparts in $\pr$ ($0.467$--$0.643$ vs.\ $0.815$--$0.845$), and SA-LLMs are the weakest on SBERT alignment (${-.005}$ to ${-.015}$), though Qwen2.5 and Qwen3 reach $\pr{=}0.815$--$0.836$ on free-text questions.
 % \textit{Identity} questions show the largest backbone--VLM gap ($\sHM{-}\sHH{=}{+}.083$) of any operation group. On these questions, VLMs also lose almost all $\pr$ under subject removal ($\pr{=}0.66{\to}0.08$) while backbone decoders remain stable ($\pr{=}0.85{\to}0.89$; Figure~\ref{fig:r_combined_ident}).
 % The groups where models most consistently fall short are the high-consensus ones---\textit{Count} (gap${=}{-}.092$), \textit{World Knowledge} (${-}.074$), and in the entity plot \textit{Vehicle} (${-}.059$)---on average across model classes.
 % \textit{World Knowledge} also shows the widest per-model spread: Qwen2.5-Instruct and several LLaVA models cross above the diagonal despite the negative average.
@@ -131,13 +131,14 @@ The three LLaVA VLMs cluster well below their backbone counterparts in $\pr$ ($0
 Figure~\ref{fig:human_degradation} showed that humans anchor on \textit{Identity} ($\Delta\sHH{=}+0.196$, $p{=}.012$), \textit{Food} ($p{<}.05$), and \textit{Animal} ($p{<}.05$).
 We apply the same two-sided Wilcoxon signed-rank test (Table~\ref{tab:degradation_wilcoxon}) to each model group to identify which question types degrade significantly under pronominalization.
 
-All three model groups replicate \textit{Identity} (VLMs $p{=}.004$, LMs $p{=}.012$, SA-LLMs $p{=}.008$): LMs match the human magnitude almost exactly ($\Delta\sHM{=}+0.197$), while VLMs and SA-LLMs over-degrade slightly ($+0.220$ and $+0.251$).
-Among entity groups, \textit{Food} is replicated by VLMs ($p{=}.005$) and SA-LLMs ($p{=}.008$) but not LMs, with SA-LLMs over-degrading most sharply ($\Delta{=}+0.129$ vs.\ $\Delta_\text{HH}{=}+0.064$).
+All three model groups replicate \textit{Identity} (VLMs $p{=}.004$, LMs $p{=}.012$, SA-LLMs $p{=}.008$): LMs match the human magnitude almost exactly ($\Delta\sHM{=}+0.197$), while VLMs and SA-LLMs over-degrade slightly ($+0.221$ and $+0.253$).
+Among entity groups, \textit{Food} is replicated by VLMs ($p{<}.05$) and SA-LLMs ($p{<}.01$) but not LMs, with SA-LLMs over-degrading most sharply ($\Delta{=}+0.120$ vs.\ $\Delta_\text{HH}{=}+0.063$).
 \textit{Animal} is significant for humans ($p{<}.05$) but not replicated by VLMs or LMs ($p{>}.06$); SA-LLMs show marginal significance ($p{=}.040$), with degradation occurring along different semantic axes in each group.
 
 \textit{Existence} reveals a model-unique reversal: VLMs show a significant \emph{negative} delta ($\Delta{=}{-}0.024$, $p{=}.016$), meaning pronominalization \emph{improves} VLM alignment on these yes/no questions.
 For example, \textit{``Is there a couch?''} elicits a confident \textit{yes} from VLMs (corpus-frequent object), whereas \textit{``Is there one?''} reduces this overconfidence---bringing VLMs closer to the more uncertain human prior.
 LMs and SA-LLMs show no such effect ($p{>}.46$), consistent with this being encoder-driven object bias rather than a language-prior artefact.
 
-\textit{Spatial} is the clearest model-without-human departure: all three model groups shift significantly ($p{<}.01$) while humans do not ($p{=}.30$), with per-question tracking fidelity dropping from $\pr{=}0.93{\to}0.69$ for VLMs and $0.88{\to}0.63$ for LMs (Appendix~\ref{app:op_degradation_gap}).
+\textit{Spatial} is the clearest model-without-human departure: all three model groups shift significantly ($p{<}.01$) while humans do not ($p{=}.30$), with $\sHM$ dropping $\Delta{=}{-}0.115$ for VLMs, ${-}0.087$ for LMs, and ${-}0.092$ for SA-LLMs (vs.\ human $\Delta\sHH{=}{-}0.039$).
+For example, \textit{``What are the flowers in?''} \emph{(Spatial)} draws \textit{vase} from all five VLMs (100\%) and a human plurality (62\%, with \textit{pot} at 18\%); pronominalized to \textit{``What are they in?''}, VLMs diverge to \textit{water} (40\%), \textit{space} (20\%), and \textit{nothing} (20\%), while humans scatter across \textit{dishes} (10\%), \textit{cup} (8\%), and \textit{basket} (8\%)---both groups lose their spatial anchor, but models collapse into semantically incoherent defaults while humans remain within plausible containers.
 \textit{Attribute} shows the same pattern (VLMs and SA-LLMs $p{<}.05$; human $p{=}.10$), as does \textit{Action} for VLMs alone ($p{=}.047$; human $p{=}.69$) and \textit{Counting} for SA-LLMs alone ($p{=}.007$), suggesting text-only pretraining makes count responses more anchor-dependent on the entity noun.

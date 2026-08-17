@@ -127,11 +127,17 @@ def main():
 
     df = pd.DataFrame(records)
 
-    # Holm correction within each subject column independently
-    # (each column asks its own independent question about that subject's sensitivity)
+    # Human: no correction (single test per group, standalone question)
+    # Model groups: Holm within each row across 3 model groups (VLM, Backbone, SA-LLM)
+    # Family = the 3 model group comparisons for a given question group
     df["p_holm"] = float("nan")
-    for subj in ["Human", "VLM", "Backbone", "SA-LLM"]:
-        mask = (df["subject"] == subj) & df["raw_p"].notna()
+    # Human column: p_holm = raw_p (uncorrected)
+    mask_h = (df["subject"] == "Human") & df["raw_p"].notna()
+    df.loc[mask_h, "p_holm"] = df.loc[mask_h, "raw_p"]
+    # Model groups: Holm per row
+    for (section, gkey), _ in df[df["subject"] != "Human"].groupby(["section", "gkey"]):
+        mask = ((df["section"] == section) & (df["gkey"] == gkey)
+                & (df["subject"] != "Human") & df["raw_p"].notna())
         if mask.sum() > 0:
             _, p_holm_arr, _, _ = multipletests(df.loc[mask, "raw_p"].values, method="holm")
             df.loc[mask, "p_holm"] = p_holm_arr
@@ -150,8 +156,8 @@ def main():
         r"\caption{Per-group pronominalization degradation "
         r"($\Delta\sHM = \sHM[\vOrig] - \sHM[\vPron]$) "
         r"for humans (HH) and each model group (HM). "
-        r"Two-sided Wilcoxon signed-rank; Holm correction applied within each column "
-        r"(12 tests per subject). "
+        r"Two-sided Wilcoxon signed-rank; Holm correction applied within each row "
+        r"across the 3 model groups (3 tests per question group); human column uncorrected. "
         r"$^{***}p{<}0.001$, $^{**}p{<}0.01$, $^{*}p{<}0.05$. "
         r"\textbf{Bold}: model significance matches human.}",
         r"\label{tab:degradation_wilcoxon}",

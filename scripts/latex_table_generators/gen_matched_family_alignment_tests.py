@@ -106,18 +106,29 @@ def main():
 
     # Build table
     lines = [
-        r"\begin{table}[ht]",
+        r"\begin{table*}[ht]",
         r"\centering",
         r"\small",
-        r"\setlength{\tabcolsep}{4pt}",
-        r"\caption{Matched-family comparisons of abstention-filtered HM SBERT over "
-        r"339 question--variant pairs. Each row shows a backbone decoder alongside "
-        r"its paired full VLM and matched standalone LLM; parenthetical deltas are "
-        r"decoder minus comparator. Tests are two-sided Wilcoxon signed-rank with "
-        r"Holm correction. $p$ shown after Holm correction; "
-        r"***\,$p{<}0.001$, **\,$p{<}0.01$, *\,$p{<}0.05$.}",
+        r"\setlength{\tabcolsep}{5pt}",
+        r"\caption{%",
+        r"\textbf{Matched-family backbone decoder alignment.} "
+        r"Each row compares a VLM backbone decoder (the language-model component of the VLM, "
+        r"run text-only without its vision encoder) against two reference points: "
+        r"(i)~its paired full VLM (same weights, but with the vision encoder active and a blank image), "
+        r"and (ii)~a standalone LLM whose base weights match the backbone's language model. "
+        r"The \textbf{Decoder} column reports mean abstention-filtered HM SBERT "
+        r"across all 339 question--variant pairs; "
+        r"\textbf{Score} in each comparison column is the comparator's mean HM SBERT, "
+        r"with the parenthetical $\Delta$ = decoder $-$ comparator "
+        r"(\textcolor{teal}{teal} = decoder higher; \textcolor{red}{red} = decoder lower). "
+        r"Significance is assessed with a two-sided Wilcoxon signed-rank test on paired "
+        r"per-(question,~variant) mean SBERT values. "
+        r"Holm correction is applied across all 10 tests simultaneously "
+        r"(2 comparisons $\times$ 5 families) to control the family-wise error rate. "
+        r"$p$ values are Holm-corrected; "
+        r"$^{***}p{<}0.001$, $^{**}p{<}0.01$, $^{*}p{<}0.05$.}",
         r"\label{tab:matched_family_alignment_tests}",
-        r"\begin{tabular}{lcccc}",
+        r"\begin{tabular}{l c cc cc}",
         r"\toprule",
         r"\multirow{2}{*}{\textbf{Family}} & \multirow{2}{*}{\textbf{Decoder}} "
         r"& \multicolumn{2}{c}{\textbf{vs.\ Full VLM}} "
@@ -156,7 +167,7 @@ def main():
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
-        r"\end{table}",
+        r"\end{table*}",
     ]
 
     tex = "\n".join(lines) + "\n"
