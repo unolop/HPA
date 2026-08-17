@@ -145,8 +145,7 @@ entirely and comparing model answer distributions against those of humans under 
 \paragraph{Human Reference and Answer Distributions.}
 AmbigQA \citep{min2020ambigqa} showed that many questions admit multiple plausible
 answers and introduced distributional evaluation---scoring against the full set of
-valid human responses rather than a single gold label---a design we adopt directly,
-comparing model answer distributions against those of 40 humans under the same blind condition.
+valid human responses rather than a single gold label---a design we adopt directly. % , comparing model answer distributions against those of 40 humans under the same blind condition.
 From the human side, dual-process accounts of judgment under uncertainty
 \citep{tversky1974judgment,kahneman2011thinking} and the proactive brain framework
 \citep{bar2007proactive} suggest that linguistic cues activate structured scene
@@ -162,8 +161,7 @@ Behavioral auditing work further shows that standard benchmarks miss persistent
 biases that only surface under diverse input conditions
 \citep{rottger2025safetyprompts,kwon2025whatllms}.
 Our work extends this human-reference paradigm to visual questions under controlled
-referential degradation, using a taxonomy that decomposes prior structure by
-reasoning operation and entity type.
+referential degradation, using a taxonomy that decomposes prior structure further. %  by reasoning operation and entity type.
 
 % \paragraph{Model Calibration and Overconfidence.}
 % \citet{guo2017calibration} showed that modern neural networks are
@@ -188,7 +186,7 @@ reasoning operation and entity type.
 We begin with 1{,}000 questions randomly sampled from the VQA v2.0 validation split
 \citep{goyal2016making}, spanning \textit{yes/no}, numerical, and open-ended answer types.
 % The original VQA metadata question types are grouped by their surface question form (e.g., \textit{how many}, \textit{what color}), 
-We annotate each question along two orthogonal dimensions: \emph{operation} and \emph{entity} type (full taxonomy in Appendix~\ref{app:taxonomy}). 
+We annotate each question along two orthogonal dimensions: \emph{operation} and \emph{entity} type. 
 We then diversity-select 113 questions spanning all 11 operation types and 9 entity types (full composition in Table~\ref{tab:q113_sample_composition}). % ; question space coverage in Appendix~\ref{app:tsne} Appendix~\ref{app:sample_composition},  
 For group-level anchoring analyses, operation and entity types with $n \leq 5$ questions are collapsed into an \emph{Other} category (\S\ref{sec:human_patterns}). % (\textit{operations}: World Knowledge, Text Reading, Temporal, Comparison, Causality; \textit{entities}: Text, Vehicle, Place, Product); 
 All groups are retained in semantic alignment analysis (\S\ref{sec:alignment_main}). %  at full granularity 
@@ -197,12 +195,11 @@ All groups are retained in semantic alignment analysis (\S\ref{sec:alignment_mai
 \paragraph{Control question variants.}
 \label{sec:control}
 To test how strongly blind answers depend on entity-denoting lexical anchors,
-we generate three progressively abstracted variants of each question,
-indexed by $v\!\in\!\{\vOrig,\vW,\vPron\}$ (referred to as \emph{variants} throughout):
+we generate three progressively abstracted variants of each question (referred to as \emph{variants}): % ,indexed by $v\!\in\!\{\vOrig,\vW,\vPron\}$  
 \textbf{Original} — the unmodified question;
 \textbf{Weaker} — object nouns generalized to a higher-level category (e.g., \emph{dog} $\rightarrow$ \emph{animal});
 \textbf{Pronominalized} — content noun phrases replaced with minimal pronouns (e.g., \emph{dog} $\rightarrow$ \emph{it}) while retaining grammatical structure.
-The full four-step generation schema and transformation rules are in Appendix~\ref{app:ctl}.
+The full generation schema and transformation rules are in Appendix~\ref{app:ctl}.
 % When an anchor is present the referent is unambiguous and answers tend to converge; removing it widens the plausible referent space, causing answer dispersion.
 % A drop in $\sHH$ similarity across variants therefore reflects this increased dispersion rather than a change in question difficulty per se.
 
@@ -279,22 +276,21 @@ As a calibration reference, we report a leave-one-out (LOO) baseline: each parti
 We refer to this interval as the \textit{human range} throughout.
 For $\djs$, a model below the lower bound is closer to the pooled human distribution than our human set are, indicating an majority-biased response pattern rather than stronger human-likeness.% ; above the upper bound indicates weaker alignment to the pooled human distribution.
 
-\textbf{Semantic alignment.} For open-ended questions we compute pairwise Sentence-BERT (\citealt{reimers2019sentence}) cosine similarity using the \texttt{all-mpnet-base-v2} encoder \citep{song2020mpnet}, denoted as SBERT ($S$).
+\textbf{Semantic alignment.} For open-ended questions we compute pairwise Sentence-BERT (\citealt{reimers2019sentence}) cosine similarity using the \texttt{all-mpnet-base-v2} encoder \citep{song2020mpnet}. % , denoted as SBERT ($S$)
 
 Let $\phi(\cdot)$ denote the encoder and $H$ the set of participants.
-Here, $q$ indexes a single question instance, i.e., one original question under one specific control variant.
-For model $m$ and question instance $q$:
+For model $m$ over question instances $Q$:
 \begin{equation}
   \sHM = \frac{1}{|Q|}\sum_{q\in Q}\frac{1}{|H|}\sum_{h\in H}\cos\!\bigl(\phi(\hat{a}_{m}(q)),\,\phi(a_{h}(q))\bigr),
   \label{eq:sbert}
 \end{equation}
 where $\hat{a}_{m}(q)$ is the model's answer and $a_{h}(q)$ is participant $h$'s answer to question $q$.
-The human--human (HH) analogue $\sHH$ is the mean pairwise cosine similarity across all participant pairs for the same instance, serving as a per-question \emph{difficulty} measure (low $\sHH$ = high human disagreement).
+The human--human analogue $\sHH$ is computed by treating each participant as the model in turn---substituting $a_{h}(q)$ for $\hat{a}_{m}(q)$ and scoring against the remaining participants---then averaging over $h$; the 95\% CI is obtained via bootstrap over this leave-one-out set.
 
 \textbf{Anchoring sensitivity.} We use two complementary views of anchor dependence. First, $\Delta S \equiv S_{\vOrig} - S_{\vPron}$ measures the drop induced by pronominalization per operation or entity subgroup. Larger values indicate that responses are more tightly bound to the specific referent. % The \emph{over-degradation gap} $\Delta S_m - \Delta S_{\text{human}}$ then measures how much more (or less) a model degrades relative to humans on the same subgroup. % ; positive values indicate the model loses alignment faster than human agreement drops when the visual anchor is removed. % ( \S\ref{sec:alignment_main}; Appendix Tables~\ref{tab:op_degradation_per_model}--\ref{tab:ent_degradation_per_model};
 
 % \textbf{Difficulty tracking.}  
-Secondly, for each model $m$, we also compute Spearman $\rho$ between its per-question scores $\sHM$ and the pooled human reference $\sHH$ across all question instances. %  ($N{=}183$ 
+Secondly, for each model $m$, we also compute Spearman $\rho$ between its per-question scores $\sHM[m,q]$ and the pooled human reference $\sHH[q]$ across all question instances. %  ($N{=}183$ 
 % We use Spearman $\rho$ rather than Pearson $r$ because the relationship between $\sHM$ and $\sHH$ is monotone but not necessarily linear, and $\rho$ is robust to skewed score distributions.
 A strong correlation indicates that the model's difficulty profile co-moves with the human semantic scoring on the questions. % ; a low $\pr$ indicates the model fails on structurally different questions than humans do.
 % The human LOO reference is the median $\rho$ obtained by correlating each participant's leave-one-out scores against the remaining participants' pooled reference.
@@ -357,7 +353,7 @@ However, question groups such as \textit{Count} and \textit{Existence} only cons
 Therefore, we report separately in more details for such categorical questions in \S\ref{sec:dist_alignment}. 
 % yes/no and count questions are analyzed distributionally via JS divergence , while free-text questions use SBERT-based semantic alignment (\S\ref{sec:alignment_main}); the per-question Spearman $\pr$ is computed across all types jointly.
 
-Within entity types, \textit{food} shows the steepest model degradation ($\Delta\sHM{=}{+}.095$, $p{<}.01$ for VLMs; ${+}.129$, $p{<}.01$ for SA-LLMs):
+Within entity types, \textit{Food} questions show the steepest human degradation ($\Delta\sHH{=}{+}.063$, $p{<}.05$), followed by \textit{Animal} ($\Delta\sHH{=}{+}.052$, $p{<}.05$):
 \textit{``What type of bread does this appear to be?''} \emph{(Attribute; Food;} Weaker: \textit{``food''};
 Pronominalized: \textit{``it''}) sees humans converge on specific bread types
 (\textit{baguette}, \textit{sandwich bread}) under the original phrasing, but shift
@@ -517,7 +513,7 @@ When no instruction is given, humans would abstain and double check on the task.
 With instruction to imagine the scene, human abstention rate to our questions is $<\!0.4\%$ (49 of 13,560 responses) with our classifier. We treat this unique behavior of humans of context-switching as an alignment dimension. 
 Some models under the explicit instruction, also reach near-zero abstention (LLaVA-1.5 and LLaVA-Vicuna backbone decoders: ${\approx}0.6\%$), superficially approaching human compliance. However, 
 As seen in Table~\ref{tab:alignment_ranking_7b_ticks}, many of our models show minimal abstention even without instruction -- some even 0\%, and those ones sometimes gain in abstention with instruction, which is a clear reversal of human behavior. 
-The most aligned model in this case is InternVL~(LM), showing the highest spontaneous abstention ($17.1\%$ without instruction) and reduction in abstention with instruction ($9.47\%$). Qwen3-VL VLM and LM also shows this switch with small abstention reduction with instruction (). 
+The most aligned model in this case is InternVL~(LM), showing the highest spontaneous abstention ($17.1\%$ without instruction) and reduction in abstention with instruction ($9.47\%$). Qwen3-VL VLM and LM also show this switch with small abstention reduction under instruction (VLM: $5.3\%{\to}3.9\%$; LM: $5.3\%{\to}3.3\%$), though at much lower absolute levels.
 In sum, while humans abstain freely without instruction and comply cleanly with it, no model achieves both: models that abstain do so inconsistently, and models that comply do so regardless of context.
 % SA-LLMs occupy a middle position---Qwen3 ranks second in blind detection ($12.7\%$) but near-last in instruction compliance---suggesting text-only pretraining instills more spontaneous sensitivity to image absence than VQA co-training, but without the ability to override it on command.
 
@@ -546,11 +542,11 @@ Model evaluation uses greedy decoding, which may underestimate answer diversity.
 Although benchmark contamination may also amplify blind performance (see \citet{chen2024are} show that VLMs can achieve non-trivial scores without visual input partly due to training-set leakage), we stress that our pronominalization test partially controls for this, since models that rely on memorized question--answer pairs should degrade more sharply when content nouns are removed.
 % Whether blind accuracy and semantic alignment dissociate systematically across architectures---and what that reveals about the relationship between benchmark performance and human-like prior structure---remains an open question for future work.
 
-The control variants have a known failure mode: questions that already lack a nominal scene anchor produce identical text across all three variants, collapsing the intended difficulty gradient.
-In \textit{``What sport is being played?''}, the word \textit{sport} is the interrogative target, not a scene anchor; there is no subject noun to strip or pronominalize, so variant~C, B, and A are all identical.
-These questions contribute no pronominalization signal and inflate agreement scores equally across variants, attenuating measured degradation.
-This differs from well-formed cases such as \textit{``What sport is the player playing?''}, where \textit{player} is a clear nominal anchor that the abstraction ladder can operate on.
-More broadly, the degree to which a question is grounded in a specific scene referent varies considerably across VQA datasets, motivating more controlled abstraction methods --- such as syntactic dependency parsing to identify and selectively replace head nominals --- beyond single-step LLM rewriting.
+We also note that the control variants of questions are not perfect due to large variability of preciseness of subject reference in the VQA questions. For exapmle, a few questions contain no clear nominal subject, so the abstraction ladder collapses across all three variants, removing the intended difficulty gradient, for example, ``What sport is being played?'' remains identical across all three variants.
+%Additionally, the Weaker and Pronominalized steps do not always follow a strict specificity order: occasionally the Pronominalized variant drops its referent entirely while the Weaker version stays grounded, producing non-monotonic agreement patterns (Weaker $>$ Pronominalized).
+% For example, ``How many zebras?'' $\to$ Weaker: ``How many animals?'' $\to$ Pronominalized: ``How many are there?'' — the Weaker version remains grounded but the Pronominalized version loses its referent entirely.
+% Similarly, ``What is the blue thing on the ground?'' weakens to ``What is the blue object on the ground?'', which is no more abstract.
+These cases motivate more controlled abstraction methods beyond single-step LLM rewriting.
 
 % ─────────────────────────────────────────────────────────────────────────────
 % removed Conclusion section header — merged into Discussion and Conclusion
@@ -565,6 +561,7 @@ More broadly, the degree to which a question is grounded in a specific scene ref
 \bibliography{paper}
 
 % ─────────────────────────────────────────────────────────────────────────────
+
 \input{appendix}
 
 \end{document}

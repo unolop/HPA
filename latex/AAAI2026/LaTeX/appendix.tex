@@ -138,16 +138,14 @@ Sec.~\ref{app:thinking} examines whether extended chain-of-thought reasoning imp
 \section{Dataset Preparation}
 \label{app:data}
 
+Both GPT-4.1-mini-2025-04-14 calls described below use temperature~0, seed~42, and structured JSON schema mode with \texttt{additionalProperties:~false}.
+Questions are submitted in batches of 50 per API call.
+
 \subsection{Control Question Extraction Pipeline}
 \label{app:ctl}
 
 The generation pipeline produces four variants per question, but human and model comparisons use three: \textbf{Original} (C, unmodified), \textbf{Weaker} (B, \texttt{weaker\_object}), and \textbf{Pronominalized} (A, \texttt{pronominalized}). The \texttt{deictic\_removed} and \texttt{object\_removed} steps are intermediate scaffolding used by the extraction pipeline but excluded from analysis.
-
-Control variants are extracted using GPT-4.1-mini-2025-04-14 (temperature~0,
-seed~42, JSON schema mode) in batches of 50 questions per API call.
-The output schema enforces
-\texttt{\{deictic\_removed, object\_removed, weaker\_object, pronominalized\}}
-as required string fields with \texttt{additionalProperties:~false}.
+The output schema enforces \texttt{\{deictic\_removed, object\_removed, weaker\_object, pronominalized\}} as required string fields.
 The system prompt is reproduced verbatim below:
 
 \begin{quote}\small
@@ -179,11 +177,10 @@ Keep ONLY question words, copula, prepositions, predicate/attribute, and pronoun
 Use ``it''/``they''/``them''---never ``the object''.
 \end{quote}
 
-\iffalse % not referenced from main text
 \subsection{Question Taxonomy Extraction}
 \label{app:sem_extraction}
 
-Each question in the pool is annotated along two axes --- \emph{operation type} (what reasoning the question demands) and \emph{entity type} (what semantic field its subject belongs to) --- using GPT-4.1-mini-2025-04-14 (temperature~0, seed~42, JSON schema mode).
+Each question is annotated along two axes: \emph{operation type} (what reasoning the question demands) and \emph{entity type} (what semantic field its subject belongs to).
 The output schema enforces \texttt{op} and \texttt{ent} as required enumerated string fields.
 The system prompt is reproduced verbatim below:
 
@@ -206,7 +203,6 @@ Return ONLY a JSON object \texttt{\{"results":[...]\}} matching the schema exact
 
 6) If \texttt{w=where} and \texttt{op} not in \{\texttt{text,know}\} $\Rightarrow$ \texttt{op=spat}, \texttt{attr=loc}, \texttt{ans=loc}, \texttt{space=cat}.
 \end{quote}
-\fi % end sem_extraction
 
 \subsection{Question Embedding Coverage}
 \label{app:tsne}
@@ -225,6 +221,7 @@ narrow semantic region.}
 \label{fig:tsne}
 \end{figure}
 
+\clearpage
 \section{Dataset Composition}
 \label{app:sample_composition}
 \input{tables/supp/sample_q113_composition}
@@ -288,6 +285,7 @@ Text        & 4  & Visible written content such as signs, labels, or logos. & \t
 \label{tab:taxonomy}
 \end{table*}
 
+\clearpage
 \section{Human Study Details}
 \label{app:human_study}
 
@@ -380,6 +378,7 @@ This cascade is applied uniformly to all model outputs before the normalization 
 The shared abstention classifier (Appendix~\ref{app:abstention_classifier}) is applied uniformly to both model and human answers to flag non-substantive responses for exclusion from alignment metrics.
 Human abstention after normalization is negligible ($<$0.01\% overall; effectively absent), so HH pairs are minimally affected; filtering primarily removes model-abstaining HM pairs.
 
+\clearpage
 \section{Model Inventory}
 \label{app:model_inventory}
 
@@ -422,6 +421,7 @@ Vicuna              & 7B, 13B & \multicolumn{2}{l}{---} & LLaMA fine-tuned on Sh
 \end{tabularx}
 \end{table*}
 
+\clearpage
 \section{Abstention}
 \label{app:abstention}
 
@@ -447,6 +447,7 @@ A small number of false positives occur where \textit{unknown} appears as an adj
 \label{fig:abstention_confidence_hist}
 \end{figure}
 
+\clearpage
 \section{Instruction Effects}
 \label{app:inst}
 
@@ -467,6 +468,7 @@ A small number of false positives occur where \textit{unknown} appears as an adj
 \label{fig:count_transition_all}
 \end{figure*}
 
+\clearpage
 \section{Pronominalization Degradation by Group}
 \label{app:op_degradation_gap}
 
@@ -516,6 +518,7 @@ This asymmetry is interpretable: text-reading questions depend on OCR of image c
 \end{figure}
 \fi % end internvl_entity
 
+\clearpage
 \section{Image-Condition Ablation}
 \label{app:ablation}
 
@@ -554,6 +557,7 @@ Chg.\ = response change rate relative to the black image baseline of the same co
 \label{tab:image_ablation_main}
 \end{table*}
 
+\clearpage
 \section{Alignment}
 \label{app:scale_variant}
 
@@ -665,6 +669,7 @@ A high $\pr$ indicates the model ranks questions in the same relative difficulty
 \fi % end delta_bar
 
 \iffalse % not referenced from main text
+\clearpage
 \section{Accuracy Alignment}
 \label{app:accuracy_robustness}
 
@@ -683,6 +688,7 @@ A high $\pr$ indicates the model ranks questions in the same relative difficulty
 \end{figure*}
 \fi % end accuracy_robustness
 
+\clearpage
 \section{Does More Thinking Help?}
 \label{app:thinking}
 
@@ -721,6 +727,7 @@ Pooled results ($\Delta{=}{+}0.048$, $p{<}.001$) are inflated by 1.7B, whose app
 %\input{tables/supp/qwen3_op_breakdown}
 
 \iffalse
+\clearpage
 \section{Answer Aggregation}
 \label{app:aggregation}
 
@@ -735,6 +742,7 @@ and $\phi$ maps raw answers to canonical forms.
 \fi
 
 \iffalse
+\clearpage
 \section{Per-Family Alignment Structure}
 \label{app:family_alignment}
 
@@ -754,6 +762,7 @@ and $\phi$ maps raw answers to canonical forms.
 \fi
 
 \iffalse
+\clearpage
 \section{SBERT Metric Robustness}
 \label{app:sbert_robustness}
 
