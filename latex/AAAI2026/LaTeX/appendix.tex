@@ -1036,7 +1036,11 @@ At 0.6B, thinking mode has no effect on any metric ($p{=}.317$; the 0.6B think a
 At 8B, think mode yields a marginal $\sHM$ improvement ($\Delta{=}{+}0.012$, $p{=}.049$) and accuracy enters the human reference band, but difficulty tracking regresses slightly ($\rho{:}~0.807{\to}0.750$), with both values remaining within the human LOO range $[0.629,\,0.846]$.
 At 32B, $\rho$ similarly regresses ($0.793{\to}0.734$), consistent with frequent thought-skipping at that scale.
 
-A further consequence of extended reasoning is overconfidence: as shown in Figure~\ref{fig:think_abs_vs_length}(c), longer reasoning traces correlate with higher final-answer token log-probability, meaning models commit more strongly to answers that humans---in the same blind condition---would express with appropriate uncertainty.
+A further consequence of extended reasoning is a parallel to human response behaviour---but with a critical divergence.
+Humans take longer to respond to questions they find harder and express more uncertainty; thinking models show the same difficulty sensitivity: per-question trace length negatively correlates with human inter-annotator agreement $\sHH$ ($\rho{=}{-}.152$, $p{<}.01$, $n{=}339$) and with the model's own human-alignment score $\sHM$ (pooled across variants: $\rho{=}{-}.124$, $p{<}.05$; by variant, see Table~\ref{tab:think_trace_length_corr}).
+This confirms that longer deliberation is not random---it is allocated to questions humans also find harder.
+The divergence, however, lies in confidence: as shown in Figure~\ref{fig:think_abs_vs_length}(c), longer reasoning traces correlate with \emph{higher} final-answer token log-probability.
+Rather than emerging more uncertain after extended deliberation, models commit more strongly---the opposite of the human pattern---suggesting that the reasoning trace amplifies commitment to a linguistically plausible answer rather than calibrating uncertainty to question difficulty.
 
 \begin{figure}[h]
 \centering
@@ -1076,6 +1080,29 @@ Pooled & .444 & .469 & $+0.025^{***}$ \\
 % \caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs on difficulty tracking, measured as Spearman $\rho$ between per-question--variant model $\sHM$ and human $\sHH$ over all questions and variants after abstention filtering. Reported $p$ values are the Spearman correlation tests against zero, not paired tests on the think--no-think difference.}
 % \label{tab:thinking_spearman}
 
+Table~\ref{tab:think_trace_length_corr} reports the Spearman correlation between per-question reasoning-trace length and mean HM SBERT, computed from abstention-filtered pairs across all 113 study questions and three question variants.
+At 8B, the negative correlation is significant for Original ($\rho{=}{-}.270$, $p{<}.01$) and Weaker ($\rho{=}{-}.200$, $p{<}.05$) variants, and marginally significant pooled ($\rho{=}{-}.124$, $p{<}.05$, $n{=}313$), confirming that longer deliberation is associated with harder (less human-aligned) questions rather than alignment gains.
+At 4B the pattern is similar; at 0.6B and 32B correlations are near zero, consistent with negligible or constrained deliberation at those scales.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption{Spearman $\rho$ between per-question reasoning-trace word count and mean HM SBERT ($\sHM$), computed from abstention-filtered pairs in the blind+instruction condition. Stars: $^{*}p{<}.05$, $^{**}p{<}.01$. $n$ = number of question--variant pairs after abstention filtering (zero-length traces excluded). Shaded cells (\cellcolor{orange!20}orange) indicate significant negative correlations.}
+\label{tab:think_trace_length_corr}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{Original (C)} & \textbf{Weaker (B)} & \textbf{Pronominalized (A)} & \textbf{All} \\
+\midrule
+Qwen3-0.6B (think) & $+.052$ {\scriptsize($n{=}110$)} & $+.167$ {\scriptsize($n{=}108$)} & $+.075$ {\scriptsize($n{=}109$)} & $+.101$ {\scriptsize($n{=}327$)} \\
+Qwen3-1.7B (think) & $-.118$ {\scriptsize($n{=}46$)}  & $-.163$ {\scriptsize($n{=}41$)}  & $+.076$ {\scriptsize($n{=}33$)}  & $-.080$ {\scriptsize($n{=}120$)} \\
+Qwen3-4B  (think)  & \cellcolor{orange!20}$-.209^{*}$ {\scriptsize($n{=}109$)} & \cellcolor{orange!20}$-.283^{**}$ {\scriptsize($n{=}105$)} & $+.058$ {\scriptsize($n{=}100$)} & \cellcolor{orange!20}$-.171^{**}$ {\scriptsize($n{=}314$)} \\
+Qwen3-8B  (think)  & \cellcolor{orange!20}$-.270^{**}$ {\scriptsize($n{=}106$)} & \cellcolor{orange!20}$-.200^{*}$ {\scriptsize($n{=}105$)} & $+.131$ {\scriptsize($n{=}102$)} & \cellcolor{orange!20}$-.124^{*}$ {\scriptsize($n{=}313$)} \\
+Qwen3-32B (think)  & $+.034$ {\scriptsize($n{=}32$)}  & $-.024$ {\scriptsize($n{=}32$)}  & $-.017$ {\scriptsize($n{=}24$)}  & $-.028$ {\scriptsize($n{=}88$)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \clearpage
 \label{app:scale_variant}
 
@@ -1102,7 +1129,7 @@ Abstention columns show actual rates shaded by quality ($\uparrow$/$\downarrow$ 
 \small
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{0.96}
-\caption{Full-scale alignment ranking across all evaluated model sizes. All questions $\times$ variants pooled; abstention classifier applied. All columns show values under the blind+instruction condition; {\scriptsize(colored $\Delta$)} = change from blind-only. For $\djs$: {\textcolor[HTML]{CC7A00}{orange}}$+$ = more divergence with instruction; {\textcolor[HTML]{0072B2}{blue}}$-$ = less. For $\sHM$/$\rho$: {\textcolor[HTML]{0072B2}{blue}}$+$ = improvement with instruction; {\textcolor[HTML]{CC7A00}{orange}}$-$ = degradation. \colorbox[HTML]{D9EAF3}{Blue} = within human LOO-CV 95\,\% CI; \colorbox[HTML]{F7EBD9}{Orange} = exceeds CI toward human mean (below lower bound for $\djs$; above upper bound for $\sHM$/$\rho$). $\rho$ = Spearman correlation between per-question model and human difficulty. Abst(\%) = abstention rate under the instruction condition with $\Delta$ from blind-only. Gray shading = lower is better. Human LOO-CV row: median with {\tiny[5th, 95th percentile]} CI across leave-one-out raters.}
+\caption{Full-scale alignment ranking across all evaluated model sizes. All questions $\times$ variants pooled; abstention classifier applied. All columns show values under the blind+instruction condition; {\scriptsize(colored $\Delta$)} = change from blind-only. For $\djs$: {\textcolor[HTML]{CC7A00}{orange}}$+$ = more divergence with instruction; {\textcolor[HTML]{0072B2}{blue}}$-$ = less. For $\sHM$/$\rho$: {\textcolor[HTML]{0072B2}{blue}}$+$ = improvement with instruction; {\textcolor[HTML]{CC7A00}{orange}}$-$ = degradation. \colorbox[HTML]{D9EAF3}{Blue} = within human LOO-CV 95\,\% CI; \colorbox[HTML]{F7EBD9}{Orange} = concentrates on consensus answers beyond human variability (below CI lower bound for $\djs$, above upper bound for $\sHM$/$\rho$). $\rho$ = Spearman correlation between per-question model and human difficulty. Abst(\%) = abstention rate under the instruction condition with $\Delta$ from blind-only. Gray shading = lower is better. Human LOO-CV row: median with {\tiny[5th, 95th percentile]} CI across leave-one-out raters.}
 \label{tab:alignment_ranking_full_scale_ticks}
 \begin{tabular}{>{\raggedright\arraybackslash}p{2.2cm}cccccccc}
 \toprule

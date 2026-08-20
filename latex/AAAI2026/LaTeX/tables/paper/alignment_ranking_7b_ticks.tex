@@ -3,36 +3,36 @@
 \small
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{0.96}
-\caption{Per-model alignment ranking. $\checkmark$ = within human LOO 95\,\% CI; {[$\checkmark$]} = exceeds CI toward human mean (more human-like than LOO). Abst(\%) = spontaneous (w/o\,$\uparrow$) and instructed (w/\,$\downarrow$) abstention rates (\textbf{bold} = best; \underline{underline} = second-best).}
+\caption{Per-model alignment ranking. $\checkmark$ = within human LOO 95\,\% CI; $(\checkmark)$ = concentrates on consensus answers beyond human variability. Abst(\%) = abstention rates with (w/) and without (w/o) instruction (\textbf{bold} = best; \underline{underline} = second-best).}
 \label{tab:alignment_ranking_7b_ticks}
 \begin{tabular}{>{\raggedright\arraybackslash}p{2.6cm}cccccc}
 \toprule
 \multirow{2}{*}{\textbf{Model}} & \multicolumn{2}{c}{$\djs$} & \multicolumn{2}{c}{$\sHM$} & \multicolumn{2}{c}{Abst(\%)} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
- & Yes/No & Count & Other & $\rho$ & w/o $\uparrow$ & w/ $\downarrow$ \\
+ & Yes/No & Count & Other & $\rho$ & w/ $\downarrow$ & w/o $\uparrow$ \\
 \midrule
 \multicolumn{7}{c}{\textit{VLMs}}\\
 \midrule
-InternVL3.5 & \textcolor[HTML]{CC7A00}{[$\checkmark$]} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{CC7A00}{[$\checkmark$]} & 0.0 & 2.1 \\
-LLaVA-1.5 & - & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & 3.0 & 3.5 \\
-LLaVA-Mistral & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 2.6 & 1.8 \\
-LLaVA-Vicuna & - & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & 2.7 & \underline{0.9} \\
-Qwen3-VL & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 5.3 & 3.9 \\
+InternVL3.5 & \textcolor[HTML]{2E7D32}{($\checkmark$)} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{($\checkmark$)} & 2.1 & 0.0 \\
+LLaVA-1.5 & - & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & 3.5 & 3.0 \\
+LLaVA-Mistral & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 1.8 & 2.6 \\
+LLaVA-Vicuna & - & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \underline{0.9} & 2.7 \\
+Qwen3-VL & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 3.9 & 5.3 \\
 \midrule
 \multicolumn{7}{c}{\textit{Backbone Decoders}}\\
 \midrule
-InternVL3.5 & \textcolor[HTML]{CC7A00}{[$\checkmark$]} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textbf{17.1} & 9.5 \\
-LLaVA-1.5 & \textcolor[HTML]{CC7A00}{[$\checkmark$]} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 0.0 & \textbf{0.6} \\
-LLaVA-Mistral & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 0.3 & 2.1 \\
-LLaVA-Vicuna & \textcolor[HTML]{CC7A00}{[$\checkmark$]} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 0.3 & \textbf{0.6} \\
-Qwen3-VL & \textcolor[HTML]{CC7A00}{[$\checkmark$]} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 5.3 & 3.2 \\
+InternVL3.5 & \textcolor[HTML]{2E7D32}{($\checkmark$)} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 9.5 & \textbf{17.1} \\
+LLaVA-1.5 & \textcolor[HTML]{2E7D32}{($\checkmark$)} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textbf{0.6} & 0.0 \\
+LLaVA-Mistral & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 2.1 & 0.3 \\
+LLaVA-Vicuna & \textcolor[HTML]{2E7D32}{($\checkmark$)} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textbf{0.6} & 0.3 \\
+Qwen3-VL & \textcolor[HTML]{2E7D32}{($\checkmark$)} & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & \textcolor[HTML]{2E7D32}{$\checkmark$} & 3.2 & 5.3 \\
 \midrule
 \multicolumn{7}{c}{\textit{SA-LLMs}}\\
 \midrule
-Qwen2.5-Instruct & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & 9.1 & 6.5 \\
-Qwen3 & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & \underline{12.7} & 4.7 \\
-Qwen3 (think) & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & \underline{12.7} & 4.7 \\
-Vicuna & \textcolor[HTML]{CC7A00}{[$\checkmark$]} & - & - & - & 1.2 & 1.5 \\
+Qwen2.5-Instruct & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & 6.5 & 9.1 \\
+Qwen3 & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & 4.7 & \underline{12.7} \\
+Qwen3 (think) & - & - & \textcolor[HTML]{2E7D32}{$\checkmark$} & - & 4.7 & \underline{12.7} \\
+Vicuna & \textcolor[HTML]{2E7D32}{($\checkmark$)} & - & - & - & 1.5 & 1.2 \\
 \bottomrule
 \end{tabular}
 \end{table}
