@@ -13,10 +13,13 @@ Also computes overall means (all ops combined).
 Output: printed summary table.
 """
 
+import sys
+from pathlib import Path
 import pandas as pd
 import numpy as np
 
-PARQUET = "/home/david/Desktop/yuna/HPA/analysis/session2/exports/pair_cache_cleaned.parquet"
+ROOT = Path(__file__).resolve().parents[2]
+PARQUET = ROOT / "analysis/session2/exports/pair_cache_cleaned.parquet"
 
 MODEL_BASE  = "Qwen3-8B"
 MODEL_THINK = "Qwen3-8B (think)"

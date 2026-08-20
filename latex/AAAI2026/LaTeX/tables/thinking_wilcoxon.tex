@@ -1,21 +1,39 @@
-\begin{table}[ht]
+\begin{table}[h]
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs. \textit{Left}: Paired Wilcoxon signed-rank tests on HM SBERT ($\sHM$) in the blind+instruction condition (abstention-filtered per-question means, all three control variants; 113-question human-study subset). \textit{Right}: Spearman $\rho$ between per-question model $\sHM$ and human difficulty $\sHH$ (free-text questions, grouped by question$\times$variant; human LOO range $[0.629, 0.846]$; Wilcoxon not applicable to scalar $\rho$). {\scriptsize ---}\,=\,no think variant at that size. Note: 4B think and no-think share the same checkpoint ($\Delta{=}0$) and are omitted. \textbf{Bold} = best per column; \underline{underline} = second-best (Pooled row excluded from ranking).}
-\label{tab:thinking_wilcoxon}
-\begin{tabular}{lcccc|ccc}
+\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs on mean HM SBERT ($\sHM$), computed over all available question--variant pairs in the blind+instruction condition after abstention filtering. Two-sided paired Wilcoxon signed-rank tests compare no-think vs.\ think on matched question--variant means. {---}\,=\,no think variant available or identical checkpoint.}
+\label{tab:thinking_shm_wilcoxon}
+\begin{tabular}{lcccc}
 \toprule
- & \multicolumn{4}{c|}{$\sHM$ (Wilcoxon)} & \multicolumn{3}{c}{Spearman $\rho$} \\
-\cmidrule(lr){2-5}\cmidrule(l){6-8}
-\textbf{Size} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} & \textbf{$p$} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} \\
+\textbf{Size} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} & \textbf{$p$} \\
 \midrule
-0.6B  & .330 & .330 & $+0.000$ & $.317$           & $0.677$ & $0.682$          & $\underline{+0.005}$ \\
-1.7B  & \textbf{.449} & \textbf{.559} & $\textbf{+0.110}$ & $<.001^{***}$    & $0.567$ & $\textbf{0.818}$           & $\textbf{+0.251}$ \\
-8B    & \underline{.426} & \underline{.438} & $\underline{+0.012}$ & $.049^{*}$        & $\textbf{0.807}$ & $\underline{0.750}$           & $-0.057$ \\
-32B   & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & {\scriptsize ---} & $\underline{0.793}$ & $0.734$ & $-0.059$ \\
+0.6B  & .330 & .330 & $+0.001$ & {---} \\
+1.7B  & .436 & .561 & $+0.125$ & $<.001^{***}$ \\
+4B    & .520 & .520 & $+0.000$ & {---} \\
+8B    & .491 & .534 & $+0.043$ & $<.001^{***}$ \\
+32B   & .510 & .562 & $+0.052$ & $.431$ \\
 \midrule
-Pooled & .382 & .430 & $+0.048$ & $<.001^{***}$   & \multicolumn{3}{c}{{\scriptsize ---}} \\
+Pooled & .444 & .469 & $+0.025$ & $<.001^{***}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs on difficulty tracking, measured as Spearman $\rho$ between per-question--variant model $\sHM$ and human $\sHH$ over all questions and variants after abstention filtering. Reported $p$ values are the Spearman correlation tests against zero, not paired tests on the think--no-think difference.}
+\label{tab:thinking_spearman}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Size} & \textbf{No-think} & \textbf{$p$} & \textbf{Think} & \textbf{$p$} & \textbf{$\Delta$} \\
+\midrule
+0.6B  & $-0.310$ & $<.001^{***}$ & $-0.306$ & $<.001^{***}$ & $+0.004$ \\
+1.7B  & $0.523$ & $<.001^{***}$ & $0.726$ & $<.001^{***}$ & $+0.203$ \\
+4B    & $0.702$ & $<.001^{***}$ & $0.702$ & $<.001^{***}$ & $+0.000$ \\
+8B    & $0.525$ & $<.001^{***}$ & $0.663$ & $<.001^{***}$ & $+0.137$ \\
+32B   & $0.688$ & $<.001^{***}$ & $0.680$ & $<.001^{***}$ & $-0.008$ \\
 \bottomrule
 \end{tabular}
 \end{table}

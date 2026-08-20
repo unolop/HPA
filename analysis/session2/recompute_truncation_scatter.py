@@ -102,9 +102,19 @@ def per_model_scores(base_df, w5_df, filter_abst: bool) -> pd.DataFrame:
 
 
 def make_scatter(df: pd.DataFrame, out_path: Path) -> None:
-    fig, ax = plt.subplots(figsize=(3.2, 2.8))
+    groups_present = [g for g in GROUP_ORDER if not df[df["group"] == g].empty]
+    n = len(groups_present)
 
-    for grp in GROUP_ORDER:
+    lims = [
+        min(df["raw"].min(), df["trunc"].min()) - 0.01,
+        max(df["raw"].max(), df["trunc"].max()) + 0.01,
+    ]
+
+    fig, axes = plt.subplots(n, 1, figsize=(3.2, 2.4 * n), sharex=True, sharey=True)
+    if n == 1:
+        axes = [axes]
+
+    for ax, grp in zip(axes, groups_present):
         sub = df[df["group"] == grp].copy()
         for _, row in sub.iterrows():
             fam = model_family(row["model"])
@@ -116,39 +126,28 @@ def make_scatter(df: pd.DataFrame, out_path: Path) -> None:
                 zorder=3, alpha=0.85,
                 edgecolors="white", linewidths=0.4,
             )
+        ax.plot(lims, lims, color="#999999", lw=0.9, ls="--", zorder=1)
+        ax.set_xlim(lims)
+        ax.set_ylim(lims)
+        ax.set_title(GROUP_LABELS[grp], fontsize=8, fontweight="bold", pad=3)
+        ax.set_ylabel("5-word trunc.", fontsize=7.5)
+        # Family marker legend on each panel
+        family_handles = [
+            Line2D([0], [0], marker=m, color="w", markerfacecolor="#555555",
+                   markersize=6, label=fam)
+            for fam, m in FAMILY_MARKERS.items()
+            if not sub[sub.apply(lambda r: model_family(r["model"]) == fam, axis=1)].empty
+        ]
+        if family_handles:
+            ax.legend(handles=family_handles, fontsize=6, frameon=True,
+                      loc="lower right", framealpha=0.9, edgecolor="#ccc")
 
-    lims = [
-        min(df["raw"].min(), df["trunc"].min()) - 0.01,
-        max(df["raw"].max(), df["trunc"].max()) + 0.01,
-    ]
-    ax.plot(lims, lims, color="#999999", lw=0.9, ls="--", zorder=1)
-    ax.set_xlim(lims)
-    ax.set_ylim(lims)
-    ax.set_xlabel("HM SBERT (raw)")
-    ax.set_ylabel("HM SBERT (5-word truncated)")
-
-    # Legend: group colors
-    group_handles = [
-        Line2D([0], [0], marker="o", color="w", markerfacecolor=GROUP_COLORS[g],
-               markersize=7, label=GROUP_LABELS[g])
-        for g in GROUP_ORDER
-    ]
-    # Legend: family markers
-    family_handles = [
-        Line2D([0], [0], marker=m, color="w", markerfacecolor="#555555",
-               markersize=7, label=fam)
-        for fam, m in FAMILY_MARKERS.items()
-    ]
-
-    leg1 = ax.legend(handles=group_handles, title=None, frameon=True,
-                     fontsize=6, loc="upper left",
-                     framealpha=0.9, edgecolor="#ccc")
-    ax.add_artist(leg1)
-    ax.legend(handles=family_handles, title=None, frameon=True,
-              fontsize=6, loc="lower right",
-              framealpha=0.9, edgecolor="#ccc")
+    axes[-1].set_xlabel("HM SBERT (raw)")
+    fig.text(0.04, 0.5, "HM SBERT (5-word truncated)", va="center",
+             rotation="vertical", fontsize=7.5)
 
     plt.tight_layout()
+    plt.subplots_adjust(left=0.18, hspace=0.35)
     fig.savefig(out_path, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"Saved: {out_path}")

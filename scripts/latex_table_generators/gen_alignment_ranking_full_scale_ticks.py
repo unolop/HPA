@@ -149,6 +149,11 @@ THINK_MODELS: list[tuple[str, str, str]] = [
     ("Qwen3", "32B",  "Qwen3-32B (think)"),
 ]
 
+N_YESNO_PAIRS = 78   # 26 yes/no questions × 3 variants
+N_COUNT_PAIRS = 66   # 22 count questions × 3 variants
+N_STUDY_PAIRS = 339  # 113 study questions × 3 variants
+N_1K_PAIRS    = 3000 # 1000 questions × 3 variants
+
 GROUP_LABELS = {
     "VLM":              "VLMs",
     "Backbone Decoder": "Backbone Decoders",
@@ -157,21 +162,24 @@ GROUP_LABELS = {
 }
 
 METRIC_CFG = [
-    ("yesno_js",       r"Y/N",              True,  True,  ".3f"),
-    ("count_js",       r"Cnt",              True,  True,  ".3f"),
-    ("ft_sbert",       r"$\sHM$",           True,  False, ".3f"),
-    ("spearman_r_ft",  r"FT",               True,  False, ".3f"),
-    ("spearman_r_all", r"All",              True,  False, ".3f"),
-    ("abs_blind",      r"w/o $\uparrow$",   False, False, ".1f"),
-    ("abs_inst",       r"w/ $\downarrow$",  False, True,  ".1f"),
-    ("abs_blind_1k",   r"w/o $\uparrow$",   False, False, ".1f"),
-    ("abs_inst_1k",    r"w/ $\downarrow$",  False, True,  ".1f"),
-    ("abs_delta_1k",   r"$\Delta$",          False, False, "+.1f"),
+    ("yesno_js",       r"Y/N",    True,  True,  ".3f"),
+    ("count_js",       r"Cnt",    True,  True,  ".3f"),
+    ("ft_sbert",       r"$\sHM$", True,  False, ".3f"),
+    ("spearman_r_ft",  r"FT",     True,  False, ".3f"),
+    ("spearman_r_all", r"All",    True,  False, ".3f"),
+    ("abs_inst",       r"Study",  False, True,  ".1f"),
+    ("abs_inst_1k",    r"1kQ",    False, True,  ".1f"),
 ]
-VALUE_KEYS = {"yesno_js", "count_js", "ft_sbert", "spearman_r_ft", "spearman_r_all",
-              "abs_blind", "abs_inst", "abs_blind_1k", "abs_inst_1k"}
-ABS_KEYS   = {"abs_blind", "abs_inst", "abs_blind_1k", "abs_inst_1k"}
-DELTA_KEYS = {"abs_delta_1k"}
+# abs_blind / abs_blind_1k stay in metrics dict for delta, but not rendered as columns
+VALUE_KEYS = {"yesno_js", "count_js"}  # ft_sbert/spearman handled via SBERT_DELTA_MAP
+ABS_INST_KEYS = {"abs_inst", "abs_inst_1k"}
+DJS_BLIND_MAP = {"yesno_js": "yesno_js_blind", "count_js": "count_js_blind"}
+SBERT_DELTA_MAP = {
+    "ft_sbert":       "ft_sbert_blind",
+    "spearman_r_ft":  "spearman_r_ft_blind",
+    "spearman_r_all": "spearman_r_all_blind",
+}
+DELTA_KEYS = set()
 
 
 # ── Ranking helpers ───────────────────────────────────────────────────────────
@@ -217,8 +225,8 @@ def rank_str(r):
 
 _BG_BLUE   = r"\cellcolor[HTML]{D9EAF3}"   # within CI
 _BG_ORANGE = r"\cellcolor[HTML]{F7EBD9}"   # over-aligned (JS below lo, or SBERT above hi)
-_SYM_IN    = r"\,$\checkmark$"             # within CI
-_SYM_OVER  = r"\,$\triangledown$"          # over-aligned (below human LOO range)
+_SYM_IN    = r""                           # within CI
+_SYM_OVER  = r""                           # over-aligned (below human LOO range)
 
 
 def fmt_metric_cell(val, rank, ci_bounds):
@@ -293,6 +301,56 @@ def fmt_abs_cell(val, all_vals, higher_better, fmt=".1f"):
     return val_str
 
 
+def fmt_abs_inst_with_delta(inst_val, blind_val, all_inst_vals, fmt=".1f"):
+    """Abstention w/ instruction: gray shading + colored Δ=(inst−blind) in parentheses."""
+    if not np.isfinite(inst_val):
+        return "---"
+    finite = [v for v in all_inst_vals if np.isfinite(v)]
+    mn, mx = (min(finite), max(finite)) if finite else (0, 1)
+    intens = 0
+    if mx > mn:
+        frac = (mx - inst_val) / (mx - mn)   # lower inst = better
+        intens = round(frac * 4) * 5
+    val_str = format(inst_val, fmt)
+    if intens > 0:
+        val_str = rf"\cellcolor{{gray!{intens}}}{val_str}"
+    if np.isfinite(blind_val):
+        delta = inst_val - blind_val
+        sign = "+" if delta >= 0 else ""
+        color = "[HTML]{CC7A00}" if delta > 0 else "[HTML]{0072B2}"
+        val_str += rf"\,{{\scriptsize(\textcolor{color}{{{sign}{delta:.1f}}})}}"
+    return val_str
+
+
+def fmt_js_cell_with_delta(inst_val, blind_val, all_vals, higher_better, ci_bounds,
+                           fmt=".3f", rank=np.nan):
+    """DJS value cell: CI coloring/checkmark as usual, plus colored Δ=(inst−blind) in brackets."""
+    base = fmt_value_cell(inst_val, all_vals, higher_better=higher_better,
+                          ci_bounds=ci_bounds, fmt=fmt, rank=rank)
+    if not np.isfinite(blind_val):
+        return base
+    delta = inst_val - blind_val
+    sign = "+" if delta >= 0 else ""
+    # For DJS: lower is better, so higher inst vs blind is worsening (orange)
+    color = "[HTML]{CC7A00}" if delta > 0 else "[HTML]{0072B2}"
+    return base + rf"\,{{\scriptsize(\textcolor{color}{{{sign}{delta:.3f}}})}}"
+
+
+def fmt_sbert_cell_with_delta(inst_val, blind_val, all_vals, higher_better, ci_bounds,
+                              fmt=".3f", rank=np.nan):
+    """SBERT/ρ value cell: CI coloring/checkmark as usual, plus colored Δ=(inst−blind) in brackets.
+    For higher-better metrics: positive delta (inst > blind) = improvement = blue."""
+    base = fmt_value_cell(inst_val, all_vals, higher_better=higher_better,
+                          ci_bounds=ci_bounds, fmt=fmt, rank=rank)
+    if not np.isfinite(blind_val):
+        return base
+    delta = inst_val - blind_val
+    sign = "+" if delta >= 0 else ""
+    # For SBERT/ρ: higher is better, so positive delta (inst > blind) is improvement (blue)
+    color = "[HTML]{0072B2}" if delta > 0 else "[HTML]{CC7A00}"
+    return base + rf"\,{{\scriptsize(\textcolor{color}{{{sign}{delta:.3f}}})}}"
+
+
 # ── Data loading (identical to gen_alignment_ranking_full_scale.py) ───────────
 
 def _all_model_ids():
@@ -321,7 +379,8 @@ def compute_abstention_rates(all_models):
     return result
 
 
-def compute_js_all_models(all_models):
+def _compute_js_from_csv(all_models, responses_csv, out_keys):
+    """Shared JS computation: load model responses from csv, compute YN and Count JS vs human."""
     from notebooks.helpers import load_human_responses, _clean_answer_series
 
     mapper = VQAAnswerMapper()
@@ -330,7 +389,7 @@ def compute_js_all_models(all_models):
                  for qid, ann in mapper.annotations.items()}
 
     human_raw = load_human_responses()
-    model_raw = pd.read_csv(EXPORTS / "responses_model_inst_blind.csv")
+    model_raw = pd.read_csv(EXPORTS / responses_csv)
 
     variants = ("C", "B", "A")
     human_raw = human_raw[human_raw["variant"].isin(variants)].copy()
@@ -351,12 +410,13 @@ def compute_js_all_models(all_models):
     m_all = _mark_abstentions(model_raw.copy())
     m_all = m_all[m_all["model"].isin(all_models)].copy()
 
-    result = {m: {"yesno_js": np.nan, "count_js": np.nan} for m in all_models}
+    yn_key, cnt_key = out_keys
+    result = {m: {yn_key: np.nan, cnt_key: np.nan} for m in all_models}
 
     for model_name, model_sub_all in m_all.groupby("model"):
         if model_name not in all_models:
             continue
-        for answer_type, key in [("yes/no", "yesno_js"), ("number", "count_js")]:
+        for answer_type, key in [("yes/no", yn_key), ("number", cnt_key)]:
             human_sub, model_sub, category_order = _prepare_distribution_category(
                 h_all.copy(), model_sub_all.copy(), answer_type)
             model_sub = model_sub[~model_sub["is_abstained"]].copy()
@@ -386,6 +446,16 @@ def compute_js_all_models(all_models):
                 result[model_name][key] = float(np.mean(js_vals))
 
     return result
+
+
+def compute_js_all_models(all_models):
+    return _compute_js_from_csv(all_models, "responses_model_inst_blind.csv",
+                                ("yesno_js", "count_js"))
+
+
+def compute_js_blind_all_models(all_models):
+    return _compute_js_from_csv(all_models, "responses_model_blind.csv",
+                                ("yesno_js_blind", "count_js_blind"))
 
 
 def compute_sbert(all_models):
@@ -419,6 +489,64 @@ def compute_sbert(all_models):
         result[model]["ft_sbert"] = float(mg["sbert_score"].mean())
 
     return result, human_refs
+
+
+def compute_sbert_blind(all_models):
+    pc = pd.read_parquet(EXPORTS / "pair_cache_cleaned_blind.parquet")
+    pc = filter_abstained_pairs(pc)
+
+    hm = pc[pc["pair_type"] == "HM"]
+
+    mapper = VQAAnswerMapper()
+    mapper._load()
+    qid2atype = {int(qid): ann.get("answer_type", "other")
+                 for qid, ann in mapper.annotations.items()}
+    ft_qids = {qid for qid, at in qid2atype.items() if at == "other"}
+
+    hm_ft = hm[hm["question_id"].astype(int).isin(ft_qids)]
+
+    result = {m: {"ft_sbert_blind": np.nan} for m in all_models}
+    for model in all_models:
+        mg = hm_ft[hm_ft["subject_2"] == model]
+        if mg.empty:
+            continue
+        result[model]["ft_sbert_blind"] = float(mg["sbert_score"].mean())
+
+    return result
+
+
+def compute_spearman_r_blind(all_models, ft_only=False):
+    from scipy.stats import spearmanr as _sr
+
+    pc = pd.read_parquet(EXPORTS / "pair_cache_cleaned_blind.parquet")
+    pc = filter_abstained_pairs(pc)
+    hm = pc[pc["pair_type"] == "HM"]
+    hh = pc[pc["pair_type"] == "HH"]
+
+    if ft_only:
+        mapper = VQAAnswerMapper()
+        mapper._load()
+        qid2atype = {int(qid): ann.get("answer_type", "other")
+                     for qid, ann in mapper.annotations.items()}
+        ft_qids = {qid for qid, at in qid2atype.items() if at == "other"}
+        hm = hm[hm["question_id"].astype(int).isin(ft_qids)]
+        hh = hh[hh["question_id"].astype(int).isin(ft_qids)]
+
+    ref_pooled = hh.groupby(["question_id", "variant"])["sbert_score"].mean()
+
+    rho_per_model: dict[str, float] = {}
+    for m in all_models:
+        mg = hm[hm["subject_2"] == m]
+        if mg.empty:
+            rho_per_model[m] = float("nan")
+            continue
+        mm = mg.groupby(["question_id", "variant"])["sbert_score"].mean()
+        common = mm.index.intersection(ref_pooled.index)
+        if len(common) >= 20:
+            rho_per_model[m] = float(_sr(mm[common].values, ref_pooled[common].values)[0])
+        else:
+            rho_per_model[m] = float("nan")
+    return rho_per_model
 
 
 # ── Full-1k abstention ───────────────────────────────────────────────────────
@@ -515,13 +643,13 @@ def compute_spearman_r(all_models, ft_only=False):
 # ── Table builder ─────────────────────────────────────────────────────────────
 
 def _fmt_ref(val, lo, hi, fmt=".3f"):
-    """Human reference cell: value with [lo,hi] CI in small font."""
+    """Human reference cell: value on first line, CI in tiny font on second line."""
     if not np.isfinite(val):
         return "---"
     def _strip(x):
         raw = format(x, fmt)
         return raw.lstrip("0") if raw.startswith("0.") and len(raw) > 3 else raw
-    return rf"{_strip(val)}\,{{\scriptsize[{_strip(lo)},{_strip(hi)}]}}"
+    return rf"\makecell{{{_strip(val)} \\ {{\tiny [{_strip(lo)},{_strip(hi)}]}}}}"
 
 
 def build_table(metrics, human_refs):
@@ -555,22 +683,45 @@ def build_table(metrics, human_refs):
     n_metrics = len(METRIC_CFG)
     col_spec = r">{\raggedright\arraybackslash}p{2.2cm}c" + "c" * n_metrics
     n_total = 2 + n_metrics
+    # human LOO row needs multiline cells → need array package p-col wrapper
+    # handled by \renewcommand{\arraystretch}
 
     n_ft  = int(human_refs.get("n_ft",  0))
     n_all = int(human_refs.get("n_all", 0))
+
+    # Pre-build col_vals for inst keys (needed for shade normalisation)
+    inst_col_vals = {
+        "abs_inst":    [metrics[m].get("abs_inst",    np.nan) for m in all_models],
+        "abs_inst_1k": [metrics[m].get("abs_inst_1k", np.nan) for m in all_models],
+    }
 
     def _model_row(m, size, fam_cell=""):
         cells = []
         for key, _, _, lower_better, fmt in METRIC_CFG:
             val  = metrics[m].get(key, np.nan)
             rank = all_ranks[key].get(m, np.nan)
-            if key in DELTA_KEYS:
-                cells.append(fmt_delta_cell(val, fmt))
-            elif key in ABS_KEYS:
-                cells.append(fmt_abs_cell(
-                    val, col_vals[key],
+            if key in ABS_INST_KEYS:
+                blind_key = "abs_blind" if key == "abs_inst" else "abs_blind_1k"
+                blind_val = metrics[m].get(blind_key, np.nan)
+                cells.append(fmt_abs_inst_with_delta(
+                    val, blind_val, inst_col_vals[key], fmt=fmt))
+            elif key in DJS_BLIND_MAP:
+                blind_val = metrics[m].get(DJS_BLIND_MAP[key], np.nan)
+                cells.append(fmt_js_cell_with_delta(
+                    val, blind_val, col_vals[key],
                     higher_better=not lower_better,
+                    ci_bounds=ci.get(key),
                     fmt=fmt,
+                    rank=rank,
+                ))
+            elif key in SBERT_DELTA_MAP:
+                blind_val = metrics[m].get(SBERT_DELTA_MAP[key], np.nan)
+                cells.append(fmt_sbert_cell_with_delta(
+                    val, blind_val, col_vals[key],
+                    higher_better=not lower_better,
+                    ci_bounds=ci.get(key),
+                    fmt=fmt,
+                    rank=rank,
                 ))
             elif key in VALUE_KEYS:
                 cells.append(fmt_value_cell(
@@ -634,31 +785,38 @@ def build_table(metrics, human_refs):
     lines.append(
         r"\caption{Full-scale alignment ranking across all evaluated model sizes. "
         r"All questions $\times$ variants pooled; abstention classifier applied. "
-        r"$\djs$ columns show actual divergence values (lower = closer to human). "
-        r"\colorbox[HTML]{D9EAF3}{Blue}\,$\checkmark$ = within human LOO-CV 95\,\% CI; "
-        r"\colorbox[HTML]{F7EBD9}{orange}\,$\triangledown$ = over-aligned (below CI lower bound for $\djs$, above upper bound for $\sHM$/$\rho$). "
-        r"$\sHM$ and $\rho$ show actual values; $\rho$ = Spearman correlation between per-question model and human difficulty. "
-        r"Abst(\%) = spontaneous (w/o, $\uparrow$) and instructed (w/, $\downarrow$) abstention rates (gray = better). "
-        r"Human LOO-CV row: median [5th, 95th percentile] across leave-one-out human raters.}"
+        r"All columns show values under the blind+instruction condition; "
+        r"{\scriptsize(colored $\Delta$)} = change from blind-only. "
+        r"For $\djs$: {\textcolor[HTML]{CC7A00}{orange}}$+$ = more divergence with instruction; {\textcolor[HTML]{0072B2}{blue}}$-$ = less. "
+        r"For $\sHM$/$\rho$: {\textcolor[HTML]{0072B2}{blue}}$+$ = improvement with instruction; {\textcolor[HTML]{CC7A00}{orange}}$-$ = degradation. "
+        r"\colorbox[HTML]{D9EAF3}{Blue} = within human LOO-CV 95\,\% CI; "
+        r"\colorbox[HTML]{F7EBD9}{Orange} = over-aligned (below CI lower bound for $\djs$, above upper bound for $\sHM$/$\rho$). "
+        r"$\rho$ = Spearman correlation between per-question model and human difficulty. "
+        r"Abst(\%) = abstention rate under the instruction condition with $\Delta$ from blind-only. "
+        r"Gray shading = lower is better. "
+        r"Human LOO-CV row: median with {\tiny[5th, 95th percentile]} CI across leave-one-out raters.}"
     )
     lines.append(r"\label{tab:alignment_ranking_full_scale_ticks}")
     lines.append(rf"\begin{{tabular}}{{{col_spec}}}")
     lines.append(r"\toprule")
 
-    # ── Three-level header ────────────────────────────────────────────────────
+    # ── Two-level header ──────────────────────────────────────────────────────
+    # Top row: djs(2) | sHM(1) | rho(2) | Abst(2 combined)
     lines.append(
         r"\multirow{2}{*}{\textbf{Model}} "
         r"& \multirow{2}{*}{\textbf{Sz}} "
         r"& \multicolumn{2}{c}{$\djs$} "
-        r"& \multicolumn{1}{c}{Other ($N{\leq}183$)} "
+        r"& $\sHM$ "
         r"& \multicolumn{2}{c}{$\rho$} "
-        r"& \multicolumn{2}{c}{Abst\,(\%), Study} "
-        r"& \multicolumn{3}{c}{Abst\,(\%), Full 1k} \\"
+        r"& \multicolumn{2}{c}{Abst\,(\%)} \\"
     )
-    lines.append(r"\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}\cmidrule(lr){10-12}")
+    lines.append(r"\cmidrule(lr){3-4}\cmidrule(lr){6-7}\cmidrule(lr){8-9}")
     lines.append(
-        r" & & Y/N & Cnt & $\sHM$ & $N{\leq}183$ & $N{\leq}339$"
-        r" & w/o $\uparrow$ & w/ $\downarrow$ & w/o $\uparrow$ & w/ $\downarrow$ & $\Delta$ \\"
+        rf" & & Y/N\,($N{{\leq}}{N_YESNO_PAIRS}$) & Cnt\,($N{{\leq}}{N_COUNT_PAIRS}$)"
+        rf" & ($N{{\leq}}{n_ft}$)"
+        rf" & FT & All"
+        rf" & $N{{\leq}}{N_STUDY_PAIRS}$"
+        rf" & $N{{\leq}}{N_1K_PAIRS}$ \\"
     )
     lines.append(r"\midrule")
 
@@ -675,7 +833,7 @@ def build_table(metrics, human_refs):
         for i, (sz, vlm_id, _) in enumerate(sizes):
             fam_cell = fam_name if i == 0 else ""
             lines.append(_model_row(vlm_id, sz, fam_cell))
-        lines.append(r"\addlinespace[1pt]")
+        lines.append(r"\addlinespace[3pt]")
 
     # ── Backbone Decoders ──────────────────────────────────────────────────────
     lines.append(r"\midrule")
@@ -690,7 +848,7 @@ def build_table(metrics, human_refs):
         for i, (sz, lm_id) in enumerate(lm_sizes):
             fam_cell = fam_name if i == 0 else ""
             lines.append(_model_row(lm_id, sz, fam_cell))
-        lines.append(r"\addlinespace[1pt]")
+        lines.append(r"\addlinespace[3pt]")
 
     # ── SA-LLMs (non-thinking) ────────────────────────────────────────────────
     lines.extend(_sa_group(SA_MODELS, "Standalone LLM"))
@@ -710,17 +868,29 @@ def main():
     all_models = _all_model_ids()
     print(f"Total models: {len(all_models)}")
 
-    print("Computing JS scores…")
+    print("Computing JS scores (inst_blind)…")
     js_data = compute_js_all_models(all_models)
 
-    print("Computing SBERT…")
+    print("Computing JS scores (blind)…")
+    js_blind_data = compute_js_blind_all_models(all_models)
+
+    print("Computing SBERT (inst_blind)…")
     sbert_data, human_refs = compute_sbert(all_models)
+
+    print("Computing SBERT (blind)…")
+    sbert_blind_data = compute_sbert_blind(all_models)
 
     print("Computing Spearman ρ (free-text only)…")
     rho_ft, rho_refs_ft, n_ft = compute_spearman_r(all_models, ft_only=True)
 
     print("Computing Spearman ρ (all questions)…")
     rho_all, rho_refs_all, n_all = compute_spearman_r(all_models, ft_only=False)
+
+    print("Computing Spearman ρ blind (free-text only)…")
+    rho_ft_blind = compute_spearman_r_blind(all_models, ft_only=True)
+
+    print("Computing Spearman ρ blind (all questions)…")
+    rho_all_blind = compute_spearman_r_blind(all_models, ft_only=False)
 
     print("Computing abstention rates (study subset)…")
     abs_data = compute_abstention_rates(all_models)
@@ -732,16 +902,19 @@ def main():
     for m in all_models:
         metrics[m] = {}
         metrics[m].update(js_data.get(m, {}))
+        metrics[m].update(js_blind_data.get(m, {}))
         metrics[m].update(sbert_data.get(m, {}))
-        metrics[m]["spearman_r_ft"]  = rho_ft.get(m, float("nan"))
-        metrics[m]["spearman_r_all"] = rho_all.get(m, float("nan"))
+        metrics[m].update(sbert_blind_data.get(m, {}))
+        metrics[m]["spearman_r_ft"]       = rho_ft.get(m, float("nan"))
+        metrics[m]["spearman_r_all"]      = rho_all.get(m, float("nan"))
+        metrics[m]["spearman_r_ft_blind"]  = rho_ft_blind.get(m, float("nan"))
+        metrics[m]["spearman_r_all_blind"] = rho_all_blind.get(m, float("nan"))
         blind_pct, inst_pct = abs_data.get(m, (np.nan, np.nan))
         metrics[m]["abs_blind"] = blind_pct
         metrics[m]["abs_inst"]  = inst_pct
         blind_1k, inst_1k = abs_data_1k.get(m, (np.nan, np.nan))
         metrics[m]["abs_blind_1k"]  = blind_1k
         metrics[m]["abs_inst_1k"]   = inst_1k
-        metrics[m]["abs_delta_1k"]  = inst_1k - blind_1k
 
     human_refs["spearman_r_ft"]     = rho_refs_ft["spearman_r"]
     human_refs["spearman_r_ft_lo"]  = rho_refs_ft["spearman_r_lo"]

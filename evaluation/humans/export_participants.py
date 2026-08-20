@@ -16,12 +16,12 @@ def parse_args():
     )
     parser.add_argument(
         "--input-dir",
-        default="/home/david/Desktop/yuna/HPA/evaluation/humans",
+        default=str(Path(__file__).resolve().parent),
         help="Directory containing aggregated participant JSON files.",
     )
     parser.add_argument(
         "--output-dir",
-        default="/home/david/Desktop/yuna/HPA/evaluation/humans/by_participant",
+        default=str(Path(__file__).resolve().parent / "by_participant"),
         help="Directory where one-participant-per-file JSONs will be written.",
     )
     parser.add_argument(

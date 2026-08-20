@@ -1,4 +1,4 @@
-\begin{table}[t]
+\begin{table}[h]
 \small\centering
 \setlength{\tabcolsep}{4pt}
 \caption{Per-operation HM SBERT for Qwen3-8B and Qwen3-8B (think), averaged across all three control variants. Parenthetical deltas are relative to the human HH baseline for the same operation. \textbf{Note:} think-mode values for \textit{Action} and \textit{World Knowledge} are computed on a smaller question subset than no-think (think-mode abstained on 4 and 2 additional questions respectively), so the think$-$no-think gap for those rows is not directly comparable.}
@@ -8,21 +8,21 @@
 \textbf{Operation} & \textbf{Human (HH)} & \textbf{Qwen3-8B ($\Delta$)} & \textbf{Qwen3-8B\,(think) ($\Delta$)} \\
 \midrule
 \multicolumn{4}{l}{\textit{Structured}} \\
-\quad Existence & .873 & .790 \small(\textcolor{red}{$-$.083}) & --- \\
-\quad Count & .665 & .479 \small(\textcolor{red}{$-$.186}) & .603 \small(\textcolor{red}{$-$.061}) \\
+\quad Existence & .873 & .790 \small(\textcolor[HTML]{CC7A00}{$-$.083}) & --- \\
+\quad Count & .665 & .479 \small(\textcolor[HTML]{CC7A00}{$-$.186}) & .603 \small(\textcolor[HTML]{CC7A00}{$-$.061}) \\
 \midrule
 \multicolumn{4}{l}{\textit{Free-text}} \\
-\quad Action & .719 & .625 \small(\textcolor{red}{$-$.095}) & .534 \small(\textcolor{red}{$-$.185}) \\
-\quad Attribute & .568 & .469 \small(\textcolor{red}{$-$.099}) & .434 \small(\textcolor{red}{$-$.134}) \\
-\quad Causality & .352 & .364 \small(\textcolor{teal}{+.012}) & .417 \small(\textcolor{teal}{+.065}) \\
-\quad Comparison & .341 & .324 \small(\textcolor{red}{$-$.016}) & .316 \small(\textcolor{red}{$-$.025}) \\
-\quad Identity & .443 & .457 \small(\textcolor{teal}{+.014}) & .467 \small(\textcolor{teal}{+.025}) \\
-\quad World Knowledge & .721 & .549 \small(\textcolor{red}{$-$.172}) & .472 \small(\textcolor{red}{$-$.249}) \\
-\quad Spatial & .392 & .366 \small(\textcolor{red}{$-$.026}) & .384 \small(\textcolor{red}{$-$.008}) \\
-\quad Temporal & .516 & .329 \small(\textcolor{red}{$-$.187}) & .368 \small(\textcolor{red}{$-$.148}) \\
-\quad Text Reading & .404 & .312 \small(\textcolor{red}{$-$.093}) & .374 \small(\textcolor{red}{$-$.031}) \\
+\quad Action & .719 & .625 \small(\textcolor[HTML]{CC7A00}{$-$.095}) & .534 \small(\textcolor[HTML]{CC7A00}{$-$.185}) \\
+\quad Attribute & .568 & .469 \small(\textcolor[HTML]{CC7A00}{$-$.099}) & .434 \small(\textcolor[HTML]{CC7A00}{$-$.134}) \\
+\quad Causality & .352 & .364 \small(\textcolor[HTML]{0072B2}{+.012}) & .417 \small(\textcolor[HTML]{0072B2}{+.065}) \\
+\quad Comparison & .341 & .324 \small(\textcolor[HTML]{CC7A00}{$-$.016}) & .316 \small(\textcolor[HTML]{CC7A00}{$-$.025}) \\
+\quad Identity & .443 & .457 \small(\textcolor[HTML]{0072B2}{+.014}) & .467 \small(\textcolor[HTML]{0072B2}{+.025}) \\
+\quad World Knowledge & .721 & .549 \small(\textcolor[HTML]{CC7A00}{$-$.172}) & .472 \small(\textcolor[HTML]{CC7A00}{$-$.249}) \\
+\quad Spatial & .392 & .366 \small(\textcolor[HTML]{CC7A00}{$-$.026}) & .384 \small(\textcolor[HTML]{CC7A00}{$-$.008}) \\
+\quad Temporal & .516 & .329 \small(\textcolor[HTML]{CC7A00}{$-$.187}) & .368 \small(\textcolor[HTML]{CC7A00}{$-$.148}) \\
+\quad Text Reading & .404 & .312 \small(\textcolor[HTML]{CC7A00}{$-$.093}) & .374 \small(\textcolor[HTML]{CC7A00}{$-$.031}) \\
 \midrule
-Overall & .577 & .477 \small(\textcolor{red}{$-$.100}) & .469 \small(\textcolor{red}{$-$.108}) \\
+Overall & .577 & .477 \small(\textcolor[HTML]{CC7A00}{$-$.100}) & .469 \small(\textcolor[HTML]{CC7A00}{$-$.108}) \\
 \bottomrule
 \end{tabular}
 \end{table}

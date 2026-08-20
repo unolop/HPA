@@ -1,12 +1,14 @@
+from pathlib import Path
+_HPA = str(Path(__file__).resolve().parent.parent)
 import os 
 import json 
 from torch.utils.data import Dataset 
 
 class VQADataset(Dataset):
     def __init__(self, 
-                 image_dir_path="/home/work/yuna/data/data/val2014", 
-                 question_path="/home/work/yuna/data/data/v2_OpenEnded_mscoco_val2014_questions.json", 
-                 annotations_path="/home/work/yuna/data/data/v2_mscoco_val2014_annotations.json", 
+                 image_dir_path=None, 
+                 question_path=None, 
+                 annotations_path=None, 
                  prompt='',
                  format=True, 
                  filter_qids=[],
@@ -87,8 +89,8 @@ class VQADataset(Dataset):
 
 class VQADataset_json(Dataset):
     def __init__(self, 
-                image_dir_path="/home/david/Desktop/yuna/data/val2014", 
-                json_path="/home/david/Desktop/yuna/HPA/dataset/vqa/vqav2_1k_val.json",
+                image_dir_path=None, 
+                json_path=None,
                 prompt='' 
                 ): 
         self.prompt = prompt 

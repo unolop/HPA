@@ -19,6 +19,7 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from scipy.stats import spearmanr
@@ -157,6 +158,91 @@ def make_embedding_compare_table(hm: pd.DataFrame) -> None:
     print(f"Saved: {out}")
 
 
+# ── 2b. Per-model embedding comparison table (7/8B) ──────────────────────────
+
+# Models to include, in display order: (group_label, model_id, display_name)
+PER_MODEL_ROWS = [
+    ("VLM",      "InternVL-8B",       "InternVL-8B"),
+    ("VLM",      "Qwen3-VL-8B",       "Qwen3-VL-8B"),
+    ("VLM",      "LLaVA-1.5-7B",      "LLaVA-1.5"),
+    ("VLM",      "LLaVA-Mistral",      "LLaVA-Mistral"),
+    ("VLM",      "LLaVA-Vicuna",       "LLaVA-Vicuna"),
+    ("Backbone", "InternVL-8B (LM)",   "InternVL-8B"),
+    ("Backbone", "Qwen3-VL-8B (LM)",   "Qwen3-VL-8B"),
+    ("Backbone", "LLaVA-1.5 (LM)",     "LLaVA-1.5"),
+    ("Backbone", "LLaVA-Mistral (LM)", "LLaVA-Mistral"),
+    ("Backbone", "LLaVA-Vicuna (LM)",  "LLaVA-Vicuna"),
+    ("SA-LLM",   "Qwen3-8B",           "Qwen3-8B"),
+    ("SA-LLM",   "Qwen3-8B (think)",   "Qwen3-8B (think)"),
+    ("SA-LLM",   "Qwen2.5-7B-Instruct","Qwen2.5-7B"),
+    ("SA-LLM",   "Vicuna-7B",          "Vicuna-7B"),
+    ("SA-LLM",   "Mistral-7B",         "Mistral-7B"),
+]
+
+
+def make_embedding_compare_per_model_table(hm: pd.DataFrame) -> None:
+    """Per-model (7/8B) alignment under SBERT, SimCSE, BERTScore + Spearman ρ footer."""
+    embed_cols = ["sbert_score", "simcse_score", "bertscore_f1"]
+    model_means = hm.groupby("subject_2")[embed_cols].mean()
+
+    rho_simcse = spearmanr(
+        model_means["sbert_score"], model_means["simcse_score"]
+    ).statistic
+    rho_bert = spearmanr(
+        model_means["sbert_score"], model_means["bertscore_f1"]
+    ).statistic
+
+    lines = [
+        r"\begin{table}[h]",
+        r"\centering",
+        r"\small",
+        r"\setlength{\tabcolsep}{4pt}",
+        (r"\caption{Per-model human--model alignment under three embedding metrics "
+         r"(all variants combined, 7/8B models). "
+         r"SBERT = \texttt{all-mpnet-base-v2}; SimCSE = \texttt{sup-simcse-roberta-large}; "
+         r"BERTScore = \texttt{roberta-large}. "
+         r"Spearman~$\rho$ in footer compares per-model rankings against SBERT.}"),
+        r"\label{tab:robustness_embedding_per_model}",
+        r"\begin{tabular}{lrrr}",
+        r"\toprule",
+        r"\textbf{Model} & \textbf{SBERT} & \textbf{SimCSE} & \textbf{BERTScore} \\",
+        r"\midrule",
+    ]
+
+    GROUP_DISPLAY = {
+        "VLM": "VLM",
+        "Backbone": "Backbone Decoder",
+        "SA-LLM": "Standalone LLM",
+    }
+
+    prev_group = None
+    for group, mid, name in PER_MODEL_ROWS:
+        if group != prev_group:
+            if prev_group is not None:
+                lines.append(r"\midrule")
+            lines.append(
+                r"\multicolumn{4}{l}{\textit{" + GROUP_DISPLAY[group] + r"}} \\"
+            )
+            prev_group = group
+        if mid in model_means.index:
+            s, c, b = (model_means.loc[mid, col] for col in embed_cols)
+            lines.append(rf"\quad {name} & {s:.3f} & {c:.3f} & {b:.3f} \\")
+        else:
+            lines.append(rf"\quad {name} & --- & --- & --- \\")
+
+    lines += [
+        r"\midrule",
+        (fr"Spearman~$\rho$ vs.\ SBERT & --- "
+         fr"& {rho_simcse:.3f} & {rho_bert:.3f} \\"),
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\end{table}",
+    ]
+    out = TABLE_DIR / "robustness_embedding_per_model.tex"
+    out.write_text("\n".join(lines) + "\n")
+    print(f"Saved: {out}")
+
+
 # ── 3. Per-op × group SBERT table ─────────────────────────────────────────────
 
 def make_op_group_table(hm: pd.DataFrame, hh: pd.DataFrame) -> None:
@@ -267,8 +353,11 @@ if __name__ == "__main__":
     print("\n1. Metric correlation heatmap…")
     make_metric_correlation(hm)
 
-    print("\n2. Embedding comparison table…")
+    print("\n2. Embedding comparison table (group-level)…")
     make_embedding_compare_table(hm)
+
+    print("\n2b. Embedding comparison table (per-model 7/8B)…")
+    make_embedding_compare_per_model_table(hm)
 
     print("\n3. Per-op × group SBERT table…")
     make_op_group_table(hm, hh)

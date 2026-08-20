@@ -31,9 +31,9 @@ FAMILIES = [
 
 
 def mean_sbert_per_qv(hm: pd.DataFrame, model: str) -> pd.Series:
-    """Mean HM SBERT per (question_id, variant) for one model."""
+    """Mean HM SBERT per question_id (averaged across variants) for one model."""
     sub = hm[hm["subject_2"] == model]
-    return sub.groupby(["question_id", "variant"])["sbert_score"].mean()
+    return sub.groupby("question_id")["sbert_score"].mean()
 
 
 def fmt_p(p: float) -> str:
@@ -104,37 +104,40 @@ def main():
     for r in raw_results:
         res[(r["fi"], r["label"])] = r
 
+    BLUE   = r"\textcolor[HTML]{0072B2}"
+    ORANGE = r"\textcolor[HTML]{CC7A00}"
+
+    def fmt_score(v: float, bold: bool) -> str:
+        s = f".{round(v * 1000):03d}"
+        return rf"\textbf{{{s}}}" if bold else s
+
+    def fmt_delta(delta: float, p_holm: float) -> str:
+        sign = "+" if delta >= 0 else "-"
+        st = star(p_holm)
+        st_str = f"^{{{st}}}" if st != "ns" else ""
+        color = BLUE if delta >= 0 else ORANGE
+        return rf"{{\scriptsize {color}{{$({sign}.{abs(round(delta * 1000)):03d}{st_str})$}}}}"
+
     # Build table
     lines = [
-        r"\begin{table*}[ht]",
+        r"\begin{table}[ht]",
         r"\centering",
         r"\small",
         r"\setlength{\tabcolsep}{5pt}",
         r"\caption{%",
         r"\textbf{Matched-family backbone decoder alignment.} "
-        r"Each row compares a VLM backbone decoder (the language-model component of the VLM, "
-        r"run text-only without its vision encoder) against two reference points: "
-        r"(i)~its paired full VLM (same weights, but with the vision encoder active and a blank image), "
-        r"and (ii)~a standalone LLM whose base weights match the backbone's language model. "
-        r"The \textbf{Decoder} column reports mean abstention-filtered HM SBERT "
-        r"across all 339 question--variant pairs; "
-        r"\textbf{Score} in each comparison column is the comparator's mean HM SBERT, "
-        r"with the parenthetical $\Delta$ = decoder $-$ comparator "
-        r"(\textcolor{teal}{teal} = decoder higher; \textcolor{red}{red} = decoder lower). "
-        r"Significance is assessed with a two-sided Wilcoxon signed-rank test on paired "
-        r"per-(question,~variant) mean SBERT values. "
-        r"Holm correction is applied across all 10 tests simultaneously "
-        r"(2 comparisons $\times$ 5 families) to control the family-wise error rate. "
-        r"$p$ values are Holm-corrected; "
-        r"$^{***}p{<}0.001$, $^{**}p{<}0.01$, $^{*}p{<}0.05$.}",
+        r"Each row compares a VLM backbone decoder against two reference points: "
+        r"(i)~its paired full VLM (blank image), "
+        r"and (ii)~the matched standalone LLM. "
+        r"\textbf{Decoder} = mean abstention-filtered HM SBERT ($N=113$ questions); "
+        r"each comparator cell shows the comparator score with "
+        r"{\scriptsize \textcolor[HTML]{0072B2}{blue}} $+\Delta$ or "
+        r"{\scriptsize \textcolor[HTML]{CC7A00}{orange}} $-\Delta$ (decoder $-$ comparator). "
+        r"Stars: Holm-corrected Wilcoxon $^{***}{<}.001$, $^{**}{<}.01$, $^{*}{<}.05$; unlabelled = not significant.}",
         r"\label{tab:matched_family_alignment_tests}",
-        r"\begin{tabular}{l c cc cc}",
+        r"\begin{tabular}{l c c c}",
         r"\toprule",
-        r"\multirow{2}{*}{\textbf{Family}} & \multirow{2}{*}{\textbf{Decoder}} "
-        r"& \multicolumn{2}{c}{\textbf{vs.\ Full VLM}} "
-        r"& \multicolumn{2}{c}{\textbf{vs.\ SA-LLM}} \\",
-        r"\cmidrule(lr){3-4}\cmidrule(lr){5-6}",
-        r" & & Score ($\Delta$) & $p$ & Score ($\Delta$) & $p$ \\",
+        r"\textbf{Family} & \textbf{Decoder} & \textbf{vs.\ Full VLM} & \textbf{vs.\ SA-LLM} \\",
         r"\midrule",
     ]
 
@@ -142,32 +145,21 @@ def main():
         rv = res[(fi, "vlm")]
         rs = res[(fi, "sa")]
 
-        dec_val = f"{rv['dec_mean']:.3f}"
+        dec_v   = rv["dec_mean"]
+        vlm_v   = rv["cmp_mean"]
+        sa_v    = rs["cmp_mean"]
+        top     = max(dec_v, vlm_v, sa_v)
 
-        # VLM comparison cell
-        d_vlm = rv["delta"]
-        sign_vlm = "+" if d_vlm >= 0 else ""
-        color_vlm = "teal" if d_vlm >= 0 else "red"
-        st_vlm = star(rv["p_holm"])
-        vlm_delta = (rf"{rv['cmp_mean']:.3f} {{\scriptsize (\textcolor{{{color_vlm}}}"
-                     rf"{{${sign_vlm}{d_vlm:.3f}^{{{st_vlm}}}$}})}}")
-        p_vlm = rf"$p{{\!=\!}}{fmt_p(rv['p_holm'])}$"
+        dec_cell = fmt_score(dec_v, bold=(dec_v == top))
+        vlm_cell = rf"{fmt_score(vlm_v, bold=(vlm_v == top))} {fmt_delta(rv['delta'], rv['p_holm'])}"
+        sa_cell  = rf"{fmt_score(sa_v,  bold=(sa_v  == top))} {fmt_delta(rs['delta'], rs['p_holm'])}"
 
-        # SA-LLM comparison cell
-        d_sa = rs["delta"]
-        sign_sa = "+" if d_sa >= 0 else ""
-        color_sa = "teal" if d_sa >= 0 else "red"
-        st_sa = star(rs["p_holm"])
-        sa_delta = (rf"{rs['cmp_mean']:.3f} {{\scriptsize (\textcolor{{{color_sa}}}"
-                    rf"{{${sign_sa}{d_sa:.3f}^{{{st_sa}}}$}})}}")
-        p_sa = rf"$p{{\!=\!}}{fmt_p(rs['p_holm'])}$"
-
-        lines.append(rf"{name} & {dec_val} & {vlm_delta} & {p_vlm} & {sa_delta} & {p_sa} \\")
+        lines.append(rf"{name} & {dec_cell} & {vlm_cell} & {sa_cell} \\")
 
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
-        r"\end{table*}",
+        r"\end{table}",
     ]
 
     tex = "\n".join(lines) + "\n"

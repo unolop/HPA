@@ -1,60 +1,62 @@
-\begin{table*}[ht]
+\begin{table}[ht]
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{0.95}
-\caption{Yes/no response distributions for all models on the 26 yes/no questions (all 3 variants pooled, $N{\leq}78$). \textbf{Oth\%} = non-yes/no outputs (excluding soft abstentions). Values show the blind condition; {\scriptsize (\textcolor{teal}{$+\Delta$}/\textcolor{red}{$-\Delta$})} = instruction effect (Blind+Inst $-$ Blind). \colorbox[HTML]{D9EAF3}{Blue} = yes-majority (${\geq}50\%$); \colorbox[HTML]{F7EBD9}{Orange} = below GT yes rate (${\leq}35\%$). Human and GT rows shown for reference.}
+\caption{Yes/no response distributions for all models on the 26 yes/no questions (all 3 variants pooled, $N{\leq}78$). \textbf{Blind} and \textbf{Inst} columns show yes\% without and with instruction. \textbf{Oth\%} = substantive non-yes/no outputs (blind); \textbf{Abst\%} = all abstentions---hard and soft---detected by the shared classifier (blind). \colorbox{gray!15}{Gray} = yes-majority (${\geq}50\%$). Human and GT rows shown for reference.}
 \label{tab:yesno_distribution_all}
-\begin{tabular}{ll cc}
+\begin{tabular}{ll cccc}
 \toprule
-\textbf{Model} & \textbf{Sz} & \textbf{yes\%} & \textbf{Oth\%} \\
+\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Sz}} & \multicolumn{2}{c}{\textbf{yes\%}} & \multirow{2}{*}{\textbf{Oth\%}} & \multirow{2}{*}{\textbf{Abst\%}} \\
+\cmidrule(lr){3-4}
+ & & \textbf{Blind} & \textbf{Inst} & & \\
 \midrule
-\textbf{Human} & -- & \cellcolor[HTML]{D9EAF3}65.4 & 0.0 \\
-\textbf{GT} & -- & \cellcolor[HTML]{F7EBD9}34.6 & --- \\
+\textbf{Human} & -- & \cellcolor{gray!15}65.4 & --- & 0.0 & 0.0 \\
+\textbf{GT} & -- & 34.6 & --- & --- & --- \\
 \midrule
-\multicolumn{4}{c}{\textit{Vision-Language Models}}\\
+\multicolumn{6}{c}{\textit{Vision-Language Models}}\\ 
 \midrule
-InternVL3.5 & 1B & \cellcolor[HTML]{D9EAF3}73.1\,{\scriptsize (\textcolor{red}{-28.2})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 2B & \cellcolor[HTML]{F7EBD9}30.8\,{\scriptsize (\textcolor{red}{-6.4})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 8B & \cellcolor[HTML]{D9EAF3}65.4\,{\scriptsize (\textcolor{teal}{+12.8})} & 1.3\,{\scriptsize (\textcolor{red}{-1.3})} \\
-LLaVA-1.5 & 7B & \cellcolor[HTML]{F7EBD9}20.5\,{\scriptsize (\textcolor{red}{-7.7})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
-LLaVA-Mistral & 7B & \cellcolor[HTML]{F7EBD9}19.2\,{\scriptsize (\textcolor{teal}{+5.1})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
-LLaVA-Vicuna & 7B & 35.9\,{\scriptsize (\textcolor{red}{-15.4})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 13B & \cellcolor[HTML]{F7EBD9}26.9\,{\scriptsize (\textcolor{teal}{+11.5})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
-Qwen3-VL & 2B & \cellcolor[HTML]{F7EBD9}11.5\,{\scriptsize (\textcolor{teal}{+7.7})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 4B & \cellcolor[HTML]{F7EBD9}29.5\,{\scriptsize (\textcolor{teal}{+11.5})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 8B & 41.0\,{\scriptsize (\textcolor{teal}{+12.8})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
+InternVL3.5 & 1B & \cellcolor{gray!15}73.1 & 44.9 & 0 & 0 \\
+ & 2B & 30.8 & 24.4 & 0 & 0 \\
+ & 8B & \cellcolor{gray!15}65.4 & \cellcolor{gray!15}78.2 & 1.3 & 0 \\
+LLaVA-1.5 & 7B & 20.5 & 12.8 & 0 & 0 \\
+LLaVA-Mistral & 7B & 19.2 & 24.4 & 0 & 0 \\
+LLaVA-Vicuna & 7B & 35.9 & 20.5 & 0 & 0 \\
+ & 13B & 26.9 & 38.5 & 0 & 0 \\
+Qwen3-VL & 2B & 11.5 & 19.2 & 0 & 0 \\
+ & 4B & 29.5 & 41.0 & 0 & 0 \\
+ & 8B & 41.0 & \cellcolor{gray!15}53.8 & 0 & 0 \\
 \midrule
-\multicolumn{4}{c}{\textit{VLM Backbone Decoders}}\\
+\multicolumn{6}{c}{\textit{VLM Backbone Decoders}}\\ 
 \midrule
-InternVL3.5 & 1B & \cellcolor[HTML]{D9EAF3}100.0\,{\scriptsize (\textcolor{red}{-1.3})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 2B & \cellcolor[HTML]{D9EAF3}69.2\,{\scriptsize (\textcolor{teal}{+9.0})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 8B & \cellcolor[HTML]{D9EAF3}83.3\,{\scriptsize (\textcolor{red}{-1.3})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
-LLaVA-1.5 & 7B & \cellcolor[HTML]{D9EAF3}70.5\,{\scriptsize (\textcolor{red}{-6.4})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
-LLaVA-Mistral & 7B & \cellcolor[HTML]{D9EAF3}50.0\,{\scriptsize (\textcolor{teal}{+2.6})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
-LLaVA-Vicuna & 7B & \cellcolor[HTML]{D9EAF3}89.7\,{\scriptsize (\textcolor{red}{-3.8})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 13B & \cellcolor[HTML]{D9EAF3}60.3\,{\scriptsize (\textcolor{teal}{+15.4})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
-Qwen3-VL & 2B & \cellcolor[HTML]{D9EAF3}70.5\,{\scriptsize (\textcolor{teal}{+14.1})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 4B & \cellcolor[HTML]{D9EAF3}74.4\,{\scriptsize (\textcolor{teal}{+9.0})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 8B & \cellcolor[HTML]{D9EAF3}71.8\,{\scriptsize (\textcolor{red}{-2.6})} & 1.3\,{\scriptsize (\textcolor{teal}{+0.0})} \\
+InternVL3.5 & 1B & \cellcolor{gray!15}100.0 & \cellcolor{gray!15}98.7 & 0 & 0 \\
+ & 2B & \cellcolor{gray!15}69.2 & \cellcolor{gray!15}78.2 & 0 & 0 \\
+ & 8B & \cellcolor{gray!15}83.3 & \cellcolor{gray!15}82.1 & 0 & 0 \\
+LLaVA-1.5 & 7B & \cellcolor{gray!15}70.5 & \cellcolor{gray!15}64.1 & 0 & 0 \\
+LLaVA-Mistral & 7B & \cellcolor{gray!15}50.0 & \cellcolor{gray!15}52.6 & 0 & 0 \\
+LLaVA-Vicuna & 7B & \cellcolor{gray!15}89.7 & \cellcolor{gray!15}85.9 & 0 & 0 \\
+ & 13B & \cellcolor{gray!15}60.3 & \cellcolor{gray!15}75.6 & 0 & 0 \\
+Qwen3-VL & 2B & \cellcolor{gray!15}70.5 & \cellcolor{gray!15}84.6 & 0 & 0 \\
+ & 4B & \cellcolor{gray!15}74.4 & \cellcolor{gray!15}83.3 & 0 & 0 \\
+ & 8B & \cellcolor{gray!15}71.8 & \cellcolor{gray!15}69.2 & 1.3 & 0 \\
 \midrule
-\multicolumn{4}{c}{\textit{Standalone LLMs}}\\
+\multicolumn{6}{c}{\textit{Standalone LLMs}}\\ 
 \midrule
-Mistral & 7B & \cellcolor[HTML]{F7EBD9}11.5\,{\scriptsize (\textcolor{red}{-1.3})} & 25.6\,{\scriptsize (\textcolor{teal}{+1.3})} \\
-Phi-3.5-mini & 3.8B & 39.7\,{\scriptsize (\textcolor{teal}{+2.6})} & 28.2\,{\scriptsize (\textcolor{red}{-2.6})} \\
-Qwen2.5-Instruct & 7B & \cellcolor[HTML]{F7EBD9}30.8\,{\scriptsize (\textcolor{teal}{+0.0})} & 19.2\,{\scriptsize (\textcolor{red}{-2.6})} \\
-Qwen3 & 0.6B & \cellcolor[HTML]{F7EBD9}5.1\,{\scriptsize (\textcolor{red}{-1.3})} & 94.9\,{\scriptsize (\textcolor{teal}{+1.3})} \\
- & 1.7B & 44.9\,{\scriptsize (\textcolor{teal}{+21.8})} & 26.9\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 4B & \cellcolor[HTML]{D9EAF3}83.3\,{\scriptsize (\textcolor{teal}{+2.6})} & 6.4\,{\scriptsize (\textcolor{teal}{+1.3})} \\
- & 8B & 42.3\,{\scriptsize (\textcolor{teal}{+2.6})} & 28.2\,{\scriptsize (\textcolor{teal}{+11.5})} \\
- & 32B & \cellcolor[HTML]{D9EAF3}80.8\,{\scriptsize (\textcolor{teal}{+0.0})} & 12.8\,{\scriptsize (\textcolor{teal}{+3.8})} \\
-Qwen3 (think) & 0.6B & 43.6\,{\scriptsize (\textcolor{red}{-26.9})} & 50.0\,{\scriptsize (\textcolor{teal}{+26.9})} \\
- & 1.7B & 44.9\,{\scriptsize (\textcolor{red}{-5.1})} & 26.9\,{\scriptsize (\textcolor{red}{-12.8})} \\
- & 4B & \cellcolor[HTML]{F7EBD9}14.1\,{\scriptsize (\textcolor{teal}{+59.0})} & 6.4\,{\scriptsize (\textcolor{teal}{+6.4})} \\
- & 8B & 42.3\,{\scriptsize (\textcolor{teal}{+14.1})} & 28.2\,{\scriptsize (\textcolor{red}{-7.7})} \\
- & 32B & \cellcolor[HTML]{D9EAF3}91.0\,{\scriptsize (\textcolor{red}{-46.2})} & 7.7\,{\scriptsize (\textcolor{teal}{+11.5})} \\
-Vicuna & 7B & \cellcolor[HTML]{D9EAF3}69.2\,{\scriptsize (\textcolor{teal}{+10.3})} & 0\,{\scriptsize (\textcolor{teal}{+0.0})} \\
- & 13B & \cellcolor[HTML]{D9EAF3}70.5\,{\scriptsize (\textcolor{teal}{+3.8})} & 9.0\,{\scriptsize (\textcolor{red}{-5.1})} \\
+Mistral & 7B & 11.5 & 10.3 & \cellcolor{gray!5}20.5 & \cellcolor{gray!20}67.9 \\
+Phi-3.5-mini & 3.8B & 39.7 & 44.9 & \cellcolor{gray!5}26.9 & 3.8 \\
+Qwen2.5-Instruct & 7B & 30.8 & 30.8 & \cellcolor{gray!5}19.2 & 2.6 \\
+Qwen3 & 0.6B & 5.1 & 3.8 & \cellcolor{gray!20}94.9 & 0 \\
+ & 1.7B & 44.9 & \cellcolor{gray!15}66.7 & \cellcolor{gray!5}25.6 & \cellcolor{gray!10}29.5 \\
+ & 4B & \cellcolor{gray!15}83.3 & \cellcolor{gray!15}85.9 & 6.4 & 0 \\
+ & 8B & 42.3 & 44.9 & \cellcolor{gray!5}28.2 & 5.1 \\
+ & 32B & \cellcolor{gray!15}80.8 & \cellcolor{gray!15}80.8 & \cellcolor{gray!5}12.8 & 0 \\
+Qwen3 (think) & 0.6B & 43.6 & 16.7 & \cellcolor{gray!10}50.0 & 0 \\
+ & 1.7B & 44.9 & 39.7 & \cellcolor{gray!5}25.6 & \cellcolor{gray!10}29.5 \\
+ & 4B & 14.1 & \cellcolor{gray!15}73.1 & 11.5 & \cellcolor{gray!20}71.8 \\
+ & 8B & 42.3 & \cellcolor{gray!15}56.4 & \cellcolor{gray!5}28.2 & 5.1 \\
+ & 32B & \cellcolor{gray!15}91.0 & 44.9 & 7.7 & 0 \\
+Vicuna & 7B & \cellcolor{gray!15}69.2 & \cellcolor{gray!15}79.5 & 0 & 0 \\
+ & 13B & \cellcolor{gray!15}70.5 & \cellcolor{gray!15}74.4 & 9.0 & 0 \\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}

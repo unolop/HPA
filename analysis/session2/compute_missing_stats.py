@@ -19,9 +19,10 @@ from scipy import stats
 
 warnings.filterwarnings("ignore")
 
-EXPORTS = Path("/home/david/Desktop/yuna/HPA/analysis/session2/exports")
-THINK_EDA = Path("/home/david/Desktop/yuna/HPA/figures/think_eda")
-LOGITS_DIR = Path("/home/david/Desktop/yuna/HPA/evaluation/logits")
+ROOT = Path(__file__).resolve().parents[2]
+EXPORTS = ROOT / "analysis/session2/exports"
+THINK_EDA = ROOT / "figures/think_eda"
+LOGITS_DIR = ROOT / "evaluation/logits"
 
 OUTPUT_FILE = EXPORTS / "missing_stat_tests.txt"
 

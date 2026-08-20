@@ -1,21 +1,19 @@
-\begin{table*}[ht]
+\begin{table}[ht]
 \centering
 \small
 \setlength{\tabcolsep}{5pt}
 \caption{%
-\textbf{Matched-family backbone decoder alignment.} Each row compares a VLM backbone decoder (the language-model component of the VLM, run text-only without its vision encoder) against two reference points: (i)~its paired full VLM (same weights, but with the vision encoder active and a blank image), and (ii)~a standalone LLM whose base weights match the backbone's language model. The \textbf{Decoder} column reports mean abstention-filtered HM SBERT across all 339 question--variant pairs; \textbf{Score} in each comparison column is the comparator's mean HM SBERT, with the parenthetical $\Delta$ = decoder $-$ comparator (\textcolor{teal}{teal} = decoder higher; \textcolor{red}{red} = decoder lower). Significance is assessed with a two-sided Wilcoxon signed-rank test on paired per-(question,~variant) mean SBERT values. Holm correction is applied across all 10 tests simultaneously (2 comparisons $\times$ 5 families) to control the family-wise error rate. $p$ values are Holm-corrected; $^{***}p{<}0.001$, $^{**}p{<}0.01$, $^{*}p{<}0.05$.}
+\textbf{Matched-family backbone decoder alignment.} Each row compares a VLM backbone decoder against two reference points: (i)~its paired full VLM (blank image), and (ii)~the matched standalone LLM. \textbf{Decoder} = mean abstention-filtered HM SBERT ($N=113$ questions); each comparator cell shows the comparator score with {\scriptsize \textcolor[HTML]{0072B2}{blue}} $+\Delta$ or {\scriptsize \textcolor[HTML]{CC7A00}{orange}} $-\Delta$ (decoder $-$ comparator). Stars: Holm-corrected Wilcoxon $^{***}{<}.001$, $^{**}{<}.01$, $^{*}{<}.05$; unlabelled = not significant.}
 \label{tab:matched_family_alignment_tests}
-\begin{tabular}{l c cc cc}
+\begin{tabular}{l c c c}
 \toprule
-\multirow{2}{*}{\textbf{Family}} & \multirow{2}{*}{\textbf{Decoder}} & \multicolumn{2}{c}{\textbf{vs.\ Full VLM}} & \multicolumn{2}{c}{\textbf{vs.\ SA-LLM}} \\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}
- & & Score ($\Delta$) & $p$ & Score ($\Delta$) & $p$ \\
+\textbf{Family} & \textbf{Decoder} & \textbf{vs.\ Full VLM} & \textbf{vs.\ SA-LLM} \\
 \midrule
-InternVL3.5 & 0.582 & 0.602 {\scriptsize (\textcolor{red}{$-0.020^{*}$})} & $p{\!=\!}0.013$ & 0.507 {\scriptsize (\textcolor{teal}{$+0.082^{***}$})} & $p{\!=\!}7.4{\times}10^{-8}$ \\
-Qwen3-VL & 0.580 & 0.567 {\scriptsize (\textcolor{teal}{$+0.013^{**}$})} & $p{\!=\!}0.007$ & 0.498 {\scriptsize (\textcolor{teal}{$+0.085^{***}$})} & $p{\!=\!}1.5{\times}10^{-9}$ \\
-LLaVA-1.5 & 0.581 & 0.514 {\scriptsize (\textcolor{teal}{$+0.066^{***}$})} & $p{\!=\!}5.4{\times}10^{-18}$ & 0.408 {\scriptsize (\textcolor{teal}{$+0.171^{***}$})} & $p{\!=\!}2.6{\times}10^{-32}$ \\
-LLaVA-Mistral & 0.590 & 0.546 {\scriptsize (\textcolor{teal}{$+0.043^{***}$})} & $p{\!=\!}7.6{\times}10^{-12}$ & 0.219 {\scriptsize (\textcolor{teal}{$+0.310^{***}$})} & $p{\!=\!}3.0{\times}10^{-11}$ \\
-LLaVA-Vicuna & 0.576 & 0.528 {\scriptsize (\textcolor{teal}{$+0.048^{***}$})} & $p{\!=\!}5.2{\times}10^{-12}$ & 0.408 {\scriptsize (\textcolor{teal}{$+0.171^{***}$})} & $p{\!=\!}1.5{\times}10^{-34}$ \\
+InternVL3.5 & .572 & \textbf{.593} {\scriptsize \textcolor[HTML]{CC7A00}{$(-.021)$}} & .489 {\scriptsize \textcolor[HTML]{0072B2}{$(+.079^{***})$}} \\
+Qwen3-VL & \textbf{.569} & .556 {\scriptsize \textcolor[HTML]{0072B2}{$(+.013^{*})$}} & .489 {\scriptsize \textcolor[HTML]{0072B2}{$(+.080^{***})$}} \\
+LLaVA-1.5 & \textbf{.573} & .507 {\scriptsize \textcolor[HTML]{0072B2}{$(+.067^{***})$}} & .403 {\scriptsize \textcolor[HTML]{0072B2}{$(+.169^{***})$}} \\
+LLaVA-Mistral & \textbf{.577} & .537 {\scriptsize \textcolor[HTML]{0072B2}{$(+.040^{***})$}} & .227 {\scriptsize \textcolor[HTML]{0072B2}{$(+.313^{***})$}} \\
+LLaVA-Vicuna & \textbf{.572} & .524 {\scriptsize \textcolor[HTML]{0072B2}{$(+.048^{***})$}} & .403 {\scriptsize \textcolor[HTML]{0072B2}{$(+.169^{***})$}} \\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}

@@ -1,9 +1,8 @@
-\begin{table}[ht]
-\centering
+\begin{center}
 \small
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{0.93}
-\caption{Abstention rates (\%) by answer type in the blind+instruction condition, pooled across all three control variants. Parenthetical $\Delta$ values are instruction minus blind; negative values indicate reduced abstention under instruction.}
+\captionof{table}{Abstention rates (\%) by answer type in the blind+instruction condition, pooled across all three control variants. Parenthetical $\Delta$ values are instruction minus blind; negative values indicate reduced abstention under instruction.}
 \label{tab:abstention_by_qtype}
 \begin{tabular}{lrrr}
 \toprule
@@ -13,25 +12,25 @@
   & \makecell[r]{\textbf{Free Text} \\ \textbf{($N{=}183$)}} \\
 \midrule
 \multicolumn{4}{l}{\textit{VLM}} \\
-\quad InternVL3.5     & 0.0 & 0.0 & 3.3 {\scriptsize(\textcolor{red}{$+$3.3})} \\
-\quad LLaVA-1.5      & 0.0 & 0.0 & 6.6 {\scriptsize(\textcolor{red}{$+$1.1})} \\
-\quad LLaVA-Mistral  & 0.0 & 0.0 & 3.3 {\scriptsize(\textcolor{teal}{$-$1.6})} \\
-\quad LLaVA-Vicuna   & 0.0 & 0.0 & 1.6 {\scriptsize(\textcolor{teal}{$-$3.4})} \\
-\quad Qwen3-VL       & 0.0 & 1.3 & 6.6 {\scriptsize(\textcolor{teal}{$-$2.7})} \\
+\quad InternVL3.5     & 0.0 & 0.0 & 3.3 {(\textcolor[HTML]{CC7A00}{$+$3.3})} \\
+\quad LLaVA-1.5      & 0.0 & 0.0 & 6.6 {(\textcolor[HTML]{CC7A00}{$+$1.1})} \\
+\quad LLaVA-Mistral  & 0.0 & 0.0 & 3.3 {(\textcolor[HTML]{0072B2}{$-$1.6})} \\
+\quad LLaVA-Vicuna   & 0.0 & 0.0 & 1.6 {(\textcolor[HTML]{0072B2}{$-$3.4})} \\
+\quad Qwen3-VL       & 0.0 & 1.3 & 6.6 {(\textcolor[HTML]{0072B2}{$-$2.7})} \\
 \midrule
 \multicolumn{4}{l}{\textit{Backbone Decoder}} \\
-\quad InternVL3.5    & 0.0 & \underline{20.5} {\scriptsize(\textcolor{teal}{$-$9.0})} &  4.4 {\scriptsize(\textcolor{teal}{$-$3.8})} \\
-\quad LLaVA-1.5      & 0.0 & 0.0 &  1.1 {\scriptsize(\textcolor{red}{$+$1.1})} \\
-\quad LLaVA-Mistral  & 0.0 & 0.0 &  3.8 {\scriptsize(\textcolor{red}{$+$3.3})} \\
-\quad LLaVA-Vicuna   & 0.0 & 0.0 &  1.1 {\scriptsize(\textcolor{red}{$+$0.6})} \\
-\quad Qwen3-VL       & 0.0 & 2.6 {\scriptsize(\textcolor{teal}{$-$2.5})} &  4.9 {\scriptsize(\textcolor{teal}{$-$2.8})} \\
+\quad InternVL3.5    & 0.0 & \underline{20.5} {(\textcolor[HTML]{0072B2}{$-$9.0})} &  4.4 {(\textcolor[HTML]{0072B2}{$-$3.8})} \\
+\quad LLaVA-1.5      & 0.0 & 0.0 &  1.1 {(\textcolor[HTML]{CC7A00}{$+$1.1})} \\
+\quad LLaVA-Mistral  & 0.0 & 0.0 &  3.8 {(\textcolor[HTML]{CC7A00}{$+$3.3})} \\
+\quad LLaVA-Vicuna   & 0.0 & 0.0 &  1.1 {(\textcolor[HTML]{CC7A00}{$+$0.6})} \\
+\quad Qwen3-VL       & 0.0 & 2.6 {(\textcolor[HTML]{0072B2}{$-$2.5})} &  4.9 {(\textcolor[HTML]{0072B2}{$-$2.8})} \\
 \midrule
 \multicolumn{4}{l}{\textit{Standalone LLM}} \\
-\quad Mistral        & \textbf{39.7} {\scriptsize(\textcolor{teal}{$-$7.7})} & \textbf{34.6} {\scriptsize(\textcolor{teal}{$-$9.0})} & \textbf{14.8} {\scriptsize(\textcolor{teal}{$-$17.4})} \\
-\quad Qwen2.5-Instruct & 0.0 {\scriptsize(\textcolor{teal}{$-$2.6})} & 14.1 {\scriptsize(\textcolor{red}{$+$2.6})} &  6.0 {\scriptsize(\textcolor{teal}{$-$3.3})} \\
-\quad Qwen3          & 0.0 {\scriptsize(\textcolor{teal}{$-$5.1})} & 6.4 {\scriptsize(\textcolor{teal}{$-$16.7})} & 6.0 {\scriptsize(\textcolor{teal}{$-$5.0})} \\
-\quad Qwen3 (think)  & \underline{2.6} {\scriptsize(\textcolor{teal}{$-$2.5})} & 2.6 {\scriptsize(\textcolor{teal}{$-$20.5})} & 4.9 {\scriptsize(\textcolor{teal}{$-$6.1})} \\
-\quad Vicuna         & 0.0 & 0.0 {\scriptsize(\textcolor{teal}{$-$3.8})} &  1.7 {\scriptsize(\textcolor{red}{$+$1.7})} \\
+\quad Mistral        & \textbf{39.7} {(\textcolor[HTML]{0072B2}{$-$7.7})} & \textbf{34.6} {(\textcolor[HTML]{0072B2}{$-$9.0})} & \textbf{14.8} {(\textcolor[HTML]{0072B2}{$-$17.4})} \\
+\quad Qwen2.5-Instruct & 0.0 {(\textcolor[HTML]{0072B2}{$-$2.6})} & 14.1 {(\textcolor[HTML]{CC7A00}{$+$2.6})} &  6.0 {(\textcolor[HTML]{0072B2}{$-$3.3})} \\
+\quad Qwen3          & 0.0 {(\textcolor[HTML]{0072B2}{$-$5.1})} & 6.4 {(\textcolor[HTML]{0072B2}{$-$16.7})} & 6.0 {(\textcolor[HTML]{0072B2}{$-$5.0})} \\
+\quad Qwen3 (think)  & \underline{2.6} {(\textcolor[HTML]{0072B2}{$-$2.5})} & 2.6 {(\textcolor[HTML]{0072B2}{$-$20.5})} & 4.9 {(\textcolor[HTML]{0072B2}{$-$6.1})} \\
+\quad Vicuna         & 0.0 & 0.0 {(\textcolor[HTML]{0072B2}{$-$3.8})} &  1.7 {(\textcolor[HTML]{CC7A00}{$+$1.7})} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{center}

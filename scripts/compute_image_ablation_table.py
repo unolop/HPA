@@ -159,6 +159,7 @@ def main():
             print(f"  {cname} inst:  Acc={acc_i:.3f} SBERT={sbt_i:.3f} Abst={abst_i:.1f}% Chg={chg_i}")
 
     # ── LaTeX table ──────────────────────────────────────────────────────────
+    # Layout: [w/o inst: SBERT | Abst | Acc | Chg] | [w/ inst: SBERT | Abst | Acc | Chg]
     print("\n% ===== UPDATED LATEX TABLE =====")
     lines = []
     lines.append(r'\begin{table*}[t]')
@@ -167,9 +168,12 @@ def main():
     lines.append(r'\setlength{\tabcolsep}{4pt}')
     lines.append(r'\begin{tabular}{ll cccc cccc}')
     lines.append(r'\toprule')
-    lines.append(r' & & \multicolumn{4}{c}{\textbf{Blind}} & \multicolumn{4}{c}{\textbf{Blind+Instruction}} \\')
+    lines.append(
+        r' & & \multicolumn{4}{c}{\textbf{w/o inst}} '
+        r'& \multicolumn{4}{c}{\textbf{w/ inst}} \\'
+    )
     lines.append(r'\cmidrule(lr){3-6}\cmidrule(lr){7-10}')
-    lines.append(r'\textbf{Model} & \textbf{Image} & Acc. & SBERT & Abst. & Chg. & Acc. & SBERT & Abst. & Chg. \\')
+    lines.append(r'\textbf{Model} & \textbf{Image} & SBERT & Abst. & Acc. & Chg. & SBERT & Abst. & Acc. & Chg. \\')
     lines.append(r'\midrule')
 
     for mconf in MODELS:
@@ -203,20 +207,26 @@ def main():
 
             lines.append(
                 f' & {cname}'
-                f' & {acc_b:.3f} & {sbt_b_s} & {abst_b:.1f}\\% & {chg_b_s}'
-                f' & {acc_i:.3f} & {sbt_i_s} & {abst_i:.1f}\\% & {chg_i_s} \\\\'
+                f' & {sbt_b_s} & {abst_b:.1f}\\% & {acc_b:.3f} & {chg_b_s}'
+                f' & {sbt_i_s} & {abst_i:.1f}\\% & {acc_i:.3f} & {chg_i_s} \\\\'
             )
         lines.append(r'\midrule')
 
     lines.append(r'\end{tabular}')
     lines.append(
-        r'\caption{Image-condition ablation (original question variant) under blind and blind+instruction conditions. '
+        r'\caption{Image-condition ablation (original question variant). '
         r'Chg.\ = response change rate relative to the black image baseline of the same condition; ``---'' for the baseline itself. '
         r'\textbf{Bold}: best SBERT within model and condition; \underline{underline}: second best.}'
     )
     lines.append(r'\label{tab:image_ablation_main}')
     lines.append(r'\end{table*}')
-    print('\n'.join(lines))
+    tex = '\n'.join(lines)
+    print(tex)
+
+    out_path = ROOT / 'latex/AAAI2026/LaTeX/tables/supp/image_ablation_main.tex'
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(tex + '\n')
+    print(f"\nSaved: {out_path}", file=__import__('sys').stderr)
 
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+from pathlib import Path
 """
 compute_paper_stats.py
 Computes every statistical value cited in the paper and saves to paper_stats.csv.
@@ -15,7 +16,7 @@ warnings.filterwarnings("ignore")
 # ---------------------------------------------------------------------------
 # Load data
 # ---------------------------------------------------------------------------
-EXPORTS = "/home/david/Desktop/yuna/HPA/analysis/session2/exports"
+EXPORTS = str(Path(__file__).resolve().parents[1])
 
 print("Loading data...", file=sys.stderr)
 pair_ib    = pd.read_parquet(f"{EXPORTS}/pair_cache_cleaned.parquet")
