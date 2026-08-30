@@ -355,6 +355,144 @@ def write_sample_composition_table(out_path: Path | None = None) -> Path:
     return out_path
 
 
+def write_sample_composition_horizontal(out_path: Path | None = None) -> Path:
+    """Horizontal composition table: answer types as rows, group categories as columns.
+
+    Uses VQA v2 answer_type (yes/no, number, other) for correct 26/26/61 split.
+    """
+    if out_path is None:
+        out_path = LATEX_TABLES / "sample_q113_composition_horizontal.tex"
+
+    from analysis.utils.vqa import VQAAnswerMapper
+
+    qmeta = pd.DataFrame(json.load(open(ROOT / "experiment" / "s2_v4" / "s4_question.json")))
+    human = pd.read_csv(ROOT / "analysis" / "session2" / "exports" / "answers_human_q113.csv")
+    qids = set(human[human["variant"] == "C"]["question_id"].unique())
+    sub = qmeta[qmeta["question_id"].isin(qids)].copy()
+
+    mapper = VQAAnswerMapper()
+    mapper._load()
+    qid2at = {int(qid): ann.get("answer_type", "other") for qid, ann in mapper.annotations.items()}
+    sub["bucket"] = sub["question_id"].map(qid2at).map(
+        {"yes/no": "Yes/No", "number": "Number", "other": "Free-text"}
+    )
+
+    OP_FULL_NAMES = {
+        "act": "Action", "attr": "Attribute", "cause": "Causality",
+        "comp": "Comparison", "count": "Count", "exist": "Existence",
+        "ident": "Identity", "know": "World Know.", "spat": "Spatial",
+        "temp": "Temporal", "text": "Text Reading", "other": "Other",
+    }
+    ENT_FULL_NAMES = {
+        "animal": "Animal", "food": "Food", "object": "Object",
+        "other": "Other", "person": "Person", "place": "Place",
+        "product": "Product", "text": "Text", "vehicle": "Vehicle",
+    }
+    sub["op_label"] = sub["op"].map(OP_FULL_NAMES).fillna(sub["op"])
+    sub["ent_label"] = sub["ent"].map(ENT_FULL_NAMES).fillna(sub["ent"])
+
+    answer_types = ["Yes/No", "Number", "Free-text"]
+
+    # Build crosstabs
+    by_op = pd.crosstab(sub["op_label"], sub["bucket"])
+    for col in answer_types:
+        if col not in by_op.columns:
+            by_op[col] = 0
+    by_op = by_op[answer_types]
+    by_op["Total"] = by_op.sum(axis=1)
+    by_op = by_op.sort_values("Total", ascending=False)
+    op_names = by_op.index.tolist()
+
+    by_ent = pd.crosstab(sub["ent_label"], sub["bucket"])
+    for col in answer_types:
+        if col not in by_ent.columns:
+            by_ent[col] = 0
+    by_ent = by_ent[answer_types]
+    by_ent["Total"] = by_ent.sum(axis=1)
+    by_ent = by_ent.sort_values("Total", ascending=False)
+    ent_names = by_ent.index.tolist()
+
+    n_op = len(op_names)
+    n_ent = len(ent_names)
+
+    # Column spec: Answer Type | op cols | ent cols | Total
+    col_spec = "l" + "c" * n_op + "|" + "c" * n_ent + "|c"
+
+    lines = [
+        r"\begin{table*}[t]",
+        r"\centering",
+        r"\small",
+        r"\setlength{\tabcolsep}{3.5pt}",
+        rf"\begin{{tabular}}{{{col_spec}}}",
+        r"\toprule",
+    ]
+
+    # Header row 1: spans
+    lines.append(
+        r"& \multicolumn{" + str(n_op) + r"}{c|}{\textbf{Operation}}"
+        r" & \multicolumn{" + str(n_ent) + r"}{c|}{\textbf{Entity}}"
+        r" & \\"
+    )
+
+    # cmidrules
+    op_start, op_end = 2, 1 + n_op
+    ent_start, ent_end = op_end + 1, op_end + n_ent
+    total_col = ent_end + 1
+    lines.append(rf"\cmidrule(lr){{{op_start}-{op_end}}} \cmidrule(lr){{{ent_start}-{ent_end}}}")
+
+    # Header row 2: individual group names
+    header = [r"\textbf{Answer Type}"]
+    for name in op_names:
+        # Abbreviate long names
+        short = name.replace("World Know.", "Know.").replace("Text Reading", "Text")
+        header.append(rf"\rotatebox{{60}}{{\small {short}}}")
+    for name in ent_names:
+        header.append(rf"\rotatebox{{60}}{{\small {name}}}")
+    header.append(r"\textbf{Total}")
+    lines.append(" & ".join(header) + r" \\")
+    lines.append(r"\midrule")
+
+    # Data rows: one per answer type
+    for at in answer_types:
+        parts = [at]
+        row_total = 0
+        for name in op_names:
+            v = int(by_op.loc[name, at])
+            parts.append(str(v) if v > 0 else "--")
+            row_total += v
+        for name in ent_names:
+            v = int(by_ent.loc[name, at])
+            parts.append(str(v) if v > 0 else "--")
+        parts.append(str(row_total))
+        lines.append(" & ".join(parts) + r" \\")
+
+    lines.append(r"\midrule")
+
+    # Total row
+    parts = [r"\textbf{Total}"]
+    for name in op_names:
+        parts.append(rf"\textbf{{{int(by_op.loc[name, 'Total'])}}}")
+    for name in ent_names:
+        parts.append(rf"\textbf{{{int(by_ent.loc[name, 'Total'])}}}")
+    parts.append(rf"\textbf{{{len(sub)}}}")
+    lines.append(" & ".join(parts) + r" \\")
+
+    lines.append(r"\bottomrule")
+    lines.append(r"\end{tabular}")
+    lines.append(
+        r"\caption{Composition of the $113$-question human-study subset by answer format "
+        r"and semantic grouping. Columns show operation type and entity type; "
+        r"rows show answer format (yes/no, count, free-text). "
+        r"Counts are based on original-formulation questions and do not vary across control variants.}"
+    )
+    lines.append(r"\label{tab:q113_sample_composition_h}")
+    lines.append(r"\end{table*}")
+    lines.append("")
+
+    out_path.write_text("\n".join(lines))
+    return out_path
+
+
 def attach_answer_summaries(
     sub: pd.DataFrame,
     human: pd.DataFrame,

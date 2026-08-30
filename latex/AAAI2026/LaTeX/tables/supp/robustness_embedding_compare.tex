@@ -2,8 +2,7 @@
 \centering
 \small
 
-\caption{Group-level human--model alignment under three embedding-based metrics, pooled across all variants. Spearman~$\rho$ is computed over individual-model rankings within each model group.}
-\label{tab:robustness_embedding}
+
 \begin{tabular}{lrrr}
 \toprule
 Group & SBERT (mpnet) & SimCSE & BERTScore \\
@@ -16,4 +15,6 @@ Think & 0.467 & 0.571 & 0.939 \\
 Spearman~$\rho$ vs.\ SBERT & \multicolumn{1}{c}{---} & 0.961 & 0.560 \\
 \bottomrule
 \end{tabular}
+\caption{Group-level human--model alignment under three embedding-based metrics, pooled across all variants. Spearman~$\rho$ is computed over individual-model rankings within each model group.}
+\label{tab:robustness_embedding}
 \end{table}

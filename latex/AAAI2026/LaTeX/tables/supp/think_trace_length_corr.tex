@@ -1,0 +1,18 @@
+\begin{table}[h]
+\centering\small\setlength{\tabcolsep}{5pt}
+\begin{tabular}{l cc cc cc cc}
+\toprule
+& \multicolumn{2}{c}{\textbf{Original}} & \multicolumn{2}{c}{\textbf{Weaker}} & \multicolumn{2}{c}{\textbf{Pronominalized}} & \multicolumn{2}{c}{\textbf{Pooled}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+\textbf{Size} & $r$ & $N$ & $r$ & $N$ & $r$ & $N$ & $r$ & $N$ \\
+\midrule
+0.6B & $+.015$ & 110 & $+.112$ & 108 & $+.153$ & 109 & $+.081$ & 327 \\
+1.7B & $-.143$ & 46 & $-.156$ & 41 & $+.077$ & 33 & $-.096$ & 120 \\
+4B & $-.184$ & 109 & $\mathbf{-.258^{**}}$ & 105 & $+.155$ & 100 & $-.100$ & 314 \\
+8B & $\mathbf{-.255^{**}}$ & 106 & $\mathbf{-.208^{*}}$ & 105 & $+.166$ & 102 & $-.107$ & 313 \\
+32B & $+.100$ & 32 & $-.006$ & 32 & $+.114$ & 24 & $+.029$ & 88 \\
+\bottomrule
+\end{tabular}
+\caption{Pearson $r$ between reasoning-trace length and $\sHM$ per question--variant pair, for Qwen3 models with thinking enabled (free-text questions only, N$\leq$113, where $N$ excludes abstained and empty-trace pairs). Stars: ${}^{**}p{<}.01$, ${}^{*}p{<}.05$; significant values in bold.}
+\label{tab:think_trace_length_corr}
+\end{table}

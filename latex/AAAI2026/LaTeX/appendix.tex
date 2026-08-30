@@ -5,7 +5,7 @@
 % aaai2027.sty (newtxtext, helvet, courier). DO NOT add \usepackage{times},
 % \usepackage{helvet}, \usepackage{courier}, or any other font package.
 \usepackage[hyphens]{url}  % DO NOT CHANGE THIS
-\usepackage{graphicx} % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS 
 \urlstyle{rm} % DO NOT CHANGE THIS
 \def\UrlFont{\rm}  % DO NOT CHANGE THIS
 \usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
@@ -95,7 +95,7 @@
 % proceedings, working notes, and technical reports.
 %
 
-\title{When You Can't See: VLM-Human Prior (Mis)Alignment When Imagining Responses to Visual Questions Without Images}
+\title{Technical Supplement: When You Can't See: VLM-Human Prior (Mis)Alignment When Imagining Responses to Visual Questions Without Images}
 \author{Anonymous submission}
 \affiliations{Anonymous submission}
 
@@ -114,48 +114,75 @@
 \fi % end standalone preamble
 
 \setcounter{secnumdepth}{2}
+\setcounter{section}{0}
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
 
 \makeatletter
 \@addtoreset{figure}{section}
 \@addtoreset{table}{section}
+\@addtoreset{equation}{section}
 \makeatother
 \renewcommand{\thefigure}{\thesection.\arabic{figure}}
 \renewcommand{\thetable}{\thesection.\arabic{table}}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
 \setcounter{figure}{0}
 \setcounter{table}{0}
-
+\setcounter{equation}{0}
 \section*{Overview}
 
-Sec.~\ref{app:data} provides dataset details: the GPT-4.1-mini control question extraction pipeline (\ref{app:ctl}), variant collapse cases (\ref{app:collapsed_variants}), taxonomy extraction (\ref{app:sem_extraction}), and question pool characterization (\ref{app:pool_char}).
+Sec.~\ref{app:data} provides details on dataset preparation, including the control-variant question extraction pipeline (\S\ref{app:ctl}), variant collapse cases (\S\ref{app:collapsed_variants}), taxonomy extraction (\S\ref{app:sem_extraction}), and the final dataset composition by answer type.
 
-Sec.~\ref{app:human_study} details the human study protocol and statistics.
+Sec.~\ref{app:human_study} details the human-study protocol and descriptive statistics, including response time, answer length, confidence, confidence and RT as agreement proxies (\S\ref{app:conf_rt_agreement}), and human--human agreement across metrics (\S\ref{app:hh_metric_robustness}).
 
-Sec.~\ref{app:preprocessing} describes the answer preprocessing pipeline, including SBERT length-normalization robustness (\ref{app:chrf_human}), pairwise metric correlations (\ref{app:metric_corr}), and alternative embedding model comparison (\ref{app:embed_compare}).
+Sec.~\ref{app:preprocessing} describes the answer preprocessing pipeline (\S\ref{app:preprocessing_pipeline}), SBERT length-normalization robustness (\S\ref{app:sbert_robustness}), and pairwise metric correlations (\S\ref{app:metric_corr}).
 
-Sec.~\ref{app:model_inventory} gives a complete inventory of all VLMs, backbone decoders, and standalone LLMs evaluated (Table~\ref{tab:model_inventory}).
+Sec.~\ref{app:model_inventory} provides the complete inventory of evaluated models, including their matched vision encoders and language backbones.
 
-Sec.~\ref{app:abstention} describes the abstention classifier, abstention rates by question type, and model confidence in abstained responses.
+Sec.~\ref{app:abstention} details model abstention behavior, including the abstention classifier (\S\ref{app:abstention_classifier}), abstention rates by question type (\S\ref{app:abstention_by_qtype}), and confidence in model abstention (\S\ref{app:abstention_confidence_hist}).
 
-Sec.~\ref{app:categorical_distributions} reports categorical answer distribution alignment: yes/no (\ref{app:yesno}) and count questions (\ref{app:count_dist}).
+Sec.~\ref{app:categorical_distributions} reports categorical answer-distribution alignment for yes/no questions (\S\ref{app:yesno}), a qualitative existence-question example (\S\ref{app:existence_example}), and count questions (\S\ref{app:count_dist}).
 
-Sec.~\ref{app:semantic_alignment} covers human--model semantic alignment: pairwise subject agreement (\ref{app:subject_corr_matrix}), group-level SBERT band coverage (\ref{app:group_band_coverage}), and pronominalization degradation by group (\ref{app:degradation}).
+Sec.~\ref{app:semantic_alignment} examines human--model semantic alignment, including group-level SBERT band coverage (\S\ref{app:group_band_coverage}) and alignment degradation from the Original to the Pronominalized variant by question group.
 
-Sec.~\ref{app:modulates_alignment} examines what modulates alignment: family-level Wilcoxon tests (\ref{app:family_alignment_tests}), image-condition ablation (\ref{app:ablation}), and whether extended chain-of-thought reasoning helps (\ref{app:thinking}).
+Sec.~\ref{app:modulates_alignment} examines factors that modulate alignment, including image-condition ablations (\S\ref{app:ablation}), matched-family comparisons of VLMs with their language-model counterparts (\S\ref{app:family_alignment_tests}), and whether extended chain-of-thought reasoning improves alignment (\S\ref{app:thinking}).
 
-Sec.~\ref{app:alignment_overview} provides the alignment overview: full-scale ranking across all model sizes and conditions (\ref{app:alignment_ranking_full}), per-model agreement across metrics (\ref{app:comprehensive_metrics}), and accuracy alignment (\ref{app:accuracy_alignment}).
+Sec.~\ref{app:alignment_overview} extends the 7B alignment ranking in the main paper to all evaluated model sizes and conditions (Table~\ref{tab:alignment_ranking_full_scale_ticks}.1).
+% Sec.~\ref{app:data} provides our dataset details. It includes the processing pipeline of control variant question extraction (\S\ref{app:ctl}), variant collapse cases (Table \ref{tab:collapsed_variants}), taxonomy extraction (\S\,\ref{app:sem_extraction}), and the final dataset composition in answer types (Table~\ref{tab:q113_sample_composition}).
+% % \S\,~\ref{app:pool_char}
+% % Figure~\ref{fig:tsne}
+% % Table~\ref{tab:taxonomy}
 
-\clearpage
+% Sec.~\ref{app:human_study} details the human study protocol and statistics including response time, answer length, and confidence. % (\S\,\ref{app:conf_rt_agreement})  
+
+% Sec.~\ref{app:preprocessing} contains robustness check on the effect of answer length in SBERT measurement and pairwise metric correlations (Figure \ref{fig:metric_corr}). % (Figure \ref{fig:sbert_truncation_scatter}) , and alternative embedding model comparison (\ref{app:embed_compare}).
+
+% Sec.~\ref{app:model_inventory} has lists our models evaluated with matched image encoder and language backbone (Table~\ref{tab:model_inventory}). %  (VLM, backbone decoder, standalone LLM)
+
+% Sec.~\ref{app:abstention} includes details about the model abstention responses. It includes the abstention classifier, abstention rates, and the relationship with model confidence. 
+
+% Sec.~\ref{app:categorical_distributions} reports categorical answer distribution alignment: yes/no (\ref{app:yesno}), a qualitative existence-question example (\ref{app:existence_example}), and count questions (\ref{app:count_dist}).
+
+% Sec.~\ref{app:semantic_alignment} covers human--model semantic alignment: group-level SBERT band coverage (Table~\ref{app:group_band_coverage}) and Pronominalizedominalization degradation by group.
+% Table~\ref{tab:degradation_wilcoxon} quantifies alignment loss from the Originalinal to the Pronominalizedominalized variant by question group, with paired Wilcoxon tests to assess significance across architecture classes.
+
+% Sec.~\ref{app:modulates_alignment} examines what modulates alignment: image-condition ablation on full VLMs (\S\ref{app:ablation}), paired VLMs to their family-level for Wilcoxon tests on semantic human alignment (\S\ref{app:family_alignment_tests}), and whether extended chain-of-thought reasoning aligns better (\S\ref{app:thinking}).
+
+% Sec.~\ref{app:alignment_overview} extends the 7B ranking table in the main paper to all evaluated model sizes and all conditions (Table~\ref{tab:alignment_ranking_full_scale_ticks}).% (Table~\ref{app:alignment_ranking_full})
+
+% \clearpage
 \section{Dataset Preparation}
 \label{app:data}
+We use GPT-4.1-mini API to create variants of our set of questions for anchor sensitivity analysis and the semantic agreement later for the human alignment analysis. 
+Due to inconsistencies in the specificity of the VQA questions, the pipeline produces two identical variants for 6 of the 113 questions (Table~\ref{tab:collapsed_variants}).
 
-Both GPT-4.1-mini-2025-04-14 calls described below use temperature~0, seed~42, and structured JSON schema mode with \texttt{additionalProperties:~false}.
-Questions are submitted in batches of 50 per API call.
+% Questions are submitted in batches of 50 per API call.
 
 \subsection{Control Question Extraction Pipeline}
 \label{app:ctl}
-
-The generation pipeline produces four variants per question, but human and model comparisons use three: \textbf{Original} (unmodified), \textbf{Weaker object}, and \textbf{Pronominalized}). The \texttt{deictic\_removed} and \texttt{object\_removed} steps are intermediate scaffolding used by the extraction pipeline but excluded from analysis.
-% The output schema enforces \texttt{\{deictic\_removed, object\_removed, weaker\_object, pronominalized\}} as required string fields.
+We use temperature~0, seed~42, and structured JSON schema mode. %  with \texttt{additionalProperties:~false}.
+The generation pipeline produces four variants per question, but human and model comparisons use three: \textit{\textbf{Original} (unmodified), \textbf{Weaker Object (Weaker)}, and \textbf{Pronominalized})}. The \texttt{deictic\_removed} and \texttt{object\_removed} steps are intermediate scaffolding used by the extraction pipeline but excluded from analysis.
+% The output schema enforces \texttt{\{deictic\_removed, object\_removed, weaker\_object, Pronominalizedominalized\}} as required string fields.
 
 The system prompt is reproduced verbatim below:
 
@@ -170,66 +197,64 @@ and spatial markers (left/right/top/bottom/foreground/background) while preservi
 grammar. Restructure the sentence if needed to remain fluent.
 
 2) \textit{object\_removed}: Replace the specific object noun with neutral placeholder
-``object''. Do not replace pronouns or generic nouns already present.
+``object''. Do not replace Pronominalizedouns or generic nouns already present.
 
 3) \textit{weaker\_object}: Replace the specific object noun with a broader hypernym
 one level up (dog$\to$animal, car$\to$vehicle, drink$\to$beverage, shirt$\to$clothing,
 apple$\to$fruit, knife$\to$utensil, sofa$\to$furniture). If no clear hypernym
 exists, use ``object''.
 
-4) \textit{pronominalized}: Replace ALL content noun phrases with minimal pronouns.
+4) \textit{pronominalized}: Replace ALL content noun phrases with minimal Pronominalized nouns.
 Grammar-aware rules: attribute (``What color is the dog?'') $\to$ ``What color is it?'';
 count (``How many cats are there?'') $\to$ ``How many are there?'';
 location (``Where is the phone?'') $\to$ ``Where is it?'';
 action (``What is the man doing?'') $\to$ ``What is it doing?'';
 yes/no (``Is the dog affectionate?'') $\to$ ``Is it affectionate?'';
 multi-NP (``between the girl and the giraffe'') $\to$ ``between them''.
-Keep ONLY question words, copula, prepositions, predicate/attribute, and pronouns.
+Keep ONLY question words, copula, prepositions, predicate/attribute, and pronominalized nouns.
 Use ``it''/``they''/``them''---never ``the object''.
 \end{quote}
 
+\clearpage
+\begin{table}[h]
 \subsection{Variant Collapse Cases}
 \label{app:collapsed_variants}
-
-In 6 of the 113 questions the pipeline produces two identical variants (Table~\ref{tab:collapsed_variants}).
-
-\begin{table}[b]
 \centering
-\small
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.1}
-\caption{The 6 questions where the pipeline produces two identical variants. \textbf{Bold} = the two identical variants.}
 \label{tab:collapsed_variants}
 \begin{tabular}{p{0.88\columnwidth}}
 \toprule
-\textbf{Is this a restaurant?} (Orig) \\
-\quad Is this a building? (Weaker) \\
-\quad \textbf{Is this a restaurant?} (Pron) \\[4pt]
-\textbf{Does it rain here a lot?} (Orig) \\
-\quad Does it rain a lot? (Weaker) \\
-\quad \textbf{Does it rain here a lot?} (Pron) \\[4pt]
-\textbf{Are the letters all capitals?} (Orig) \\
-\quad \textbf{Are the letters all capitals?} (Weaker) \\
-\quad Are they all capitals? (Pron) \\[4pt]
-\textbf{Are there any Roman numerals?} (Orig) \\
-\quad \textbf{Are there any Roman numerals?} (Weaker) \\
-\quad Are there any? (Pron) \\[4pt]
-\textbf{Does the vehicle have a flat tire?} (Orig) \\
-\quad \textbf{Does the vehicle have a flat tire?} (Weaker) \\
-\quad Does it have a flat one? (Pron) \\[4pt]
-\textbf{What does the cake represent?} (Orig) \\
-\quad \textbf{What does the cake represent?} (Weaker) \\
-\quad What does it represent? (Pron) \\
+\textbf{Is this a restaurant?} (\textit{Original}) \\
+\quad Is this a building? (\textit{Weaker}) \\
+\quad \textbf{Is this a restaurant?} (\textit{Pronominalized}) \\[4pt]
+\textbf{Does it rain here a lot?} (\textit{Original}) \\
+\quad Does it rain a lot? (\textit{Weaker}) \\
+\quad \textbf{Does it rain here a lot?} (\textit{Pronominalized}) \\[4pt]
+\textbf{Are the letters all capitals?} (\textit{Original}) \\
+\quad \textbf{Are the letters all capitals?} (\textit{Weaker}) \\
+\quad Are they all capitals? (\textit{Pronominalized}) \\[4pt]
+\textbf{Are there any Roman numerals?} (\textit{Original}) \\
+\quad \textbf{Are there any Roman numerals?} (\textit{Weaker}) \\
+\quad Are there any? (\textit{Pronominalized}) \\[4pt]
+\textbf{Does the vehicle have a flat tire?} (\textit{Original}) \\
+\quad \textbf{Does the vehicle have a flat tire?} (\textit{Weaker}) \\
+\quad Does it have a flat one? (\textit{Pronominalized}) \\[4pt]
+\textbf{What does the cake represent?} (Original) \\
+\quad \textbf{What does the cake represent?} (\textit{Weaker}) \\
+\quad What does it represent? (\textit{Pronominalized}) \\
 \bottomrule
 \end{tabular}
+\caption{The 6 questions where the pipeline produces two identical variants. \textbf{Bold} = the two identical variants.}
 \end{table}
 
-\clearpage
+% \clearpage
 \subsection{Question Taxonomy Extraction}
 \label{app:sem_extraction}\label{app:taxonomy}
 
 Each question is annotated along two axes: \emph{operation type} (what reasoning the question demands) and \emph{entity type} (what semantic field its subject belongs to).
-The output schema enforces \texttt{op} and \texttt{ent} as required enumerated string fields.
+% The output schema enforces \texttt{op} and \texttt{ent} as required enumerated string fields.
+
 The system prompt is reproduced verbatim below:
 
 \begin{quote}\small
@@ -252,79 +277,31 @@ Return ONLY a JSON object \texttt{\{"results":[...]\}} matching the schema exact
 6) If \texttt{w=where} and \texttt{op} not in \{\texttt{text,know}\} $\Rightarrow$ \texttt{op=spat}, \texttt{attr=loc}, \texttt{ans=loc}, \texttt{space=cat}.
 \end{quote}
 
-\subsection{Question Pool Characterization}
-\label{app:pool_char}
+% Figure~\ref{fig:tsne} shows a t-SNE embedding of the full 1{,}000-question pool with our subset highlighted to ensure a broad coverage without semantic clustering.
 
-Figure~\ref{fig:tsne} shows a t-SNE embedding of the full 1{,}000-question pool with our subset highlighted, confirming broad coverage without semantic clustering.
+% Table~\ref{tab:q113_sample_composition} gives the breakdown of the 113-question subset by answer type (yes/no, count, free-text) across operation and entity groups.
 
-Table~\ref{tab:q113_sample_composition} gives the breakdown of the 113-question subset by answer type (yes/no, count, free-text) across operation and entity groups.
-
-Table~\ref{tab:taxonomy} lists all 11 operation and 9 entity categories used for group-level analysis.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\linewidth]{subset_tsne_entities}\\[0.4em]
-\includegraphics[width=\linewidth]{subset_tsne_operations}
-\caption{t-SNE of the 1{,}000-question pool (gray) with the 113-question
-human-study subset highlighted. \textbf{Top:} colored by entity type.
-\textbf{Bottom:} colored by operation type. Cluster centroids are marked;
-the nearest question to each centroid provides a representative example
-for the corresponding taxonomy category (Table~\ref{tab:taxonomy}).
-The subset spans the full embedding space without concentrating in any
-narrow semantic region.}
-\label{fig:tsne}
-\end{figure}
-
-
-% BEGIN inlined from tables/supp/sample_q113_composition.tex
-\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{5pt}
-
-\caption{Composition of the 113-question human-study subset by answer format, operation type, and entity type. Free-text denotes non-yes/no, non-count questions. Counts are based on the original question forms and therefore do not vary across control variants.}
-\label{tab:q113_sample_composition}
-\begin{tabular}{lcccc}
-\toprule
-Group & Yes/No & Count & Free-text & Total \\
-\midrule
-\multicolumn{5}{c}{\textit{Overall}} \\
-\midrule
-Total & 25 & 22 & 66 & 113 \\
-\midrule
-\multicolumn{5}{c}{\textit{By operation}} \\
-\midrule
-Action & 4 & 0 & 3 & 7 \\
-Attribute & 12 & 0 & 29 & 41 \\
-Causality & 0 & 0 & 1 & 1 \\
-Comparison & 0 & 0 & 2 & 2 \\
-Count & 0 & 22 & 0 & 22 \\
-Existence & 7 & 0 & 0 & 7 \\
-Identity & 0 & 0 & 9 & 9 \\
-World Know. & 2 & 0 & 2 & 4 \\
-Spatial & 0 & 0 & 12 & 12 \\
-Temporal & 0 & 0 & 3 & 3 \\
-Text Reading & 0 & 0 & 5 & 5 \\
-\midrule
-\multicolumn{5}{c}{\textit{By entity}} \\
-\midrule
-Animal & 5 & 3 & 9 & 17 \\
-Food & 5 & 2 & 9 & 16 \\
-Object & 4 & 9 & 14 & 27 \\
-Other & 2 & 2 & 5 & 9 \\
-Person & 6 & 4 & 16 & 26 \\
-Place & 2 & 0 & 3 & 5 \\
-Product & 0 & 2 & 3 & 5 \\
-Text & 0 & 0 & 4 & 4 \\
-Vehicle & 1 & 0 & 3 & 4 \\
-\bottomrule
-\end{tabular}
-\end{table}
-% END inlined from tables/supp/sample_q113_composition.tex
+% Table~\ref{tab:taxonomy} lists all 11 operation and 9 entity categories used for group-level analysis.
+\input{tables/supp/sample_q113_composition}
 
 % Table~\ref{tab:taxonomy} lists all operation and entity categories used for group-level analysis.
 
-\begin{table*}[h]
+\begin{figure*}[t]
+\centering
+
+\includegraphics[width=0.49\textwidth]{subset_tsne_entities}
+\hfill
+\includegraphics[width=0.49\textwidth]{subset_tsne_operations}
+
+\caption{t-SNE of the 1{,}000-question pool (gray) with the 113-question
+human-study subset highlighted. \textbf{Left:} colored by entity type.
+\textbf{Right:} colored by operation type. Cluster centroids are marked;
+the nearest question to each centroid provides a representative example
+for the corresponding taxonomy category (Table~\ref{tab:taxonomy}).}
+\label{fig:tsne}
+\end{figure*}
+
+\begin{table*}[b]
 \centering
 {\fontsize{9}{10}\selectfont
 \renewcommand{\arraystretch}{0.95}
@@ -361,28 +338,26 @@ Text        & 4  & Visible written content such as signs, labels, or logos. & \t
 \bottomrule
 \end{tabularx}
 }
-\caption{Question taxonomy used for group-level analysis. Some appendix plots merge low-support operation and entity labels for readability; the full labels and counts are shown here.}
+\caption{Question taxonomy used for group-level analysis. Some appendix plots merge low-support operation and entity labels for readability; the full labels and number of questions (\textit{N}) are shown here.}
 \label{tab:taxonomy}
 \end{table*}
 
 \clearpage
 \section{Human Study Details}
 \label{app:human_study}
+With an IRB-approved protocol adhering to the Declaration of Helsinki, we recruited via online student community forums at universities and paid at standard compensation with informed consent obtained prior to participation.
 
-\subsection{Human Study Protocol}
-\label{app:human}
-
-A total of 40 participants were included. Participants were recruited via
-online student community forums at universities. All procedures were conducted
-under an IRB-approved protocol adhering to the Declaration of Helsinki.
-Informed consent was obtained prior to participation.
-
-Participants answered text-only blind-instruction questions across the original, weaker-object, and pronominalized formulations in shuffled order ($N{=}339$ per participant).
-Participants were compensated at 10,000~KRW per hour. 
+Participants answered questions across 3 \textit{variants }-- \textit{Original}, \textit{Weaker (Weaker Object)}, and \textit{Pronominalized} formulations in shuffled order, a total of N{=}339 questions per participant. The participants were given instruction in the beginning of the experiment. % The final  13,560 responses in total ($=40$ participants $\times 113$ questions $\times 3$ variants).
 
 \subsection{Human Study Statistics}
+A total of 40 participants (17 men and 23 women; age mean${=}26.9$, $\sigma{=}4.8$, median${=}26$, range: 18--35 years) were included in the study.
+
+\subsubsection{Answer Length}
+Answer length is predominantly single-word (84.4\%).
+Soft abstention is negligible ($<$0.6\% per variant: \textit{Original}\,=\,0.354\%, \textit{Weaker}\,=\,0.354\%, \textit{Pronominalized}\,=\,0.575\%), confirming engaged responding throughout.
+
 \subsubsection{Response Time}
-Per-participant median RTs range from 2.6~s to 7.5~s with no extreme outliers (Figure~\ref{fig:human_stats_a}).
+Per-participant median response time (RT) range from 2.6~s to 7.5~s with no extreme outliers. %  (Figure~\ref{fig:human_stats_a})
 
 \begin{figure}[h]
 \centering
@@ -391,9 +366,6 @@ Per-participant median RTs range from 2.6~s to 7.5~s with no extreme outliers (F
 \label{fig:human_stats_a}
 \end{figure}
 
-\subsubsection{Answer Length}
-Answer length is predominantly single-word (92.6\%).
-Soft abstention is negligible ($<$0.04\% per variant: C\,=\,0.039\%, B\,=\,0.020\%, A\,=\,0.039\%), confirming engaged responding throughout.
 % \begin{figure}[h]
 % \centering
 % \includegraphics[width=\columnwidth]{figures_supp/human_study_statistics_c}
@@ -402,9 +374,7 @@ Soft abstention is negligible ($<$0.04\% per variant: C\,=\,0.039\%, B\,=\,0.020
 % \end{figure}
 
 \subsubsection{Human Confidence}
-Confidence ranges from 1.0 to 4.8 per participant (mean 3.06; Figure~\ref{fig:human_confidence}), with
-per-variant distributions nearly identical---suggesting question surface form
-does not systematically inflate or suppress self-reported certainty.
+Confidence ranges from 1.0 to 4.8 per participant (mean=3.06; Figure~\ref{fig:human_confidence}). The three curves are nearly identical, with a modest downward shift under Pronominalization. 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\columnwidth]{figures_supp/human_study_statistics_f}
@@ -414,13 +384,23 @@ does not systematically inflate or suppress self-reported certainty.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\linewidth]{confidence/human_ecdf}
-\caption{ECDF of human self-reported confidence (normalised to $[0,1]$) by question
-variant. The three curves are nearly identical, with only a modest downward shift
-under pronominalization, confirming that human confidence is robust to lexical-anchor
-removal and more stable across variants than model token confidence.}
+\includegraphics[width=0.9\linewidth]{confidence/human_ecdf}
+\caption{ECDF of human self-reported confidence per question. }
 \label{fig:human_ecdf}
 \end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{conf-rt.png}
+    \caption{Per-question mean response time vs.\ mean confidence. Dashed black line: pooled regression ($N=339$). Solid lines: per-variant regressions (dark$\to$light: Original$\to$Pronominalized). }
+    \label{fig:conf-rt}
+\end{figure}
+
+\subsubsection{Confidence vs. RT}
+\label{app:conf_rt_agreement}
+
+Confidence and RT are themselves weakly negatively correlated ($r = -0.148$, $p < .01$): participants are less confident when they take longer. 
+Participants are less confident when they deliberate longer, though the effect is weak and driven primarily by the Weaker object variant ($r = -0.20$, $p < .05$).
 
 \iffalse % not referenced from main text
 \subsection{Human--Human Agreement Across Metrics}
@@ -440,7 +420,7 @@ Human--human agreement by operation and entity type across four metrics (SBERT, 
 \toprule
 Group & \multicolumn{3}{c}{SBERT} & \multicolumn{3}{c}{chrF} & \multicolumn{3}{c}{ROUGE-1} & \multicolumn{3}{c}{Jaccard} & \multicolumn{3}{c}{Entropy (bits)} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13} \cmidrule(lr){14-16}
- & Orig. & Wkr. & Pron. & Orig. & Wkr. & Pron. & Orig. & Wkr. & Pron. & Orig. & Wkr. & Pron. & Orig. & Wkr. & Pron. \\
+ & Original. & Wkr. & Pronominalized. & Original. & Wkr. & Pronominalized. & Original. & Wkr. & Pronominalized. & Original. & Wkr. & Pronominalized. & Original. & Wkr. & Pronominalized. \\
 \midrule
 \multicolumn{16}{l}{\textit{By operation type}} \\
 \midrule
@@ -477,116 +457,138 @@ Text (n=4)  & .447 & .417 & .504 & .133 & .126 & .149 & .082 & .079 & .104 & .08
 \clearpage
 \section{Answer Preprocessing}
 \label{app:preprocessing}
+% In Figure~\ref{app:metric_corr}, we compare SBERT, SimCSE, BERTScore, chrF, ROUGE-1, and Jaccard at the per-question level to justify SBERT as the primary metric.
 
 \subsection{Preprocessing Pipeline}
 \label{app:preprocessing_pipeline}
-
-Human and model responses are preprocessed through the following pipeline.
-Human responses (collected in Korean) go through all four steps; model responses (produced in English) skip step~1 and go through steps~2--4 only.
-Pairs where either response is flagged as an abstention are excluded from alignment metrics (see Appendix~\ref{app:abstention_classifier}).
+% Human and model responses are preprocessed through the following pipeline.
+Human responses collected in Korean go through all four steps; all model responses (produced in English) skip step~1. Most VLMs and humans do not verbose, but is needed for LLMs and CoT model (3(i)), so they undergo the same pipeline for fairness. %  and go through steps~2--4 only.
+% Pairs where either response is flagged as an abstention are excluded from alignment metrics (see Appendix~\ref{app:abstention_classifier}).
 
 \textbf{(1) Translation (human responses only).}
 Korean responses are translated to English via GPT-4o-mini using the following prompt:
 \begin{quote}\small
 \textit{You are a precise translation assistant for VQA data.
 Task: Translate the Korean answer to English. Return ONLY the translated answer, nothing else.
-Rules: Keep answer concise (similar length to original); use natural English phrasing; if it's a number, color, or simple noun, translate directly; do not add explanations.
+Rules: Keep answer concise (similar length to Originalinal); use natural English phrasing; if it's a number, color, or simple noun, translate directly; do not add explanations.
 QUESTION: \{question\}~~KOREAN ANSWER: \{answer\}~~English:}
 \end{quote}
 
 \textbf{(2) VQA normalization.}
 Answers are lowercased, punctuation stripped, and articles removed following the standard VQA v2 pipeline \citep{antol2015vqa}.
 
-\textbf{(2b) Verbose response stripping.}
+\textbf{(3) Verbose response stripping.}
 Before normalization, model outputs are cleaned with a hand-crafted cascade applied in order:
+
 (i)~\textit{Think-trace removal}: \texttt{<think>...</think>} blocks are stripped via regex; if reasoning text leaks into the output (e.g.\ the response begins \textit{``Okay let's see\ldots''} or \textit{``Hmm, the user is asking\ldots''}), a recovery pass extracts the final committed answer from explicit cues such as \textit{``the answer is\ldots''} or \textit{``therefore X is the answer''}.
+
 (ii)~\textit{Preamble stripping}: leading wrappers matching patterns such as \textit{``The answer is\ldots''}, \textit{``My final answer is\ldots''}, and \textit{``Answer to the question is\ldots''} are removed, as is any residual \texttt{\textbackslash boxed\{\}} template marker.
 This cascade is applied uniformly to all model outputs before the normalization step.
 
-\subsection{SBERT Length-Normalization Robustness}
-\label{app:chrf_human}\label{app:sbert_robustness}
-
 \begin{figure}[h]
+\subsection{SBERT Length-Normalization Robustness}
+\label{app:sbert_robustness}
+
+% We verify that truncating verbose model outputs to 5 words before computing SBERT does not distort the alignment signal, motivating filtered SBERT as the primary metric.
+
 \centering
-\begin{subfigure}[b]{\linewidth}
-\includegraphics[width=\linewidth]{appQ_sbert_robustness/sbert_truncation_scatter_vc_filtered}
+\begin{subfigure}[h]{0.9\linewidth}
+\includegraphics[width=0.9\linewidth]{appQ_sbert_robustness/sbert_truncation_scatter_vc_with_abst}
 \caption{Abstention-filtered}
 \end{subfigure}
 \\[6pt]
-\begin{subfigure}[b]{\linewidth}
-\includegraphics[width=\linewidth]{appQ_sbert_robustness/sbert_truncation_scatter_vc_with_abst}
+\begin{subfigure}[h]{0.9\linewidth}
+\includegraphics[width=0.9\linewidth]{appQ_sbert_robustness/sbert_truncation_scatter_vc_filtered}
 \caption{With abstentions}
 \end{subfigure}
-\caption{Raw vs.\ 5-word-truncated HM SBERT per model (original variant, instruction-blind). Each point is one model; colors indicate model group; dashed line = $y{=}x$. \textbf{(a)} After abstention filtering, all groups cluster tightly on the diagonal. \textbf{(b)} Including abstentions, think models shift above the diagonal as truncation removes verbose reasoning traces---motivating filtered scores as the primary metric.}
+\caption{Raw vs.\ 5-word-truncated $\sHM$ per model (N=113, Original questions under instruction). Each point is shows one model with colors indicating its model group. \textbf{(a)} $\sHM$ including abstentions, think models shift above the diagonal (5 word truncation matches the unrestricted preprocessed answer embeddings) as limiting answer length reduces verbose reasoning traces. \textbf{(b)} $\sHM$ after abstention filtering, all groups cluster tightly on the diagonal. }
 \label{fig:sbert_truncation_scatter}
 \end{figure}
 
+\begin{figure*}[h]
 \subsection{Pairwise Metric Correlations}
 \label{app:metric_corr}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.72\columnwidth]{appQ_sbert_robustness/metric_correlation_per_question_hm_113}
-\caption{Pairwise Pearson~$r$ between evaluation metrics computed at per-(question, variant) mean level across human--model pairs ($N{=}113$ questions, all variants, abstention-filtered). SBERT and SimCSE rank models similarly ($\rho{=}.961$); BERTScore diverges substantially ($\rho{=}.560$), motivating SBERT as the primary metric.}
-\label{fig:metric_corr}
-\end{figure}
+We compare seven answer-similarity metrics at the per-question level to justify SBERT as the primary metric.
+Three are embedding-based: \textbf{SBERT} (\texttt{all-mpnet-base-v2} cosine similarity), \textbf{SimCSE} (\texttt{sup-simcse-roberta-large}), and \textbf{BERTScore} (contextual token-level F1 on RoBERTa).
+Four are surface-level: \textbf{ChrF} (character $n$-gram F-score), \textbf{ROUGE-1} (unigram recall), \textbf{Jaccard} (token-set overlap), and \textbf{Exact} (exact string match).
 
-\subsection{Alternative Embedding Models}
-\label{app:embed_compare}
+% Figure~\ref{fig:metric_corr} shows that BERTScore diverges most from embedding-based metrics, especially on free-text answers ($r{=}.26$ vs.\ $r{=}.68$ with SBERT), motivating SBERT as the primary metric.
+
+\centering
+\begin{subfigure}[t]{0.47\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{appQ_sbert_robustness/metric_correlation_per_question_hm_183}
+  \caption{Free-text only (61 questions, 183 pairs).}
+  \label{fig:metric_corr_ft}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.52\textwidth}
+  \centering \includegraphics[width=\textwidth]{appQ_sbert_robustness/metric_correlation_per_question_hm_339}
+  \caption{All questions (113 questions, 339 pairs).}
+  \label{fig:metric_corr_all}
+\end{subfigure}
+\caption{Pairwise Pearson~$r$ between evaluation metrics at the per-(question, variant) mean level across human--model pairs (abstention-filtered).}
+\label{fig:metric_corr}
+\end{figure*}
+
+\input{tables/supp/comprehensive_inst_blind}
+% \subsection{Alternative Embedding Models}
+% \label{app:embed_compare}
+
+% Table~\ref{tab:robustness_embedding_per_model} compares per-model alignment under three embedding metrics, confirming that SBERT and SimCSE produce nearly identical model rankings ($\rho{=}.960$) while BERTScore diverges substantially.
 
 % BEGIN robustness_embedding_per_model
-\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-\caption{Per-model human--model alignment under three embedding metrics (all variants combined, 7/8B models). SBERT = \texttt{all-mpnet-base-v2}; SimCSE = \texttt{sup-simcse-roberta-large}; BERTScore = \texttt{roberta-large}. Spearman~$\rho$ in footer compares per-model rankings against SBERT.}
-\label{tab:robustness_embedding_per_model}
-\begin{tabular}{lrrr}
-\toprule
-\textbf{Model} & \textbf{SBERT} & \textbf{SimCSE} & \textbf{BERTScore} \\
-\midrule
-\multicolumn{4}{l}{\textit{VLM}} \\
-\quad InternVL-8B & 0.598 & 0.650 & 0.947 \\
-\quad Qwen3-VL-8B & 0.549 & 0.615 & 0.946 \\
-\quad LLaVA-1.5 & 0.503 & 0.573 & 0.952 \\
-\quad LLaVA-Mistral & 0.535 & 0.603 & 0.953 \\
-\quad LLaVA-Vicuna & 0.524 & 0.590 & 0.953 \\
-\midrule
-\multicolumn{4}{l}{\textit{Backbone Decoder}} \\
-\quad InternVL-8B & 0.575 & 0.642 & 0.933 \\
-\quad Qwen3-VL-8B & 0.568 & 0.637 & 0.947 \\
-\quad LLaVA-1.5 & 0.574 & 0.632 & 0.956 \\
-\quad LLaVA-Mistral & 0.576 & 0.634 & 0.954 \\
-\quad LLaVA-Vicuna & 0.574 & 0.632 & 0.952 \\
-\midrule
-\multicolumn{4}{l}{\textit{Standalone LLM}} \\
-\quad Qwen3-8B & 0.477 & 0.580 & 0.938 \\
-\quad Qwen3-8B (think) & 0.525 & 0.607 & 0.936 \\
-\quad Qwen2.5-7B & 0.500 & 0.594 & 0.934 \\
-\quad Vicuna-7B & 0.407 & 0.559 & 0.885 \\
-\quad Mistral-7B & 0.210 & 0.419 & 0.803 \\
-\midrule
-Spearman~$\rho$ vs.\ SBERT & --- & 0.960 & 0.550 \\
-\bottomrule
-\end{tabular}
-\end{table}
+% \begin{table}[h]
+% \centering
+% \small
+% \setlength{\tabcolsep}{4pt}
+% \caption{Per-model human--model alignment under three embedding metrics (all variants combined, 7/8B models). SBERT = \texttt{all-mpnet-base-v2}; SimCSE = \texttt{sup-simcse-roberta-large}; BERTScore = \texttt{roberta-large}. Spearman~$\rho$ in footer compares per-model rankings against SBERT.}
+% \label{tab:robustness_embedding_per_model}
+% \begin{tabular}{lrrr}
+% \toprule
+% \textbf{Model} & \textbf{SBERT} & \textbf{SimCSE} & \textbf{BERTScore} \\
+% \midrule
+% \multicolumn{4}{l}{\textit{VLM}} \\
+% \quad InternVL-8B & 0.598 & 0.650 & 0.947 \\
+% \quad Qwen3-VL-8B & 0.549 & 0.615 & 0.946 \\
+% \quad LLaVA-1.5 & 0.503 & 0.573 & 0.952 \\
+% \quad LLaVA-Mistral & 0.535 & 0.603 & 0.953 \\
+% \quad LLaVA-Vicuna & 0.524 & 0.590 & 0.953 \\
+% \midrule
+% \multicolumn{4}{l}{\textit{Backbone Decoder}} \\
+% \quad InternVL-8B & 0.575 & 0.642 & 0.933 \\
+% \quad Qwen3-VL-8B & 0.568 & 0.637 & 0.947 \\
+% \quad LLaVA-1.5 & 0.574 & 0.632 & 0.956 \\
+% \quad LLaVA-Mistral & 0.576 & 0.634 & 0.954 \\
+% \quad LLaVA-Vicuna & 0.574 & 0.632 & 0.952 \\
+% \midrule
+% \multicolumn{4}{l}{\textit{Standalone LLM}} \\
+% \quad Qwen3-8B & 0.477 & 0.580 & 0.938 \\
+% \quad Qwen3-8B (think) & 0.525 & 0.607 & 0.936 \\
+% \quad Qwen2.5-7B & 0.500 & 0.594 & 0.934 \\
+% \quad Vicuna-7B & 0.407 & 0.559 & 0.885 \\
+% \quad Mistral-7B & 0.210 & 0.419 & 0.803 \\
+% \midrule
+% Spearman~$\rho$ vs.\ SBERT & --- & 0.960 & 0.550 \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
 % END robustness_embedding_per_model
 
 \clearpage
-
-\clearpage
 % \twocolumn[{\section{Model Inventory}\label{app:model_inventory}}]
-\section{Model Inventory}\label{app:model_inventory}
+% \section{Model Inventory}\label{app:model_inventory}
 
-\begin{table*}[h]
+% Table~\ref{tab:model_inventory} lists all models evaluated, grouped by type (VLM, backbone decoder, standalone LLM), with architecture notes and the criterion for the single excluded model (Mistral-7B).
+
+\begin{table*}[!t]
+\section{Model Inventory}
+\label{app:model_inventory}
+
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Model inventory (temperature 0). Each VLM is also evaluated as a
-  \textbf{backbone decoder} (text-only, no image tokens, identical weights).
-  Standalone Qwen3 models are additionally evaluated with thinking traces enabled
-  (same weights; decoding mode differs only).
-  $\dagger$~=~excluded from main analysis (incomplete inference data or exclusively verbose multi-sentence outputs incompatible with short-answer scoring).}
 \label{tab:model_inventory}
 \begin{tabularx}{\textwidth}{@{}lp{0.09\textwidth}llX@{}}
 \toprule
@@ -605,7 +607,7 @@ Qwen3-VL           & 2B   & Qwen3-2B           & Qwen3-ViT           & Native dy
 Qwen3-VL           & 4B   & Qwen3-4B           & Qwen3-ViT           & Same architecture as Qwen3-VL-2B; stronger instruction following at 4B scale \citep{bai2025qwen3vl}. \\
 Qwen3-VL           & 8B   & Qwen3-8B           & Qwen3-ViT           & Primary Qwen3-VL model in our analysis; competitive with much larger models on standard benchmarks \citep{bai2025qwen3vl}. \\
 \midrule
-\multicolumn{5}{c}{\textit{Standalone LLMs (Qwen3 also evaluated with thinking traces enabled; same weights)}} \\
+\multicolumn{5}{c}{\textit{Standalone LLMs}} \\% (Qwen3 also evaluated with thinking traces enabled; same weights)
 \midrule
 Mistral-7B$\dagger$ & 7B  & \multicolumn{2}{l}{---} & Sliding-window attention with grouped-query attention; instruction-tuned on proprietary data. Used as the LLM backbone for LLaVA-1.6-Mistral; evaluated standalone but excluded from main analysis \citep{jiang2023mistral}. \\
 % Phi-3.5-mini removed: 100% verbose outputs, not paired with any VLM backbone, outside the 7-8B matched scale
@@ -614,103 +616,44 @@ Qwen3               & 0.6B, 1.7B, 4B, 8B & \multicolumn{2}{l}{---} & Dense model
 Vicuna              & 7B, 13B & \multicolumn{2}{l}{---} & LLaMA fine-tuned on ShareGPT conversations; widely used as VLM language backbone \citep{zheng2023vicuna}. \\
 \bottomrule
 \end{tabularx}
+\caption{Model inventory. List of VLMs and SA-LLMs used for our analysis with matched LLM decoder and vision encoder. All inference was run using the ms-swift framework \citep{zhao2024swift} built on HuggingFace Transformers \citep{wolf2020transformers}. $\dagger$~=~excluded from main analysis due to verbose outputs incompatible with short-answer scoring.}
 \end{table*}
 
 \clearpage
 \section{Abstention}
 \label{app:abstention}
 
-\subsection{Abstention Classifier Details}
+This section describes the abstention classifier used to exclude non-committal responses from alignment metrics, reports abstention rates by question type and model, and examines model confidence in abstained responses.
+Main alignment analyses exclude hard and soft abstentions; uncertain but contentful answers (e.g., \textit{nothing}, \textit{none}) are retained.
+
+% Figure~\ref{app:abstention_confidence_hist} shows that the a.
+
+\subsection{Abstention Classifier}
 \label{app:abstention_classifier}
 
-% BEGIN inlined from tables/supp/abstention_keyword_table.tex
-\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-
-\caption{Keyword rules used by the abstention classifier. Main alignment analyses exclude only hard and soft abstentions; uncertain but contentful answers are retained.}
-\label{tab:abstention_keywords}
-\begin{tabular}{@{}p{0.22\columnwidth}p{0.70\columnwidth}@{}}
-\toprule
-\textbf{Category} & \textbf{Keywords} \\
-\midrule
-\textbf{Hard} &
-\textit{cannot}, \textit{can't}, \textit{don't see}, \textit{no image},
-\textit{unable}, \textit{not visible}, \textit{no visual},
-\textit{cannot see}, \textit{i'm not able}, \textit{i am not able},
-\textit{blank};
-verbose-refusal phrases: \textit{impossible to}, \textit{does not provide},
-\textit{without more}, \textit{without additional}, \textit{not enough},
-\textit{hard to say}, \textit{hard to determine}, \textit{would need},
-\textit{not possible to}, \textit{unclear} \\
-\midrule
-\textbf{Soft} &
-\textit{unknown}, \textit{unanswerable}, \textit{nowhere}, \textit{n/a},
-\textit{na}, \textit{indeterminate}, \textit{unidentifiable}, \textit{no sign},
-\textit{can't tell}, \textit{cannot tell}, \textit{not clear},
-\textit{not visible} \\
-% \midrule
-% \textbf{Retained in other} &
-% \textit{maybe}, \textit{possibly}, \textit{perhaps}, \textit{uncertain},
-% \textit{unsure}; contentful negatives such as \textit{nothing}, \textit{none},
-% or numeric \textit{0} for count questions \\
-\bottomrule
-\end{tabular}
-\end{table}
-% END inlined from tables/supp/abstention_keyword_table.tex
+% The classifier combines a hard-refusal regex and a soft-abstention keyword list; Table~\ref{tab:abstention_keywords} enumerates both trigger sets.
+\input{tables/supp/abstention_keyword_table.tex}
 
 % The classifier was applied uniformly to both model and human responses.
 % Human participants were instructed to provide an answer in all cases; the resulting human abstention rate is $<\!0.4\%$ (49 of 13,560 responses), confirming near-complete compliance.
-% The majority of flagged human responses are standalone \textit{``unknown''} or \textit{``I don't know''} answers concentrated in pronominalized variants (A), where the subject referent has been removed and participants lacked sufficient context to commit to a specific answer.
-% A small number of false positives occur where \textit{unknown} appears as an adjective within a substantive answer (e.g., \textit{``a sauce of unknown origin''}); these are retained in practice because the overall human abstention rate is negligible.
+% The majority of flagged human responses are standalone \textit{``unknown''} or \textit{``I don't know''} answers concentrated in Pronominalizedominalized variants (A), where the subject referent has been removed and participants lacked sufficient context to commit to a specific answer.
+% A small number of false positives occur where \textit{unknown} appears as an adjective within a substantive answer (e.g., \textit{``a sauce of unknown Originalin''}); these are retained in practice because the overall human abstention rate is negligible.
 
 \subsection{Abstention by Question Type}
 \label{app:abstention_by_qtype}
 
-\begin{center}
-\small
-\setlength{\tabcolsep}{3.5pt}
-\renewcommand{\arraystretch}{0.93}
-\captionof{table}{Abstention rates (\%) by answer type in the blind+instruction condition, pooled across all three control variants. Parenthetical $\Delta$ values are instruction minus blind; negative values indicate reduced abstention under instruction.}
-\label{tab:abstention_by_qtype}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Model}
-  & \makecell[r]{\textbf{Yes/No} \\ \textbf{($N{=}78$)}}
-  & \makecell[r]{\textbf{Count} \\ \textbf{($N{=}78$)}}
-  & \makecell[r]{\textbf{Free Text} \\ \textbf{($N{=}183$)}} \\
-\midrule
-\multicolumn{4}{l}{\textit{VLM}} \\
-\quad InternVL3.5     & 0.0 & 0.0 & 3.3 {(\textcolor[HTML]{CC7A00}{$+$3.3})} \\
-\quad LLaVA-1.5      & 0.0 & 0.0 & 6.6 {(\textcolor[HTML]{CC7A00}{$+$1.1})} \\
-\quad LLaVA-Mistral  & 0.0 & 0.0 & 3.3 {(\textcolor[HTML]{0072B2}{$-$1.6})} \\
-\quad LLaVA-Vicuna   & 0.0 & 0.0 & 1.6 {(\textcolor[HTML]{0072B2}{$-$3.4})} \\
-\quad Qwen3-VL       & 0.0 & 1.3 & 6.6 {(\textcolor[HTML]{0072B2}{$-$2.7})} \\
-\midrule
-\multicolumn{4}{l}{\textit{Backbone Decoder}} \\
-\quad InternVL3.5    & 0.0 & \underline{20.5} {(\textcolor[HTML]{0072B2}{$-$9.0})} &  4.4 {(\textcolor[HTML]{0072B2}{$-$3.8})} \\
-\quad LLaVA-1.5      & 0.0 & 0.0 &  1.1 {(\textcolor[HTML]{CC7A00}{$+$1.1})} \\
-\quad LLaVA-Mistral  & 0.0 & 0.0 &  3.8 {(\textcolor[HTML]{CC7A00}{$+$3.3})} \\
-\quad LLaVA-Vicuna   & 0.0 & 0.0 &  1.1 {(\textcolor[HTML]{CC7A00}{$+$0.6})} \\
-\quad Qwen3-VL       & 0.0 & 2.6 {(\textcolor[HTML]{0072B2}{$-$2.5})} &  4.9 {(\textcolor[HTML]{0072B2}{$-$2.8})} \\
-\midrule
-\multicolumn{4}{l}{\textit{Standalone LLM}} \\
-\quad Mistral        & \textbf{39.7} {(\textcolor[HTML]{0072B2}{$-$7.7})} & \textbf{34.6} {(\textcolor[HTML]{0072B2}{$-$9.0})} & \textbf{14.8} {(\textcolor[HTML]{0072B2}{$-$17.4})} \\
-\quad Qwen2.5-Instruct & 0.0 {(\textcolor[HTML]{0072B2}{$-$2.6})} & 14.1 {(\textcolor[HTML]{CC7A00}{$+$2.6})} &  6.0 {(\textcolor[HTML]{0072B2}{$-$3.3})} \\
-\quad Qwen3          & 0.0 {(\textcolor[HTML]{0072B2}{$-$5.1})} & 6.4 {(\textcolor[HTML]{0072B2}{$-$16.7})} & 6.0 {(\textcolor[HTML]{0072B2}{$-$5.0})} \\
-\quad Qwen3 (think)  & \underline{2.6} {(\textcolor[HTML]{0072B2}{$-$2.5})} & 2.6 {(\textcolor[HTML]{0072B2}{$-$20.5})} & 4.9 {(\textcolor[HTML]{0072B2}{$-$6.1})} \\
-\quad Vicuna         & 0.0 & 0.0 {(\textcolor[HTML]{0072B2}{$-$3.8})} &  1.7 {(\textcolor[HTML]{CC7A00}{$+$1.7})} \\
-\bottomrule
-\end{tabular}
-\end{center}
+% Table~\ref{tab:abstention_by_qtype} shows abstention rates broken down by answer type and model group under the blind+instruction condition, with $\Delta$ values indicating instruction-driven changes.
+\input{tables/supp/abstention_by_qtype}
 
+% Figure~\ref{fig:abstention_confidence_hist} compares token-level confidence between committed and abstained responses across all model groups, confirming that abstentions reflect genuine uncertainty rather than high-confidence refusals.
+
+\begin{figure}[h]
 \subsection{Confidence in Model Abstention}
 \label{app:abstention_confidence_hist}
-\begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{confidence/abstention_vs_confidence_hist_inst_blind}
-\caption{Token confidence (mean token probability) pooled across all model groups and scales (VLMs, backbone decoders, standalone LLMs, and thinking models; 0.6B--13B), instruction-blind condition ($N{=}339$ question--variant pairs). \textbf{Top:} committed vs.\ abstained answers. Abstained answers are markedly lower in confidence, confirming abstentions reflect genuine uncertainty rather than high-confidence refusals. \textbf{Bottom:} soft vs.\ hard abstention split. Soft abstentions show higher confidence than hard abstentions, consistent with partial commitment rather than complete uncertainty.}
+\caption{Token confidence (mean token probability) pooled across all model groups and scales (0.6B--13B) under instruction ($N{=}339$). \textbf{Top:} committed vs.\ abstained answers. \textbf{Bottom:} soft vs.\ hard abstention split. Abstained answers are higher in confidence (median 0.829) than committed answers (median=0.729). 
+Hard abstentions (median=0.829) are more confident than soft abstentions (median=0.675).}
 \label{fig:abstention_confidence_hist}
 \end{figure}
 
@@ -718,70 +661,9 @@ verbose-refusal phrases: \textit{impossible to}, \textit{does not provide},
 \section{Categorical Answer Distributions Alignment}
 \label{app:categorical_distributions}
 
-\subsection{Yes/No Questions}
-\label{app:yesno}
-\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{0.95}
-\caption{Yes/no response distributions for all models on the 26 yes/no questions (all 3 variants pooled, $N{\leq}78$). \textbf{Blind} and \textbf{Inst} columns show yes\% without and with instruction. \textbf{Oth\%} = substantive non-yes/no outputs (blind); \textbf{Abst\%} = all abstentions---hard and soft---detected by the shared classifier (blind). \colorbox{gray!15}{Gray} = yes-majority (${\geq}50\%$). Human and GT rows shown for reference.}
-\label{tab:yesno_distribution_all}
-\begin{tabular}{ll cccc}
-\toprule
-\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Sz}} & \multicolumn{2}{c}{\textbf{yes\%}} & \multirow{2}{*}{\textbf{Oth\%}} & \multirow{2}{*}{\textbf{Abst\%}} \\
-\cmidrule(lr){3-4}
- & & \textbf{Blind} & \textbf{Inst} & & \\
-\midrule
-\textbf{Human} & -- & \cellcolor{gray!15}65.4 & --- & 0.0 & 0.0 \\
-\textbf{GT} & -- & 34.6 & --- & --- & --- \\
-\midrule
-\multicolumn{6}{c}{\textit{Vision-Language Models}}\\ 
-\midrule
-InternVL3.5 & 1B & \cellcolor{gray!15}73.1 & 44.9 & 0 & 0 \\
- & 2B & 30.8 & 24.4 & 0 & 0 \\
- & 8B & \cellcolor{gray!15}65.4 & \cellcolor{gray!15}78.2 & 1.3 & 0 \\
-LLaVA-1.5 & 7B & 20.5 & 12.8 & 0 & 0 \\
-LLaVA-Mistral & 7B & 19.2 & 24.4 & 0 & 0 \\
-LLaVA-Vicuna & 7B & 35.9 & 20.5 & 0 & 0 \\
- & 13B & 26.9 & 38.5 & 0 & 0 \\
-Qwen3-VL & 2B & 11.5 & 19.2 & 0 & 0 \\
- & 4B & 29.5 & 41.0 & 0 & 0 \\
- & 8B & 41.0 & \cellcolor{gray!15}53.8 & 0 & 0 \\
-\midrule
-\multicolumn{6}{c}{\textit{VLM Backbone Decoders}}\\ 
-\midrule
-InternVL3.5 & 1B & \cellcolor{gray!15}100.0 & \cellcolor{gray!15}98.7 & 0 & 0 \\
- & 2B & \cellcolor{gray!15}69.2 & \cellcolor{gray!15}78.2 & 0 & 0 \\
- & 8B & \cellcolor{gray!15}83.3 & \cellcolor{gray!15}82.1 & 0 & 0 \\
-LLaVA-1.5 & 7B & \cellcolor{gray!15}70.5 & \cellcolor{gray!15}64.1 & 0 & 0 \\
-LLaVA-Mistral & 7B & \cellcolor{gray!15}50.0 & \cellcolor{gray!15}52.6 & 0 & 0 \\
-LLaVA-Vicuna & 7B & \cellcolor{gray!15}89.7 & \cellcolor{gray!15}85.9 & 0 & 0 \\
- & 13B & \cellcolor{gray!15}60.3 & \cellcolor{gray!15}75.6 & 0 & 0 \\
-Qwen3-VL & 2B & \cellcolor{gray!15}70.5 & \cellcolor{gray!15}84.6 & 0 & 0 \\
- & 4B & \cellcolor{gray!15}74.4 & \cellcolor{gray!15}83.3 & 0 & 0 \\
- & 8B & \cellcolor{gray!15}71.8 & \cellcolor{gray!15}69.2 & 1.3 & 0 \\
-\midrule
-\multicolumn{6}{c}{\textit{Standalone LLMs}}\\ 
-\midrule
-Mistral & 7B & 11.5 & 10.3 & \cellcolor{gray!5}20.5 & \cellcolor{gray!20}67.9 \\
-Phi-3.5-mini & 3.8B & 39.7 & 44.9 & \cellcolor{gray!5}26.9 & 3.8 \\
-Qwen2.5-Instruct & 7B & 30.8 & 30.8 & \cellcolor{gray!5}19.2 & 2.6 \\
-Qwen3 & 0.6B & 5.1 & 3.8 & \cellcolor{gray!20}94.9 & 0 \\
- & 1.7B & 44.9 & \cellcolor{gray!15}66.7 & \cellcolor{gray!5}25.6 & \cellcolor{gray!10}29.5 \\
- & 4B & \cellcolor{gray!15}83.3 & \cellcolor{gray!15}85.9 & 6.4 & 0 \\
- & 8B & 42.3 & 44.9 & \cellcolor{gray!5}28.2 & 5.1 \\
- & 32B & \cellcolor{gray!15}80.8 & \cellcolor{gray!15}80.8 & \cellcolor{gray!5}12.8 & 0 \\
-Qwen3 (think) & 0.6B & 43.6 & 16.7 & \cellcolor{gray!10}50.0 & 0 \\
- & 1.7B & 44.9 & 39.7 & \cellcolor{gray!5}25.6 & \cellcolor{gray!10}29.5 \\
- & 4B & 14.1 & \cellcolor{gray!15}73.1 & 11.5 & \cellcolor{gray!20}71.8 \\
- & 8B & 42.3 & \cellcolor{gray!15}56.4 & \cellcolor{gray!5}28.2 & 5.1 \\
- & 32B & \cellcolor{gray!15}91.0 & 44.9 & 7.7 & 0 \\
-Vicuna & 7B & \cellcolor{gray!15}69.2 & \cellcolor{gray!15}79.5 & 0 & 0 \\
- & 13B & \cellcolor{gray!15}70.5 & \cellcolor{gray!15}74.4 & 9.0 & 0 \\
-\bottomrule
-\end{tabular}
-\end{table}
+This section reports the comparison between model and human answer to structured answer type questions including yes/no (\S\,\ref{app:existence_example}-\S\,\ref{app:yesno}) and numerical questions (\S\ref{app:count_dist}).
+
+% Table~\ref{tab:yesno_distribution_all} reports the yes-response rate for all models on the 26 yes/no questions, under both blind and instruction conditions, alongside other (non-yes/no) output and abstention rates.
 
 % \input{tables/supp/hm_all_scales_full} % not referenced from main text
 
@@ -790,29 +672,61 @@ Vicuna & 7B & \cellcolor{gray!15}69.2 & \cellcolor{gray!15}79.5 & 0 & 0 \\
 
 % \input{tables/supp/sbert_inst_effect} % not referenced from main text
 
-\subsection{Count Questions}
-\label{app:count_dist}
+\subsection{Existence Questions: A Qualitative Example}
+\label{app:existence_example}
 
-\begin{figure*}[h]
-\centering
-\includegraphics[width=\textwidth]{answer_distribution/transition/vABC_all_models}
-\caption{Count-answer distributions for all 7/8B models across all three variants (pooled). Row 1: full VLMs; Row 2: backbone decoders (matched LLM backbone of each VLM family); Row 3: standalone LLMs and thinking models (Qwen3-8B is the matched SA-LLM for the Qwen3-VL family; Vicuna-7B for the LLaVA-Vicuna family; Mistral-7B for LLaVA-Mistral). Hollow = blind, filled = +instruction. The zero-default collapse in full VLMs is consistent across all families (LLaVA-Vicuna: 98\% zero, unchanged under instruction). Among standalone LLMs, Qwen3-8B is most responsive to instruction (zero-default drops from ${\sim}$49\% to ${\sim}$26\%); Mistral-7B remains near zero due to its high abstention rate. Backbone decoders show partial recovery, less than standalone LLMs but more than their paired VLMs.}
-\label{fig:count_transition_all}
-\end{figure*}
+VLMs collectively show a unique reversal on \textit{Existence} questions, particularly frequent in Qwen3-VL (VLM) where pronominalization increases positive bias and \emph{improves} alignment (VLM mean: $\Delta{=}{-}0.024$, $p{=}.016$, Table~\ref{tab:degradation_wilcoxon}).
+% We reason that VLMs likely default to \textit{no}---an absence prior that is driven by the image encoder processing blank image.
+LMs and SA-LLMs show no such reversal ($p{>}.46$).
 
+For \textit{``Is there a couch?''} (humans: 78\% \textit{yes}), four of five VLMs answer \textit{no} while all five backbone decoders answer \textit{yes}. However, under pronominalization (\textit{``Is there one?''}), Qwen3-VL flips to \textit{yes}, reverting to the language-model default (see Table~\ref{tab:existence_couch}).
 
-\clearpage
-\section{Human--Model Semantic Alignment}
-\label{app:semantic_alignment}
-% \section{What Modulates Alignment}
+Another example is \textit{``Is there a bag of chips?''}, where humans answer \textit{yes} 70\% of the time, and the same four VLMs answer \textit{no}; again Qwen3-VL flip to answer \textit{yes} under pronominalization.
+The three LLaVA VLMs remain locked into \textit{no} across all existence questions regardless of variant. InternVL shows positive bias most of the time regardless with and without image encoder.
 
-% \subsection{Anchoring Degradation} %  by Group and Architecture Class
-% \label{app:delta_bar}
+\newcommand{\cyes}{\cellcolor{green!15}\checkmark}
+\newcommand{\cno}{\cellcolor{red!15}$\times$}
+\begin{table}[h]
+\centering\small\setlength{\tabcolsep}{5pt}
+\begin{tabular}{llccc}
+\toprule
+\textbf{Group} & \textbf{Model} & \textbf{Original} & \textbf{Weaker} & \textbf{Pronom.} \\
+\midrule
+% \multicolumn{2}{l}{\textit{``Is there a couch?''}} & & \textit{``\ldots furniture?''} & \textit{``\ldots one?''} \\
+\midrule
+\multirow{5}{*}{VLM} & InternVL3.5 & \cyes & \cyes & \cyes \\
+ & LLaVA-1.5 & \cno & \cno & \cno \\
+ & LLaVA-Mistral & \cno & \cno & \cno \\
+ & LLaVA-Vicuna & \cno & \cno & \cno \\
+ & Qwen3-VL-8B & \cno & \cno & \cyes \\
+\midrule
+\multirow{5}{*}{LM} & InternVL & \cyes & \cyes & \cyes \\
+ & LLaVA-1.5 & \cyes & \cyes & \cyes \\
+ & LLaVA-Mistral & \cno & \cyes & \cyes \\
+ & LLaVA-Vicuna & \cyes & \cyes & \cyes \\
+ & Qwen3-VL & \cyes & \cyes & \cyes \\
+\midrule
+\multirow{2}{*}{SA-LLM} & Qwen3-8B & \cyes & \cyes & \cyes \\
+ & Vicuna-7B & \cyes & \cyes & \cyes \\
+\midrule
+\multicolumn{2}{l}{Human ($N{=}40$)} & \cyes\,78\% & \cyes\,88\% & \cyes\,58\% \\
+\bottomrule
+\end{tabular}
+\caption{Model and human responses to \textit{``Is there a couch?''} across variants. \checkmark\,=\,\textit{yes}, $\times$\,=\,\textit{no}. Four of five VLMs answer \textit{no}; backbone decoders and SA-LLMs largely answer \textit{yes}, matching the human majority.}
+\label{tab:existence_couch}
+\end{table}
+\input{tables/supp/yesno}
+% \paragraph{Can instruction restore scene imagination on count questions?}
+% Instruction partially recovers scene imagination by reducing abstentions, but the zero-default persists for full VLMs and backbone decoders---only the Qwen3 SA-LLMs show genuine distributional recovery.
+% VLMs and backbone decoders are nearly unchanged in alignment ($|\Delta\djs|{<}0.06$); InternVL~(LM) partially improves as instruction roughly halves abstentions (from $26.9\%$ to $7.7\%$), but released responses convert to zero answers ($\Delta\djs{=}{-}0.034$).
+% Among SA-LLMs, the Qwen3 models show the clearest recovery, with both abstention and zero rates falling together (Qwen3: $49\%{\to}26\%$, $\Delta\djs{=}{-}0.035$; Qwen3~(think): $49\%{\to}21\%$, $\Delta\djs{=}{-}0.146$).
+% This suggests that the zero-default is not merely a refusal strategy but a committed prior: releasing abstentions reveals zero answers rather than scene-imagined counts.
+
 %
 % \begin{figure*}[h]
 % \centering
 % \includegraphics[width=\textwidth]{hh_hm_grouped_scatter_7b_all_variants/7b_sbert_delta_bar_abstfiltered}
-% \caption{Orig.$\to$Pron.\ degradation by operation type (top row) and entity type (bottom row) for SBERT (left column) and exact-match accuracy (right column).
+% \caption{Original.$\to$Pronominalized.\ degradation by operation type (top row) and entity type (bottom row) for SBERT (left column) and exact-match accuracy (right column).
 % \textbf{Bars} = per-architecture-class mean $\Delta$; \textbf{markers} = individual model $\Delta$; \textbf{error bars} = 95\% CI across models within class.
 % \textbf{Black diamonds} = human (HH) $\Delta$; groups ordered by human SBERT $\Delta$ ascending.}
 % \label{fig:delta_bar}
@@ -849,443 +763,132 @@ Vicuna & 7B & \cellcolor{gray!15}69.2 & \cellcolor{gray!15}79.5 & 0 & 0 \\
 % %\begin{figure*}[h]
 % %\centering
 % %\includegraphics[width=\textwidth]{degradation_by_ent_op_7b_inst_blind/sbert/r_combined}
-% %\caption{Per-question $\sHM$--$\sHH$ Spearman rank correlation $\pr$ across control variants (Orig.$\to$Weak.$\to$Pron.), grouped by operation type (top row) and entity type (bottom row). Lines show per-model trajectories (thin) and class means (thick). \textit{Identity} is the sharpest architecture split: VLMs lose almost all per-question $\sHM$--$\sHH$ agreement under subject removal ($\pr{=}0.66{\to}0.08$), while backbone decoders remain stable or improve ($\pr{=}0.85{\to}0.89$). The mechanism: under full pronominalization, VLMs collapse to a near-uniform answer across all Identity questions ($\sHM$ std drops from $0.146$ to $0.043$), eliminating the per-question variance needed to correlate with $\sHH$. Backbone decoders maintain answer diversity across questions (std $0.146{\to}0.155$), continuing to track which questions humans find harder.}
+% %\caption{Per-question $\sHM$--$\sHH$ Spearman rank correlation $\pr$ across control variants (Original.$\to$Weak.$\to$Pronominalized.), grouped by operation type (top row) and entity type (bottom row). Lines show per-model trajectories (thin) and class means (thick). \textit{Identity} is the sharpest architecture split: VLMs lose almost all per-question $\sHM$--$\sHH$ agreement under subject removal ($\pr{=}0.66{\to}0.08$), while backbone decoders remain stable or improve ($\pr{=}0.85{\to}0.89$). The mechanism: under full Pronominalizedominalization, VLMs collapse to a near-uniform answer across all Identity questions ($\sHM$ std drops from $0.146$ to $0.043$), eliminating the per-question variance needed to correlate with $\sHH$. Backbone decoders maintain answer diversity across questions (std $0.146{\to}0.155$), continuing to track which questions humans find harder.}
 % %\label{fig:r_combined_ident}
 % %\end{figure*}
 %
 
+% \subsection{Pairwise Subject Agreement Matrix}
+% \label{app:subject_corr_matrix}
 
+% Figure~\ref{fig:subject_corr_matrix} shows the full $77{\times}77$ pairwise SBERT matrix across all 40 humans and 37 models, making cross-group similarity patterns visible at a glance.
 
+% \begin{figure*}[h]
+% \centering
+% \includegraphics[width=\textwidth]{subject_correlation_matrix}
+% \caption{Pairwise mean SBERT matrix for all 40 humans + 37 models (abstention-filtered; $N{=}113$). Each cell is the mean SBERT score across all 113 questions for that subject pair. The Human$\times$Human block shows moderate within-group agreement; VLM$\times$VLM and VLM$\times$Backbone blocks are high (models within a family give similar answers); the two near-white columns in SA-LLM correspond to Mistral-7B, whose verbose outputs yield near-zero pairwise SBERT with all other subjects.}
+% \label{fig:subject_corr_matrix}
+% \end{figure*}
 
+% Table~\ref{tab:group_band_coverage} shows mean $\sHM$ per operation and entity group relative to the human LOOCV band, highlighting which question categories each model class falls within or outside the human reference range.
+% \input{tables/supp/group_band_coverage}
+% \subsection{Pronominalizedominalization Degradation by Group}
+% \label{app:degradation}
 
-
-
-
-\subsection{Pairwise Subject Agreement Matrix}
-\label{app:subject_corr_matrix}
 
 \begin{figure*}[h]
+\subsection{Count Questions}
+\label{app:count_dist}
+% The zero-default collapse in full VLMs is consistent across all families (LLaVA-Vicuna: 98\% zero, unchanged under instruction). Among standalone LLMs, Qwen3-8B is most responsive to instruction (zero-default drops from ${\sim}$49\% to ${\sim}$26\%); Mistral-7B remains near zero due to its high abstention rate. Backbone decoders show partial recovery, less than standalone LLMs but more than their paired VLMs.
+% Ground-truth answers for the 26 numerical questions span a range of values (0: 29\%, 2: 24\%, 1: 10\%), yet full VLMs answer zero at 82--96\%---over three times the corpus rate---while humans answer zero only 5\% of the time. This over-bias toward zero far exceeds what corpus-frequency accounts would predict \citep{mccoy2024embers} and points to an absence-driven prior triggered by the lack of visual input (Figure~\ref{fig:count_transition_all}).
 \centering
-\includegraphics[width=\textwidth]{subject_correlation_matrix}
-\caption{Pairwise mean SBERT matrix for all 40 humans + 37 models (original variant, all question types, abstention-filtered; $N{=}113$). Each cell is the mean SBERT score across all 113 questions for that subject pair. The Human$\times$Human block shows moderate within-group agreement; VLM$\times$VLM and VLM$\times$Backbone blocks are high (models within a family give similar answers); the two near-white columns in SA-LLM correspond to Mistral-7B, whose verbose outputs yield near-zero pairwise SBERT with all other subjects.}
-\label{fig:subject_corr_matrix}
+\includegraphics[width=\textwidth]{answer_distribution/transition/vABC_all_models}
+\caption{Count-answer distributions for all 7/8B models (N$\leq$78). The rows show 1) full VLMs, 2) LMs, 3) SA-LLMs and Qwen3 (\textit{Think}). The dotted lines and hollow markers show condition without instruction, while the filled ones show the responses with instruction. }
+\label{fig:count_transition_all}
 \end{figure*}
 
-\subsection{Group-Level SBERT Band Coverage}
-\label{app:group_band_coverage}
+\input{tables/supp/group_band_coverage}
 
-% BEGIN inlined from tables/supp/group_band_coverage.tex
-\begin{table*}[t]
-\centering
-\small
-\setlength{\tabcolsep}{3.5pt}
-\renewcommand{\arraystretch}{1.02}
-\caption[Per-group mean $\sHM$ vs.\ human LOOCV SBERT band]{Per-group mean $\sHM$ against the human LOOCV SBERT p5--p95 band (free-text questions, abstention-filtered). \colorbox[HTML]{D9EAF3}{Blue}~= within human band; \colorbox[HTML]{F7EBD9}{Orange}~= below band; \colorbox[HTML]{FFCCCC}{Red}~= above band (closer to human mean than CI). Human row shows mean $\sHH$ per group as reference. Group mean rows aggregate all models within the class.}
-\label{tab:group_band_coverage}
-\begin{tabular}{lcccccccccccccccc}
-\toprule
-\multirow{2}{*}{\textbf{Model}} & \multicolumn{7}{c}{\textbf{Operation groups}} & \multicolumn{9}{c}{\textbf{Entity groups}} \\
-\cmidrule(lr){2-8}\cmidrule(lr){9-17}
-& \rotatebox{60}{\textbf{Act.}} & \rotatebox{60}{\textbf{Attr.}} & \rotatebox{60}{\textbf{Caus.}} & \rotatebox{60}{\textbf{Comp.}} & \rotatebox{60}{\textbf{Ident.}} & \rotatebox{60}{\textbf{Know.}} & \rotatebox{60}{\textbf{Spat.}} & \rotatebox{60}{\textbf{Animal}} & \rotatebox{60}{\textbf{Food}} & \rotatebox{60}{\textbf{Object}} & \rotatebox{60}{\textbf{Ent-Oth}} & \rotatebox{60}{\textbf{Person}} & \rotatebox{60}{\textbf{Place}} & \rotatebox{60}{\textbf{Prod.}} & \rotatebox{60}{\textbf{Text}} & \rotatebox{60}{\textbf{Veh.}} \\
-\midrule
-\textbf{Human (sHH)} & .350 & .446 & .352 & .347 & .447 & .572 & .393 & .445 & .476 & .411 & .356 & .406 & .449 & .455 & .430 & .431 \\
-\midrule
-\rowcolor{gray!12}\textit{VLM Mean} & \cellcolor[HTML]{D9EAF3}.314 & \cellcolor[HTML]{D9EAF3}.429 & \cellcolor[HTML]{D9EAF3}.350 & \cellcolor[HTML]{D9EAF3}.323 & \cellcolor[HTML]{F7EBD9}.365 & \cellcolor[HTML]{D9EAF3}.533 & \cellcolor[HTML]{D9EAF3}.395 & \cellcolor[HTML]{D9EAF3}.415 & \cellcolor[HTML]{D9EAF3}.436 & \cellcolor[HTML]{D9EAF3}.404 & \cellcolor[HTML]{D9EAF3}.334 & \cellcolor[HTML]{D9EAF3}.373 & \cellcolor[HTML]{D9EAF3}.468 & \cellcolor[HTML]{D9EAF3}.419 & \cellcolor[HTML]{D9EAF3}.450 & \cellcolor[HTML]{D9EAF3}.417 \\
-\quad InternVL-8B & \cellcolor[HTML]{D9EAF3}.344 & \cellcolor[HTML]{D9EAF3}.467 & \cellcolor[HTML]{D9EAF3}.421 & \cellcolor[HTML]{D9EAF3}.354 & \cellcolor[HTML]{D9EAF3}.455 & \cellcolor[HTML]{D9EAF3}.496 & \cellcolor[HTML]{D9EAF3}.430 & \cellcolor[HTML]{D9EAF3}.473 & \cellcolor[HTML]{D9EAF3}.513 & \cellcolor[HTML]{D9EAF3}.463 & \cellcolor[HTML]{D9EAF3}.361 & \cellcolor[HTML]{D9EAF3}.408 & \cellcolor[HTML]{D9EAF3}.497 & \cellcolor[HTML]{D9EAF3}.463 & \cellcolor[HTML]{D9EAF3}.462 & \cellcolor[HTML]{D9EAF3}.391 \\
-\quad Qwen3-VL-8B & \cellcolor[HTML]{D9EAF3}.295 & \cellcolor[HTML]{D9EAF3}.455 & \cellcolor[HTML]{D9EAF3}.417 & \cellcolor[HTML]{D9EAF3}.311 & \cellcolor[HTML]{F7EBD9}.404 & \cellcolor[HTML]{D9EAF3}.539 & \cellcolor[HTML]{D9EAF3}.421 & \cellcolor[HTML]{D9EAF3}.484 & \cellcolor[HTML]{D9EAF3}.458 & \cellcolor[HTML]{D9EAF3}.415 & \cellcolor[HTML]{D9EAF3}.328 & \cellcolor[HTML]{D9EAF3}.393 & \cellcolor[HTML]{D9EAF3}.468 & \cellcolor[HTML]{D9EAF3}.454 & \cellcolor[HTML]{D9EAF3}.436 & \cellcolor[HTML]{D9EAF3}.418 \\
-\quad LLaVA-1.5-7B & \cellcolor[HTML]{F7EBD9}.268 & \cellcolor[HTML]{F7EBD9}.374 & \cellcolor[HTML]{F7EBD9}.200 & \cellcolor[HTML]{D9EAF3}.335 & \cellcolor[HTML]{F7EBD9}.285 & \cellcolor[HTML]{D9EAF3}.551 & \cellcolor[HTML]{D9EAF3}.366 & \cellcolor[HTML]{F7EBD9}.350 & \cellcolor[HTML]{F7EBD9}.346 & \cellcolor[HTML]{D9EAF3}.373 & \cellcolor[HTML]{D9EAF3}.323 & \cellcolor[HTML]{F7EBD9}.328 & \cellcolor[HTML]{D9EAF3}.437 & \cellcolor[HTML]{F7EBD9}.297 & \cellcolor[HTML]{D9EAF3}.442 & \cellcolor[HTML]{D9EAF3}.426 \\
-\quad LLaVA-Mistral & \cellcolor[HTML]{D9EAF3}.370 & \cellcolor[HTML]{D9EAF3}.440 & \cellcolor[HTML]{D9EAF3}.293 & \cellcolor[HTML]{D9EAF3}.273 & \cellcolor[HTML]{F7EBD9}.349 & \cellcolor[HTML]{D9EAF3}.508 & \cellcolor[HTML]{D9EAF3}.363 & \cellcolor[HTML]{D9EAF3}.416 & \cellcolor[HTML]{D9EAF3}.454 & \cellcolor[HTML]{D9EAF3}.392 & \cellcolor[HTML]{D9EAF3}.345 & \cellcolor[HTML]{D9EAF3}.351 & \cellcolor[HTML]{D9EAF3}.454 & \cellcolor[HTML]{D9EAF3}.415 & \cellcolor[HTML]{D9EAF3}.457 & \cellcolor[HTML]{D9EAF3}.430 \\
-\quad LLaVA-Vicuna & \cellcolor[HTML]{D9EAF3}.294 & \cellcolor[HTML]{D9EAF3}.413 & \cellcolor[HTML]{D9EAF3}.417 & \cellcolor[HTML]{D9EAF3}.342 & \cellcolor[HTML]{F7EBD9}.333 & \cellcolor[HTML]{D9EAF3}.567 & \cellcolor[HTML]{D9EAF3}.388 & \cellcolor[HTML]{F7EBD9}.344 & \cellcolor[HTML]{F7EBD9}.403 & \cellcolor[HTML]{D9EAF3}.383 & \cellcolor[HTML]{D9EAF3}.316 & \cellcolor[HTML]{D9EAF3}.383 & \cellcolor[HTML]{D9EAF3}.491 & \cellcolor[HTML]{D9EAF3}.459 & \cellcolor[HTML]{D9EAF3}.452 & \cellcolor[HTML]{D9EAF3}.425 \\
-\midrule
-\rowcolor{gray!12}\textit{Backbone Mean} & \cellcolor[HTML]{D9EAF3}.422 & \cellcolor[HTML]{D9EAF3}.464 & \cellcolor[HTML]{D9EAF3}.428 & \cellcolor[HTML]{D9EAF3}.328 & \cellcolor[HTML]{D9EAF3}.448 & \cellcolor[HTML]{D9EAF3}.537 & \cellcolor[HTML]{D9EAF3}.386 & \cellcolor[HTML]{D9EAF3}.486 & \cellcolor[HTML]{D9EAF3}.498 & \cellcolor[HTML]{D9EAF3}.423 & \cellcolor[HTML]{D9EAF3}.363 & \cellcolor[HTML]{D9EAF3}.404 & \cellcolor[HTML]{D9EAF3}.482 & \cellcolor[HTML]{D9EAF3}.458 & \cellcolor[HTML]{D9EAF3}.480 & \cellcolor[HTML]{D9EAF3}.391 \\
-\quad InternVL-8B (LM) & \cellcolor[HTML]{D9EAF3}.420 & \cellcolor[HTML]{D9EAF3}.467 & \cellcolor[HTML]{D9EAF3}.474 & \cellcolor[HTML]{D9EAF3}.361 & \cellcolor[HTML]{D9EAF3}.446 & \cellcolor[HTML]{F7EBD9}.437 & \cellcolor[HTML]{D9EAF3}.365 & \cellcolor[HTML]{FFCCCC}.512 & \cellcolor[HTML]{D9EAF3}.512 & \cellcolor[HTML]{D9EAF3}.407 & \cellcolor[HTML]{D9EAF3}.372 & \cellcolor[HTML]{D9EAF3}.407 & \cellcolor[HTML]{D9EAF3}.452 & \cellcolor[HTML]{D9EAF3}.416 & \cellcolor[HTML]{D9EAF3}.474 & \cellcolor[HTML]{F7EBD9}.277 \\
-\quad Qwen3-VL-8B (LM) & \cellcolor[HTML]{D9EAF3}.406 & \cellcolor[HTML]{D9EAF3}.471 & \cellcolor[HTML]{D9EAF3}.417 & \cellcolor[HTML]{D9EAF3}.285 & \cellcolor[HTML]{D9EAF3}.462 & \cellcolor[HTML]{D9EAF3}.592 & \cellcolor[HTML]{D9EAF3}.396 & \cellcolor[HTML]{D9EAF3}.492 & \cellcolor[HTML]{D9EAF3}.489 & \cellcolor[HTML]{D9EAF3}.440 & \cellcolor[HTML]{D9EAF3}.352 & \cellcolor[HTML]{D9EAF3}.406 & \cellcolor[HTML]{D9EAF3}.474 & \cellcolor[HTML]{D9EAF3}.541 & \cellcolor[HTML]{D9EAF3}.454 & \cellcolor[HTML]{D9EAF3}.436 \\
-\quad LLaVA-1.5 (LM) & \cellcolor[HTML]{D9EAF3}.425 & \cellcolor[HTML]{D9EAF3}.455 & \cellcolor[HTML]{D9EAF3}.417 & \cellcolor[HTML]{D9EAF3}.347 & \cellcolor[HTML]{D9EAF3}.440 & \cellcolor[HTML]{D9EAF3}.600 & \cellcolor[HTML]{D9EAF3}.361 & \cellcolor[HTML]{D9EAF3}.467 & \cellcolor[HTML]{D9EAF3}.492 & \cellcolor[HTML]{D9EAF3}.403 & \cellcolor[HTML]{D9EAF3}.349 & \cellcolor[HTML]{D9EAF3}.389 & \cellcolor[HTML]{D9EAF3}.478 & \cellcolor[HTML]{D9EAF3}.473 & \cellcolor[HTML]{D9EAF3}.504 & \cellcolor[HTML]{D9EAF3}.455 \\
-\quad LLaVA-Mistral (LM) & \cellcolor[HTML]{FFCCCC}.437 & \cellcolor[HTML]{D9EAF3}.469 & \cellcolor[HTML]{D9EAF3}.417 & \cellcolor[HTML]{D9EAF3}.289 & \cellcolor[HTML]{D9EAF3}.440 & \cellcolor[HTML]{D9EAF3}.525 & \cellcolor[HTML]{D9EAF3}.408 & \cellcolor[HTML]{D9EAF3}.469 & \cellcolor[HTML]{D9EAF3}.507 & \cellcolor[HTML]{D9EAF3}.443 & \cellcolor[HTML]{D9EAF3}.369 & \cellcolor[HTML]{D9EAF3}.410 & \cellcolor[HTML]{D9EAF3}.505 & \cellcolor[HTML]{D9EAF3}.475 & \cellcolor[HTML]{D9EAF3}.479 & \cellcolor[HTML]{D9EAF3}.378 \\
-\quad LLaVA-Vicuna (LM) & \cellcolor[HTML]{D9EAF3}.425 & \cellcolor[HTML]{D9EAF3}.458 & \cellcolor[HTML]{D9EAF3}.417 & \cellcolor[HTML]{D9EAF3}.359 & \cellcolor[HTML]{D9EAF3}.452 & \cellcolor[HTML]{D9EAF3}.529 & \cellcolor[HTML]{D9EAF3}.401 & \cellcolor[HTML]{D9EAF3}.490 & \cellcolor[HTML]{D9EAF3}.489 & \cellcolor[HTML]{D9EAF3}.421 & \cellcolor[HTML]{D9EAF3}.374 & \cellcolor[HTML]{D9EAF3}.410 & \cellcolor[HTML]{D9EAF3}.498 & \cellcolor[HTML]{D9EAF3}.413 & \cellcolor[HTML]{D9EAF3}.489 & \cellcolor[HTML]{D9EAF3}.411 \\
-\midrule
-\rowcolor{gray!12}\textit{SA-LLM Mean} & \cellcolor[HTML]{D9EAF3}.307 & \cellcolor[HTML]{F7EBD9}.400 & \cellcolor[HTML]{D9EAF3}.282 & \cellcolor[HTML]{D9EAF3}.344 & \cellcolor[HTML]{D9EAF3}.423 & \cellcolor[HTML]{F7EBD9}.414 & \cellcolor[HTML]{F7EBD9}.331 & \cellcolor[HTML]{D9EAF3}.422 & \cellcolor[HTML]{D9EAF3}.438 & \cellcolor[HTML]{F7EBD9}.352 & \cellcolor[HTML]{D9EAF3}.313 & \cellcolor[HTML]{D9EAF3}.363 & \cellcolor[HTML]{D9EAF3}.403 & \cellcolor[HTML]{D9EAF3}.418 & \cellcolor[HTML]{D9EAF3}.394 & \cellcolor[HTML]{F7EBD9}.292 \\
-\quad Qwen3-8B & \cellcolor[HTML]{F7EBD9}.281 & \cellcolor[HTML]{D9EAF3}.449 & \cellcolor[HTML]{D9EAF3}.364 & \cellcolor[HTML]{D9EAF3}.328 & \cellcolor[HTML]{D9EAF3}.479 & \cellcolor[HTML]{D9EAF3}.495 & \cellcolor[HTML]{D9EAF3}.390 & \cellcolor[HTML]{D9EAF3}.485 & \cellcolor[HTML]{D9EAF3}.508 & \cellcolor[HTML]{D9EAF3}.402 & \cellcolor[HTML]{D9EAF3}.334 & \cellcolor[HTML]{D9EAF3}.384 & \cellcolor[HTML]{D9EAF3}.452 & \cellcolor[HTML]{D9EAF3}.532 & \cellcolor[HTML]{D9EAF3}.418 & \cellcolor[HTML]{F7EBD9}.346 \\
-\quad Qwen3-8B (think) & \cellcolor[HTML]{D9EAF3}.356 & \cellcolor[HTML]{D9EAF3}.446 & \cellcolor[HTML]{D9EAF3}.417 & \cellcolor[HTML]{D9EAF3}.318 & \cellcolor[HTML]{D9EAF3}.492 & \cellcolor[HTML]{D9EAF3}.472 & \cellcolor[HTML]{D9EAF3}.384 & \cellcolor[HTML]{D9EAF3}.472 & \cellcolor[HTML]{D9EAF3}.498 & \cellcolor[HTML]{D9EAF3}.416 & \cellcolor[HTML]{D9EAF3}.361 & \cellcolor[HTML]{D9EAF3}.406 & \cellcolor[HTML]{D9EAF3}.467 & \cellcolor[HTML]{D9EAF3}.441 & \cellcolor[HTML]{D9EAF3}.447 & \cellcolor[HTML]{F7EBD9}.295 \\
-\quad Qwen2.5-7B-Instruct & \cellcolor[HTML]{D9EAF3}.346 & \cellcolor[HTML]{D9EAF3}.431 & \cellcolor[HTML]{D9EAF3}.219 & \cellcolor[HTML]{D9EAF3}.356 & \cellcolor[HTML]{D9EAF3}.429 & \cellcolor[HTML]{D9EAF3}.608 & \cellcolor[HTML]{D9EAF3}.387 & \cellcolor[HTML]{D9EAF3}.458 & \cellcolor[HTML]{D9EAF3}.478 & \cellcolor[HTML]{D9EAF3}.369 & \cellcolor[HTML]{D9EAF3}.358 & \cellcolor[HTML]{D9EAF3}.390 & \cellcolor[HTML]{D9EAF3}.476 & \cellcolor[HTML]{D9EAF3}.435 & \cellcolor[HTML]{D9EAF3}.470 & \cellcolor[HTML]{D9EAF3}.428 \\
-\quad Vicuna-7B & \cellcolor[HTML]{F7EBD9}.260 & \cellcolor[HTML]{F7EBD9}.294 & \cellcolor[HTML]{F7EBD9}.174 & \cellcolor[HTML]{D9EAF3}.316 & \cellcolor[HTML]{F7EBD9}.355 & \cellcolor[HTML]{F7EBD9}.265 & \cellcolor[HTML]{F7EBD9}.201 & \cellcolor[HTML]{F7EBD9}.316 & \cellcolor[HTML]{F7EBD9}.292 & \cellcolor[HTML]{F7EBD9}.247 & \cellcolor[HTML]{F7EBD9}.241 & \cellcolor[HTML]{F7EBD9}.286 & \cellcolor[HTML]{F7EBD9}.264 & \cellcolor[HTML]{F7EBD9}.362 & \cellcolor[HTML]{D9EAF3}.384 & \cellcolor[HTML]{F7EBD9}.186 \\
-\quad Mistral-7B & \cellcolor[HTML]{F7EBD9}.211 & \cellcolor[HTML]{F7EBD9}.273 & \cellcolor[HTML]{D9EAF3}.236 & \cellcolor[HTML]{D9EAF3}.409 & \cellcolor[HTML]{F7EBD9}.228 & \cellcolor[HTML]{F7EBD9}.135 & \cellcolor[HTML]{F7EBD9}.268 & \cellcolor[HTML]{F7EBD9}.283 & \cellcolor[HTML]{F7EBD9}.343 & \cellcolor[HTML]{F7EBD9}.247 & \cellcolor[HTML]{F7EBD9}.096 & \cellcolor[HTML]{F7EBD9}.311 & \cellcolor[HTML]{F7EBD9}.220 & \cellcolor[HTML]{F7EBD9}.148 & \cellcolor[HTML]{F7EBD9}.127 & \cellcolor[HTML]{F7EBD9}.135 \\
-\bottomrule
-\end{tabular}
-\end{table*}
-% END inlined from tables/supp/group_band_coverage.tex
-\subsection{Pronominalization Degradation by Group}
-\label{app:degradation}
+\input{tables/supp/degradation_wilcoxon}
 
-\begin{table*}[h]
-\centering
-\small
-\setlength{\tabcolsep}{3.8pt}
-\renewcommand{\arraystretch}{1.02}
-\caption{Pronominalization degradation by question group. All rows (Human LOO and group means) report raw paired Wilcoxon $p$-values; individual model rows likewise report raw Wilcoxon stars. Warm cells indicate positive degradation (alignment worsens); blue cells indicate negative values. $^{***}p{<}0.001$, $^{**}p{<}0.01$, $^{*}p{<}0.05$.}
-\label{tab:degradation_wilcoxon}
-\begin{tabular}{lcccccccccccc}
-\toprule
-\multirow{2}{*}{\textbf{Row}} & \multicolumn{7}{c}{\textbf{Operation groups}} & \multicolumn{5}{c}{\textbf{Entity groups}} \\
-\cmidrule(lr){2-8}\cmidrule(lr){9-13}
-& \rotatebox{60}{\textbf{Attr.}} & \rotatebox{60}{\textbf{Count}} & \rotatebox{60}{\textbf{Spat.}} & \rotatebox{60}{\textbf{Ident.}} & \rotatebox{60}{\textbf{Act.}} & \rotatebox{60}{\textbf{Exist.}} & \rotatebox{60}{\textbf{Other}} & \rotatebox{60}{\textbf{Person}} & \rotatebox{60}{\textbf{Animal}} & \rotatebox{60}{\textbf{Object}} & \rotatebox{60}{\textbf{Food}} & \rotatebox{60}{\textbf{Other}} \\
-\midrule
-\textbf{Human LOO} & \cellcolor{orange!12}+0.035 & -0.010 & \cellcolor{orange!12}+0.039 & \cellcolor{orange!24}+0.196$^{*}$ & +0.015 & +0.016 & +0.010 & \cellcolor{orange!12}+0.022 & \cellcolor{orange!12}+0.052$^{*}$ & \cellcolor{orange!12}+0.040 & \cellcolor{orange!12}+0.063$^{*}$ & +0.009 \\
-\midrule
-\rowcolor{gray!12}\textit{VLM Mean} & \cellcolor{orange!12}+0.034$^{*}$ & -0.000 & \cellcolor{orange!24}+0.115$^{**}$ & \cellcolor{orange!24}+0.221$^{**}$ & \cellcolor{orange!12}+0.034$^{*}$ & \cellcolor{blue!10}-0.024$^{*}$ & \cellcolor{orange!12}+0.029 & \cellcolor{orange!12}+0.029 & \cellcolor{orange!12}+0.034 & \cellcolor{orange!12}+0.046 & \cellcolor{orange!24}+0.101$^{**}$ & \cellcolor{orange!12}+0.039 \\
-\quad InternVL-8B & \cellcolor{orange!12}+0.048 & \cellcolor{orange!12}+0.024 & \cellcolor{orange!24}+0.117$^{*}$ & \cellcolor{orange!24}+0.260$^{*}$ & -0.007 & +0.008 & \cellcolor{orange!12}+0.035$^{*}$ & \cellcolor{orange!12}+0.043 & \cellcolor{orange!12}+0.028 & \cellcolor{orange!12}+0.092$^{**}$ & \cellcolor{orange!24}+0.118$^{*}$ & \cellcolor{orange!12}+0.032 \\
-\quad Qwen3-VL-8B & \cellcolor{orange!12}+0.042 & -0.017 & \cellcolor{orange!24}+0.106$^{*}$ & \cellcolor{orange!24}+0.256$^{**}$ & -0.003 & \cellcolor{blue!10}-0.042 & \cellcolor{orange!12}+0.023 & \cellcolor{orange!12}+0.043 & \cellcolor{orange!12}+0.025 & +0.018 & \cellcolor{orange!12}+0.071 & \cellcolor{orange!12}+0.067 \\
-\quad LLaVA-1.5-7B & +0.015 & \cellcolor{blue!10}-0.024 & \cellcolor{orange!24}+0.146 & \cellcolor{orange!24}+0.142 & \cellcolor{orange!12}+0.053 & \cellcolor{blue!10}-0.029 & \cellcolor{orange!12}+0.038 & \cellcolor{orange!12}+0.030 & \cellcolor{orange!12}+0.025 & \cellcolor{orange!12}+0.024 & \cellcolor{orange!12}+0.027 & \cellcolor{orange!12}+0.041 \\
-\quad LLaVA-Mistral & \cellcolor{orange!12}+0.051$^{**}$ & +0.020 & \cellcolor{orange!24}+0.112 & \cellcolor{orange!24}+0.243$^{*}$ & \cellcolor{orange!12}+0.097 & \cellcolor{blue!10}-0.029 & -0.020 & \cellcolor{orange!12}+0.027 & \cellcolor{orange!12}+0.051 & \cellcolor{orange!12}+0.060$^{*}$ & \cellcolor{orange!24}+0.154$^{**}$ & \cellcolor{orange!12}+0.022 \\
-\quad LLaVA-Vicuna & \cellcolor{orange!12}+0.032$^{*}$ & -0.004 & \cellcolor{orange!12}+0.081 & \cellcolor{orange!24}+0.203$^{**}$ & \cellcolor{orange!12}+0.030 & \cellcolor{blue!10}-0.029 & \cellcolor{orange!12}+0.035 & +0.013 & \cellcolor{orange!12}+0.030 & \cellcolor{orange!12}+0.040 & \cellcolor{orange!12}+0.098 & \cellcolor{orange!12}+0.040 \\
-\midrule
-\rowcolor{gray!12}\textit{Backbone Mean} & \cellcolor{orange!12}+0.036 & \cellcolor{orange!12}+0.024 & \cellcolor{orange!12}+0.087$^{**}$ & \cellcolor{orange!24}+0.197$^{*}$ & \cellcolor{orange!12}+0.028 & +0.006 & +0.016 & \cellcolor{orange!12}+0.027 & \cellcolor{orange!12}+0.055 & \cellcolor{orange!12}+0.054 & \cellcolor{orange!12}+0.070 & \cellcolor{orange!12}+0.041 \\
-\quad InternVL-8B (LM) & \cellcolor{orange!12}+0.047 & \cellcolor{orange!24}+0.201 & \cellcolor{orange!12}+0.086 & \cellcolor{orange!24}+0.258$^{*}$ & \cellcolor{orange!12}+0.050 & \cellcolor{orange!12}+0.055$^{*}$ & \cellcolor{orange!12}+0.046 & \cellcolor{orange!12}+0.054 & \cellcolor{orange!24}+0.118$^{*}$ & \cellcolor{orange!12}+0.090 & \cellcolor{orange!24}+0.108$^{**}$ & \cellcolor{orange!12}+0.062$^{*}$ \\
-\quad Qwen3-VL-8B (LM) & \cellcolor{orange!12}+0.040 & \cellcolor{orange!12}+0.030 & \cellcolor{orange!24}+0.105 & \cellcolor{orange!24}+0.215$^{*}$ & +0.016 & +0.001 & \cellcolor{blue!10}-0.045 & \cellcolor{orange!12}+0.054$^{*}$ & +0.004 & \cellcolor{orange!12}+0.037 & \cellcolor{orange!24}+0.109$^{*}$ & \cellcolor{orange!12}+0.030 \\
-\quad LLaVA-1.5 (LM) & \cellcolor{orange!12}+0.028 & +0.010 & \cellcolor{orange!12}+0.082 & \cellcolor{orange!24}+0.136 & -0.009 & +0.001 & \cellcolor{orange!12}+0.026 & \cellcolor{orange!12}+0.021 & \cellcolor{orange!12}+0.030 & \cellcolor{orange!12}+0.043 & \cellcolor{orange!12}+0.034 & \cellcolor{orange!12}+0.044 \\
-\quad LLaVA-Mistral (LM) & +0.016 & +0.000 & \cellcolor{orange!24}+0.113 & \cellcolor{orange!24}+0.225$^{*}$ & \cellcolor{orange!12}+0.072 & \cellcolor{blue!10}-0.040 & \cellcolor{blue!10}-0.046 & \cellcolor{orange!12}+0.023 & \cellcolor{orange!12}+0.071 & \cellcolor{orange!12}+0.034 & \cellcolor{orange!12}+0.044 & -0.004 \\
-\quad LLaVA-Vicuna (LM) & \cellcolor{orange!12}+0.033 & +0.012 & \cellcolor{orange!12}+0.069 & \cellcolor{orange!24}+0.188$^{**}$ & +0.012 & +0.012 & \cellcolor{orange!12}+0.051 & -0.001 & \cellcolor{orange!12}+0.056$^{*}$ & \cellcolor{orange!12}+0.064 & \cellcolor{orange!12}+0.048 & \cellcolor{orange!12}+0.063 \\
-\midrule
-\rowcolor{gray!12}\textit{SA-LLM Mean} & \cellcolor{orange!12}+0.047$^{*}$ & \cellcolor{orange!12}+0.081$^{*}$ & \cellcolor{orange!12}+0.092$^{**}$ & \cellcolor{orange!24}+0.253$^{**}$ & -0.014 & +0.016 & \cellcolor{blue!10}-0.030 & \cellcolor{orange!12}+0.035 & \cellcolor{orange!12}+0.079$^{*}$ & \cellcolor{orange!12}+0.038 & \cellcolor{orange!24}+0.120$^{**}$ & \cellcolor{orange!12}+0.054 \\
-\quad Qwen3-8B & \cellcolor{orange!12}+0.042$^{*}$ & \cellcolor{orange!24}+0.124$^{*}$ & \cellcolor{orange!24}+0.104 & \cellcolor{orange!24}+0.173 & \cellcolor{blue!10}-0.031 & +0.001 & \cellcolor{orange!12}+0.037 & \cellcolor{orange!12}+0.057 & \cellcolor{orange!12}+0.043 & \cellcolor{orange!12}+0.032 & \cellcolor{orange!24}+0.111$^{*}$ & \cellcolor{orange!12}+0.086$^{*}$ \\
-\quad Qwen3-8B (think) & +0.008 & \cellcolor{blue!10}-0.023 & \cellcolor{orange!12}+0.074 & \cellcolor{orange!24}+0.267$^{*}$ & \cellcolor{blue!10}-0.050 & \cellcolor{orange!24}+0.153$^{*}$ & \cellcolor{orange!12}+0.031 & \cellcolor{orange!12}+0.063 & \cellcolor{orange!12}+0.067 & \cellcolor{orange!12}+0.034 & \cellcolor{orange!12}+0.063 & \cellcolor{blue!10}-0.025 \\
-\quad Qwen2.5-7B-Instruct & \cellcolor{orange!12}+0.085$^{*}$ & \cellcolor{orange!24}+0.257$^{**}$ & \cellcolor{orange!24}+0.127$^{**}$ & \cellcolor{orange!24}+0.256$^{**}$ & \cellcolor{orange!12}+0.027 & -0.016 & \cellcolor{blue!20}-0.112 & \cellcolor{orange!12}+0.028 & \cellcolor{orange!12}+0.087$^{*}$ & \cellcolor{orange!24}+0.137$^{**}$ & \cellcolor{orange!24}+0.113$^{*}$ & \cellcolor{orange!24}+0.109 \\
-\quad Vicuna-7B & \cellcolor{orange!12}+0.062$^{*}$ & \cellcolor{orange!12}+0.041 & \cellcolor{orange!12}+0.034 & \cellcolor{orange!24}+0.298$^{*}$ & -0.007 & \cellcolor{blue!10}-0.082 & \cellcolor{blue!10}-0.051 & \cellcolor{orange!12}+0.030 & \cellcolor{orange!12}+0.066 & -0.001 & \cellcolor{orange!24}+0.152$^{*}$ & \cellcolor{orange!12}+0.023 \\
-\bottomrule
-\end{tabular}
-\end{table*}
-
-
+\clearpage
 \section{What Modulates Alignment}
 \label{app:modulates_alignment}
 
-\subsection{Family-Level Tests} 
-\label{app:family_alignment_tests}
+This section examines three factors that drive alignment differences across models.  % : matched-family architecture comparisons (\S\ref{app:family_alignment_tests}), image-condition ablation (\S\ref{app:ablation}), and the effect of chain-of-thought reasoning (\S\ref{app:thinking}).
 
-\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{5pt}
-\caption{%
-\textbf{Matched-family backbone decoder alignment.} Each row compares a VLM backbone decoder against two reference points: (i)~its paired full VLM (blank image), and (ii)~the matched standalone LLM. \textbf{Decoder} = mean abstention-filtered HM SBERT ($N=113$ questions); each comparator cell shows the comparator score with {\scriptsize \textcolor[HTML]{0072B2}{blue}} $+\Delta$ or {\scriptsize \textcolor[HTML]{CC7A00}{orange}} $-\Delta$ (decoder $-$ comparator). Stars: Holm-corrected Wilcoxon $^{***}{<}.001$, $^{**}{<}.01$, $^{*}{<}.05$; unlabelled = not significant.}
-\label{tab:matched_family_alignment_tests}
-\begin{tabular}{l c c c}
-\toprule
-\textbf{Family} & \textbf{Decoder} & \textbf{vs.\ Full VLM} & \textbf{vs.\ SA-LLM} \\
-\midrule
-InternVL3.5 & .572 & \textbf{.593} {\scriptsize \textcolor[HTML]{CC7A00}{$(-.021)$}} & .489 {\scriptsize \textcolor[HTML]{0072B2}{$(+.079^{***})$}} \\
-Qwen3-VL & \textbf{.569} & .556 {\scriptsize \textcolor[HTML]{0072B2}{$(+.013^{*})$}} & .489 {\scriptsize \textcolor[HTML]{0072B2}{$(+.080^{***})$}} \\
-LLaVA-1.5 & \textbf{.573} & .507 {\scriptsize \textcolor[HTML]{0072B2}{$(+.067^{***})$}} & .403 {\scriptsize \textcolor[HTML]{0072B2}{$(+.169^{***})$}} \\
-LLaVA-Mistral & \textbf{.577} & .537 {\scriptsize \textcolor[HTML]{0072B2}{$(+.040^{***})$}} & .227 {\scriptsize \textcolor[HTML]{0072B2}{$(+.313^{***})$}} \\
-LLaVA-Vicuna & \textbf{.572} & .524 {\scriptsize \textcolor[HTML]{0072B2}{$(+.048^{***})$}} & .403 {\scriptsize \textcolor[HTML]{0072B2}{$(+.169^{***})$}} \\
-\bottomrule
-\end{tabular}
-\end{table}
+% Table~\ref{tab:image_ablation_main} compares alignment across four image conditions (black, gray, noise, white) for three representative models, testing whether the choice of blank image placeholder affects responses.
 
-\subsection{Image-Condition Ablation}
-\label{app:ablation}
+% Table~\ref{tab:matched_family_alignment_tests} compares each backbone decoder against its paired full VLM and matched standalone LLM, isolating the contribution of the vision encoder to alignment.
 
-\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-\caption{Image-condition ablation (original question variant). Chg.\ = response change rate relative to the black image baseline of the same condition; ``---'' for the baseline itself. \textbf{Bold}: best SBERT within model and condition; \underline{underline}: second best.}
-\label{tab:image_ablation_main}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{l cccc cccc}
-\toprule
- & \multicolumn{4}{c}{\textbf{w/o inst}} & \multicolumn{4}{c}{\textbf{w/ inst}} \\
-\cmidrule(lr){2-5}\cmidrule(lr){6-9}
-\textbf{Image} & SBERT & Abst. & Acc. & Chg. & SBERT & Abst. & Acc. & Chg. \\
-\midrule
-\multicolumn{9}{c}{\textit{Qwen3-VL}} \\
-\midrule
-Black & \underline{0.614} & 4.5\% & 0.342 & --- & 0.623 & 2.1\% & 0.362 & --- \\
-Gray & 0.574 & 11.3\% & 0.310 & 38.1\% & \textbf{0.638} & 1.3\% & 0.393 & 44.7\% \\
-Noise & 0.490 & 28.6\% & 0.262 & 51.0\% & \underline{0.638} & 1.3\% & 0.393 & 44.7\% \\
-White & \textbf{0.628} & 2.4\% & 0.371 & 26.2\% & 0.638 & 1.3\% & 0.393 & 44.7\% \\
-\midrule
-\multicolumn{9}{c}{\textit{LLaVA-Mistral}} \\
-\midrule
-Black & 0.609 & 3.1\% & 0.344 & --- & 0.623 & 1.7\% & 0.357 & --- \\
-Gray & \underline{0.622} & 2.5\% & 0.363 & 22.4\% & \underline{0.635} & 0.6\% & 0.372 & 22.9\% \\
-Noise & 0.590 & 3.0\% & 0.353 & 27.6\% & 0.611 & 1.4\% & 0.361 & 32.7\% \\
-White & \textbf{0.626} & 2.4\% & 0.373 & 24.9\% & \textbf{0.642} & 0.7\% & 0.398 & 26.2\% \\
-\midrule
-\multicolumn{9}{c}{\textit{InternVL-8B}} \\
-\midrule
-Black & \underline{0.658} & 0.0\% & 0.372 & --- & \underline{0.651} & 0.6\% & 0.362 & --- \\
-Gray & 0.648 & 0.1\% & 0.365 & 21.6\% & 0.647 & 0.9\% & 0.370 & 17.7\% \\
-Noise & 0.639 & 0.3\% & 0.349 & 45.1\% & 0.639 & 1.5\% & 0.372 & 40.7\% \\
-White & \textbf{0.660} & 0.0\% & 0.379 & 18.8\% & \textbf{0.655} & 0.4\% & 0.378 & 15.0\% \\
-\bottomrule
-\end{tabular}}
-\end{table}
+\input{tables/supp/image_ablation_main}
+\input{tables/supp/matched_family_alignment_tests_183q_ft_absf}
 
-\clearpage
-\subsection{Does More Thinking Help?}
-\label{app:thinking}
-
-The main text focuses on the Qwen3-8B vs.\ Qwen3-8B~(Think) comparison as the primary case study.
-This appendix provides the full scale-level analysis and contextualises an important caveat: thinking mode is not uniformly beneficial, and its effects differ substantially across model sizes.
-
-A critical constraint is that 1.7B and 32B think models convert approximately 60\% of their answers into abstentions---the model declines to answer rather than deliberating---leaving a residual answering subset that is too small and potentially biased (skewed towards easier questions) for a reliable alignment comparison.
-At 8B, abstention under think mode remains below 2\%, making it the only size where the think vs.\ no-think comparison is fully interpretable.
-At 0.6B, thinking mode has no effect on any metric ($p{=}.317$; the 0.6B think and no-think checkpoints are also effectively the same model).
-
-At 8B, think mode yields a marginal $\sHM$ improvement ($\Delta{=}{+}0.012$, $p{=}.049$) and accuracy enters the human reference band, but difficulty tracking regresses slightly ($\rho{:}~0.807{\to}0.750$), with both values remaining within the human LOO range $[0.629,\,0.846]$.
-At 32B, $\rho$ similarly regresses ($0.793{\to}0.734$), consistent with frequent thought-skipping at that scale.
-
-A further consequence of extended reasoning is a parallel to human response behaviour---but with a critical divergence.
-Humans take longer to respond to questions they find harder and express more uncertainty; thinking models show the same difficulty sensitivity: per-question trace length negatively correlates with human inter-annotator agreement $\sHH$ ($\rho{=}{-}.152$, $p{<}.01$, $n{=}339$) and with the model's own human-alignment score $\sHM$ (pooled across variants: $\rho{=}{-}.124$, $p{<}.05$; by variant, see Table~\ref{tab:think_trace_length_corr}).
-This confirms that longer deliberation is not random---it is allocated to questions humans also find harder.
-The divergence, however, lies in confidence: as shown in Figure~\ref{fig:think_abs_vs_length}(c), longer reasoning traces correlate with \emph{higher} final-answer token log-probability.
-Rather than emerging more uncertain after extended deliberation, models commit more strongly---the opposite of the human pattern---suggesting that the reasoning trace amplifies commitment to a linguistically plausible answer rather than calibrating uncertainty to question difficulty.
-
+% \clearpage
 \begin{figure}[h]
+\subsection{Does More Thinking Help?}
+% The main text focuses on the -8B vs.\ Qwen3-8B~(Think) comparison as the primary case study.
+This section provides the analysis on Qwen3 (\textit{Think}) including other model sizes and shows its effects differ across model sizes.
+The model increases in $\sHM$ in 4B and 8B as they think longer under instruction and fits in the $\sHH$ range of humans (Figure~\ref{fig:think_abs_vs_length}). Table~\ref{tab:think_trace_length_corr} shows that models of those sizes also show longer reasoning traces correlate with \emph{higher} final-answer token log-probability. 
+% For Original and Weaker variants, per-question trace length negatively correlates with $\sHM$ on two variants.
+% Pooled across all three variants ($N{=}313$), the correlation is $r{=}{-}.107$ ($p{=}.060$).
+
+\label{app:thinking}
 \centering
-\includegraphics[width=\columnwidth]{think_eda/think_abs_sbert_accuracy_vert}
-\caption{Qwen3 thinking models vs.\ mean reasoning-trace length. \textbf{(a)} HM SBERT; gray band and dashed lines mark the human LOO reference. \textbf{(b)} Blind VQA accuracy; gray band marks the human LOO reference. 4B and 8B think enter the human accuracy band. \textbf{(c)} Mean answer log-probability; longer chains correlate with higher confidence. Filled markers = blind-with-instruction; open = blind-only.}
+\begin{subfigure}[b]{0.9\columnwidth}
+  \centering
+  \includegraphics[width=0.9\columnwidth]{think_eda/think_trace_sbert}
+  % \caption{$\sHM$; gray band and dashed lines mark the human LOO reference.}
+  \label{fig:think_trace_sbert}
+\end{subfigure}
+\vspace{0.3em}
+\begin{subfigure}[b]{0.9\columnwidth}
+  \centering
+  \includegraphics[width=0.9\columnwidth]{think_eda/think_trace_confidence}
+  % \caption{Mean answer log-probability; longer chains correlate with higher confidence.}
+  \label{fig:think_trace_confidence}
+\end{subfigure}
+\caption{Qwen3 (\textit{Think}) CoT SA-LLM vs.\ mean reasoning-trace length ($N\leq183$). Dotted arrows connect SBERT in condition without to with instruction of the same model.}
 \label{fig:think_abs_vs_length}
 \end{figure}
 
-Table~\ref{tab:thinking_wilcoxon} summarises the paired Wilcoxon signed-rank tests on $\sHM$ and Spearman~$\rho$ across all evaluated sizes.
-Pooled results ($\Delta{=}{+}0.048$, $p{<}.001$) are inflated by 1.7B, whose apparent gain reflects the biased answering subset rather than a general CoT benefit.
+\input{tables/supp/think_trace_length_corr}
 
-\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{4pt}
-\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs on mean HM SBERT ($\sHM$), computed over all available question--variant pairs in the blind+instruction condition after abstention filtering. Two-sided paired Wilcoxon signed-rank tests compare no-think vs.\ think on matched question--variant means. Significance stars on $\Delta$: $^{***}p{<}.001$. {---}\,=\,no think variant available or identical checkpoint.}
-\label{tab:thinking_shm_wilcoxon}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Size} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} \\
-\midrule
-0.6B  & .330 & .330 & $+0.001$ \\
-1.7B  & .436 & .561 & $+0.125^{***}$ \\
-4B    & .520 & .520 & $+0.000$ \\
-8B    & .491 & .534 & $+0.043^{***}$ \\
-32B   & .510 & .562 & $+0.052$ \\
-\midrule
-Pooled & .444 & .469 & $+0.025^{***}$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+% A critical constraint is that 1.7B and 32B think models convert approximately 60\% of their answers into abstentions---the model declines to answer rather than deliberating---leaving a residual answering subset that is too small and potentially biased (skewed towards easier questions) for a reliable alignment comparison.
+% At 8B, abstention under think mode remains below 2\%, making it the only size where the think vs.\ no-think comparison is fully interpretable.
+% At 0.6B, thinking mode has no effect on any metric ($p{=}.317$; the 0.6B think and no-think checkpoints are also effectively the same model).
 
-% \begin{table}[h]
-% \centering
-% \small
-% \setlength{\tabcolsep}{4pt}
-% \caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs on difficulty tracking, measured as Spearman $\rho$ between per-question--variant model $\sHM$ and human $\sHH$ over all questions and variants after abstention filtering. Reported $p$ values are the Spearman correlation tests against zero, not paired tests on the think--no-think difference.}
-% \label{tab:thinking_spearman}
+% At 8B, think mode yields a marginal $\sHM$ improvement ($\Delta{=}{+}0.012$, $p{=}.049$) and accuracy enters the human reference band, but difficulty tracking regresses slightly ($\rho{:}~0.807{\to}0.750$), with both values remaining within the human LOO range $[0.629,\,0.846]$.
+% At 32B, $\rho$ similarly regresses ($0.793{\to}0.734$), consistent with frequent thought-skipping at that scale.
 
-Table~\ref{tab:think_trace_length_corr} reports the Spearman correlation between per-question reasoning-trace length and mean HM SBERT, computed from abstention-filtered pairs across all 113 study questions and three question variants.
-At 8B, the negative correlation is significant for Original ($\rho{=}{-}.270$, $p{<}.01$) and Weaker ($\rho{=}{-}.200$, $p{<}.05$) variants, and marginally significant pooled ($\rho{=}{-}.124$, $p{<}.05$, $n{=}313$), confirming that longer deliberation is associated with harder (less human-aligned) questions rather than alignment gains.
-At 4B the pattern is similar; at 0.6B and 32B correlations are near zero, consistent with negligible or constrained deliberation at those scales.
-
-\begin{table}[h]
-\centering
-\small
-\setlength{\tabcolsep}{5pt}
-\caption{Spearman $\rho$ between per-question reasoning-trace word count and mean HM SBERT ($\sHM$), computed from abstention-filtered pairs in the blind+instruction condition. Stars: $^{*}p{<}.05$, $^{**}p{<}.01$. $n$ = number of question--variant pairs after abstention filtering (zero-length traces excluded). Shaded cells (\cellcolor{orange!20}orange) indicate significant negative correlations.}
-\label{tab:think_trace_length_corr}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Model} & \textbf{Original (C)} & \textbf{Weaker (B)} & \textbf{Pronominalized (A)} & \textbf{All} \\
-\midrule
-Qwen3-0.6B (think) & $+.052$ {\scriptsize($n{=}110$)} & $+.167$ {\scriptsize($n{=}108$)} & $+.075$ {\scriptsize($n{=}109$)} & $+.101$ {\scriptsize($n{=}327$)} \\
-Qwen3-1.7B (think) & $-.118$ {\scriptsize($n{=}46$)}  & $-.163$ {\scriptsize($n{=}41$)}  & $+.076$ {\scriptsize($n{=}33$)}  & $-.080$ {\scriptsize($n{=}120$)} \\
-Qwen3-4B  (think)  & \cellcolor{orange!20}$-.209^{*}$ {\scriptsize($n{=}109$)} & \cellcolor{orange!20}$-.283^{**}$ {\scriptsize($n{=}105$)} & $+.058$ {\scriptsize($n{=}100$)} & \cellcolor{orange!20}$-.171^{**}$ {\scriptsize($n{=}314$)} \\
-Qwen3-8B  (think)  & \cellcolor{orange!20}$-.270^{**}$ {\scriptsize($n{=}106$)} & \cellcolor{orange!20}$-.200^{*}$ {\scriptsize($n{=}105$)} & $+.131$ {\scriptsize($n{=}102$)} & \cellcolor{orange!20}$-.124^{*}$ {\scriptsize($n{=}313$)} \\
-Qwen3-32B (think)  & $+.034$ {\scriptsize($n{=}32$)}  & $-.024$ {\scriptsize($n{=}32$)}  & $-.017$ {\scriptsize($n{=}24$)}  & $-.028$ {\scriptsize($n{=}88$)} \\
-\bottomrule
-\end{tabular}
-\end{table}
+% The divergence, however, lies in confidence: as shown in Figure~\ref{fig:think_abs_vs_length}(c), 
+% Rather than emerging more uncertain after extended deliberation, models commit more strongly---the opposite of the human pattern---suggesting that the reasoning trace amplifies commitment to a linguistically plausible answer rather than calibrating uncertainty to question difficulty.
 
 \clearpage
 \label{app:scale_variant}
 
-We test multiple sizes for three families: InternVL (1B, 2B, 8B), Qwen3-VL (2B, 4B, 8B, 32B), and Qwen3 SA-LLM (0.6B--32B), with Vicuna and LLaVA-Vicuna compared at 7B vs.\ 13B.
-For VLMs and LMs, scale yields no consistent benefit: InternVL peaks at 8B ($\sHM{=}0.620$) but dips at 2B ($0.553$); Qwen3-VL is nearly flat and slightly drops at 32B.
-One indirect effect is notable: InternVL~(LM) $\sHM$ on pronominalized questions \emph{decreases} from 1B to 8B ($0.555{\to}0.526$), driven by growing count abstention at 8B---which the vision encoder suppresses---partially explaining the reversed VLM--LM ordering at that size.
-For SA-LLMs, the trajectory is non-monotonic: Qwen3 rises from $\sHM{=}0.315$ at 0.6B to $0.554$ at 32B but dips at 8B, and remains $0.066$ below InternVL~(LM) at the same scale, suggesting gains reflect better language modelling rather than acquired visual knowledge.
+% We test multiple sizes for three families: InternVL (1B, 2B, 8B), Qwen3-VL (2B, 4B, 8B, 32B), and Qwen3 SA-LLM (0.6B--32B), with Vicuna and LLaVA-Vicuna compared at 7B vs.\ 13B.
+% For VLMs and LMs, scale yields no consistent benefit: InternVL peaks at 8B ($\sHM{=}0.620$) but dips at 2B ($0.553$); Qwen3-VL is nearly flat and slightly drops at 32B.
+% One indirect effect is notable: InternVL~(LM) $\sHM$ on Pronominalizedominalized questions \emph{decreases} from 1B to 8B ($0.555{\to}0.526$), driven by growing count abstention at 8B---which the vision encoder suppresses---partially explaining the reversed VLM--LM ordering at that size.
+% For SA-LLMs, the trajectory is non-monotonic: Qwen3 rises from $\sHM{=}0.315$ at 0.6B to $0.554$ at 32B but dips at 8B, and remains $0.066$ below InternVL~(LM) at the same scale, suggesting gains reflect better language modelling rather than acquired visual knowledge.
+
+\input{tables/supp/alignment_ranking_full_scale_ticks}
+% ~\ref{tab:alignment_ranking_7b_ticks} 
 
 
-\section{Alignment Overview}
-\label{app:alignment_overview}
+% \subsection{Per-Model Agreement Across Metrics}
+% \label{app:comprehensive_metrics}
 
-\subsection{Full-scale alignment ranking overview}
-\label{app:alignment_ranking_full}
+% Table~\ref{tab:comprehensive_inst_blind} reports accuracy, answer length, and five agreement metrics for every model across all three question variants in the blind condition.
 
+% \subsection{Accuracy Alignment}
+% \label{app:accuracy_alignment}
 
-Table~\ref{tab:alignment_ranking_full_scale_ticks} extends the 7B ranking table (Table~\ref{tab:alignment_ranking_7b_ticks} in the main paper) to all evaluated model sizes (0.6B--32B).
-Rank cells show distance-to-human-median ranking; $\checkmark$ marks values within the human LOO 95\,\% CI.
-Abstention columns show actual rates shaded by quality ($\uparrow$/$\downarrow$ indicate favorable direction).
+% Figure~\ref{fig:scatter_accuracy} plots per-group human vs.\ model blind accuracy by operation and entity type, confirming that accuracy and semantic alignment tell largely consistent stories across question categories.
 
-% BEGIN inlined from tables/supp/alignment_ranking_full_scale_ticks.tex
-\begin{table*}[h]
-\centering
-\small
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{0.96}
-\caption{Full-scale alignment ranking across all evaluated model sizes. All questions $\times$ variants pooled; abstention classifier applied. All columns show values under the blind+instruction condition; {\scriptsize(colored $\Delta$)} = change from blind-only. For $\djs$: {\textcolor[HTML]{CC7A00}{orange}}$+$ = more divergence with instruction; {\textcolor[HTML]{0072B2}{blue}}$-$ = less. For $\sHM$/$\rho$: {\textcolor[HTML]{0072B2}{blue}}$+$ = improvement with instruction; {\textcolor[HTML]{CC7A00}{orange}}$-$ = degradation. \colorbox[HTML]{D9EAF3}{Blue} = within human LOO-CV 95\,\% CI; \colorbox[HTML]{F7EBD9}{Orange} = concentrates on consensus answers beyond human variability (below CI lower bound for $\djs$, above upper bound for $\sHM$/$\rho$). $\rho$ = Spearman correlation between per-question model and human difficulty. Abst(\%) = abstention rate under the instruction condition with $\Delta$ from blind-only. Gray shading = lower is better. Human LOO-CV row: median with {\tiny[5th, 95th percentile]} CI across leave-one-out raters.}
-\label{tab:alignment_ranking_full_scale_ticks}
-\begin{tabular}{>{\raggedright\arraybackslash}p{2.2cm}cccccccc}
-\toprule
-\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Sz}} & \multicolumn{2}{c}{$\djs$} & $\sHM$ & \multicolumn{2}{c}{$\rho$} & \multicolumn{2}{c}{Abst\,(\%)} \\
-\cmidrule(lr){3-4}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
- & & Y/N\,($N{\leq}78$) & Cnt\,($N{\leq}66$) & ($N{\leq}174$) & FT & All & $N{\leq}339$ & $N{\leq}3000$ \\
-\midrule
-\textit{Human LOO-CV} & --- & \makecell{.271 \\ {\tiny [.260,.282]}} & \makecell{.524 \\ {\tiny [.493,.554]}} & \makecell{.427 \\ {\tiny [.389,.474]}} & \makecell{.780 \\ {\tiny [.655,.843]}} & \makecell{.899 \\ {\tiny [.827,.932]}} & --- & --- \\
-\midrule
-\multicolumn{9}{c}{\textit{VLMs}}\\ 
-\midrule
-InternVL3.5 & 1B & .315\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.051})} & .815\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.043})} & \cellcolor[HTML]{D9EAF3}.420\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.002})} & \cellcolor[HTML]{D9EAF3}\underline{.795}\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.004})} & \cellcolor[HTML]{D9EAF3}.905\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.069})} & \cellcolor{gray!20}0.6\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.6})} & \cellcolor{gray!20}0.3\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.2})} \\
- & 2B & .375\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.018})} & .758\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.023})} & \cellcolor[HTML]{D9EAF3}.411\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.007})} & \cellcolor[HTML]{D9EAF3}\textbf{.765}\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.013})} & \cellcolor[HTML]{D9EAF3}.890\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.060})} & \cellcolor{gray!20}0.0\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.0})} & \cellcolor{gray!20}0.7\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.6})} \\
- & 8B & \cellcolor[HTML]{F7EBD9}.230\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.024})} & .586\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.027})} & \cellcolor[HTML]{D9EAF3}.449\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.032})} & \cellcolor[HTML]{F7EBD9}.856\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.043})} & \cellcolor[HTML]{F7EBD9}.936\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.047})} & \cellcolor{gray!20}2.1\,{\scriptsize(\textcolor[HTML]{CC7A00}{+2.1})} & \cellcolor{gray!20}1.1\,{\scriptsize(\textcolor[HTML]{CC7A00}{+1.1})} \\
-\addlinespace[3pt]
-Qwen3-VL & 2B & .403\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.042})} & .757\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.028})} & \cellcolor[HTML]{D9EAF3}.433\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.027})} & \cellcolor[HTML]{F7EBD9}.844\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.122})} & \cellcolor[HTML]{D9EAF3}.887\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.081})} & \cellcolor{gray!20}3.6\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.3})} & \cellcolor{gray!20}2.9\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.8})} \\
- & 4B & .322\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.052})} & .772\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.006})} & \cellcolor[HTML]{D9EAF3}.437\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.058})} & \cellcolor[HTML]{D9EAF3}.812\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.237})} & \cellcolor[HTML]{D9EAF3}.886\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.153})} & \cellcolor{gray!20}3.8\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.9})} & \cellcolor{gray!20}2.1\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.6})} \\
- & 8B & \cellcolor[HTML]{D9EAF3}.277\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.041})} & .788\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.015})} & \cellcolor[HTML]{D9EAF3}.424\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.035})} & \cellcolor[HTML]{D9EAF3}.798\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.198})} & \cellcolor[HTML]{D9EAF3}.901\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.130})} & \cellcolor{gray!20}3.9\,{\scriptsize(\textcolor[HTML]{0072B2}{-1.5})} & \cellcolor{gray!20}3.3\,{\scriptsize(\textcolor[HTML]{0072B2}{-1.5})} \\
- & 32B & .348\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.122})} & .637 & .374 & \cellcolor[HTML]{D9EAF3}.731 & .779 & \cellcolor{gray!15}19.8\,{\scriptsize(\textcolor[HTML]{0072B2}{-69.6})} & \cellcolor{gray!15}18.0\,{\scriptsize(\textcolor[HTML]{0072B2}{-25.0})} \\
-\addlinespace[3pt]
-LLaVA-1.5 & 7B & .421\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.029})} & .824\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.013})} & .356\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.011})} & .467\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.047})} & \cellcolor[HTML]{D9EAF3}.851\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.143})} & \cellcolor{gray!20}3.5\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.6})} & \cellcolor{gray!20}2.3\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.3})} \\
-\addlinespace[3pt]
-LLaVA-Mistral & 7B & .357\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.022})} & .787\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.048})} & \cellcolor[HTML]{D9EAF3}.399\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.016})} & .643\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.073})} & \cellcolor[HTML]{D9EAF3}.871\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.136})} & \cellcolor{gray!20}1.8\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.9})} & \cellcolor{gray!20}1.9\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.6})} \\
-\addlinespace[3pt]
-LLaVA-Vicuna & 7B & .385\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.033})} & .837\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.007})} & \cellcolor[HTML]{D9EAF3}.390\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.005})} & .613\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.001})} & \cellcolor[HTML]{D9EAF3}.874\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.100})} & \cellcolor{gray!20}0.9\,{\scriptsize(\textcolor[HTML]{0072B2}{-1.8})} & \cellcolor{gray!20}1.4\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.9})} \\
- & 13B & .314\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.050})} & .761\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.063})} & \cellcolor[HTML]{D9EAF3}.401\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.036})} & .623\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.172})} & \cellcolor[HTML]{D9EAF3}.875\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.177})} & \cellcolor{gray!20}0.6\,{\scriptsize(\textcolor[HTML]{0072B2}{-1.8})} & \cellcolor{gray!20}0.4\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.8})} \\
-\addlinespace[3pt]
-\midrule
-\multicolumn{9}{c}{\textit{Backbone Decoders}}\\ 
-\midrule
-InternVL3.5 & 1B & \cellcolor[HTML]{F7EBD9}.206\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.003})} & .666\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.028})} & \cellcolor[HTML]{D9EAF3}.432\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.008})} & \cellcolor[HTML]{D9EAF3}.835\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.041})} & \cellcolor[HTML]{D9EAF3}.911\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.079})} & \cellcolor{gray!20}0.3\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.3})} & \cellcolor{gray!20}0.4\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.3})} \\
- & 2B & \cellcolor[HTML]{F7EBD9}.224\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.009})} & \cellcolor[HTML]{D9EAF3}\textbf{.521}\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.090})} & \cellcolor[HTML]{D9EAF3}.395\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.049})} & \cellcolor[HTML]{D9EAF3}.706\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.094})} & \cellcolor[HTML]{D9EAF3}\underline{.900}\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.246})} & \cellcolor{gray!20}5.6\,{\scriptsize(\textcolor[HTML]{CC7A00}{+2.4})} & \cellcolor{gray!20}5.6\,{\scriptsize(\textcolor[HTML]{CC7A00}{+2.6})} \\
- & 8B & \cellcolor[HTML]{F7EBD9}.209\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.006})} & \underline{.575}\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.157})} & \cellcolor[HTML]{D9EAF3}.432\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.029})} & \cellcolor[HTML]{D9EAF3}.813\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.106})} & \cellcolor[HTML]{D9EAF3}\textbf{.900}\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.174})} & \cellcolor{gray!20}9.5\,{\scriptsize(\textcolor[HTML]{0072B2}{-7.6})} & \cellcolor{gray!20}5.8\,{\scriptsize(\textcolor[HTML]{0072B2}{-4.7})} \\
-\addlinespace[3pt]
-Qwen3-VL & 2B & \cellcolor[HTML]{F7EBD9}.226\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.018})} & .627\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.017})} & \cellcolor[HTML]{D9EAF3}.431\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.003})} & \cellcolor[HTML]{F7EBD9}.850\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.008})} & \cellcolor[HTML]{D9EAF3}.919\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.099})} & \cellcolor{gray!20}2.4\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.9})} & \cellcolor{gray!20}1.2\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.4})} \\
- & 4B & \cellcolor[HTML]{F7EBD9}.213\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.035})} & .639\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.005})} & \cellcolor[HTML]{D9EAF3}.443\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.002})} & \cellcolor[HTML]{F7EBD9}.843\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.005})} & \cellcolor[HTML]{D9EAF3}.921\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.099})} & \cellcolor{gray!20}2.7\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.6})} & \cellcolor{gray!20}1.2\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.5})} \\
- & 8B & \cellcolor[HTML]{F7EBD9}.230\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.001})} & .745\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.004})} & \cellcolor[HTML]{D9EAF3}.446\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.012})} & \cellcolor[HTML]{F7EBD9}.853\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.058})} & \cellcolor[HTML]{D9EAF3}.894\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.117})} & \cellcolor{gray!20}3.3\,{\scriptsize(\textcolor[HTML]{0072B2}{-2.1})} & \cellcolor{gray!20}1.7\,{\scriptsize(\textcolor[HTML]{0072B2}{-1.2})} \\
- & 32B & \cellcolor[HTML]{F7EBD9}.241\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.054})} & .699\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.098})} & \cellcolor[HTML]{D9EAF3}.444\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.034})} & \cellcolor[HTML]{D9EAF3}.840\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.058})} & \cellcolor[HTML]{D9EAF3}.913\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.149})} & \cellcolor{gray!20}1.5\,{\scriptsize(\textcolor[HTML]{0072B2}{-4.4})} & \cellcolor{gray!20}0.9\,{\scriptsize(\textcolor[HTML]{0072B2}{-2.4})} \\
-\addlinespace[3pt]
-LLaVA-1.5 & 7B & \cellcolor[HTML]{F7EBD9}.241\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.000})} & .663\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.008})} & \cellcolor[HTML]{D9EAF3}.430\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.003})} & \cellcolor[HTML]{D9EAF3}.815\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.013})} & \cellcolor[HTML]{D9EAF3}.915\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.064})} & \cellcolor{gray!20}0.6\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.6})} & \cellcolor{gray!20}0.4\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.3})} \\
-\addlinespace[3pt]
-LLaVA-Mistral & 7B & \cellcolor[HTML]{D9EAF3}\underline{.275}\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.021})} & .671\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.002})} & \cellcolor[HTML]{D9EAF3}.445\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.004})} & \cellcolor[HTML]{D9EAF3}.833\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.035})} & \cellcolor[HTML]{D9EAF3}.922\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.065})} & \cellcolor{gray!20}2.1\,{\scriptsize(\textcolor[HTML]{CC7A00}{+1.8})} & \cellcolor{gray!20}1.6\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.5})} \\
-\addlinespace[3pt]
-LLaVA-Vicuna & 7B & \cellcolor[HTML]{F7EBD9}.223\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.003})} & .693\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.030})} & \cellcolor[HTML]{D9EAF3}.439\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.010})} & \cellcolor[HTML]{F7EBD9}.845\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.027})} & \cellcolor[HTML]{D9EAF3}.916\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.051})} & \cellcolor{gray!20}0.6\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.3})} & \cellcolor{gray!20}0.6\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.5})} \\
- & 13B & \cellcolor[HTML]{F7EBD9}.219\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.034})} & .614\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.059})} & \cellcolor[HTML]{D9EAF3}.432\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.002})} & \cellcolor[HTML]{D9EAF3}.817\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.029})} & \cellcolor[HTML]{F7EBD9}.937\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.110})} & \cellcolor{gray!20}0.0\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.6})} & \cellcolor{gray!20}0.4\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.0})} \\
-\addlinespace[3pt]
-\midrule
-\multicolumn{9}{c}{\textit{SA-LLMs}}\\ 
-\midrule
-Qwen3 & 0.6B & .967\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.011})} & .848\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.010})} & .377\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.005})} & \cellcolor[HTML]{D9EAF3}.679\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.058})} & -0.310\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.562})} & \cellcolor{gray!20}0.0\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.0})} & \cellcolor{gray!20}0.0\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.0})} \\
- & 1.7B & .425\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.074})} & .656\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.032})} & .324\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.033})} & .585\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.042})} & .523\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.112})} & \cellcolor{gray!20}9.1\,{\scriptsize(\textcolor[HTML]{0072B2}{-6.6})} & \cellcolor{gray!20}8.4\,{\scriptsize(\textcolor[HTML]{0072B2}{-9.7})} \\
- & 4B & \cellcolor[HTML]{D9EAF3}\textbf{.268}\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.002})} & .755\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.151})} & \cellcolor[HTML]{D9EAF3}.415\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.009})} & \cellcolor[HTML]{D9EAF3}.740\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.028})} & .702\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.066})} & \cellcolor{gray!20}0.0\,{\scriptsize(\textcolor[HTML]{0072B2}{-1.5})} & \cellcolor{gray!20}0.1\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.5})} \\
- & 8B & .531\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.063})} & .721\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.035})} & \cellcolor[HTML]{D9EAF3}\underline{.425}\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.009})} & \cellcolor[HTML]{D9EAF3}.836\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.010})} & .525\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.242})} & \cellcolor{gray!20}4.7\,{\scriptsize(\textcolor[HTML]{0072B2}{-7.7})} & \cellcolor{gray!20}4.8\,{\scriptsize(\textcolor[HTML]{0072B2}{-9.8})} \\
- & 32B & .334\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.012})} & .730\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.034})} & \cellcolor[HTML]{D9EAF3}.406\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.001})} & \cellcolor[HTML]{D9EAF3}.797\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.066})} & .688\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.116})} & \cellcolor{gray!20}6.5\,{\scriptsize(\textcolor[HTML]{CC7A00}{+1.2})} & \cellcolor{gray!20}3.1\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.8})} \\
-Qwen2.5 & 7B & .440\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.006})} & .688\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.024})} & \cellcolor[HTML]{D9EAF3}.416\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.019})} & \cellcolor[HTML]{D9EAF3}.815\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.069})} & .685\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.059})} & \cellcolor{gray!20}6.5\,{\scriptsize(\textcolor[HTML]{0072B2}{-2.6})} & \cellcolor{gray!20}4.1\,{\scriptsize(\textcolor[HTML]{0072B2}{-2.9})} \\
-Vicuna & 7B & \cellcolor[HTML]{F7EBD9}.225\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.017})} & .788\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.002})} & .279\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.018})} & .466\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.082})} & .613\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.178})} & \cellcolor{gray!20}1.5\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.3})} & \cellcolor{gray!20}0.9\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.2})} \\
- & 13B & \cellcolor[HTML]{F7EBD9}.258\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.043})} & .653\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.022})} & \cellcolor[HTML]{D9EAF3}.398\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.066})} & \cellcolor[HTML]{D9EAF3}.802\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.168})} & .379\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.217})} & \cellcolor{gray!20}2.4\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.6})} & \cellcolor{gray!20}5.8\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.2})} \\
-Mistral & 7B & .552\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.125})} & .706\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.094})} & .258\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.047})} & .446\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.357})} & -0.118\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.300})} & 77.3\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.9})} & 73.0\,{\scriptsize(\textcolor[HTML]{0072B2}{-4.0})} \\
-\midrule
-\multicolumn{9}{c}{\textit{Thinking Models}}\\ 
-\midrule
-Qwen3 & 1.7B & .586\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.087})} & .784\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.096})} & \cellcolor[HTML]{D9EAF3}.430\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.139})} & \cellcolor[HTML]{D9EAF3}.810\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.184})} & .726\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.315})} & \cellcolor{gray!10}46.2\,{\scriptsize(\textcolor[HTML]{CC7A00}{+30.4})} & \cellcolor{gray!5}46.5\,{\scriptsize(\textcolor[HTML]{CC7A00}{+28.5})} \\
- & 8B & .397\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.071})} & .610\,{\scriptsize(\textcolor[HTML]{0072B2}{-0.146})} & \cellcolor[HTML]{D9EAF3}\textbf{.427}\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.012})} & \cellcolor[HTML]{D9EAF3}.796\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.050})} & .663\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.105})} & \cellcolor{gray!20}4.7\,{\scriptsize(\textcolor[HTML]{0072B2}{-7.7})} & \cellcolor{gray!20}5.3\,{\scriptsize(\textcolor[HTML]{0072B2}{-9.4})} \\
- & 32B & .616\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.342})} & .872\,{\scriptsize(\textcolor[HTML]{CC7A00}{+0.229})} & \cellcolor[HTML]{D9EAF3}.436\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.035})} & \cellcolor[HTML]{D9EAF3}.733\,{\scriptsize(\textcolor[HTML]{0072B2}{+0.001})} & .680\,{\scriptsize(\textcolor[HTML]{CC7A00}{-0.003})} & \cellcolor{gray!10}46.7\,{\scriptsize(\textcolor[HTML]{CC7A00}{+38.4})} & \cellcolor{gray!10}38.2\,{\scriptsize(\textcolor[HTML]{CC7A00}{+33.5})} \\
-\bottomrule
-\end{tabular}
-\end{table*}
+% \begin{figure*}[h]
+% \centering
+% \includegraphics[width=0.7\textwidth]{hh_hm_grouped_scatter_7b_all_variants/7b_accuracy_op_ent_abstfiltered}
+% \caption{Human vs.\ model blind accuracy grouped by operation type (left) and entity type (right), abstention-filtered.}
+% \label{fig:scatter_accuracy}
+% \end{figure*}
 
-% END inlined from tables/supp/alignment_ranking_full_scale_ticks.tex
-
-\subsection{Per-Model Agreement Across Metrics}
-\label{app:comprehensive_metrics}
-
-\begin{table*}[h]
-\centering
-\setlength{\tabcolsep}{2.5pt}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lc|cccccc|cccccc|cccccc}
-\toprule
-\textbf{Model} & \textbf{Size} & \multicolumn{6}{c|}{\textbf{Original}}& \multicolumn{6}{c|}{\textbf{Weaker}}& \multicolumn{6}{c}{\textbf{Pronominalized}} \\
-\cmidrule(lr){3-8}\cmidrule(lr){9-14}\cmidrule(lr){15-20}
- & & \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\
-\midrule
-\textbf{Human (N=40)} & -- & 26.3 & 1.3 & 59.4 & 27.2 & 23.9 & 22.6 & 22.9 & 1.3 & 57.8 & 26.7 & 23.3 & 22.4 & 22.6 & 1.3 & 55.9 & 24.1 & 20.7 & 20.2 \\
-\midrule
-\multicolumn{20}{c}{\textit{Vision-Language Models}} \\
-\midrule
-\multirow{3}{*}{InternVL3.5} & 1B & 36.9 & 1.2 & 57.6 & 22.9 & 19.0 & 18.2 & 36.6 & 1.2 & 54.7 & 21.2 & 17.9 & 17.5 & 33.6 & 1.2 & 53.4 & 21.6 & 18.3 & 18.1 \\
- & 2B & 44.5 & 1.3 & 55.4 & 20.7 & 17.0 & 15.5 & 38.6 & 1.2 & 55.5 & 21.4 & 18.0 & 17.2 & 39.2 & 1.3 & 52.7 & 20.1 & 16.4 & 16.0 \\
- & 8B & 37.2 & 1.5 & \textbf{61.3} & \textbf{27.7} & \textbf{23.2} & \textbf{21.7} & 33.3 & 1.7 & \textbf{59.0} & \textbf{26.4} & \textbf{23.1} & \textbf{22.2} & 29.5 & 1.7 & \textbf{55.6} & \textbf{22.6} & \textbf{19.3} & \textbf{18.5} \\
-LLaVA-1.5 & 7B & 47.2 & 1.0 & 51.8 & 18.4 & 14.8 & 14.8 & \textbf{47.5} & 1.0 & 50.7 & 16.7 & 13.8 & 13.6 & 35.4 & 1.1 & 48.5 & 16.0 & 13.2 & 13.3 \\
-LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 55.6 & 21.9 & 17.8 & 17.3 & 46.0 & 1.1 & 53.9 & 20.7 & 17.6 & 17.4 & 41.3 & 1.1 & 50.1 & 17.8 & 14.5 & 14.3 \\
-\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 51.6 & 1.0 & 54.4 & 20.8 & 17.4 & 16.7 & 44.2 & 1.0 & 52.1 & 18.6 & 15.3 & 15.0 & \textbf{42.3} & 1.0 & 50.9 & 17.9 & 14.8 & 14.6 \\
- & 13B & 52.4 & 1.0 & 56.4 & 24.1 & 20.7 & 20.4 & 38.6 & 1.1 & 54.5 & 23.1 & 20.0 & 19.7 & 37.5 & 1.0 & 51.8 & 18.3 & 15.1 & 15.1 \\
-\multirow{4}{*}{Qwen3-VL} & 2B & 47.6 & 1.3 & 56.1 & 21.6 & 17.5 & 16.3 & 41.9 & 1.3 & 53.4 & 20.6 & 16.6 & 16.4 & 40.2 & 1.3 & 52.6 & 18.8 & 15.4 & 15.2 \\
- & 4B & 50.1 & 1.2 & 56.9 & 23.6 & 19.3 & 18.4 & 37.5 & 1.2 & 55.2 & 24.0 & 20.3 & 20.1 & 38.7 & 1.1 & 52.7 & 20.6 & 17.4 & 17.1 \\
- & 8B & 47.3 & 3.3 & 56.2 & 23.2 & 19.7 & 18.8 & 38.4 & 1.5 & 54.9 & 24.3 & 20.5 & 20.3 & 33.3 & 1.3 & 52.3 & 21.2 & 17.8 & 17.6 \\
- & 32B & 37.5 & \textbf{28} & 51.3 & 20.5 & 18.3 & 16.6 & 27.4 & \textbf{29} & 47.7 & 19.9 & 17.6 & 16.4 & 17.1 & \textbf{35} & 45.1 & 15.4 & 13.1 & 12.5 \\
-\midrule
-\multicolumn{20}{c}{\textit{VLM Backbone Decoders}} \\
-\midrule
-\multirow{3}{*}{InternVL3.5} & 1B & 28.9 & 1.4 & 59.5 & 27.3 & 24.0 & 22.8 & 26.0 & 1.2 & 57.3 & 26.9 & 23.5 & 22.4 & 23.8 & 1.7 & 55.1 & 24.0 & 20.3 & 19.8 \\
- & 2B & 30.7 & 3.9 & 55.1 & 25.2 & 21.6 & 20.3 & 25.7 & 3.9 & 54.8 & 25.8 & 22.8 & 21.4 & 25.3 & 5.5 & 53.4 & \textbf{24.8} & \textbf{21.5} & \textbf{20.7} \\
- & 8B & 39.8 & 3.8 & 58.9 & \textbf{28.8} & \textbf{24.4} & 22.7 & 34.5 & \textbf{5.1} & 55.8 & 26.9 & 23.7 & 22.7 & 19.9 & \textbf{15} & 46.9 & 20.8 & 17.7 & 16.7 \\
-LLaVA-1.5 & 7B & \textbf{53.7} & 1.1 & 58.7 & 26.9 & 22.8 & 22.2 & 35.1 & 1.2 & 56.9 & 27.2 & 23.1 & 22.6 & 32.1 & 1.6 & 55.5 & 22.7 & 19.0 & 18.8 \\
-LLaVA-1.6-Mistral & 7B & \textbf{53.7} & 1.1 & 59.0 & 25.4 & 21.4 & 20.8 & \textbf{39.5} & 1.1 & 57.6 & 25.5 & 22.1 & 21.8 & 37.2 & 1.3 & 55.7 & 23.1 & 19.4 & 19.3 \\
-\multirow{2}{*}{LLaVA-1.6-Vicuna} & 7B & 44.5 & 1.1 & 59.3 & 27.2 & 23.0 & 22.5 & 36.9 & 1.1 & 57.1 & 26.7 & 23.0 & 22.3 & 30.4 & 1.4 & 54.9 & 23.2 & 19.8 & 19.1 \\
- & 13B & 47.2 & 1.0 & 58.9 & 27.3 & 23.6 & \textbf{23.2} & 36.0 & 1.1 & \textbf{59.8} & \textbf{29.0} & \textbf{25.6} & \textbf{25.1} & \textbf{37.5} & 1.0 & \textbf{56.8} & 23.8 & 20.0 & 19.7 \\
-\multirow{4}{*}{Qwen3-VL} & 2B & 39.2 & \textbf{5.1} & 57.9 & 26.0 & 22.1 & 20.3 & 34.5 & 4.6 & 57.1 & 26.7 & 22.7 & 22.2 & 25.3 & 1.5 & 54.1 & 24.1 & 20.8 & 20.2 \\
- & 4B & 40.7 & 1.2 & \textbf{59.6} & 27.7 & 23.2 & 21.8 & 33.3 & 1.2 & 58.0 & 28.2 & 24.0 & 23.2 & 23.5 & 1.2 & 55.0 & 23.6 & 20.0 & 19.7 \\
- & 8B & 42.2 & 1.4 & 58.4 & 25.8 & 21.9 & 20.0 & 32.4 & 1.8 & 56.5 & 26.9 & 23.0 & 23.0 & 29.5 & 1.3 & 53.9 & 22.9 & 19.6 & 18.6 \\
- & 32B & 45.1 & 2.2 & 58.8 & 25.9 & 21.7 & 20.2 & 38.9 & 1.2 & 57.5 & 27.3 & 23.3 & 22.7 & 33.9 & 2.7 & 54.6 & 22.6 & 18.8 & 18.2 \\
-\midrule
-\multicolumn{20}{c}{\textit{Standalone LLMs}} \\
-\midrule
-Mistral & 7B & 0.0 & \textbf{30} & 21.5 & 1.8 & 1.2 & 0.0 & 0.0 & \textbf{30} & 18.8 & 1.7 & 1.7 & 0.0 & 0.0 & \textbf{28} & 16.9 & 1.3 & 0.4 & 0.0 \\
-Phi-3.5-mini & 3.8B & 5.6 & 14 & 33.3 & 9.0 & 8.4 & 3.9 & 4.7 & 16 & 31.9 & 10.5 & 9.1 & 6.3 & 9.7 & 15 & 37.7 & 11.7 & 10.0 & 8.0 \\
-Qwen2.5-Instruct & 7B & \textbf{35.4} & 1.3 & 53.8 & 21.5 & 17.4 & 16.7 & \textbf{28.3} & 1.6 & 50.6 & 20.9 & 17.0 & 16.6 & \textbf{24.4} & 1.3 & 44.5 & 17.1 & 12.4 & 12.4 \\
-\multirow{5}{*}{Qwen3} & 0.6B & 7.7 & 1.1 & 31.5 & 8.3 & 3.4 & 2.4 & 7.7 & 1.2 & 31.7 & 7.8 & 2.2 & 1.7 & 5.7 & 1.3 & 35.8 & 9.9 & 5.1 & 4.3 \\
- & 1.7B & 9.1 & 7.8 & 43.4 & 15.2 & 12.8 & 10.7 & 10.0 & 7.5 & 41.2 & 16.3 & 13.4 & 12.5 & 8.0 & 5.7 & 39.9 & 15.0 & 11.5 & 10.1 \\
- & 4B & 18.0 & 1.3 & 53.7 & 24.6 & \textbf{20.2} & 18.2 & 20.1 & 1.2 & \textbf{52.0} & \textbf{24.2} & \textbf{20.7} & \textbf{20.1} & 18.0 & 1.1 & \textbf{50.2} & \textbf{22.3} & \textbf{19.1} & \textbf{18.2} \\
- & 8B & 27.1 & 2.3 & 50.9 & 21.1 & 16.3 & 14.7 & 21.5 & 1.2 & 50.4 & 21.7 & 18.0 & 17.0 & 15.0 & 1.4 & 42.8 & 15.8 & 11.6 & 10.6 \\
- & 32B & 32.7 & 1.9 & \textbf{54.4} & \textbf{25.1} & 20.2 & \textbf{18.7} & 20.9 & 1.8 & 48.7 & 22.3 & 19.1 & 17.5 & 19.5 & 3.2 & 45.3 & 18.4 & 14.8 & 13.3 \\
-\multirow{2}{*}{Vicuna} & 7B & 17.4 & 6.9 & 41.8 & 15.9 & 15.6 & 12.1 & 14.6 & 5.2 & 39.4 & 15.5 & 15.4 & 12.0 & 9.3 & 5.3 & 38.2 & 14.0 & 13.3 & 11.3 \\
- & 13B & 26.8 & 3.0 & 50.8 & 21.2 & 19.1 & 15.7 & 19.5 & 2.9 & 42.4 & 15.2 & 14.4 & 9.7 & 17.3 & 5.1 & 43.3 & 15.4 & 13.8 & 11.0 \\
-\midrule
-\multicolumn{20}{c}{\textit{Standalone LLMs with Thinking}} \\
-\midrule
-\multirow{5}{*}{Qwen3} & 0.6B & 14.7 & 9.5 & 31.6 & 8.3 & 3.3 & 2.4 & 7.7 & 15 & 31.7 & 7.8 & 2.2 & 1.7 & 11.0 & 9.9 & 35.9 & 9.9 & 5.0 & 4.3 \\
- & 1.7B & 16.7 & 198 & 39.0 & 12.3 & 10.5 & 10.8 & 9.4 & 204 & 37.4 & 13.6 & 12.1 & 11.5 & 11.5 & 230 & 32.0 & 8.9 & 7.1 & 7.1 \\
- & 4B & 28.6 & 44 & \textbf{51.4} & \textbf{21.9} & \textbf{17.5} & \textbf{15.3} & 22.7 & 111 & 48.1 & 20.4 & 16.9 & 16.1 & 19.9 & 60 & \textbf{48.2} & \textbf{18.6} & \textbf{15.7} & \textbf{14.2} \\
- & 8B & \textbf{30.7} & 4.4 & 50.9 & 21.1 & 16.3 & 14.7 & \textbf{24.2} & 46 & \textbf{50.4} & \textbf{21.7} & \textbf{18.0} & \textbf{17.0} & \textbf{20.4} & 26 & 42.8 & 15.8 & 11.6 & 10.6 \\
- & 32B & 11.2 & \textbf{216} & 40.2 & 15.4 & 14.4 & 12.9 & 10.4 & \textbf{217} & 39.1 & 15.7 & 14.5 & 13.4 & 8.3 & \textbf{252} & 33.9 & 10.9 & 9.2 & 8.6 \\
-\bottomrule
-\end{tabular}
-}
-\caption{\small Blind performance across evaluation variants (Original, Weaker, Pronominalized). Acc = VQA accuracy (\%); Len = mean answer length in words; SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). Human row shows human--human (HH) agreement.}
-\label{tab:comprehensive_inst_blind}
-\end{table*}
-
-
-\subsection{Accuracy Alignment}
-\label{app:accuracy_alignment}
-\begin{figure*}[h]
-\centering
-\includegraphics[width=\textwidth]{hh_hm_grouped_scatter_7b_all_variants/7b_accuracy_op_ent_abstfiltered}
-\caption{Human vs.\ model blind accuracy grouped by operation type (left) and entity type (right), abstention-filtered.}
-\label{fig:scatter_accuracy}
-\end{figure*}
-
-\begin{figure*}[h]
-\centering
-\includegraphics[width=\textwidth]{degradation_by_ent_op_7b_inst_blind/accuracy/combined}
-\caption{Matched 7/8B instruction-blind accuracy degradation profiles across control variants.}
-\label{fig:combined_accuracy}
-\end{figure*}
+% \begin{figure*}[h]
+% \centering
+% \includegraphics[width=\textwidth]{degradation_by_ent_op_7b_inst_blind/accuracy/combined}
+% \caption{Matched 7/8B instruction-blind accuracy degradation profiles across control variants.}
+% \label{fig:combined_accuracy}
+% \end{figure*}
 
 \bibliography{paper}
 

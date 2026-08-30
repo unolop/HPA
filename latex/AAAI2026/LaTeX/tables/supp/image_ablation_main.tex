@@ -1,32 +1,30 @@
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\begin{tabular}{ll cccc cccc}
+\begin{tabular}{ll cccc}
 \toprule
- & & \multicolumn{4}{c}{\textbf{w/o inst}} & \multicolumn{4}{c}{\textbf{w/ inst}} \\
-\cmidrule(lr){3-6}\cmidrule(lr){7-10}
-\textbf{Model} & \textbf{Image} & SBERT & Abst. & Acc. & Chg. & SBERT & Abst. & Acc. & Chg. \\
+\textbf{Model} & \textbf{Image} & SBERT & Acc. & Abst.\% & Chg.\% \\
 \midrule
 \multirow{4}{*}{Qwen3-VL}
- & Black & \underline{0.614} & 4.5\% & 0.342 & --- & 0.623 & 2.1\% & 0.362 & --- \\
- & Gray & 0.574 & 11.3\% & 0.310 & 38.1\% & \textbf{0.638} & 1.3\% & 0.393 & 44.7\% \\
- & Noise & 0.490 & 28.6\% & 0.262 & 51.0\% & \underline{0.638} & 1.3\% & 0.393 & 44.7\% \\
- & White & \textbf{0.628} & 2.4\% & 0.371 & 26.2\% & 0.638 & 1.3\% & 0.393 & 44.7\% \\
+ & Black & \underline{0.614} & 0.342 & 4.5 & --- \\
+ & Gray  & 0.574 & 0.310 & 11.3 & 38.1 \\
+ & Noise & 0.490 & 0.262 & 28.6 & 51.0 \\
+ & White & \textbf{0.628} & 0.371 & 2.4 & 26.2 \\
 \midrule
 \multirow{4}{*}{LLaVA-Mistral}
- & Black & 0.609 & 3.1\% & 0.344 & --- & 0.623 & 1.7\% & 0.357 & --- \\
- & Gray & \underline{0.622} & 2.5\% & 0.363 & 22.4\% & \underline{0.635} & 0.6\% & 0.372 & 22.9\% \\
- & Noise & 0.590 & 3.0\% & 0.353 & 27.6\% & 0.611 & 1.4\% & 0.361 & 32.7\% \\
- & White & \textbf{0.626} & 2.4\% & 0.373 & 24.9\% & \textbf{0.642} & 0.7\% & 0.398 & 26.2\% \\
+ & Black & 0.609 & 0.344 & 3.1 & --- \\
+ & Gray  & \underline{0.622} & 0.363 & 2.5 & 22.4 \\
+ & Noise & 0.590 & 0.353 & 3.0 & 27.6 \\
+ & White & \textbf{0.626} & 0.373 & 2.4 & 24.9 \\
 \midrule
 \multirow{4}{*}{InternVL-8B}
- & Black & \underline{0.658} & 0.0\% & 0.372 & --- & \underline{0.651} & 0.6\% & 0.362 & --- \\
- & Gray & 0.648 & 0.1\% & 0.365 & 21.6\% & 0.647 & 0.9\% & 0.370 & 17.7\% \\
- & Noise & 0.639 & 0.3\% & 0.349 & 45.1\% & 0.639 & 1.5\% & 0.372 & 40.7\% \\
- & White & \textbf{0.660} & 0.0\% & 0.379 & 18.8\% & \textbf{0.655} & 0.4\% & 0.378 & 15.0\% \\
+ & Black & \underline{0.658} & 0.372 & 0.0 & --- \\
+ & Gray  & 0.648 & 0.365 & 0.1 & 21.6 \\
+ & Noise & 0.639 & 0.349 & 0.3 & 45.1 \\
+ & White & \textbf{0.660} & 0.379 & 0.0 & 18.8 \\
 \midrule
 \end{tabular}
-\caption{Image-condition ablation (original question variant). Chg.\ = response change rate relative to the black image baseline of the same condition; ``--- for the baseline itself. \textbf{Bold}: best SBERT within model and condition; \underline{underline}: second best.}
+\caption{Image-condition ablation ($N{=}1{,}000$ questions, original question variant, w/o instruction). SBERT = cosine similarity between model response and first VQA v2 ground-truth answer (\textbf{bold}: best per model, \underline{underline}: second best). Acc.\ = VQA accuracy against ground-truth answers. Abst.\% = abstention rate. Chg.\% = response change rate relative to the black image baseline; ``---'' for the baseline itself.}
 \label{tab:image_ablation_main}
-\end{table*}
+\end{table}

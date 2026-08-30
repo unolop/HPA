@@ -3,8 +3,7 @@
 % 
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{1.05}
-\caption{Full-scale alignment metrics for all models (abstention-filtered; instruction-blind condition). $\sHM$(Orig) and $\sHM$(Pron): mean HM SBERT for Original (C) and Pronominalized (A) variants. $\Delta = \sHM(\text{Orig})-\sHM(\text{Pron})$: positive = model degrades under pronominalization. Human LOO reference: $\sHH$(Orig)\,$=$\,0.596\ [0.594, 0.598]; $\sHH$(Pron)\,$=$\,0.563\ [0.561, 0.565]. \colorbox{green!20}{Green} = within human LOO 95\,\% CI. \textbf{Bold} = closest to LOO mean; \underline{underline} = second-closest. {---} = no model available at that size.}
-\label{tab:scale_alignment_full}
+
 \begin{tabular}{llccc}
 \toprule
 \textbf{Family} & \textbf{Size} & $\sHM$(Orig) & $\sHM$(Pron) & $\Delta$ \\
@@ -63,4 +62,6 @@ Qwen3 & 1.7B & 0.586 & 0.486 & +0.100 \\
  & 32B & 0.573 & 0.507 & +0.066 \\
 \bottomrule
 \end{tabular}
+\caption{Full-scale alignment metrics for all models (abstention-filtered; instruction-blind condition). $\sHM$(Orig) and $\sHM$(Pron): mean HM SBERT for Original (C) and Pronominalized (A) variants. $\Delta = \sHM(\text{Orig})-\sHM(\text{Pron})$: positive = model degrades under pronominalization. Human LOO reference: $\sHH$(Orig)\,$=$\,0.596\ [0.594, 0.598]; $\sHH$(Pron)\,$=$\,0.563\ [0.561, 0.565]. \colorbox{green!20}{Green} = within human LOO 95\,\% CI. \textbf{Bold} = closest to LOO mean; \underline{underline} = second-closest. {---} = no model available at that size.}
+\label{tab:scale_alignment_full}
 \end{table}

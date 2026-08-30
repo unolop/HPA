@@ -2,33 +2,27 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-
-\caption{Keyword rules used by the abstention classifier. Main alignment analyses exclude only hard and soft abstentions; uncertain but contentful answers are retained.}
-\label{tab:abstention_keywords}
 \begin{tabular}{@{}p{0.22\columnwidth}p{0.70\columnwidth}@{}}
 \toprule
-\textbf{Category} & \textbf{Keywords} \\
+\textbf{Category} & \textbf{Keywords / Phrases} \\
 \midrule
 \textbf{Hard} &
-\textit{cannot}, \textit{can't}, \textit{don't see}, \textit{no image},
-\textit{unable}, \textit{not visible}, \textit{no visual},
-\textit{cannot see}, \textit{i'm not able}, \textit{i am not able},
-\textit{blank};
+\textit{cannot}, \textit{can't}, \textit{can not}, \textit{i cannot},
+\textit{i don't}, \textit{don't see}, \textit{no image}, \textit{unable},
+\textit{not visible}, \textit{no visual}, \textit{cannot see},
+\textit{i'm not able}, \textit{i am not able}, \textit{blank} (whole-word);
 verbose-refusal phrases: \textit{impossible to}, \textit{does not provide},
 \textit{without more}, \textit{without additional}, \textit{not enough},
 \textit{hard to say}, \textit{hard to determine}, \textit{would need},
-\textit{not possible to}, \textit{unclear} \\
+\textit{not possible to}, \textit{unclear} (whole-word) \\
 \midrule
 \textbf{Soft} &
-\textit{unknown}, \textit{unanswerable}, \textit{nowhere}, \textit{n/a},
-\textit{na}, \textit{indeterminate}, \textit{unidentifiable}, \textit{no sign},
-\textit{can't tell}, \textit{cannot tell}, \textit{not clear},
+exact-match only: \textit{unknown}, \textit{unanswerable}, \textit{nowhere},
+\textit{n/a}, \textit{na}, \textit{indeterminate}, \textit{unidentifiable},
+\textit{no sign}, \textit{can't tell}, \textit{cannot tell}, \textit{not clear},
 \textit{not visible} \\
-% \midrule
-% \textbf{Retained in other} &
-% \textit{maybe}, \textit{possibly}, \textit{perhaps}, \textit{uncertain},
-% \textit{unsure}; contentful negatives such as \textit{nothing}, \textit{none},
-% or numeric \textit{0} for count questions \\
 \bottomrule
 \end{tabular}
+\caption{Keyword rules used by the abstention classifier. Hard patterns are matched by substring regex (case-insensitive); soft patterns require an exact full-string match after stripping punctuation. Main alignment analyses exclude hard and soft abstentions; uncertain but contentful answers (e.g., \textit{nothing}, \textit{none}) are retained.}
+\label{tab:abstention_keywords}
 \end{table}

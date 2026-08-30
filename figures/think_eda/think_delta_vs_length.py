@@ -18,7 +18,26 @@ sys.path.insert(0, str(ROOT / "analysis"))
 sys.path.insert(0, str(ROOT / "figures"))
 
 from utils.vqa import VQAAnswerMapper, vqa_accuracy  # noqa: E402
-from helpers import load_cleaned_pair_cache  # noqa: E402
+
+# Analysis repo imports via importlib (avoids utils namespace collision with HPA)
+ANALYSIS_ROOT = ROOT.parent / "human-prior-alignment"
+import importlib.util as _ilu
+
+def _import_from(name, path):
+    spec = _ilu.spec_from_file_location(name, str(path))
+    mod = _ilu.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+_load_data = _import_from("load_data", ANALYSIS_ROOT / "analysis" / "utils" / "load_data.py")
+load_hh_hm = _load_data.load_hh_hm
+load_pc_blind = _load_data.load_pc_blind
+load_responses = _load_data.load_responses
+ANALYSIS_DATA_DIR = _load_data.DATA_DIR
+
+# Free-text question IDs (VQA v2 canonical: 61 "other" questions)
+_at = pd.read_csv(ANALYSIS_DATA_DIR / "vqa_answer_types.csv")
+FT_QIDS = set(_at[_at["answer_type"] == "other"]["question_id"].astype(int))
 
 THINK_RE = re.compile(r"<think>(.*?)</think>\s*", re.DOTALL)
 VARIANT_TO_CT = {"C": "question", "B": "weaker_object", "A": "pronominalized"}
@@ -77,6 +96,8 @@ def load_metrics_by_variant(jsonl_path: Path, *, strip_think_tags: bool) -> dict
         for line in handle:
             ex = json.loads(line)
             qid = ex["question_id"]
+            if int(qid) not in FT_QIDS:
+                continue
             gt = mapper.get_answers(qid)
             answers = ex.get("generated_answers", {})
             logits = ex.get("generated_logits", {})
@@ -126,18 +147,53 @@ def load_metrics_by_variant(jsonl_path: Path, *, strip_think_tags: bool) -> dict
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    hm_frames = {}
-    for condition in CONDITIONS:
-        hm_cache = load_cleaned_pair_cache(ROOT, condition=condition, include_yesno=True, verbose=False)
-        hm_sub = hm_cache[
-            (hm_cache["pair_type"] == "HM")
-            & (hm_cache["subject_2"].isin([m for pair in MODEL_PAIRS for m in pair[:2]]))
-        ].copy()
-        hm_frames[condition] = (
-            hm_sub.groupby(["subject_2", "variant"], as_index=False)["sbert_score"]
-            .mean()
-            .rename(columns={"subject_2": "model", "sbert_score": "hm_sbert"})
-        )
+    all_model_names = [m for pair in MODEL_PAIRS for m in pair[:2]]
+
+    # inst_blind: canonical pair cache, abstention filtered, free-text only
+    hh, hm_inst = load_hh_hm(filtered=True)
+    hm_inst = hm_inst[hm_inst["question_id"].astype(int).isin(FT_QIDS)]
+    hm_inst_means = (
+        hm_inst[hm_inst["subject_2"].isin(all_model_names)]
+        .groupby(["subject_2", "variant"], as_index=False)["sbert_score"]
+        .mean()
+        .rename(columns={"subject_2": "model", "sbert_score": "hm_sbert"})
+    )
+
+    # blind: canonical blind pair cache, abstention filtered, free-text only
+    pc_blind = load_pc_blind(filtered=True)
+    hm_blind = pc_blind[pc_blind["pair_type"] == "HM"]
+    hm_blind = hm_blind[hm_blind["question_id"].astype(int).isin(FT_QIDS)]
+    hm_blind_means = (
+        hm_blind[hm_blind["subject_2"].isin(all_model_names)]
+        .groupby(["subject_2", "variant"], as_index=False)["sbert_score"]
+        .mean()
+        .rename(columns={"subject_2": "model", "sbert_score": "hm_sbert"})
+    )
+
+    hm_frames = {"inst_blind": hm_inst_means, "blind": hm_blind_means}
+
+    # ── Human LOO CIs (free-text, for plotting) ─────────────────────────────
+    hh_ft = hh[hh["question_id"].astype(int).isin(FT_QIDS)]
+    h_sbert_per_part = hh_ft.groupby("subject_1")["sbert_score"].mean().values
+    hu_sbert_lo = float(np.percentile(h_sbert_per_part, 5))
+    hu_sbert_hi = float(np.percentile(h_sbert_per_part, 95))
+
+    # Human accuracy CI (free-text, per-participant LOO)
+    human_resp = load_responses("human")
+    human_resp = human_resp[human_resp["question_id"].astype(int).isin(FT_QIDS)]
+    mapper = VQAAnswerMapper()
+    human_resp["accuracy"] = human_resp.apply(
+        lambda r: vqa_accuracy(str(r["response"]).strip(),
+                               mapper.get_answers(int(r["question_id"]))),
+        axis=1,
+    )
+    h_acc_per_part = human_resp.groupby("participant")["accuracy"].mean().values
+    hu_acc_lo = float(np.percentile(h_acc_per_part, 5))
+    hu_acc_hi = float(np.percentile(h_acc_per_part, 95))
+
+    print(f"Human LOO CIs (free-text):")
+    print(f"  sHM: [{hu_sbert_lo:.3f}, {hu_sbert_hi:.3f}]")
+    print(f"  Accuracy: [{hu_acc_lo:.3f}, {hu_acc_hi:.3f}]")
 
     acc_rows = []
     for base_model, think_model, size in MODEL_PAIRS:
@@ -266,9 +322,17 @@ def main() -> None:
     fig.tight_layout(rect=[0, 0, 1, 0.95])
     fig.savefig(OUT_DIR / f"{OUT_STEM}.png", dpi=180, bbox_inches="tight")
 
+    # Save human CI values for the plotting script
+    hh_ci = {
+        "sbert_lo": hu_sbert_lo, "sbert_hi": hu_sbert_hi,
+        "accuracy_lo": hu_acc_lo, "accuracy_hi": hu_acc_hi,
+    }
+    (OUT_DIR / "hh_ci_freetext.json").write_text(json.dumps(hh_ci, indent=2))
+
     print(df.to_string(index=False, float_format=lambda x: f"{x:.3f}"))
     print(f"\nSaved: {OUT_DIR / f'{OUT_STEM}.png'}")
     print(f"Saved: {OUT_DIR / f'{OUT_STEM}.csv'}")
+    print(f"Saved: {OUT_DIR / 'hh_ci_freetext.json'}")
 
 
 if __name__ == "__main__":

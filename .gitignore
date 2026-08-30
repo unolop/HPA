@@ -68,7 +68,12 @@ dataset/vqa/*.jsonl
 
 # LaTeX build artifacts and reference PDFs
 latex/AAAI2026/LaTeX/*.pdf
+latex/AAAI2026/LaTeX/*.aux
+latex/AAAI2026/AuthorKit27/*.aux
 latex/AAAI2026/references/
+
+# Hidden state extractions (large .pt files, reproducible from inference)
+evaluation/hidden_states/
 
 # Misc caches
 .cache/

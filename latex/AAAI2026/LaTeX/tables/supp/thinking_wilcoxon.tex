@@ -2,21 +2,22 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs on mean HM SBERT ($\sHM$), computed over all available question--variant pairs in the blind+instruction condition after abstention filtering. Two-sided paired Wilcoxon signed-rank tests compare no-think vs.\ think on matched question--variant means. {---}\,=\,no think variant available or identical checkpoint.}
-\label{tab:thinking_shm_wilcoxon}
+
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Size} & \textbf{No-think} & \textbf{Think} & \textbf{$\Delta$} & \textbf{$p$} \\
 \midrule
-0.6B  & .330 & .330 & $+0.001$ & {---} \\
-1.7B  & .436 & .561 & $+0.125$ & $<.001^{***}$ \\
-4B    & .520 & .520 & $+0.000$ & {---} \\
-8B    & .491 & .534 & $+0.043$ & $<.001^{***}$ \\
-32B   & .510 & .562 & $+0.052$ & $.431$ \\
+0.6B  & .329 & .329 & $+0.000$ & {---} \\
+1.7B  & .475 & .558 & $+0.082$ & $<.001^{***}$ \\
+4B    & .519 & .519 & $+0.000$ & {---} \\
+8B    & .491 & .539 & $+0.048$ & $<.001^{***}$ \\
+32B   & .580 & .561 & $-0.019$ & $.414$ \\
 \midrule
-Pooled & .444 & .469 & $+0.025$ & $<.001^{***}$ \\
+Pooled & .463 & .482 & $+0.019$ & $<.001^{***}$ \\
 \bottomrule
 \end{tabular}
+\caption{Think vs.\ no-think comparison for Qwen3 SA-LLMs on mean HM SBERT ($\sHM$), computed over all available question--variant pairs in the blind+instruction condition after abstention filtering. Two-sided paired Wilcoxon signed-rank tests compare no-think vs.\ think on matched question--variant means. {---}\,=\,no think variant available or identical checkpoint.}
+\label{tab:thinking_shm_wilcoxon}
 \end{table}
 
 \begin{table}[h]
@@ -30,10 +31,10 @@ Pooled & .444 & .469 & $+0.025$ & $<.001^{***}$ \\
 \textbf{Size} & \textbf{No-think} & \textbf{$p$} & \textbf{Think} & \textbf{$p$} & \textbf{$\Delta$} \\
 \midrule
 0.6B  & $-0.310$ & $<.001^{***}$ & $-0.306$ & $<.001^{***}$ & $+0.004$ \\
-1.7B  & $0.523$ & $<.001^{***}$ & $0.726$ & $<.001^{***}$ & $+0.203$ \\
+1.7B  & $0.499$ & $<.001^{***}$ & $0.730$ & $<.001^{***}$ & $+0.231$ \\
 4B    & $0.702$ & $<.001^{***}$ & $0.702$ & $<.001^{***}$ & $+0.000$ \\
-8B    & $0.525$ & $<.001^{***}$ & $0.663$ & $<.001^{***}$ & $+0.137$ \\
-32B   & $0.688$ & $<.001^{***}$ & $0.680$ & $<.001^{***}$ & $-0.008$ \\
+8B    & $0.525$ & $<.001^{***}$ & $0.663$ & $<.001^{***}$ & $+0.138$ \\
+32B   & $0.691$ & $<.001^{***}$ & $0.680$ & $<.001^{***}$ & $-0.011$ \\
 \bottomrule
 \end{tabular}
 \end{table}

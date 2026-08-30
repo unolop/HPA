@@ -1,0 +1,35 @@
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{ll cccc cccc}
+\toprule
+ & & \multicolumn{4}{c}{\textbf{w/o inst}} & \multicolumn{4}{c}{\textbf{w/ inst}} \\
+\cmidrule(lr){3-6}\cmidrule(lr){7-10}
+\textbf{Model} & \textbf{Image} & SBERT & Abst. & Acc. & Chg. & SBERT & Abst. & Acc. & Chg. \\
+\midrule
+\multirow{5}{*}{Qwen3-VL}
+ & \textit{Avg.\ $\Delta$} & \textit{$-$0.050} & \textit{$+$9.6\%} & \textit{$-$0.028} & \textit{38.4\%} & \textit{$+$0.015} & \textit{$-$0.8\%} & \textit{$+$0.031} & \textit{44.7\%} \\
+ & Black & \underline{0.614} & 4.5\% & 0.342 & --- & 0.623 & 2.1\% & 0.362 & --- \\
+ & Gray & 0.574 & 11.3\% & 0.310 & 38.1\% & \textbf{0.638} & 1.3\% & 0.393 & 44.7\% \\
+ & Noise & 0.490 & 28.6\% & 0.262 & 51.0\% & \underline{0.638} & 1.3\% & 0.393 & 44.7\% \\
+ & White & \textbf{0.628} & 2.4\% & 0.371 & 26.2\% & 0.638 & 1.3\% & 0.393 & 44.7\% \\
+\midrule
+\multirow{5}{*}{LLaVA-Mistral}
+ & \textit{Avg.\ $\Delta$} & \textit{$+$0.004} & \textit{$-$0.5\%} & \textit{$+$0.019} & \textit{25.0\%} & \textit{$+$0.006} & \textit{$-$0.8\%} & \textit{$+$0.020} & \textit{27.3\%} \\
+ & Black & 0.609 & 3.1\% & 0.344 & --- & 0.623 & 1.7\% & 0.357 & --- \\
+ & Gray & \underline{0.622} & 2.5\% & 0.363 & 22.4\% & \underline{0.635} & 0.6\% & 0.372 & 22.9\% \\
+ & Noise & 0.590 & 3.0\% & 0.353 & 27.6\% & 0.611 & 1.4\% & 0.361 & 32.7\% \\
+ & White & \textbf{0.626} & 2.4\% & 0.373 & 24.9\% & \textbf{0.642} & 0.7\% & 0.398 & 26.2\% \\
+\midrule
+\multirow{5}{*}{InternVL-8B}
+ & \textit{Avg.\ $\Delta$} & \textit{$-$0.009} & \textit{$+$0.1\%} & \textit{$-$0.008} & \textit{28.5\%} & \textit{$-$0.004} & \textit{$+$0.3\%} & \textit{$+$0.011} & \textit{24.5\%} \\
+ & Black & \underline{0.658} & 0.0\% & 0.372 & --- & \underline{0.651} & 0.6\% & 0.362 & --- \\
+ & Gray & 0.648 & 0.1\% & 0.365 & 21.6\% & 0.647 & 0.9\% & 0.370 & 17.7\% \\
+ & Noise & 0.639 & 0.3\% & 0.349 & 45.1\% & 0.639 & 1.5\% & 0.372 & 40.7\% \\
+ & White & \textbf{0.660} & 0.0\% & 0.379 & 18.8\% & \textbf{0.655} & 0.4\% & 0.378 & 15.0\% \\
+\midrule
+\end{tabular}
+\caption{Image-condition ablation ($N{=}1{,}000$ questions, original question variant). \textit{Avg.\ $\Delta$} = mean delta from the Black baseline across the three non-baseline image conditions (Gray, Noise, White). Chg.\ = response change rate relative to the black image baseline of the same condition; ``---'' for the baseline itself. \textbf{Bold}: best SBERT within model and condition; \underline{underline}: second best.}
+\label{tab:image_ablation_both_conditions}
+\end{table*}

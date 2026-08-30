@@ -2,19 +2,16 @@
 \centering
 \small
 \setlength{\tabcolsep}{2.2pt}
-\renewcommand{\arraystretch}{0.95}
-\caption{$\djs$ divergence and modal-match rate vs.\ the human distribution. Human LOO reports the leave-one-out mean and 95\% bootstrap CI. Abs = abstention rate; parenthetical values are with-instruction minus blind abstention (\textcolor[HTML]{0072B2}{blue}: reduced abstention; \textcolor[HTML]{CC7A00}{orange}: increased abstention). \colorbox[HTML]{D9EAF3}{Blue}: within human LOO 95\,\% CI. \colorbox[HTML]{F7EBD9}{Orange}: exceeds CI toward pooled mean ($\djs$ below CI lower bound; Mode above CI upper bound).}
-\label{tab:hm_grouped_distribution_7b_compact_filtered}
-
+\renewcommand{\arraystretch}{0.95p}
 \begin{tabular}{lcc@{\hspace{6pt}}cc}
 \toprule
 \multirow{2}{*}{\textbf{Model}} &
 \multicolumn{2}{c}{\textbf{Yes/No} ($N{=}78$)} &
-\multicolumn{2}{c}{\textbf{Count} ($N{=}78$)} \\
+\multicolumn{2}{c}{\textbf{Num} ($N{=}78$)} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 & \textbf{$D_{\mathrm{JS}}$} & \textbf{Mode} & \textbf{$D_{\mathrm{JS}}$} & \textbf{Abs(\%)} \\
 \midrule
-\textbf{Human LOO} & \makecell[c]{.271 \\ {[.260, .282]}} & \makecell[c]{.653 \\ {[.610, .692]}} & \makecell[c]{.524 \\ {[.493, .554]}} & --- \\
+\textbf{Human LOO} & \makecell[c]{.271 \\ {\scriptsize[.260, .282]}} & \makecell[c]{.653 \\ {\scriptsize[.610, .692]}} & \makecell[c]{.524 \\ {\scriptsize[.493, .554]}} & --- \\
 \midrule
 \multicolumn{5}{c}{\textbf{VLMs}} \\
 \midrule
@@ -26,11 +23,11 @@ Qwen3-VL & \cellcolor[HTML]{D9EAF3}.277 & \cellcolor[HTML]{D9EAF3}.654 & .788 & 
 \midrule
 \multicolumn{5}{c}{\textbf{Backbone Decoders}} \\
 \midrule
-InternVL & \cellcolor[HTML]{F7EBD9}.209 & \cellcolor[HTML]{F7EBD9}.872 & .575 & 26.9 {(\textcolor[HTML]{0072B2}{-19.2})} \\
+InternVL & \cellcolor[HTML]{F7EBD9}.209 & \cellcolor[HTML]{F7EBD9}.872 & .575 & 26.9 {(\textcolor[HTML]{0072B2}{-19.3})} \\
 LLaVA-1.5 & \cellcolor[HTML]{F7EBD9}.241 & \cellcolor[HTML]{F7EBD9}.731 & .663 & 0.0 \\
 LLaVA-Mistral & \cellcolor[HTML]{D9EAF3}.275 & \cellcolor[HTML]{D9EAF3}.654 & .671 & 0.0 \\
 LLaVA-Vicuna & \cellcolor[HTML]{F7EBD9}.223 & \cellcolor[HTML]{F7EBD9}.808 & .693 & 0.0 \\
-Qwen3-VL & \cellcolor[HTML]{F7EBD9}.230 & \cellcolor[HTML]{F7EBD9}.821 & .745 & 2.6 {(\textcolor[HTML]{0072B2}{-2.6})} \\
+Qwen3-VL & \cellcolor[HTML]{F7EBD9}.230 & \cellcolor[HTML]{F7EBD9}.821 & .745 & 2.6 {(\textcolor[HTML]{0072B2}{-2.5})} \\
 \midrule
 \multicolumn{5}{c}{\textbf{Standalone LLMs}} \\
 \midrule
@@ -40,4 +37,6 @@ Qwen3 (think) & .397 & \cellcolor[HTML]{D9EAF3}.684 & .610 & 2.6 {(\textcolor[HT
 Vicuna & \cellcolor[HTML]{F7EBD9}.225 & \cellcolor[HTML]{F7EBD9}.821 & .788 & 0.0 {(\textcolor[HTML]{0072B2}{-5.1})} \\
 \bottomrule
 \end{tabular}
+\caption{$\djs$ divergence and modal-match rate vs.\ the human distribution. Human LOO reports the leave-one-out mean and 95\% bootstrap CI. Abs = abstention rate; parenthetical values are with-instruction minus blind abstention (\textcolor[HTML]{0072B2}{blue}: reduced abstention; \textcolor[HTML]{CC7A00}{orange}: increased abstention). \colorbox[HTML]{D9EAF3}{Blue}: within human LOO 95\,\% CI. \colorbox[HTML]{F7EBD9}{Orange}: $\djs$ below CI lower bound; Mode above CI upper bound.}
+\label{tab:hm_grouped_distribution_7b_compact_filtered}
 \end{table}

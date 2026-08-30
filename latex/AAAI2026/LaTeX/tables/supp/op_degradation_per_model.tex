@@ -3,8 +3,7 @@
 
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{0.92}
-\caption{Per-model original-to-pronominalized SBERT degradation ($\Delta = S_\mathrm{Orig} - S_\mathrm{Pron}$) by operation group for the matched 7/8B model set, using free-text questions only. Columns are sorted by human $\Delta$ in descending order. Avg = mean degradation across the shown operation groups. Gray values in architecture headers give the mean profile for that class; formal group-level significance tests are reported separately in Table~\ref{tab:degradation_wilcoxon}.}
-\label{tab:op_degradation_per_model}
+
 \begin{tabular}{>{\raggedright\arraybackslash}p{2.1cm}rrrrrrrrrr}
 \toprule
 \textbf{Model} & \rotatebox{60}{\textbf{Identity}} & \rotatebox{60}{\textbf{World K.}} & \rotatebox{60}{\textbf{Action}} & \rotatebox{60}{\textbf{Causality}} & \rotatebox{60}{\textbf{Attribute}} & \rotatebox{60}{\textbf{Spatial}} & \rotatebox{60}{\textbf{Comparison}} & \rotatebox{60}{\textbf{Temporal}} & \rotatebox{60}{\textbf{Text R.}} & \rotatebox{60}{\textbf{Avg}} \\
@@ -35,4 +34,6 @@ Qwen2.5 & +0.26 & +0.14 & +0.10 & -0.00 & +0.07 & +0.12 & -0.13 & +0.04 & -0.39 
 Vicuna & +0.32 & -0.01 & +0.06 & -0.45 & +0.08 & +0.03 & +0.08 & +0.06 & -0.30 & -0.01 \\
 \bottomrule
 \end{tabular}
+\caption{Per-model original-to-pronominalized SBERT degradation ($\Delta = S_\mathrm{Orig} - S_\mathrm{Pron}$) by operation group for the matched 7/8B model set, using free-text questions only. Columns are sorted by human $\Delta$ in descending order. Avg = mean degradation across the shown operation groups. Gray values in architecture headers give the mean profile for that class; formal group-level significance tests are reported separately in Table~\ref{tab:degradation_wilcoxon}.}
+\label{tab:op_degradation_per_model}
 \end{table*}

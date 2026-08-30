@@ -2,32 +2,34 @@
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\caption{Per-model human--model alignment under three embedding metrics (all variants combined, 7/8B models). SBERT = \texttt{all-mpnet-base-v2}; SimCSE = \texttt{sup-simcse-roberta-large}; BERTScore = \texttt{roberta-large}. Spearman~$\rho$ in footer compares per-model rankings against SBERT. Group separators: VLM / Backbone / SA-LLM / Think.}
+\caption{Per-model human--model alignment under three embedding metrics (all variants combined, 7/8B models). SBERT = \texttt{all-mpnet-base-v2}; SimCSE = \texttt{sup-simcse-roberta-large}; BERTScore = \texttt{roberta-large}. Spearman~$\rho$ in footer compares per-model rankings against SBERT.}
 \label{tab:robustness_embedding_per_model}
 \begin{tabular}{lrrr}
 \toprule
 \textbf{Model} & \textbf{SBERT} & \textbf{SimCSE} & \textbf{BERTScore} \\
 \midrule
-InternVL-8B & 0.598 & 0.650 & 0.947 \\
-Qwen3-VL-8B & 0.549 & 0.615 & 0.946 \\
-LLaVA-1.5 & 0.503 & 0.573 & 0.952 \\
-LLaVA-Mistral & 0.535 & 0.603 & 0.953 \\
-LLaVA-Vicuna & 0.524 & 0.590 & 0.953 \\
-\addlinespace[3pt]
-InternVL-8B (LM) & 0.575 & 0.642 & 0.933 \\
-Qwen3-VL-8B (LM) & 0.568 & 0.637 & 0.947 \\
-LLaVA-1.5 (LM) & 0.574 & 0.632 & 0.956 \\
-LLaVA-Mistral (LM) & 0.576 & 0.634 & 0.954 \\
-LLaVA-Vicuna (LM) & 0.574 & 0.632 & 0.952 \\
-\addlinespace[3pt]
-Qwen3-8B & 0.477 & 0.580 & 0.938 \\
-Qwen2.5-7B & 0.500 & 0.594 & 0.934 \\
-Vicuna-7B & 0.407 & 0.559 & 0.885 \\
-Mistral-7B & 0.210 & 0.419 & 0.803 \\
-\addlinespace[3pt]
-Qwen3-8B (think) & 0.525 & 0.607 & 0.936 \\
+\multicolumn{4}{l}{\textit{VLM}} \\
+\quad InternVL-8B & 0.599 & 0.650 & 0.947 \\
+\quad Qwen3-VL-8B & 0.562 & 0.626 & 0.949 \\
+\quad LLaVA-1.5 & 0.512 & 0.583 & 0.953 \\
+\quad LLaVA-Mistral & 0.540 & 0.607 & 0.953 \\
+\quad LLaVA-Vicuna & 0.527 & 0.593 & 0.954 \\
 \midrule
-Spearman~$\rho$ vs.\ SBERT & --- & 0.960 & 0.550 \\
+\multicolumn{4}{l}{\textit{Backbone Decoder}} \\
+\quad InternVL-8B & 0.579 & 0.644 & 0.934 \\
+\quad Qwen3-VL-8B & 0.577 & 0.643 & 0.948 \\
+\quad LLaVA-1.5 & 0.575 & 0.633 & 0.956 \\
+\quad LLaVA-Mistral & 0.585 & 0.640 & 0.956 \\
+\quad LLaVA-Vicuna & 0.576 & 0.633 & 0.952 \\
+\midrule
+\multicolumn{4}{l}{\textit{Standalone LLM}} \\
+\quad Qwen3-8B & 0.491 & 0.588 & 0.938 \\
+\quad Qwen3-8B (think) & 0.534 & 0.613 & 0.936 \\
+\quad Qwen2.5-7B & 0.519 & 0.609 & 0.938 \\
+\quad Vicuna-7B & 0.409 & 0.560 & 0.885 \\
+\quad Mistral-7B & 0.219 & 0.419 & 0.810 \\
+\midrule
+Spearman~$\rho$ vs.\ SBERT & --- & 0.949 & 0.565 \\
 \bottomrule
 \end{tabular}
 \end{table}

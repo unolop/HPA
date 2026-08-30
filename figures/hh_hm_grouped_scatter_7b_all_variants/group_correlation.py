@@ -187,11 +187,11 @@ def plot_correlation_boxplot(results_op: dict, results_ent: dict):
             box_data.append(hrs if hrs else [np.nan])
 
         bp = ax.boxplot(
-            box_data, positions=x, widths=0.55,
+            box_data, positions=x, widths=0.35,
             patch_artist=True, showfliers=True,
             flierprops=dict(marker=".", markersize=3, color="#999999", alpha=0.5),
             medianprops=dict(color="#333333", lw=1.8),
-            boxprops=dict(facecolor="#dddddd", edgecolor="#888888", linewidth=0.9),
+            boxprops=dict(facecolor="#dddddd", edgecolor="#888888", linewidth=0.9, alpha=0.45),
             whiskerprops=dict(color="#888888", lw=0.9),
             capprops=dict(color="#888888", lw=0.9),
             zorder=1,
@@ -234,7 +234,7 @@ def plot_correlation_boxplot(results_op: dict, results_ent: dict):
         plt.Rectangle((0, 0), 1, 1, facecolor="#dddddd", edgecolor="#888888",
                        linewidth=0.9, label="Human range (boxplot)"),
     ]
-    fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.04),
+    fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, 0.02),
                ncol=len(handles), fontsize=8.5, frameon=False,
                handletextpad=0.4, columnspacing=1.0)
 

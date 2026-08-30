@@ -3,8 +3,7 @@
 \small
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{0.96}
-\caption{Per-model alignment ranking. \colorbox[HTML]{D9EAF3}{Blue}\,$\checkmark$ = within human LOO 95\,\% CI; \colorbox[HTML]{F7EBD9}{orange}\,$\triangle$ = exceeds CI toward pooled mean. Abst(\%) = spontaneous (w/o\,$\uparrow$) and instructed (w/\,$\downarrow$) abstention rates (\textbf{bold} = best; \underline{underline} = second-best).}
-\label{tab:alignment_ranking_7b_ticks}
+
 \begin{tabular}{>{\raggedright\arraybackslash}p{2.6cm}cccccc}
 \toprule
 \multirow{2}{*}{\textbf{Model}} & \multicolumn{2}{c}{$\djs$} & \multicolumn{2}{c}{$\sHM$} & \multicolumn{2}{c}{Abst(\%)} \\
@@ -35,4 +34,6 @@ Qwen3 (think) & - & - & \cellcolor[HTML]{D9EAF3}$\checkmark$ & - & \underline{12
 Vicuna & \cellcolor[HTML]{F7EBD9}$\triangle$ & - & - & - & 1.2 & 1.5 \\
 \bottomrule
 \end{tabular}
+\caption{Per-model alignment ranking. \colorbox[HTML]{D9EAF3}{Blue}\,$\checkmark$ = within human LOO 95\,\% CI; \colorbox[HTML]{F7EBD9}{orange}\,$\triangle$ = over-aligned. Abst(\%) = spontaneous (w/o\,$\uparrow$) and instructed (w/\,$\downarrow$) abstention rates (\textbf{bold} = best; \underline{underline} = second-best).}
+\label{tab:alignment_ranking_7b_ticks}
 \end{table}

@@ -1,0 +1,43 @@
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Question} & \textbf{Group} & \textbf{C (orig.)} & \textbf{B (weaker)} & \textbf{A (pron.)} \\
+\midrule
+\multirow{4}{*}{\makecell[l]{\textit{Is there a couch?}\\$\to$ \textit{furniture?} $\to$ \textit{one?}}}
+ & Human & 77 & 87 & 56 \\
+ & VLM & \textbf{20} & \textbf{20} & 40 \\
+ & Backbone & 80 & 100 & 100 \\
+ & SA-LLM & 75 & 100 & 100 \\
+\midrule
+\multirow{4}{*}{\makecell[l]{\textit{Is there a lighthouse?}\\$\to$ \textit{a building?} $\to$ \textit{one?}}}
+ & Human & 51 & 82 & 49 \\
+ & VLM & \textbf{20} & 40 & 40 \\
+ & Backbone & 100 & 100 & 100 \\
+ & SA-LLM & 100 & 100 & 100 \\
+\midrule
+\multirow{4}{*}{\makecell[l]{\textit{Is there broccoli in the mixture?}\\$\to$ \textit{vegetable?} $\to$ \textit{any?}}}
+ & Human & 67 & 77 & 79 \\
+ & VLM & \textbf{0} & 40 & 40 \\
+ & Backbone & 40 & 100 & 60 \\
+ & SA-LLM & 25 & 75 & 0 \\
+\midrule
+\multirow{4}{*}{\makecell[l]{\textit{Is there a hot dog in there?}\\$\to$ \textit{a food?} $\to$ \textit{one?}}}
+ & Human & 74 & 67 & 56 \\
+ & VLM & \textbf{20} & \textbf{0} & 40 \\
+ & Backbone & 20 & 80 & 100 \\
+ & SA-LLM & 25 & 75 & 100 \\
+\midrule
+\multirow{4}{*}{\makecell[l]{\textit{Is there cheese on the sandwich?}\\$\to$ \textit{on the food?} $\to$ \textit{on it?}}}
+ & Human & 77 & 77 & 51 \\
+ & VLM & 40 & \textbf{20} & \textbf{20} \\
+ & Backbone & 80 & 80 & 40 \\
+ & SA-LLM & 100 & 50 & 50 \\
+\bottomrule
+\end{tabular}
+\caption{Yes-response rate (\%) on representative existence questions across control variants. VLMs consistently answer \textit{no} to specific entities (C) while humans default to \textit{yes}---a specificity-driven absence prior. Backbone decoders and SA-LLMs recover under anchor weakening (B), but VLMs remain suppressed. \textbf{Bold} = yes\% ${\leq}20$ (strong no-bias). All values from instruction-blind condition, 5 VLMs, 5 backbone decoders, 4 SA-LLMs, 39 humans per variant.}
+\label{tab:exist_example_responses}
+\end{table}

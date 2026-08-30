@@ -78,6 +78,7 @@ OP_LABEL = {
 
 def load():
     pc = pd.read_parquet(EXPORTS / "pair_cache_cleaned.parquet")
+    pc = filter_abstained_pairs(pc)
     hm = pc[pc["pair_type"] == "HM"].copy()
     hh = pc[pc["pair_type"] == "HH"].copy()
     return pc, hm, hh
@@ -85,30 +86,44 @@ def load():
 
 # ── 1. Metric correlation heatmap ─────────────────────────────────────────────
 
-def make_metric_correlation(hm: pd.DataFrame) -> None:
-    """Pearson r between all metrics at the per-(question, variant) mean level."""
-    qv = hm.groupby(["question_id", "variant"])[METRICS].mean()
+def _corr_matrix(hm_sub: pd.DataFrame):
+    """Compute per-(question, variant) mean correlation matrix."""
+    qv = hm_sub.groupby(["question_id", "variant"])[METRICS].mean()
     corr = qv.corr(method="pearson")
     labels = [METRIC_LABEL[m] for m in METRICS]
     corr.index = labels
     corr.columns = labels
+    return corr
 
-    # lower-triangle only
-    mask = np.triu(np.ones_like(corr, dtype=bool), k=1)
 
-    fig, ax = plt.subplots(figsize=(6.5, 5.8))
+def _plot_single_corr(corr, mask, out_path: Path, *, cbar: bool = True) -> None:
+    figw = 6.0 if cbar else 5.0
+    fig, ax = plt.subplots(figsize=(figw, 5.0))
     sns.heatmap(
         corr, ax=ax, mask=mask,
         annot=True, fmt=".2f", annot_kws={"fontsize": 9},
         cmap="RdYlGn", vmin=-0.2, vmax=1.0, center=0.5,
         square=True, linewidths=0.5,
-        cbar_kws={"shrink": 0.75, "label": "Pearson r"},
+        cbar=cbar,
+        **({"cbar_kws": {"shrink": 0.75, "label": "Pearson r"}} if cbar else {}),
     )
     plt.tight_layout()
-    out = FIG_DIR / "metric_correlation_per_question_hm_113.png"
-    fig.savefig(out, dpi=180, bbox_inches="tight")
+    fig.savefig(out_path, dpi=180, bbox_inches="tight")
     plt.close(fig)
-    print(f"Saved: {out}")
+    print(f"Saved: {out_path}")
+
+
+def make_metric_correlation(hm: pd.DataFrame) -> None:
+    _at = pd.read_csv(ROOT.parent / "human-prior-alignment" / "data" / "vqa_answer_types.csv")
+    ft_qids = set(_at[_at["answer_type"] == "other"]["question_id"].astype(int))
+    hm_ft = hm[hm["question_id"].astype(int).isin(ft_qids)]
+
+    corr_all = _corr_matrix(hm)
+    corr_ft  = _corr_matrix(hm_ft)
+    mask = np.triu(np.ones_like(corr_all, dtype=bool), k=1)
+
+    _plot_single_corr(corr_ft,  mask, FIG_DIR / "metric_correlation_per_question_hm_183.png", cbar=False)
+    _plot_single_corr(corr_all, mask, FIG_DIR / "metric_correlation_per_question_hm_339.png", cbar=True)
 
 
 # ── 2. Embedding comparison table ─────────────────────────────────────────────

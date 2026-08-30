@@ -1,0 +1,39 @@
+\begin{table*}[h]
+\centering
+\small
+\setlength{\tabcolsep}{3.8pt}
+\renewcommand{\arraystretch}{1.02}
+
+\begin{tabular}{lcccccccccc}
+\toprule
+\multirow{2}{*}{\textbf{Row}} & \multicolumn{4}{c}{\textbf{Operation groups}} & \multicolumn{5}{c}{\textbf{Entity groups}} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-10}
+& \rotatebox{60}{\textbf{Attr.}} & \rotatebox{60}{\textbf{Spat.}} & \rotatebox{60}{\textbf{Ident.}} & \rotatebox{60}{\textbf{Other}} & \rotatebox{60}{\textbf{Person}} & \rotatebox{60}{\textbf{Animal}} & \rotatebox{60}{\textbf{Object}} & \rotatebox{60}{\textbf{Food}} & \rotatebox{60}{\textbf{Other}} \\
+\midrule
+\textbf{Human LOO} & \cellcolor{orange!12}$+0.049$ & \cellcolor{orange!12}$+0.039$ & \cellcolor{orange!24}$+0.196^{*}$ & \cellcolor{orange!12}$+0.031$ & \cellcolor{orange!12}$+0.046$ & \cellcolor{orange!24}$+0.121^{*}$ & \cellcolor{orange!12}$+0.062$ & \cellcolor{orange!24}$+0.111^{*}$ & \cellcolor{orange!12}$+0.037$ \\
+\midrule
+\rowcolor{gray!12}\textit{VLM Mean} & \cellcolor{orange!12}$+0.047^{*}$ & \cellcolor{orange!24}$+0.115^{**}$ & \cellcolor{orange!24}$+0.221^{**}$ & \cellcolor{orange!12}$+0.057$ & \cellcolor{orange!12}$+0.035$ & \cellcolor{orange!24}$+0.102^{*}$ & \cellcolor{orange!12}$+0.079$ & \cellcolor{orange!24}$+0.182^{**}$ & \cellcolor{orange!12}$+0.081$ \\
+\midrule
+\quad InternVL-8B & \cellcolor{orange!12}$+0.084^{*}$ & \cellcolor{orange!24}$+0.117^{*}$ & \cellcolor{orange!24}$+0.260^{*}$ & \cellcolor{orange!12}$+0.026$ & \cellcolor{orange!12}$+0.066$ & \cellcolor{orange!24}$+0.125$ & \cellcolor{orange!24}$+0.129^{*}$ & \cellcolor{orange!24}$+0.208^{*}$ & \cellcolor{orange!12}$+0.058$ \\
+\quad Qwen3-VL-8B & \cellcolor{orange!12}$+0.065^{*}$ & \cellcolor{orange!24}$+0.106^{*}$ & \cellcolor{orange!24}$+0.256^{**}$ & \cellcolor{orange!12}$+0.079$ & \cellcolor{orange!12}$+0.072$ & \cellcolor{orange!24}$+0.134^{*}$ & \cellcolor{orange!12}$+0.028$ & \cellcolor{orange!24}$+0.162^{*}$ & \cellcolor{orange!24}$+0.163^{*}$ \\
+\quad LLaVA-1.5-7B & \cellcolor{orange!12}$+0.023$ & \cellcolor{orange!24}$+0.146$ & \cellcolor{orange!24}$+0.142$ & \cellcolor{orange!12}$+0.063$ & \cellcolor{orange!12}$+0.038$ & \cellcolor{orange!12}$+0.064$ & \cellcolor{orange!12}$+0.068$ & \cellcolor{orange!12}$+0.077$ & \cellcolor{orange!12}$+0.092$ \\
+\quad LLaVA-Mistral & \cellcolor{orange!12}$+0.060^{*}$ & \cellcolor{orange!24}$+0.112$ & \cellcolor{orange!24}$+0.243^{*}$ & $-0.015$ & $+0.014$ & \cellcolor{orange!24}$+0.129^{*}$ & \cellcolor{orange!24}$+0.101^{**}$ & \cellcolor{orange!24}$+0.237^{**}$ & \cellcolor{orange!12}$+0.053$ \\
+\quad LLaVA-Vicuna & \cellcolor{orange!12}$+0.033$ & \cellcolor{orange!12}$+0.081$ & \cellcolor{orange!24}$+0.203^{**}$ & \cellcolor{orange!12}$+0.063$ & $-0.007$ & \cellcolor{orange!12}$+0.046$ & \cellcolor{orange!12}$+0.082^{*}$ & \cellcolor{orange!24}$+0.189$ & \cellcolor{orange!12}$+0.085$ \\
+\rowcolor{gray!12}\textit{Backbone Mean} & \cellcolor{orange!12}$+0.053$ & \cellcolor{orange!12}$+0.087^{**}$ & \cellcolor{orange!24}$+0.197^{*}$ & \cellcolor{orange!12}$+0.056$ & \cellcolor{orange!12}$+0.051$ & \cellcolor{orange!24}$+0.128^{*}$ & \cellcolor{orange!12}$+0.071$ & \cellcolor{orange!24}$+0.129^{*}$ & \cellcolor{orange!12}$+0.079$ \\
+\midrule
+\quad InternVL-8B (LM) & \cellcolor{orange!12}$+0.073^{*}$ & \cellcolor{orange!12}$+0.086$ & \cellcolor{orange!24}$+0.258^{*}$ & \cellcolor{orange!12}$+0.032$ & \cellcolor{orange!24}$+0.114^{*}$ & \cellcolor{orange!24}$+0.179^{*}$ & \cellcolor{orange!12}$+0.039$ & \cellcolor{orange!24}$+0.143^{*}$ & \cellcolor{orange!12}$+0.082$ \\
+\quad Qwen3-VL-8B (LM) & \cellcolor{orange!12}$+0.065^{*}$ & \cellcolor{orange!24}$+0.105$ & \cellcolor{orange!24}$+0.215^{*}$ & \cellcolor{orange!12}$+0.065$ & \cellcolor{orange!12}$+0.073$ & \cellcolor{orange!24}$+0.138^{*}$ & \cellcolor{orange!12}$+0.064$ & \cellcolor{orange!24}$+0.177^{**}$ & \cellcolor{orange!12}$+0.084$ \\
+\quad LLaVA-1.5 (LM) & \cellcolor{orange!12}$+0.039$ & \cellcolor{orange!12}$+0.082$ & \cellcolor{orange!24}$+0.136$ & \cellcolor{orange!12}$+0.054$ & \cellcolor{orange!12}$+0.033$ & \cellcolor{orange!12}$+0.068$ & \cellcolor{orange!12}$+0.082$ & \cellcolor{orange!12}$+0.084$ & \cellcolor{orange!12}$+0.076$ \\
+\quad LLaVA-Mistral (LM) & \cellcolor{orange!12}$+0.027$ & \cellcolor{orange!24}$+0.113$ & \cellcolor{orange!24}$+0.225^{*}$ & $-0.009$ & \cellcolor{orange!12}$+0.038$ & \cellcolor{orange!24}$+0.142^{*}$ & \cellcolor{orange!12}$+0.088$ & \cellcolor{orange!24}$+0.122^{*}$ & $+0.015$ \\
+\quad LLaVA-Vicuna (LM) & \cellcolor{orange!12}$+0.043$ & \cellcolor{orange!12}$+0.069$ & \cellcolor{orange!24}$+0.188^{**}$ & \cellcolor{orange!12}$+0.094$ & $+0.011$ & \cellcolor{orange!24}$+0.109^{*}$ & \cellcolor{orange!12}$+0.078$ & \cellcolor{orange!24}$+0.108^{*}$ & \cellcolor{orange!24}$+0.115$ \\
+\rowcolor{gray!12}\textit{SA-LLM Mean} & \cellcolor{orange!12}$+0.067^{*}$ & \cellcolor{orange!12}$+0.092^{**}$ & \cellcolor{orange!24}$+0.253^{**}$ & $-0.019$ & \cellcolor{orange!12}$+0.038$ & \cellcolor{orange!24}$+0.163^{**}$ & \cellcolor{orange!12}$+0.052$ & \cellcolor{orange!24}$+0.149^{*}$ & \cellcolor{orange!12}$+0.082^{*}$ \\
+\midrule
+\quad Qwen3-8B & \cellcolor{orange!12}$+0.074^{*}$ & \cellcolor{orange!24}$+0.104$ & \cellcolor{orange!24}$+0.173$ & $-0.011$ & \cellcolor{orange!12}$+0.092^{*}$ & \cellcolor{orange!12}$+0.033$ & \cellcolor{orange!12}$+0.051$ & \cellcolor{orange!24}$+0.151^{*}$ & \cellcolor{orange!12}$+0.040$ \\
+\quad Qwen3-8B (think) & \cellcolor{orange!12}$+0.050$ & \cellcolor{orange!12}$+0.074$ & \cellcolor{orange!24}$+0.267^{*}$ & $-0.005$ & \cellcolor{orange!12}$+0.051$ & \cellcolor{orange!24}$+0.154$ & \cellcolor{orange!12}$+0.077$ & \cellcolor{orange!12}$+0.069$ & \cellcolor{orange!12}$+0.036$ \\
+\quad Qwen2.5-7B-Instruct & \cellcolor{orange!12}$+0.067$ & \cellcolor{orange!24}$+0.127^{**}$ & \cellcolor{orange!24}$+0.256^{**}$ & $-0.004$ & $+0.002$ & \cellcolor{orange!24}$+0.193^{*}$ & \cellcolor{orange!12}$+0.082$ & \cellcolor{orange!24}$+0.161^{*}$ & \cellcolor{orange!24}$+0.128^{*}$ \\
+\quad Vicuna-7B & \cellcolor{orange!12}$+0.084^{*}$ & \cellcolor{orange!12}$+0.034$ & \cellcolor{orange!24}$+0.298^{*}$ & \cellcolor{blue!10}$-0.045$ & \cellcolor{orange!12}$+0.021$ & \cellcolor{orange!24}$+0.172^{**}$ & \cellcolor{orange!12}$+0.028$ & \cellcolor{orange!24}$+0.174^{*}$ & \cellcolor{orange!12}$+0.091$ \\
+\bottomrule
+\end{tabular}
+\caption{Pronominalization degradation by question group, \textbf{free-text questions only} (\texttt{answer\_type=other}; count and yes/no excluded). All rows report raw paired Wilcoxon $p$-values. Warm cells: positive degradation; blue: negative. $^{***}p{<}0.001$, $^{**}p{<}0.01$, $^{*}p{<}0.05$.}
+\label{tab:degradation_wilcoxon_ft}
+\end{table*}

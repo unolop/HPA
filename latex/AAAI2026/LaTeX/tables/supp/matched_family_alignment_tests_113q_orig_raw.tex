@@ -1,0 +1,22 @@
+\begin{table}[ht]
+\centering\small\setlength{\tabcolsep}{5pt}
+\begin{tabular}{l cc cc}
+\toprule
+& \multicolumn{2}{c}{\textbf{Full VLM}} & \multicolumn{2}{c}{\textbf{SA-LLM}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{Family} & $\Delta$ & $N$ & $\Delta$ & $N$ \\
+\midrule
+InternVL3.5 & $+.017$ & 108 & $-.093^{***}$ & 108 \\
+Qwen3-VL & $-.017$ & 110 & $-.079^{**}$ & 111 \\
+LLaVA-1.5 & $-.071^{***}$ & 113 & $-.161^{***}$ & 113 \\
+LLaVA-Mistral & $-.033^{***}$ & 113 & $-.305^{***}$ & 46 \\
+LLaVA-Vicuna & $-.049^{***}$ & 113 & $-.167^{***}$ & 113 \\
+\midrule
+\textit{Pooled} & $-.031^{***}$ & 557 & $-.142^{***}$ & 491 \\
+\bottomrule
+\end{tabular}
+\caption{Matched-family alignment relative to the backbone decoder (all 113 questions, original variant only, unfiltered; $N$ = matched question-variant pairs).
+$\Delta$ = model in comparison $-$ corresponding backbone decoder (LM) on per-question-variant $\sHM$ on average; positive values indicate the model leads.
+Stars on per-family rows: paired Wilcoxon (raw $p$). \textit{Pooled} row: Wilcoxon signed-rank on all per-question-variant deltas pooled across families, Holm--Bonferroni corrected across the two tests. ${}^{***}p{<}.001$, ${}^{**}p{<}.01$, ${}^{*}p{<}.05$; unlabelled\,=\,not significant.}
+\label{tab:matched_family_alignment_tests_orig_raw}
+\end{table}

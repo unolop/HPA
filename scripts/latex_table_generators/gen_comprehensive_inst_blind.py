@@ -1,12 +1,15 @@
-"""
-Generate the comprehensive blind-response LaTeX table.
+r"""
+Comprehensive inst-blind table — all models, per-variant agreement metrics.
 
-Usage:
-    python scripts/latex_table_generators/gen_comprehensive_inst_blind.py                      # prints to stdout
-    python scripts/latex_table_generators/gen_comprehensive_inst_blind.py --write              # writes to the LaTeX tables directory
-    python scripts/latex_table_generators/gen_comprehensive_inst_blind.py --cleaned --max_words 5 --output_tag w5 --output_dir latex/AAAI2026/LaTeX/tables_5words --write
+Shows Acc, Len, SBERT, chrF, ROUGE-1, Exact for every model across Original,
+Weaker, Pronominalized variants.  Uses the canonical HPA abstention classifier
+(analysis.utils.abstention) via figures.helpers.filter_abstained_pairs, so
+values are consistent with gen_alignment_ranking_full_scale_ticks.py.
+
+Output: latex/AAAI2026/LaTeX/tables/supp/comprehensive_inst_blind_table.tex
 """
-import argparse
+from __future__ import annotations
+
 import re
 import sys
 from pathlib import Path
@@ -14,451 +17,334 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]   # HPA/
-sys.path.insert(0, str(ROOT / 'analysis'))
-sys.path.insert(0, str(ROOT / 'figures'))
-from helpers import load_pair_cache, load_cleaned_pair_cache
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 
-EXPORTS = ROOT / 'analysis/session2/exports'
+from figures.helpers import filter_abstained_pairs
+from notebooks.helpers import _clean_answer_series
+from analysis.utils.abstention import classify, is_abstained
 
-# Parse early so we know whether to filter
-_pre = argparse.ArgumentParser(add_help=False)
-_pre.add_argument("--filtered", action="store_true")
-_pre.add_argument("--cleaned", action="store_true")
-_pre.add_argument("--max_words", type=int, default=None)
-_pre.add_argument("--output_tag", default=None)
-_pre_args, _ = _pre.parse_known_args()
+EXPORTS = ROOT / "analysis/session2/exports"
+OUT = ROOT / "latex/AAAI2026/LaTeX/tables/supp/comprehensive_inst_blind_table.tex"
 
-if _pre_args.filtered or _pre_args.cleaned:
-    pc = load_cleaned_pair_cache(
-        ROOT,
-        include_yesno=True,
-        max_words=_pre_args.max_words,
-        output_tag=_pre_args.output_tag,
-        verbose=False,
-    )
-else:
-    pc = load_pair_cache(ROOT, include_yesno=True, verbose=False)
-mr = pd.read_csv(EXPORTS / 'responses_model_inst_blind.csv')
-hr = pd.read_csv(EXPORTS / 'responses_human.csv')
+_STRIP_THINK = re.compile(r"<think>.*?</think>", re.DOTALL)
 
-if _pre_args.filtered:
-    from utils.abstention import classify, is_abstained
-    from utils.vqa import preprocess_answer
-    mr = mr.copy()
-    mr['_clean'] = mr['response'].fillna('').astype(str).apply(
-        lambda x: preprocess_answer(x, strip_think=True))
-    mr['_is_subst'] = mr['_clean'].apply(
-        lambda x: not is_abstained(classify(x, None)))
-    mr = mr[mr['_is_subst']].copy()
-    mr.drop(columns=['_clean', '_is_subst'], inplace=True)
-
-VARIANTS = ['C', 'B', 'A']
-hh = pc[pc['pair_type'] == 'HH']
-hm = pc[pc['pair_type'] == 'HM']
-
-# Soft abstention regex
-ABSTAIN_RE = r'\b(?:blank|nothing|none|nowhere|unanswerable|unknown|n/a|not applicable|cannot|can.t tell|no image|not possible|i don.t know|not sure)\b'
-
-# ── Model metadata ──
-
-SIZE_NUM = {
-    'Qwen3-VL-2B': 2, 'Qwen3-VL-4B': 4, 'Qwen3-VL-8B': 8, 'Qwen3-VL-32B': 32,
-    'InternVL-1B': 1, 'InternVL-2B': 2, 'InternVL-8B': 8,
-    'LLaVA-1.5-7B': 7, 'LLaVA-Mistral': 7.01, 'LLaVA-Vicuna': 7.02, 'LLaVA-Vicuna-13B': 13,
-    'Qwen3-VL-2B (LM)': 2, 'Qwen3-VL-4B (LM)': 4, 'Qwen3-VL-8B (LM)': 8, 'Qwen3-VL-32B (LM)': 32,
-    'InternVL-1B (LM)': 1, 'InternVL-2B (LM)': 2, 'InternVL-8B (LM)': 8,
-    'LLaVA-1.5 (LM)': 7, 'LLaVA-Vicuna (LM)': 7.02, 'LLaVA-Mistral (LM)': 7.01, 'LLaVA-Vicuna-13B (LM)': 13,
-    'Qwen3-0.6B': 0.6, 'Qwen3-1.7B': 1.7, 'Qwen3-4B': 4, 'Qwen3-8B': 8, 'Qwen3-32B': 32,
-    'Qwen2.5-7B-Instruct': 7, 'Mistral-7B': 7.01, 'Vicuna-7B': 7.02, 'Vicuna-13B': 13,
-    'Phi-3.5-mini': 3.8,
-    'Qwen3-0.6B (think)': 0.6, 'Qwen3-1.7B (think)': 1.7, 'Qwen3-4B (think)': 4,
-    'Qwen3-8B (think)': 8, 'Qwen3-32B (think)': 32,
-}
-
-SIZE_LABEL = {
-    'Qwen3-VL-2B': '2B', 'Qwen3-VL-4B': '4B', 'Qwen3-VL-8B': '8B', 'Qwen3-VL-32B': '32B',
-    'InternVL-1B': '1B', 'InternVL-2B': '2B', 'InternVL-8B': '8B',
-    'LLaVA-1.5-7B': '7B', 'LLaVA-Mistral': '7B', 'LLaVA-Vicuna': '7B', 'LLaVA-Vicuna-13B': '13B',
-    'Qwen3-VL-2B (LM)': '2B', 'Qwen3-VL-4B (LM)': '4B', 'Qwen3-VL-8B (LM)': '8B', 'Qwen3-VL-32B (LM)': '32B',
-    'InternVL-1B (LM)': '1B', 'InternVL-2B (LM)': '2B', 'InternVL-8B (LM)': '8B',
-    'LLaVA-1.5 (LM)': '7B', 'LLaVA-Vicuna (LM)': '7B', 'LLaVA-Mistral (LM)': '7B', 'LLaVA-Vicuna-13B (LM)': '13B',
-    'Qwen3-0.6B': '0.6B', 'Qwen3-1.7B': '1.7B', 'Qwen3-4B': '4B', 'Qwen3-8B': '8B', 'Qwen3-32B': '32B',
-    'Qwen2.5-7B-Instruct': '7B', 'Mistral-7B': '7B', 'Vicuna-7B': '7B', 'Vicuna-13B': '13B',
-    'Phi-3.5-mini': '3.8B',
-    'Qwen3-0.6B (think)': '0.6B', 'Qwen3-1.7B (think)': '1.7B', 'Qwen3-4B (think)': '4B',
-    'Qwen3-8B (think)': '8B', 'Qwen3-32B (think)': '32B',
-}
-
-DISPLAY_NAME = {
-    'LLaVA-1.5-7B': 'LLaVA-1.5',
-    'LLaVA-Mistral': 'LLaVA-1.6-Mistral',
-    'LLaVA-Vicuna': 'LLaVA-1.6-Vicuna',
-    'LLaVA-Vicuna-13B': 'LLaVA-1.6-Vicuna',
-    'LLaVA-1.5 (LM)': 'LLaVA-1.5',
-    'LLaVA-Vicuna (LM)': 'LLaVA-1.6-Vicuna',
-    'LLaVA-Mistral (LM)': 'LLaVA-1.6-Mistral',
-    'LLaVA-Vicuna-13B (LM)': 'LLaVA-1.6-Vicuna',
-}
-
-# ── Metrics ──
-
-METRIC_KEYS = [
-    ('Acc', None, 'acc'),
-    ('Len', None, 'length'),
-    ('SBERT', 'sbert_score', 'hm'),
-    ('chrF', 'chrf_score', 'hm'),
-    ('R-1', 'rouge1_score', 'hm'),
-    ('Exact', 'exact_score', 'hm'),
+# ── Model roster (display_name, group, family, size, pair_cache_id) ──────────
+MODEL_ROSTER: list[tuple[str, str, str, str, str]] = [
+    # VLMs
+    ("InternVL3.5",    "VLM", "InternVL3.5",   "1B",  "InternVL-1B"),
+    ("",               "VLM", "InternVL3.5",   "2B",  "InternVL-2B"),
+    ("",               "VLM", "InternVL3.5",   "8B",  "InternVL-8B"),
+    ("LLaVA-1.5",      "VLM", "LLaVA-1.5",     "7B",  "LLaVA-1.5-7B"),
+    ("LLaVA-1.6-Mistral", "VLM", "LLaVA-Mistral", "7B", "LLaVA-Mistral"),
+    ("LLaVA-1.6-Vicuna", "VLM", "LLaVA-Vicuna",  "7B", "LLaVA-Vicuna"),
+    ("",               "VLM", "LLaVA-Vicuna",  "13B", "LLaVA-Vicuna-13B"),
+    ("Qwen3-VL",       "VLM", "Qwen3-VL",      "2B",  "Qwen3-VL-2B"),
+    ("",               "VLM", "Qwen3-VL",      "4B",  "Qwen3-VL-4B"),
+    ("",               "VLM", "Qwen3-VL",      "8B",  "Qwen3-VL-8B"),
+    ("",               "VLM", "Qwen3-VL",      "32B", "Qwen3-VL-32B"),
+    # Backbone Decoders
+    ("InternVL3.5",    "LM",  "InternVL3.5",   "1B",  "InternVL-1B (LM)"),
+    ("",               "LM",  "InternVL3.5",   "2B",  "InternVL-2B (LM)"),
+    ("",               "LM",  "InternVL3.5",   "8B",  "InternVL-8B (LM)"),
+    ("LLaVA-1.5",      "LM",  "LLaVA-1.5",     "7B",  "LLaVA-1.5 (LM)"),
+    ("LLaVA-1.6-Mistral", "LM", "LLaVA-Mistral", "7B", "LLaVA-Mistral (LM)"),
+    ("LLaVA-1.6-Vicuna", "LM", "LLaVA-Vicuna",  "7B", "LLaVA-Vicuna (LM)"),
+    ("",               "LM",  "LLaVA-Vicuna",  "13B", "LLaVA-Vicuna-13B (LM)"),
+    ("Qwen3-VL",       "LM",  "Qwen3-VL",      "2B",  "Qwen3-VL-2B (LM)"),
+    ("",               "LM",  "Qwen3-VL",      "4B",  "Qwen3-VL-4B (LM)"),
+    ("",               "LM",  "Qwen3-VL",      "8B",  "Qwen3-VL-8B (LM)"),
+    ("",               "LM",  "Qwen3-VL",      "32B", "Qwen3-VL-32B (LM)"),
+    # Standalone LLMs
+    ("Mistral",        "SA",  "Mistral",       "7B",  "Mistral-7B"),
+    ("Phi-3.5-mini",   "SA",  "Phi-3.5",       "3.8B", "Phi-3.5-mini"),
+    ("Qwen2.5-Instruct", "SA", "Qwen2.5",     "7B",  "Qwen2.5-7B-Instruct"),
+    ("Qwen3",          "SA",  "Qwen3",         "0.6B", "Qwen3-0.6B"),
+    ("",               "SA",  "Qwen3",         "1.7B", "Qwen3-1.7B"),
+    ("",               "SA",  "Qwen3",         "4B",   "Qwen3-4B"),
+    ("",               "SA",  "Qwen3",         "8B",   "Qwen3-8B"),
+    ("",               "SA",  "Qwen3",         "32B",  "Qwen3-32B"),
+    ("Vicuna",         "SA",  "Vicuna",        "7B",   "Vicuna-7B"),
+    ("",               "SA",  "Vicuna",        "13B",  "Vicuna-13B"),
+    # Think models
+    ("Qwen3",          "Think", "Qwen3",       "0.6B", "Qwen3-0.6B (think)"),
+    ("",               "Think", "Qwen3",       "1.7B", "Qwen3-1.7B (think)"),
+    ("",               "Think", "Qwen3",       "4B",   "Qwen3-4B (think)"),
+    ("",               "Think", "Qwen3",       "8B",   "Qwen3-8B (think)"),
+    ("",               "Think", "Qwen3",       "32B",  "Qwen3-32B (think)"),
 ]
 
-VARIANT_LABELS = {
-    'C': 'Original',
-    'B': 'Weaker',
-    'A': 'Pronominalized',
+GROUP_TITLES = {
+    "VLM":   "Vision-Language Models",
+    "LM":    "VLM Backbone Decoders",
+    "SA":    "Standalone LLMs",
+    "Think": "Standalone LLMs with Thinking",
 }
 
-# Human LOOCV p5–p95 ranges (percent units) for within-human highlighting.
-# Computed via leave-one-participant-out: per-participant mean score vs all others.
-HUMAN_LOOCV_RANGES = {
-    # (metric_label, variant) → (p5, p95)  [in % units]
-    ('Acc',   'C'): (19.2, 33.7), ('Acc',   'B'): (17.1, 29.0), ('Acc',   'A'): (16.2, 28.9),
-    ('SBERT', 'C'): (54.9, 63.8), ('SBERT', 'B'): (53.2, 62.4), ('SBERT', 'A'): (52.4, 61.2),
-    ('chrF',  'C'): (23.1, 32.5), ('chrF',  'B'): (21.5, 32.8), ('chrF',  'A'): (19.8, 30.3),
-    ('R-1',   'C'): (18.8, 30.6), ('R-1',   'B'): (18.1, 30.4), ('R-1',   'A'): (16.0, 27.8),
-    ('Exact', 'C'): (17.5, 27.8), ('Exact', 'B'): (16.7, 28.7), ('Exact', 'A'): (15.8, 26.7),
-}
+VARIANTS = ["C", "B", "A"]
+VARIANT_LABELS = {"C": "Original", "B": "Weaker", "A": "Pronominalized"}
+METRICS = ["acc", "len", "sbert", "chrf", "rouge1", "exact"]
+METRIC_LABELS = ["Acc", "Len", "SBERT", "chrF", "ROUGE-1", "Exact"]
 
 
-def get_vals(model, group, variants):
-    result = {}
-    for label, col, src in METRIC_KEYS:
-        vals = []
-        for v in variants:
-            if src == 'acc':
-                if group == 'Human':
-                    val = hr[hr['variant']==v].groupby('question_id')['accuracy'].mean().mean()
-                else:
-                    d = mr[(mr['model']==model) & (mr['variant']==v)]['accuracy']
-                    val = d.mean() if len(d) > 0 else np.nan
-            elif src == 'length':
-                if group == 'Human':
-                    resp = hr[hr['variant']==v]['response'].fillna('')
-                    val = resp.str.split().apply(len).mean() / 100.0
-                else:
-                    resp = mr[(mr['model']==model) & (mr['variant']==v)]['response'].fillna('')
-                    wc = resp.str.split().apply(len)
-                    val = (wc.mean() if len(wc) > 0 else np.nan) / 100.0
+def compute_all() -> dict[str, dict[str, dict[str, float]]]:
+    """Returns {model_id: {variant: {metric: value}}}.
+
+    Agreement metrics (SBERT, chrF, ROUGE-1, Exact) are computed on
+    free-text questions only (answer_type == 'other'), consistent with
+    the sHM column in the ranking table.
+    Acc and Len are computed on all question types.
+    """
+    from analysis.utils.vqa import VQAAnswerMapper
+
+    # ── Load pair cache with canonical abstention filtering ──
+    pc = pd.read_parquet(EXPORTS / "pair_cache_cleaned.parquet")
+    pc = filter_abstained_pairs(pc)
+    hm = pc[pc["pair_type"] == "HM"]
+    hh = pc[pc["pair_type"] == "HH"]
+
+    # ── Filter to free-text questions for agreement metrics ──
+    mapper = VQAAnswerMapper()
+    mapper._load()
+    qid2atype = {int(qid): ann.get("answer_type", "other")
+                 for qid, ann in mapper.annotations.items()}
+    ft_qids = {qid for qid, at in qid2atype.items() if at == "other"}
+    hm_ft = hm[hm["question_id"].astype(int).isin(ft_qids)]
+    hh_ft = hh[hh["question_id"].astype(int).isin(ft_qids)]
+
+    # ── Load responses for Acc and Len (all question types) ──
+    resp = pd.read_csv(EXPORTS / "responses_model_inst_blind.csv")
+    resp["clean"] = _clean_answer_series(resp["response"].fillna("").astype(str))
+    resp["clean"] = resp["clean"].apply(
+        lambda x: _STRIP_THINK.sub("", x).strip() if isinstance(x, str) else x
+    )
+
+    all_ids = {mid for *_, mid in MODEL_ROSTER}
+    result: dict[str, dict[str, dict[str, float]]] = {}
+
+    for model_id in all_ids:
+        result[model_id] = {}
+        for v in VARIANTS:
+            # ── Agreement metrics from pair_cache (free-text only) ──
+            sub = hm_ft[(hm_ft["subject_2"] == model_id) & (hm_ft["variant"] == v)]
+            d: dict[str, float] = {}
+            d["sbert"]  = float(sub["sbert_score"].mean() * 100) if len(sub) > 0 else np.nan
+            d["chrf"]   = float(sub["chrf_score"].mean() * 100)  if len(sub) > 0 else np.nan
+            d["rouge1"] = float(sub["rouge1_score"].mean() * 100) if len(sub) > 0 else np.nan
+            d["exact"]  = float(sub["exact_score"].mean() * 100) if len(sub) > 0 else np.nan
+
+            # ── Acc and Len from responses (all question types) ──
+            rsub = resp[(resp["model"] == model_id) & (resp["variant"] == v)]
+            d["acc"] = float(rsub["accuracy"].mean() * 100) if len(rsub) > 0 else np.nan
+            if len(rsub) > 0:
+                # Len uses raw response (including think traces) for total verbosity
+                words = rsub["response"].fillna("").apply(
+                    lambda x: len(str(x).split()) if x else 0
+                )
+                d["len"] = float(words.mean())
             else:
-                if group == 'Human':
-                    d = hh[hh['variant']==v]
-                else:
-                    d = hm[(hm['subject_2']==model) & (hm['variant']==v)]
-                if len(d) > 0:
-                    val = d.groupby('question_id')[col].mean().mean()
-                else:
-                    val = np.nan
-            vals.append(val)
-        result[label] = vals
+                d["len"] = np.nan
+
+            result[model_id][v] = d
+
+    # ── Human row ──
+    result["Human"] = {}
+    for v in VARIANTS:
+        sub = hh_ft[hh_ft["variant"] == v]
+        d = {}
+        d["sbert"]  = float(sub["sbert_score"].mean() * 100) if len(sub) > 0 else np.nan
+        d["chrf"]   = float(sub["chrf_score"].mean() * 100)  if len(sub) > 0 else np.nan
+        d["rouge1"] = float(sub["rouge1_score"].mean() * 100) if len(sub) > 0 else np.nan
+        d["exact"]  = float(sub["exact_score"].mean() * 100) if len(sub) > 0 else np.nan
+
+        # Human accuracy from responses (all question types)
+        hresp = pd.read_csv(EXPORTS / "responses_human.csv") \
+            if (EXPORTS / "responses_human.csv").exists() else None
+        if hresp is not None:
+            hsub = hresp[(hresp["variant"] == v)]
+            d["acc"] = float(hsub["accuracy"].mean() * 100) if len(hsub) > 0 else np.nan
+            words = hsub["response"].fillna("").apply(lambda x: len(str(x).split()))
+            d["len"] = float(words.mean())
+        else:
+            d["acc"] = np.nan
+            d["len"] = np.nan
+
+        result["Human"][v] = d
+
     return result
 
 
-def fmt(val):
-    if np.isnan(val):
-        return "--"
-    return f"{val*100:.1f}"
-
-def fmt_len(val):
-    if np.isnan(val):
-        return "--"
-    raw = val * 100
-    return f"{raw:.0f}" if raw >= 10 else f"{raw:.1f}"
-
-
-def family_key(model):
-    base = DISPLAY_NAME.get(model, model).replace(" (LM)", "").replace(" (think)", "")
-    if base.startswith('InternVL'):
-        return 'InternVL'
-    if base.startswith('LLaVA'):
-        return 'LLaVA'
-    if base.startswith('Mistral'):
-        return 'Mistral'
-    if base.startswith('Phi'):
-        return 'Phi'
-    if base.startswith('Qwen2.5'):
-        return 'Qwen2.5'
-    if base.startswith('Qwen3-VL'):
-        return 'Qwen3-VL'
-    if base.startswith('Qwen3'):
-        return 'Qwen3'
-    if base.startswith('Vicuna'):
-        return 'Vicuna'
-    return base
+def _fmt(val: float, metric: str) -> str:
+    if not np.isfinite(val):
+        return "---"
+    if metric == "len":
+        if val >= 10:
+            return f"{val:.0f}"
+        return f"{val:.1f}"
+    if metric == "acc":
+        return f"{val:.1f}"
+    # agreement metrics: 1 decimal
+    return f"{val:.1f}"
 
 
-def sort_models(models):
-    return sorted(
-        models,
-        key=lambda m: (family_key(m).lower(), SIZE_NUM[m], DISPLAY_NAME.get(m, m).lower()),
-    )
+def _bold_best(vals: list[float], formatted: list[str], higher_better: bool = True) -> list[str]:
+    """Bold the best value in a group of formatted strings."""
+    finite = [(i, v) for i, v in enumerate(vals) if np.isfinite(v)]
+    if not finite:
+        return formatted
+    if higher_better:
+        best_val = max(v for _, v in finite)
+    else:
+        best_val = min(v for _, v in finite)
+    out = list(formatted)
+    for i, v in finite:
+        if abs(v - best_val) < 1e-9:
+            out[i] = rf"\textbf{{{out[i]}}}"
+            break  # only bold one
+    return out
 
 
-def row_cells(vals):
-    cells = []
-    for variant_idx in range(len(vals['Acc'])):
-        for metric_label, _col, _src in METRIC_KEYS:
-            metric_vals = vals[metric_label]
-            cell = fmt_len(metric_vals[variant_idx]) if metric_label == 'Len' else fmt(metric_vals[variant_idx])
-            cells.append(cell)
-    return cells
+def build_table(data: dict) -> str:
+    n_metric_cols = len(METRICS)  # 6
+    n_variant_cols = n_metric_cols * len(VARIANTS)  # 18
+    total_cols = 2 + n_variant_cols  # model + size + 18
 
-
-def flat_numeric_cells(vals):
-    cells = []
-    for variant_idx in range(len(vals['Acc'])):
-        for metric_label, _col, _src in METRIC_KEYS:
-            cells.append(vals[metric_label][variant_idx])
-    return cells
-
-
-def row_name(model, group):
-    name = DISPLAY_NAME.get(model, model)
-    if group == 'VLM backbone decoder':
-        name = name.replace(' (LM)', '')
-    if group == 'standalone LLM (think)':
-        name = name.replace(' (think)', '')
-    # Remove terminal scale markers because size already has its own column.
-    name = re.sub(r'-(?:0\.6|1|1\.7|2|3\.8|4|7|8|13|32)B(?=-|$)', '', name)
-    name = name.replace('--', '-').strip('- ')
-    return name
-
-
-def section_column_rankings(models, group, variants):
-    rows = [flat_numeric_cells(get_vals(model, group, variants)) for model in models]
-    rankings = []
-    for col_idx in range(len(rows[0])):
-        col = np.array([row[col_idx] for row in rows], dtype=float)
-        valid = col[~np.isnan(col)]
-        if len(valid) == 0:
-            rankings.append((np.nan, np.nan))
-            continue
-        uniq = sorted(set(valid.tolist()), reverse=True)
-        best = uniq[0]
-        second = uniq[1] if len(uniq) > 1 else np.nan
-        rankings.append((best, second))
-    return rankings
-
-
-def _in_human_range(value, metric_label, variant):
-    """True if value (in [0,1] scale) falls within the human LOOCV p5–p95 range."""
-    if metric_label == 'Len' or np.isnan(value):
-        return False
-    key = (metric_label, variant)
-    if key not in HUMAN_LOOCV_RANGES:
-        return False
-    p5, p95 = HUMAN_LOOCV_RANGES[key]
-    return p5 <= value * 100 <= p95
-
-
-def format_highlighted_cell(value, metric_label, best_value, variant=None):
-    text = fmt_len(value) if metric_label == 'Len' else fmt(value)
-    if text == "--" or np.isnan(value):
-        return text
-    in_range = _in_human_range(value, metric_label, variant)
-    is_best = not np.isnan(best_value) and np.isclose(value, best_value, equal_nan=False)
-    if is_best and in_range:
-        return rf"\cellcolor{{gray!15}}\textbf{{{text}}}"
-    if is_best:
-        return rf"\textbf{{{text}}}"
-    if in_range:
-        return rf"\cellcolor{{gray!15}}{text}"
-    return text
-
-
-def highlighted_row_cells(vals, rankings, variants):
-    cells = []
-    flat_idx = 0
-    for variant_idx, variant in enumerate(variants):
-        for metric_label, _col, _src in METRIC_KEYS:
-            value = vals[metric_label][variant_idx]
-            best_value, _second = rankings[flat_idx]
-            cells.append(format_highlighted_cell(value, metric_label, best_value, variant=variant))
-            flat_idx += 1
-    return cells
-
-
-def emit_rows_with_multirow(lines, rows):
-    i = 0
-    while i < len(rows):
-        j = i + 1
-        while j < len(rows) and rows[j]["name"] == rows[i]["name"]:
-            j += 1
-        span = j - i
-        for k in range(i, j):
-            name_cell = rf"\multirow{{{span}}}{{*}}{{{rows[i]['name']}}}" if k == i and span > 1 else (rows[i]["name"] if k == i else "")
-            row = rows[k]
-            lines.append(f"{name_cell} & {row['size']} & " + " & ".join(row["cols"]) + r" \\")
-        i = j
-
-
-# ── Model lists per section, sorted alphabetically by family then size ──
-
-vlm_models = sort_models([
-    'Qwen3-VL-2B', 'Qwen3-VL-4B', 'Qwen3-VL-8B', 'Qwen3-VL-32B',
-    'InternVL-1B', 'InternVL-2B', 'InternVL-8B',
-    'LLaVA-1.5-7B', 'LLaVA-Vicuna', 'LLaVA-Mistral', 'LLaVA-Vicuna-13B',
-])
-
-dec_models = sort_models([
-    'Qwen3-VL-2B (LM)', 'Qwen3-VL-4B (LM)', 'Qwen3-VL-8B (LM)', 'Qwen3-VL-32B (LM)',
-    'InternVL-1B (LM)', 'InternVL-2B (LM)', 'InternVL-8B (LM)',
-    'LLaVA-1.5 (LM)', 'LLaVA-Vicuna (LM)', 'LLaVA-Mistral (LM)', 'LLaVA-Vicuna-13B (LM)',
-])
-
-llm_models = sort_models([
-    'Qwen3-0.6B', 'Qwen3-1.7B', 'Qwen3-4B', 'Qwen3-8B', 'Qwen3-32B',
-    'Qwen2.5-7B-Instruct', 'Mistral-7B', 'Vicuna-7B', 'Vicuna-13B',
-    'Phi-3.5-mini',
-])
-
-think_models = sort_models([
-    'Qwen3-0.6B (think)', 'Qwen3-1.7B (think)', 'Qwen3-4B (think)',
-    'Qwen3-8B (think)', 'Qwen3-32B (think)',
-])
-
-
-# ── Build table ──
-
-def variant_block_spec(variants):
-    if len(variants) == 1:
-        title = VARIANT_LABELS[variants[0]]
-        return (
-            r"\begin{tabular}{lc|cccccc}",
-            r"\textbf{Model} & \textbf{Size} "
-            rf"& \multicolumn{{6}}{{c}}{{\textbf{{{title}}}}} \\",
-            r"\cmidrule(lr){3-8}",
-            r" & "
-            r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\",
-        )
-    return (
-        r"\begin{tabular}{lc|cccccc|cccccc|cccccc}",
-        r"\textbf{Model} & \textbf{Size} "
-        r"& \multicolumn{6}{c|}{\textbf{Original}}"
-        r"& \multicolumn{6}{c|}{\textbf{Weaker}}"
-        r"& \multicolumn{6}{c}{\textbf{Pronominalized}} \\",
-        r"\cmidrule(lr){3-8}\cmidrule(lr){9-14}\cmidrule(lr){15-20}",
-        r" & "
-        r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}"
-        r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact}"
-        r"& \textbf{Acc} & \textbf{Len} & \textbf{SBERT} & \textbf{chrF} & \textbf{ROUGE-1} & \textbf{Exact} \\",
-    )
-
-
-def build_table(variants=VARIANTS, label="tab:comprehensive_inst_blind"):
-    lines = []
-    lines.append(r"\begin{table*}[t]")
-    lines.append(r"\scriptsize")
+    lines: list[str] = []
+    lines.append(r"\begin{table*}[h]")
     lines.append(r"\centering")
     lines.append(r"\setlength{\tabcolsep}{2.5pt}")
     lines.append(r"\resizebox{\textwidth}{!}{%")
-    tabular_spec, header1, cmidrule, header2 = variant_block_spec(variants)
-    lines.append(tabular_spec)
+
+    # Column spec
+    col_spec = "lc" + "|".join(["c" * n_metric_cols] * len(VARIANTS))
+    lines.append(rf"\begin{{tabular}}{{{col_spec}}}")
     lines.append(r"\toprule")
-    lines.append(header1)
-    lines.append(cmidrule)
-    lines.append(header2)
+
+    # Header row 1: Model, Size, variant spans
+    parts = [r"\textbf{Model}", r"\textbf{Size}"]
+    for v in VARIANTS:
+        parts.append(
+            rf"\multicolumn{{{n_metric_cols}}}{{c{'|' if v != VARIANTS[-1] else ''}}}"
+            rf"{{\textbf{{{VARIANT_LABELS[v]}}}}}"
+        )
+    lines.append(" & ".join(parts) + r" \\")
+
+    # cmidrules
+    for i, v in enumerate(VARIANTS):
+        start = 3 + i * n_metric_cols
+        end = start + n_metric_cols - 1
+        lines.append(rf"\cmidrule(lr){{{start}-{end}}}")
+
+    # Header row 2: metric names repeated per variant
+    parts = ["", ""]
+    for v in VARIANTS:
+        for ml in METRIC_LABELS:
+            parts.append(rf"\textbf{{{ml}}}")
+    lines.append(" & ".join(parts) + r" \\")
     lines.append(r"\midrule")
 
-    # Human row
-    hvals = get_vals('Human (N=40)', 'Human', variants)
-    cols = row_cells(hvals)
-    lines.append(r"\textbf{Human (N=40)} & -- & " + " & ".join(cols) + r" \\")
+    # ── Human row ──
+    parts = [r"\textbf{Human (N=40)}", "--"]
+    for v in VARIANTS:
+        hd = data.get("Human", {}).get(v, {})
+        for m in METRICS:
+            parts.append(_fmt(hd.get(m, np.nan), m))
+    lines.append(" & ".join(parts) + r" \\")
     lines.append(r"\midrule")
 
-    def emit_section(title, models, group):
-        ncols = 2 + len(variants) * len(METRIC_KEYS)
-        lines.append(rf"\multicolumn{{{ncols}}}{{c}}{{\textit{{{title}}}}} \\")
-        lines.append(r"\midrule")
-        rankings = section_column_rankings(models, group, variants)
-        rows = []
-        for model in models:
-            vals = get_vals(model, group, variants)
-            name = row_name(model, group)
-            size = SIZE_LABEL.get(model, '?')
-            cols = highlighted_row_cells(vals, rankings, variants)
-            rows.append({"name": name, "size": size, "cols": cols})
-        emit_rows_with_multirow(lines, rows)
+    # ── Model rows, grouped ──
+    prev_group = None
+    for display_name, group, family, size, model_id in MODEL_ROSTER:
+        # Group header
+        if group != prev_group:
+            if prev_group is not None:
+                lines.append(r"\midrule")
+            lines.append(
+                rf"\multicolumn{{{total_cols}}}{{c}}"
+                rf"{{\textit{{{GROUP_TITLES[group]}}}}}"
+                r" \\"
+            )
+            lines.append(r"\midrule")
+            prev_group = group
 
-    emit_section("Vision-Language Models", vlm_models, 'VLM')
-    lines.append(r"\midrule")
-    emit_section("VLM Backbone Decoders", dec_models, 'VLM backbone decoder')
-    lines.append(r"\midrule")
-    emit_section("Standalone LLMs", llm_models, 'standalone LLM')
-    lines.append(r"\midrule")
-    emit_section("Standalone LLMs with Thinking", think_models, 'standalone LLM (think)')
+        # Model name column
+        if display_name:
+            # Check if next rows share the family (multirow)
+            count = sum(1 for dn, g, f, *_ in MODEL_ROSTER
+                        if g == group and f == family)
+            if count > 1:
+                name_cell = rf"\multirow{{{count}}}{{*}}{{{display_name}}}"
+            else:
+                name_cell = display_name
+        else:
+            name_cell = ""
+
+        # Collect per-variant values for bolding within group
+        parts = [name_cell, size]
+        model_data = data.get(model_id, {})
+
+        # Get all values in this group for bolding
+        group_models = [mid for _, g, *_, mid in MODEL_ROSTER if g == group]
+
+        for v in VARIANTS:
+            vd = model_data.get(v, {})
+            # Collect this model's values and all group values for each metric
+            for metric in METRICS:
+                val = vd.get(metric, np.nan)
+                all_group_vals = [
+                    data.get(gm, {}).get(v, {}).get(metric, np.nan)
+                    for gm in group_models
+                ]
+                formatted = _fmt(val, metric)
+                # Bold best in group
+                if np.isfinite(val):
+                    finite_group = [v2 for v2 in all_group_vals if np.isfinite(v2)]
+                    if finite_group:
+                        higher_better = metric not in ("len",)  # len is neutral
+                        if metric == "len":
+                            pass  # don't bold len
+                        elif higher_better and val >= max(finite_group) - 1e-9:
+                            formatted = rf"\textbf{{{formatted}}}"
+                parts.append(formatted)
+
+        lines.append(" & ".join(parts) + r" \\")
 
     lines.append(r"\bottomrule")
     lines.append(r"\end{tabular}")
-    lines.append(r"}")
-    filt_note = r" Abstaining responses are excluded." if _pre_args.filtered else ""
-    clean_note = r" All answers are length-normalized ($\leq$5 words) before scoring." if (_pre_args.cleaned or _pre_args.max_words) else ""
-    if len(variants) == 1:
-        caption = (
-            r"\caption{\small Blind+Inst performance on the original question variant only. "
-            r"Acc = VQA accuracy (\%); Len = mean answer length in words; "
-            r"SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). "
-            r"Human row shows human--human (HH) agreement."
-            + clean_note + filt_note + r"}"
-        )
-    else:
-        caption = (
-            r"\caption{\small Blind performance across evaluation variants "
-            r"(Original, Weaker, Pronominalized). "
-            r"Acc = VQA accuracy (\%); Len = mean answer length in words; "
-            r"SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%). "
-            r"Human row shows human--human (HH) agreement."
-            + clean_note + filt_note + r"}"
-        )
-    lines.append(caption)
-    lines.append(rf"\label{{{label}}}")
+    lines.append("}")
+    lines.append(
+        r"\caption{\small Per-variant agreement metrics for all models in the "
+        r"blind+instruction condition. "
+        r"Acc = VQA accuracy (\%); Len = mean answer length in words; "
+        r"SBERT, chrF, ROUGE-1, Exact = human--model (HM) agreement (\%), "
+        r"averaged over 40 human responses per question, "
+        r"on free-text questions only ($N{=}61$). "
+        r"Human row shows human--human (HH) agreement. "
+        r"Agreement metrics use abstention-filtered pairs "
+        r"(canonical classifier; consistent with main analysis). "
+        r"Bold = best in group per variant.}"
+    )
+    lines.append(r"\label{tab:comprehensive_inst_blind}")
     lines.append(r"\end{table*}")
     return "\n".join(lines)
 
 
+def main():
+    print("Computing metrics (abstention-filtered)...")
+    data = compute_all()
+
+    # Verify against ranking table for a few models
+    print("\nSpot-check sHM (total, all variants, filtered):")
+    for mid in ["InternVL-8B", "LLaVA-1.5-7B", "Qwen3-8B", "Qwen3-0.6B"]:
+        vals = [data.get(mid, {}).get(v, {}).get("sbert", np.nan) for v in VARIANTS]
+        mean = np.nanmean(vals)
+        print(f"  {mid:<22} C={vals[0]:.1f}  B={vals[1]:.1f}  A={vals[2]:.1f}  mean={mean:.1f}")
+
+    tex = build_table(data)
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(tex)
+    print(f"\nWrote {OUT}")
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--write", action="store_true",
-                        help="Write output to comprehensive_inst_blind.tex")
-    parser.add_argument("--variant", choices=VARIANTS,
-                        help="Emit a single-variant table only.")
-    parser.add_argument("--filtered", action="store_true",
-                        help="Filter out abstentions before computing statistics.")
-    parser.add_argument("--cleaned", action="store_true",
-                        help="Use the cleaned agreement cache instead of the raw cache.")
-    parser.add_argument("--max_words", type=int, default=None,
-                        help="Optional max words used by the cleaned cache.")
-    parser.add_argument("--output_tag", default=None,
-                        help="Optional cleaned-cache tag (e.g. w5).")
-    parser.add_argument("--output_dir", default=".",
-                        help="Directory to write the .tex file into when --write is set.")
-    args = parser.parse_args()
-
-    filtered_tag = "_filtered" if args.filtered else ""
-    cleaned_tag = f"_{args.output_tag}" if args.output_tag else ""
-    variants = [args.variant] if args.variant else VARIANTS
-    base_label = "tab:comprehensive_inst_blind_vc" if args.variant == "C" else "tab:comprehensive_inst_blind"
-    label = f"{base_label}{cleaned_tag}{filtered_tag}"
-    table = build_table(variants=variants, label=label)
-
-    if args.write:
-        if args.variant == "C":
-            filename = f"comprehensive_inst_blind_vC{cleaned_tag}{filtered_tag}.tex"
-        else:
-            filename = f"comprehensive_inst_blind{cleaned_tag}{filtered_tag}.tex"
-        out_dir = (ROOT / args.output_dir).resolve() if not Path(args.output_dir).is_absolute() else Path(args.output_dir).resolve()
-        out_dir.mkdir(parents=True, exist_ok=True)
-        out = out_dir / filename
-        out.write_text(table + "\n")
-        print(f"Wrote {out}")
-    else:
-        print(table)
+    main()

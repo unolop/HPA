@@ -36,9 +36,11 @@ VARIANT_COLORS = {"C": "#2a4e6e", "B": "#678cac", "A": "#bdccde"}
 SIZE_MARKER = {0.6: 20, 1.7: 38, 4.0: 68, 8.0: 105, 32.0: 160}
 SIZE_LABEL  = {0.6: "0.6B", 1.7: "1.7B", 4.0: "4B", 8.0: "8B", 32.0: "32B"}
 
-# HH baselines per variant (computed from inst_blind pair_cache, 113-question subset)
-HH_SBERT    = {"C": 0.5936, "B": 0.5778, "A": 0.5604}
-HH_ACCURACY = {"C": 0.2628, "B": 0.2294, "A": 0.2265}
+# Human LOO CIs (free-text, abstention-filtered, p5–p95)
+import json as _json
+_hh_ci = _json.loads((OUT_DIR / "hh_ci_freetext.json").read_text())
+HH_SBERT_BAND    = (_hh_ci["sbert_lo"],   _hh_ci["sbert_hi"])
+HH_ACCURACY_BAND = (_hh_ci["accuracy_lo"], _hh_ci["accuracy_hi"])
 
 plt.rcParams.update({
     "font.family": "sans-serif",
@@ -56,7 +58,8 @@ df = pd.read_csv(CSV)
 df_valid = df[df["mean_think_words"] > 0].copy()
 
 PANEL_SPECS = [
-    ("think_confidence", "Mean answer logprob",  "think_abs_confidence.png", None),
+    ("think_hm_sbert",   "HM SBERT",            "think_trace_sbert.png",      HH_SBERT_BAND),
+    ("think_confidence", "Mean answer logprob",  "think_trace_confidence.png", None),
 ]
 
 # Build shared legend handles
@@ -66,14 +69,21 @@ variant_handles = [
            markersize=7, label=VARIANT_LABELS[v])
     for v in VARIANT_ORDER
 ]
-def plot_metric_panel(ax, metric: str, ylabel: str, hh_vals: dict[str, float] | None) -> None:
-    # HH baseline band (SBERT and accuracy only)
-    if hh_vals is not None:
-        lo = min(hh_vals.values())
-        hi = max(hh_vals.values())
+# Size legend handles (marker area → display radius via sqrt)
+_SIZE_LEGEND = [(0.6, "0.6B"), (4.0, "4B"), (8.0, "8B"), (32.0, "32B")]
+size_handles = [
+    Line2D([0], [0], marker="o", color="none",
+           markerfacecolor="#999", markeredgecolor="#999",
+           markersize=(SIZE_MARKER[s] ** 0.5) * 0.85, label=lbl)
+    for s, lbl in _SIZE_LEGEND
+]
+def plot_metric_panel(ax, metric: str, ylabel: str, hh_band: tuple[float, float] | None) -> None:
+    # HH baseline band (human LOO p5–p95 CI, free-text)
+    if hh_band is not None:
+        lo, hi = hh_band
         ax.axhspan(lo, hi, color="#bbb", alpha=0.18, zorder=0)
-        for v in VARIANT_ORDER:
-            ax.axhline(hh_vals[v], color="#999", lw=0.9, ls="--", zorder=1)
+        ax.axhline(lo, color="#999", lw=0.9, ls="--", zorder=1)
+        ax.axhline(hi, color="#999", lw=0.9, ls="--", zorder=1)
 
     # Dotted arrows: blind → inst_blind
     for size_b, g in df_valid.groupby("size_b"):
@@ -92,7 +102,7 @@ def plot_metric_panel(ax, metric: str, ylabel: str, hh_vals: dict[str, float] | 
                 arrowprops=dict(
                     arrowstyle="-|>", linestyle="dotted",
                     color=VARIANT_COLORS[variant],
-                    lw=1.0, mutation_scale=8,
+                    lw=2.4, mutation_scale=12,
                 ),
                 zorder=2,
             )
@@ -127,8 +137,8 @@ fig, (ax_sbert, ax_acc) = plt.subplots(
     sharex=True,
     gridspec_kw={"hspace": 0.08},
 )
-plot_metric_panel(ax_sbert, "think_hm_sbert", "HM SBERT", HH_SBERT)
-plot_metric_panel(ax_acc, "think_accuracy", "Accuracy", HH_ACCURACY)
+plot_metric_panel(ax_sbert, "think_hm_sbert", "HM SBERT", HH_SBERT_BAND)
+plot_metric_panel(ax_acc, "think_accuracy", "Accuracy", HH_ACCURACY_BAND)
 ax_acc.set_xlabel("Mean think words")
 
 fig.legend(
@@ -156,8 +166,8 @@ fig, (ax_sbert, ax_acc, ax_conf) = plt.subplots(
     sharey=False,
     gridspec_kw={"wspace": 0.55},
 )
-plot_metric_panel(ax_sbert, "think_hm_sbert",   "HM SBERT",          HH_SBERT)
-plot_metric_panel(ax_acc,   "think_accuracy",    "Accuracy",          HH_ACCURACY)
+plot_metric_panel(ax_sbert, "think_hm_sbert",   "HM SBERT",          HH_SBERT_BAND)
+plot_metric_panel(ax_acc,   "think_accuracy",    "Accuracy",          HH_ACCURACY_BAND)
 plot_metric_panel(ax_conf,  "think_confidence",  "Mean answer logprob", None)
 ax_sbert.set_xlabel("Mean think words")
 ax_acc.set_xlabel("Mean think words")
@@ -183,53 +193,81 @@ shutil.copy(horiz_out, LATEX_OUT / "think_abs_sbert_accuracy_horiz.png")
 plt.close(fig)
 print(f"Saved: {horiz_out}")
 
-# Vertical variant: 3 panels stacked, for appendix
-fig, (ax_sbert, ax_acc, ax_conf) = plt.subplots(
-    3, 1,
-    figsize=(4.35, 6.0),
+# Vertical variant: sHM + confidence, for appendix
+fig, (ax_sbert, ax_conf) = plt.subplots(
+    2, 1,
+    figsize=(3.2, 4.0),
     sharex=True,
-    gridspec_kw={"hspace": 0.08},
+    gridspec_kw={"hspace": 0.10},
 )
-plot_metric_panel(ax_sbert, "think_hm_sbert",   "HM SBERT",          HH_SBERT)
-plot_metric_panel(ax_acc,   "think_accuracy",    "Accuracy",          HH_ACCURACY)
+plot_metric_panel(ax_sbert, "think_hm_sbert",   "HM SBERT",            HH_SBERT_BAND)
 plot_metric_panel(ax_conf,  "think_confidence",  "Mean answer logprob", None)
+ax_sbert.set_xlabel("")
+ax_sbert.tick_params(labelbottom=False)
 ax_conf.set_xlabel("Mean think words")
-for ax, label in zip([ax_sbert, ax_acc, ax_conf], ["(a)", "(b)", "(c)"]):
-    ax.text(0.03, 0.97, label, transform=ax.transAxes, fontsize=9, fontweight="bold", va="top", ha="left")
 
+# Variant legend (top)
 fig.legend(
         handles=variant_handles,
-        loc="lower center",
-        bbox_to_anchor=(0.5, -0.01),
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.02),
         ncol=3,
         frameon=False,
         fontsize=7.5,
         handletextpad=0.4,
         columnspacing=0.9,
 )
-fig.tight_layout(rect=[0.06, 0.04, 1, 0.98])
+# Size legend (bottom, below x-axis label)
+fig.legend(
+        handles=size_handles,
+        loc="lower center",
+        bbox_to_anchor=(0.5, -0.04),
+        ncol=4,
+        frameon=False,
+        fontsize=7.5,
+        handletextpad=0.4,
+        columnspacing=0.7,
+)
+fig.tight_layout(rect=[0.04, 0.04, 1, 0.95])
 
-vert_out = OUT_DIR / "think_abs_sbert_accuracy_vert.png"
+vert_out = OUT_DIR / "think_abs_sbert_confidence_vert.png"
 fig.savefig(vert_out, dpi=200, bbox_inches="tight")
-shutil.copy(vert_out, LATEX_OUT / "think_abs_sbert_accuracy_vert.png")
+shutil.copy(vert_out, LATEX_OUT / "think_abs_sbert_confidence_vert.png")
 plt.close(fig)
 print(f"Saved: {vert_out}")
 
 for metric, ylabel, fname, hh_vals in PANEL_SPECS:
-    fig, ax = plt.subplots(1, 1, figsize=(4.1, 2.7))
+    show_scale = (metric == "think_confidence")
+    fig, ax = plt.subplots(1, 1, figsize=(3.4, 2.2))
     plot_metric_panel(ax, metric, ylabel, hh_vals)
-    ax.set_xlabel("Mean think words")
-    fig.legend(
-        handles=variant_handles,
-        loc="lower center",
-        bbox_to_anchor=(0.5, -0.01),
-        ncol=3,
-        frameon=False,
-        fontsize=7.5,
-        handletextpad=0.4,
-        columnspacing=0.9,
-    )
-    fig.tight_layout(rect=[0.06, 0.1, 1, 0.97])
+    if show_scale:
+        # Confidence: xlabel + scale legend at bottom only
+        ax.set_xlabel("Mean think words")
+        fig.legend(
+            handles=size_handles,
+            loc="lower center",
+            bbox_to_anchor=(0.5, -0.02),
+            ncol=4,
+            frameon=False,
+            fontsize=7.5,
+            handletextpad=0.4,
+            columnspacing=0.7,
+        )
+        fig.tight_layout(rect=[0.06, 0.04, 1, 0.97])
+    else:
+        # sHM: variant legend on top, no xlabel
+        ax.tick_params(labelbottom=False)
+        fig.legend(
+            handles=variant_handles,
+            loc="upper center",
+            bbox_to_anchor=(0.5, 1.01),
+            ncol=3,
+            frameon=False,
+            fontsize=7.5,
+            handletextpad=0.4,
+            columnspacing=0.9,
+        )
+        fig.tight_layout(rect=[0.06, 0, 1, 0.93])
 
     out = OUT_DIR / fname
     fig.savefig(out, dpi=200, bbox_inches="tight")

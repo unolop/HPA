@@ -1,172 +1,191 @@
-"""
-Generate matched_family_alignment_tests.tex with exact Wilcoxon p-values.
+r"""
+Matched-family alignment table — models compared against Backbone Decoder.
 
-For each family, compares backbone decoder vs. full VLM and vs. matched SA-LLM
-using per-(question, variant) mean HM SBERT, abstention-filtered.
-Tests: two-sided Wilcoxon signed-rank, Holm correction across all comparisons.
+Reference: Backbone Decoder. Subjects: Full VLM and SA-LLM.
+  Col 1 (Full VLM) : Delta = Full VLM - Decoder
+  Col 2 (SA-LLM)   : Delta = SA-LLM  - Decoder
+
+Stars: raw paired Wilcoxon (each family is a pre-specified independent comparison).
+Pooled row: Wilcoxon signed-rank on all per-(q,v) deltas across families, Holm-corrected.
+
+Generates two versions:
+  matched_family_alignment_tests_113q.tex  (all questions)
+  matched_family_alignment_tests_61q.tex   (free-text only)
 """
 from __future__ import annotations
+
 import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from scipy import stats
-from statsmodels.stats.multitest import multipletests
+from scipy import stats as _st
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT))
-from figures.helpers import filter_abstained_pairs
+ANALYSIS_ROOT = ROOT.parent / "human-prior-alignment"
+sys.path.insert(0, str(ANALYSIS_ROOT / "analysis"))
 
-OUT = ROOT / "latex/AAAI2026/LaTeX/tables/supp/matched_family_alignment_tests.tex"
+from utils.load_data import load_hh_hm, DATA_DIR
 
-# Matched family definitions: (display_name, decoder, vlm, sa_llm)
+OUT_DIR = ROOT / "latex/AAAI2026/LaTeX/tables/supp"
+
 FAMILIES = [
-    ("InternVL3.5",  "InternVL-8B (LM)",   "InternVL-8B",   "Qwen3-8B"),
-    ("Qwen3-VL",     "Qwen3-VL-8B (LM)",   "Qwen3-VL-8B",   "Qwen3-8B"),
-    ("LLaVA-1.5",    "LLaVA-1.5 (LM)",     "LLaVA-1.5-7B",  "Vicuna-7B"),
-    ("LLaVA-Mistral","LLaVA-Mistral (LM)",  "LLaVA-Mistral", "Mistral-7B"),
-    ("LLaVA-Vicuna", "LLaVA-Vicuna (LM)",   "LLaVA-Vicuna",  "Vicuna-7B"),
+    ("InternVL3.5",   "InternVL-8B (LM)",   "InternVL-8B",   "Qwen3-8B"),
+    ("Qwen3-VL",      "Qwen3-VL-8B (LM)",   "Qwen3-VL-8B",   "Qwen3-8B"),
+    ("LLaVA-1.5",     "LLaVA-1.5 (LM)",     "LLaVA-1.5-7B",  "Vicuna-7B"),
+    ("LLaVA-Mistral", "LLaVA-Mistral (LM)",  "LLaVA-Mistral", "Mistral-7B"),
+    ("LLaVA-Vicuna",  "LLaVA-Vicuna (LM)",   "LLaVA-Vicuna",  "Vicuna-7B"),
 ]
 
 
-def mean_sbert_per_qv(hm: pd.DataFrame, model: str) -> pd.Series:
-    """Mean HM SBERT per question_id (averaged across variants) for one model."""
-    sub = hm[hm["subject_2"] == model]
-    return sub.groupby("question_id")["sbert_score"].mean()
+def per_qv_mean(df: pd.DataFrame, model: str) -> pd.Series:
+    return (
+        df[df["subject_2"] == model]
+        .groupby(["question_id", "variant"])["sbert_score"]
+        .mean()
+    )
 
 
-def fmt_p(p: float) -> str:
-    """Format p-value: scientific notation for very small, else 3 sig figs."""
-    if p < 0.001:
-        exp = int(np.floor(np.log10(p)))
-        mantissa = p / 10**exp
-        return rf"{mantissa:.1f}{{\times}}10^{{{exp}}}"
-    return f"{p:.3f}"
+def wilcoxon_pair(s_subj: pd.Series, s_ref: pd.Series):
+    """Δ = subject − reference. Returns (delta, raw_p, n)."""
+    common = s_subj.index.intersection(s_ref.index)
+    v_subj, v_ref = s_subj[common].values, s_ref[common].values
+    delta = float(v_subj.mean() - v_ref.mean())
+    nz = v_subj - v_ref
+    nz = nz[nz != 0]
+    if len(nz) < 5:
+        return delta, float("nan"), len(common)
+    _, p = _st.wilcoxon(v_subj, v_ref, alternative="two-sided")
+    return delta, float(p), len(common)
 
 
-def star(p_holm: float) -> str:
-    if p_holm < 0.001:
-        return "***"
-    if p_holm < 0.01:
-        return "**"
-    if p_holm < 0.05:
-        return "*"
-    return "ns"
+def stars(p: float) -> str:
+    if p != p:      return ""
+    if p < 0.001:   return "^{***}"
+    if p < 0.01:    return "^{**}"
+    if p < 0.05:    return "^{*}"
+    return ""
+
+
+def holm_bonferroni(pvals: list[float]) -> list[float]:
+    n = len(pvals)
+    indexed = sorted(enumerate(pvals), key=lambda x: x[1])
+    corrected = [0.0] * n
+    cummax = 0.0
+    for rank, (orig_idx, p) in enumerate(indexed):
+        adj = p * (n - rank)
+        cummax = max(cummax, adj)
+        corrected[orig_idx] = min(cummax, 1.0)
+    return corrected
+
+
+def fmt_delta(val: float, sup: str = "") -> str:
+    sign = "+" if val >= 0 else "-"
+    s = sign + "." + f"{abs(val):.3f}".split(".")[1]
+    return f"${s}{sup}$"
+
+
+def generate_table(hm: pd.DataFrame, nq: int, label_suffix: str, caption_scope: str):
+    """Generate one version of the table."""
+    all_models = {m for _, dec, vlm, sa in FAMILIES for m in (dec, vlm, sa)}
+    qv = {m: per_qv_mean(hm, m) for m in all_models}
+
+    rows = []
+    for name, dec, vlm, sa in FAMILIES:
+        d_vlm, p_vlm, n_vlm = wilcoxon_pair(qv[vlm], qv[dec])
+        d_sa,  p_sa,  n_sa  = wilcoxon_pair(qv[sa],  qv[dec])
+        rows.append(dict(Family=name,
+                         d_vlm=d_vlm, p_vlm=p_vlm, n_vlm=n_vlm,
+                         d_sa=d_sa,   p_sa=p_sa,   n_sa=n_sa))
+
+    res = pd.DataFrame(rows).set_index("Family")
+    print(res[["d_vlm", "p_vlm", "n_vlm", "d_sa", "p_sa", "n_sa"]].round(4).to_string())
+
+    # Pooled Wilcoxon across all families
+    vlm_deltas, sa_deltas = [], []
+    for name, dec, vlm, sa in FAMILIES:
+        common_v = qv[vlm].index.intersection(qv[dec].index)
+        vlm_deltas.extend((qv[vlm][common_v] - qv[dec][common_v]).values)
+        common_s = qv[sa].index.intersection(qv[dec].index)
+        sa_deltas.extend((qv[sa][common_s] - qv[dec][common_s]).values)
+    vlm_deltas = np.array(vlm_deltas)
+    sa_deltas = np.array(sa_deltas)
+
+    nz_vlm = vlm_deltas[vlm_deltas != 0]
+    nz_sa = sa_deltas[sa_deltas != 0]
+    _, p_pool_vlm = _st.wilcoxon(nz_vlm, alternative="two-sided")
+    _, p_pool_sa = _st.wilcoxon(nz_sa, alternative="two-sided")
+    avg_d_vlm = float(vlm_deltas.mean())
+    avg_d_sa = float(sa_deltas.mean())
+    n_pool_vlm = len(vlm_deltas)
+    n_pool_sa = len(sa_deltas)
+
+    p_vlm_adj, p_sa_adj = holm_bonferroni([p_pool_vlm, p_pool_sa])
+
+    print(f"\nPooled Wilcoxon — VLM: Δ={avg_d_vlm:+.4f} N={n_pool_vlm} p={p_pool_vlm:.6f} Holm={p_vlm_adj:.6f}")
+    print(f"Pooled Wilcoxon — SA:  Δ={avg_d_sa:+.4f} N={n_pool_sa} p={p_pool_sa:.6f} Holm={p_sa_adj:.6f}")
+
+    tex_rows = []
+    for name, *_ in FAMILIES:
+        r = res.loc[name]
+        tex_rows.append(
+            f"{name} & {fmt_delta(r['d_vlm'], stars(r['p_vlm']))} & {int(r['n_vlm'])}"
+            f" & {fmt_delta(r['d_sa'], stars(r['p_sa']))} & {int(r['n_sa'])} \\\\"
+        )
+
+    tex = (
+        r"\begin{table}[ht]" "\n"
+        r"\centering\small\setlength{\tabcolsep}{5pt}" "\n"
+        r"\begin{tabular}{l cc cc}" "\n"
+        r"\toprule" "\n"
+        r"& \multicolumn{2}{c}{\textbf{Full VLM}} & \multicolumn{2}{c}{\textbf{SA-LLM}} \\" "\n"
+        r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}" "\n"
+        r"\textbf{Family} & $\Delta$ & $N$ & $\Delta$ & $N$ \\" "\n"
+        r"\midrule" "\n"
+        + "\n".join(tex_rows) + "\n"
+        r"\midrule" "\n"
+        f"\\textit{{Pooled}} & {fmt_delta(avg_d_vlm, stars(p_vlm_adj))} & {n_pool_vlm} & {fmt_delta(avg_d_sa, stars(p_sa_adj))} & {n_pool_sa} \\\\\n"
+        r"\bottomrule" "\n"
+        r"\end{tabular}" "\n"
+        f"\\caption{{Matched-family alignment relative to the backbone decoder ({caption_scope}; $N$ = matched question-variant pairs).\n"
+        r"$\Delta$ = model in comparison $-$ corresponding backbone decoder (LM) on per-question-variant $\sHM$ on average; positive values indicate the model leads." "\n"
+        r"Stars on per-family rows: paired Wilcoxon (raw $p$). \textit{Pooled} row: Wilcoxon signed-rank on all per-question-variant deltas pooled across families, Holm--Bonferroni corrected across the two tests. ${}^{***}p{<}.001$, ${}^{**}p{<}.01$, ${}^{*}p{<}.05$; unlabelled\,=\,not significant.}" "\n"
+        f"\\label{{tab:matched_family_alignment_tests{label_suffix}}}\n"
+        r"\end{table}"
+    )
+
+    out = OUT_DIR / f"matched_family_alignment_tests_{nq}q{label_suffix}.tex"
+    out.write_text(tex)
+    print(f"\nWritten to {out}\n")
+    return tex
 
 
 def main():
-    pc = pd.read_parquet(ROOT / "analysis/session2/exports/pair_cache_cleaned.parquet")
-    pc = filter_abstained_pairs(pc)
-    hm = pc[pc["pair_type"] == "HM"].copy()
+    _at = pd.read_csv(DATA_DIR / "vqa_answer_types.csv")
+    qid2atype = dict(zip(_at["question_id"].astype(int), _at["answer_type"]))
+    other_qids = {qid for qid, at in qid2atype.items() if at == "other"}
 
-    # Pre-compute per-(qv) mean for each model needed
-    all_models = set()
-    for _, dec, vlm, sa in FAMILIES:
-        all_models.update([dec, vlm, sa])
-    qv_means = {m: mean_sbert_per_qv(hm, m) for m in all_models}
+    for filt in [False, True]:
+        filt_tag = "absf" if filt else "raw"
+        filt_label = "abstention-filtered" if filt else "unfiltered"
+        _, hm = load_hh_hm(filtered=filt)
 
-    # Collect all raw p-values for Holm correction (2 tests per family = 10 total)
-    raw_results = []  # (family_idx, comparison, dec_mean, cmp_mean, delta, raw_p, n)
-    for fi, (name, dec, vlm, sa) in enumerate(FAMILIES):
-        dec_s = qv_means[dec]
-        for label, cmp_model in [("vlm", vlm), ("sa", sa)]:
-            cmp_s = qv_means[cmp_model]
-            common = dec_s.index.intersection(cmp_s.index)
-            d = dec_s[common].values - cmp_s[common].values
-            # Drop zero differences (Wilcoxon requirement)
-            nz = d[d != 0]
-            if len(nz) < 10:
-                raw_p = float("nan")
-            else:
-                _, raw_p = stats.wilcoxon(dec_s[common].values, cmp_s[common].values,
-                                          alternative="two-sided")
-            raw_results.append({
-                "fi": fi, "label": label,
-                "dec_mean": float(dec_s[common].mean()),
-                "cmp_mean": float(cmp_s[common].mean()),
-                "delta": float(dec_s[common].mean() - cmp_s[common].mean()),
-                "raw_p": raw_p,
-                "n": len(common),
-            })
+        hm_ft = hm[hm["question_id"].isin(other_qids)]
+        hm_c = hm[hm["variant"] == "C"]
+        hm_ft_c = hm_ft[hm_ft["variant"] == "C"]
 
-    # Holm correction across all valid tests
-    valid_mask = [not np.isnan(r["raw_p"]) for r in raw_results]
-    valid_ps = [r["raw_p"] for r in raw_results if not np.isnan(r["raw_p"])]
-    if valid_ps:
-        _, p_holm_vals, _, _ = multipletests(valid_ps, method="holm")
-    holm_iter = iter(p_holm_vals)
-    for r in raw_results:
-        r["p_holm"] = float(next(holm_iter)) if not np.isnan(r["raw_p"]) else float("nan")
+        configs = [
+            (hm,      339, f"_{filt_tag}", f"all 113 questions $\\times$ 3 variants, {filt_label}"),
+            (hm_ft,   183, f"_ft_{filt_tag}", f"61 free-text questions $\\times$ 3 variants, {filt_label}"),
+            (hm_c,    113, f"_orig_{filt_tag}", f"all 113 questions, original variant only, {filt_label}"),
+            (hm_ft_c,  61, f"_ft_orig_{filt_tag}", f"61 free-text questions, original variant only, {filt_label}"),
+        ]
 
-    # Index results for easy lookup
-    res = {}
-    for r in raw_results:
-        res[(r["fi"], r["label"])] = r
-
-    BLUE   = r"\textcolor[HTML]{0072B2}"
-    ORANGE = r"\textcolor[HTML]{CC7A00}"
-
-    def fmt_score(v: float, bold: bool) -> str:
-        s = f".{round(v * 1000):03d}"
-        return rf"\textbf{{{s}}}" if bold else s
-
-    def fmt_delta(delta: float, p_holm: float) -> str:
-        sign = "+" if delta >= 0 else "-"
-        st = star(p_holm)
-        st_str = f"^{{{st}}}" if st != "ns" else ""
-        color = BLUE if delta >= 0 else ORANGE
-        return rf"{{\scriptsize {color}{{$({sign}.{abs(round(delta * 1000)):03d}{st_str})$}}}}"
-
-    # Build table
-    lines = [
-        r"\begin{table}[ht]",
-        r"\centering",
-        r"\small",
-        r"\setlength{\tabcolsep}{5pt}",
-        r"\caption{%",
-        r"\textbf{Matched-family backbone decoder alignment.} "
-        r"Each row compares a VLM backbone decoder against two reference points: "
-        r"(i)~its paired full VLM (blank image), "
-        r"and (ii)~the matched standalone LLM. "
-        r"\textbf{Decoder} = mean abstention-filtered HM SBERT ($N=113$ questions); "
-        r"each comparator cell shows the comparator score with "
-        r"{\scriptsize \textcolor[HTML]{0072B2}{blue}} $+\Delta$ or "
-        r"{\scriptsize \textcolor[HTML]{CC7A00}{orange}} $-\Delta$ (decoder $-$ comparator). "
-        r"Stars: Holm-corrected Wilcoxon $^{***}{<}.001$, $^{**}{<}.01$, $^{*}{<}.05$; unlabelled = not significant.}",
-        r"\label{tab:matched_family_alignment_tests}",
-        r"\begin{tabular}{l c c c}",
-        r"\toprule",
-        r"\textbf{Family} & \textbf{Decoder} & \textbf{vs.\ Full VLM} & \textbf{vs.\ SA-LLM} \\",
-        r"\midrule",
-    ]
-
-    for fi, (name, dec, vlm, sa) in enumerate(FAMILIES):
-        rv = res[(fi, "vlm")]
-        rs = res[(fi, "sa")]
-
-        dec_v   = rv["dec_mean"]
-        vlm_v   = rv["cmp_mean"]
-        sa_v    = rs["cmp_mean"]
-        top     = max(dec_v, vlm_v, sa_v)
-
-        dec_cell = fmt_score(dec_v, bold=(dec_v == top))
-        vlm_cell = rf"{fmt_score(vlm_v, bold=(vlm_v == top))} {fmt_delta(rv['delta'], rv['p_holm'])}"
-        sa_cell  = rf"{fmt_score(sa_v,  bold=(sa_v  == top))} {fmt_delta(rs['delta'], rs['p_holm'])}"
-
-        lines.append(rf"{name} & {dec_cell} & {vlm_cell} & {sa_cell} \\")
-
-    lines += [
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ]
-
-    tex = "\n".join(lines) + "\n"
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(tex)
-    print(f"Saved: {OUT}")
-    print(tex)
+        for data, nqv, suffix, caption in configs:
+            print("=" * 60)
+            print(f"{caption.upper()} ({nqv} qv pairs)")
+            print("=" * 60)
+            generate_table(data, nqv, suffix, caption)
 
 
 if __name__ == "__main__":

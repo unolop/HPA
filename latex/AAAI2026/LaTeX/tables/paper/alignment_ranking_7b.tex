@@ -3,8 +3,7 @@
 \small
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{0.96}
-\caption{Per-model alignment ranks across all criteria (all questions $\times$ variants pooled; abstention classifier applied). Cells show rank (1\,=\,best for all metrics). \colorbox{green!20}{Green} = within human LOO 95\,\% CI. \colorbox{orange!30}{Orange} = over-concentrated ($<$CI for $\djs$; $>$CI for $\sHM$/$\rho$). \colorbox{gray!15}{Gray} = outside CI in the wrong direction; darker = closer to human range. Abst: abstention rate. w/o (blind): rank 1\,=\,highest abstention (model spontaneously detects missing image). w/ (inst): rank 1\,=\,lowest abstention (model follows the instruction to answer). $\rho$: Spearman correlation between per-question model and human difficulty (raw value; higher\,=\,better). Avg = mean rank across all six metrics.}
-\label{tab:alignment_ranking_7b}
+
 \begin{tabular}{>{\raggedright\arraybackslash}p{2.6cm}ccccccc}
 \toprule
 \multirow{2}{*}{\textbf{Model}} & \multicolumn{2}{c}{$\djs$} & \multicolumn{2}{c}{Free text} & \multicolumn{2}{c}{Abst(\%)} & \multirow{2}{*}{\textbf{Avg}} \\
@@ -35,4 +34,6 @@ Qwen3 (think) & \cellcolor{gray!10}11 & \cellcolor{gray!15}3 & \cellcolor{green!
 Vicuna & \cellcolor{orange!30}6 & \cellcolor{gray!5}12 & 14 & .472 & \cellcolor{gray!5}10 & \cellcolor{gray!15}4 & 9.8 \\
 \bottomrule
 \end{tabular}
+\caption{Per-model alignment ranks across all criteria (all questions $\times$ variants pooled; abstention classifier applied). Cells show rank (1\,=\,best for all metrics). \colorbox{green!20}{Green} = within human LOO 95\,\% CI. \colorbox{orange!30}{Orange} = over-concentrated ($<$CI for $\djs$; $>$CI for $\sHM$/$\rho$). \colorbox{gray!15}{Gray} = outside CI in the wrong direction; darker = closer to human range. Abst: abstention rate. w/o (blind): rank 1\,=\,highest abstention (model spontaneously detects missing image). w/ (inst): rank 1\,=\,lowest abstention (model follows the instruction to answer). $\rho$: Spearman correlation between per-question model and human difficulty (raw value; higher\,=\,better). Avg = mean rank across all six metrics.}
+\label{tab:alignment_ranking_7b}
 \end{table}
