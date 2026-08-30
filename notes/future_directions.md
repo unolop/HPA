@@ -173,7 +173,7 @@ Questions with high $h(q)$ (easy blind = strong shortcut) receive stronger subtr
 | Your VLM Can't Even Count to 20 | 2024 | https://arxiv.org/abs/2510.04401 |
 | LVLM-COUNT (divide-and-conquer) | 2024 | https://arxiv.org/abs/2412.00686 |
 | CounterCount (zero-aware prompt) | 2025 | https://arxiv.org/abs/2605.17826 |
-| The Count Is There, but Misaligned | 2025 | https://arxiv.org/abs/2607.09544 |
+| **The Count Is There, but Misaligned** | arXiv 2026 | https://arxiv.org/abs/2607.09544 |
 | CountGD (NeurIPS 2024, grounding-first) | NeurIPS 2024 | https://arxiv.org/abs/2407.04619 |
 | CounTX (open-vocab counting) | BMVC 2023 | https://arxiv.org/abs/2306.01851 |
 | GroundingDINO | ECCV 2024 | https://arxiv.org/abs/2303.05499 |
@@ -187,6 +187,30 @@ Questions with high $h(q)$ (easy blind = strong shortcut) receive stronger subtr
 6. **Inference-time probe correction**: linear probe on intermediate activations → correct output logit (Count Is There but Misaligned)
 
 **Note**: LVLM-COUNT found CoT ("think step-by-step") *hurts* counting. Zero-bias under blind/text-only condition is currently uncharted — our work may be the first systematic documentation.
+
+---
+
+### Deep Dive: "The Count Is There, but Misaligned" (arXiv 2607.09544)
+
+**Core diagnosis**: Counting failures in VLMs do NOT stem from missing internal knowledge — the correct count is encoded in hidden representations. The problem is a **readout misalignment**: the ground-truth probe and the output probe use near-orthogonal directions in activation space (measured by SVCCA on probe weight matrices, not activations). The model "knows" the right answer but fails to verbalize it.
+
+**Diagnostic methodology**:
+1. Train three parallel probes on hidden activations: (a) ground-truth probe, (b) output probe (what model actually says), (c) error detector probe
+2. Apply SVCCA to compare probe weight matrices → low similarity = misaligned readout directions
+3. Causal validation: steer activations along ground-truth probe direction → accuracy improves; random direction → degrades
+
+**Intervention** (inference-time, no retraining):
+- Train an error detector on VLM activations
+- When detector predicts failure → re-prompt with corrective prompt to recount
+- Result: up to +15.6 absolute accuracy points, plug-and-play across models
+
+**Direct connection to our work**:
+- Their "ground-truth probe vs output probe misalignment" is exactly what our V3 direction captures: `mean(correct sighted activations) − mean(incorrect sighted activations)` = the direction that aligns the output with the internal representation
+- Their error detector = our abstention/uncertainty signal (blind confident = likely misaligned)
+- Our V1 direction (blind abstention) operationalizes the precondition for their error detector: a model that confidently answers blind is not in a "re-examine" state
+- **Key synergy**: their SVCCA analysis could be run on our blind vs sighted activation pairs to test whether linguistic prior exploitation is *also* a readout misalignment phenomenon, not just a missing-image phenomenon
+
+**PDF**: `latex/AAAI2026/references/pdfs/el-shangiti2026count_misaligned.pdf`
 
 ### Proposed Human Data Collection for Counting
 1. **Count prior distribution** (blind, no image): humans distribute confidence across bins (0,1,2–3,4–5,6–10,>10) for each count question type → measures reasonable linguistic prior; gap to model zero-distribution = calibration target
