@@ -133,6 +133,24 @@ Questions with high $h(q)$ (easy blind = strong shortcut) receive stronger subtr
 2. V2a if sighted human study completed
 3. Attention analysis: do hallucinating responses show blind-like attention to visual tokens?
 
+**Phase 4 — Future / follow-up paper: Sighted-only probing with SVCCA**
+
+Train two probes on sighted hidden states only:
+- **Probe A**: supervised on "model answered correctly sighted" (visual grounding)
+- **Probe B**: supervised on "model answered correctly blind" (shortcut — correct by luck)
+
+Apply SVCCA to compare probe A and probe B weight matrices.
+
+*Interesting finding if SVCCA is high*: both probes read from the same direction → the model uses the same internal mechanism to answer correctly with and without image → it never actually used the visual content → shortcut exploitation persists even in the sighted condition, just behaviorally masked.
+
+This is the mechanistic version of our behavioral finding. It would show that correct sighted answers are not always grounded in visual processing — the model routes through the linguistic prior direction regardless of whether the image was informative.
+
+**Why this is different from the obvious blind-vs-sighted comparison**: comparing blind vs sighted hidden states directly is trivially different (obviously different inputs). The interesting question is *within sighted inference*: do correctly-answered questions use a visual direction or a linguistic-prior direction? SVCCA on probes answers this.
+
+**Compute**: free once hidden states are extracted. Linear probe training ~seconds on 1k × 4096. SVCCA on weight matrices ~seconds.
+
+**Relationship to steering vectors**: steering vectors = unsupervised mean-difference in activation space. Probe weights ≈ supervised version of the same direction (equivalent for linear probes on balanced data). SVCCA requires weight matrices, so it's only applicable to probes, not raw steering vectors.
+
 **What is NOT needed**: no standalone LM decoder re-runs (blind VLM condition already serves as the no-vision baseline).
 
 **Target benchmarks**: POPE, HallusionBench, CHAIR, AMBER
