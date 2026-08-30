@@ -82,7 +82,9 @@ def find_transformer_layers(model):
     Raises AttributeError with a helpful message if none match.
     """
     candidate_paths = [
-        'language_model.model.layers',   # LLaVA-1.5/1.6, InternVL
+        'model.language_model.layers',   # LLaVA-1.5 (LlavaForConditionalGeneration)
+        'language_model.model.layers',   # LLaVA-1.6, InternVL
+        'model.language_model.model.layers',  # some wrapped variants
         'model.layers',                  # Qwen3-VL, plain LLaMA
         'model.model.layers',            # some swift-wrapped models
         'transformer.h',                 # GPT-2 style
